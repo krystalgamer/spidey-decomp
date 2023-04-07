@@ -1,2 +1,3 @@
 - ghidra-psx-loader has wrong alignment for structs
 - gcc operators here: https://github.com/gcc-mirror/gcc/blob/1b84dc3709f339801f34093ccece9f484ff2b60e/gcc/cp/operators.def
+- jumping usually is to code further away
