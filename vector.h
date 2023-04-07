@@ -18,6 +18,8 @@ public:
 	~CVector();
 	EXPORT CVector* operator-=(const CVector& other);
 	EXPORT CVector* operator>>=(const int& other);
+	EXPORT CVector* operator<<=(const int& other);
 	EXPORT CVector* operator*=(const CVector& other);
 	EXPORT CVector* operator/=(const CVector& other);
+	EXPORT CVector* operator+=(const CVector& other);
 };

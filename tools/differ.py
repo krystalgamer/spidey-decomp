@@ -1,5 +1,6 @@
 import sys
 import pefile
+import pydemangler
 
 
 def get_text_section(exe):
@@ -26,7 +27,7 @@ def main():
 
     for entry in exe.DIRECTORY_ENTRY_EXPORT.symbols:
         name = entry.name.decode()
-        print(f'{name} {hex(entry.address)}')
+        print(f"'{name}' '{pydemangler.demangle(name)}' {hex(entry.address)}")
     
 
 
