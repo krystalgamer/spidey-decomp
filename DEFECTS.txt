@@ -1,0 +1,32 @@
+
+M3dMaths_SquareRoot0
+
+decomp:
+fild    [esp+8+arg_0]
+fstp    [esp+8+X]
+mov     eax, dword ptr [esp+8+X+4]
+mov     ecx, dword ptr [esp+8+X]
+push    eax
+push    ecx             ; X
+call    _sqrt
+add     esp, 8
+call    __ftol
+add     esp, 8
+retn
+
+
+original:
+fild    dword ptr [esp+8+arg_0]
+sub     esp, 8
+fstp    [esp+10h+var_8] ; DOUBLE not float
+fld     [esp+10h+var_8]
+fstp    [esp+10h+var_10] ; double
+call    _sqrt
+add     esp, 8
+call    __ftol
+add     esp, 8
+retn
+
+notes: the function calls are causes by consistent floats, but for some reason the current iteration of the code puts the values in registers. logically it does the same thing so for now i'll just ignore. already spent 12hours+ debugging this shit and can't understand what triggers it. one unexplored avenue is that it's using a fixed point abstraction.
+it's important to note the last `add esp, 8` is related to the conversion to double in the code that adds on the prologue a `sub esp, 8`. if you do a conversion to float and then to double the code will end up looking "similar" but don't fool yourself the opcodes are different.
+

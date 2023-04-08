@@ -1,0 +1,23 @@
+# Microsoft Developer Studio Generated Dependency File, included by spider.mak
+
+.\friction.cpp : \
+	".\friction.h"\
+	
+
+.\m3d.cpp : \
+	".\export.h"\
+	".\m3d.h"\
+	
+
+.\main.cpp : \
+	"..\..\..\..\..\..\program files (x86)\microsoft visual studio\vc98\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\vector.h"\
+	
+
+.\vector.cpp : \
+	".\export.h"\
+	".\friction.h"\
+	".\vector.h"\
+	

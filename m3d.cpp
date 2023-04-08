@@ -1,5 +1,5 @@
 #include "m3d.h"
-#include <cmath>
+#include <math.h>
 
 int M3dMaths_SquareRoot0(int i){
 
@@ -11,6 +11,6 @@ int M3dMaths_SquareRoot0(int i){
         return 0;
     }
 
-	float tmp = (float)i;
-	return sqrt(tmp);
+	return (int)sqrt(i);
 }
+

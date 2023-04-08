@@ -5,5 +5,4 @@
 
 #include "export.h"
 
-
 EXPORT int M3dMaths_SquareRoot0(int i);
