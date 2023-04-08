@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <cstdlib>
 
 
 int Utils_CrapDist(const CVector& a,const CVector& b){
@@ -48,4 +49,56 @@ int Utils_CrapXZDist(const CVector& a,const CVector& b) {
     CVector tmp = a;
     tmp.vy = b.vy;
     return Utils_CrapDist(tmp, b);
+}
+
+int Utils_CompareStrings(const char* left, const char* right) {
+
+    if (left == NULL){
+
+        //Without the goto the statement is simplified to a setnz/setz
+        // with it it jumps to the same return block as when the comparison fails
+        if (right != NULL)
+            goto fail;
+        return 1;
+    }
+
+
+    if (right != NULL){
+
+        char currLeft = *left;
+        char currRight = *right;
+        if (currLeft >= 'A' && currLeft <= 'Z'){
+            currLeft += ' ';
+        }
+        if (currRight >= 'A' && currRight <= 'Z'){
+            currRight += ' ';
+        }
+
+        while (currLeft == currRight){
+
+            if (currLeft != 0 && currRight != 0) {
+                    currLeft = *++left;
+                    currRight = *++right;
+
+                    if (currLeft >= 'A' && currLeft <= 'Z'){
+                        currLeft += ' ';
+                    }
+                    if (currRight >= 'A' && currRight <= 'Z'){
+                        currRight += ' ';
+                    }
+            }
+            else{
+                break;
+            }
+
+        }
+
+        if (currLeft == 0 && currRight == 0){
+            return 1;
+        }
+    }
+
+
+fail:
+    return 0;
 }
