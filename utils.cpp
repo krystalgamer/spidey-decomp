@@ -43,3 +43,9 @@ int Utils_CrapDist(const CVector& a,const CVector& b){
 
     return ((dZ >> 1) + dX + (dY >>2)) >> 12;
 }
+
+int Utils_CrapXZDist(const CVector& a,const CVector& b) {
+    CVector tmp = a;
+    tmp.vy = b.vy;
+    return Utils_CrapDist(tmp, b);
+}

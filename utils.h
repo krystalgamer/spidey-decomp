@@ -5,3 +5,4 @@
 
 
 EXPORT int Utils_CrapDist(const CVector& a,const CVector& b) ;
+EXPORT int Utils_CrapXZDist(const CVector& a,const CVector& b) ;
