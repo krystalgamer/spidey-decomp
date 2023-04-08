@@ -11,6 +11,6 @@ int M3dMaths_SquareRoot0(int i){
         return 0;
     }
 
-    double res = sqrt((double)i);
-    return res;
+	float tmp = (float)i;
+	return sqrt(tmp);
 }
