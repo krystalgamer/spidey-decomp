@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import pefile
@@ -6,7 +7,7 @@ import functools
 import pydemangler
 import iced_x86
 import difflib
-import wasabi
+import hashlib
 
 
 class ExeFile(object):
@@ -90,10 +91,15 @@ def decode_func(data, address):
     return res
 
 
-def equal_functions(orig_data, decomp_data, orig_address, show_diff=False):
+def equal_functions(orig_data, decomp_data, orig_address, function_overrides, show_diff=False):
 
     if orig_data == decomp_data:
         return (True, None)
+
+    decomp_hash = hashlib.md5(decomp_data).hexdigest()
+    if orig_address in function_overrides:
+        if decomp_hash == function_overrides[orig_address]:
+            return (True, None)
 
     decoded_orig = decode_func(orig_data, orig_address)
     decoded_decomp = decode_func(decomp_data, orig_address)
@@ -148,6 +154,13 @@ def main():
         print('Nothing to compare')
         return
 
+    function_overrides = {}
+    function_overrides_path = tools_path / 'overrides.json'
+    if os.path.exists(function_overrides_path):
+        with open(function_overrides_path, 'r') as fp:
+            for k,v in json.load(fp).items():
+                function_overrides[int(k)] = v
+
     function_loader = function_loader_creator(tools_path / 'functions')
     print('Starting comparison')
 
@@ -158,9 +171,9 @@ def main():
         orig_func_data = function_loader(orig_address)
         decomp_func_data = exe.get_function_data(exe_address, len(orig_func_data))
 
-        equal, resp_str = equal_functions(orig_func_data, decomp_func_data, orig_address)
+        equal, resp_str = equal_functions(orig_func_data, decomp_func_data, orig_address, function_overrides=function_overrides)
         if not equal:
-            print(f'{entry} - {pydemangler.demangle(entry)} - does not match')
+            print(f'{entry} - {pydemangler.demangle(entry)} - {orig_address} - does not match')
             if resp_str != '':
                 print(resp_str)
             not_match.append(entry)
