@@ -4,3 +4,4 @@ Release/
 *.plg
 **/env/
 *.swp
+*.opt
