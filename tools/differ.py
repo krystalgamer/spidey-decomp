@@ -4,6 +4,9 @@ import pefile
 import pathlib
 import functools
 import pydemangler
+import iced_x86
+import difflib
+import wasabi
 
 
 class ExeFile(object):
@@ -50,7 +53,7 @@ def name_generator(json_path):
         functions = json.load(fp)['functions']
 
     for k,v in functions.items():
-        yield (v['name'], k)
+        yield (v['name'], int(k))
 
 
 def function_loader_creator(path):
@@ -58,6 +61,61 @@ def function_loader_creator(path):
         with open(path / f'{name}.bin', 'rb') as fp:
             return fp.read()
     return function_loader
+
+
+def create_enum_dict(module):
+    return {module.__dict__[key]:key for key in module.__dict__ if isinstance(module.__dict__[key], int)}
+
+
+MNEMONICS = create_enum_dict(iced_x86.Mnemonic)
+def get_mnemonic(value):
+    return MNEMONICS[value]
+
+
+FORMATTER = iced_x86.Formatter(iced_x86.FormatterSyntax.NASM)
+
+def decode_func(data, address):
+    decoder = iced_x86.Decoder(32, data, ip=address)
+    res = []
+    for instr in decoder:
+
+        content = None
+        mnemonic = get_mnemonic(instr.mnemonic)
+        if mnemonic == 'CALL':
+            content = 'CALL XXXXXXXX'
+        else:
+            content = FORMATTER.format(instr)
+        n = f'{instr.ip:016X} {content}\n'
+        res.append(n)
+    return res
+
+
+def equal_functions(orig_data, decomp_data, orig_address, show_diff=False):
+
+    if orig_data == decomp_data:
+        return (True, None)
+
+    decoded_orig = decode_func(orig_data, orig_address)
+    decoded_decomp = decode_func(decomp_data, orig_address)
+
+    if decoded_orig == decoded_decomp:
+        return (True, None)
+
+    output = []
+
+    if show_diff:
+        res = difflib.Differ()
+        for entry in res.compare(decoded_orig, decoded_decomp):
+            if entry.startswith('  '):
+                continue
+            elif entry.startswith('- '):
+                output.append(entry)
+            elif entry.startswith('+ '):
+                output.append(entry)
+            elif entry.startswith('? '):
+                output.append(entry)
+
+    return (False, ''.join(output))
 
 def main():
 
@@ -96,14 +154,18 @@ def main():
     not_match = []
     for entry in to_compare:
         exe_address = export_symbols[entry].address
-        orig_func_data = function_loader(names_and_addresses[entry])
+        orig_address = names_and_addresses[entry]
+        orig_func_data = function_loader(orig_address)
         decomp_func_data = exe.get_function_data(exe_address, len(orig_func_data))
 
-        if orig_func_data != decomp_func_data:
+        equal, resp_str = equal_functions(orig_func_data, decomp_func_data, orig_address)
+        if not equal:
             print(f'{entry} - {pydemangler.demangle(entry)} - does not match')
+            if resp_str != '':
+                print(resp_str)
             not_match.append(entry)
 
-    print(f'Match ratio is {len(not_match)/len(to_compare)*100:.2f}% out of {len(to_compare)} functions')
+    print(f'Match ratio is {(len(to_compare)-len(not_match))/len(to_compare)*100:.2f}% out of {len(to_compare)} functions')
     return
 
 

@@ -52,17 +52,17 @@ CVector* CVector::operator<<=(const int& other){
 	return this;
 }
 
-CVector* CVector::operator*=(const CVector& other){
-	this->vx *= other.vx;
-	this->vy *= other.vy;
-	this->vz *= other.vz;
+CVector* CVector::operator*=(const int& other){
+	this->vx *= other;
+	this->vy *= other;
+	this->vz *= other;
 	return this;
 }
 
-CVector* CVector::operator/=(const CVector& other){
-	this->vx /= other.vx;
-	this->vy /= other.vy;
-	this->vz /= other.vz;
+CVector* CVector::operator/=(const int& other){
+	this->vx /= other;
+	this->vy /= other;
+	this->vz /= other;
 	return this;
 }
 
