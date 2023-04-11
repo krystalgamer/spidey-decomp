@@ -27,7 +27,7 @@ int Utils_CrapDist(const CVector& a,const CVector& b){
 			return (dZ + (dX >>2) + (dY >>1)) >> 12;
 		}
 
-		if(dZ < dY){
+		if(dZ < dX){
 			return ((dZ >> 2) + (dX >> 1) + dY) >> 12;
 		}
 
