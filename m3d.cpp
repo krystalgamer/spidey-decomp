@@ -11,6 +11,7 @@ int M3dMaths_SquareRoot0(int i){
         return 0;
     }
 
-	return (int)sqrt(i);
+	volatile double tmp = i;
+	return (int)sqrt(tmp);
 }
 

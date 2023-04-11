@@ -173,7 +173,7 @@ def main():
 
         equal, resp_str = equal_functions(orig_func_data, decomp_func_data, orig_address, function_overrides=function_overrides)
         if not equal:
-            print(f'{entry} - {pydemangler.demangle(entry)} - {orig_address} - does not match')
+            print(f'{entry} - {pydemangler.demangle(entry)} - {orig_address} - {hashlib.md5(decomp_func_data).hexdigest()} - does not match')
             if resp_str != '':
                 print(resp_str)
             not_match.append(entry)
