@@ -13,7 +13,3 @@ CFriction::CFriction()
 
 }
 
-CFriction::~CFriction()
-{
-
-}
