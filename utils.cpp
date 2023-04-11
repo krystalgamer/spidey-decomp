@@ -53,14 +53,15 @@ int Utils_CrapXZDist(const CVector& a,const CVector& b) {
 
 int Utils_CompareStrings(const char* left, const char* right) {
 
-    if (left == NULL){
-
-        //Without the goto the statement is simplified to a setnz/setz
-        // with it it jumps to the same return block as when the comparison fails
-        if (right != NULL)
-            goto fail;
+    if (left == NULL && right == NULL){
         return 1;
     }
+
+	if (left == NULL || right == NULL){
+		return 0;
+	}
+
+
 
 
     if (right != NULL){
@@ -98,7 +99,5 @@ int Utils_CompareStrings(const char* left, const char* right) {
         }
     }
 
-
-fail:
     return 0;
 }
