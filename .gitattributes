@@ -1,0 +1,9 @@
+* text=auto
+
+*.cpp text
+*.h text
+
+
+*.dsp text eol=crlf
+*.dsw text eol=crlf
+*.mak text eol=crlf
