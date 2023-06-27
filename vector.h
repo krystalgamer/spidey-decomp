@@ -10,12 +10,12 @@
 #include "export.h"
 #include "friction.h"
 
-struct CVector  
+class CVector  
 {
+public: 
 	int vx;
 	int vy;
 	int vz;
-	CVector();
 	EXPORT void KillSmall();
 	EXPORT CVector* operator-=(const CVector& other);
 	EXPORT CVector* operator>>=(const int& other);

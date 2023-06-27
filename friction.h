@@ -6,12 +6,11 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-struct  CFriction  
+class CFriction  
 {
 public:
     unsigned char vx;
     unsigned char vy;
     unsigned char vz;
-	CFriction();
 
 };

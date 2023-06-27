@@ -9,10 +9,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CVector::CVector()
-{
-}
-
 void CVector::KillSmall(){
 
     if (this->vx >= -2048 && this->vx <= 2048)
