@@ -18,4 +18,5 @@ class CBit
 		CFriction mFric;
 		EXPORT CBit();
 		virtual ~CBit();
+		EXPORT void* operator new(unsigned int size);
 };

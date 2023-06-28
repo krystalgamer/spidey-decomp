@@ -1,10 +1,12 @@
 #include "export.h"
 #include "bit.h"
+#include "mem.h"
 #include <cstring>
 #include <cstdlib>
 
 
 volatile static int BitCount = 0;
+static int TotalBitUsage = 0;
 
 CBit::CBit() {
 
@@ -28,6 +30,32 @@ CBit::CBit() {
 	BitCount++;
 }
 
+/*
+ * With optimizations the >>=2 expression is removed
+ * taking a look at THPS2 it shows it's due
+ * to it storing the result in a global variable. For some reason
+ * both PC and MAC remove the store
+ */
+void* CBit::operator new(unsigned int size) {
+
+	void *result;
+	if (TotalBitUsage == 0)
+		result = DCMem_New(size, 0, 1, 0, 1);
+	else
+		result = DCMem_New(size, 0, 1, 0, 1);
+
+	unsigned int quarter = size + 3;
+	quarter &= 0xFFFFFFFC;
+	/*
+	TotalBitUsage += 4 + quarter;
+	*/
+	quarter >>= 2; // optimized out 
+
+	if (quarter)
+		memset(result, 0, 4 * quarter);
+
+	return result;
+}
 
 CBit::~CBit(){
 	this->mNext = NULL;
