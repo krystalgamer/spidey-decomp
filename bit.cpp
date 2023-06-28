@@ -4,6 +4,8 @@
 #include <cstdlib>
 
 
+volatile static int BitCount = 0;
+
 CBit::CBit() {
 
 	this->mPos.vx = 0;
@@ -23,6 +25,7 @@ CBit::CBit() {
 	this->mFric.vx = 1;
 	this->mFric.vy = 1;
 	this->mFric.vz = 1;
+	BitCount++;
 }
 
 
