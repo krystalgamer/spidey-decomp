@@ -60,3 +60,10 @@ void* CBit::operator new(unsigned int size) {
 CBit::~CBit(){
 	this->mNext = NULL;
 }
+
+void CBit::Die(void){
+	print_if_false(this->mProtected == 0, "A protected bit die");
+	this->mDead = 1;
+}
+
+
