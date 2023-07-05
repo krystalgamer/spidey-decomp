@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <cstdlib>
+#include <cmath>
 
 
 int Utils_CrapDist(const CVector& a,const CVector& b){
@@ -100,4 +101,14 @@ int Utils_CompareStrings(const char* left, const char* right) {
     }
 
     return 0;
+}
+
+const float FOUR_NINETY_SIX = 4096.0;
+const float TWO_FOURTY_EIGHT = 2048.0;
+const float PI = 3.1415927;
+
+int Utils_ArcCos(int val){
+	float inp = val;
+	float res = acos(inp / FOUR_NINETY_SIX);
+	return (res * TWO_FOURTY_EIGHT / PI);
 }
