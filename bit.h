@@ -25,4 +25,5 @@ class CBit
 		EXPORT void* operator new(unsigned int size);
 		EXPORT void Die();
 		EXPORT CBit* AttachTo(CBit** to);
+		EXPORT int SetPos(const CVector &pos);
 };

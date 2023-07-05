@@ -82,3 +82,10 @@ CBit* CBit::AttachTo(CBit** to){
 	return result;
 }
 
+int CBit::SetPos(const CVector &pos){
+
+	CVector &mPos = this->mPos;
+	mPos.vx = pos.vx;
+	mPos.vy = pos.vy;
+	return mPos.vz = pos.vz;
+}
