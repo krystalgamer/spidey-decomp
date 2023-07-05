@@ -24,4 +24,5 @@ class CBit
 		virtual ~CBit();
 		EXPORT void* operator new(unsigned int size);
 		EXPORT void Die();
+		EXPORT CBit* AttachTo(CBit** to);
 };

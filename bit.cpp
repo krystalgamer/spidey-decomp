@@ -66,4 +66,19 @@ void CBit::Die(void){
 	this->mDead = 1;
 }
 
+CBit* CBit::AttachTo(CBit** to){
+
+	CBit* tmp;
+	CBit* result;
+	tmp = *to;
+
+	this->mPrevious = NULL;
+	this->mNext = tmp;
+	*to = this;
+
+	result = this->mNext;
+	if (result)
+		result->mPrevious = this;
+	return result;
+}
 
