@@ -48,7 +48,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MT /W3 /GX /O2 /Op /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)\spider.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /fp:strict /c 
+CPP_PROJ=/nologo /MT /W3 /GX /Ot /Og /Oi /Op /Oy /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)\spider.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -118,7 +118,6 @@ CLEAN :
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vector.obj"
 	-@erase "$(OUTDIR)\spider.exe"
-	-@erase "$(OUTDIR)\spider.ilk"
 	-@erase "$(OUTDIR)\spider.pdb"
 
 "$(OUTDIR)" :
@@ -165,7 +164,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\spider.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\spider.pdb" /debug /machine:I386 /out:"$(OUTDIR)\spider.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\spider.pdb" /debug /machine:I386 /out:"$(OUTDIR)\spider.exe" /pdbtype:sept 
 LINK32_OBJS= \
 	"$(INTDIR)\friction.obj" \
 	"$(INTDIR)\m3d.obj" \
