@@ -92,6 +92,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\bit.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\friction.cpp
 # End Source File
 # Begin Source File
@@ -104,12 +108,28 @@ SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\mem.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ob.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\vector.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\bit.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\export.h
@@ -121,6 +141,14 @@ SOURCE=.\friction.h
 # Begin Source File
 
 SOURCE=.\m3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ob.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils.h
 # End Source File
 # Begin Source File
 
