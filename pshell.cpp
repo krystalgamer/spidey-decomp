@@ -54,4 +54,59 @@ CExpandingBox::Display(){
 
 }
 
+int expected(){ return 200;}
+int not_expected() { return 69; }
+
+int CExpandingBox::ScrollBarHitTest(int a2, int a3){
+
+
+	int v4; // r11
+  int v5; // r8
+  int v6; // r9
+  int v7; // r7
+  int v8; // r4
+  unsigned __int16 v9; // r3
+
+  if ( !this->unk_9|| !this->unk_12 )
+    return 0;
+  v4 = 0;
+  v5 = (unsigned __int16)this->unk_8;
+  v7 = (unsigned __int16)(this->unk_7 - 14);
+
+  //int v10 = (unsigned __int16)(v5 - 3);
+  if ( a2 >= v7
+    && a2 <= v7 + 14
+    && a3 >= (unsigned __int16)(v5 - 3)
+    && (v6 = (unsigned __int16) this->unk_2, a3 <= (unsigned __int16)(v5 - 3) + (unsigned __int16)((unsigned __int16)v6 + 6) ))
+  {
+    v8 = this->unk_11;
+    v9 = v5 + ((this->unk_10 * (this->unk_2 - 8 - v8)) >> 8) + 4;
+
+	if ( a3 <= (unsigned __int16)(v5 + 7) ){
+		v4 = 1;
+	}
+	else{
+
+      if ( a3 >= (unsigned __int16)(v5 + v6 - 5) )
+      {
+		  v4 = 2;
+        
+      }
+      else
+      {
+        if ( a3 < v9 )
+        {
+			 v4 = 4;
+       
+        }
+        else
+        {
+			v4 = ( a3 > v9 + (unsigned __int16)v8 ) ? 5 : 3;
+        }
+      }
+    }
+  }
+  return v4;
+}
+
 CExpandingBox::~CExpandingBox(){}
