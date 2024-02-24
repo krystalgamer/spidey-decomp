@@ -4,6 +4,8 @@
 #include "vector.h"
 #include "friction.h"
 #include "bit.h"
+#include "front.h"
+#include "pshell.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -18,6 +20,9 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(CVector)==12>::assert();
 	StaticAssert<sizeof(CFriction)==3>::assert();
 	//StaticAssert<sizeof(CBit) == 0x38>::assert();
+	//StaticAssert<sizeof(CMenu)==0x53C>::assert();
+	StaticAssert<sizeof(CExpandingBox)==52>::assert();
+
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
