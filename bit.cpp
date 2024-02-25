@@ -138,6 +138,26 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 CFT4Bit::~CFT4Bit() {}
 
 
+void CFT4Bit::SetAnimSpeed(short s){
+	this->mAnimSpeed = s;
+}
+
+void CFT4Bit::SetScale(unsigned short s){
+	this->mScale = s;
+}
+
+
+void CFT4Bit::SetSemiTransparent(){
+	this->mCodeBGR |= 0x2000000;
+}
+
+void CFT4Bit::SetTransparency(unsigned char t){
+	this->mCodeBGR = t | this->mCodeBGR & 0xFF000000 | ((t | (t << 8)) << 8);
+}
+
+
+
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, mSemiTransparencyRate, 0x5E);
 	VALIDATE(CFlatBit, mPostScale, 0x60);

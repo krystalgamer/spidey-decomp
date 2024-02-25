@@ -53,6 +53,10 @@ class CFT4Bit : public CBit {
 
 public:
 	EXPORT virtual ~CFT4Bit();
+	EXPORT void SetAnimSpeed(short);
+	EXPORT void SetScale(unsigned short);
+	EXPORT void SetSemiTransparent();
+	EXPORT void SetTransparency(unsigned char t);
 
 	unsigned short mTransDecay;
 	unsigned short mScaleDelay;
@@ -60,8 +64,8 @@ public:
 
 
 	unsigned char pad[0x10];
-	unsigned short mAnimSpeed;
-	unsigned short mScale;
+	short mAnimSpeed;
+	short mScale;
 };
 
 class CFlatBit : public CFT4Bit {
