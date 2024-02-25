@@ -25,3 +25,17 @@ public:
 	EXPORT CVector* operator+=(const CVector& other);
 	EXPORT CVector* operator%=(const CFriction& other);
 };
+
+
+class CSVector{
+
+public:
+	unsigned short vx;
+	unsigned short vy;
+	unsigned short vz;
+
+};
+
+
+void validate_CVector(void);
+void validate_CSVector(void);

@@ -4,6 +4,7 @@
 
 #include "vector.h"
 #include <cstdio>
+#include "validate.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -74,4 +75,20 @@ CVector* CVector::operator%=(const CFriction& other){
 	this->vy -= this->vy >> other.vy;
 	this->vz -= this->vz >> other.vz;
 	return this;
+}
+
+
+
+void validate_CVector(void)
+{
+	VALIDATE(CVector, vx, 0);
+	VALIDATE(CVector, vy, 4);
+	VALIDATE(CVector, vz, 8);
+}
+
+void validate_CSVector(void)
+{
+	VALIDATE(CSVector, vx, 0);
+	VALIDATE(CSVector, vy, 2);
+	VALIDATE(CSVector, vz, 4);
 }

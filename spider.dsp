@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /Ot /Og /Oi /Op /Oy /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# SUBTRACT CPP /Ox /Oa /Ow /Os
+# ADD CPP /nologo /GB /MT /W3 /GX /O2 /Op /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /O3 /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -100,6 +100,10 @@ SOURCE=.\friction.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\front.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\m3d.cpp
 # End Source File
 # Begin Source File
@@ -113,6 +117,10 @@ SOURCE=.\mem.cpp
 # Begin Source File
 
 SOURCE=.\ob.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
 
@@ -140,11 +148,19 @@ SOURCE=.\friction.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\front.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\m3d.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\ob.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pshell.h
 # End Source File
 # Begin Source File
 
