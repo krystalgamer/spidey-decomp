@@ -3,6 +3,7 @@
 #include "mem.h"
 #include <cstring>
 #include <cstdlib>
+#include "validate.h"
 
 
 volatile static int BitCount = 0;
@@ -82,10 +83,50 @@ CBit* CBit::AttachTo(CBit** to){
 	return result;
 }
 
-int CBit::SetPos(const CVector &pos){
+void CBit::SetPos(const CVector &pos){
 
-	CVector &mPos = this->mPos;
-	mPos.vx = pos.vx;
-	mPos.vy = pos.vy;
-	return mPos.vz = pos.vz;
+	this->mPos = pos;
+}
+
+
+void CBit::DeleteFrom(CBit **lst){
+	
+	CBit* next = this->mNext;
+	if(next != NULL){
+		next->mPrevious = this->mPrevious;
+	}
+
+	CBit* prev = this->mPrevious;
+	if(prev != NULL){
+		prev->mNext = this->mNext;
+	}
+
+	if(*lst == this){
+		*lst = this->mNext;
+	}
+}
+
+void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
+{
+  this->mTint = a2 | ((a4 << 16) & 0xFF0000 | (a3 << 8) & 0xFF00) & 0xFFFFFF00;
+}
+
+
+
+void validate_CQuadBit(void)
+{
+	VALIDATE(CQuadBit, mpTexture, 0x60);
+	VALIDATE(CQuadBit, mCodeBGR, 0x64);
+	VALIDATE(CQuadBit, mTint, 0x6C);
+}
+
+void validate_CBit(void)
+{
+	VALIDATE(CBit, mPrevious, 0x4);
+	VALIDATE(CBit, mNext, 0x8);
+	VALIDATE(CBit, mPos, 0x10);
+	VALIDATE(CBit, mVel, 0x1C);
+	VALIDATE(CBit, mAcc, 0x28);
+	VALIDATE(CBit, mProtected, 0x3A);
+	VALIDATE(CBit, mDead, 0x37);
 }

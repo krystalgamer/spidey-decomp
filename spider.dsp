@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /GB /MT /W3 /GX /O2 /Op /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /O3 /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Op /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -92,6 +92,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\baddy.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bit.cpp
 # End Source File
 # Begin Source File
@@ -124,7 +128,15 @@ SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\torch.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\validate.cpp
 # End Source File
 # Begin Source File
 
@@ -134,6 +146,10 @@ SOURCE=.\vector.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\baddy.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\bit.h
@@ -164,7 +180,15 @@ SOURCE=.\pshell.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\torch.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\validate.h
 # End Source File
 # Begin Source File
 
