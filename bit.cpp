@@ -112,9 +112,34 @@ void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 }
 
 
+void CQuadBit::SetSemiTransparent()
+{
+	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFFFE) | 0x2C0;
+}
+
+void CQuadBit::SetOpaque(){
+	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFDBF) | 0x80;
+}
+
+
+void CQuadBit::SetSubtractiveTransparency(){
+	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFF7F) | 0x340;
+}
+
+void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5)
+{
+	this->mPos = a2;
+	this->mPosB = a3;
+	this->mPosC = a4;
+	this->mPosD = a5;
+}
+
 
 void validate_CQuadBit(void)
 {
+	VALIDATE(CQuadBit, mPosB, 0x3C);
+	VALIDATE(CQuadBit, mPosC, 0x48);
+	VALIDATE(CQuadBit, mPosD, 0x54);
 	VALIDATE(CQuadBit, mpTexture, 0x60);
 	VALIDATE(CQuadBit, mCodeBGR, 0x64);
 	VALIDATE(CQuadBit, mTint, 0x6C);

@@ -32,13 +32,20 @@ class CBit
 class CQuadBit : public CBit {
 
 public:
-	unsigned char padding[0x24];
+	CVector mPosB;
+	CVector mPosC;
+	CVector mPosD;
 	void* mpTexture;
 	unsigned int mCodeBGR;
 	unsigned pad;
 	unsigned int mTint;
 
 	EXPORT void SetTint(unsigned char a2, unsigned char a3, unsigned char a4);
+	EXPORT void SetSemiTransparent();
+	EXPORT void SetOpaque();
+	EXPORT void SetSubtractiveTransparency();
+	EXPORT void SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5);
+
 
 };
 
