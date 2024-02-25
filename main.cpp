@@ -43,6 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBit();
 	validate_CQuadBit();
 	validate_CFT4Bit();
+	validate_CFlatBit();
 
 	while(1){}
 

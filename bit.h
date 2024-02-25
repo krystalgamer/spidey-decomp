@@ -64,7 +64,21 @@ public:
 	unsigned short mScale;
 };
 
+class CFlatBit : public CFT4Bit {
 
+public:
+
+	unsigned char pad[0x6];
+	unsigned short mSemiTransparencyRate;
+	unsigned int mPostScale;
+	unsigned char pad1;
+	unsigned char mAngFric;
+
+
+};
+
+
+void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
 void validate_CQuadBit(void);
 void validate_CBit(void);
