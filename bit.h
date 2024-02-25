@@ -49,6 +49,22 @@ public:
 
 };
 
+class CFT4Bit : public CBit {
 
+public:
+	EXPORT virtual ~CFT4Bit();
+
+	unsigned short mTransDecay;
+	unsigned short mScaleDelay;
+	unsigned int mCodeBGR;
+
+
+	unsigned char pad[0x10];
+	unsigned short mAnimSpeed;
+	unsigned short mScale;
+};
+
+
+void validate_CFT4Bit(void);
 void validate_CQuadBit(void);
 void validate_CBit(void);

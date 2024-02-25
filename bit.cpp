@@ -135,6 +135,16 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 }
 
 
+CFT4Bit::~CFT4Bit() {}
+
+
+void validate_CFT4Bit(void){
+	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
+
+	VALIDATE(CFT4Bit, mAnimSpeed, 0x54);
+	VALIDATE(CFT4Bit, mScale, 0x56);
+}
+
 void validate_CQuadBit(void)
 {
 	VALIDATE(CQuadBit, mPosB, 0x3C);
