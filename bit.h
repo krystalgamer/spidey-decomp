@@ -17,7 +17,7 @@ class CBit
 		CVector mAcc;
 		CFriction mFric;
 		unsigned char mDead;
-		unsigned char pad[2];
+		unsigned __int16 mFrigDeltaZ;
 		unsigned char mProtected;
 
 		EXPORT CBit();
@@ -39,6 +39,7 @@ public:
 	unsigned int mCodeBGR;
 	unsigned pad;
 	unsigned int mTint;
+	unsigned char quadPad[0x14];
 
 	EXPORT void SetTint(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void SetSemiTransparent();
@@ -46,6 +47,8 @@ public:
 	EXPORT void SetSubtractiveTransparency();
 	EXPORT void SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5);
 	EXPORT void SetTransparency(unsigned char a2);
+	EXPORT void OrientUsing(CVector *a2, SVector *a3, int a4, int a5);
+	EXPORT void SetTexture(int, int);
 
 };
 

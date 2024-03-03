@@ -36,6 +36,11 @@ public:
 
 };
 
+struct SVector {
+	__int16 vx, vy, vz;
+
+};
 
 void validate_CVector(void);
 void validate_CSVector(void);
+void validate_SVector(void);

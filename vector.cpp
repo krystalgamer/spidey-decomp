@@ -92,3 +92,9 @@ void validate_CSVector(void)
 	VALIDATE(CSVector, vy, 2);
 	VALIDATE(CSVector, vz, 4);
 }
+
+void validate_SVector(void){
+	VALIDATE(SVector, vx, 0);
+	VALIDATE(SVector, vy, 2);
+	VALIDATE(SVector, vz, 4);
+}

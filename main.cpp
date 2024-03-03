@@ -24,7 +24,8 @@ void compile_time_assertions(){
 	//StaticAssert<sizeof(CMenu)==0x53C>::assert();
 	//StaticAssert<sizeof(CExpandingBox)==52>::assert();
 	StaticAssert<sizeof(CSVector)==6>::assert();
-
+	StaticAssert<sizeof(SVector)==6>::assert();
+	StaticAssert<sizeof(CQuadBit)==0x84>::assert();
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -46,6 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CFT4Bit();
 	validate_CFlatBit();
 	validate_CBody();
+	validate_SVector();
 
 	puts("[*] Validation done!");
 

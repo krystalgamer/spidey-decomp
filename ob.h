@@ -35,10 +35,20 @@ class CBody : public CItem {
 
 public:
 	unsigned char pad[0x26];
+
 	unsigned __int16 mCBodyFlags;
 
-	unsigned char pad1[0x84];
+	unsigned char pad1[0x70];
+
+	CVector bodyVector;
+
+	unsigned char pad2[0x8];
+	
 	CQuadBit *bodyQuadBit;
+
+	unsigned __int16 field_D0;
+	unsigned __int16 field_D2;
+	unsigned __int16 field_D4;
 
 
 	EXPORT int IsDead(void) const;

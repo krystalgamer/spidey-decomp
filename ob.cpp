@@ -65,11 +65,32 @@ void CBody::UpdateShadow(void){
 	if(flags & 8){
 
 		if(!this->bodyQuadBit){
-			this->mFlags = 69;
+
+			CQuadBit *quad = new CQuadBit();
+			this->bodyQuadBit = quad;
+
+			quad->SetTexture(0, 0);
+			this->bodyQuadBit->SetSubtractiveTransparency();
+			this->bodyQuadBit->mFrigDeltaZ = 32;
+			this->bodyQuadBit->mProtected = 1;
 		}
 
+		SVector vec;
+		vec.vx = 0;
+		vec.vy = -4096;
+		vec.vz = 0;
 
-		this->bodyQuadBit->SetTransparency(35);
+		unsigned __int16 lastParam = this->field_D0;
+		this->bodyQuadBit->OrientUsing(&this->bodyVector, &vec, lastParam, lastParam);
+
+
+		__int8 trans = ((this->field_D4 - this->field_D2) << 7) / this->field_D4;
+
+		if(trans < 0){
+			trans = 0;
+		}
+
+		this->bodyQuadBit->SetTransparency(trans);
 
 	}
 	else{
@@ -92,4 +113,8 @@ void validate_CItem(void){
 void validate_CBody(void){
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, bodyQuadBit, 0xCC);
+	VALIDATE(CBody, field_D0, 0xD0);
+	VALIDATE(CBody, field_D2, 0xD2);
+	VALIDATE(CBody, field_D4, 0xD4);
+	VALIDATE(CBody, bodyVector, 0xB8);
 }

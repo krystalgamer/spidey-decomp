@@ -138,6 +138,12 @@ void CQuadBit::SetTransparency(unsigned char a2){
 	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
 }
 
+void CQuadBit::OrientUsing(CVector *a2, SVector *a3, int a4, int a5){
+}
+
+void CQuadBit::SetTexture(int a, int b){
+	
+}
 
 CFT4Bit::~CFT4Bit() {}
 
@@ -195,4 +201,5 @@ void validate_CBit(void)
 	VALIDATE(CBit, mAcc, 0x28);
 	VALIDATE(CBit, mProtected, 0x3A);
 	VALIDATE(CBit, mDead, 0x37);
+	VALIDATE(CBit, mFrigDeltaZ, 0x38);
 }
