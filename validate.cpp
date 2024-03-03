@@ -4,7 +4,7 @@
 void validate_class(int cur, int expected, const char *cls, const char *member){
 
 	if (expected != cur){
-		printf("ERROR: Expected %X but got %X, for %s->%s\n", expected, cur, cls, member);
+		printf("[!] Expected %X but got %X, for %s->%s\n", expected, cur, cls, member);
 	}
 	else{
 

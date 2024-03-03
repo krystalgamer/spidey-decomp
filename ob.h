@@ -32,6 +32,14 @@ public:
 
 class CBody : public CItem {
 
+public:
+	unsigned char pad[0x26];
+	unsigned __int16 mDead;
+
+
+	EXPORT int IsDead(void) const;
+	EXPORT void Die(void);
+
 };
 
 class CSuper : public CBody {
@@ -39,3 +47,4 @@ class CSuper : public CBody {
 };
 
 void validate_CItem(void);
+void validate_CBody(void);

@@ -36,6 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	freopen("CONOUT$", "w", stdout);
 
+	puts("[*] Starting validation");
 
 	validate_CItem();
 	validate_CVector();
@@ -44,6 +45,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CQuadBit();
 	validate_CFT4Bit();
 	validate_CFlatBit();
+	validate_CBody();
+
+	puts("[*] Validation done!");
 
 	while(1){}
 

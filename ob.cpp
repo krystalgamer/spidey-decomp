@@ -29,6 +29,20 @@ void CItem::InitItem(const char *)
 }
 
 
+
+int __inline CBody::IsDead(void) const{
+	return (this->mDead >> 6) & 1;
+}
+	
+
+void CBody::Die(void){
+	int isDead = this->IsDead();
+	if(!isDead)
+	{
+		this->mDead |= 0x40;
+	}
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -37,4 +51,9 @@ void validate_CItem(void){
 	VALIDATE(CItem, mModel, 0x1A);
 	VALIDATE(CItem, mRegion, 0x1F);
 
+}
+
+
+void validate_CBody(void){
+	VALIDATE(CBody, mDead, 0x46);
 }

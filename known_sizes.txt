@@ -1,0 +1,2 @@
+CTorch -> 0x354 from Torch_Create
+CQuadBit -> 0x84 from CTorch::DoMGSShadow
