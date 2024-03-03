@@ -1,6 +1,7 @@
 #pragma once
 #include "export.h"
 #include "vector.h"
+#include "bit.h"
 
 
 class CItem  
@@ -34,11 +35,19 @@ class CBody : public CItem {
 
 public:
 	unsigned char pad[0x26];
-	unsigned __int16 mDead;
+	unsigned __int16 mCBodyFlags;
+
+	unsigned char pad1[0x84];
+	CQuadBit *bodyQuadBit;
 
 
 	EXPORT int IsDead(void) const;
 	EXPORT void Die(void);
+	EXPORT void ShadowOn(void);
+	EXPORT void KillShadow(void);
+
+	EXPORT void UpdateShadow(void);
+
 
 };
 

@@ -31,7 +31,7 @@ void CItem::InitItem(const char *)
 
 
 int __inline CBody::IsDead(void) const{
-	return (this->mDead >> 6) & 1;
+	return (this->mCBodyFlags >> 6) & 1;
 }
 	
 
@@ -39,8 +39,43 @@ void CBody::Die(void){
 	int isDead = this->IsDead();
 	if(!isDead)
 	{
-		this->mDead |= 0x40;
+		this->mCBodyFlags |= 0x40;
 	}
+}
+
+void CBody::ShadowOn(void){
+	this->mCBodyFlags |= 8;
+}
+
+
+void __inline CBody::KillShadow(void){
+
+  this->mCBodyFlags &= ~8u;
+  if ( this->bodyQuadBit )
+  {
+    //result = (**somethingWithVtableDestructor)(somethingWithVtableDestructor, 1);
+    this->bodyQuadBit = 0;
+  }
+}
+
+void CBody::UpdateShadow(void){
+
+	__int16 flags = this->mCBodyFlags;
+
+	if(flags & 8){
+
+		if(!this->bodyQuadBit){
+			this->mFlags = 69;
+		}
+
+
+		this->bodyQuadBit->SetTransparency(35);
+
+	}
+	else{
+		   this->KillShadow();
+	}
+
 }
 
 void validate_CItem(void){
@@ -55,5 +90,6 @@ void validate_CItem(void){
 
 
 void validate_CBody(void){
-	VALIDATE(CBody, mDead, 0x46);
+	VALIDATE(CBody, mCBodyFlags, 0x46);
+	VALIDATE(CBody, bodyQuadBit, 0xCC);
 }

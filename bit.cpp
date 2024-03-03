@@ -134,6 +134,10 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 	this->mPosD = a5;
 }
 
+void CQuadBit::SetTransparency(unsigned char a2){
+	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
+}
+
 
 CFT4Bit::~CFT4Bit() {}
 
