@@ -112,6 +112,19 @@ void CSuper::OutlineOff(void){
 	this->outlineRelated &= 0xFFFFFFFB;
 }
 
+// NEED TO FINISH
+void CSuper::OutlineOn(void){
+	this->outlineRelated |= 4;
+	if (!this->SNbrFaces){
+	}
+
+	this->outlineR = -1;
+	this->outlineG = -1;
+	this->outlineB = -1;
+	this->alsoOutlineRelated = 0x50000000;
+}
+
+
 void CSuper::SetOutlineSemiTransparent(){
 	this->alsoOutlineRelated |= 0x20000000;
 }
@@ -228,6 +241,7 @@ void validate_CSuper(void){
 	*/
 	
 
+	VALIDATE(CSuper, SNbrFaces, 0x11C);
 	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
 	VALIDATE(CSuper, outlineR, 0x124);
 	VALIDATE(CSuper, outlineG, 0x125);

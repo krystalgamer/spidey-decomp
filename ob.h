@@ -70,12 +70,14 @@ public:
 
 	EXPORT CSuper();
 	EXPORT void OutlineOff(void);
+	EXPORT void OutlineOn(void);
 	EXPORT void SetOutlineSemiTransparent(void);
 	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void UpdateFrame(void);
 	EXPORT void CycleAnim(int a2, char a3);
 
-	unsigned char padB[0x2C];
+	unsigned char padB[0x28];
+	int SNbrFaces;
 	int alsoOutlineRelated;
 	unsigned char outlineR;
 	unsigned char outlineG;
