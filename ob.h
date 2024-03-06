@@ -68,10 +68,19 @@ public:
 
 	EXPORT CSuper();
 	EXPORT void OutlineOff(void);
+	EXPORT void SetOutlineSemiTransparent(void);
+	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
 
-	unsigned char padB[0x36];
+	unsigned char padB[0x2C];
+	int alsoOutlineRelated;
+	unsigned char outlineR;
+	unsigned char outlineG;
+	unsigned char outlineB;
+
+	unsigned char padI[0x4];
 	int outlineRelated;
 	unsigned char padA[0xE];
+
 	unsigned char field_13E;
 	unsigned char field_13F;
 

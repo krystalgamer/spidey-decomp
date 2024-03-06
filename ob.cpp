@@ -112,6 +112,16 @@ void CSuper::OutlineOff(void){
 	this->outlineRelated &= 0xFFFFFFFB;
 }
 
+void CSuper::SetOutlineSemiTransparent(){
+	this->alsoOutlineRelated |= 0x20000000;
+}
+
+void CSuper::SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4){
+	this->outlineR = a2;
+	this->outlineG = a3;
+	this->outlineB = a4;
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -140,10 +150,17 @@ void validate_CSuper(void){
 	unsigned char field_142;
 	__int16 field_148;
 	*/
+	
+
+	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
+	VALIDATE(CSuper, outlineR, 0x124);
+	VALIDATE(CSuper, outlineG, 0x125);
+	VALIDATE(CSuper, outlineB, 0x126);
+
+	VALIDATE(CSuper, outlineRelated, 0x12C);
+
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
 	VALIDATE(CSuper, field_142, 0x142);
-	VALIDATE(CSuper, field_148, 0x148);
-
-	VALIDATE(CSuper, outlineRelated, 0x12C);
+	VALIDATE(CSuper, field_148, 0x148);	
 }
