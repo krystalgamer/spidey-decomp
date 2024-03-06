@@ -73,6 +73,7 @@ public:
 	EXPORT void SetOutlineSemiTransparent(void);
 	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void UpdateFrame(void);
+	EXPORT void CycleAnim(int a2, char a3);
 
 	unsigned char padB[0x2C];
 	int alsoOutlineRelated;
@@ -82,7 +83,7 @@ public:
 
 	__int16 field_128;
 
-	unsigned __int16 padI;
+	unsigned __int16 field_12A;
 
 	int outlineRelated;
 	unsigned char padA[0xE];
@@ -96,7 +97,7 @@ public:
 
 	__int16 field_144;
 	__int16 field_146;
-	__int16 field_148;
+	__int16 gAnim;
 
 
 	int csuperend;

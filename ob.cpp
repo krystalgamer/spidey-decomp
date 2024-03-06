@@ -101,7 +101,7 @@ void CBody::UpdateShadow(void){
 
 
 CSuper::CSuper(){
-  this->field_148 = 1;
+  this->gAnim = 1;
   this->field_142 = 1;
   this->field_13E = 100;
   this->field_13F = 94;
@@ -130,7 +130,6 @@ void CSuper::UpdateFrame(void){
 	int v5; // edx
 	int v6; // eax
 	unsigned __int16 v7; // dx
-	__int16 v8; // dx
 
 
 	if ( !this->field_80 )
@@ -151,7 +150,7 @@ void CSuper::UpdateFrame(void){
 	if (v5) {
 		if ( --v5 == 0)
 		{
-		  v7 = this->field_148;
+		  v7 = this->gAnim;
 		  if ( (__int16)v6 >= (int)v7 )
 		  {
 			  this->field_128 = v6 - v7;
@@ -172,16 +171,30 @@ void CSuper::UpdateFrame(void){
 		this->field_128 = this->field_144;
 		this->field_142 = 1;
 	}
-	
+}
 
 
-	/*
-	else if ( v1 == 1 && (v8 = this->field_144, (__int16)v6 >= v8)
-         || v1 == -1 && (v8 = this->field_144, (__int16)v6 <= v8) )
+// Revisit
+void CSuper::CycleAnim(int a2, char a3){
+  if (this->field_12A != a2 )
   {
-    this->field_128 = v8;
-    this->field_142 = 1;
-  }*/
+    this->field_128 = 0;
+	this->field_146 = 0;
+	this->field_12A = a2;
+    int mRegion = (unsigned __int8)this->mRegion;
+
+	print_if_false(
+      (unsigned int)(unsigned __int16)a2 < *(unsigned int *)Animations[17 * mRegion],
+      "Bad anim sent to CycleAnim");
+    this->gAnim = *(__int16 *)(Animations[17 * (unsigned __int8)this->mRegion]
+                           + 8 * (unsigned __int16)this->field_12A
+                           + 8);
+
+    
+    this->field_141 = a3;
+  }
+  this->field_140 = 1;
+  this->field_142 = 0;
 }
 
 void validate_CItem(void){
@@ -222,6 +235,7 @@ void validate_CSuper(void){
 
 	VALIDATE(CSuper, field_128, 0x128);
 
+	VALIDATE(CSuper, field_12A, 0x12A);
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
 	VALIDATE(CSuper, field_13E, 0x13E);
@@ -234,6 +248,6 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_144, 0x144);	
 	VALIDATE(CSuper, field_146, 0x146);	
 
-	VALIDATE(CSuper, field_148, 0x148);	
+	VALIDATE(CSuper, gAnim, 0x148);	
 	VALIDATE(CSuper, csuperend, 0x14C);
 }
