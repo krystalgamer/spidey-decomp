@@ -48,6 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CFlatBit();
 	validate_CBody();
 	validate_SVector();
+	validate_CSuper();
 
 	puts("[*] Validation done!");
 

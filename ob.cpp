@@ -99,6 +99,15 @@ void CBody::UpdateShadow(void){
 
 }
 
+
+CSuper::CSuper(){
+  this->field_148 = 1;
+  this->field_142 = 1;
+  this->field_13E = 100;
+  this->field_13F = 94;
+
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -117,4 +126,18 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_D2, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
 	VALIDATE(CBody, bodyVector, 0xB8);
+}
+
+void validate_CSuper(void){
+
+	/*
+		unsigned char field_13E;
+	unsigned char field_13F;
+	unsigned char field_142;
+	__int16 field_148;
+	*/
+	VALIDATE(CSuper, field_13E, 0x13E);
+	VALIDATE(CSuper, field_13F, 0x13F);
+	VALIDATE(CSuper, field_142, 0x142);
+	VALIDATE(CSuper, field_148, 0x148);
 }
