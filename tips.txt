@@ -3,3 +3,65 @@
 - jumping is to code further away
 - loop condition is the condition before the loop and at the end of the loop block
 - composed if statements will change register allocation
+- it's really easy to trip up the msvc optimizer
+
+code like 
+
+```
+int x = this->x;
+
+if (x == 1){
+  do_smth();
+  }
+
+  if (x == -1){
+    do_other();
+  }
+```
+
+is compiled to
+
+```
+switch(this->x) {
+  case 1:
+    do_smth();
+    break;
+  case -1:
+    do_other();
+    break;
+}
+```
+
+
+
+while 
+
+```
+int x = this->x;
+
+if (this->x == 1){
+  do_smth();
+}
+
+if (x == -1){
+  do_other();
+}
+
+```
+
+is compiled to
+
+```
+int x = this->x;
+
+if (x == 1){
+  do_smth();
+}
+
+if (x == -1){
+  do_other();
+}
+
+```
+
+worse code

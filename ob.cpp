@@ -122,6 +122,68 @@ void CSuper::SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4)
 	this->outlineB = a4;
 }
 
+void CSuper::UpdateFrame(void){
+	char v1; // bl
+	int v2; // esi
+	int v3; // edx
+	int v4; // eax
+	int v5; // edx
+	int v6; // eax
+	unsigned __int16 v7; // dx
+	__int16 v8; // dx
+
+
+	if ( !this->field_80 )
+	  this->field_80 = 2;
+	v1 = this->field_141;
+	v2 = this->field_80 * this->csuperend / 2;
+	v3 = (unsigned __int16)this->field_146 | (this->field_128 << 16);
+	if ( this->field_141 == 1 )
+	  v3 += v2;
+	if ( v1 == -1 )
+	  v3 -= v2;
+	v4 = v3;
+	this->field_146 = v3;
+	v5 = (unsigned __int8)this->field_140;
+	v6 = v4 >> 16;
+	this->field_128 = v6;
+
+	if (v5) {
+		if ( --v5 == 0)
+		{
+		  v7 = this->field_148;
+		  if ( (__int16)v6 >= (int)v7 )
+		  {
+			  this->field_128 = v6 - v7;
+        
+		  }
+		  else
+		  {
+
+			if ( (__int16)(v6) < 0 )
+			  this->field_128 = v6 + v7;
+		  }
+		}
+	}
+	else if( (this->field_141 == 1 && (__int16)v6 >= this->field_144)
+		||
+		(v1 == -1 && (__int16)v6 <= this->field_144)
+		){
+		this->field_128 = this->field_144;
+		this->field_142 = 1;
+	}
+	
+
+
+	/*
+	else if ( v1 == 1 && (v8 = this->field_144, (__int16)v6 >= v8)
+         || v1 == -1 && (v8 = this->field_144, (__int16)v6 <= v8) )
+  {
+    this->field_128 = v8;
+    this->field_142 = 1;
+  }*/
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -135,6 +197,7 @@ void validate_CItem(void){
 
 void validate_CBody(void){
 	VALIDATE(CBody, mCBodyFlags, 0x46);
+	VALIDATE(CBody, field_80, 0x80);
 	VALIDATE(CBody, bodyQuadBit, 0xCC);
 	VALIDATE(CBody, field_D0, 0xD0);
 	VALIDATE(CBody, field_D2, 0xD2);
@@ -157,10 +220,20 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, outlineG, 0x125);
 	VALIDATE(CSuper, outlineB, 0x126);
 
+	VALIDATE(CSuper, field_128, 0x128);
+
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
+
+	VALIDATE(CSuper, field_140, 0x140);
+	VALIDATE(CSuper, field_141, 0x141);
 	VALIDATE(CSuper, field_142, 0x142);
+
+	VALIDATE(CSuper, field_144, 0x144);	
+	VALIDATE(CSuper, field_146, 0x146);	
+
 	VALIDATE(CSuper, field_148, 0x148);	
+	VALIDATE(CSuper, csuperend, 0x14C);
 }

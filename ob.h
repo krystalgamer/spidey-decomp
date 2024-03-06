@@ -38,7 +38,9 @@ public:
 
 	unsigned __int16 mCBodyFlags;
 
-	unsigned char pad1[0x70];
+	unsigned char pad1[0x38];
+	int field_80;
+	unsigned char pad3[0x34];
 
 	CVector bodyVector;
 
@@ -70,6 +72,7 @@ public:
 	EXPORT void OutlineOff(void);
 	EXPORT void SetOutlineSemiTransparent(void);
 	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
+	EXPORT void UpdateFrame(void);
 
 	unsigned char padB[0x2C];
 	int alsoOutlineRelated;
@@ -77,25 +80,26 @@ public:
 	unsigned char outlineG;
 	unsigned char outlineB;
 
-	unsigned char padI[0x4];
+	__int16 field_128;
+
+	unsigned __int16 padI;
+
 	int outlineRelated;
 	unsigned char padA[0xE];
 
 	unsigned char field_13E;
 	unsigned char field_13F;
 
-	unsigned __int16 pad1;
-
+	unsigned char field_140;
+	unsigned char field_141;
 	unsigned char field_142;
 
-	int pad2;
-
+	__int16 field_144;
+	__int16 field_146;
 	__int16 field_148;
 
 
-
-	
-
+	int csuperend;
 };
 
 
