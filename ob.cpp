@@ -108,6 +108,10 @@ CSuper::CSuper(){
 
 }
 
+void CSuper::OutlineOff(void){
+	this->outlineRelated &= 0xFFFFFFFB;
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -140,4 +144,6 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_13F, 0x13F);
 	VALIDATE(CSuper, field_142, 0x142);
 	VALIDATE(CSuper, field_148, 0x148);
+
+	VALIDATE(CSuper, outlineRelated, 0x12C);
 }

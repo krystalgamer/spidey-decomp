@@ -67,8 +67,11 @@ class CSuper : public CBody {
 public:
 
 	EXPORT CSuper();
+	EXPORT void OutlineOff(void);
 
-	unsigned char pad[0x4A];
+	unsigned char padB[0x36];
+	int outlineRelated;
+	unsigned char padA[0xE];
 	unsigned char field_13E;
 	unsigned char field_13F;
 
@@ -79,6 +82,9 @@ public:
 	int pad2;
 
 	__int16 field_148;
+
+
+
 	
 
 };
