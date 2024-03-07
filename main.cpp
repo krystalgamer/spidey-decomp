@@ -7,6 +7,7 @@
 #include "bit.h"
 #include "front.h"
 #include "pshell.h"
+#include "baddy.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -49,6 +50,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBody();
 	validate_SVector();
 	validate_CSuper();
+	validate_CBaddy();
 
 	puts("[*] Validation done!");
 

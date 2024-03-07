@@ -116,3 +116,5 @@ public:
 void validate_CItem(void);
 void validate_CBody(void);
 void validate_CSuper(void);
+
+static CSuper *globalSuper = (CSuper*)0x006A9038;
