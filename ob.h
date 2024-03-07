@@ -75,6 +75,7 @@ public:
 	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void UpdateFrame(void);
 	EXPORT void CycleAnim(int a2, char a3);
+	EXPORT void ApplyPose(__int16 *a2);
 
 	unsigned char padB[0x28];
 	int SNbrFaces;
@@ -103,6 +104,12 @@ public:
 
 
 	int csuperend;
+
+	unsigned char padVE[0x38];
+
+	int field_188;
+	unsigned char padEE[0x4];
+	__int16 *actualcsuperend;
 };
 
 

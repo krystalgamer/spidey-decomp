@@ -210,6 +210,19 @@ void CSuper::CycleAnim(int a2, char a3){
   this->field_142 = 0;
 }
 
+
+//Revisit
+void CSuper::ApplyPose(__int16 *a2){
+
+	if (!this->field_188){
+		this->actualcsuperend = a2;
+	}
+
+	if ((this->mFlags & 4) != 0){
+		this->field_13E = 69;
+	}
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -264,4 +277,8 @@ void validate_CSuper(void){
 
 	VALIDATE(CSuper, gAnim, 0x148);	
 	VALIDATE(CSuper, csuperend, 0x14C);
+
+
+	VALIDATE(CSuper, field_188, 0x188);
+	VALIDATE(CSuper, actualcsuperend, 0x190);
 }
