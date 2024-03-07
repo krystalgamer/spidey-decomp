@@ -50,5 +50,6 @@ int CBaddy::TugWeb(void){
 void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_204, 0x204);
 	VALIDATE(CBaddy, field_208, 0x208);
+	VALIDATE(CBaddy, field_290, 0x290);
 	VALIDATE(CBaddy, field_2A8, 0x2A8);
 }
