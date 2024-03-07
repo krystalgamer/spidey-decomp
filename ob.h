@@ -80,7 +80,10 @@ public:
 	EXPORT void CycleAnim(int a2, char a3);
 	EXPORT void ApplyPose(__int16 *a2);
 
-	unsigned char padB[0x28];
+	unsigned char padBBB[0x18];
+
+	int field_10C;
+	unsigned char padB[0x10-4];
 	int SNbrFaces;
 	int alsoOutlineRelated;
 	unsigned char outlineR;

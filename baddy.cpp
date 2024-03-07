@@ -1,6 +1,7 @@
 #include "baddy.h"
 #include "validate.h"
 #include "utils.h"
+#include "mem.h"
 
 
 int CBaddy::DistanceToPlayer(int a2){
@@ -28,6 +29,20 @@ int CBaddy::TrapWeb(void){
 	}
 
 	
+
+	return 0;
+}
+
+//Revisit
+
+int CBaddy::TugWeb(void){
+	if(!(this->field_2A8 & 0x10000)){
+		if (this->field_E2 > 0){
+		return 1;
+		}
+	}
+
+	Mem_RecoverPointer((SHandle*)&this->field_10C);
 
 	return 0;
 }

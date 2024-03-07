@@ -9,6 +9,7 @@ class CBaddy : public CSuper {
 public:
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
+	EXPORT int TugWeb(void);
 
 
 	unsigned char pad[0x69+4];

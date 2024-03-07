@@ -172,6 +172,10 @@ SOURCE=.\m3d.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\mem.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ob.h
 # End Source File
 # Begin Source File

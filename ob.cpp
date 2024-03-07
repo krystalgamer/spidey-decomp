@@ -255,6 +255,7 @@ void validate_CSuper(void){
 	*/
 	
 
+	VALIDATE(CSuper, field_10C, 0x10C);
 	VALIDATE(CSuper, SNbrFaces, 0x11C);
 	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
 	VALIDATE(CSuper, outlineR, 0x124);
