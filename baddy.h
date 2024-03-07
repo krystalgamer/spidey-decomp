@@ -25,7 +25,16 @@ public:
 	unsigned char morerererPad[0x12];
 	__int16 field_21E;
 
-	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10];
+	unsigned char adsfPad[0x2C - 0x18];
+
+	unsigned char field_234;
+
+	unsigned char asdfkjfdsPad[0x15];
+
+	int field_24C;
+
+
+	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30];
 	int field_27C;
 	int field_280;
 	int field_284;
