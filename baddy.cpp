@@ -19,7 +19,21 @@ int CBaddy::DistanceToPlayer(int a2){
 	return result;
 }
 
+// Revisit
+int CBaddy::TrapWeb(void){
+	if(!(this->field_2A8 & 0x10000)){
+		if (this->field_E2 > 0){
+		return 1;
+		}
+	}
+
+	
+
+	return 0;
+}
+
 void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_204, 0x204);
 	VALIDATE(CBaddy, field_208, 0x208);
+	VALIDATE(CBaddy, field_2A8, 0x2A8);
 }

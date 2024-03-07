@@ -52,7 +52,10 @@ public:
 	unsigned __int16 field_D2;
 	unsigned __int16 field_D4;
 
-	unsigned char bottomPad[0x1C];
+	unsigned char moreBottomPad[0xC];
+
+	__int16 field_E2;
+	unsigned char bottomPad[0x10];
 
 
 	EXPORT int IsDead(void) const;
