@@ -17,7 +17,10 @@ public:
 	int field_204;
 	int field_208;
 
-	unsigned char morerPad[0x84];
+	unsigned char morerererPad[0x12];
+	__int16 field_21E;
+
+	unsigned char morerPad[0x84 - 0x14];
 	int field_290;
 	unsigned char morePad[0xA0 - 8 - 0x84];
 
