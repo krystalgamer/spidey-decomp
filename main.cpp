@@ -8,6 +8,7 @@
 #include "front.h"
 #include "pshell.h"
 #include "baddy.h"
+#include "mj.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -27,6 +28,7 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(CSVector)==6>::assert();
 	StaticAssert<sizeof(SVector)==6>::assert();
 	StaticAssert<sizeof(CQuadBit)==0x84>::assert();
+	StaticAssert<sizeof(CMJ)==0x324>::assert();
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,

@@ -176,6 +176,10 @@ SOURCE=.\mem.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\mj.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ob.h
 # End Source File
 # Begin Source File
