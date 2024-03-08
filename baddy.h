@@ -41,11 +41,14 @@ public:
 	
 	unsigned char weirdpad[0x06];
 	int field_290;
-	unsigned char morePad[0xA0 - 8 - 0x84];
+	unsigned char field_294;
+	unsigned char field_295;
+	unsigned char field_296;
+	unsigned char morePad[0xA0 - 8 - 0x84 - 4];
 
 	int field_2A8;
-
-	unsigned char shitPad[0x50 - 0xC];
+	int field_2AC;
+	unsigned char shitPad[0x50 - 0xC - 4];
 
 	int field_2F0;
 	int field_2F4;
