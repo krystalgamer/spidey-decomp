@@ -44,7 +44,9 @@ public:
 	unsigned char field_294;
 	unsigned char field_295;
 	unsigned char field_296;
-	unsigned char morePad[0xA0 - 8 - 0x84 - 4];
+	unsigned char field_297;
+	unsigned char field_298;
+	unsigned char morePad[0xA0 - 8 - 0x84 - 8];
 
 	int field_2A8;
 	int field_2AC;
