@@ -7,3 +7,6 @@
 class CMJ : public CBaddy {
 	int dumbAssPad;
 };
+
+
+void validate_CMJ(void);

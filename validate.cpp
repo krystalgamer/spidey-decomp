@@ -15,3 +15,17 @@ void validate_class(int cur, int expected, const char *cls, const char *member){
 
 	fflush(stdout);
 }
+
+void validate_size(int cur, int expected, const char *name){
+	if (expected != cur){
+		printf("[!] Expected %d but got %d, size of %s\n", expected, cur, name);
+	}
+	else{
+
+#ifdef _VALIDATE_SUCCESS
+		printf("[!] SUGG my dicgg\n");
+#endif
+	}
+
+	fflush(stdout);
+}
