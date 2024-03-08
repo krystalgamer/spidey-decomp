@@ -53,11 +53,11 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_204, 0x204);
 	VALIDATE(CBaddy, field_208, 0x208);
 	VALIDATE(CBaddy, field_21E, 0x21E);
+
+	VALIDATE(CBaddy, field_230, 0x230);
 	VALIDATE(CBaddy, field_234, 0x234);
 	VALIDATE(CBaddy, field_24C, 0x24C);
 	VALIDATE(CBaddy, field_27C, 0x27C);
-	VALIDATE(CBaddy, field_280, 0x280);
-	VALIDATE(CBaddy, field_284, 0x284);
 
 	VALIDATE(CBaddy, field_290, 0x290);
 	VALIDATE(CBaddy, field_294, 0x294);
@@ -68,6 +68,11 @@ void validate_CBaddy(void){
 
 	VALIDATE(CBaddy, field_2A8, 0x2A8);
 	VALIDATE(CBaddy, field_2AC, 0x2AC);
+
+	VALIDATE(CBaddy, field_2B0, 0x2B0);
+	VALIDATE(CBaddy, field_2B4, 0x2B4);
+	VALIDATE(CBaddy, field_2B8, 0x2B8);
+	VALIDATE(CBaddy, field_2D0, 0x2D0);
 
 	VALIDATE(CBaddy, field_2F0, 0x2F0);
 	VALIDATE(CBaddy, field_2F4, 0x2F4);

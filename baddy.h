@@ -25,8 +25,9 @@ public:
 	unsigned char morerererPad[0x12];
 	__int16 field_21E;
 
-	unsigned char adsfPad[0x2C - 0x18];
+	unsigned char adsfPad[0x2C - 0x18 - 4];
 
+	int field_230;
 	unsigned char field_234;
 
 	unsigned char asdfkjfdsPad[0x15];
@@ -35,9 +36,7 @@ public:
 
 
 	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30];
-	int field_27C;
-	int field_280;
-	int field_284;
+	CVector field_27C;
 	
 	unsigned char weirdpad[0x06];
 	int field_290;
@@ -50,7 +49,15 @@ public:
 
 	int field_2A8;
 	int field_2AC;
-	unsigned char shitPad[0x50 - 0xC - 4];
+	int field_2B0;
+
+	int field_2B4;
+	CVector field_2B8;
+	unsigned char shittestPad[0x14-8];
+	CVector field_2D0;
+
+	unsigned char shitPad[0x14];
+
 
 	int field_2F0;
 	int field_2F4;
