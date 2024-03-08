@@ -22,7 +22,10 @@ public:
 	int field_204;
 	int field_208;
 
-	unsigned char morerererPad[0x12];
+	unsigned char field_20C;
+	unsigned char asdfasdfPad[0x4];
+	unsigned char field_211;
+	unsigned char morerererPad[0x12-7];
 	__int16 field_21E;
 
 	unsigned char adsfPad[0x2C - 0x18 - 4];
