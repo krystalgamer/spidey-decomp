@@ -40,7 +40,10 @@ public:
 
 	unsigned char pad1[0x38];
 	int field_80;
-	unsigned char pad3[0x34];
+
+	unsigned char boddddPad[0xA];
+	CSVector field_8E;
+	unsigned char pad3[0x24];
 
 	CVector bodyVector;
 
