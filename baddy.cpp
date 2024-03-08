@@ -50,17 +50,27 @@ int CBaddy::TugWeb(void){
 void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);
+	VALIDATE(CBaddy, field_1FC, 0x1FC);
+	VALIDATE(CBaddy, field_1FE, 0x1FE);
+
 	VALIDATE(CBaddy, field_204, 0x204);
 	VALIDATE(CBaddy, field_208, 0x208);
 	VALIDATE(CBaddy, field_20C, 0x20C);
+	VALIDATE(CBaddy, field_20F, 0x20F);
+	VALIDATE(CBaddy, field_210, 0x210);
 
 
 	VALIDATE(CBaddy, field_211, 0x211);
 	VALIDATE(CBaddy, field_21E, 0x21E);
+	VALIDATE(CBaddy, registerArr, 0x220);
 
 	VALIDATE(CBaddy, field_230, 0x230);
 	VALIDATE(CBaddy, field_234, 0x234);
+	VALIDATE(CBaddy, field_23C, 0x23C);
 	VALIDATE(CBaddy, field_24C, 0x24C);
+
+
+	VALIDATE(CBaddy, attributeArr, 0x270);
 	VALIDATE(CBaddy, field_27C, 0x27C);
 
 	VALIDATE(CBaddy, field_290, 0x290);

@@ -16,29 +16,43 @@ public:
 
 	unsigned char baddyPad[0x40];
 	int field_1F4;
-
-	unsigned char pad[0x9];
+	
+	unsigned char padasdf[0x4];
+	__int16 field_1FC;
+	__int16 field_1FE;
+	unsigned char pad[0x1];
 
 	int field_204;
 	int field_208;
 
 	unsigned char field_20C;
-	unsigned char asdfasdfPad[0x4];
+
+	unsigned char fusdakjfasdPad[0x2];
+
+
+	unsigned char field_20F;
+	unsigned char field_210;
 	unsigned char field_211;
 	unsigned char morerererPad[0x12-7];
 	__int16 field_21E;
 
-	unsigned char adsfPad[0x2C - 0x18 - 4];
+	__int16 registerArr[6];
+	unsigned char adsfPad[0x2C - 0x18 - 4 - 0xC];
 
 	int field_230;
 	unsigned char field_234;
 
-	unsigned char asdfkjfdsPad[0x15];
+	unsigned char jasdkfasdkjfajsdfPad[4];
+
+	int field_23C;
+
+	unsigned char asdfkjfdsPad[0x15-0xC];
 
 	int field_24C;
 
 
-	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30];
+	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30 - 0xC];
+	__int16 attributeArr[6];
 	CVector field_27C;
 	
 	unsigned char weirdpad[0x06];
