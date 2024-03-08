@@ -55,7 +55,11 @@ public:
 	unsigned __int16 field_D2;
 	unsigned __int16 field_D4;
 
-	unsigned char moreBottomPad[0xC];
+	unsigned char moreBottomPad[0x4+1];
+
+	__int16 field_DC;
+
+	unsigned char stopPPPad[0x4];
 
 	__int16 field_E2;
 	unsigned char bottomPad[0x10];

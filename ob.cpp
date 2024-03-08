@@ -243,6 +243,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_D0, 0xD0);
 	VALIDATE(CBody, field_D2, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
+	VALIDATE(CBody, field_DC, 0xDC);
 	VALIDATE(CBody, field_E2, 0xE2);
 }
 
