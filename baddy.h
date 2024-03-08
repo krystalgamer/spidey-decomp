@@ -82,6 +82,11 @@ public:
 	unsigned char shitterPad[0x4];
 	CVector field_2FC;
 
+
+	unsigned char ajskdfdfgsjkdfgjksdfgjkPad[11];
+	__int16 field_314;
+	unsigned char asdfahsudfausdhuasduhPad[4];
+	int field_31C;
 };
 
 
