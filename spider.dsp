@@ -120,6 +120,10 @@ SOURCE=.\mem.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\mj.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ob.cpp
 # End Source File
 # Begin Source File

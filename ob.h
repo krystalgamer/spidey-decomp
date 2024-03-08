@@ -34,8 +34,9 @@ public:
 class CBody : public CItem {
 
 public:
-	unsigned char pad[0x26];
+	unsigned char pad[0x24];
 
+	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
 
 	unsigned char pad1[0x38];

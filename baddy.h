@@ -10,6 +10,7 @@ public:
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
 	EXPORT int TugWeb(void);
+	EXPORT void CleanUpMessages(int, int);
 
 	unsigned char asdfaPad[0x14];
 	CVector field_1A8;

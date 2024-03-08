@@ -47,6 +47,13 @@ int CBaddy::TugWeb(void){
 	return 0;
 }
 
+
+//TODO
+void CBaddy::CleanUpMessages(int, int){
+	printf("LMAOOOO");
+}
+
+
 void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);

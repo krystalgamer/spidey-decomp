@@ -235,6 +235,7 @@ void validate_CItem(void){
 
 
 void validate_CBody(void){
+	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, field_80, 0x80);
 	VALIDATE(CBody, field_8E, 0x8E);
