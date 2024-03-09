@@ -16,6 +16,7 @@
 #include "torch.h"
 #include "hostage.h"
 #include "cop.h"
+#include "carnage.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -69,6 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CHostage();
 	validate_CScriptOnlyBaddy();
 	validate_CCop();
+	validate_CCarnage();
 
 	puts("[*] Validation done!");
 
