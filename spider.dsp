@@ -100,11 +100,27 @@ SOURCE=.\bit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\blackcat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\carnage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cop.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\friction.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\front.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\hostage.cpp
 # End Source File
 # Begin Source File
 
@@ -136,6 +152,10 @@ SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\submarin.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\torch.cpp
 # End Source File
 # Begin Source File
@@ -149,6 +169,10 @@ SOURCE=.\validate.cpp
 # Begin Source File
 
 SOURCE=.\vector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\venom.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -164,6 +188,18 @@ SOURCE=.\bit.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\blackcat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\carnage.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cop.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\export.h
 # End Source File
 # Begin Source File
@@ -173,6 +209,10 @@ SOURCE=.\friction.h
 # Begin Source File
 
 SOURCE=.\front.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\hostage.h
 # End Source File
 # Begin Source File
 
@@ -192,11 +232,19 @@ SOURCE=.\ob.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2funcs.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2m3d.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\pshell.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\submarin.h
 # End Source File
 # Begin Source File
 
@@ -213,6 +261,10 @@ SOURCE=.\validate.h
 # Begin Source File
 
 SOURCE=.\vector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\venom.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
