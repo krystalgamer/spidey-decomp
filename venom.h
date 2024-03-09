@@ -45,7 +45,11 @@ public:
 	int field_418;
 	int field_41C;
 	int field_420;
-	unsigned char venomPadAfter420[0x30];
+	unsigned char venomPadAfter420[0x30 - 0x24];
+
+	int field_430;
+	CQuadBit *field_434;
+	unsigned char venomPadAfter434[0x20-4];
 
 
 	int field_454;
