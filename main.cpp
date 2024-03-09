@@ -94,6 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CScorpion();
 	validate_CPunchOb();
 	validate_CSimby();
+	validate_CSimbyBase();
 
 	puts("[*] Validation done!");
 

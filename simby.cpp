@@ -9,3 +9,7 @@ void validate_CPunchOb(void){
 void validate_CSimby(void){
 	VALIDATE_SIZE(CSimby, 0x460);
 }
+
+void validate_CSimbyBase(void){
+	VALIDATE_SIZE(CSimbyBase, 0x334);
+}
