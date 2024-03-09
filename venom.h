@@ -8,13 +8,20 @@ class CVenom : public CBaddy {
 
 public:
 
-	unsigned char venomStartPad[0x58];
+	unsigned char venomStartPad[0x18];
+	unsigned char field_33C;
+	unsigned char field_33D;
+	unsigned char venomPadAfter33D[0x24 - 12];
+
+	int field_358;
+	unsigned char venomPadAfter358[0x20];
+
 	int field_37C;
 	int field_380;
 	int field_384;
+	unsigned char venomPadAfter384[0x14];
 
-	unsigned char venomPadAfter384[0x18];
-
+	int field_39C;
 	int field_3A0;
 	int field_3A4;
 	int field_3A8;
@@ -36,6 +43,15 @@ public:
 	int field_418;
 	int field_41C;
 	int field_420;
+	unsigned char venomPadAfter420[0x30];
+
+
+	int field_454;
+	unsigned char venomPadAfter454[0x4];
+
+	int field_45C;
+	int field_460;
+	int field_464;
 };
 
 
