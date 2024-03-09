@@ -108,7 +108,15 @@ SOURCE=.\carnage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chopper.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\cop.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\docock.cpp
 # End Source File
 # Begin Source File
 
@@ -196,7 +204,15 @@ SOURCE=.\carnage.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\chopper.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\cop.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\docock.h
 # End Source File
 # Begin Source File
 
