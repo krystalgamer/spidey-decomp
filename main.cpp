@@ -27,6 +27,7 @@
 #include "rhino.h"
 #include "scorpion.h"
 #include "simby.h"
+#include "spclone.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -95,6 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CPunchOb();
 	validate_CSimby();
 	validate_CSimbyBase();
+	validate_CSpClone();
 
 	puts("[*] Validation done!");
 

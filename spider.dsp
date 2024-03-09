@@ -160,7 +160,15 @@ SOURCE=.\mj.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\mysterio.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ob.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\platform.cpp
 # End Source File
 # Begin Source File
 
@@ -169,6 +177,22 @@ SOURCE=.\ps2m3d.cpp
 # Begin Source File
 
 SOURCE=.\pshell.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rhino.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\scorpion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\simby.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\spclone.cpp
 # End Source File
 # Begin Source File
 
@@ -268,7 +292,15 @@ SOURCE=.\mj.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\mysterio.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ob.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\platform.h
 # End Source File
 # Begin Source File
 
@@ -281,6 +313,22 @@ SOURCE=.\ps2m3d.h
 # Begin Source File
 
 SOURCE=.\pshell.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rhino.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\scorpion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\simby.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\spclone.h
 # End Source File
 # Begin Source File
 
