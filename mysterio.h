@@ -6,6 +6,15 @@
 
 class CMystFoot : public CBaddy {};
 
+class CSoftSpot : public CBaddy {
+public:
+	int field_324;
+	int field_328;
+	int field_32c;
+	int field_330;
+	int field_334;
+};
+
 class CMysterio : public CBaddy {
 	public:
 	int field_324;
@@ -45,3 +54,4 @@ class CMysterio : public CBaddy {
 
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
+void validate_CSoftSpot(void);

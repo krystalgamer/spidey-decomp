@@ -84,6 +84,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CLizMan();
 	validate_CMystFoot();
 	validate_CMysterio();
+	validate_CSoftSpot();
 
 	puts("[*] Validation done!");
 
