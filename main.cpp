@@ -19,6 +19,7 @@
 #include "carnage.h"
 #include "chopper.h"
 #include "docock.h"
+#include "jonah.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -75,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CCarnage();
 	validate_CChopper();
 	validate_CDocOc();
+	validate_CJonah();
 
 	puts("[*] Validation done!");
 
