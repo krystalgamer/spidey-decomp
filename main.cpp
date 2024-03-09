@@ -14,6 +14,7 @@
 #include "ps2funcs.h"
 #include "blackcat.h"
 #include "torch.h"
+#include "hostage.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -64,6 +65,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CVenom();
 	validate_CBlackCat();
 	validate_CTorch();
+	validate_CHostage();
 
 	puts("[*] Validation done!");
 
