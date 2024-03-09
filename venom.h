@@ -53,8 +53,7 @@ public:
 
 
 	int field_454;
-	unsigned char venomPadAfter454[0x4];
-
+	int field_458;
 	int field_45C;
 	int field_460;
 	int field_464;
