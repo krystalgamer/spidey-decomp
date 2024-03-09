@@ -132,6 +132,18 @@ SOURCE=.\hostage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\jonah.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lizard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lizman.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\m3d.cpp
 # End Source File
 # Begin Source File
@@ -229,6 +241,18 @@ SOURCE=.\front.h
 # Begin Source File
 
 SOURCE=.\hostage.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\jonah.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\lizard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\lizman.h
 # End Source File
 # Begin Source File
 
