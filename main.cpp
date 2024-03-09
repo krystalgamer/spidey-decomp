@@ -20,6 +20,7 @@
 #include "chopper.h"
 #include "docock.h"
 #include "jonah.h"
+#include "lizard.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -77,6 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CChopper();
 	validate_CDocOc();
 	validate_CJonah();
+	validate_CLizard();
 
 	puts("[*] Validation done!");
 
