@@ -10,6 +10,7 @@
 #include "baddy.h"
 #include "mj.h"
 #include "submarin.h"
+#include "venom.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -56,6 +57,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBaddy();
 	validate_CMJ();
 	validate_CSubmariner();
+	validate_CVenom();
 
 	puts("[*] Validation done!");
 
