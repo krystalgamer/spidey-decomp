@@ -5,3 +5,7 @@
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 }
+
+void validate_CSimby(void){
+	VALIDATE_SIZE(CSimby, 0x460);
+}
