@@ -39,7 +39,10 @@ public:
 	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
 
-	unsigned char pad1[0x38];
+	unsigned char pad1[0x38 - 0x20];
+	CVector mAccellorVel;
+	unsigned char bodyPadAdterAccelorVel[0x80-0x60-0xC];
+
 	int field_80;
 
 	unsigned char boddddPad[0xA];
@@ -87,6 +90,7 @@ public:
 	EXPORT void UpdateFrame(void);
 	EXPORT void CycleAnim(int a2, char a3);
 	EXPORT void ApplyPose(__int16 *a2);
+	EXPORT void RunAnim(int, int, int);
 
 	unsigned char padBBB[0x18];
 

@@ -35,7 +35,10 @@ public:
 	unsigned char field_20F;
 	unsigned char field_210;
 	unsigned char field_211;
-	unsigned char morerererPad[0x12-7];
+	unsigned char morerererPad[0x12 - 7 - 6];
+	int field_218;
+	unsigned char padAFter218[0x2];
+
 	__int16 field_21E;
 
 	__int16 registerArr[6];

@@ -1,6 +1,35 @@
 #include "venom.h"
 #include "validate.h"
 
+//Revisit
+void __inline CVenom::Lookaround(void){
+
+	int v2; // r0
+
+  v2 = this->dumbAssPad;
+  if ( v2 == 1 )
+  {
+    if ( this->field_142 )
+    {
+      this->field_31C = 32;
+      this->dumbAssPad = 0;
+    }
+  }
+  else if ( v2 >= 1 || v2 < 0 )
+  {
+    print_if_false(0, "Unknown substate");
+  }
+  else
+  {
+    this->field_218 &= 0xFFFFFFF8;
+    this->mAccellorVel.vz = 0;
+    this->mAccellorVel.vy = 0;
+    this->mAccellorVel.vx = 0;
+    this->RunAnim(8, 0, -1);
+    ++this->dumbAssPad;
+  }
+
+}
 
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);

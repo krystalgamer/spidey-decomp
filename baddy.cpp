@@ -72,6 +72,7 @@ void validate_CBaddy(void){
 
 
 	VALIDATE(CBaddy, field_211, 0x211);
+	VALIDATE(CBaddy, field_218, 0x218);
 	VALIDATE(CBaddy, field_21E, 0x21E);
 	VALIDATE(CBaddy, registerArr, 0x220);
 

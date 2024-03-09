@@ -223,6 +223,11 @@ void CSuper::ApplyPose(__int16 *a2){
 	}
 }
 
+
+//TODO
+void CSuper::RunAnim(int, int, int){
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -237,6 +242,7 @@ void validate_CItem(void){
 void validate_CBody(void){
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
+	VALIDATE(CBody, mAccellorVel, 0x60);
 	VALIDATE(CBody, field_80, 0x80);
 	VALIDATE(CBody, field_8E, 0x8E);
 	VALIDATE(CBody, bodyVector, 0xB8);

@@ -8,6 +8,8 @@ class CVenom : public CBaddy {
 
 public:
 
+	EXPORT void Lookaround(void);
+
 	unsigned char venomStartPad[0x18];
 	unsigned char field_33C;
 	unsigned char field_33D;
