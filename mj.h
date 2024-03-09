@@ -5,7 +5,6 @@
 
 
 class CMJ : public CBaddy {
-	int dumbAssPad;
 
 	EXPORT void AI(void);
 };

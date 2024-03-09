@@ -9,6 +9,7 @@
 #include "pshell.h"
 #include "baddy.h"
 #include "mj.h"
+#include "submarin.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -54,6 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSuper();
 	validate_CBaddy();
 	validate_CMJ();
+	validate_CSubmariner();
 
 	puts("[*] Validation done!");
 

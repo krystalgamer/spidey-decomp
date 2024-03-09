@@ -53,6 +53,10 @@ void CBaddy::CleanUpMessages(int, int){
 	printf("LMAOOOO");
 }
 
+//TODO
+void CBaddy::Die(int){
+}
+
 
 void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_1A8, 0x1A8);

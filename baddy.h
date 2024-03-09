@@ -11,6 +11,7 @@ public:
 	EXPORT int TrapWeb(void);
 	EXPORT int TugWeb(void);
 	EXPORT void CleanUpMessages(int, int);
+	EXPORT void Die(int);
 
 	unsigned char asdfaPad[0x14];
 	CVector field_1A8;
@@ -88,6 +89,7 @@ public:
 	__int16 field_314;
 	unsigned char asdfahsudfausdhuasduhPad[4];
 	int field_31C;
+	int dumbAssPad;
 };
 
 

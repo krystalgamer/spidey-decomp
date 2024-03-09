@@ -128,6 +128,10 @@ SOURCE=.\ob.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2m3d.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
@@ -185,6 +189,10 @@ SOURCE=.\mj.h
 # Begin Source File
 
 SOURCE=.\ob.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2m3d.h
 # End Source File
 # Begin Source File
 
