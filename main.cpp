@@ -26,6 +26,7 @@
 #include "platform.h"
 #include "rhino.h"
 #include "scorpion.h"
+#include "simby.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -91,6 +92,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CPlatform();
 	validate_CRhino();
 	validate_CScorpion();
+	validate_CPunchOb();
 
 	puts("[*] Validation done!");
 
