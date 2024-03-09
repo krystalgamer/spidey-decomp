@@ -13,6 +13,7 @@
 #include "venom.h"
 #include "ps2funcs.h"
 #include "blackcat.h"
+#include "torch.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -62,6 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSubmariner();
 	validate_CVenom();
 	validate_CBlackCat();
+	validate_CTorch();
 
 	puts("[*] Validation done!");
 
