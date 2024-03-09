@@ -11,6 +11,7 @@
 #include "mj.h"
 #include "submarin.h"
 #include "venom.h"
+#include "ps2funcs.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -31,6 +32,7 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(SVector)==6>::assert();
 	StaticAssert<sizeof(CQuadBit)==0x84>::assert();
 	//StaticAssert<sizeof(CMJ)==0x324>::assert();
+	StaticAssert<sizeof(MATRIX)==0x20>::assert();
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,

@@ -2,6 +2,7 @@
 #include "export.h"
 #include "vector.h"
 #include "bit.h"
+#include "ps2funcs.h"
 
 
 class CItem  
@@ -123,7 +124,9 @@ public:
 
 	int csuperend;
 
-	unsigned char padVE[0x38];
+	unsigned char padVE[0x14];
+	MATRIX field_164;
+	unsigned char padAfter188[0x4];
 
 	int field_188;
 	unsigned char padEE[0x4];
