@@ -22,6 +22,7 @@
 #include "jonah.h"
 #include "lizard.h"
 #include "lizman.h"
+#include "mysterio.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -81,6 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CJonah();
 	validate_CLizard();
 	validate_CLizMan();
+	validate_CMystFoot();
 
 	puts("[*] Validation done!");
 
