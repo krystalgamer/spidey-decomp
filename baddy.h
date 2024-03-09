@@ -96,4 +96,14 @@ public:
 };
 
 
+class CScriptOnlyBaddy : public CBaddy {
+
+public:
+	unsigned char padSOBStart[0x4];
+	int field_328;
+	__int16 field_32C;
+	__int16 field_32E;
+};
+
 void validate_CBaddy(void);
+void validate_CScriptOnlyBaddy(void);

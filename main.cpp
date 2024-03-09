@@ -66,6 +66,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBlackCat();
 	validate_CTorch();
 	validate_CHostage();
+	validate_CScriptOnlyBaddy();
 
 	puts("[*] Validation done!");
 

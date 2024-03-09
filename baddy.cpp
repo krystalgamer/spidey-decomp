@@ -108,3 +108,12 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_314, 0x314);
 	VALIDATE(CBaddy, field_31C, 0x31C);
 }
+
+
+void validate_CScriptOnlyBaddy(void){
+
+	VALIDATE_SIZE(CScriptOnlyBaddy, 0x330);
+	VALIDATE(CScriptOnlyBaddy, field_328, 0x328);
+	VALIDATE(CScriptOnlyBaddy, field_32C, 0x32C);
+	VALIDATE(CScriptOnlyBaddy, field_32E, 0x32E);
+}
