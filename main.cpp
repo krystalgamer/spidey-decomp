@@ -24,6 +24,8 @@
 #include "lizman.h"
 #include "mysterio.h"
 #include "platform.h"
+#include "rhino.h"
+#include "scorpion.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -87,6 +89,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CMysterio();
 	validate_CSoftSpot();
 	validate_CPlatform();
+	validate_CRhino();
+	validate_CScorpion();
 
 	puts("[*] Validation done!");
 
