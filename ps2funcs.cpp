@@ -130,3 +130,59 @@ void gte_stlvnl0(int *a1)
 {
   *a1 = gGeneralLongVector.vx;
 }
+
+void gte_stlvnl2(int *a1)
+{
+  *a1 = gGeneralLongVector.vz;
+}
+
+EXPORT int gScalar;
+void gte_gpf0()
+{
+  gGeneralLongVector.vx = gOp12Result.vx * gScalar;
+  gGeneralLongVector.vy = gScalar * gOp12Result.vy;
+  gGeneralLongVector.vz = gScalar * gOp12Result.vz;
+}
+
+EXPORT int lzc;
+
+// Stupid function, can be extremely simplified
+void gte_stlzc(int *a1)
+{
+  int v1; // esi
+  int v2; // eax
+  int v3; // eax
+
+  v1 = lzc;
+  print_if_false(lzc != 0, "lzc not zero");
+  if ( v1 < 0 )
+  {
+    v2 = 0;
+    do
+    {
+      v1 *= 2;
+      ++v2;
+    }
+    while ( v1 < 0 );
+    *a1 = v2;
+  }
+  else
+  {
+	v3 = 0;
+    do
+    {
+      v1 *= 2;
+      ++v3;
+    }
+    while ( v1 >= 0 );
+    *a1 = v3;
+  }
+}
+
+
+void gte_stsv(SVECTOR *a1)
+{
+  a1->vx = (short)gOp12Result.vx;
+  a1->vy = (short)gOp12Result.vy;
+  a1->vz = (short)gOp12Result.vz;
+}

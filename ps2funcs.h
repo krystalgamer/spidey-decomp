@@ -39,3 +39,7 @@ EXPORT void gte_ldlvl(VECTOR *a1);
 EXPORT void gte_sqr0(void);
 EXPORT void gte_rtv0(void);
 EXPORT void gte_stlvnl0(int *a1);
+EXPORT void gte_stlvnl2(int *a1);
+EXPORT void gte_gpf0(void);
+EXPORT void gte_stlzc(int *a1);
+EXPORT void gte_stsv(SVECTOR *a1);
