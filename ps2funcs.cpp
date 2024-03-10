@@ -2,7 +2,9 @@
 #include "validate.h"
 
 EXPORT __int16 gRotMatrix[3][3];
-EXPORT int vertexRegister[3];
+
+EXPORT int vertexRegister[4];
+
 EXPORT VECTOR translationVector;
 EXPORT VECTOR gGeneralLongVector;
 
@@ -223,4 +225,45 @@ void gte_mvmva(int _sf, int mx, int a3, int cv, int lm)
 void gte_stsxy(int *a1)
 {
   *a1 = (gGeneralLongVector.vx & 0xFFFF) | (gGeneralLongVector.vy << 16);
+}
+
+void gte_lddp(int a1)
+{
+  gScalar = a1;
+}
+
+
+void gte_ldsvrtrow0(const SVECTOR *a1)
+{
+  gRotMatrix[0][0] = a1->vx;
+  gRotMatrix[0][1] = a1->vy;
+  gRotMatrix[0][2] = a1->vz;
+}
+
+void gte_ldopv1(VECTOR *a1)
+{
+  gWtfOP12 = *a1;
+}
+
+void gte_ldopv2(VECTOR *a1)
+{
+  gFtwOp12 = *a1;
+}
+
+
+// Garbage revisit
+// vertex register is not vector, i added one to it so it doesn't crash, it's trash
+void gte_ldlv0(const VECTOR *a1)
+{
+  *(VECTOR *)vertexRegister = *a1;
+}
+
+
+void gte_stsxy3(int *a1, int *a2, int *a3)
+{
+  *a1 = (gOp12Result.vx & 0xFFFF) | (gOp12Result.vy << 16);
+  *a2 = (gOp12Result.vx & 0xFFFF) | (gOp12Result.vy << 16);
+  *a3 = (gOp12Result.vx & 0xFFFF) | (gOp12Result.vy << 16);
+  if ( !stubGte )
+    stubbed_printf("stubbed out:  gte_stsxy3");
 }
