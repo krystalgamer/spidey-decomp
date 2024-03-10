@@ -287,3 +287,68 @@ void M3dMaths_SetIdentityRotation(MATRIX *a1)
   a1->m[0][2] = 0;
   a1->m[0][1] = 0;
 }
+
+// Revisit, with validator
+void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3)
+{
+  int v3; // [sp+0h] [-78h]
+  int v4; // [sp+4h] [-74h]
+  int v5; // [sp+8h] [-70h]
+  int v6; // [sp+Ch] [-6Ch]
+  int v7; // [sp+10h] [-68h]
+  int v8; // [sp+14h] [-64h]
+  int v9; // [sp+18h] [-60h]
+  int v10; // [sp+1Ch] [-5Ch]
+  int v11; // [sp+20h] [-58h]
+  int v12; // [sp+24h] [-54h]
+  int v13; // [sp+28h] [-50h]
+  int v14; // [sp+2Ch] [-4Ch]
+  int v15; // [sp+30h] [-48h]
+  int v16; // [sp+34h] [-44h]
+  int v17; // [sp+38h] [-40h]
+  int v18; // [sp+3Ch] [-3Ch]
+  int v19; // [sp+40h] [-38h]
+  int v20; // [sp+44h] [-34h]
+
+  v12 = a1->m[0][0];
+  v13 = a1->m[0][1];
+  v14 = a1->m[0][2];
+  v15 = a1->m[1][0];
+  v16 = a1->m[1][1];
+  v17 = a1->m[1][2];
+  v18 = a1->m[2][0];
+  v19 = a1->m[2][1];
+  v20 = a1->m[2][2];
+  v3 = a2->m[0][0];
+  v4 = a2->m[0][1];
+  v5 = a2->m[0][2];
+  v6 = a2->m[1][0];
+  v7 = a2->m[1][1];
+  v8 = a2->m[1][2];
+  v9 = a2->m[2][0];
+  v10 = a2->m[2][1];
+  v11 = a2->m[2][2];
+  a3->m[0][0] = (v12 * v3 + v13 * v6 + v14 * v9) >> 12;
+  a3->m[0][1] = (v12 * v4 + v13 * v7 + v14 * v10) >> 12;
+  a3->m[0][2] = (v12 * v5 + v13 * v8 + v14 * v11) >> 12;
+  a3->m[1][0] = (v15 * v3 + v16 * v6 + v17 * v9) >> 12;
+  a3->m[1][1] = (v15 * v4 + v16 * v7 + v17 * v10) >> 12;
+  a3->m[1][2] = (v15 * v5 + v16 * v8 + v17 * v11) >> 12;
+  a3->m[2][0] = (v18 * v3 + v19 * v6 + v20 * v9) >> 12;
+  a3->m[2][1] = (v18 * v4 + v19 * v7 + v20 * v10) >> 12;
+  a3->m[2][2] = (v18 * v5 + v19 * v8 + v20 * v11) >> 12;
+}
+
+
+void MulMatrix(MATRIX *a1, MATRIX *a2)
+{
+  //MATRIX v2 = *a1;
+
+	MATRIX v2;
+	for (int i = 0; i<3; i++){
+		for (int j = 0; j<3; j++){
+			v2.m[i][j] = a2->m[i][j];
+		}
+	}
+  MulMatrix0(&v2, a2, a1);
+}

@@ -53,3 +53,5 @@ EXPORT void gte_ldlv0(const VECTOR *a1);
 EXPORT void gte_stsxy3(int *a1, int *a2, int *a3);
 EXPORT void gte_rtir(void);
 EXPORT void M3dMaths_SetIdentityRotation(MATRIX *a1);
+EXPORT void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3);
+EXPORT void MulMatrix(MATRIX *a1, MATRIX *a2);
