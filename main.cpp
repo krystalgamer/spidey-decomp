@@ -51,7 +51,7 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(SVector)==6>::assert();
 	StaticAssert<sizeof(CQuadBit)==0x84>::assert();
 	//StaticAssert<sizeof(CMJ)==0x324>::assert();
-	StaticAssert<sizeof(MATRIX)==0x20>::assert();
+	//StaticAssert<sizeof(MATRIX)==0x20>::assert();
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -103,6 +103,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSuperDocOck();
 	validate_CThug();
 	validate_CTurret();
+	validate_MATRIX();
 
 	puts("[*] Validation done!");
 

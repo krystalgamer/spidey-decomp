@@ -4,5 +4,9 @@
 
 
 struct MATRIX{
-	unsigned char stuff[32];
+	__int16 m[3][3];
+	int t[3];
 };
+
+void validate_MATRIX(void);
+EXPORT void gte_SetRotMatrix(MATRIX*);
