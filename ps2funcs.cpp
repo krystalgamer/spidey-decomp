@@ -109,3 +109,24 @@ void gte_ldlvl(VECTOR *a1)
 {
   gOp12Result = *a1;
 }
+
+void gte_sqr0(void)
+{
+  gGeneralLongVector.vx = gOp12Result.vx * gOp12Result.vx;
+  gGeneralLongVector.vy = gOp12Result.vy * gOp12Result.vy;
+  gGeneralLongVector.vz = gOp12Result.vz * gOp12Result.vz;
+}
+
+
+
+void gte_rtv0(void)
+{
+	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
+
+	gOp12Result = gGeneralLongVector;
+}
+
+void gte_stlvnl0(int *a1)
+{
+  *a1 = gGeneralLongVector.vx;
+}
