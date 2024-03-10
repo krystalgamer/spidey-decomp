@@ -1,15 +1,16 @@
 #include "ps2funcs.h"
 #include "validate.h"
 
-static __int16 gRotMatrix[3][3];
-static int vertexRegister[3];
-static VECTOR translationVector;
-static VECTOR gGeneralLongVector;
+EXPORT __int16 gRotMatrix[3][3];
+EXPORT int vertexRegister[3];
+EXPORT VECTOR translationVector;
+EXPORT VECTOR gGeneralLongVector;
 
-static int gRtpsRelatedNoClue;
-static int gRtpsRelatedNoClue2;
-static int gRtpsRelatedNoClue3;
+EXPORT int gRtpsRelatedNoClue;
+EXPORT int gRtpsRelatedNoClue2;
+EXPORT int gRtpsRelatedNoClue3;
 
+static unsigned char stubGte = 1;
 
 void validate_MATRIX(void){
 	VALIDATE_SIZE(MATRIX, 0x20);
@@ -82,4 +83,29 @@ void gte_rtps(void){
 							  / gGeneralLongVector.vz;
 	}
 
+}
+
+
+void gte_rtpt(void){
+	if ( !stubGte )
+		stubbed_printf("stubbed out: gte_rtpt()");
+}
+
+EXPORT VECTOR gFtwOp12;
+EXPORT VECTOR gWtfOP12;
+EXPORT VECTOR gOp12Result;
+
+
+void gte_op12(void)
+{
+  gGeneralLongVector.vz = (gFtwOp12.vy * gWtfOP12.vx - gWtfOP12.vy * gFtwOp12.vx) >> 12;
+  gGeneralLongVector.vx = (gWtfOP12.vy * gFtwOp12.vz - gWtfOP12.vz * gFtwOp12.vy) >> 12;
+  gGeneralLongVector.vy = (gWtfOP12.vz * gFtwOp12.vx - gFtwOp12.vz * gWtfOP12.vx) >> 12;
+  gOp12Result = gGeneralLongVector;
+}
+
+
+void gte_ldlvl(VECTOR *a1)
+{
+  gOp12Result = *a1;
 }

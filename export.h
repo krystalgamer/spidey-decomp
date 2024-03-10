@@ -14,3 +14,7 @@ static void print_if_false(unsigned char cry, char * message) {
 		printf(message);
 	}
 }
+
+static void stubbed_printf(char *message){
+	puts(message);
+}
