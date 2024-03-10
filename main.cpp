@@ -28,6 +28,7 @@
 #include "scorpion.h"
 #include "simby.h"
 #include "spclone.h"
+#include "superock.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -97,6 +98,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSimby();
 	validate_CSimbyBase();
 	validate_CSpClone();
+	validate_CSuperDocOck();
 
 	puts("[*] Validation done!");
 
