@@ -272,3 +272,18 @@ void gte_stsxy3(int *a1, int *a2, int *a3)
 void gte_rtir(void){
 	FixedXForm(gRotMatrix, &gOp12Result, &gGeneralLongVector);
 }
+
+void M3dMaths_SetIdentityRotation(MATRIX *a1)
+{
+  a1->m[2][2] = 4096;
+  a1->m[1][1] = 4096;
+  a1->m[0][0] = 4096;
+
+  a1->m[2][1] = 0;
+  a1->m[2][0] = 0;
+  a1->m[1][2] = 0;
+
+  a1->m[1][0] = 0;
+  a1->m[0][2] = 0;
+  a1->m[0][1] = 0;
+}
