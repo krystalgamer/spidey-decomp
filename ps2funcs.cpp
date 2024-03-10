@@ -4,7 +4,11 @@
 static __int16 gRotMatrix[3][3];
 static int vertexRegister[3];
 static VECTOR translationVector;
-static VECTOR generalLongVector;
+static VECTOR gGeneralLongVector;
+
+static int gRtpsRelatedNoClue;
+static int gRtpsRelatedNoClue2;
+static int gRtpsRelatedNoClue3;
 
 
 void validate_MATRIX(void){
@@ -42,9 +46,40 @@ void __inline FixedXForm(__int16 matrix[3][3], const VECTOR* a, VECTOR *r){
 
 void gte_rtv0tr(void){
 
-	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &generalLongVector);
+	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
 
-	generalLongVector.vx += translationVector.vx >> 12;
-	generalLongVector.vy += translationVector.vy >> 12;
-	generalLongVector.vz += translationVector.vz >> 12;
+	gGeneralLongVector.vx += translationVector.vx >> 12;
+	gGeneralLongVector.vy += translationVector.vy >> 12;
+	gGeneralLongVector.vz += translationVector.vz >> 12;
+}
+
+void gte_stlvnl(VECTOR *a1)
+{
+  a1->vx = gGeneralLongVector.vx;
+  a1->vy = gGeneralLongVector.vy;
+  a1->vz = gGeneralLongVector.vz;
+}
+
+void gte_rtps(void){
+
+	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
+	gGeneralLongVector.vz = translationVector.vz + gGeneralLongVector.vy;
+	
+
+	if (gGeneralLongVector.vz == 0){
+		gGeneralLongVector.vx = 0x8000;
+		gGeneralLongVector.vy = 0x8000;
+	}
+	else{
+		gGeneralLongVector.vx = gRtpsRelatedNoClue2 / 2
+                          + (gGeneralLongVector.vx + translationVector.vx) * gRtpsRelatedNoClue / gGeneralLongVector.vz;
+		gGeneralLongVector.vy = gRtpsRelatedNoClue3 / 2
+							  + (translationVector.vy
+							   + ((vertexRegister[0] * gRotMatrix[1][0]
+								 + vertexRegister[1] * gRotMatrix[1][1]
+								 + vertexRegister[2] * gRotMatrix[1][2]) >> 12))
+							  * gRtpsRelatedNoClue
+							  / gGeneralLongVector.vz;
+	}
+
 }

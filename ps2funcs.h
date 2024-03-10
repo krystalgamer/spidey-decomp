@@ -31,3 +31,5 @@ void validate_MATRIX(void);
 EXPORT void gte_SetRotMatrix(MATRIX*);
 EXPORT void gte_ldv0(const SVECTOR* a1);
 EXPORT void gte_rtv0tr(void);
+EXPORT void gte_stlvnl(VECTOR *a1);
+EXPORT void gte_rtps(void);
