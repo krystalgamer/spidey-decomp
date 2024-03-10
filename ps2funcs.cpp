@@ -218,3 +218,9 @@ void gte_mvmva(int _sf, int mx, int a3, int cv, int lm)
   gOp12Result.vy = gGeneralLongVector.vy;
   gOp12Result.pad = gGeneralLongVector.pad;
 }
+
+
+void gte_stsxy(int *a1)
+{
+  *a1 = (gGeneralLongVector.vx & 0xFFFF) | (gGeneralLongVector.vy << 16);
+}
