@@ -172,6 +172,10 @@ SOURCE=.\platform.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2funcs.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2m3d.cpp
 # End Source File
 # Begin Source File
