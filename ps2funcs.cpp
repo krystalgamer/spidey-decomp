@@ -352,3 +352,10 @@ void MulMatrix(MATRIX *a1, MATRIX *a2)
 	}
   MulMatrix0(&v2, a2, a1);
 }
+
+void m3d_ZeroTransVector(void)
+{
+  translationVector.vx = 0;
+  translationVector.vy = 0;
+  translationVector.vz = 0;
+}
