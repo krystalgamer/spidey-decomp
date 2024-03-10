@@ -51,3 +51,4 @@ EXPORT void gte_ldopv1(VECTOR *a1);
 EXPORT void gte_ldopv2(VECTOR *a1);
 EXPORT void gte_ldlv0(const VECTOR *a1);
 EXPORT void gte_stsxy3(int *a1, int *a2, int *a3);
+EXPORT void gte_rtir(void);

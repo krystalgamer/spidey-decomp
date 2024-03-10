@@ -267,3 +267,8 @@ void gte_stsxy3(int *a1, int *a2, int *a3)
   if ( !stubGte )
     stubbed_printf("stubbed out:  gte_stsxy3");
 }
+
+
+void gte_rtir(void){
+	FixedXForm(gRotMatrix, &gOp12Result, &gGeneralLongVector);
+}
