@@ -43,3 +43,4 @@ EXPORT void gte_stlvnl2(int *a1);
 EXPORT void gte_gpf0(void);
 EXPORT void gte_stlzc(int *a1);
 EXPORT void gte_stsv(SVECTOR *a1);
+EXPORT void gte_mvmva(int _sf, int mx, int a3, int cv, int lm);

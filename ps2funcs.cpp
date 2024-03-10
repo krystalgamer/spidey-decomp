@@ -186,3 +186,35 @@ void gte_stsv(SVECTOR *a1)
   a1->vy = (short)gOp12Result.vy;
   a1->vz = (short)gOp12Result.vz;
 }
+
+
+// Revisit, maybe with validator???
+void gte_mvmva(int _sf, int mx, int a3, int cv, int lm)
+{
+  VECTOR *v7; // eax
+
+  print_if_false(!(_sf!=0 && _sf!=1), "sf!=0 && sf!=1");
+  print_if_false(mx == 0, "MX!=0");
+  print_if_false(!a3 || a3 == 3, "bad v");
+  print_if_false(cv == 3, "cv!=3");
+  print_if_false(lm == 0, "lm!=0");
+  v7 = (VECTOR *)vertexRegister;
+
+  if ( a3 )
+    v7 = &gOp12Result;
+
+  gGeneralLongVector.vx = v7->vz * gRotMatrix[0][2] + v7->vy * gRotMatrix[0][1] + v7->vx * gRotMatrix[0][0];
+  gGeneralLongVector.vy = v7->vz * gRotMatrix[1][1] + v7->vy * gRotMatrix[0][1] + v7->vx * gRotMatrix[0][2];
+  gGeneralLongVector.vz = v7->vz * gRotMatrix[2][1] + v7->vy * gRotMatrix[2][0] + v7->vx * gRotMatrix[1][2];
+  if ( _sf == 1 )
+  {
+    gGeneralLongVector.vx = gGeneralLongVector.vx >> 12;
+    gGeneralLongVector.vy = gGeneralLongVector.vy >> 12;
+    gGeneralLongVector.vz = gGeneralLongVector.vz >> 12;
+  }
+
+  gOp12Result.vz = gGeneralLongVector.vz;
+  gOp12Result.vx = gGeneralLongVector.vx;
+  gOp12Result.vy = gGeneralLongVector.vy;
+  gOp12Result.pad = gGeneralLongVector.pad;
+}
