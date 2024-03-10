@@ -29,6 +29,8 @@
 #include "simby.h"
 #include "spclone.h"
 #include "superock.h"
+#include "thug.h"
+#include "turret.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -99,6 +101,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSimbyBase();
 	validate_CSpClone();
 	validate_CSuperDocOck();
+	validate_CThug();
+	validate_CTurret();
 
 	puts("[*] Validation done!");
 

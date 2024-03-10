@@ -200,7 +200,19 @@ SOURCE=.\submarin.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\superock.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\thug.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\torch.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\turret.cpp
 # End Source File
 # Begin Source File
 
@@ -336,7 +348,19 @@ SOURCE=.\submarin.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\superock.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\thug.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\torch.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\turret.h
 # End Source File
 # Begin Source File
 
