@@ -51,4 +51,9 @@ public:
 	unsigned char endChopperPad[0x3d8-0x3d0-4];
 };
 
+class CBulletFrag : public CFlatBit {
+
+};
+
 void validate_CChopper(void);
+void validate_CBulletFrag(void);

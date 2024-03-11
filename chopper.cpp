@@ -34,3 +34,7 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_3CC, 0x3CC);
 	VALIDATE(CChopper, field_3D0, 0x3D0);
 }
+
+void validate_CBulletFrag(void){
+	VALIDATE_SIZE(CBulletFrag, 0x68);
+}

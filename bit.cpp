@@ -169,6 +169,8 @@ void CFT4Bit::SetTransparency(unsigned char t){
 
 
 void validate_CFlatBit(void){
+	VALIDATE(CFlatBit, field_58, 0x58);
+	VALIDATE(CFlatBit, field_5A, 0x5A);
 	VALIDATE(CFlatBit, mSemiTransparencyRate, 0x5E);
 	VALIDATE(CFlatBit, mPostScale, 0x60);
 	VALIDATE(CFlatBit, mAngFric, 0x65);

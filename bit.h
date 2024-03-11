@@ -75,7 +75,9 @@ class CFlatBit : public CFT4Bit {
 
 public:
 
-	unsigned char pad[0x6];
+	__int16 field_58;
+	__int16 field_5A;
+	unsigned char padAfter5A[0x2];
 	unsigned short mSemiTransparencyRate;
 	unsigned int mPostScale;
 	unsigned char pad1;
