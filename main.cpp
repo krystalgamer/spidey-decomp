@@ -32,6 +32,7 @@
 #include "thug.h"
 #include "turret.h"
 #include "shell.h"
+#include "web.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -107,6 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_MATRIX();
 	validate_CRudeWordHitterSpidey();
 	validate_CBulletFrag();
+	validate_CImpactWeb();
 
 	puts("[*] Validation done!");
 
