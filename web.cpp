@@ -8,3 +8,14 @@ void validate_CImpactWeb(void){
 void validate_CDomePiece(void){
 	VALIDATE_SIZE(CDomePiece, 0x100);
 }
+void validate_CDome(void){
+	VALIDATE_SIZE(CDome, 0x11C);
+}
+
+void validate_CDomeRing(void){
+	VALIDATE_SIZE(CDomeRing, 0x110);
+}
+
+void validate_CWeb(void){
+	VALIDATE_SIZE(CWeb, 0x13C);
+}

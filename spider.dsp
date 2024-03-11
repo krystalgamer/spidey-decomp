@@ -238,6 +238,10 @@ SOURCE=.\vector.cpp
 
 SOURCE=.\venom.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\web.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -389,6 +393,10 @@ SOURCE=.\vector.h
 # Begin Source File
 
 SOURCE=.\venom.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\web.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

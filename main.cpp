@@ -110,6 +110,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBulletFrag();
 	validate_CImpactWeb();
 	validate_CDomePiece();
+	validate_CDome();
+	validate_CDomeRing();
+	validate_CWeb();
 
 	puts("[*] Validation done!");
 

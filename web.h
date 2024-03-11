@@ -15,6 +15,26 @@ public:
 	unsigned char padFull[0xC];
 };
 
+class CDome : public CBody {
+public:
+	unsigned char padFull[0x25];
+};
+
+class CDomeRing : public CBody {
+public:
+	unsigned char padFull[0x25 - 0xC];
+};
+
+
+class CWeb : public CBody {
+public:
+	unsigned char padFull[0x45];
+};
+
+
 
 void validate_CImpactWeb(void);
 void validate_CDomePiece(void);
+void validate_CDome(void);
+void validate_CDomeRing(void);
+void validate_CWeb(void);
