@@ -17,4 +17,10 @@ public:
 	CBody *field_378;
 };
 
+class CTurretBase : public CBody {
+public:
+	unsigned char fullpad[0x8];
+};
+
 void validate_CTurret(void);
+void validate_CTurretBase(void);

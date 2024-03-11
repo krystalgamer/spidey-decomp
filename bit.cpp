@@ -165,6 +165,24 @@ void CFT4Bit::SetTransparency(unsigned char t){
 	this->mCodeBGR = t | this->mCodeBGR & 0xFF000000 | ((t | (t << 8)) << 8);
 }
 
+static int * const gAnimTable = (int*)0x0056EA64;
+static const unsigned int maxANimTableEntry = 0x1D;
+
+void CFT4Bit::SetAnim(int a2){
+
+	char v5; // cl
+
+	print_if_false(a2 >= 0 && !((unsigned int)a2 >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
+	print_if_false(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
+
+	int v4 = gAnimTable[a2];
+	this->animRelated1 = v4;
+	v5 = *(char *)(v4 - 4);
+	this->animRelated2 = 0;
+	this->animRelated3 = v5;
+	this->animRelated4 = 0;
+	this->animRelated5 = this->animRelated1;
+}
 
 
 
@@ -179,6 +197,14 @@ void validate_CFlatBit(void){
 
 void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
+
+	VALIDATE(CFT4Bit, mDeleteAnimOnDestruction, 0x44);
+	VALIDATE(CFT4Bit, animRelated1, 0x48);
+	VALIDATE(CFT4Bit, animRelated5, 0x4C);
+
+	VALIDATE(CFT4Bit, animRelated3, 0x51);
+	VALIDATE(CFT4Bit, animRelated4, 0x52);
+	VALIDATE(CFT4Bit, animRelated2, 0x53);
 
 	VALIDATE(CFT4Bit, mAnimSpeed, 0x54);
 	VALIDATE(CFT4Bit, mScale, 0x56);

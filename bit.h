@@ -61,13 +61,23 @@ public:
 	EXPORT void SetScale(unsigned short);
 	EXPORT void SetSemiTransparent();
 	EXPORT void SetTransparency(unsigned char t);
+	EXPORT void SetAnim(int);
 
 	unsigned short mTransDecay;
 	unsigned short mScaleDelay;
 	unsigned int mCodeBGR;
 
+	unsigned char mDeleteAnimOnDestruction;
+	unsigned char padAfterDeleteAnim[0x3];
 
-	unsigned char pad[0x10];
+	int animRelated1;
+	int animRelated5;
+	unsigned char padAfteranimRelated5[0x1];
+
+	unsigned char animRelated3;
+	unsigned char animRelated4;
+	unsigned char animRelated2;
+
 	short mAnimSpeed;
 	short mScale;
 };

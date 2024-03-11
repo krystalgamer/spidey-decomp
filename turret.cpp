@@ -23,3 +23,7 @@ void validate_CTurret(void){
 	VALIDATE(CTurret, field_344, 0x344);
 	VALIDATE(CTurret, field_378, 0x378);
 }
+
+void validate_CTurretBase(void){
+		VALIDATE_SIZE(CTurretBase, 0xFC);
+}
