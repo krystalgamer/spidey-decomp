@@ -19,3 +19,7 @@ void validate_CDomeRing(void){
 void validate_CWeb(void){
 	VALIDATE_SIZE(CWeb, 0x13C);
 }
+
+void validate_CSwinger(void){
+	VALIDATE_SIZE(CSwinger, 0x190);
+}

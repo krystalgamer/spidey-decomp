@@ -6,7 +6,13 @@
 
 class CTurret : public CBaddy {
 public:
-	unsigned char padFull[0x37C - 0x324];
+	EXPORT void TargetLockAbsolute(const CVector &);
+
+	CVector field_324;
+	unsigned char padAfter324[0x20 - sizeof(CVector)];
+
+	CVector field_344;
+	unsigned char padFull[41];
 };
 
 void validate_CTurret(void);

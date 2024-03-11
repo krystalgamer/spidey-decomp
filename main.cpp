@@ -113,6 +113,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CDome();
 	validate_CDomeRing();
 	validate_CWeb();
+	validate_CSwinger();
 
 	puts("[*] Validation done!");
 

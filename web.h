@@ -31,6 +31,15 @@ public:
 	unsigned char padFull[0x45];
 };
 
+class CSwinger : public CBody {
+public:
+	unsigned char padFull[0x99];
+};
+
+class CSplat : public CQuadBit {
+public:
+};
+
 
 
 void validate_CImpactWeb(void);
@@ -38,3 +47,5 @@ void validate_CDomePiece(void);
 void validate_CDome(void);
 void validate_CDomeRing(void);
 void validate_CWeb(void);
+void validate_CSwinger(void);
+void validate_CSplat(void);
