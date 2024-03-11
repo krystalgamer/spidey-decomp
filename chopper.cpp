@@ -50,3 +50,7 @@ void validate_CChopper(void){
 void validate_CBulletFrag(void){
 	VALIDATE_SIZE(CBulletFrag, 0x68);
 }
+
+void validate_CSniperSplat(void){
+	VALIDATE_SIZE(CSniperSplat, 0x88);
+}

@@ -57,5 +57,11 @@ public:
 
 };
 
+class CSniperSplat : public CQuadBit {
+public:
+	int field_84;
+};
+
 void validate_CChopper(void);
 void validate_CBulletFrag(void);
+void validate_CSniperSplat(void);
