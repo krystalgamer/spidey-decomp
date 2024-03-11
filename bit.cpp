@@ -198,6 +198,9 @@ void validate_CBit(void)
 {
 	VALIDATE(CBit, mPrevious, 0x4);
 	VALIDATE(CBit, mNext, 0x8);
+
+	VALIDATE(CBit, field_E, 0xE);
+
 	VALIDATE(CBit, mPos, 0x10);
 	VALIDATE(CBit, mVel, 0x1C);
 	VALIDATE(CBit, mAcc, 0x28);

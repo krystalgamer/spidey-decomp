@@ -10,7 +10,8 @@ class CBit
 		CBit* mPrevious;
 		CBit* mNext;
 
-		int unk;
+		__int16 field_C;
+		__int16 field_E;
 
 		CVector mPos;
 		CVector mVel;

@@ -1,6 +1,18 @@
 #include "chopper.h"
 #include "validate.h"
 
+void CBulletFrag::Move()
+{
+  this->mPos.vx += this->mVel.vx;
+  this->mPos.vy += this->mVel.vy;
+  this->mPos.vz += this->mVel.vz;
+  this->mVel.vy += 0x7390;
+
+  this->field_58 += this->field_5A;
+
+  if ( ++this->field_C > (int)(unsigned __int16)this->field_E )
+	  this->Die();
+  }
 
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);

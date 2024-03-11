@@ -52,6 +52,8 @@ public:
 };
 
 class CBulletFrag : public CFlatBit {
+public:
+	EXPORT void Move(void);
 
 };
 

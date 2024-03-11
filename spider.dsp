@@ -192,6 +192,10 @@ SOURCE=.\scorpion.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\shell.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\simby.cpp
 # End Source File
 # Begin Source File
@@ -337,6 +341,10 @@ SOURCE=.\rhino.h
 # Begin Source File
 
 SOURCE=.\scorpion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\shell.h
 # End Source File
 # Begin Source File
 
