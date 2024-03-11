@@ -31,6 +31,7 @@
 #include "superock.h"
 #include "thug.h"
 #include "turret.h"
+#include "shell.h"
 
 template<bool b>
 struct StaticAssert{};
@@ -104,6 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CThug();
 	validate_CTurret();
 	validate_MATRIX();
+	validate_CRudeWordHitterSpidey();
 
 	puts("[*] Validation done!");
 
