@@ -109,6 +109,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CRudeWordHitterSpidey();
 	validate_CBulletFrag();
 	validate_CImpactWeb();
+	validate_CDomePiece();
 
 	puts("[*] Validation done!");
 
