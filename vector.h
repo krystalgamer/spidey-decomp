@@ -30,9 +30,9 @@ public:
 class CSVector{
 
 public:
-	unsigned short vx;
-	unsigned short vy;
-	unsigned short vz;
+	short vx;
+	short vy;
+	short vz;
 
 };
 

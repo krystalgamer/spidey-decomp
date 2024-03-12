@@ -19,8 +19,10 @@ public:
 	EXPORT void CleanUpMessages(int, int);
 	EXPORT void Die(int);
 	EXPORT int CheckStateFlags(SStateFlags *, int);
+	EXPORT int YawTowards(int, int);
 
-	unsigned char asdfaPad[0x14];
+	unsigned char padBaddyStart[0x14];
+
 	CVector field_1A8;
 
 	unsigned char baddyPad[0x40];

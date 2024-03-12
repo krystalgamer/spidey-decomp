@@ -243,7 +243,10 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);
+
 	VALIDATE(CBody, field_80, 0x80);
+	VALIDATE(CBody, csVector1, 0x88);
+
 	VALIDATE(CBody, field_8E, 0x8E);
 	VALIDATE(CBody, bodyVector, 0xB8);
 	VALIDATE(CBody, bodyQuadBit, 0xCC);

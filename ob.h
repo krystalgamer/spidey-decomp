@@ -11,9 +11,7 @@ public:
 	
 	unsigned short mFlags;
 	CVector mPos;
-	int mAngles;
-
-	unsigned char pad[0x02];
+	CSVector mAngles;
 
 	unsigned short mModel;
 
@@ -45,8 +43,9 @@ public:
 	unsigned char bodyPadAdterAccelorVel[0x80-0x60-0xC];
 
 	int field_80;
+	unsigned char padAfter80[0x4];
 
-	unsigned char boddddPad[0xA];
+	CSVector csVector1;
 	CSVector field_8E;
 	unsigned char pad3[0x24];
 

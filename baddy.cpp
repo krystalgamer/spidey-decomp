@@ -59,12 +59,6 @@ void CBaddy::Die(int){
 
 int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 
-	__int16 v4; // ax
-	unsigned __int16 v7; // dx
-	SStateFlags *v8; // eax
-	int v9; // esi
-	SStateFlags *v10; // eax
-
 	if(this->field_314 < 0){
 		if (this->field_31C.bothFlags == -this->field_314)
 			return 0;
@@ -89,6 +83,41 @@ int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 	return 0;	
 }
 
+// Revisit??
+int CBaddy::YawTowards(int a2, int a3){
+
+	int vy; // edi
+	int v4; // eax
+	int v5; // edx
+
+
+	vy = this->mAngles.vy;
+	v4 = a2 - vy;
+
+	if ( a2 - vy < -2048 )
+		v4 += 4096;
+	if ( v4 > 2048 )
+		v4 -= 4096;
+
+	if ( !v4 )
+	{
+		this->field_8E.vy = 0;
+		this->csVector1.vy = 0;
+		return v4;
+	}
+
+	v5 = (a3 * v4) >> 8;
+	this->mAngles.vy += v5;
+	if ( v5 && ((int)this->mAngles.vy - a2 > 0) != (vy - a2> 0))
+	{
+		return v4;
+	}
+
+	this->mAngles.vy = a2;
+	this->field_8E.vy = 0;
+	this->csVector1.vy = 0;
+	return 0;
+}
 
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
