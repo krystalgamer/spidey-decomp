@@ -11,7 +11,7 @@ void __inline CVenom::Lookaround(void){
   {
     if ( this->field_142 )
     {
-      this->field_31C = 32;
+      this->field_31C.bothFlags = 32;
       this->dumbAssPad = 0;
     }
   }

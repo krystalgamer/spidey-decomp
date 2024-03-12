@@ -117,6 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CTurretBase();
 	validate_CDummy();
 	validate_CSniperSplat();
+	validate_SStateFlags();
 
 	puts("[*] Validation done!");
 

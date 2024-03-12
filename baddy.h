@@ -3,6 +3,12 @@
 #include "export.h"
 #include "ob.h"
 
+struct SStateFlags{
+	union {
+		__int16 flags[2];
+		int bothFlags;
+	};
+};
 
 class CBaddy : public CSuper {
 
@@ -12,6 +18,7 @@ public:
 	EXPORT int TugWeb(void);
 	EXPORT void CleanUpMessages(int, int);
 	EXPORT void Die(int);
+	EXPORT int CheckStateFlags(SStateFlags *, int);
 
 	unsigned char asdfaPad[0x14];
 	CVector field_1A8;
@@ -90,8 +97,8 @@ public:
 
 	unsigned char ajskdfdfgsjkdfgjksdfgjkPad[11];
 	__int16 field_314;
-	unsigned char asdfahsudfausdhuasduhPad[4];
-	int field_31C;
+	unsigned char asdfahsudfausdhuasduhPad[6];
+	SStateFlags field_31C;
 	int dumbAssPad;
 };
 
@@ -107,3 +114,4 @@ public:
 
 void validate_CBaddy(void);
 void validate_CScriptOnlyBaddy(void);
+void validate_SStateFlags(void);

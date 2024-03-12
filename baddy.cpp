@@ -57,8 +57,42 @@ void CBaddy::CleanUpMessages(int, int){
 void CBaddy::Die(int){
 }
 
+int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
+
+	__int16 v4; // ax
+	unsigned __int16 v7; // dx
+	SStateFlags *v8; // eax
+	int v9; // esi
+	SStateFlags *v10; // eax
+
+	if(this->field_314 < 0){
+		if (this->field_31C.bothFlags == -this->field_314)
+			return 0;
+	}
+	else if(this->field_31C.bothFlags == sFlags[this->field_314].flags[0]){
+		print_if_false(59, "This shouldn't be zero.  Remove state from table.");
+		return sFlags[this->field_314].flags[1];
+	}
+
+	for (int i = 0; i< a3; i++){
+
+		if (this->field_31C.bothFlags != (unsigned __int16) sFlags[i].flags[0]){
+			continue;
+		}
+
+		this->field_314 = i;
+		print_if_false(200, "This hsouldn't be zero.  Remove state from table.");
+		return sFlags[i].flags[1];
+	}
+
+	this->field_314 = -this->field_31C.flags[0];
+	return 0;	
+}
+
 
 void validate_CBaddy(void){
+	VALIDATE_SIZE(CBaddy, 0x324);
+
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);
 	VALIDATE(CBaddy, field_1FC, 0x1FC);
@@ -116,4 +150,8 @@ void validate_CScriptOnlyBaddy(void){
 	VALIDATE(CScriptOnlyBaddy, field_328, 0x328);
 	VALIDATE(CScriptOnlyBaddy, field_32C, 0x32C);
 	VALIDATE(CScriptOnlyBaddy, field_32E, 0x32E);
+}
+
+void validate_SStateFlags(void){
+	VALIDATE_SIZE(SStateFlags, 0x4);
 }
