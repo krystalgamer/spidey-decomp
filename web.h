@@ -40,20 +40,27 @@ public:
 class CWeb : public CBody {
 public:
 
-	unsigned char padTop[0x108-0xF4];
+	unsigned char padTop[0xF8-0xF4];
 
-	int field_108;
-	int field_10C;
-	int field_110;
-	int field_114;
-	int field_118;
-	int field_11C;
+	int field_F8;
+
+	unsigned char padBefore100[0x100-0xF8-4];
+
+	int field_100;
+	int field_104;
+	CVector field_108;
+
+	CVector field_114;
+
 	int field_120;
 	int field_124;
 	int field_128;
+	unsigned char *field_12C;
 
+	int field_130;
 
-	unsigned char padBottom[0x13C-0x128-4];
+	int field_134;
+	int field_138;
 };
 
 class CSwinger : public CBody {
