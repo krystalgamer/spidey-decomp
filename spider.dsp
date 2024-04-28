@@ -100,7 +100,15 @@ SOURCE=.\bit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bit2.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\blackcat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\camera.cpp
 # End Source File
 # Begin Source File
 
@@ -184,6 +192,10 @@ SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\quat.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rhino.cpp
 # End Source File
 # Begin Source File
@@ -256,7 +268,15 @@ SOURCE=.\bit.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\bit2.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\blackcat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\camera.h
 # End Source File
 # Begin Source File
 
@@ -337,6 +357,10 @@ SOURCE=.\ps2m3d.h
 # Begin Source File
 
 SOURCE=.\pshell.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\quat.h
 # End Source File
 # Begin Source File
 
