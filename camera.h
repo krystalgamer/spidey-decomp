@@ -4,6 +4,8 @@
 #define CAMERA_H
 
 #include "ob.h"
+#include "vector.h"
+#include "quat.h"
 
 class CCamera : public CBody {
 public:
@@ -96,9 +98,8 @@ public:
 	int field_240;
 	int field_244;
 	int field_248;
-	int field_24C;
-	int field_250;
-	int field_254;
+	CVector field_24C;
+
 	int field_258;
 	int field_25C;
 	int field_260;
@@ -127,33 +128,30 @@ public:
 	int field_298;
 	int field_29C;
 
-	int padAfter29C;
+	int field_2A0;
 
 	int field_2A4;
 	int field_2A8;
 
-	int padAfter2A8;
+	unsigned char field_2AC;
+
 
 	int field_2B0;
 	int field_2B4;
 	int field_2B8;
+	int field_2BC;
 
-	int padAfter2C0[2];
+	int field_2C0;
 
 	int field_2C4;
 	int field_2C8;
 	int field_2CC;
 	int field_2D0;
-	int field_2D4;
-	int field_2D8;
-	int field_2DC;
-	int field_2E0;
+	CQuat field_2D4;
 
-	int padAfter2E0;
+	__int16 field_2E4;
 
-	int field_2E8;
-	int field_2EC;
-	int field_2F0;
+	CVector field_2E8;
 
 };
 

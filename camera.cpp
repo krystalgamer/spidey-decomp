@@ -77,8 +77,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_244, 0x244);
 	VALIDATE(CCamera, field_248, 0x248);
 	VALIDATE(CCamera, field_24C, 0x24C);
-	VALIDATE(CCamera, field_250, 0x250);
-	VALIDATE(CCamera, field_254, 0x254);
+
 	VALIDATE(CCamera, field_258, 0x258);
 	VALIDATE(CCamera, field_25C, 0x25C);
 	VALIDATE(CCamera, field_260, 0x260);
@@ -100,21 +99,29 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_294, 0x294);
 	VALIDATE(CCamera, field_298, 0x298);
 	VALIDATE(CCamera, field_29C, 0x29C);
+
+	VALIDATE(CCamera, field_2A0, 0x2A0);
 	VALIDATE(CCamera, field_2A4, 0x2A4);
+
 	VALIDATE(CCamera, field_2A8, 0x2A8);
+	VALIDATE(CCamera, field_2AC, 0x2AC);
+
 	VALIDATE(CCamera, field_2B0, 0x2B0);
 	VALIDATE(CCamera, field_2B4, 0x2B4);
 	VALIDATE(CCamera, field_2B8, 0x2B8);
+
+	VALIDATE(CCamera, field_2BC, 0x2BC);
+	VALIDATE(CCamera, field_2C0, 0x2C0);
+
+
 	VALIDATE(CCamera, field_2C4, 0x2C4);
 	VALIDATE(CCamera, field_2C8, 0x2C8);
 	VALIDATE(CCamera, field_2CC, 0x2CC);
 	VALIDATE(CCamera, field_2D0, 0x2D0);
 	VALIDATE(CCamera, field_2D4, 0x2D4);
-	VALIDATE(CCamera, field_2D8, 0x2D8);
-	VALIDATE(CCamera, field_2DC, 0x2DC);
-	VALIDATE(CCamera, field_2E0, 0x2E0);
+
+	VALIDATE(CCamera, field_2E4, 0x2E4);
+
 	VALIDATE(CCamera, field_2E8, 0x2E8);
-	VALIDATE(CCamera, field_2EC, 0x2EC);
-	VALIDATE(CCamera, field_2F0, 0x2F0);
 
 }
