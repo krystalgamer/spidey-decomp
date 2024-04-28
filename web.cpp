@@ -7,6 +7,9 @@ void validate_CImpactWeb(void){
 
 void validate_CDomePiece(void){
 	VALIDATE_SIZE(CDomePiece, 0x100);
+
+	VALIDATE(CDomePiece, field_F8, 0xF8);
+	VALIDATE(CDomePiece, field_FC, 0xFC);
 }
 void validate_CDome(void){
 	VALIDATE_SIZE(CDome, 0x11C);

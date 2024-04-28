@@ -12,7 +12,9 @@ public:
 
 class CDomePiece : public CBody {
 public:
-	unsigned char padFull[0xC];
+	int padBeforeF8;
+	int field_F8;
+	int field_FC;
 };
 
 class CDome : public CBody {
