@@ -24,13 +24,36 @@ public:
 
 class CDomeRing : public CBody {
 public:
-	unsigned char padFull[0x25 - 0xC];
+
+	int padCDomeRing;
+
+	int field_F8;
+	int field_FC;
+	int field_100;
+	int field_104;
+	int field_108;
+
+	unsigned char lastCDomeRing;
 };
 
 
 class CWeb : public CBody {
 public:
-	unsigned char padFull[0x45];
+
+	unsigned char padTop[0x108-0xF4];
+
+	int field_108;
+	int field_10C;
+	int field_110;
+	int field_114;
+	int field_118;
+	int field_11C;
+	int field_120;
+	int field_124;
+	int field_128;
+
+
+	unsigned char padBottom[0x13C-0x128-4];
 };
 
 class CSwinger : public CBody {
