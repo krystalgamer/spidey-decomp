@@ -62,6 +62,7 @@
 
 #include "web.h"
 #include "bit2.h"
+#include "camera.h"
 
 
 
@@ -221,6 +222,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	validate_SStateFlags();
 	validate_CGPolyLine();
+	validate_CCamera();
 
 
 

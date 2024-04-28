@@ -97,8 +97,13 @@ public:
 
 };
 
+class CNonRenderedBit : public CBit {
+public:
+};
+
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
 void validate_CQuadBit(void);
 void validate_CBit(void);
+void validate_CNonRenderedBit(void);

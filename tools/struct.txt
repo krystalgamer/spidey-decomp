@@ -1,0 +1,221 @@
+000000F4                 db ? ; undefined
+000000F5                 db ? ; undefined
+000000F6                 db ? ; undefined
+000000F7                 db ? ; undefined
+000000F8 field_F8        db ?
+000000F9 field_F9        db ?
+000000FA                 db ? ; undefined
+000000FB                 db ? ; undefined
+000000FC field_FC        dd ?
+00000100 field_100       db ?
+00000101                 db ? ; undefined
+00000102                 db ? ; undefined
+00000103                 db ? ; undefined
+00000104 field_104       dd ?
+00000108 field_108       dd ?
+0000010C field_10C       dd ?
+00000110 field_110       dd ?
+00000114 field_114       dd ?
+00000118 field_118       dd ?
+0000011C field_11C       dd ?
+00000120 field_120       dd ?
+00000124 field_124       dd ?
+00000128 field_128       dd ?
+0000012C field_12C       dd ?
+00000130 field_130       dd ?
+00000134 field_134       dd ?
+00000138 field_138       dd ?
+0000013C field_13C       dd ?
+00000140 field_140       db ?
+00000141                 db ? ; undefined
+00000142                 db ? ; undefined
+00000143                 db ? ; undefined
+00000144 field_144       dd ?
+00000148 field_148       dd ?
+0000014C field_14C       dd ?
+00000150 field_150       dd ?
+00000154 field_154       dd ?
+00000158 field_158       dd ?
+0000015C field_15C       dd ?
+00000160 field_160       dd ?
+00000164 field_164       dd ?
+00000168 field_168       dd ?
+0000016C field_16C       dd ?
+00000170 field_170       dd ?
+00000174                 db ? ; undefined
+00000175                 db ? ; undefined
+00000176                 db ? ; undefined
+00000177                 db ? ; undefined
+00000178                 db ? ; undefined
+00000179                 db ? ; undefined
+0000017A                 db ? ; undefined
+0000017B                 db ? ; undefined
+0000017C                 db ? ; undefined
+0000017D                 db ? ; undefined
+0000017E                 db ? ; undefined
+0000017F                 db ? ; undefined
+00000180                 db ? ; undefined
+00000181                 db ? ; undefined
+00000182                 db ? ; undefined
+00000183                 db ? ; undefined
+00000184                 db ? ; undefined
+00000185                 db ? ; undefined
+00000186                 db ? ; undefined
+00000187                 db ? ; undefined
+00000188                 db ? ; undefined
+00000189                 db ? ; undefined
+0000018A                 db ? ; undefined
+0000018B                 db ? ; undefined
+0000018C                 db ? ; undefined
+0000018D                 db ? ; undefined
+0000018E                 db ? ; undefined
+0000018F                 db ? ; undefined
+00000190                 db ? ; undefined
+00000191                 db ? ; undefined
+00000192                 db ? ; undefined
+00000193                 db ? ; undefined
+00000194                 db ? ; undefined
+00000195                 db ? ; undefined
+00000196                 db ? ; undefined
+00000197                 db ? ; undefined
+00000198                 db ? ; undefined
+00000199                 db ? ; undefined
+0000019A                 db ? ; undefined
+0000019B                 db ? ; undefined
+0000019C                 db ? ; undefined
+0000019D                 db ? ; undefined
+0000019E                 db ? ; undefined
+0000019F                 db ? ; undefined
+000001A0                 db ? ; undefined
+000001A1                 db ? ; undefined
+000001A2                 db ? ; undefined
+000001A3                 db ? ; undefined
+000001A4                 db ? ; undefined
+000001A5                 db ? ; undefined
+000001A6                 db ? ; undefined
+000001A7                 db ? ; undefined
+000001A8 field_1A8       dd ?
+000001AC field_1AC       dd ?
+000001B0 field_1B0       dd ?
+000001B4 field_1B4       dd ?
+000001B8 field_1B8       dd ?
+000001BC field_1BC       dd ?
+000001C0 field_1C0       dd ?
+000001C4                 db ? ; undefined
+000001C5                 db ? ; undefined
+000001C6                 db ? ; undefined
+000001C7                 db ? ; undefined
+000001C8 field_1C8       dd ?
+000001CC field_1CC       dw ?
+000001CE field_1CE       dw ?
+000001D0                 db ? ; undefined
+000001D1                 db ? ; undefined
+000001D2                 db ? ; undefined
+000001D3                 db ? ; undefined
+000001D4                 db ? ; undefined
+000001D5                 db ? ; undefined
+000001D6                 db ? ; undefined
+000001D7                 db ? ; undefined
+000001D8 field_1D8       dd ?
+000001DC field_1DC       dd ?
+000001E0 field_1E0       dd ?
+000001E4 field_1E4       dd ?
+000001E8 field_1E8       dd ?
+000001EC field_1EC       dd ?
+000001F0 field_1F0       dd ?
+000001F4 field_1F4       dd ?
+000001F8 field_1F8       dd ?
+000001FC field_1FC       dd ?
+00000200 field_200       dd ?
+00000204 field_204       dd ?
+00000208 field_208       dd ?
+0000020C field_20C       dd ?
+00000210 field_210       dd ?
+00000214 field_214       dd ?
+00000218 field_218       dd ?
+0000021C field_21C       dd ?
+00000220 field_220       dd ?
+00000224 field_224       dd ?
+00000228 field_228       dd ?
+0000022C field_22C       dd ?
+00000230 field_230       dd ?
+00000234 field_234       dd ?
+00000238 field_238       dw ?
+0000023A                 db ? ; undefined
+0000023B                 db ? ; undefined
+0000023C field_23C       db ?
+0000023D                 db ? ; undefined
+0000023E                 db ? ; undefined
+0000023F                 db ? ; undefined
+00000240 field_240       dd ?
+00000244 field_244       dd ?
+00000248 field_248       dd ?
+0000024C field_24C       dd ?
+00000250 field_250       dd ?
+00000254 field_254       dd ?
+00000258 field_258       dd ?
+0000025C field_25C       dd ?
+00000260 field_260       dd ?
+00000264 field_264       dd ?
+00000268 field_268       dd ?
+0000026C field_26C       dw ?
+0000026E field_26E       dw ?
+00000270                 db ? ; undefined
+00000271                 db ? ; undefined
+00000272                 db ? ; undefined
+00000273                 db ? ; undefined
+00000274 field_274       dw ?
+00000276 field_276       db ?
+00000277 field_277       db ?
+00000278 field_278       db ?
+00000279                 db ? ; undefined
+0000027A field_27A       dw ?
+0000027C field_27C       dw ?
+0000027E field_27E       dw ?
+00000280                 db ? ; undefined
+00000281                 db ? ; undefined
+00000282                 db ? ; undefined
+00000283                 db ? ; undefined
+00000284 field_284       dd ?
+00000288 field_288       dd ?
+0000028C field_28C       dd ?
+00000290 field_290       dd ?
+00000294 field_294       dd ?
+00000298 field_298       dd ?
+0000029C field_29C       dd ?
+000002A0                 db ? ; undefined
+000002A1                 db ? ; undefined
+000002A2                 db ? ; undefined
+000002A3                 db ? ; undefined
+000002A4 field_2A4       dd ?
+000002A8 field_2A8       dd ?
+000002AC                 db ? ; undefined
+000002AD                 db ? ; undefined
+000002AE                 db ? ; undefined
+000002AF                 db ? ; undefined
+000002B0 field_2B0       dd ?
+000002B4 field_2B4       dd ?
+000002B8 field_2B8       dd ?
+000002BC                 db ? ; undefined
+000002BD                 db ? ; undefined
+000002BE                 db ? ; undefined
+000002BF                 db ? ; undefined
+000002C0                 db ? ; undefined
+000002C1                 db ? ; undefined
+000002C2                 db ? ; undefined
+000002C3                 db ? ; undefined
+000002C4 field_2C4       dd ?
+000002C8 field_2C8       dd ?
+000002CC field_2CC       dd ?
+000002D0 field_2D0       dd ?
+000002D4 field_2D4       dd ?
+000002D8 field_2D8       dd ?
+000002DC field_2DC       dd ?
+000002E0 field_2E0       dd ?
+000002E4                 db ? ; undefined
+000002E5                 db ? ; undefined
+000002E6                 db ? ; undefined
+000002E7                 db ? ; undefined
+000002E8 field_2E8       dd ?
+000002EC field_2EC       dd ?
+000002F0 field_2F0       dd ?
