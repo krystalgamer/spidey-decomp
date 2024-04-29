@@ -23,6 +23,7 @@ public:
 	EXPORT void SetCollisionAngLR(__int16 a2);
 	EXPORT void SetCollisionAngBack(__int16 a2);
 	EXPORT void SetZoom(int a2, unsigned __int16 a3);
+	EXPORT int GetZoom(void) const;
 
 
 	int padTop;
@@ -58,7 +59,7 @@ public:
 	int field_164;
 	int field_168;
 	int field_16C;
-	int field_170;
+	int mZoom;
 
 	__int16 field_174;
 	unsigned char padAfter174[2];

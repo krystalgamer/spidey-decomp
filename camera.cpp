@@ -45,13 +45,17 @@ void CCamera::SetZoom(int a2, unsigned __int16 a3){
 	this->field_174 = a3;
 	if (this->field_174)
 	{
-		this->field_178 = (a2 - this->field_170) / (0xFFFF & a3);
+		this->field_178 = (a2 - this->mZoom) / (0xFFFF & a3);
 		this->field_17C = a2;
 	}
 	else
 	{
-		this->field_170 = a2;
+		this->mZoom = a2;
 	}
+}
+
+int CCamera::GetZoom(void) const{
+	return this->mZoom;
 }
 
 void validate_CCamera(void){
@@ -89,7 +93,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_164, 0x164);
 	VALIDATE(CCamera, field_168, 0x168);
 	VALIDATE(CCamera, field_16C, 0x16C);
-	VALIDATE(CCamera, field_170, 0x170);
+	VALIDATE(CCamera, mZoom, 0x170);
 
 	VALIDATE(CCamera, field_174, 0x174);
 	VALIDATE(CCamera, field_178, 0x178);
