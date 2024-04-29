@@ -1,6 +1,18 @@
 #include "camera.h"
 #include "validate.h"
 
+
+
+// Not matching, not important
+void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4){
+
+	this->field_2A0 = 6;
+	this->field_2AC = 1;
+	this->field_2E8 = *a2;
+	this->field_2E4 = (0xFFFF & a3) / 3;
+	this->field_2BC = a4;
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 

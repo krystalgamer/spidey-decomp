@@ -9,6 +9,7 @@
 
 class CCamera : public CBody {
 public:
+	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
 
 	int padTop;
 

@@ -4,6 +4,8 @@
 #ifndef QUAT_H
 #define QUAT_H
 
+#include "export.h"
+
 class CQuat {
 public:
 
