@@ -7,9 +7,17 @@
 #include "vector.h"
 #include "quat.h"
 
+static int * const gCameraRelated = (int*)0x56F254;
+
+enum ECameraMode {
+	ECam_mode_0x10 = 0x10,
+	ECam_mode_0x11 = 0x11,
+};
+
 class CCamera : public CBody {
 public:
 	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
+	EXPORT int SetMode(ECameraMode mode);
 
 	int padTop;
 
@@ -129,7 +137,7 @@ public:
 	int field_298;
 	int field_29C;
 
-	int field_2A0;
+	int mMode;
 
 	int field_2A4;
 	int field_2A8;

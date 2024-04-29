@@ -6,11 +6,22 @@
 // Not matching, not important
 void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4){
 
-	this->field_2A0 = 6;
+	this->mMode = 6;
 	this->field_2AC = 1;
 	this->field_2E8 = *a2;
 	this->field_2E4 = (0xFFFF & a3) / 3;
 	this->field_2BC = a4;
+}
+
+int CCamera::SetMode(ECameraMode mode){
+
+	int oldMode = this->mMode;
+	this->mMode = mode;
+	if (mode == ECam_mode_0x10 || mode == ECam_mode_0x11){
+		*gCameraRelated = 0;
+	}
+
+	return oldMode;
 }
 
 void validate_CCamera(void){
@@ -112,7 +123,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_298, 0x298);
 	VALIDATE(CCamera, field_29C, 0x29C);
 
-	VALIDATE(CCamera, field_2A0, 0x2A0);
+	VALIDATE(CCamera, mMode, 0x2A0);
 	VALIDATE(CCamera, field_2A4, 0x2A4);
 
 	VALIDATE(CCamera, field_2A8, 0x2A8);
