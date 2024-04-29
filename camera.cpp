@@ -24,6 +24,36 @@ int CCamera::SetMode(ECameraMode mode){
 	return oldMode;
 }
 
+void CCamera::SetCollisionRayLR(int a2){
+	this->field_264 = a2;
+}
+
+void CCamera::SetCollisionRayBack(int a2){
+	this->field_268 = a2;
+}
+
+void CCamera::SetCollisionAngLR(__int16 a2){
+	this->field_26C = a2;
+}
+
+void CCamera::SetCollisionAngBack(__int16 a2){
+	this->field_26E = a2;
+}
+
+void CCamera::SetZoom(int a2, unsigned __int16 a3){
+
+	this->field_174 = a3;
+	if (this->field_174)
+	{
+		this->field_178 = (a2 - this->field_170) / (0xFFFF & a3);
+		this->field_17C = a2;
+	}
+	else
+	{
+		this->field_170 = a2;
+	}
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 
@@ -60,6 +90,12 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_168, 0x168);
 	VALIDATE(CCamera, field_16C, 0x16C);
 	VALIDATE(CCamera, field_170, 0x170);
+
+	VALIDATE(CCamera, field_174, 0x174);
+	VALIDATE(CCamera, field_178, 0x178);
+	VALIDATE(CCamera, field_17C, 0x17C);
+
+
 	VALIDATE(CCamera, field_1A8, 0x1A8);
 	VALIDATE(CCamera, field_1AC, 0x1AC);
 	VALIDATE(CCamera, field_1B0, 0x1B0);

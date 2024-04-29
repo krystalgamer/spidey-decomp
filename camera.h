@@ -18,6 +18,12 @@ class CCamera : public CBody {
 public:
 	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
 	EXPORT int SetMode(ECameraMode mode);
+	EXPORT void SetCollisionRayLR(int a2);
+	EXPORT void SetCollisionRayBack(int a2);
+	EXPORT void SetCollisionAngLR(__int16 a2);
+	EXPORT void SetCollisionAngBack(__int16 a2);
+	EXPORT void SetZoom(int a2, unsigned __int16 a3);
+
 
 	int padTop;
 
@@ -54,7 +60,13 @@ public:
 	int field_16C;
 	int field_170;
 
-	unsigned char padAfter170[0x1A8-0x170-4];
+	__int16 field_174;
+	unsigned char padAfter174[2];
+
+	int field_178;
+	int field_17C;
+
+	unsigned char padAfter17C[0x1A8-0x17C-4];
 
 
 	int field_1A8;
