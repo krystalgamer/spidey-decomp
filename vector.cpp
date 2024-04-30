@@ -77,6 +77,33 @@ CVector* CVector::operator%=(const CFriction& other){
 	return this;
 }
 
+CVector operator-(const CVector& lhs, const CVector& other)
+{
+	CVector res;
+
+	res.vx = lhs.vx - other.vx;
+	res.vy = lhs.vy - other.vy;
+	res.vz = lhs.vz - other.vz;
+
+	return res;
+}
+
+
+CVector operator/(const CVector& lhs, const int& other){
+
+	CVector res;
+
+	res.vx = lhs.vx / other;
+	res.vy = lhs.vy / other;
+	res.vz = lhs.vz / other;
+
+	return res;
+
+
+}
+
+
+
 
 
 void validate_CVector(void)

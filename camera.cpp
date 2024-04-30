@@ -73,13 +73,45 @@ void CCamera::PushMode(void){
 void CCamera::PopMode(void){
 
 	int mode = this->field_280;
-
 	if (mode == 4 || mode == 5 || mode == 6){
 		this->mPos = this->field_284;
 		this->field_1E4 = this->field_290;
 	}
 
 	this->mMode = mode;
+}
+
+
+//TODO
+void CCamera::CM_Normal(void){
+	/* DO ME */
+}
+
+
+void CCamera::SetStartPosition(void){
+
+	if ( this->mMode == 3 )
+	{
+		this->field_104 = *(CVector *)(this->field_FC + 8);
+		this->CM_Normal();
+		this->mPos = this->field_24C;
+		this->field_1E4 = this->field_1F4;
+	}
+
+}
+
+// Revisit
+void CCamera::SetFixedPosMode(CVector *a2, unsigned __int16 a3){
+
+	this->mMode = 4;
+	this->field_24C = *a2;
+	this->field_2AC = 1;
+	this->field_2BC = a3;
+
+	if (a3)
+	{
+		this->field_2B0 = (*a2 - this->mPos)/a3;
+	}
 }
 
 void validate_CCamera(void){
@@ -91,8 +123,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_FC, 0xFC);
 	VALIDATE(CCamera, field_100, 0x100);
 	VALIDATE(CCamera, field_104, 0x104);
-	VALIDATE(CCamera, field_108, 0x108);
-	VALIDATE(CCamera, field_10C, 0x10C);
+
 	VALIDATE(CCamera, field_110, 0x110);
 	VALIDATE(CCamera, field_114, 0x114);
 	VALIDATE(CCamera, field_118, 0x118);
@@ -141,9 +172,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_1E4, 0x1E4);
 
 	VALIDATE(CCamera, field_1F4, 0x1F4);
-	VALIDATE(CCamera, field_1F8, 0x1F8);
-	VALIDATE(CCamera, field_1FC, 0x1FC);
-	VALIDATE(CCamera, field_200, 0x200);
+
 	VALIDATE(CCamera, field_204, 0x204);
 	VALIDATE(CCamera, field_208, 0x208);
 	VALIDATE(CCamera, field_20C, 0x20C);
@@ -191,8 +220,6 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_2AC, 0x2AC);
 
 	VALIDATE(CCamera, field_2B0, 0x2B0);
-	VALIDATE(CCamera, field_2B4, 0x2B4);
-	VALIDATE(CCamera, field_2B8, 0x2B8);
 
 	VALIDATE(CCamera, field_2BC, 0x2BC);
 	VALIDATE(CCamera, field_2C0, 0x2C0);

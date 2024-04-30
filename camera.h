@@ -26,6 +26,9 @@ public:
 	EXPORT int GetZoom(void) const;
 	EXPORT void PushMode(void);
 	EXPORT void PopMode(void);
+	EXPORT void CM_Normal(void);
+	EXPORT void SetStartPosition(void);
+	EXPORT void SetFixedPosMode(CVector *a2, unsigned __int16 a3);
 
 
 	int padTop;
@@ -34,9 +37,9 @@ public:
 	unsigned char field_F9;
 	int field_FC;
 	unsigned char field_100;
-	int field_104;
-	int field_108;
-	int field_10C;
+
+	CVector field_104;
+
 	int field_110;
 	int field_114;
 	int field_118;
@@ -96,10 +99,8 @@ public:
 
 	CQuat field_1E4;
 
-	int field_1F4;
-	int field_1F8;
-	int field_1FC;
-	int field_200;
+	CQuat field_1F4;
+
 	int field_204;
 	int field_208;
 	int field_20C;
@@ -155,9 +156,8 @@ public:
 	unsigned char field_2AC;
 
 
-	int field_2B0;
-	int field_2B4;
-	int field_2B8;
+	CVector field_2B0;
+
 	int field_2BC;
 
 	int field_2C0;

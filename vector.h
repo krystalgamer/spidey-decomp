@@ -24,7 +24,21 @@ public:
 	EXPORT CVector* operator/=(const int& other);
 	EXPORT CVector* operator+=(const CVector& other);
 	EXPORT CVector* operator%=(const CFriction& other);
+
+	EXPORT const CVector& operator=(const CVector& rhs) {
+
+		this->vx = rhs.vx;
+		this->vy = rhs.vy;
+		this->vz = rhs.vz;
+
+		return *this;
+	}
 };
+
+EXPORT CVector operator/(const CVector& lhs, const int& other);
+EXPORT CVector operator-(const CVector& lhs, const CVector& other);
+
+
 
 
 class CSVector{
