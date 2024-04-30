@@ -70,6 +70,18 @@ void CCamera::PushMode(void){
 	}
 }
 
+void CCamera::PopMode(void){
+
+	int mode = this->field_280;
+
+	if (mode == 4 || mode == 5 || mode == 6){
+		this->mPos = this->field_284;
+		this->field_1E4 = this->field_290;
+	}
+
+	this->mMode = mode;
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 

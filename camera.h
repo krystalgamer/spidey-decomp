@@ -25,6 +25,7 @@ public:
 	EXPORT void SetZoom(int a2, unsigned __int16 a3);
 	EXPORT int GetZoom(void) const;
 	EXPORT void PushMode(void);
+	EXPORT void PopMode(void);
 
 
 	int padTop;
