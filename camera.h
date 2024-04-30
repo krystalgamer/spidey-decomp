@@ -24,6 +24,7 @@ public:
 	EXPORT void SetCollisionAngBack(__int16 a2);
 	EXPORT void SetZoom(int a2, unsigned __int16 a3);
 	EXPORT int GetZoom(void) const;
+	EXPORT void PushMode(void);
 
 
 	int padTop;
@@ -91,10 +92,9 @@ public:
 	int field_1D8;
 	int field_1DC;
 	int field_1E0;
-	int field_1E4;
-	int field_1E8;
-	int field_1EC;
-	int field_1F0;
+
+	CQuat field_1E4;
+
 	int field_1F4;
 	int field_1F8;
 	int field_1FC;
@@ -140,15 +140,11 @@ public:
 	__int16 field_27C;
 	__int16 field_27E;
 
-	int padAfter27E;
+	int field_280;
 
-	int field_284;
-	int field_288;
-	int field_28C;
-	int field_290;
-	int field_294;
-	int field_298;
-	int field_29C;
+	CVector field_284;
+
+	CQuat field_290;
 
 	int mMode;
 

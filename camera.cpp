@@ -58,6 +58,18 @@ int CCamera::GetZoom(void) const{
 	return this->mZoom;
 }
 
+
+void CCamera::PushMode(void){
+
+	int mode = this->mMode;
+	this->field_280 = mode;
+
+	if (mode == 4 || mode == 5 || mode == 6){
+		this->field_284 = this->mPos;
+		this->field_290 = this->field_1E4;
+	}
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 
@@ -113,10 +125,9 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_1D8, 0x1D8);
 	VALIDATE(CCamera, field_1DC, 0x1DC);
 	VALIDATE(CCamera, field_1E0, 0x1E0);
+
 	VALIDATE(CCamera, field_1E4, 0x1E4);
-	VALIDATE(CCamera, field_1E8, 0x1E8);
-	VALIDATE(CCamera, field_1EC, 0x1EC);
-	VALIDATE(CCamera, field_1F0, 0x1F0);
+
 	VALIDATE(CCamera, field_1F4, 0x1F4);
 	VALIDATE(CCamera, field_1F8, 0x1F8);
 	VALIDATE(CCamera, field_1FC, 0x1FC);
@@ -155,13 +166,11 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_27A, 0x27A);
 	VALIDATE(CCamera, field_27C, 0x27C);
 	VALIDATE(CCamera, field_27E, 0x27E);
+
+	VALIDATE(CCamera, field_280, 0x280);
 	VALIDATE(CCamera, field_284, 0x284);
-	VALIDATE(CCamera, field_288, 0x288);
-	VALIDATE(CCamera, field_28C, 0x28C);
+
 	VALIDATE(CCamera, field_290, 0x290);
-	VALIDATE(CCamera, field_294, 0x294);
-	VALIDATE(CCamera, field_298, 0x298);
-	VALIDATE(CCamera, field_29C, 0x29C);
 
 	VALIDATE(CCamera, mMode, 0x2A0);
 	VALIDATE(CCamera, field_2A4, 0x2A4);
