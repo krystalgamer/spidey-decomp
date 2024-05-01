@@ -359,3 +359,9 @@ void m3d_ZeroTransVector(void)
   translationVector.vy = 0;
   translationVector.vz = 0;
 }
+
+void MToQ(MATRIX const & a1, CQuat& a2){
+}
+
+void VectorNormal(VECTOR* a1, VECTOR* a2){
+}

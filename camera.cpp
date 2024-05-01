@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "validate.h"
+#include "ps2funcs.h"
 
 
 
@@ -165,6 +166,87 @@ void CCamera::CM_FixedPosAngles(void){
 
 }
 
+static CVector * const stru_56F260 = (CVector*)0x56F260;
+
+// Revisit, needs validation
+void CCamera::CM_FixedPos(void){
+
+	int v2; // eax
+	CVector v6; // eax
+	int v10; // eax
+	VECTOR v15; // [esp+1Ch] [ebp-50h] BYREF
+	VECTOR a1; // [esp+2Ch] [ebp-40h] BYREF
+	VECTOR v17; // [esp+3Ch] [ebp-30h] BYREF
+	MATRIX v18; // [esp+4Ch] [ebp-20h] BYREF
+
+	v2 = this->field_2BC;
+	if ( v2 )
+	{
+		this->field_2BC = v2 - this->field_80;
+		if ( this->field_2BC > 0 )
+		{
+			this->mPos += this->field_2B0 * this->field_80;
+		}
+		else
+		{
+			this->field_2BC = 0;
+			this->mPos = this->field_24C;
+		}
+	}
+	else
+	{
+		this->mPos = this->field_24C;
+	}
+
+
+	this->field_258 = this->field_144;
+
+	v6 = this->mPos * *stru_56F260;
+
+	v15.vx = (this->field_258.vx - v6.vx) >> 12;
+	v15.vy = (this->field_258.vy - v6.vy) >> 12;
+	v15.vz = (this->field_258.vz - v6.vz) >> 12;
+
+	VectorNormal(&v15, &v15);
+	a1.vx = 0;
+	a1.vy = 4096;
+	a1.vz = 0;
+	gte_ldopv1(&a1);
+	gte_ldopv2(&v15);
+	gte_op12();
+	gte_stlvnl(&v17);
+	gte_ldopv1(&v15);
+	gte_ldopv2(&v17);
+	gte_op12();
+	gte_stlvnl(&a1);
+
+	v18.m[0][0] = v17.vx;
+	v18.m[0][1] = v17.vy;
+	v18.m[0][2] = v17.vz;
+
+	v18.m[1][0] = a1.vx;
+	v18.m[1][1] = a1.vy;
+	v18.m[1][2] = a1.vz;
+
+	v18.m[2][0] = v15.vx;
+	v18.m[2][1] = v15.vy;
+	v18.m[2][2] = v15.vz;
+
+
+	MToQ(v18, this->field_1F4);
+	if ( this->field_2AC )
+	{
+		v10 = this->field_2BC;
+		this->field_2AC = 0;
+		if ( !v10 )
+		{
+			this->field_1E4 = this->field_1F4;
+			this->field_204 = this->field_1F4;
+		}
+	}
+
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 
@@ -188,9 +270,9 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_138, 0x138);
 	VALIDATE(CCamera, field_13C, 0x13C);
 	VALIDATE(CCamera, field_140, 0x140);
+
 	VALIDATE(CCamera, field_144, 0x144);
-	VALIDATE(CCamera, field_148, 0x148);
-	VALIDATE(CCamera, field_14C, 0x14C);
+
 	VALIDATE(CCamera, field_150, 0x150);
 	VALIDATE(CCamera, field_154, 0x154);
 	VALIDATE(CCamera, field_158, 0x158);
@@ -243,8 +325,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_24C, 0x24C);
 
 	VALIDATE(CCamera, field_258, 0x258);
-	VALIDATE(CCamera, field_25C, 0x25C);
-	VALIDATE(CCamera, field_260, 0x260);
+
 	VALIDATE(CCamera, field_264, 0x264);
 	VALIDATE(CCamera, field_268, 0x268);
 	VALIDATE(CCamera, field_26C, 0x26C);

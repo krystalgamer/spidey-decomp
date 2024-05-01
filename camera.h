@@ -30,6 +30,7 @@ public:
 	EXPORT void SetStartPosition(void);
 	EXPORT void SetFixedPosMode(CVector *a2, unsigned __int16 a3);
 	EXPORT void CM_FixedPosAngles(void);
+	EXPORT void CM_FixedPos(void);
 
 
 	int padTop;
@@ -54,9 +55,8 @@ public:
 	int field_138;
 	int field_13C;
 	unsigned char field_140;
-	int field_144;
-	int field_148;
-	int field_14C;
+	CVector field_144;
+
 	int field_150;
 	int field_154;
 	int field_158;
@@ -123,9 +123,8 @@ public:
 	int field_248;
 	CVector field_24C;
 
-	int field_258;
-	int field_25C;
-	int field_260;
+	CVector field_258;
+
 	int field_264;
 	int field_268;
 	__int16 field_26C;
