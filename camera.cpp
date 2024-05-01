@@ -114,6 +114,57 @@ void CCamera::SetFixedPosMode(CVector *a2, unsigned __int16 a3){
 	}
 }
 
+
+// Revisit
+// Not matching but the same, compiler generates codeblock for else statement twice for some reason
+void CCamera::CM_FixedPosAngles(void){
+
+
+	int v2; // r30
+	int v3; // r30
+
+	v2 = this->field_2BC;
+
+	if ( v2 && v2 - this->field_80 > 0)
+	{
+		this->mPos += this->field_2B0 * this->field_80;
+	}
+	else
+	{
+		this->mPos = this->field_24C;
+	}
+
+
+	v3 = this->field_2BC;
+
+	if ( v3 && v3 - this->field_80 > 0 )
+	{
+		Quat_Slerp(
+			this->field_2C4,
+			this->field_2D4,
+			((this->field_2C0 - v3) << 12) / this->field_2C0,
+			this->field_1F4);
+	}
+
+	else
+	{
+		this->field_1F4 = this->field_2D4;
+	}
+
+	this->field_2BC = v3;
+
+	if ( this->field_2AC )
+	{
+		this->field_2AC = 0;
+		if ( !this->field_2BC )
+		{
+			this->field_1E4 = this->field_1F4;
+			this->field_204 = this->field_1E4;
+		}
+	}
+
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 
@@ -174,9 +225,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_1F4, 0x1F4);
 
 	VALIDATE(CCamera, field_204, 0x204);
-	VALIDATE(CCamera, field_208, 0x208);
-	VALIDATE(CCamera, field_20C, 0x20C);
-	VALIDATE(CCamera, field_210, 0x210);
+
 	VALIDATE(CCamera, field_214, 0x214);
 	VALIDATE(CCamera, field_218, 0x218);
 	VALIDATE(CCamera, field_21C, 0x21C);
@@ -226,9 +275,7 @@ void validate_CCamera(void){
 
 
 	VALIDATE(CCamera, field_2C4, 0x2C4);
-	VALIDATE(CCamera, field_2C8, 0x2C8);
-	VALIDATE(CCamera, field_2CC, 0x2CC);
-	VALIDATE(CCamera, field_2D0, 0x2D0);
+
 	VALIDATE(CCamera, field_2D4, 0x2D4);
 
 	VALIDATE(CCamera, field_2E4, 0x2E4);

@@ -102,6 +102,17 @@ CVector operator/(const CVector& lhs, const int& other){
 
 }
 
+CVector operator*(const CVector& lhs, const int& other)
+{
+	CVector res;
+
+	res.vx = lhs.vx * other;
+	res.vy = lhs.vy * other;
+	res.vz = lhs.vz * other;
+
+	return res;
+}
+
 
 
 

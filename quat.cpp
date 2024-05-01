@@ -2,6 +2,9 @@
 #include "validate.h"
 
 
+void Quat_Slerp (CQuat& a1, CQuat const & a2, int a3, CQuat& a4) {
+
+}
 
 
 void validate_CQuat(void){
