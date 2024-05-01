@@ -40,10 +40,16 @@ public:
 
 	unsigned char pad1[0x38 - 0x20];
 	CVector mAccellorVel;
-	unsigned char bodyPadAdterAccelorVel[0x80-0x60-0xC];
+	CVector gVec;
 
+	unsigned char field_78;
+	unsigned char field_79;
+	unsigned char field_7A;
+
+
+	int field_7C;
 	int field_80;
-	unsigned char padAfter80[0x4];
+	int field_84;
 
 	CSVector csVector1;
 	CSVector field_8E;
@@ -66,13 +72,53 @@ public:
 	unsigned char stopPPPad[0x4];
 
 	__int16 field_E2;
-	unsigned char bottomPad[0x10];
+
+	unsigned char padAfterE2[0x10C-0xE2-2];
+
+	int field_10C;
+	unsigned char padB[0x10-4];
+	int SNbrFaces;
+	int alsoOutlineRelated;
+	unsigned char outlineR;
+	unsigned char outlineG;
+	unsigned char outlineB;
+
+
+	__int16 field_128;
+	unsigned __int16 field_12A;
+
+	int outlineRelated;
+	unsigned char padA[0xE];
+
+	unsigned char field_13E;
+	unsigned char field_13F;
+
+	unsigned char field_140;
+
+	unsigned char field_141;
+	unsigned char field_142;
+	unsigned char field_143;
+
+
+	__int16 field_144;
+	__int16 field_146;
+	__int16 gAnim;
+
+	unsigned __int16 padAfte;
+
+	int csuperend;
+
+
+	__int16 field_150;
+	__int16 field_152;
+	__int16 field_154;
 
 
 	EXPORT int IsDead(void) const;
 	EXPORT void Die(void);
 	EXPORT void ShadowOn(void);
 	EXPORT void KillShadow(void);
+	EXPORT void EveryFrame(void);
 
 	EXPORT void UpdateShadow(void);
 
@@ -92,38 +138,7 @@ public:
 	EXPORT void ApplyPose(__int16 *a2);
 	EXPORT void RunAnim(int, int, int);
 
-	unsigned char padBBB[0x18];
-
-	int field_10C;
-	unsigned char padB[0x10-4];
-	int SNbrFaces;
-	int alsoOutlineRelated;
-	unsigned char outlineR;
-	unsigned char outlineG;
-	unsigned char outlineB;
-
-	__int16 field_128;
-
-	unsigned __int16 field_12A;
-
-	int outlineRelated;
-	unsigned char padA[0xE];
-
-	unsigned char field_13E;
-	unsigned char field_13F;
-
-	unsigned char field_140;
-	unsigned char field_141;
-	unsigned char field_142;
-
-	__int16 field_144;
-	__int16 field_146;
-	__int16 gAnim;
-
-
-	int csuperend;
-
-	unsigned char padVE[0x14];
+	unsigned char padVE[0x14-8];
 	MATRIX field_164;
 	unsigned char padAfter188[0x4];
 

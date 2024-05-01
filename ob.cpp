@@ -228,6 +228,50 @@ void CSuper::ApplyPose(__int16 *a2){
 void CSuper::RunAnim(int, int, int){
 }
 
+static int * const gTimerRelated = (int*)0x006B4CA8;
+
+void CBody::EveryFrame(void)
+{
+	int v3; // edx
+	int v4; // ecx
+	__int16 v6; // ax
+	__int16 v7; // cx
+	char v8; // dl
+	bool v9; // [esp-8h] [ebp-Ch]
+
+	if ( (this->mCBodyFlags & 4) != 0 )
+	{
+		this->field_80 = 2;
+		this->mCBodyFlags &= 0xFFFB;
+		this->field_7C = *gTimerRelated;
+		this->field_84 = 0;
+	}
+	else
+	{
+		v3 = this->field_7C;
+		v9 = *gTimerRelated - v3 >= 0;
+		this->field_80 = *gTimerRelated - v3;
+		print_if_false(v9, "Timing error");
+		v4 = this->field_80;
+		this->field_7C = *gTimerRelated;
+		if ( v4 > 6 )
+		this->field_80 = 6;
+	}
+
+	this->field_84 += this->field_80;
+	if ( (this->mFlags & 2) != 0 )
+	{
+		v6 = this->field_128;
+		v7 = this->field_12A;
+		v8 = this->field_141;
+		this->field_152 = v6;
+		this->field_150 = v6;
+		this->field_154 = v7;
+		this->field_143 = v8;
+	}
+
+}
+
 void validate_CItem(void){
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -244,7 +288,18 @@ void validate_CBody(void){
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);
 
+	VALIDATE(CBody, gVec, 0x6C);
+
+	VALIDATE(CBody, field_78, 0x78);
+	VALIDATE(CBody, field_79, 0x79);
+	VALIDATE(CBody, field_7A, 0x7A);
+
+
+	VALIDATE(CBody, field_7C, 0x7C);
+
 	VALIDATE(CBody, field_80, 0x80);
+	VALIDATE(CBody, field_84, 0x84);
+
 	VALIDATE(CBody, csVector1, 0x88);
 
 	VALIDATE(CBody, field_8E, 0x8E);
@@ -255,6 +310,14 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_D4, 0xD4);
 	VALIDATE(CBody, field_DC, 0xDC);
 	VALIDATE(CBody, field_E2, 0xE2);
+
+	VALIDATE(CBody, field_128, 0x128);
+	VALIDATE(CBody, field_12A, 0x12A);
+	VALIDATE(CBody, field_141, 0x141);
+	VALIDATE(CBody, field_143, 0x143);
+	VALIDATE(CBody, field_150, 0x150);
+	VALIDATE(CBody, field_152, 0x152);
+	VALIDATE(CBody, field_154, 0x154);
 }
 
 void validate_CSuper(void){
