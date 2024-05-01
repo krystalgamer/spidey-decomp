@@ -12,9 +12,6 @@ public:
 
 class CDomePiece : public CBody {
 public:
-	int padBeforeF8;
-	int field_F8;
-	int field_FC;
 };
 
 class CDome : public CBody {
@@ -25,6 +22,7 @@ public:
 class CDomeRing : public CBody {
 public:
 
+	/*
 	int padCDomeRing;
 
 	int field_F8;
@@ -32,6 +30,7 @@ public:
 	int field_100;
 	int field_104;
 	int field_108;
+	*/
 
 	unsigned char lastCDomeRing;
 };

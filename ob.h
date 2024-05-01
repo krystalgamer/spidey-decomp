@@ -73,7 +73,13 @@ public:
 
 	__int16 field_E2;
 
-	unsigned char padAfterE2[0x10C-0xE2-2];
+	unsigned char padAfterE2[0xF8-0xE2-2];
+
+	int field_F8;
+	int field_FC;
+	int field_100;
+	int field_104;
+	int field_108;
 
 	int field_10C;
 	unsigned char padB[0x10-4];

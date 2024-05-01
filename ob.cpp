@@ -284,6 +284,9 @@ void validate_CItem(void){
 
 
 void validate_CBody(void){
+
+	VALIDATE_SIZE(CBody, 0x158);
+	
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);
@@ -311,6 +314,19 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_DC, 0xDC);
 	VALIDATE(CBody, field_E2, 0xE2);
 
+	VALIDATE(CBody, field_F8, 0xF8);
+	VALIDATE(CBody, field_FC, 0xFC);
+	VALIDATE(CBody, field_100, 0x100);
+	VALIDATE(CBody, field_104, 0x104);
+	VALIDATE(CBody, field_108, 0x108);
+
+	VALIDATE(CBody, field_10C, 0x10C);
+	VALIDATE(CBody, SNbrFaces, 0x11C);
+	VALIDATE(CBody, alsoOutlineRelated, 0x120);
+	VALIDATE(CBody, outlineR, 0x124);
+	VALIDATE(CBody, outlineG, 0x125);
+	VALIDATE(CBody, outlineB, 0x126);
+
 	VALIDATE(CBody, field_128, 0x128);
 	VALIDATE(CBody, field_12A, 0x12A);
 	VALIDATE(CBody, field_141, 0x141);
@@ -330,12 +346,6 @@ void validate_CSuper(void){
 	*/
 	
 
-	VALIDATE(CSuper, field_10C, 0x10C);
-	VALIDATE(CSuper, SNbrFaces, 0x11C);
-	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
-	VALIDATE(CSuper, outlineR, 0x124);
-	VALIDATE(CSuper, outlineG, 0x125);
-	VALIDATE(CSuper, outlineB, 0x126);
 
 	VALIDATE(CSuper, field_128, 0x128);
 
