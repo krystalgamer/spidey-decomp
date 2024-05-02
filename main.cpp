@@ -65,6 +65,7 @@
 #include "camera.h"
 #include "quat.h"
 
+#include "mem.h"
 
 
 template<bool b>
@@ -225,6 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CGPolyLine();
 	validate_CCamera();
 	validate_CQuat();
+	validate_SBlockHeader();
 
 
 
