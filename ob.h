@@ -73,7 +73,36 @@ public:
 
 	__int16 field_E2;
 
-	unsigned char padAfterE2[0xF8-0xE2-2];
+	unsigned char padAfterE2[0xF8-0xE2-2-4];
+
+
+
+	EXPORT int IsDead(void) const;
+	EXPORT void Die(void);
+	EXPORT void ShadowOn(void);
+	EXPORT void KillShadow(void);
+	EXPORT void EveryFrame(void);
+
+	EXPORT void UpdateShadow(void);
+
+
+};
+
+class CSuper : public CBody {
+public:
+
+	EXPORT CSuper();
+	EXPORT void OutlineOff(void);
+	EXPORT void OutlineOn(void);
+	EXPORT void SetOutlineSemiTransparent(void);
+	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
+	EXPORT void UpdateFrame(void);
+	EXPORT void CycleAnim(int a2, char a3);
+	EXPORT void ApplyPose(__int16 *a2);
+	EXPORT void RunAnim(int, int, int);
+
+
+	int padTopUnkn;
 
 	int field_F8;
 	int field_FC;
@@ -119,30 +148,6 @@ public:
 	__int16 field_152;
 	__int16 field_154;
 
-
-	EXPORT int IsDead(void) const;
-	EXPORT void Die(void);
-	EXPORT void ShadowOn(void);
-	EXPORT void KillShadow(void);
-	EXPORT void EveryFrame(void);
-
-	EXPORT void UpdateShadow(void);
-
-
-};
-
-class CSuper : public CBody {
-public:
-
-	EXPORT CSuper();
-	EXPORT void OutlineOff(void);
-	EXPORT void OutlineOn(void);
-	EXPORT void SetOutlineSemiTransparent(void);
-	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
-	EXPORT void UpdateFrame(void);
-	EXPORT void CycleAnim(int a2, char a3);
-	EXPORT void ApplyPose(__int16 *a2);
-	EXPORT void RunAnim(int, int, int);
 
 	unsigned char padVE[0x14-8];
 	MATRIX field_164;

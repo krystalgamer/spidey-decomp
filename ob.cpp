@@ -261,13 +261,14 @@ void CBody::EveryFrame(void)
 	this->field_84 += this->field_80;
 	if ( (this->mFlags & 2) != 0 )
 	{
-		v6 = this->field_128;
-		v7 = this->field_12A;
-		v8 = this->field_141;
-		this->field_152 = v6;
-		this->field_150 = v6;
-		this->field_154 = v7;
-		this->field_143 = v8;
+		CSuper *super = reinterpret_cast<CSuper*>(this);
+		v6 = super->field_128;
+		v7 = super->field_12A;
+		v8 = super->field_141;
+		super->field_152 = v6;
+		super->field_150 = v6;
+		super->field_154 = v7;
+		super->field_143 = v8;
 	}
 
 }
@@ -285,7 +286,7 @@ void validate_CItem(void){
 
 void validate_CBody(void){
 
-	VALIDATE_SIZE(CBody, 0x158);
+	VALIDATE_SIZE(CBody, 0xF4);
 	
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
@@ -314,26 +315,6 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_DC, 0xDC);
 	VALIDATE(CBody, field_E2, 0xE2);
 
-	VALIDATE(CBody, field_F8, 0xF8);
-	VALIDATE(CBody, field_FC, 0xFC);
-	VALIDATE(CBody, field_100, 0x100);
-	VALIDATE(CBody, field_104, 0x104);
-	VALIDATE(CBody, field_108, 0x108);
-
-	VALIDATE(CBody, field_10C, 0x10C);
-	VALIDATE(CBody, SNbrFaces, 0x11C);
-	VALIDATE(CBody, alsoOutlineRelated, 0x120);
-	VALIDATE(CBody, outlineR, 0x124);
-	VALIDATE(CBody, outlineG, 0x125);
-	VALIDATE(CBody, outlineB, 0x126);
-
-	VALIDATE(CBody, field_128, 0x128);
-	VALIDATE(CBody, field_12A, 0x12A);
-	VALIDATE(CBody, field_141, 0x141);
-	VALIDATE(CBody, field_143, 0x143);
-	VALIDATE(CBody, field_150, 0x150);
-	VALIDATE(CBody, field_152, 0x152);
-	VALIDATE(CBody, field_154, 0x154);
 }
 
 void validate_CSuper(void){
@@ -345,6 +326,26 @@ void validate_CSuper(void){
 	__int16 field_148;
 	*/
 	
+	VALIDATE(CSuper, field_F8, 0xF8);
+	VALIDATE(CSuper, field_FC, 0xFC);
+	VALIDATE(CSuper, field_100, 0x100);
+	VALIDATE(CSuper, field_104, 0x104);
+	VALIDATE(CSuper, field_108, 0x108);
+
+	VALIDATE(CSuper, field_10C, 0x10C);
+	VALIDATE(CSuper, SNbrFaces, 0x11C);
+	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
+	VALIDATE(CSuper, outlineR, 0x124);
+	VALIDATE(CSuper, outlineG, 0x125);
+	VALIDATE(CSuper, outlineB, 0x126);
+
+	VALIDATE(CSuper, field_128, 0x128);
+	VALIDATE(CSuper, field_12A, 0x12A);
+	VALIDATE(CSuper, field_141, 0x141);
+	VALIDATE(CSuper, field_143, 0x143);
+	VALIDATE(CSuper, field_150, 0x150);
+	VALIDATE(CSuper, field_152, 0x152);
+	VALIDATE(CSuper, field_154, 0x154);
 
 
 	VALIDATE(CSuper, field_128, 0x128);
