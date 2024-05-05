@@ -249,6 +249,126 @@ void Mem_Copy(void* dst, void* src, int size)
 	}
 }
 
+unsigned int dword_60D11C;
+unsigned int UniqueIdentifier;
+// @NotOk
+// Revisit
+void *Mem_NewTop(unsigned int a1)
+{
+	unsigned int v1; // esi
+	unsigned int *v2; // eax
+	unsigned int *v3; // edx
+	unsigned int *v4; // edi
+	unsigned int *v5; // ecx
+	unsigned int v6; // eax
+	unsigned int *v8; // ecx
+	unsigned int v9; // eax
+	void *v10; // edx
+	unsigned int v11; // eax
+
+	UniqueIdentifier = (UniqueIdentifier + 1) & 0x7FFFFFFF;
+	if ( !UniqueIdentifier )
+		UniqueIdentifier = 1;
+	v1 = (a1 + 3) & 0xFFFFFFFC;
+
+	print_if_false(v1 != 0, "Zero size sent to Mem_New");
+	print_if_false(v1 < 0xFFFFFFF, "size exceeds 28 bit range");
+
+	v2 = (unsigned int *)dword_60D11C;
+	v3 = 0;
+	v4 = 0;
+	v5 = (unsigned int *)dword_60D11C;
+	if ( dword_60D11C )
+	{
+		do
+		{
+			if ( *v2 >> 4 >= v1 )
+			{
+				v5 = v2;
+				v4 = v3;
+			}
+			v3 = v2;
+			v2 = (unsigned int *)v2[1];
+		}
+		while ( v2 );
+	}
+
+	v6 = *v5 >> 4;
+	if ( v6 < v1 )
+		return 0;
+	if ( v6 > v1 + 32 )
+	{
+
+
+		*v5 = *v5 & 0xF ^ (16 * (0xFFFFFFF * v1 + v6 + 0xFFFFFE0));
+		v8 = (unsigned int *)((char *)v5 + v6 - v1);
+		v9 = (16 * v1) | *v8 & 0xF;
+		*v8 = v9;
+
+		v9 &= 0xFFFFFFF0;
+		v8[2] = UniqueIdentifier;
+		v9 ^= 1u;
+		*v8 = v9;
+		v10 = v8 + 8;
+		dword_60D208 += (v9 >> 4) + 32;
+		*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		if ( v1 >> 2 )
+		{
+			memset(v10, 0x33u, 4 * (v1 >> 2));
+			return v8 + 8;
+		}
+
+	}
+	else
+	{
+		if ( v4 )
+			v4[1] = v5[1];
+		else
+			dword_60D11C = v5[1];
+		v11 = *v5;
+
+		v11 |= (unsigned char)(*v5 & 0xF0);
+		v5[2] = UniqueIdentifier;
+		v11 ^= 1u;
+		*v5 = v11;
+		v10 = v5 + 8;
+		dword_60D208 += (v11 >> 4) + 32;
+		*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		if ( v1 >> 2 )
+			memset(v10, 0x33u, 4 * (v1 >> 2));
+	}
+	return v10;
+}
+
+// @Ok
+void *Mem_CoreNew(unsigned int a1)
+{
+	return Mem_NewTop(a1);
+}
+
+bool dword_54D560;
+// @Ok
+// Does not match, no need to revisit
+void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
+{
+	int v5; // eax
+	void* v6; // eax
+	int v7; // edx
+	void *result; // eax
+
+	print_if_false(a4 == 0, "Bad Mem_new");
+	if ( a5 )
+		dword_54D560 = a5;
+	v5 = a1 + 32;
+	if ( a1 + 32 <= 4 )
+	v5 = 8;
+	v6 = Mem_CoreNew(v5);
+	v7 = (int)v6 & 0x1F;
+	result = (void*)((int)v6 + 32 - v7);
+	*((char *)result - 1) = 32 - v7;
+	return result;
+}
+
 void validate_SBlockHeader(void){
 
 	VALIDATE_SIZE(SBlockHeader, 0x20);

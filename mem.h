@@ -22,5 +22,8 @@ EXPORT void Mem_Init(void);
 EXPORT void Mem_Delete(void*);
 EXPORT void Mem_ShrinkX(void*, unsigned int);
 EXPORT void Mem_Copy(void*, void*, int);
+EXPORT void *Mem_NewTop(unsigned int);
+EXPORT void *Mem_CoreNew(unsigned int);
+EXPORT void *DCMem_New(unsigned int, int, int, void*, bool);
 
 void validate_SBlockHeader(void);
