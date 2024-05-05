@@ -15,6 +15,10 @@ static void print_if_false(unsigned char cry, char * message) {
 	}
 }
 
+static void printf_fancy(const char *message, ...) {
+	// TODO
+}
+
 static void stubbed_printf(char *message){
 	puts(message);
 }

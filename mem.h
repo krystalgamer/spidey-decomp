@@ -18,5 +18,6 @@ struct SBlockHeader {
 };
 
 EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);
+EXPORT void Mem_Init(void);
 
 void validate_SBlockHeader(void);

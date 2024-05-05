@@ -101,6 +101,58 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 
 }
 
+struct MemRelated {
+	int HeapBottom;
+	int HeapTop;
+};
+
+//Guessed the number
+int gMemInitRelatedOne[32];
+
+static MemRelated * const gMemInitRelatedBottom =  (MemRelated*)0x0060D214;
+static MemRelated * const gMemInitRelatedTop =  (MemRelated*)0x0060D224;
+
+unsigned int dword_60D228;
+unsigned int dword_60D220;
+unsigned int dword_60D21C;
+
+// @Revisit, too many globals
+// ebx is used for some reason to write 0
+void Mem_Init(void)
+{
+
+	int Heap; // edi
+	MemRelated *v1; // esi
+	SBlockHeader *pAllFreeMem; // eax
+	int v4; // ecx
+	int HeapBottom; // edx
+
+	printf_fancy("Heap sizes: ");
+	Heap = 0;
+	v1 = gMemInitRelatedBottom;
+	do
+	{
+
+		print_if_false((unsigned int)(v1->HeapBottom + 32) < (unsigned int)v1->HeapTop, "Bad values for HEAPBOT and HEAPTOP");
+
+		pAllFreeMem = (SBlockHeader *)v1->HeapBottom;
+		v4 = v1->HeapTop;
+		HeapBottom = v1->HeapBottom;
+		Heaps[Heap] = 0;
+		gMemInitRelatedOne[Heap] = 0;
+		pAllFreeMem->ParentHeap = pAllFreeMem->ParentHeap & 0xF ^ (16
+				* ((HeapBottom << 28) - (unsigned int)pAllFreeMem + v4 + 0xFFFFFE0));
+		AddToFreeList(pAllFreeMem, Heap);
+
+		printf_fancy("Heap %d: %ld bytes, ", Heap, v1->HeapTop - v1->HeapBottom);
+		++v1;
+		++Heap;
+	}
+	while ( (int)v1 < (int)gMemInitRelatedTop );
+	printf_fancy("\n");
+	dword_60D228 = (98 * dword_60D220 - 98 * dword_60D21C) / 0x64u;
+}
+
 void validate_SBlockHeader(void){
 
 	VALIDATE_SIZE(SBlockHeader, 0x20);
