@@ -227,6 +227,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CCamera();
 	validate_CQuat();
 	validate_SBlockHeader();
+	validate_SHandle();
 
 
 

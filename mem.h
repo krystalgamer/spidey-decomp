@@ -2,11 +2,6 @@
 
 #include "export.h"
 
-struct SHandle{};
-
-EXPORT void* DCMem_New(size_t size, int unk1, int unk2, int unk3, int unk4); 
-EXPORT void* Mem_RecoverPointer(SHandle*);
-
 
 struct SBlockHeader {
 
@@ -25,5 +20,14 @@ EXPORT void Mem_Copy(void*, void*, int);
 EXPORT void *Mem_NewTop(unsigned int);
 EXPORT void *Mem_CoreNew(unsigned int);
 EXPORT void *DCMem_New(unsigned int, int, int, void*, bool);
+EXPORT int Mem_MakeHandle(void*);
+
+struct SHandle
+{
+	int field_0;
+};
+
+EXPORT void *Mem_RecoverPointer(SHandle*);
 
 void validate_SBlockHeader(void);
+void validate_SHandle(void);

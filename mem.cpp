@@ -3,13 +3,6 @@
 #include <cstring>
 #include "validate.h"
 
-void* DCMem_New(size_t size, int unk1, int unk2, int unk3, int unk4) { 
-	return NULL;
-}
-
-void* Mem_RecoverPointer(SHandle*){
-	return NULL;
-}
 
 static SBlockHeader ** const Heaps = (SBlockHeader**)0x0060D118;
 
@@ -367,6 +360,82 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 	result = (void*)((int)v6 + 32 - v7);
 	*((char *)result - 1) = 32 - v7;
 	return result;
+}
+
+
+// @Ok
+// slightly different due to many jumps to same printf_if_false, no biggie
+int Mem_MakeHandle(void* a1)
+{
+	char *v1; // esi
+	int v2; // eax
+	char *v3; // esi
+	int v4; // eax
+	unsigned int v5; // ecx
+
+	if ( a1 )
+	{
+		v1 = (char *)a1 - *((char *)a1 - 1);
+		v2 = *((unsigned int *)v1 - 6);
+		v3 = v1 - 32;
+		if ( v2 & 0x80000000 )
+		{
+			print_if_false(0, "Tried to make handle out of a free block");
+		}
+		else
+		{
+			print_if_false(v2 != 0, "A unique identifier has not been assigned to the memory block");
+			v4 = (int)(*(unsigned int *)v3 << 28) >> 28;
+			if ( v4 < 0 || v4 > 1 )
+			{
+				print_if_false(0, "Tried to make handle out of invalid pointer\n bad heap");
+				}
+			else
+			{
+				v5 = *(unsigned int *)v3 & 0xFFFFFFF0;
+				if ( v5 >= 0x40 && v5 <= (unsigned int)0x2000000 )
+					return reinterpret_cast<int>(a1);
+				print_if_false(0, "Tried to make handle out of invalid pointer\n bad size");
+			}
+		}
+	}
+	return 0;
+}
+
+
+// @Ok
+// Small difference where if a1->field_0 is 0 it jumps to xor eax, eax, which is
+// not needed :D
+void *Mem_RecoverPointer(SHandle *a1)
+{
+	void *result; // eax
+	int v2; // edx
+	char *v3; // ecx
+
+	result = (void *)a1->field_0;
+	if ( a1->field_0 )
+	{
+
+		v2 = *((char *)result - 1);
+		v3 = (char *)result - v2;
+		if ( v2 > ' ' ||
+				((unsigned __int8)v3 & ~0xFFFFFFFC) != 0 ||
+				*((unsigned int *)v3 - 6) != (unsigned int)a1[1].field_0 )
+		{
+			a1->field_0 = 0;
+			return 0;
+		}
+
+	}
+
+	return (void*)a1->field_0;
+
+}
+
+void validate_SHandle(void){
+	VALIDATE_SIZE(SHandle, 4);
+
+	VALIDATE(SHandle, field_0, 0x0);
 }
 
 void validate_SBlockHeader(void){
