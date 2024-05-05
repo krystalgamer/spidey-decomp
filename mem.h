@@ -19,5 +19,6 @@ struct SBlockHeader {
 
 EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);
 EXPORT void Mem_Init(void);
+EXPORT void Mem_Delete(void*);
 
 void validate_SBlockHeader(void);

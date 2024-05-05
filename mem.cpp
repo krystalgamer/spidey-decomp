@@ -110,12 +110,13 @@ struct MemRelated {
 int gMemInitRelatedOne[32];
 
 static MemRelated * const gMemInitRelatedBottom =  (MemRelated*)0x0060D214;
-static MemRelated * const gMemInitRelatedTop =  (MemRelated*)0x0060D224;
+static int * const gMemInitRelatedTop =  (int*)0x0060D224;
 
 unsigned int dword_60D228;
 unsigned int dword_60D220;
 unsigned int dword_60D21C;
 
+// @Ok
 // @Revisit, too many globals
 // ebx is used for some reason to write 0
 void Mem_Init(void)
@@ -151,6 +152,37 @@ void Mem_Init(void)
 	while ( (int)v1 < (int)gMemInitRelatedTop );
 	printf_fancy("\n");
 	dword_60D228 = (98 * dword_60D220 - 98 * dword_60D21C) / 0x64u;
+}
+
+unsigned int dword_60D208;
+
+// @Ok
+// @Revisit, different registers at begin
+void Mem_Delete(void* a1)
+{
+	void *v1; // ecx
+	char *v2; // esi
+	unsigned int v3; // eax
+	SBlockHeader *v4; // ecx
+	int Heap; // esi
+
+	v1 = (void *)*((char *)a1 - 1);
+	v2 = (char *)((unsigned char *)a1 - (unsigned char *)v1);
+	print_if_false(a1 != v1, "NULL pointer sent to Mem_Delete");
+	v3 = *((unsigned int*)v2 - 8);
+	v4 = (SBlockHeader *)(v2 - 32);
+	Heap = (int)(v3 << 28) >> 28;
+	if ( Heap < 0 || Heap >= 2 )
+	{
+		print_if_false(0, "Invalid pointer sent to Mem_Delete");
+	}
+	else
+	{
+		gMemInitRelatedOne[Heap] += -32 - (v3 >> 4);
+		AddToFreeList(v4, Heap);
+		if ( Heap == 1 )
+			*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+	}
 }
 
 void validate_SBlockHeader(void){
