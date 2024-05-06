@@ -73,6 +73,12 @@ class CSplat : public CQuadBit {
 public:
 };
 
+struct SLineInfo
+{
+	CVector vec_0;
+	CVector vec_C;
+};
+
 
 
 void validate_CImpactWeb(void);
@@ -82,3 +88,4 @@ void validate_CDomeRing(void);
 void validate_CWeb(void);
 void validate_CSwinger(void);
 void validate_CSplat(void);
+void validate_SLineInfo(void);

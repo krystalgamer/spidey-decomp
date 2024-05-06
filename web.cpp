@@ -53,3 +53,11 @@ void validate_CWeb(void){
 void validate_CSwinger(void){
 	VALIDATE_SIZE(CSwinger, 0x190);
 }
+
+void validate_SLineInfo(void)
+{
+	VALIDATE_SIZE(SLineInfo, 0xC * 2);
+
+	VALIDATE(SLineInfo, vec_0, 0x0);
+	VALIDATE(SLineInfo, vec_C, 0xC);
+}

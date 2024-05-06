@@ -230,6 +230,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SBlockHeader();
 	validate_SHandle();
 	validate_CItemFrag();
+	validate_SLineInfo();
 
 
 
