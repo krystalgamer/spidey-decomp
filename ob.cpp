@@ -4,6 +4,8 @@
 #include "validate.h"
 
 
+// @Ok
+// Random move from global to eax and test eax, eax that doesn't change shit
 void* CItem::operator new(unsigned int size) {
 
   void *result = DCMem_New(size, 0, 1, 0, 1);
@@ -16,7 +18,27 @@ void* CItem::operator new(unsigned int size) {
 }
 
 
-CItem::CItem(){}
+/// @NotOk
+// missing 3C assignement need to understand what it is
+CItem::CItem()
+{
+	this->mPos.vx = 0;
+	this->mPos.vy = 0;
+	this->mPos.vz = 0;
+
+
+	this->mAngles.vx = 0;
+	this->mAngles.vy = 0;
+	this->mAngles.vz = 0;
+
+	//this->field_2C = 0;
+
+	this->field_28 = 0x1000;
+	this->field_2A = 0x1000;
+	this->field_2C = 0x1000;
+
+	///this->field_3C = ???;
+}
 
 CItem::~CItem(){}
 
@@ -275,11 +297,19 @@ void CBody::EveryFrame(void)
 
 void validate_CItem(void){
 
+	VALIDATE_SIZE(CItem, 0x40);
+
 	VALIDATE(CItem, mFlags, 0x4);
 	VALIDATE(CItem, mPos, 0x8);
 	VALIDATE(CItem, mAngles, 0x14);
 	VALIDATE(CItem, mModel, 0x1A);
 	VALIDATE(CItem, mRegion, 0x1F);
+
+
+	VALIDATE(CItem, field_28, 0x28);
+	VALIDATE(CItem, field_2A, 0x2A);
+	VALIDATE(CItem, field_2C, 0x2C);
+	VALIDATE(CItem, field_3C, 0x3C);
 
 }
 

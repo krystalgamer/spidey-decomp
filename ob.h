@@ -19,6 +19,16 @@ public:
 	unsigned char mRegion;
 
 
+	unsigned char padAfterRegion[0x8];
+
+	__int16 field_28;
+	__int16 field_2A;
+	__int16 field_2C;
+
+	unsigned char padAfter2C[0x3C-0x2C - 2];
+
+	int field_3C;
+
 
 
 	EXPORT void * operator new(unsigned int size);
@@ -33,7 +43,7 @@ public:
 class CBody : public CItem {
 
 public:
-	unsigned char pad[0x24];
+	unsigned char pad[0x4];
 
 	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
