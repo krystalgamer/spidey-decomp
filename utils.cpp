@@ -112,3 +112,29 @@ int Utils_ArcCos(int val){
 	float res = acos(inp / FOUR_NINETY_SIX);
 	return (res * TWO_FOURTY_EIGHT / PI);
 }
+
+
+
+// @Ok
+// Matching
+int Utils_CopyString(const char* src, char* dst, int maxSize)
+{
+	int total = 0;
+
+	if (*src)
+	{
+		while (*src){
+
+			if (total >= maxSize)
+				break;
+
+			*dst++ = *src++;
+			total++;
+
+		}
+	}
+
+	print_if_false(total < maxSize, "Dest buffer overflow in Utils_CopyString");
+	*dst = 0;
+	return total;
+}
