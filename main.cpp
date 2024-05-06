@@ -66,6 +66,7 @@
 #include "quat.h"
 
 #include "mem.h"
+#include "exp.h"
 
 
 template<bool b>
@@ -228,6 +229,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CQuat();
 	validate_SBlockHeader();
 	validate_SHandle();
+	validate_CItemFrag();
 
 
 

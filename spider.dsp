@@ -128,6 +128,10 @@ SOURCE=.\docock.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\exp.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\friction.cpp
 # End Source File
 # Begin Source File
@@ -297,6 +301,10 @@ SOURCE=.\cop.h
 # Begin Source File
 
 SOURCE=.\docock.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\exp.h
 # End Source File
 # Begin Source File
 
