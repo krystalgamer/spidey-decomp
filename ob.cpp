@@ -1,5 +1,6 @@
 #include "ob.h"
 #include "mem.h"
+#include "spool.h"
 #include <cstring>
 #include "validate.h"
 
@@ -42,12 +43,25 @@ CItem::CItem()
 
 CItem::~CItem(){}
 
-//TODO
-void CItem::InitItem(const char *)
+// @NotOk
+// indices not matching, rest is okay
+void CItem::InitItem(const char * a1)
 {
 
-	this->mRegion = 69;
+	int Region = Spool_FindRegion(a1);
+	this->mRegion = Region;
 	this->mModel = 0;
+
+	int index = (Region & 0xFF)  * 0x11;
+
+	if (Regions[index])
+	{
+		int *tmp = *CItemRelatedList[index];
+		tmp[2] = 0x64000;
+		tmp[3] = 0xFF9C0064;
+		tmp[4] = 0xFF9C0064;
+		tmp[5] = 0xFF9C0064;
+	}
 }
 
 

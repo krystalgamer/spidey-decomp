@@ -4,6 +4,8 @@
 #include "bit.h"
 #include "ps2funcs.h"
 
+static unsigned char * const Regions = (unsigned char*)0x006B2449;
+static int *** const CItemRelatedList = (int***)0x006B2454;
 
 class CItem  
 {
