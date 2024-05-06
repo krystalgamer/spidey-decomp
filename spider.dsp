@@ -160,6 +160,18 @@ SOURCE=.\m3d.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\m3dcolij.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\m3dinit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\m3dzone.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
@@ -337,6 +349,18 @@ SOURCE=.\lizman.h
 # Begin Source File
 
 SOURCE=.\m3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\m3dcolij.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\m3dinit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\m3dzone.h
 # End Source File
 # Begin Source File
 

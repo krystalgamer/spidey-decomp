@@ -67,6 +67,7 @@
 
 #include "mem.h"
 #include "exp.h"
+#include "m3dcolij.h"
 
 
 template<bool b>

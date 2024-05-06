@@ -1,5 +1,36 @@
 #include "web.h"
 #include "validate.h"
+#include "m3dinit.h"
+#include "m3dcolij.h"
+#include "m3dzone.h"
+
+
+SLineInfo gLineInfo;
+int gGetGroundRelated;
+int gGetGroundDefaultValue;
+
+
+// @NotOk
+// Order assignemnt slightly different and make sure globals are properly set
+int Web_GetGroundY(const CVector* a1)
+{
+
+	gLineInfo.vec_0.vy = a1->vy;
+	gLineInfo.vec_0.vx = a1->vx;
+	gLineInfo.vec_0.vz = a1->vz;
+
+	gLineInfo.vec_C.vx = a1->vx;
+	gLineInfo.vec_C.vy = a1->vy + 0x1388000;
+	gLineInfo.vec_C.vz = a1->vz;
+
+	M3dColij_InitLineInfo(&gLineInfo);
+	M3dZone_LineToItem(&gLineInfo, 1);
+
+	if (gGetGroundRelated)
+		return gGetGroundDefaultValue;
+
+	return gLineInfo.vec_C.vy;
+}
 
 void validate_CImpactWeb(void){
 	VALIDATE_SIZE(CImpactWeb, 0x8C);
@@ -52,12 +83,4 @@ void validate_CWeb(void){
 
 void validate_CSwinger(void){
 	VALIDATE_SIZE(CSwinger, 0x190);
-}
-
-void validate_SLineInfo(void)
-{
-	VALIDATE_SIZE(SLineInfo, 0xC * 2);
-
-	VALIDATE(SLineInfo, vec_0, 0x0);
-	VALIDATE(SLineInfo, vec_C, 0xC);
 }
