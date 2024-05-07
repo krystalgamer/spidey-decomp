@@ -3,6 +3,7 @@
 #include "spool.h"
 #include <cstring>
 #include "validate.h"
+#include "ps2redbook.h"
 
 
 // @Ok
@@ -215,6 +216,21 @@ void CBody::AttachXA(int a2, int a3)
 	this->field_98 = *dword_6B4CA0;
 	this->field_9C = a2;
 	this->field_A0 = a3;
+}
+
+static int * const dword_681D1C = (int*)0x681D1C;
+static int * const dword_6612C0 = (int*)0x6612C0;
+
+// @NotOk
+// Replace dword_
+void CBody::StopMyXA(void)
+{
+	if ( (unsigned int)(*dword_6B4CA0 - this->field_98) < 0x12C
+			&& *dword_681D1C == this->field_9C
+			&& *dword_6612C0 == this->field_A0)
+	{
+		Redbook_XAStop();
+	}
 }
 
 CSuper::CSuper(){

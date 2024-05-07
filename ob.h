@@ -113,6 +113,7 @@ public:
 	EXPORT int* SquirtPos(int*);
 	EXPORT __int16* SquirtAngles(__int16*);
 	EXPORT void AttachXA(int, int);
+	EXPORT void StopMyXA(void);
 };
 
 class CSuper : public CBody {
