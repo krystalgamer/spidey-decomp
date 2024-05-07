@@ -204,6 +204,10 @@ SOURCE=.\ps2m3d.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2redbook.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\pshell.cpp
 # End Source File
 # Begin Source File
@@ -389,6 +393,10 @@ SOURCE=.\ps2funcs.h
 # Begin Source File
 
 SOURCE=.\ps2m3d.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2redbook.h
 # End Source File
 # Begin Source File
 
