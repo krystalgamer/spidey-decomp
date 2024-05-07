@@ -104,6 +104,7 @@ public:
 	EXPORT void AttachTo(CBody**);
 
 	EXPORT void InterleaveAI(void);
+	EXPORT int* SquirtPos(int*);
 
 
 };

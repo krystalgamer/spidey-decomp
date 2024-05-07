@@ -180,6 +180,22 @@ void CBody::InterleaveAI(void)
 	// vcall here
 }
 
+// @Ok
+// almost close, lea on original mov on mine
+int* CBody::SquirtPos(int *params)
+{
+	print_if_false(((int)params & 3) == 0, "Bad alignment");
+
+	this->mPos.vx = *params << 12;
+	params++;
+
+	this->mPos.vy = *params << 12;
+	params++;
+
+	this->mPos.vz = *params << 12;
+	params++;
+	return params;
+}
 
 CSuper::CSuper(){
   this->gAnim = 1;
