@@ -22,7 +22,7 @@ void* CItem::operator new(unsigned int size) {
 
 /// @NotOk
 // missing 3C assignement need to understand what it is
-CItem::CItem()
+__inline CItem::CItem()
 {
 	this->mPos.vx = 0;
 	this->mPos.vy = 0;
@@ -287,6 +287,75 @@ void CBody::StopMyXA(void)
 	}
 }
 
+// @NotOk
+// field reassignement + missing vtable
+// need to understand whether the default constructor is called by default and then overriden
+CBody::CBody()
+{
+	this->field_48 = 0;
+	this->field_4C = 0;
+	this->field_50 = 0;
+	this->field_54 = 0;
+	this->field_58 = 0;
+	this->field_5C = 0;
+
+	this->mAccellorVel.vx = 0;
+	this->mAccellorVel.vy = 0;
+	this->mAccellorVel.vz = 0;
+
+
+	this->gVec.vx = 0;
+	this->gVec.vy = 0;
+	this->gVec.vz = 0;
+
+	this->field_78 = 0;
+	this->field_79 = 0;
+	this->field_7A = 0;
+
+
+	this->csVector1.vx = 0;
+	this->csVector1.vy = 0;
+	this->csVector1.vz = 0;
+
+	this->field_8E.vx = 0;
+	this->field_8E.vy = 0;
+	this->field_8E.vz = 0;
+
+	this->field_94 = 0;
+	this->field_95 = 0;
+	this->field_96 = 0;
+
+	this->field_A8 = 0;
+	this->field_AA = 0;
+	this->field_AC = 0;
+	this->bodyVector.vx = 0;
+	this->bodyVector.vy = 0;
+	this->bodyVector.vz = 0;
+
+	this->field_C4 = 0;
+	this->field_C6 = 0;
+	this->field_C8 = 0;
+	this->field_E8 = 0;
+	this->field_EC = 0;
+
+	this->cbodyend = 0;
+
+	this->field_78 = 1;
+	this->field_79 = 1;
+	this->field_7A = 1;
+
+	this->field_94 = 1;
+	this->field_95 = 1;
+	this->field_96 = 1;
+	this->mCBodyFlags |= 0x16;
+
+	this->field_D8 = 10;
+	this->field_A4 = 0;
+	this->field_DE = -1;
+	this->field_D0 = 32;
+	this->field_D4 = 200;
+}
+
 CSuper::CSuper(){
   this->gAnim = 1;
   this->field_142 = 1;
@@ -495,6 +564,14 @@ void validate_CBody(void){
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);
 
+	VALIDATE(CBody, field_48, 0x48);
+	VALIDATE(CBody, field_4C, 0x4C);
+	VALIDATE(CBody, field_50, 0x50);
+	VALIDATE(CBody, field_54, 0x54);
+	VALIDATE(CBody, field_58, 0x58);
+	VALIDATE(CBody, field_5C, 0x5C);
+
+	VALIDATE(CBody, mAccellorVel, 0x60);
 	VALIDATE(CBody, gVec, 0x6C);
 
 	VALIDATE(CBody, field_78, 0x78);
@@ -511,18 +588,42 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, field_8E, 0x8E);
 
+	VALIDATE(CBody, field_94, 0x94);
+	VALIDATE(CBody, field_95, 0x95);
+	VALIDATE(CBody, field_96, 0x96);
+
 	VALIDATE(CBody, field_98, 0x98);
 	VALIDATE(CBody, field_9C, 0x9C);
 	VALIDATE(CBody, field_A0, 0xA0);
 
+	VALIDATE(CBody, field_A4, 0xA4);
+	VALIDATE(CBody, field_A8, 0xA8);
+	VALIDATE(CBody, field_AA, 0xAA);
+	VALIDATE(CBody, field_AC, 0xAC);
 
 	VALIDATE(CBody, bodyVector, 0xB8);
+
+	VALIDATE(CBody, field_C4, 0xC4);
+	VALIDATE(CBody, field_C6, 0xC6);
+	VALIDATE(CBody, field_C8, 0xC8);
+
+
 	VALIDATE(CBody, bodyQuadBit, 0xCC);
 	VALIDATE(CBody, field_D0, 0xD0);
 	VALIDATE(CBody, field_D2, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
+
+	VALIDATE(CBody, field_D8, 0xD8);
+
 	VALIDATE(CBody, field_DC, 0xDC);
+
+	VALIDATE(CBody, field_DE, 0xDE);
+
 	VALIDATE(CBody, field_E2, 0xE2);
+
+	VALIDATE(CBody, field_E8, 0xE8);
+	VALIDATE(CBody, field_EC, 0xEC);
+	VALIDATE(CBody, cbodyend, 0xF0);
 
 }
 

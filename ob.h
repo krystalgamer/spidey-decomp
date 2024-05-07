@@ -55,7 +55,13 @@ public:
 	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
 
-	unsigned char pad1[0x38 - 0x20];
+	int field_48;
+	int field_4C;
+	int field_50;
+	int field_54;
+	int field_58;
+	int field_5C;
+
 	CVector mAccellorVel;
 	CVector gVec;
 
@@ -70,17 +76,26 @@ public:
 
 	CSVector csVector1;
 	CSVector field_8E;
-	unsigned char padAfter8E[0x98-0x8E-sizeof(CSVector)];
+
+	unsigned char field_94;
+	unsigned char field_95;
+	unsigned char field_96;
 
 	int field_98;
 	int field_9C;
 	int field_A0;
+	int field_A4;
+	__int16 field_A8;
+	__int16 field_AA;
+	__int16 field_AC;
 
-	unsigned char padAfterA0[0xB8-0xA0-4];
+	unsigned char padAfterAC[0xB8-0xAC-2];
 
 	CVector bodyVector;
+	__int16 field_C4;
+	__int16 field_C6;
+	__int16 field_C8;
 
-	unsigned char pad2[0x8];
 	
 	CQuadBit *bodyQuadBit;
 
@@ -88,15 +103,21 @@ public:
 	unsigned __int16 field_D2;
 	unsigned __int16 field_D4;
 
-	unsigned char moreBottomPad[0x4+1];
+	int field_D8;
 
 	__int16 field_DC;
 
-	unsigned char stopPPPad[0x4];
+	__int16 field_DE;
+
+	unsigned char stopPPPad[0x2];
 
 	__int16 field_E2;
 
-	unsigned char padAfterE2[0xF8-0xE2-2-4];
+	unsigned char padAfterE2[4];
+
+	int field_E8;
+	int field_EC;
+	int cbodyend;
 
 
 
@@ -117,6 +138,8 @@ public:
 	EXPORT void UnSuspend(void);
 	EXPORT void DeleteFrom(CBody**);
 	EXPORT void Suspend(CBody**);
+
+	EXPORT CBody();
 };
 
 class CSuper : public CBody {
