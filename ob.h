@@ -116,6 +116,7 @@ public:
 	EXPORT void StopMyXA(void);
 	EXPORT void UnSuspend(void);
 	EXPORT void DeleteFrom(CBody**);
+	EXPORT void Suspend(CBody**);
 };
 
 class CSuper : public CBody {

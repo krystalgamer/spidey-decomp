@@ -198,6 +198,24 @@ void __inline CBody::UnSuspend(void)
 	}
 }
 
+// @NotOk
+// removed constants
+void CBody::Suspend(CBody **a2)
+{
+	print_if_false((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
+	print_if_false(a2 != 0, "woops");
+
+	//vtable call here
+
+	this->field_40 = a2;
+	this->DeleteFrom(a2);
+
+	this->AttachTo(reinterpret_cast<CBody**>(0x60DAB4));
+	this->mCBodyFlags |= 1;
+}
+
+
+
 
 // @NotOk
 // missing vtable call
