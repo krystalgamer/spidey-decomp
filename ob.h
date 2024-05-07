@@ -103,6 +103,8 @@ public:
 	EXPORT void UpdateShadow(void);
 	EXPORT void AttachTo(CBody**);
 
+	EXPORT void InterleaveAI(void);
+
 
 };
 

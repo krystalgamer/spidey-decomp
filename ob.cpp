@@ -67,11 +67,15 @@ void CItem::InitItem(const char * a1)
 
 
 
+// @Ok
+// has weird xor eax, eax at the top
 int __inline CBody::IsDead(void) const{
 	return (this->mCBodyFlags >> 6) & 1;
 }
 	
 
+
+// @Ok
 void CBody::Die(void){
 	int isDead = this->IsDead();
 	if(!isDead)
@@ -80,11 +84,14 @@ void CBody::Die(void){
 	}
 }
 
+// @Ok
 void CBody::ShadowOn(void){
 	this->mCBodyFlags |= 8;
 }
 
 
+// @NotOk
+// dessutrctor
 void __inline CBody::KillShadow(void){
 
   this->mCBodyFlags &= ~8u;
@@ -95,6 +102,8 @@ void __inline CBody::KillShadow(void){
   }
 }
 
+// @NotOk
+// Inlined KillShadow and weird part where we store data but it's just xor eax, eax
 void CBody::UpdateShadow(void){
 
 	__int16 flags = this->mCBodyFlags;
@@ -151,6 +160,24 @@ void CBody::AttachTo(CBody** a1)
 	if (v3)
 		v3->field_34 = this;
 
+}
+
+// @NotOk
+// missing vtable call
+void CBody::InterleaveAI(void)
+{
+	if (this->mFlags & 2)
+	{
+		this->EveryFrame();
+		CSuper *super = reinterpret_cast<CSuper*>(this);
+		super->UpdateFrame();
+	}
+	else
+	{
+		this->EveryFrame();
+	}
+
+	// vcall here
 }
 
 
@@ -284,6 +311,8 @@ void CSuper::RunAnim(int, int, int){
 
 static int * const gTimerRelated = (int*)0x006B4CA8;
 
+// @NotOk
+// timerRelated needs to be fixed and call to print_if_false looks wrong
 void CBody::EveryFrame(void)
 {
 	int v3; // edx
