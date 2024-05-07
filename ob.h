@@ -70,7 +70,13 @@ public:
 
 	CSVector csVector1;
 	CSVector field_8E;
-	unsigned char pad3[0x24];
+	unsigned char padAfter8E[0x98-0x8E-sizeof(CSVector)];
+
+	int field_98;
+	int field_9C;
+	int field_A0;
+
+	unsigned char padAfterA0[0xB8-0xA0-4];
 
 	CVector bodyVector;
 
@@ -106,6 +112,7 @@ public:
 	EXPORT void InterleaveAI(void);
 	EXPORT int* SquirtPos(int*);
 	EXPORT __int16* SquirtAngles(__int16*);
+	EXPORT void AttachXA(int, int);
 };
 
 class CSuper : public CBody {

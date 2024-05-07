@@ -206,6 +206,17 @@ __int16* CBody::SquirtAngles(__int16* params)
 	return params;
 }
 
+static int * const dword_6B4CA0 = (int*)0x6B4CA0;
+
+// @NotOk
+// replace dword_
+void CBody::AttachXA(int a2, int a3)
+{
+	this->field_98 = *dword_6B4CA0;
+	this->field_9C = a2;
+	this->field_A0 = a3;
+}
+
 CSuper::CSuper(){
   this->gAnim = 1;
   this->field_142 = 1;
@@ -427,6 +438,12 @@ void validate_CBody(void){
 	VALIDATE(CBody, csVector1, 0x88);
 
 	VALIDATE(CBody, field_8E, 0x8E);
+
+	VALIDATE(CBody, field_98, 0x98);
+	VALIDATE(CBody, field_9C, 0x9C);
+	VALIDATE(CBody, field_A0, 0xA0);
+
+
 	VALIDATE(CBody, bodyVector, 0xB8);
 	VALIDATE(CBody, bodyQuadBit, 0xCC);
 	VALIDATE(CBody, field_D0, 0xD0);
