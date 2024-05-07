@@ -186,14 +186,23 @@ int* CBody::SquirtPos(int *params)
 {
 	print_if_false(((int)params & 3) == 0, "Bad alignment");
 
-	this->mPos.vx = *params << 12;
+	this->mPos.vx = *params++ << 12;
+
+	this->mPos.vy = *params++ << 12;
 	params++;
 
-	this->mPos.vy = *params << 12;
-	params++;
+	this->mPos.vz = *params++ << 12;
 
-	this->mPos.vz = *params << 12;
-	params++;
+	return params;
+}
+
+// @Ok
+__int16* CBody::SquirtAngles(__int16* params)
+{
+	this->mAngles.vx = *params++;
+	this->mAngles.vy = *params++;
+	this->mAngles.vz = *params++;
+
 	return params;
 }
 

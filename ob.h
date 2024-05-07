@@ -105,8 +105,7 @@ public:
 
 	EXPORT void InterleaveAI(void);
 	EXPORT int* SquirtPos(int*);
-
-
+	EXPORT __int16* SquirtAngles(__int16*);
 };
 
 class CSuper : public CBody {
