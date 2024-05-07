@@ -43,6 +43,7 @@ CItem::CItem()
 
 CItem::~CItem(){}
 
+
 // @NotOk
 // indices not matching, rest is okay
 void CItem::InitItem(const char * a1)
@@ -132,6 +133,23 @@ void CBody::UpdateShadow(void){
 	else{
 		   this->KillShadow();
 	}
+
+}
+
+
+// @Ok
+void CBody::AttachTo(CBody** a1)
+{
+
+	CBody *v2 = *a1;
+	this->field_34 = 0;
+	this->field_20 = v2;
+
+	*a1 = this;
+
+	CItem *v3 = this->field_20;
+	if (v3)
+		v3->field_34 = this;
 
 }
 
@@ -319,10 +337,14 @@ void validate_CItem(void){
 	VALIDATE(CItem, mModel, 0x1A);
 	VALIDATE(CItem, mRegion, 0x1F);
 
+	VALIDATE(CItem, field_20, 0x20);
+
 
 	VALIDATE(CItem, field_28, 0x28);
 	VALIDATE(CItem, field_2A, 0x2A);
 	VALIDATE(CItem, field_2C, 0x2C);
+
+	VALIDATE(CItem, field_34, 0x34);
 	VALIDATE(CItem, field_3C, 0x3C);
 
 }

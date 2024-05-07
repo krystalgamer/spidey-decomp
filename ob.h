@@ -21,13 +21,18 @@ public:
 	unsigned char mRegion;
 
 
-	unsigned char padAfterRegion[0x8];
+	CItem *field_20;
+	unsigned char padAfterRegion[0x4];
 
 	__int16 field_28;
 	__int16 field_2A;
 	__int16 field_2C;
 
-	unsigned char padAfter2C[0x3C-0x2C - 2];
+	unsigned char padAfter2C[0x34-0x2C - 2];
+
+	CItem *field_34;
+	unsigned char padAfter34[4];
+
 
 	int field_3C;
 
@@ -96,6 +101,7 @@ public:
 	EXPORT void EveryFrame(void);
 
 	EXPORT void UpdateShadow(void);
+	EXPORT void AttachTo(CBody**);
 
 
 };
