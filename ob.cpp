@@ -148,7 +148,7 @@ void CBody::UpdateShadow(void){
 
 
 // @Ok
-void CBody::AttachTo(CBody** a1)
+void __inline CBody::AttachTo(CBody** a1)
 {
 
 	CBody *v2 = *a1;
@@ -162,6 +162,42 @@ void CBody::AttachTo(CBody** a1)
 		v3->field_34 = this;
 
 }
+
+// @NotOk
+// remove constants
+void __inline CBody::DeleteFrom(CBody **a2)
+{
+
+	if(this->mCBodyFlags & 1 && a2 != reinterpret_cast<CBody**>(0x60DAB4))
+	{
+		this->UnSuspend();
+	}
+
+	CItem *v6 = this->field_20;
+	if (v6)
+		v6->field_34 = this->field_34;
+
+	CItem *r = this->field_34;
+	if (r)
+		r->field_20 = this->field_20;
+
+	if (*a2 == this)
+		*a2 = reinterpret_cast<CBody*>(this->field_20);
+}
+
+// @NotOk
+// looks good, but I think the constants are fucking it up
+void __inline CBody::UnSuspend(void)
+{
+
+	if (this->mCBodyFlags & 1)
+	{
+		this->DeleteFrom(reinterpret_cast<CBody**>(0x60DAB4));
+		this->AttachTo(this->field_40);
+		this->mCBodyFlags &= 0xFFFE;
+	}
+}
+
 
 // @NotOk
 // missing vtable call
@@ -435,6 +471,8 @@ void validate_CBody(void){
 
 	VALIDATE_SIZE(CBody, 0xF4);
 	
+	VALIDATE(CBody, field_40, 0x40);
+
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);

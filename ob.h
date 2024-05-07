@@ -50,7 +50,7 @@ public:
 class CBody : public CItem {
 
 public:
-	unsigned char pad[0x4];
+	CBody **field_40;
 
 	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
@@ -114,6 +114,8 @@ public:
 	EXPORT __int16* SquirtAngles(__int16*);
 	EXPORT void AttachXA(int, int);
 	EXPORT void StopMyXA(void);
+	EXPORT void UnSuspend(void);
+	EXPORT void DeleteFrom(CBody**);
 };
 
 class CSuper : public CBody {
