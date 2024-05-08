@@ -65,3 +65,8 @@ EXPORT int M3dMaths_SquareRoot0(int i);
 EXPORT int M3dMaths_MulDiv64(int, int, int);
 
 EXPORT void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2);
+
+class CItem;
+EXPORT void M3dMaths_ScaleMatrix(CItem*, MATRIX *a2);
+
+EXPORT void M3dMaths_CopyMat(MATRIX*, MATRIX*);

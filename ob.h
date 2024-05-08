@@ -22,7 +22,8 @@ public:
 
 
 	CItem *field_20;
-	unsigned char padAfterRegion[0x4];
+
+	unsigned char padAfter20[4];
 
 	__int16 field_28;
 	__int16 field_2A;

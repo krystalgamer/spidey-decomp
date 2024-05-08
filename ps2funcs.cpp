@@ -1,6 +1,8 @@
 #include "ps2funcs.h"
 #include "validate.h"
 #include <cmath>
+#include <cstring>
+#include "ob.h"
 
 EXPORT __int16 gRotMatrix[3][3];
 
@@ -443,4 +445,34 @@ void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2)
 	a2->m[2][0] = a1->m[0][2];
 	a2->m[2][1] = a1->m[1][2];
 	a2->m[2][2] = a1->m[2][2];
+}
+
+
+
+// @Ok
+void M3dMaths_ScaleMatrix(CItem *a1, MATRIX *a2)
+{
+	MATRIX v7;
+	MATRIX v8;
+	memset((void*)&v8, 0, sizeof(v8));
+
+	v8.m[0][0] = a1->field_28;
+	v8.m[1][1] = a1->field_2A;
+	v8.m[2][2] = a1->field_2C;
+
+	MulMatrix0(a2, &v8, &v7);
+
+	for (int i = 0; i < 3; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			a2->m[i][j] = v7.m[i][j];
+		}
+
+	}
+}
+
+void M3dMaths_CopyMat(MATRIX* a1, MATRIX* a2)
+{
+	memcpy(reinterpret_cast<void*>(a2), reinterpret_cast<void*>(a1), 3*3*2);
 }
