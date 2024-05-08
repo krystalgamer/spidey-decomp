@@ -364,11 +364,13 @@ CSuper::CSuper(){
 
 }
 
+// @Ok
 void CSuper::OutlineOff(void){
 	this->outlineRelated &= 0xFFFFFFFB;
 }
 
-// NEED TO FINISH
+// @NotOk
+// Missing most stuff, only used by CVenom and CDummy
 void CSuper::OutlineOn(void){
 	this->outlineRelated |= 4;
 	if (!this->SNbrFaces){
@@ -381,16 +383,21 @@ void CSuper::OutlineOn(void){
 }
 
 
+// @Ok
 void CSuper::SetOutlineSemiTransparent(){
 	this->alsoOutlineRelated |= 0x20000000;
 }
 
+
+// @Ok
 void CSuper::SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4){
 	this->outlineR = a2;
 	this->outlineG = a3;
 	this->outlineB = a4;
 }
 
+// @Ok
+// Slightly different register allocation, edx and eax are swapped
 void CSuper::UpdateFrame(void){
 	char v1; // bl
 	int v2; // esi
@@ -443,6 +450,7 @@ void CSuper::UpdateFrame(void){
 }
 
 
+// @NotOk
 // Revisit
 void CSuper::CycleAnim(int a2, char a3){
   if (this->field_12A != a2 )
@@ -467,6 +475,7 @@ void CSuper::CycleAnim(int a2, char a3){
 }
 
 
+// @NotOk
 //Revisit
 void CSuper::ApplyPose(__int16 *a2){
 
@@ -480,8 +489,45 @@ void CSuper::ApplyPose(__int16 *a2){
 }
 
 
-//TODO
-void CSuper::RunAnim(int, int, int){
+// @NotOk
+// slightly different register allocation
+// relies on global Animations
+void CSuper::RunAnim(__int16 a2, int a3, int a4)
+{
+	int mRegion; // ecx
+	unsigned __int16 v6; // dx
+	int v7; // eax
+	int v8; // ecx
+	char v9; // dl
+
+	mRegion = this->mRegion;
+	this->field_12A = a2;
+
+	print_if_false((unsigned int)a2 < *(unsigned int *)Animations[17 * mRegion], "Bad anim sent to RunAnim");
+	v6 = *(unsigned __int16 *)(Animations[17 * (unsigned char)this->mRegion] + 8 * (unsigned __int16)this->field_12A + 8);
+	v7 = a3;
+	this->gAnim = v6;
+	if ( a3 == -1 )
+		v7 = v6 - 1;
+	v8 = a4;
+	if ( a4 == -1 )
+		v8 = v6 - 1;
+	if ( v7 < 0 || v7 >= v6 )
+		v7 = 0;
+	if ( v8 < 0 || v8 >= v6 )
+		v8 = 0;
+	this->field_140 = 0;
+
+	if ( v8 > v7 )
+		v9 = 1;
+	else
+		v9 = (v8 >= v7) - 1;
+
+	this->field_144 = v8;
+	this->field_141 = v9;
+	this->field_128 = v7;
+	this->field_146 = 0;
+	this->field_142 = (unsigned __int16)v7 == (unsigned __int16)v8;
 }
 
 static int * const gTimerRelated = (int*)0x006B4CA8;
