@@ -358,12 +358,17 @@ CBody::CBody()
 	this->field_D4 = 200;
 }
 
-CSuper::CSuper(){
-  this->gAnim = 1;
-  this->field_142 = 1;
-  this->field_13E = 100;
-  this->field_13F = 94;
-
+// @NotOk
+// code is matching but make sure vtable is also
+CSuper::CSuper()
+{
+	this->mFlags |= 2u;
+	this->gAnim = 1;
+	this->field_142 = 1;
+	//this->cbody.citem.vtable = (int)&off_53BBE8;
+	this->csuperend = 0x10000;
+	this->field_13E = 100;
+	this->field_13F = 94;
 }
 
 // @Ok
