@@ -430,3 +430,17 @@ int M3dMaths_MulDiv64(int a1, int a2, int a3)
 	print_if_false(hope >= -2147483648.0, "hope>=INT_MIN");
 	return (int)hope;
 }
+
+// @Ok
+void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2)
+{
+	a2->m[0][0] = a1->m[0][0];
+	a2->m[0][1] = a1->m[1][0];
+	a2->m[0][2] = a1->m[2][0];
+	a2->m[1][0] = a1->m[0][1];
+	a2->m[1][1] = a1->m[1][1];
+	a2->m[1][2] = a1->m[2][1];
+	a2->m[2][0] = a1->m[0][2];
+	a2->m[2][1] = a1->m[1][2];
+	a2->m[2][2] = a1->m[2][2];
+}

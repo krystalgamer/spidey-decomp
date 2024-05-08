@@ -63,3 +63,5 @@ EXPORT void VectorNormal(VECTOR*, VECTOR*);
 EXPORT int M3dMaths_SquareRoot0(int i);
 
 EXPORT int M3dMaths_MulDiv64(int, int, int);
+
+EXPORT void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2);
