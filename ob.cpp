@@ -4,6 +4,8 @@
 #include <cstring>
 #include "validate.h"
 #include "ps2redbook.h"
+#include "ps2m3d.h"
+#include "m3dutils.h"
 
 
 // @Ok
@@ -475,16 +477,21 @@ void CSuper::CycleAnim(int a2, char a3){
 }
 
 
-// @NotOk
-//Revisit
+// @Ok
 void CSuper::ApplyPose(__int16 *a2){
 
-	if (!this->field_188){
+	if (!this->field_188)
+	{
+		M3dUtils_ReadLinksPacket(this, reinterpret_cast<void*>(a2));
 		this->actualcsuperend = a2;
 	}
 
-	if ((this->mFlags & 4) != 0){
-		this->field_13E = 69;
+	M3dUtils_InBetween(this);
+
+	if ((this->mFlags & 4) != 0)
+	{
+		M3d_BuildTransform(this);
+		M3dUtils_BuildPose(this);
 	}
 }
 
