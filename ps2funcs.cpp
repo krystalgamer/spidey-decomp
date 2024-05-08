@@ -1,5 +1,6 @@
 #include "ps2funcs.h"
 #include "validate.h"
+#include <cmath>
 
 EXPORT __int16 gRotMatrix[3][3];
 
@@ -20,6 +21,7 @@ void validate_MATRIX(void){
 	VALIDATE(MATRIX, t, 0x14);
 }
 
+// @Ok
 void gte_SetRotMatrix(MATRIX* a1){
 
 	for (int i = 0; i < 3; i++){
@@ -29,12 +31,14 @@ void gte_SetRotMatrix(MATRIX* a1){
 	}
 }
 
+// @Ok
 void gte_ldv0(const SVECTOR* a1){
 	vertexRegister[0] = a1->vx;
 	vertexRegister[1] = a1->vy;
 	vertexRegister[2] = a1->vz;
 }
 
+// @Ok
 void __inline FixedXForm(__int16 matrix[3][3], const VECTOR* a, VECTOR *r){
 
 	int x = a->vx;
@@ -47,6 +51,7 @@ void __inline FixedXForm(__int16 matrix[3][3], const VECTOR* a, VECTOR *r){
 	r->pad = (long)r;
 }
 
+// @Ok
 void gte_rtv0tr(void){
 
 	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
@@ -56,6 +61,7 @@ void gte_rtv0tr(void){
 	gGeneralLongVector.vz += translationVector.vz >> 12;
 }
 
+// @Ok
 void gte_stlvnl(VECTOR *a1)
 {
   a1->vx = gGeneralLongVector.vx;
@@ -63,6 +69,7 @@ void gte_stlvnl(VECTOR *a1)
   a1->vz = gGeneralLongVector.vz;
 }
 
+// @Ok
 void gte_rtps(void){
 
 	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
@@ -88,6 +95,7 @@ void gte_rtps(void){
 }
 
 
+// @ok
 void gte_rtpt(void){
 	if ( !stubGte )
 		stubbed_printf("stubbed out: gte_rtpt()");
@@ -98,6 +106,7 @@ EXPORT VECTOR gWtfOP12;
 EXPORT VECTOR gOp12Result;
 
 
+// @Ok
 void gte_op12(void)
 {
   gGeneralLongVector.vz = (gFtwOp12.vy * gWtfOP12.vx - gWtfOP12.vy * gFtwOp12.vx) >> 12;
@@ -107,11 +116,13 @@ void gte_op12(void)
 }
 
 
+// @Ok
 void gte_ldlvl(VECTOR *a1)
 {
   gOp12Result = *a1;
 }
 
+// @Ok
 void gte_sqr0(void)
 {
   gGeneralLongVector.vx = gOp12Result.vx * gOp12Result.vx;
@@ -121,6 +132,7 @@ void gte_sqr0(void)
 
 
 
+// @Ok
 void gte_rtv0(void)
 {
 	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
@@ -128,17 +140,20 @@ void gte_rtv0(void)
 	gOp12Result = gGeneralLongVector;
 }
 
+// @Ok
 void gte_stlvnl0(int *a1)
 {
   *a1 = gGeneralLongVector.vx;
 }
 
+// @Ok
 void gte_stlvnl2(int *a1)
 {
   *a1 = gGeneralLongVector.vz;
 }
 
 EXPORT int gScalar;
+// @Ok
 void gte_gpf0()
 {
   gGeneralLongVector.vx = gOp12Result.vx * gScalar;
@@ -148,6 +163,7 @@ void gte_gpf0()
 
 EXPORT int lzc;
 
+// @NotOk
 // Stupid function, can be extremely simplified
 void gte_stlzc(int *a1)
 {
@@ -182,6 +198,7 @@ void gte_stlzc(int *a1)
 }
 
 
+// @Ok
 void gte_stsv(SVECTOR *a1)
 {
   a1->vx = (short)gOp12Result.vx;
@@ -190,6 +207,7 @@ void gte_stsv(SVECTOR *a1)
 }
 
 
+// @NotOk
 // Revisit, maybe with validator???
 void gte_mvmva(int _sf, int mx, int a3, int cv, int lm)
 {
@@ -222,17 +240,20 @@ void gte_mvmva(int _sf, int mx, int a3, int cv, int lm)
 }
 
 
+// @Ok
 void gte_stsxy(int *a1)
 {
   *a1 = (gGeneralLongVector.vx & 0xFFFF) | (gGeneralLongVector.vy << 16);
 }
 
+// @Ok
 void gte_lddp(int a1)
 {
   gScalar = a1;
 }
 
 
+// @Ok
 void gte_ldsvrtrow0(const SVECTOR *a1)
 {
   gRotMatrix[0][0] = a1->vx;
@@ -240,17 +261,20 @@ void gte_ldsvrtrow0(const SVECTOR *a1)
   gRotMatrix[0][2] = a1->vz;
 }
 
+// @Ok
 void gte_ldopv1(VECTOR *a1)
 {
   gWtfOP12 = *a1;
 }
 
+// @Ok
 void gte_ldopv2(VECTOR *a1)
 {
   gFtwOp12 = *a1;
 }
 
 
+// @NotOk
 // Garbage revisit
 // vertex register is not vector, i added one to it so it doesn't crash, it's trash
 void gte_ldlv0(const VECTOR *a1)
@@ -259,6 +283,7 @@ void gte_ldlv0(const VECTOR *a1)
 }
 
 
+// @NotOk
 void gte_stsxy3(int *a1, int *a2, int *a3)
 {
   *a1 = (gOp12Result.vx & 0xFFFF) | (gOp12Result.vy << 16);
@@ -269,10 +294,12 @@ void gte_stsxy3(int *a1, int *a2, int *a3)
 }
 
 
+// @Ok
 void gte_rtir(void){
 	FixedXForm(gRotMatrix, &gOp12Result, &gGeneralLongVector);
 }
 
+// @Ok
 void M3dMaths_SetIdentityRotation(MATRIX *a1)
 {
   a1->m[2][2] = 4096;
@@ -288,6 +315,7 @@ void M3dMaths_SetIdentityRotation(MATRIX *a1)
   a1->m[0][1] = 0;
 }
 
+// @NotOk
 // Revisit, with validator
 void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3)
 {
@@ -340,6 +368,7 @@ void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3)
 }
 
 
+// @Ok
 void MulMatrix(MATRIX *a1, MATRIX *a2)
 {
   //MATRIX v2 = *a1;
@@ -353,6 +382,7 @@ void MulMatrix(MATRIX *a1, MATRIX *a2)
   MulMatrix0(&v2, a2, a1);
 }
 
+// @Ok
 void m3d_ZeroTransVector(void)
 {
   translationVector.vx = 0;
@@ -360,8 +390,43 @@ void m3d_ZeroTransVector(void)
   translationVector.vz = 0;
 }
 
+// @NotOk
 void MToQ(MATRIX const & a1, CQuat& a2){
 }
 
+// @NotOk
 void VectorNormal(VECTOR* a1, VECTOR* a2){
+}
+
+
+// @NotOk
+// fild, fstp fiasco, goofyness all around
+int M3dMaths_SquareRoot0(int i){
+
+    if (i <= (int)0xffff8000) {
+        return 0x8000;
+    }
+
+    if (i < 0) {
+        return 0;
+    }
+
+	volatile double tmp = i;
+	return (int)sqrt(tmp);
+}
+
+
+
+// @Ok
+int M3dMaths_MulDiv64(int a1, int a2, int a3)
+{
+	if (!a3)
+	{
+		return -1;
+	}
+
+	double hope = (double)a1 * (double)a2 / (double)a3;
+	print_if_false(hope <= 2147483647.0, "hope<=INT_MAX");
+	print_if_false(hope >= -2147483648.0, "hope>=INT_MIN");
+	return (int)hope;
 }

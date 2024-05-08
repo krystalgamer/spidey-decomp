@@ -59,3 +59,7 @@ EXPORT void MulMatrix(MATRIX *a1, MATRIX *a2);
 EXPORT void m3d_ZeroTransVector(void);
 EXPORT void MToQ(MATRIX const &, CQuat&);
 EXPORT void VectorNormal(VECTOR*, VECTOR*);
+
+EXPORT int M3dMaths_SquareRoot0(int i);
+
+EXPORT int M3dMaths_MulDiv64(int, int, int);
