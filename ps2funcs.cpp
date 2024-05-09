@@ -485,3 +485,5 @@ void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int)
 	if ( !byte_54D347 )
 		stubbed_printf("stubbed out: void M3dAsm_ProcessPolys(Uint32 *pFace, SVECTOR *Normals, int NumFaces)");
 }
+
+
