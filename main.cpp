@@ -6,68 +6,41 @@
 #include "vector.h"
 #include "friction.h"
 #include "bit.h"
-
 #include "front.h"
-
 #include "pshell.h"
-
 #include "baddy.h"
-
 #include "mj.h"
-
 #include "submarin.h"
-
 #include "venom.h"
-
 #include "ps2funcs.h"
-
 #include "blackcat.h"
-
 #include "torch.h"
-
 #include "hostage.h"
 #include "cop.h"
-
 #include "carnage.h"
-
 #include "chopper.h"
-
 #include "docock.h"
-
 #include "jonah.h"
-
 #include "lizard.h"
-
 #include "lizman.h"
-
 #include "mysterio.h"
-
 #include "platform.h"
-
 #include "rhino.h"
-
 #include "scorpion.h"
-
 #include "simby.h"
-
 #include "spclone.h"
-
 #include "superock.h"
-
 #include "thug.h"
-
 #include "turret.h"
-
 #include "shell.h"
-
 #include "web.h"
 #include "bit2.h"
 #include "camera.h"
 #include "quat.h"
-
 #include "mem.h"
 #include "exp.h"
 #include "m3dcolij.h"
+#include "m3dinit.h"
 
 
 template<bool b>
@@ -232,6 +205,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SHandle();
 	validate_CItemFrag();
 	validate_SLineInfo();
+	validate_STexWibItemInfo();
 
 
 
