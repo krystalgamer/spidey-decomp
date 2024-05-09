@@ -487,3 +487,10 @@ void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int)
 }
 
 
+// @Ok
+void M3dAsm_SetTransVector(VECTOR* a1)
+{
+	translationVector.vx = a1->vx;
+	translationVector.vy = a1->vy;
+	translationVector.vz = a1->vz;
+}
