@@ -70,3 +70,5 @@ class CItem;
 EXPORT void M3dMaths_ScaleMatrix(CItem*, MATRIX *a2);
 
 EXPORT void M3dMaths_CopyMat(MATRIX*, MATRIX*);
+
+EXPORT void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int);

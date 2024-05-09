@@ -476,3 +476,12 @@ void M3dMaths_CopyMat(MATRIX* a1, MATRIX* a2)
 {
 	memcpy(reinterpret_cast<void*>(a2), reinterpret_cast<void*>(a1), 3*3*2);
 }
+
+
+unsigned char byte_54D347 = 1;
+// @Ok
+void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int)
+{
+	if ( !byte_54D347 )
+		stubbed_printf("stubbed out: void M3dAsm_ProcessPolys(Uint32 *pFace, SVECTOR *Normals, int NumFaces)");
+}
