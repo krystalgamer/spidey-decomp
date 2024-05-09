@@ -240,6 +240,10 @@ SOURCE=.\spclone.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\spidey.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\spool.cpp
 # End Source File
 # Begin Source File
@@ -433,6 +437,10 @@ SOURCE=.\simby.h
 # Begin Source File
 
 SOURCE=.\spclone.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\spidey.h
 # End Source File
 # Begin Source File
 

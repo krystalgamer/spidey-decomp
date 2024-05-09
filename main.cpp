@@ -41,6 +41,7 @@
 #include "exp.h"
 #include "m3dcolij.h"
 #include "m3dinit.h"
+#include "spidey.h"
 
 
 template<bool b>
@@ -206,6 +207,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CItemFrag();
 	validate_SLineInfo();
 	validate_STexWibItemInfo();
+	validate_CPlayer();
 
 
 
