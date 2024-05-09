@@ -494,3 +494,16 @@ void M3dAsm_SetTransVector(VECTOR* a1)
 	translationVector.vy = a1->vy;
 	translationVector.vz = a1->vz;
 }
+
+
+// @TODO
+MATRIX* RotMatrixYXZ(SVECTOR *a1, MATRIX *a2)
+{
+	return reinterpret_cast<MATRIX*>(0x69696969);
+}
+
+// @Ok
+MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2)
+{
+	return RotMatrixYXZ(a1, a2);
+}

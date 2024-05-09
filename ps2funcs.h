@@ -73,3 +73,6 @@ EXPORT void M3dMaths_CopyMat(MATRIX*, MATRIX*);
 
 EXPORT void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int);
 EXPORT void M3dAsm_SetTransVector(VECTOR*);
+
+EXPORT MATRIX* RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
+EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
