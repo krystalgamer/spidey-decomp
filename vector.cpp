@@ -124,6 +124,7 @@ CVector operator*(const CVector& lhs, const CVector& other){
 	return res;
 }
 
+// @Ok
 CVector operator>>(const CVector& lhs, const int& other)
 {
 	CVector res;

@@ -244,15 +244,36 @@ char CPlayer::DecreaseWebbing(int a2)
 static CVector * const stru_56F1B4 = (CVector*)0x56F1B4;
 static MATRIX * const stru_56F224 = (MATRIX*)0x56F224;
 
+// @NotOk
+// Globals
+// Can be optimized (remove tmp)
+// gte_ldlv0 is dangerous it reads more memory than needed
 void CPlayer::RenderLookaroundReticle(void)
 {
 	if (this->field_DE4)
 	{
-		CVector v8 = *stru_56F1B4;
-		int v5 = 12;
-		int v7[10];
 
-		*reinterpret_cast<CVector*>(&v7[9]) = this->field_DC0 >> v5;
+		CVector tmp = *stru_56F1B4;
+		CVector vec  = (this->field_DC0 >> 12) - tmp;
+		
+		gte_SetRotMatrix(stru_56F224);
+		m3d_ZeroTransVector();
+		gte_ldlv0(reinterpret_cast<VECTOR*>(&vec));
+		gte_rtps();
+
+		int v5;
+		gte_stlvnl2(&v5);
+
+		__int16 v6[2];
+		gte_stsxy(reinterpret_cast<int*>(v6));
+
+		int v3 = 3072 - v5;
+		if (v3 < 768)
+		{
+			v3 = 768;
+		}
+
+		this->DrawRecticle(v6[0], v6[1], v3);
 	}
 }
 
