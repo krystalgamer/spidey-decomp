@@ -47,6 +47,7 @@ class CPlayer : public CSuper
 		EXPORT void ExitLookaroundMode(void);
 		EXPORT void SetIgnoreInputTimer(int);
 		EXPORT void PutCameraBehind(int);
+		EXPORT void SetSpideyLookaroundCamValue(unsigned __int16, unsigned __int16, __int16);
 };
 
 void validate_CPlayer(void);

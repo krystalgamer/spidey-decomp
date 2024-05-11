@@ -73,8 +73,59 @@ void CPlayer::ExitLookaroundMode(void)
 	}
 }
 
+//@TODO
 void CPlayer::PutCameraBehind(int)
 {
+}
+
+static int * const dword_6A81FC = (int*)0x6A81FC;
+static int * const dword_6A8208 = (int*)0x6A8208;
+static int * const dword_6A8260 = (int*)0x6A8260;
+
+// @NotOk
+// Remove globals, there's an extra test for some reason
+void CPlayer::SetSpideyLookaroundCamValue(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)
+{
+	unsigned int actualA1 = a1;
+	if (actualA1)
+	{
+		actualA1--;
+		if (actualA1)
+		{
+			actualA1--;
+			if (!actualA1)
+			{
+				if (a2)
+				{
+					print_if_false(0, "Bad spidey cam param type");
+				}
+				else
+				{
+					*dword_6A8208 = a3;
+				}
+			}
+		}
+		else
+		{
+			if (a2)
+			{
+				print_if_false(0, "Bad spidey cam param type");
+			}
+			else
+			{
+				*dword_6A81FC = a3;
+			}
+		}
+
+	}
+	else if (a2)
+	{
+		print_if_false(0, "Bad spidey cam param type");
+	}
+	else
+	{
+		*dword_6A8260 = a3;
+	}
 }
 
 void validate_CPlayer(void)
