@@ -7,5 +7,6 @@
 
 
 EXPORT void Redbook_XAStop(void);
+EXPORT int Redbook_XAPlay(int, int, int);
 
 #endif

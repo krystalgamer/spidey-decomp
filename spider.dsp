@@ -204,6 +204,10 @@ SOURCE=.\ps2funcs.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2lowsfx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2m3d.cpp
 # End Source File
 # Begin Source File
@@ -405,6 +409,10 @@ SOURCE=.\platform.h
 # Begin Source File
 
 SOURCE=.\ps2funcs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2lowsfx.h
 # End Source File
 # Begin Source File
 

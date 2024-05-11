@@ -5,6 +5,9 @@
 #include "screen.h"
 #include "ps2funcs.h"
 #include <cmath>
+#include "ps2lowsfx.h"
+#include "ps2redbook.h"
+#include "utils.h"
 
 // @Ok
 void CPlayer::SetIgnoreInputTimer(int a2)
@@ -172,12 +175,84 @@ void CPlayer::SetTargetTorsoAngle(__int16, int)
 {
 }
 
+
+static int * const dword_60CFE8 = (int*)0x60CFE8;
+static int * const dword_54D474 = (int*)0x54D474;
+static char * const byte_682770 = (char*)0x682770;
+extern int CurrentSuit;
+
+// @NotOk
+// Globals
+// The part with >> 12 has a jump in the original rather than it's perfect
+char CPlayer::DecreaseWebbing(int a2)
+{
+	if (!this->field_1AC &&
+			!*dword_60CFE8 &&
+			CurrentSuit != 3 &&
+			CurrentSuit != 4)
+	{
+		int v3;
+		int v4;
+
+		int tmpDword = *dword_54D474;
+		if (!tmpDword)
+		{
+			v3 = a2 << 7;
+			v4 = v3 >> 12;
+		}
+		else if (tmpDword == 1)
+		{
+			v3 = a2 << 11;
+			v4 = v3 >> 12;
+		}
+
+		int v5 = this->field_5D4;
+		if (v5 > v4)
+		{
+			this->field_5D4 = v5 - v4;
+			return 1;
+		}
+
+		int v7 = this->field_5D8;
+		if (v7)
+		{
+			this->field_5D4 = v5 - v4 + 4096;
+			this->field_5D8 = v7 - 1;
+			SFX_PlayPos(0x1E, &this->mPos, 0);
+			this->field_5E8 = 0;
+			return 1;
+		}
+
+		if (!this->field_E10)
+		{
+			if (!*byte_682770)
+			{
+				Redbook_XAPlay(33, Rnd(3) + 2, 0);
+			}
+
+			this->field_5E8 = 0;
+			return 0;
+		}
+
+		return 1;
+	}
+
+	return 1;
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
 
+	VALIDATE(CPlayer, field_1AC, 0x1AC);
 
 	VALIDATE(CPlayer, field_56C, 0x56C);
+
+
+	VALIDATE(CPlayer, field_5D4, 0x5D4);
+	VALIDATE(CPlayer, field_5D8, 0x5D8);
+
+	VALIDATE(CPlayer, field_5E8, 0x5E8);
 
 	VALIDATE(CPlayer, field_89C, 0x89C);
 
@@ -192,6 +267,7 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_DE4, 0xDE4);
 
+	VALIDATE(CPlayer, field_E10, 0xE10);
 	VALIDATE(CPlayer, field_E12, 0xE12);
 	VALIDATE(CPlayer, field_E18, 0xE18);
 }

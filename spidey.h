@@ -11,10 +11,19 @@ class CPlayer : public CSuper
 {
 	public:
 
-		unsigned char padTopPlayer[0x56C-0x194];
+		unsigned char padTopPlayer[0x1AC-0x194];
+		char field_1AC;
+		unsigned char padAfter1AC[0x56C-0x1AC-1];
 
 		int field_56C;
-		unsigned char padAfter56C[0x89C-0x56C-4];
+		unsigned char padAfter56C[0x5D4-0x56C-4];
+
+		int field_5D4;
+		int field_5D8;
+		unsigned char padAfter5D8[0x5E8-0x5D8-4];
+
+		char field_5E8;
+		unsigned char padAfter5E8[0x89C-0x5E8-4];
 
 		MATRIX field_89C;
 		unsigned char padAfter89C[0x8E9-0x89C-sizeof(MATRIX)];
@@ -36,8 +45,9 @@ class CPlayer : public CSuper
 		unsigned char padAfterCE4[0xDE4-0xCE4-4];
 
 		char field_DE4;
-		unsigned char padAfterDE4[0xE12-0xDE4-1];
+		unsigned char padAfterDE4[0xE10-0xDE4-1];
 
+		char field_E10;
 		__int16 field_E12;
 		unsigned char padAfterE12[4];
 
@@ -55,6 +65,7 @@ class CPlayer : public CSuper
 
 		EXPORT __int16 GetEffectiveHeading(void);
 		EXPORT void SetTargetTorsoAngle(__int16, int);
+		EXPORT char DecreaseWebbing(int);
 };
 
 void validate_CPlayer(void);

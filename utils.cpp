@@ -138,3 +138,9 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 	*dst = 0;
 	return total;
 }
+
+// @TODO
+int Rnd(int)
+{
+	return 0x420420;
+}
