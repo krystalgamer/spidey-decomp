@@ -14,9 +14,12 @@ class CPlayer : public CSuper
 		unsigned char padTopPlayer[0x56C-0x194];
 
 		int field_56C;
-		unsigned char padAfter56C[0x8EA-0x56C-4];
+		unsigned char padAfter56C[0x89C-0x56C-4];
 
+		MATRIX field_89C;
+		unsigned char padAfter89C[0x8E9-0x89C-sizeof(MATRIX)];
 
+		unsigned char field_8E9;
 		unsigned char field_8EA;
 		unsigned char padAFter8Ea;
 
@@ -48,6 +51,10 @@ class CPlayer : public CSuper
 		EXPORT void SetIgnoreInputTimer(int);
 		EXPORT void PutCameraBehind(int);
 		EXPORT void SetSpideyLookaroundCamValue(unsigned __int16, unsigned __int16, __int16);
+		EXPORT void SetTargetTorsoAngleToThisPoint(CVector *a2);
+
+		EXPORT __int16 GetEffectiveHeading(void);
+		EXPORT void SetTargetTorsoAngle(__int16, int);
 };
 
 void validate_CPlayer(void);

@@ -507,3 +507,28 @@ MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2)
 {
 	return RotMatrixYXZ(a1, a2);
 }
+
+
+// @Ok
+int ratan2(int x, int y)
+{
+	if (!y)
+	{
+		if (x < 0)
+		{
+			return -1024;
+		}
+		else if (x > 0)
+		{
+			return 1024;
+		}
+		else
+		{
+			print_if_false(0, "x and y are both zero (ratan2)");
+			return 0;
+		}
+	}
+
+	return atan2((double)x, (double)y) * 651.0006103515625;
+
+}
