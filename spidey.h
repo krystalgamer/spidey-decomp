@@ -42,7 +42,10 @@ class CPlayer : public CSuper
 		unsigned char padAfterCB4[0xCE4-0xCB4-4];
 
 		int field_CE4;
-		unsigned char padAfterCE4[0xDE4-0xCE4-4];
+		unsigned char padAfterCE4[0xDC0-0xCE4-4];
+
+		CVector field_DC0;
+		unsigned char padAfterDC0[0xDE4-0xDC0-sizeof(CVector)];
 
 		char field_DE4;
 		unsigned char padAfterDE4[0xE10-0xDE4-1];
@@ -66,6 +69,8 @@ class CPlayer : public CSuper
 		EXPORT __int16 GetEffectiveHeading(void);
 		EXPORT void SetTargetTorsoAngle(__int16, int);
 		EXPORT char DecreaseWebbing(int);
+		EXPORT void RenderLookaroundReticle(void);
+		EXPORT void DrawRecticle(unsigned __int16, unsigned __int16, unsigned int);
 };
 
 void validate_CPlayer(void);

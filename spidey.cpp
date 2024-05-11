@@ -240,6 +240,26 @@ char CPlayer::DecreaseWebbing(int a2)
 	return 1;
 }
 
+
+static CVector * const stru_56F1B4 = (CVector*)0x56F1B4;
+static MATRIX * const stru_56F224 = (MATRIX*)0x56F224;
+
+void CPlayer::RenderLookaroundReticle(void)
+{
+	if (this->field_DE4)
+	{
+		CVector v8 = *stru_56F1B4;
+		int v5 = 12;
+		int v7[10];
+
+		*reinterpret_cast<CVector*>(&v7[9]) = this->field_DC0 >> v5;
+	}
+}
+
+// @TODO
+void CPlayer::DrawRecticle(unsigned __int16, unsigned __int16, unsigned int)
+{}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -265,6 +285,7 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_CB4, 0xCB4);
 	VALIDATE(CPlayer, field_CE4, 0xCE4);
 
+	VALIDATE(CPlayer, field_DC0, 0xDC0);
 	VALIDATE(CPlayer, field_DE4, 0xDE4);
 
 	VALIDATE(CPlayer, field_E10, 0xE10);
