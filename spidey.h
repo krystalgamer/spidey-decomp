@@ -33,7 +33,10 @@ class CPlayer : public CSuper
 		unsigned char padAFter8Ea;
 
 		unsigned char gCamAngleLock; //8EC
-		unsigned char padAfterLock[0xC90-0x8EC-1];
+		unsigned char padAfterLock[0xAD4-0x8EC-1];
+
+		char field_AD4;
+		unsigned char padAfterAD4[0xC90-0xAD4-1];
 
 		int field_C90;
 		unsigned char padAfterC90[0xCB4-0xC90-4];
@@ -48,15 +51,23 @@ class CPlayer : public CSuper
 		unsigned char padAfterDC0[0xDE4-0xDC0-sizeof(CVector)];
 
 		char field_DE4;
-		unsigned char padAfterDE4[0xE10-0xDE4-1];
+		unsigned char padAfterDE4[0xDF0-0xDE4-1];
+
+		int field_DF0;
+		int field_DF4;
+
+		int field_DF8;
+		int field_DFC;
+		unsigned char padAfterDF8[0xE10-0xDFC-4];
 
 		char field_E10;
 		__int16 field_E12;
 		unsigned char padAfterE12[4];
 
 		int field_E18;
+		int field_E1C;
 
-		unsigned char padBottomPlayer[0xEFC-0xE18-4];
+		unsigned char padBottomPlayer[0xEFC-0xE1C-4];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);
@@ -71,6 +82,7 @@ class CPlayer : public CSuper
 		EXPORT char DecreaseWebbing(int);
 		EXPORT void RenderLookaroundReticle(void);
 		EXPORT void DrawRecticle(unsigned __int16, unsigned __int16, unsigned int);
+		EXPORT void SetTargetTorsoAngle(__int16, bool);
 };
 
 void validate_CPlayer(void);

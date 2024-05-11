@@ -281,6 +281,70 @@ void CPlayer::RenderLookaroundReticle(void)
 void CPlayer::DrawRecticle(unsigned __int16, unsigned __int16, unsigned int)
 {}
 
+
+// @Ok
+// instead of sub 0x1000 we do add 0xFFFFF000, dunno why
+// also abs is different but wtv
+void CPlayer::SetTargetTorsoAngle(__int16 a2, bool a3)
+{
+	int v4 = (a2 & 0xFFF);
+	__int16 EffectiveHeading = this->GetEffectiveHeading();
+
+	if ( (__int16)v4 == EffectiveHeading)
+	{
+		this->field_DF8 = 0;
+		return;
+	}
+
+	int v6 = this->field_E1C;
+	if (v6 & 6)
+		this->field_DF8 = 5 * this->field_DFC;
+	else
+		this->field_DF8 = 10;
+
+
+	if (v6 & 0x2000000)
+		this->field_DF8 <<= 1;
+
+	this->field_DF0 = v4;
+
+	int v7;
+	if (v4 > EffectiveHeading)
+	{
+		v7 = v4 - EffectiveHeading;
+		if ( v7 >= 2048 )
+			v7 = (__int16)(v4 - 0x1000) - EffectiveHeading;
+	}
+	else
+	{
+		int v8 = EffectiveHeading;
+		if ( EffectiveHeading - v4 >= 2048 )
+			v8 = (__int16)(EffectiveHeading - 0x1000);
+		v7 = v4 - v8;
+	}
+
+	int v9 = this->field_DF8;
+	int v10 = v7 / v9;
+	bool v11 = this->field_AD4 == 0;
+	this->field_DF4 = v7 / v9;
+	int v12 = 384;
+	if ( v11 )
+		v12 = 512;
+	int v13 = v12 / v9;
+	if ( a3 )
+		v13 <<= 1;
+	if ( v10 > v13 )
+	{
+		this->field_DF4 = v13;
+		this->field_DF8 = abs(v7 / v13);
+	}
+	if ( this->field_DF4 < -v13 )
+	{
+		this->field_DF4 = -v13;
+		this->field_DF8 = abs(v7 / v13);
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -302,6 +366,8 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, gCamAngleLock, 0x8EC);
 
+	VALIDATE(CPlayer, field_AD4, 0xAD4);
+
 	VALIDATE(CPlayer, field_C90, 0xC90);
 	VALIDATE(CPlayer, field_CB4, 0xCB4);
 	VALIDATE(CPlayer, field_CE4, 0xCE4);
@@ -309,7 +375,14 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_DC0, 0xDC0);
 	VALIDATE(CPlayer, field_DE4, 0xDE4);
 
+
+	VALIDATE(CPlayer, field_DF0, 0xDF0);
+	VALIDATE(CPlayer, field_DF4, 0xDF4);
+	VALIDATE(CPlayer, field_DF8, 0xDF8);
+	VALIDATE(CPlayer, field_DFC, 0xDFC);
+
 	VALIDATE(CPlayer, field_E10, 0xE10);
 	VALIDATE(CPlayer, field_E12, 0xE12);
 	VALIDATE(CPlayer, field_E18, 0xE18);
+	VALIDATE(CPlayer, field_E1C, 0xE1C);
 }
