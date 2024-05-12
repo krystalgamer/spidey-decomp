@@ -8,6 +8,8 @@
 #include "ps2lowsfx.h"
 #include "ps2redbook.h"
 #include "utils.h"
+#include "m3dutils.h"
+#include "bit.h"
 
 // @Ok
 void CPlayer::SetIgnoreInputTimer(int a2)
@@ -378,6 +380,51 @@ void CPlayer::PutCameraBehind(int a2)
 	}
 }
 
+
+// @NotOk
+// not matching become smoke trai lhas no cosntructor so it's inlined af
+void CPlayer::CreateJumpingSmashKickTrail(void)
+{
+	CVector vec;
+	vec.vx = 0;
+	vec.vy = 0;
+	vec.vz = 0;
+
+	if (!this->field_584)
+	{
+		M3dUtils_GetHookPosition(reinterpret_cast<VECTOR*>(&vec),
+				this,
+				5);
+
+		int args = this->field_580;
+		CSmokeTrail *smokeTrail = new CSmokeTrail(
+				&vec,
+				4,
+				args,
+				*(reinterpret_cast<unsigned char*>(&args) + 2),
+				*(reinterpret_cast<unsigned char*>(&args) + 1));
+
+		this->field_584 = reinterpret_cast<int>(smokeTrail);
+	}
+
+	if (!this->field_588)
+	{
+		M3dUtils_GetHookPosition(reinterpret_cast<VECTOR*>(&vec),
+				this,
+				6);
+
+		int args = this->field_580;
+		CSmokeTrail *smokeTrail = new CSmokeTrail(
+				&vec,
+				4,
+				static_cast<unsigned char>(args),
+				*(reinterpret_cast<unsigned char*>(&args) + 2),
+				*(reinterpret_cast<unsigned char*>(&args) + 1));
+
+		this->field_588 = reinterpret_cast<int>(smokeTrail);
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -385,6 +432,10 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
 
 	VALIDATE(CPlayer, field_56C, 0x56C);
+
+	VALIDATE(CPlayer, field_580, 0x580);
+	VALIDATE(CPlayer, field_584, 0x584);
+	VALIDATE(CPlayer, field_588, 0x588);
 
 
 	VALIDATE(CPlayer, field_5D4, 0x5D4);

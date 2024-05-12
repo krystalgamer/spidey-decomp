@@ -39,3 +39,6 @@ void M3dUtils_BuildPose(CSuper*)
 // @TODO
 void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)
 {}
+
+void M3dUtils_GetHookPosition(VECTOR*, CSuper*, int)
+{}

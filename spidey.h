@@ -16,7 +16,13 @@ class CPlayer : public CSuper
 		unsigned char padAfter1AC[0x56C-0x1AC-1];
 
 		int field_56C;
-		unsigned char padAfter56C[0x5D4-0x56C-4];
+		unsigned char padAfter56C[0x580-0x56C-4];
+
+		int field_580;
+		int field_584;
+		int field_588;
+		unsigned char padAfter584[0x5D4-0x588-4];
+
 
 		int field_5D4;
 		int field_5D8;
@@ -92,6 +98,7 @@ class CPlayer : public CSuper
 		EXPORT void RenderLookaroundReticle(void);
 		EXPORT void DrawRecticle(unsigned __int16, unsigned __int16, unsigned int);
 		EXPORT void SetTargetTorsoAngle(__int16, bool);
+		EXPORT void CreateJumpingSmashKickTrail(void);
 };
 
 void validate_CPlayer(void);

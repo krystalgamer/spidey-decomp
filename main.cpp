@@ -208,6 +208,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SLineInfo();
 	validate_STexWibItemInfo();
 	validate_CPlayer();
+	validate_CSmokeTrail();
 
 
 

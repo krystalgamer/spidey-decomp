@@ -234,3 +234,8 @@ void validate_CBit(void)
 	VALIDATE(CBit, mDead, 0x37);
 	VALIDATE(CBit, mFrigDeltaZ, 0x38);
 }
+
+void validate_CSmokeTrail(void)
+{
+	VALIDATE_SIZE(CSmokeTrail, 0x58);
+}
