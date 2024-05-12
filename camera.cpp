@@ -247,6 +247,14 @@ void CCamera::CM_FixedPos(void){
 
 }
 
+// @TODO
+void CCamera::SetCamYDistance(__int16, unsigned __int16)
+{}
+
+// @TODO
+void CCamera::SetCamAngle(__int16, unsigned __int16)
+{}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 

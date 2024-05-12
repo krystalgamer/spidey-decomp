@@ -78,11 +78,6 @@ void CPlayer::ExitLookaroundMode(void)
 	}
 }
 
-//@TODO
-void CPlayer::PutCameraBehind(int)
-{
-}
-
 static int * const dword_6A81FC = (int*)0x6A81FC;
 static int * const dword_6A8208 = (int*)0x6A8208;
 static int * const dword_6A8260 = (int*)0x6A8260;
@@ -345,6 +340,44 @@ void CPlayer::SetTargetTorsoAngle(__int16 a2, bool a3)
 	}
 }
 
+static __int16 * const word_6A8C66 = (__int16*)0x6A8C66;
+static __int16 * const word_610C4A = (__int16*)0x610C4A;
+static __int16 * const word_610C48 = (__int16*)0x610C48;
+
+// @NotOk
+// globals
+void CPlayer::PutCameraBehind(int a2)
+{
+	if (!this->gCamAngleLock)
+	{
+		if (!this->field_8E8)
+		{
+			gGlobalThisCamera->SetCamAngle(this->GetEffectiveHeading(), a2);
+		}
+		else
+		{
+			int v5 = (1024 - ratan2(this->field_C8C, this->field_C84)) & 0xFFF;
+			gGlobalThisCamera->SetCamAngle(v5, a2);
+
+			if (gGlobalThisCamera->mMode == 3)
+			{
+				if ((this->field_E2E | this->field_E2D) && this->field_E1C == 16)
+				{
+					int v6 = 2 * (this->field_E2D & 0xFFF);
+					gGlobalThisCamera->SetCamYDistance(*word_6A8C66 + ((500 * word_6A8C66[v6]) >> 12), a2);
+					gGlobalThisCamera->SetCamAngle(v5 + ((700 * word_610C48[v6]) >> 12), a2);
+				}
+				else
+				{
+					gGlobalThisCamera->SetCamYDistance(*word_6A8C66, a2);
+				}
+			}
+		}
+
+
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -361,12 +394,16 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_89C, 0x89C);
 
+	VALIDATE(CPlayer, field_8E8, 0x8E8);
 	VALIDATE(CPlayer, field_8E9, 0x8E9);
 	VALIDATE(CPlayer, field_8EA, 0x8EA);
 
 	VALIDATE(CPlayer, gCamAngleLock, 0x8EC);
 
 	VALIDATE(CPlayer, field_AD4, 0xAD4);
+
+	VALIDATE(CPlayer, field_C84, 0xC84);
+	VALIDATE(CPlayer, field_C8C, 0xC8C);
 
 	VALIDATE(CPlayer, field_C90, 0xC90);
 	VALIDATE(CPlayer, field_CB4, 0xCB4);
@@ -385,4 +422,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_E12, 0xE12);
 	VALIDATE(CPlayer, field_E18, 0xE18);
 	VALIDATE(CPlayer, field_E1C, 0xE1C);
+
+	VALIDATE(CPlayer, field_E2D, 0xE2D);
+	VALIDATE(CPlayer, field_E2E, 0xE2E);
+
 }

@@ -31,6 +31,8 @@ public:
 	EXPORT void SetFixedPosMode(CVector *a2, unsigned __int16 a3);
 	EXPORT void CM_FixedPosAngles(void);
 	EXPORT void CM_FixedPos(void);
+	EXPORT void SetCamYDistance(__int16, unsigned __int16);
+	EXPORT void SetCamAngle(__int16, unsigned __int16);
 
 
 	int padTop;

@@ -26,8 +26,9 @@ class CPlayer : public CSuper
 		unsigned char padAfter5E8[0x89C-0x5E8-4];
 
 		MATRIX field_89C;
-		unsigned char padAfter89C[0x8E9-0x89C-sizeof(MATRIX)];
+		unsigned char padAfter89C[0x8E8-0x89C-sizeof(MATRIX)];
 
+		unsigned char field_8E8;
 		unsigned char field_8E9;
 		unsigned char field_8EA;
 		unsigned char padAFter8Ea;
@@ -36,8 +37,12 @@ class CPlayer : public CSuper
 		unsigned char padAfterLock[0xAD4-0x8EC-1];
 
 		char field_AD4;
-		unsigned char padAfterAD4[0xC90-0xAD4-1];
+		unsigned char padAfterAD4[0xC84-0xAD4-1];
 
+		int field_C84;
+		unsigned int padAfterC84;
+
+		int field_C8C;
 		int field_C90;
 		unsigned char padAfterC90[0xCB4-0xC90-4];
 
@@ -66,8 +71,12 @@ class CPlayer : public CSuper
 
 		int field_E18;
 		int field_E1C;
+		unsigned char padAfterE1C[0xE2D-0xE1C-4];
 
-		unsigned char padBottomPlayer[0xEFC-0xE1C-4];
+		char field_E2D;
+		char field_E2E;
+
+		unsigned char padBottomPlayer[0xEFC-0xE2E-1];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);
