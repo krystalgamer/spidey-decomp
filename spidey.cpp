@@ -161,10 +161,56 @@ void CPlayer::SetTargetTorsoAngleToThisPoint(CVector *a2)
 	this->SetTargetTorsoAngle(v7 & 0xFFF, 0);
 }
 
-// @TODO
+// @Ok
 __int16 CPlayer::GetEffectiveHeading(void)
 { 
-	return 0x32;
+	if (!this->field_8E8)
+	{
+		return (1024 - ratan2(this->field_C74, this->field_C6C)) & 0xFFF;
+	}
+
+	CVector fourth;
+	fourth.vx = 0;
+	fourth.vy = -4096;
+	fourth.vz = 0;
+
+	CVector second;
+	second.vx = 0;
+	second.vy = 0;
+	second.vz = 0;
+
+	gte_ldopv1(reinterpret_cast<VECTOR*>(&fourth));
+	gte_ldopv2(reinterpret_cast<VECTOR*>(&this->field_C84));
+	gte_op12();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&second));
+	VectorNormal(reinterpret_cast<VECTOR*>(&second), reinterpret_cast<VECTOR*>(&second));
+
+	CVector first;
+	first.vx = 0;
+	first.vy = 0;
+	first.vz = 0;
+
+	gte_ldopv1(reinterpret_cast<VECTOR*>(&second));
+	gte_ldopv2(reinterpret_cast<VECTOR*>(&this->field_C84));
+	gte_op12();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&first));
+
+	first.vx = -first.vx;
+	first.vy = -first.vy;
+	first.vz = -first.vz;
+
+	gte_SetRotMatrix(&this->field_89C);
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&first));
+	gte_rtir();
+
+	CVector third;
+	third.vx = 0;
+	third.vy = 0;
+	third.vz = 0;
+
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&third));
+
+	return (ratan2(third.vz, third.vx) + 1024) & 0xFFF;
 }
 
 // @TODO

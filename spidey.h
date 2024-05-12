@@ -43,7 +43,14 @@ class CPlayer : public CSuper
 		unsigned char padAfterLock[0xAD4-0x8EC-1];
 
 		char field_AD4;
-		unsigned char padAfterAD4[0xC84-0xAD4-1];
+		unsigned char padAfterAD4[0xC6C-0xAD4-1];
+
+
+		int field_C6C;
+		unsigned char padAfterC6C[0xC74-0xC6C-4];
+
+		int field_C74;
+		unsigned char padAfterC74[0xC84-0xC74-4];
 
 		int field_C84;
 		unsigned int padAfterC84;
