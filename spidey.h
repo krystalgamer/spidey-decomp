@@ -11,7 +11,8 @@ class CPlayer : public CSuper
 {
 	public:
 
-		unsigned char padTopPlayer[0x1AC-0x194];
+		unsigned char padTopPlayer[0x1A8-0x194];
+		int field_1A8;
 		char field_1AC;
 		unsigned char padAfter1AC[0x56C-0x1AC-1];
 
@@ -46,11 +47,8 @@ class CPlayer : public CSuper
 		unsigned char padAfterAD4[0xC6C-0xAD4-1];
 
 
-		int field_C6C;
-		unsigned char padAfterC6C[0xC74-0xC6C-4];
-
-		int field_C74;
-		unsigned char padAfterC74[0xC84-0xC74-4];
+		CVector field_C6C;
+		unsigned char padAfterC6C[0xC84-0xC6C-sizeof(CVector)];
 
 		int field_C84;
 		unsigned int padAfterC84;
@@ -76,8 +74,11 @@ class CPlayer : public CSuper
 
 		int field_DF8;
 		int field_DFC;
-		unsigned char padAfterDF8[0xE10-0xDFC-4];
 
+		int field_E00;
+		unsigned char padAfterE00[0xE0C-0xE00-4];
+
+		int field_E0C;
 		char field_E10;
 		__int16 field_E12;
 		unsigned char padAfterE12[4];
@@ -106,6 +107,11 @@ class CPlayer : public CSuper
 		EXPORT void DrawRecticle(unsigned __int16, unsigned __int16, unsigned int);
 		EXPORT void SetTargetTorsoAngle(__int16, bool);
 		EXPORT void CreateJumpingSmashKickTrail(void);
+		EXPORT void PlaySingleAnim(int, int, int);
+		EXPORT void CutSceneSkipCleanup(void);
+		EXPORT void OrientToNormal(bool, CVector*);
+		EXPORT void PriorToVenomDistanceAttack(CVector);
+		EXPORT void SwitchToStandMode(void);
 };
 
 void validate_CPlayer(void);

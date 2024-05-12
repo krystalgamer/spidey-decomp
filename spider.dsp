@@ -272,6 +272,10 @@ SOURCE=.\torch.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\trig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\turret.cpp
 # End Source File
 # Begin Source File
@@ -477,6 +481,10 @@ SOURCE=.\thug.h
 # Begin Source File
 
 SOURCE=.\torch.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\trig.h
 # End Source File
 # Begin Source File
 

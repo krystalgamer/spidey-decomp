@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "m3dutils.h"
 #include "bit.h"
+#include "trig.h"
 
 // @Ok
 void CPlayer::SetIgnoreInputTimer(int a2)
@@ -166,7 +167,7 @@ __int16 CPlayer::GetEffectiveHeading(void)
 { 
 	if (!this->field_8E8)
 	{
-		return (1024 - ratan2(this->field_C74, this->field_C6C)) & 0xFFF;
+		return (1024 - ratan2(this->field_C6C.vz, this->field_C6C.vx)) & 0xFFF;
 	}
 
 	CVector fourth;
@@ -471,10 +472,87 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 	}
 }
 
+
+// @NotOk
+// missing destructor call
+void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
+{
+	// smoehting missing here
+	this->RunAnim(a2, a3, a4);
+}
+
+// @TODO
+void CPlayer::OrientToNormal(bool, CVector*)
+{}
+
+// @TODO
+void CPlayer::PriorToVenomDistanceAttack(CVector)
+{}
+
+// @TODO
+void CPlayer::SwitchToStandMode(void)
+{}
+
+// @NotOk
+// Globals
+// raw memory accesses
+void CPlayer::CutSceneSkipCleanup(void)
+{
+	Redbook_XAStop();
+
+	if (gGlobalThisCamera->mMode != 3 && Trig_GetLevelId() != 514)
+	{
+		gGlobalThisCamera->SetMode(static_cast<ECameraMode>(3));
+	}
+
+	int v3 = this->field_1A8;
+	CVector v14;
+	v14.vx = 0;
+	v14.vy = 0;
+	v14.vz = 0;
+
+
+	if (v3)
+	{
+		int* ptr = reinterpret_cast<int*>(Trig_GetLinksPointer(v3));
+		if (ptr[0])
+		{
+			Trig_GetPosition(&v14, ptr[1]);
+
+			v14.vy = 0;
+			v14.vx = (this->mPos.vx - v14.vx) >> 12;
+			v14.vz = (this->mPos.vz - v14.vz) >> 12;
+			VectorNormal(
+					reinterpret_cast<VECTOR*>(&v14),
+					reinterpret_cast<VECTOR*>(&v14));
+
+			this->field_A8 = 0;
+			this->field_AA = -4096;
+			this->field_AC = 0;
+		}
+		else
+		{
+			v14 = this->field_C6C;
+		}
+
+		this->PriorToVenomDistanceAttack(v14);
+	}
+
+	this->PlaySingleAnim(0, 0, -1);
+	this->SwitchToStandMode();
+	gGlobalThisCamera->SetStartPosition();
+
+	char * v13 = reinterpret_cast<char*>(this->field_E0C);
+	*(v13  + 256) = 1;
+	*(v13  + 48) = 1;
+
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
 
+	VALIDATE(CPlayer, field_1A8, 0x1A8);
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
 
 	VALIDATE(CPlayer, field_56C, 0x56C);
@@ -514,6 +592,9 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_DF4, 0xDF4);
 	VALIDATE(CPlayer, field_DF8, 0xDF8);
 	VALIDATE(CPlayer, field_DFC, 0xDFC);
+
+	VALIDATE(CPlayer, field_E00, 0xE00);
+	VALIDATE(CPlayer, field_E0C, 0xE0C);
 
 	VALIDATE(CPlayer, field_E10, 0xE10);
 	VALIDATE(CPlayer, field_E12, 0xE12);
