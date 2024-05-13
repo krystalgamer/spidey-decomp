@@ -20,6 +20,7 @@ public:
 	EXPORT void Die(int);
 	EXPORT int CheckStateFlags(SStateFlags *, int);
 	EXPORT int YawTowards(int, int);
+	EXPORT int RunTimer(int*);
 
 	unsigned char padBaddyStart[0x14];
 

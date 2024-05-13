@@ -122,6 +122,15 @@ int CBaddy::YawTowards(int a2, int a3){
 	return 0;
 }
 
+// @Ok
+int CBaddy::RunTimer(int *a2)
+{
+	*a2 -= this->field_80;
+	if ( *a2 < 0 )
+		*a2 = 0;
+	return *a2;
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
