@@ -154,6 +154,32 @@ int CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, int a5)
 }
 
 
+static CBody** const dword_56E990 = (CBody**)0x56E990;
+
+// @Ok
+CBody* CBaddy::StruckGameObject(int a2, int a3)
+{
+	CBody *result;
+	  if ( !a2
+			|| (result = Utils_CheckObjectCollision(
+				&this->field_2FC,
+				&this->mPos,
+				globalSuper,
+				this)) == 0 )
+	  {
+		  if (a3 && (result = Utils_CheckObjectCollision(&this->field_2FC, &this->mPos, *dword_56E990, this)))
+		  {
+			  print_if_false(result != this, "smoething's wrong in the state of denmark");
+			  return result;
+		  }
+
+		  return NULL;
+	  }
+
+	  return result;
+}
+
+
 
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);

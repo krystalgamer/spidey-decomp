@@ -1,5 +1,4 @@
 #pragma once
-
 #include "export.h"
 #include "ob.h"
 
@@ -23,6 +22,7 @@ public:
 	EXPORT int RunTimer(int*);
 	EXPORT int PathCheckGuts(CVector*, CVector*, CVector*, int);
 	EXPORT int PathCheck(CVector*, CVector*, CVector*, int);
+	EXPORT CBody* StruckGameObject(int, int);
 
 	unsigned char padBaddyStart[0x14];
 

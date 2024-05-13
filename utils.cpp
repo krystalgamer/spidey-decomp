@@ -144,3 +144,9 @@ int Rnd(int)
 {
 	return 0x420420;
 }
+
+// @TODO
+CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*)
+{
+	return reinterpret_cast<CBody*>(0x13052024);
+}
