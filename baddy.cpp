@@ -131,6 +131,30 @@ int CBaddy::RunTimer(int *a2)
 	return *a2;
 }
 
+// @TODO
+int CBaddy::PathCheckGuts(CVector*, CVector*, CVector*, int)
+{
+	return 0x14141414;
+}
+
+static int * const dword_5FBEE0 = (int*)0x5FBEE0;;
+// @NotOk
+// Globals (rest is matching)
+int CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, int a5)
+{
+
+	int v5 = *dword_5FBEE0;
+
+	if ( (this->field_2A8 & 0x2000))
+		*dword_5FBEE0 = 1;
+
+	int result = this->PathCheckGuts(a2, a3, a4, a5);
+	*dword_5FBEE0 = v5;
+	return result;
+}
+
+
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

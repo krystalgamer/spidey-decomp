@@ -21,6 +21,8 @@ public:
 	EXPORT int CheckStateFlags(SStateFlags *, int);
 	EXPORT int YawTowards(int, int);
 	EXPORT int RunTimer(int*);
+	EXPORT int PathCheckGuts(CVector*, CVector*, CVector*, int);
+	EXPORT int PathCheck(CVector*, CVector*, CVector*, int);
 
 	unsigned char padBaddyStart[0x14];
 
