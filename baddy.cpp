@@ -4,6 +4,8 @@
 #include "mem.h"
 
 
+// @NotOk
+// Global
 int CBaddy::DistanceToPlayer(int a2){
 	int v3; // eax	
 	int result; // eax
@@ -57,6 +59,7 @@ void CBaddy::CleanUpMessages(int, int){
 void CBaddy::Die(int){
 }
 
+// @Ok
 int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 
 	if(this->field_314 < 0){
@@ -64,7 +67,7 @@ int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 			return 0;
 	}
 	else if(this->field_31C.bothFlags == sFlags[this->field_314].flags[0]){
-		print_if_false(59, "This shouldn't be zero.  Remove state from table.");
+		print_if_false(sFlags[this->field_314].flags[1] != 0, "This shouldn't be zero.  Remove state from table.");
 		return sFlags[this->field_314].flags[1];
 	}
 
@@ -75,7 +78,7 @@ int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 		}
 
 		this->field_314 = i;
-		print_if_false(200, "This hsouldn't be zero.  Remove state from table.");
+		print_if_false(sFlags[i].flags[1] != 0, "This shouldn't be zero.  Remove state from table.");
 		return sFlags[i].flags[1];
 	}
 
