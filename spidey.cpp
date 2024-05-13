@@ -11,6 +11,8 @@
 #include "m3dutils.h"
 #include "bit.h"
 #include "trig.h"
+#include "m3dcolij.h"
+#include "m3dzone.h"
 
 // @Ok
 void CPlayer::SetIgnoreInputTimer(int a2)
@@ -548,6 +550,72 @@ void CPlayer::CutSceneSkipCleanup(void)
 
 }
 
+// @NotOk
+// globals
+// variables
+void CPlayer::TidyUpZipWebLandingPosition(int a2)
+{
+	SLineInfo v21;
+
+	int v2 = 0;
+
+	v21.field_18 = 0;
+	v21.field_1C = 0;
+	v21.field_20 = 0;
+	v21.field_24 = 0;
+	v21.field_28 = 0;
+	v21.field_2C = 0;
+
+	v21.field_6C = 0;
+	v21.field_70 = 0;
+	v21.field_74 = 0;
+	v21.field_78 = 0;
+	v21.field_7A = 0;
+	v21.field_7C = 0;
+
+	int i = 0;
+	do
+	{
+		int y = this->mPos.vy;
+		int v6 = 2 * (i & 0xFFF);
+
+		int v7 = word_610C4A[v6];
+		int v8 = word_610C48[v6];
+
+		int v9 = v2 * (((this->field_C78 * v7) >> 12) + ((this->field_C6C.vx * v8) >> 12));
+		int v10 = this->field_C7C * v7;
+		int v11 = this->field_C80 * v7;
+
+		v21.vec_0.vx = v9 + this->mPos.vx;
+		int v12 = (v10 >> 12) + ((this->field_C6C.vy * v8) >> 12);
+		v2 = a2;
+		int v13 = a2 * v12;
+		int v14 = (v11 >> 12) + ((this->field_C6C.vz * v8) >> 12);
+		int z = this->mPos.vz;
+
+		int v16 = a2 * v14;
+		v21.vec_0.vy = v13 + y;
+		v21.vec_0.vz = v16 + z;
+		v21.vec_C.vx = this->mPos.vx - v9;
+
+		int v17 = this->mPos.vy;
+		v21.vec_C.vy = v17 - v13;
+		v21.vec_C.vz = z - v16;
+		M3dColij_InitLineInfo(&v21);
+		M3dZone_LineToItem(&v21, 1);
+		if ( v21.field_68 )
+		{
+			int v18 = a2 * v21.field_7C;
+			int v19 = v17 + a2 * v21.field_7A;
+			this->mPos.vx += a2 * v21.field_78;
+			this->mPos.vy = v19;
+			this->mPos.vz = z + v18;
+		}
+
+		i += 512;
+	}while(i<4096);
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -577,6 +645,9 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_AD4, 0xAD4);
 
+	VALIDATE(CPlayer, field_C78, 0xC78);
+	VALIDATE(CPlayer, field_C7C, 0xC7C);
+	VALIDATE(CPlayer, field_C80, 0xC80);
 	VALIDATE(CPlayer, field_C84, 0xC84);
 	VALIDATE(CPlayer, field_C8C, 0xC8C);
 

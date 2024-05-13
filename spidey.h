@@ -48,8 +48,9 @@ class CPlayer : public CSuper
 
 
 		CVector field_C6C;
-		unsigned char padAfterC6C[0xC84-0xC6C-sizeof(CVector)];
-
+		int field_C78;
+		int field_C7C;
+		int field_C80;
 		int field_C84;
 		unsigned int padAfterC84;
 
@@ -112,6 +113,7 @@ class CPlayer : public CSuper
 		EXPORT void OrientToNormal(bool, CVector*);
 		EXPORT void PriorToVenomDistanceAttack(CVector);
 		EXPORT void SwitchToStandMode(void);
+		EXPORT void TidyUpZipWebLandingPosition(int);
 };
 
 void validate_CPlayer(void);
