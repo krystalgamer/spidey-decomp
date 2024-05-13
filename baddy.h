@@ -23,6 +23,8 @@ public:
 	EXPORT int PathCheckGuts(CVector*, CVector*, CVector*, int);
 	EXPORT int PathCheck(CVector*, CVector*, CVector*, int);
 	EXPORT CBody* StruckGameObject(int, int);
+	EXPORT void MarkAIProcList(int, int, int);
+	EXPORT void Neutralize(void);
 
 	unsigned char padBaddyStart[0x14];
 
@@ -72,7 +74,8 @@ public:
 	__int16 attributeArr[6];
 	CVector field_27C;
 	
-	unsigned char weirdpad[0x06];
+	unsigned char weirdpad[0x02];
+	int  field_28C;
 	int field_290;
 	unsigned char field_294;
 	unsigned char field_295;

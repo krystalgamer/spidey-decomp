@@ -180,6 +180,64 @@ CBody* CBaddy::StruckGameObject(int a2, int a3)
 }
 
 
+// @NotOk
+// Only tested for (1, 0, 0) which is Ok
+// others might be wrong
+void __inline CBaddy::MarkAIProcList(int a2, int a3, int a4)
+{
+	int it;
+	int current;
+
+	it = this->field_28C;
+	while (it)
+	{
+		current = it;
+		it = *reinterpret_cast<int*>(it + 28);
+
+		if (a2 && !(*reinterpret_cast<int*>(current + 8) & 0x20000) ||
+				a3 && (((*reinterpret_cast<int*>(current + 8)) & 0xFF00) == a3))
+		{
+			*reinterpret_cast<int*>(current+16) |= 1;
+		}
+		else if (a4 && (*reinterpret_cast<int*>(current + 8) & 0xFF00) == a4)
+		{
+			*reinterpret_cast<int*>(current + 16) |= 16;
+		}
+	}
+}
+
+
+// @Ok
+void CBaddy::Neutralize(void)
+{
+	this->MarkAIProcList(1, 0, 0);
+
+	this->gVec.vz = 0;
+	this->gVec.vy = 0;
+	this->gVec.vz = 0;
+
+	this->mAccellorVel.vz = 0;
+	this->mAccellorVel.vy = 0;
+	this->mAccellorVel.vx = 0;
+
+	this->gVec.vz = 0;
+	this->gVec.vy = 0;
+	this->gVec.vx = 0;
+
+	this->csVector1.vz = 0;
+	this->csVector1.vy = 0;
+	this->csVector1.vx = 0;
+
+	this->field_8E.vz = 0;
+	this->field_8E.vy = 0;
+	this->field_8E.vx = 0;
+
+	this->field_27C.vz = 0;
+	this->field_27C.vy = 0;
+	this->field_27C.vx = 0;
+
+	this->field_2A8 &= 0xB7FFFFFB;
+}
 
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
@@ -210,6 +268,7 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, attributeArr, 0x270);
 	VALIDATE(CBaddy, field_27C, 0x27C);
 
+	VALIDATE(CBaddy, field_28C, 0x28C);
 	VALIDATE(CBaddy, field_290, 0x290);
 	VALIDATE(CBaddy, field_294, 0x294);
 	VALIDATE(CBaddy, field_295, 0x295);
