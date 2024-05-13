@@ -42,7 +42,7 @@
 #include "m3dcolij.h"
 #include "m3dinit.h"
 #include "spidey.h"
-
+#include "message.h"
 
 template<bool b>
 
@@ -209,7 +209,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_STexWibItemInfo();
 	validate_CPlayer();
 	validate_CSmokeTrail();
-
+	validate_CMessage();
 
 
 	puts("[*] Validation done!");

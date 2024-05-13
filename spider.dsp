@@ -184,6 +184,10 @@ SOURCE=.\mem.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\message.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mj.cpp
 # End Source File
 # Begin Source File
@@ -393,6 +397,10 @@ SOURCE=.\m3dzone.h
 # Begin Source File
 
 SOURCE=.\mem.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\message.h
 # End Source File
 # Begin Source File
 

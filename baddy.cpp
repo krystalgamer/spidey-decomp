@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "utils.h"
 #include "mem.h"
+#include "message.h"
 
 
 // @NotOk
@@ -22,17 +23,15 @@ int CBaddy::DistanceToPlayer(int a2){
 	return result;
 }
 
-// Revisit
+// @Ok
 int CBaddy::TrapWeb(void){
-	if(!(this->field_2A8 & 0x10000)){
-		if (this->field_E2 > 0){
-		return 1;
-		}
+	if((this->field_2A8 & 0x10000) || (this->field_E2 <= 0)){
+		return 0;
 	}
 
-	
+	new CMessage(NULL, this, 5, 0);
 
-	return 0;
+	return 1;
 }
 
 //Revisit
