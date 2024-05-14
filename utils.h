@@ -15,5 +15,6 @@ EXPORT int Utils_ArcCos(int val);
 EXPORT int Utils_CopyString(const char*, char*, int);
 EXPORT int Rnd(int);
 EXPORT CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*);
+EXPORT int Utils_GetGroundHeight(CVector*, int, int, CBody**);
 
 #endif

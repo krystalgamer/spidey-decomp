@@ -25,6 +25,8 @@ public:
 	EXPORT void MarkAIProcList(int, int, int);
 	EXPORT void Neutralize(void);
 	EXPORT int TugWeb(void);
+	EXPORT int MakeSpriteRing(CVector*);
+	EXPORT void GetLocalPos(CVector *, CVector *, CSVector *);
 
 	unsigned char padBaddyStart[0x14];
 

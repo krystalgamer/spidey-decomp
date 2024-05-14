@@ -244,6 +244,59 @@ int CBaddy::TugWeb(void)
 	return 1;
 }
 
+// @Ok
+void __inline CBaddy::GetLocalPos(CVector *a2, CVector *a3, CSVector *a4)
+{
+	MATRIX v7;
+
+	if (a4)
+	{
+		M3dMaths_RotMatrixYXZ(
+				reinterpret_cast<SVECTOR*>(a4),
+				&v7);
+	}
+	else
+	{
+		M3dMaths_RotMatrixYXZ(
+				reinterpret_cast<SVECTOR*>(&this->mAngles),
+				&v7);
+	}
+
+	gte_SetRotMatrix(&v7);
+	*a3 = *a2;
+	gte_ldlvl(reinterpret_cast<VECTOR*>(a3));
+	gte_rtir();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(a3));
+
+}
+
+// @Ok
+int CBaddy::MakeSpriteRing(CVector* arg0)
+{
+	CVector mPos;
+	mPos.vx = 0;
+	mPos.vy = 0;
+	mPos.vz = 0;
+	
+	if (!arg0)
+	{
+		mPos = this->mPos;
+	}
+	else
+	{
+		CVector tmp = *arg0;
+
+		tmp >>= 12;
+		this->GetLocalPos(&tmp, &mPos, 0);
+
+		mPos <<= 12;
+		mPos += this->mPos;
+	}
+
+	mPos.vy = Utils_GetGroundHeight(&this->mPos, 300, 600, 0) - 0xA000;
+	return Bit_MakeSpriteRing(&mPos, 24, 8, 1, 512, 32, 16, 0);
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

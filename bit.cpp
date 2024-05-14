@@ -185,6 +185,11 @@ void CFT4Bit::SetAnim(int a2){
 }
 
 
+int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
+{
+	return 0x420690;
+}
+
 
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);

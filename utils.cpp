@@ -150,3 +150,9 @@ CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*)
 {
 	return reinterpret_cast<CBody*>(0x13052024);
 }
+
+// @TODO
+int Utils_GetGroundHeight(CVector*, int, int, CBody**)
+{
+	return 0x14052024;
+}

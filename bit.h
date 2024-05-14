@@ -110,6 +110,7 @@ class CSmokeTrail : public CNonRenderedBit
 		{}
 };
 
+EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
