@@ -602,10 +602,12 @@ void validate_CItem(void){
 	VALIDATE(CItem, field_20, 0x20);
 
 
+	VALIDATE(CItem, field_24, 0x24);
 	VALIDATE(CItem, field_28, 0x28);
 	VALIDATE(CItem, field_2A, 0x2A);
 	VALIDATE(CItem, field_2C, 0x2C);
 
+	VALIDATE(CItem, field_30, 0x30);
 	VALIDATE(CItem, field_34, 0x34);
 	VALIDATE(CItem, field_3C, 0x3C);
 

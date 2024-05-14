@@ -5,6 +5,7 @@
 #include "message.h"
 #include "web.h"
 #include <cmath>
+#include "trig.h"
 
 
 // @NotOk
@@ -40,10 +41,6 @@ int CBaddy::TrapWeb(void){
 //TODO
 void CBaddy::CleanUpMessages(int, int){
 	printf("LMAOOOO");
-}
-
-//TODO
-void CBaddy::Die(int){
 }
 
 // @Ok
@@ -373,11 +370,85 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 	return 2;
 }
 
+
+// @Ok
+void __inline CBaddy::SendDeathPulse(void)
+{
+
+	if (!this->field_211 && this->field_DE != (__int16)0xFFFF)
+	{
+		this->field_211 = 1;
+		Trig_SendPulse(
+				reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->field_DE & 0xFFFF)));
+	}
+}
+
+// @Ok
+int CBaddy::Die(int a2)
+{
+	if(!this->IsDead())
+	{
+		int v8;
+		int v9;
+		switch (a2)
+		{
+			case 0:
+				if (!(this->field_2A8 & 0x4000))
+				{
+					this->SendDeathPulse();
+				}
+			case 3:
+				this->mCBodyFlags |= 0x40;
+				this->mFlags |= 1;
+				break;
+			case 1:
+				if (!(this->field_2A8 & 0x4000))
+				{
+					this->SendDeathPulse();
+				}
+
+				this->mFlags |= 0x800;
+				this->field_30 = 128;
+				this->KillShadow();
+
+				this->mFlags |= 0x400;
+				this->field_24 = 0x404040;
+				this->field_1F8 = 0;
+				break;
+			case 2:
+				v8 = this->field_1F8;
+				v9 = v8 + 1;
+				this->field_1F8 = v9;
+				if ( v8 >= 40 )
+					return 1;
+
+				v9 = ((6553 * (40 - v9)) >> 12);
+				v8 = v9;
+
+				v8 <<= 8;
+				v8 |= v9;
+				v8 <<= 8;
+				v8 |= v9;
+
+				this->field_24 =  v8;
+				break;
+
+
+			default:
+				print_if_false(0, "Unknown die state");
+		}
+	}
+
+	return 0;
+}
+
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);
+	VALIDATE(CBaddy, field_1F8, 0x1F8);
 	VALIDATE(CBaddy, field_1FC, 0x1FC);
 	VALIDATE(CBaddy, field_1FE, 0x1FE);
 

@@ -15,3 +15,7 @@ void* Trig_GetLinksPointer(int)
 {
 	return reinterpret_cast<void*>(0x686849);
 }
+
+// @TODO
+void Trig_SendPulse(unsigned __int16*)
+{}

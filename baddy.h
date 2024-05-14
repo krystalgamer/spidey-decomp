@@ -15,7 +15,6 @@ public:
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
 	EXPORT void CleanUpMessages(int, int);
-	EXPORT void Die(int);
 	EXPORT int CheckStateFlags(SStateFlags *, int);
 	EXPORT int YawTowards(int, int);
 	EXPORT int RunTimer(int*);
@@ -28,6 +27,8 @@ public:
 	EXPORT int MakeSpriteRing(CVector*);
 	EXPORT void GetLocalPos(CVector *, CVector *, CSVector *);
 	EXPORT int SetHeight(int, int, int);
+	EXPORT void SendDeathPulse(void);
+	EXPORT int Die(int);
 
 	unsigned char padBaddyStart[0x14];
 
@@ -35,8 +36,7 @@ public:
 
 	unsigned char baddyPad[0x40];
 	int field_1F4;
-	
-	unsigned char padasdf[0x4];
+	int field_1F8;
 	__int16 field_1FC;
 	__int16 field_1FE;
 	unsigned char pad[0x1];

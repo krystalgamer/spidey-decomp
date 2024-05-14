@@ -9,5 +9,6 @@
 EXPORT int Trig_GetLevelId(void);
 EXPORT void Trig_GetPosition(CVector*, int);
 EXPORT void* Trig_GetLinksPointer(int);
+EXPORT void Trig_SendPulse(unsigned __int16*);
 
 #endif
