@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "message.h"
 #include "web.h"
+#include <cmath>
 
 
 // @NotOk
@@ -297,6 +298,81 @@ int CBaddy::MakeSpriteRing(CVector* arg0)
 	return Bit_MakeSpriteRing(&mPos, 24, 8, 1, 512, 32, 16, 0);
 }
 
+// @Ok
+int CBaddy::SetHeight(int a2, int a3, int a4)
+{
+	int v5 = this->field_2A8;
+	if (v5 & 0x8000)
+	{
+		return 1;
+	}
+
+	int *v7 = &this->field_2A4;
+	if (this->field_2A4
+			|| a2
+			|| (v5 & 0x40000) != 0
+			|| (v5 & 0x8000000) != 0 && ((v5 & 0x20000000) != 0 || (this->field_2F0 & 4) != 0) )
+	{
+		unsigned char v9;
+
+		if (a2 || ( 
+					v9 = this->field_80, v9 += this->field_213,
+				v9 >= this->field_212))
+		{
+			CVector v16;
+			v16.vx = this->mPos.vx;
+			v16.vy = (this->field_21E << 12) + this->mPos.vy;
+			v16.vz = this->mPos.vz;
+
+			int height = Utils_GetGroundHeight(&v16, a3, a4, reinterpret_cast<CBody**>(&this->field_2A4));
+			if (height == -1)
+			{
+				return 0;
+			}
+
+			int v7Value = *v7;
+			if (v7Value)
+			{
+				int v12 = *reinterpret_cast<int*>(v7Value + 0x64);
+				if (!v12)
+				{
+					*v7 = v12;
+				}
+				else
+				{
+					height += v12;
+				}
+			}
+
+			this->field_2A0 = height;
+			if (!this->field_212)
+				this->field_212 = 30;
+			this->field_213 = 0;
+		}
+	}
+
+	// label 21
+	int v13 = this->field_2A0 - (this->field_21E << 12);
+	int vy = this->mPos.vy;
+
+	if (v13 != vy)
+	{
+		int v15 = ((v13 - vy) >> 2) + vy;
+		this->mPos.vy = v15;
+		if ( abs(v15 - v13) <= (*v7 != 0 ? 122880 : 12888))
+		{
+			this->mPos.vy = v13;
+		}
+		else
+		{
+			return 1;
+		}
+		
+	}
+
+	return 2;
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
@@ -313,6 +389,9 @@ void validate_CBaddy(void){
 
 
 	VALIDATE(CBaddy, field_211, 0x211);
+	VALIDATE(CBaddy, field_212, 0x212);
+	VALIDATE(CBaddy, field_213, 0x213);
+
 	VALIDATE(CBaddy, field_218, 0x218);
 	VALIDATE(CBaddy, field_21E, 0x21E);
 	VALIDATE(CBaddy, registerArr, 0x220);
@@ -334,6 +413,8 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_297, 0x297);
 	VALIDATE(CBaddy, field_298, 0x298);
 
+	VALIDATE(CBaddy, field_2A0, 0x2A0);
+	VALIDATE(CBaddy, field_2A4, 0x2A4);
 	VALIDATE(CBaddy, field_2A8, 0x2A8);
 	VALIDATE(CBaddy, field_2AC, 0x2AC);
 

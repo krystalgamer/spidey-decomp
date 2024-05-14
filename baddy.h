@@ -27,6 +27,7 @@ public:
 	EXPORT int TugWeb(void);
 	EXPORT int MakeSpriteRing(CVector*);
 	EXPORT void GetLocalPos(CVector *, CVector *, CSVector *);
+	EXPORT int SetHeight(int, int, int);
 
 	unsigned char padBaddyStart[0x14];
 
@@ -51,7 +52,10 @@ public:
 	unsigned char field_20F;
 	unsigned char field_210;
 	unsigned char field_211;
-	unsigned char morerererPad[0x12 - 7 - 6];
+	unsigned char field_212;
+	unsigned char field_213;
+	unsigned char padAfter213[0x218 - 0x213 - 1];
+
 	int field_218;
 	unsigned char padAFter218[0x2];
 
@@ -84,8 +88,10 @@ public:
 	unsigned char field_296;
 	unsigned char field_297;
 	unsigned char field_298;
-	unsigned char morePad[0xA0 - 8 - 0x84 - 8];
+	unsigned char padAfter298[0x2A0 - 0x298 - 1];
 
+	int field_2A0;
+	int field_2A4;
 	int field_2A8;
 	int field_2AC;
 	int field_2B0;
