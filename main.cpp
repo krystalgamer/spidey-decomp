@@ -210,6 +210,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CPlayer();
 	validate_CSmokeTrail();
 	validate_CMessage();
+	validate_CTrapWebEffect();
 
 
 	puts("[*] Validation done!");

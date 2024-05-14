@@ -32,6 +32,10 @@ int Web_GetGroundY(const CVector* a1)
 	return gLineInfo.vec_C.vy;
 }
 
+// @TODO
+void CTrapWebEffect::Burst(void)
+{}
+
 void validate_CImpactWeb(void){
 	VALIDATE_SIZE(CImpactWeb, 0x8C);
 }
@@ -83,4 +87,9 @@ void validate_CWeb(void){
 
 void validate_CSwinger(void){
 	VALIDATE_SIZE(CSwinger, 0x190);
+}
+
+void validate_CTrapWebEffect(void)
+{
+	VALIDATE_SIZE(CTrapWebEffect, 0x430);
 }

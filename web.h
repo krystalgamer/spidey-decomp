@@ -73,6 +73,13 @@ class CSplat : public CQuadBit {
 public:
 };
 
+class CTrapWebEffect : public CNonRenderedBit
+{
+	public:
+		EXPORT void Burst(void);
+		unsigned char topPad[0x3F4];
+};
+
 
 EXPORT int Web_GetGroundY(const CVector*);
 
@@ -84,3 +91,4 @@ void validate_CDomeRing(void);
 void validate_CWeb(void);
 void validate_CSwinger(void);
 void validate_CSplat(void);
+void validate_CTrapWebEffect(void);
