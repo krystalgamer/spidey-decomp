@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "mem.h"
 #include "message.h"
+#include "web.h"
 
 
 // @NotOk
@@ -32,20 +33,6 @@ int CBaddy::TrapWeb(void){
 	new CMessage(NULL, this, 5, 0);
 
 	return 1;
-}
-
-//Revisit
-
-int CBaddy::TugWeb(void){
-	if(!(this->field_2A8 & 0x10000)){
-		if (this->field_E2 > 0){
-		return 1;
-		}
-	}
-
-	Mem_RecoverPointer((SHandle*)&this->field_10C);
-
-	return 0;
 }
 
 
@@ -236,6 +223,25 @@ void CBaddy::Neutralize(void)
 	this->field_27C.vx = 0;
 
 	this->field_2A8 &= 0xB7FFFFFB;
+}
+
+// @Ok
+int CBaddy::TugWeb(void)
+{
+	if ( (this->field_2A8 & 0x200) || this->field_E2 <= 0)
+	{
+
+		CTrapWebEffect *trapWeb = reinterpret_cast<CTrapWebEffect*>(
+				Mem_RecoverPointer(reinterpret_cast<SHandle*>(&this->field_10C)));
+
+		if (trapWeb)
+			trapWeb->Burst();
+
+		return 0;
+	}
+
+	new CMessage(0, this, 6, 0);
+	return 1;
 }
 
 void validate_CBaddy(void){

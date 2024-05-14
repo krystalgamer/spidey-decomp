@@ -14,7 +14,6 @@ class CBaddy : public CSuper {
 public:
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
-	EXPORT int TugWeb(void);
 	EXPORT void CleanUpMessages(int, int);
 	EXPORT void Die(int);
 	EXPORT int CheckStateFlags(SStateFlags *, int);
@@ -25,6 +24,7 @@ public:
 	EXPORT CBody* StruckGameObject(int, int);
 	EXPORT void MarkAIProcList(int, int, int);
 	EXPORT void Neutralize(void);
+	EXPORT int TugWeb(void);
 
 	unsigned char padBaddyStart[0x14];
 
