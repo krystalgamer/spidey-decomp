@@ -489,6 +489,39 @@ void CBaddy::CleanUpAIPRocList(int a2)
 	}
 }
 
+// @NotOk
+// Gloabsl
+// and vz
+int CBaddy::BumpedIntoSpidey(int a2)
+{
+	int v3 = this->field_208;
+	int v4;
+
+	if (v3 && *dword_5FCCF4 <= 4)
+	{
+		v4 = this->field_204;
+	}
+	else
+	{
+		this->field_208 = *dword_5FCCF4;
+		v4 = Utils_CrapXZDist(this->mPos, globalSuper->mPos);
+		this->field_204 = v4;
+	}
+
+	if (v4 < a2)
+	{
+		__int16 vz = *reinterpret_cast<__int16*>(globalSuper + 0x754); // wrong
+		int twoOneE = this->field_21E;
+
+		int res = twoOneE - vz - (globalSuper->mPos.vy >> 12) + (this->mPos.vy >> 12);
+		int shifted = res >> 31;
+
+		if ( (((shifted) ^ res) - shifted) < 200)
+			return 1;
+	}
+
+	return 0;
+}
 
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
