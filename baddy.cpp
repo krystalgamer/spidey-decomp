@@ -571,6 +571,56 @@ int CBaddy::ShouldFall(int a2, int a3)
 	return 0;
 }
 
+// @NotOk
+// Globals
+int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
+{
+	CSVector v16;
+	v16.vx = 0;
+	v16.vy = 0;
+	v16.vz = 0;
+
+	if (!a3)
+		return 0;
+
+	int v12 = a6->mPos.vy - this->mPos.vy;
+	if (abs(v12) > (a3 << 12))
+		return 0;
+
+	int v13;
+	if (a6 == globalSuper)
+	{
+		this->DistanceToPlayer(2);
+	}
+	else
+	{
+		Utils_CrapXZDist(this->mPos, a6->mPos);
+	}
+
+	if (v13 < a5)
+		return 1;
+
+	if (v13 > a4)
+		return 0;
+
+	Utils_CalcAim(&v16, &this->mPos, &a6->mPos);
+	int v14 = v16.vy - this->mAngles.vy;
+	if (v14 < -2048)
+	{
+		v14 += 4096;
+	}
+	else if (v14 >= -2048)
+	{
+		if (v14 > 2048)
+		{
+			v14 -= 4096;
+		}
+	}
+
+
+	return  abs(v14) <= (a2 >> 1);
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

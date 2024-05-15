@@ -33,6 +33,7 @@ public:
 	EXPORT int BumpedIntoSpidey(int);
 	EXPORT int PlayerIsVisible(int);
 	EXPORT int ShouldFall(int, int);
+	EXPORT int CheckSightCone(int, int, int, int, CBody*);
 
 	unsigned char padBaddyStart[0x14];
 

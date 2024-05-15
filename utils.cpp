@@ -162,3 +162,7 @@ int Utils_LineOfSight(CVector*, CVector*, CVector*, int)
 {
 	return 0x15052024;
 }
+
+// @TODO
+void Utils_CalcAim(CSVector*, CVector*, CVector*)
+{}
