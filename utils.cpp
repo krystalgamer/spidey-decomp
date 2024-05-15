@@ -156,3 +156,9 @@ int Utils_GetGroundHeight(CVector*, int, int, CBody**)
 {
 	return 0x14052024;
 }
+
+// @TODO
+int Utils_LineOfSight(CVector*, CVector*, CVector*, int)
+{
+	return 0x15052024;
+}

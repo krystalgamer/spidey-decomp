@@ -523,6 +523,24 @@ int CBaddy::BumpedIntoSpidey(int a2)
 	return 0;
 }
 
+
+int CBaddy::PlayerIsVisible(int a2)
+{
+	if (!globalSuper->IsDead() &&
+			Utils_LineOfSight(&this->mPos, &globalSuper->mPos, 0, 0)
+			)
+	{
+		if (!this->PathCheck( &this->mPos, &globalSuper->mPos, 0, 55))
+		{
+			this->field_1A8 = globalSuper->mPos;
+			this->field_2A8 |= 0x800;
+		}
+		return 1;
+	}
+
+	return 0;
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

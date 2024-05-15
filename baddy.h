@@ -31,6 +31,7 @@ public:
 	EXPORT int Die(int);
 	EXPORT void CleanUpAIPRocList(int);
 	EXPORT int BumpedIntoSpidey(int);
+	EXPORT int PlayerIsVisible(int);
 
 	unsigned char padBaddyStart[0x14];
 
