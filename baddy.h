@@ -29,6 +29,7 @@ public:
 	EXPORT int SetHeight(int, int, int);
 	EXPORT void SendDeathPulse(void);
 	EXPORT int Die(int);
+	EXPORT void CleanUpAIPRocList(int);
 
 	unsigned char padBaddyStart[0x14];
 

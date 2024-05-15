@@ -443,6 +443,33 @@ int CBaddy::Die(int a2)
 }
 
 
+
+// @NotOk
+// Calling a vfunc with fastcall, basically matching but polluting edx
+void CBaddy::CleanUpAIPRocList(int a2)
+{
+	int v2 = this->field_28C;
+	int v3;
+
+
+	while (v2)
+	{
+		v3 = v2;
+		v2 = *reinterpret_cast<int*>(v2 + 28);
+
+		if (a2 || (*reinterpret_cast<unsigned char*>(v3 + 16) & 1))
+		{
+			if (v3)
+			{
+				typedef void (__fastcall *wtvHappeningPtr)(void*, void*, int);
+				wtvHappeningPtr wtvHappening = reinterpret_cast<wtvHappeningPtr>(**reinterpret_cast<int**>(v3));
+				wtvHappening(reinterpret_cast<void*>(v3), NULL, 1);
+			}
+		}
+	}
+}
+
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
