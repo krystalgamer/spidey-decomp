@@ -5,6 +5,7 @@
 #include "vector.h"
 #include <cstdio>
 #include "validate.h"
+#include "ps2funcs.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -136,6 +137,21 @@ CVector operator>>(const CVector& lhs, const int& other)
 	return res;
 }
 
+// @Ok
+int CVector::Length(void)
+{
+	CVector v4;
+
+	v4.vx = this->vx >> 12;
+	v4.vy = this->vy >> 12;
+	v4.vz = this->vz >> 12;
+
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&v4));
+	gte_sqr0();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&v4));
+
+	return M3dMaths_SquareRoot0(v4.vx + v4.vy + v4.vz);
+}
 
 
 

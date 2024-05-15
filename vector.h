@@ -33,6 +33,7 @@ public:
 
 		return *this;
 	}
+	EXPORT int Length(void);
 };
 
 EXPORT CVector operator/(const CVector& lhs, const int& other);
