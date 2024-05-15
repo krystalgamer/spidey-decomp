@@ -524,6 +524,7 @@ int CBaddy::BumpedIntoSpidey(int a2)
 }
 
 
+// @Ok
 int CBaddy::PlayerIsVisible(int a2)
 {
 	if (!globalSuper->IsDead() &&
@@ -536,6 +537,35 @@ int CBaddy::PlayerIsVisible(int a2)
 			this->field_2A8 |= 0x800;
 		}
 		return 1;
+	}
+
+	return 0;
+}
+
+// @Ok
+int CBaddy::ShouldFall(int a2, int a3)
+{
+	int GroundHeight = Utils_GetGroundHeight(&this->mPos, a2, 4096, 0);
+	if (GroundHeight == -1)
+	{
+		this->field_308 = this->mPos.vy - 100;
+		this->KillShadow();
+
+		this->field_2A8 &= 0xFFFFFBFF;
+
+		return GroundHeight;
+	}
+
+	int v7 = GroundHeight - (this->field_21E << 12);
+
+	if (v7 - this->mPos.vy > a3)
+	{
+		this->KillShadow();
+
+		this->field_308 = v7;
+		this->field_2A8 |= 0x400;
+
+		return v7 - this->mPos.vy;
 	}
 
 	return 0;
@@ -597,6 +627,7 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_2FC, 0x2FC);
 
 
+	VALIDATE(CBaddy, field_308, 0x308);
 	VALIDATE(CBaddy, field_314, 0x314);
 	VALIDATE(CBaddy, field_31C, 0x31C);
 }

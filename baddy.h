@@ -32,6 +32,7 @@ public:
 	EXPORT void CleanUpAIPRocList(int);
 	EXPORT int BumpedIntoSpidey(int);
 	EXPORT int PlayerIsVisible(int);
+	EXPORT int ShouldFall(int, int);
 
 	unsigned char padBaddyStart[0x14];
 
@@ -112,9 +113,9 @@ public:
 
 	unsigned char shitterPad[0x4];
 	CVector field_2FC;
+	int field_308;
+	unsigned char padAfter308[0x314 - 0x308 - 4];
 
-
-	unsigned char ajskdfdfgsjkdfgjksdfgjkPad[11];
 	__int16 field_314;
 	unsigned char asdfahsudfausdhuasduhPad[6];
 	SStateFlags field_31C;
