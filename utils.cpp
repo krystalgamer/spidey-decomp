@@ -163,6 +163,61 @@ int Utils_LineOfSight(CVector*, CVector*, CVector*, int)
 	return 0x15052024;
 }
 
-// @TODO
-void Utils_CalcAim(CSVector*, CVector*, CVector*)
-{}
+int catan(int a1)
+{
+	 return (atan((double)a1 / 4096.0) * 651.0006103515625);
+}
+
+// @Ok
+int Utils_CalcAim(CSVector* a1, CVector* a2, CVector* a3)
+{
+	int x,y,z;
+	x = (a3->vx - a2->vx) >> 12;
+	y = (a3->vy - a2->vy) >> 12;
+	z = (a3->vz - a2->vz) >> 12;
+
+	if (z)
+	{
+		if (z > 0)
+		{
+			a1->vy = catan(-((x << 12) / z));
+		}
+		else
+		{
+			a1->vy = catan((x << 12) / z);
+		}
+	}
+	else
+	{
+		if (x > 0)
+		{
+			a1->vy = -1024;
+		}
+		else
+		{
+			a1->vy = 1024;
+		}
+	}
+
+	int v7 = M3dMaths_SquareRoot0(x*x + z*z);
+	if (v7)
+	{
+		if (y > 0)
+		{
+			a1->vx = catan((y<<12) / v7);
+		}
+		else
+		{
+			a1->vx = -catan(-4096 * y / v7);
+		}
+	}
+	else
+	{
+		a1->vx = y > 0 ? 1024 : -1024;
+	}
+
+	a1->vx &= 0xFFF;
+	a1->vy &= 0xFFF;
+	a1->vz = 0;
+	return v7;
+}

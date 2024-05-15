@@ -590,11 +590,11 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 	int v13;
 	if (a6 == globalSuper)
 	{
-		this->DistanceToPlayer(2);
+		v13 = this->DistanceToPlayer(2);
 	}
 	else
 	{
-		Utils_CrapXZDist(this->mPos, a6->mPos);
+		v13 = Utils_CrapXZDist(this->mPos, a6->mPos);
 	}
 
 	if (v13 < a5)
