@@ -17,3 +17,4 @@ public:
 
 
 void validate_CHostage(void);
+EXPORT void Hostage_CreateHostage(const unsigned int *, unsigned int *);

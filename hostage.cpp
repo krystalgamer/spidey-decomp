@@ -37,6 +37,15 @@ CHostage::CHostage(int* a2, int a3)
 	this->ParseScript(reinterpret_cast<unsigned __int16*>(afterAngles));
 }
 
+// @Ok
+void Hostage_CreateHostage(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	*result = reinterpret_cast<unsigned int>(new CHostage(v2, v3));
+}
+
 void validate_CHostage(void){
 	VALIDATE_SIZE(CHostage, 0x334);
 
