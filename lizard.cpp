@@ -21,6 +21,26 @@ void CLizard::AI(void)
 	M3d_BuildTransform(this);
 }
 
+// @NotOk
+// globals
+// also args to SquirtAngles wtf??
+CLizard::CLizard(int* a2, __int16 a3)
+{
+	this->InitItem("lizard");
+
+	this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+
+	this->CycleAnim(0, 1);
+	this->mFlags |= 0x480;
+	this->field_3C = 0x0054B530;
+
+	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->field_38 = 326;
+
+	this->field_DE = a3;
+	this->field_DC = 0;
+}
+
 void validate_CLizard(void){
 	VALIDATE_SIZE(CLizard, 0x324);
 }

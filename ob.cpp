@@ -246,7 +246,6 @@ int* CBody::SquirtPos(int *params)
 	this->mPos.vx = *params++ << 12;
 
 	this->mPos.vy = *params++ << 12;
-	params++;
 
 	this->mPos.vz = *params++ << 12;
 
@@ -609,6 +608,7 @@ void validate_CItem(void){
 
 	VALIDATE(CItem, field_30, 0x30);
 	VALIDATE(CItem, field_34, 0x34);
+	VALIDATE(CItem, field_38, 0x38);
 	VALIDATE(CItem, field_3C, 0x3C);
 
 }

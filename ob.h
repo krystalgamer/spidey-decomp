@@ -31,7 +31,8 @@ public:
 	int field_30;
 
 	CItem *field_34;
-	unsigned char padAfter34[4];
+	__int16 field_38;
+	unsigned char padAfter38[2];
 
 
 	int field_3C;

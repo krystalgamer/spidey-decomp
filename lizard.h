@@ -5,6 +5,7 @@
 
 class CLizard : public CBaddy {
 public:
+	EXPORT CLizard(int*, __int16);
 	EXPORT void AI(void);
 };
 
