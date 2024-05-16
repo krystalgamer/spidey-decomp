@@ -36,7 +36,8 @@ public:
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
 	EXPORT void ParseScript(unsigned __int16*);
 
-	unsigned char padBaddyStart[0x14];
+	int field_194;
+	unsigned char padAfter194[0x1A8-0x194-4];
 
 	CVector field_1A8;
 

@@ -1,7 +1,48 @@
 #include "carnage.h"
 #include "validate.h"
+#include "trig.h"
+#include "panel.h"
 
 
+// @NotOk
+// globals
+CCarnage::CCarnage(int* a2, int a3)
+{
+	this->field_334 = 0;
+	this->field_338 = 0;
+	this->field_33C = 0;
+	this->field_370 = 0;
+	this->field_374 = 0;
+	this->field_378 = 0;
+
+
+	this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	this->InitItem("carnage");
+	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+
+	this->mFlags |= 0x480;
+	this->field_3C = 0x548980;
+	this->field_194 = 278528;
+
+	this->field_38 = 314;
+	this->field_31C.bothFlags = 1;
+
+	this->field_E2 = 3000;
+	this->field_DC = 160;
+	this->field_21E = 100;
+	this->field_35C = 1;
+	this->field_354 = 241;
+
+	unsigned __int16 *LinksPointer = reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(a3));
+	print_if_false(*LinksPointer == 1, "Error");
+	this->field_358 = LinksPointer[1];
+	Panel_CreateHealthBar(this, 314);
+	CreateSonicBubbleVertexWobbler();
+}
+
+// @TODO
+void CreateSonicBubbleVertexWobbler(void)
+{}
 
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);

@@ -5,6 +5,8 @@
 
 class CCarnage : public CBaddy {
 public:
+	EXPORT CCarnage(int*, int);
+
 	unsigned char carnageStartPad[0x10];
 
 	int field_334;
@@ -25,3 +27,4 @@ public:
 
 
 void validate_CCarnage(void);
+EXPORT void CreateSonicBubbleVertexWobbler(void);
