@@ -5,6 +5,7 @@
 
 class CJonah : public CBaddy {
 public:
+	EXPORT CJonah(void);
 	unsigned char padStartJonah[0x28];
 	int field_34C;
 	int field_350;
