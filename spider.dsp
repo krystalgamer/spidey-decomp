@@ -200,6 +200,10 @@ SOURCE=.\ob.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\panel.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\platform.cpp
 # End Source File
 # Begin Source File
@@ -413,6 +417,10 @@ SOURCE=.\mysterio.h
 # Begin Source File
 
 SOURCE=.\ob.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\panel.h
 # End Source File
 # Begin Source File
 
