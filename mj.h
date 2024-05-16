@@ -13,3 +13,4 @@ public:
 
 
 void validate_CMJ(void);
+EXPORT void MJ_CreateMJ(const unsigned int *, unsigned int *);

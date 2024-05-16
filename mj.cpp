@@ -39,6 +39,15 @@ CMJ::CMJ(int* a2, __int16 a3)
 		this->Die(0);
 }
 
+// @Ok
+void MJ_CreateMJ(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	*result = reinterpret_cast<unsigned int>(new CMJ(v2, v3));
+}
+
 void validate_CMJ(void){
 	VALIDATE_SIZE(CMJ, 0x324);
 }
