@@ -7,6 +7,7 @@
 class CHostage : public CBaddy {
 
 public:
+	EXPORT CHostage(int*, int);
 	int field_324;
 	int field_328;
 	int field_32C;

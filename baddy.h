@@ -34,6 +34,7 @@ public:
 	EXPORT int PlayerIsVisible(int);
 	EXPORT int ShouldFall(int, int);
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
+	EXPORT void ParseScript(unsigned __int16*);
 
 	unsigned char padBaddyStart[0x14];
 
@@ -59,8 +60,9 @@ public:
 	unsigned char field_211;
 	unsigned char field_212;
 	unsigned char field_213;
-	unsigned char padAfter213[0x218 - 0x213 - 1];
+	unsigned char padAfter213[0x216 - 0x213 - 1];
 
+	__int16 field_216;
 	int field_218;
 	unsigned char padAFter218[0x2];
 
@@ -93,7 +95,10 @@ public:
 	unsigned char field_296;
 	unsigned char field_297;
 	unsigned char field_298;
-	unsigned char padAfter298[0x2A0 - 0x298 - 1];
+	unsigned char field_299;
+	unsigned char field_29A;
+	unsigned char field_29B;
+	unsigned char padAfter298[0x2A0 - 0x29B - 1];
 
 	int field_2A0;
 	int field_2A4;

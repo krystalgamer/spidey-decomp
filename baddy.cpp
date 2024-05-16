@@ -621,6 +621,10 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 	return  abs(v14) <= (a2 >> 1);
 }
 
+// @TODO
+void CBaddy::ParseScript(unsigned __int16*)
+{}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
@@ -641,6 +645,7 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_212, 0x212);
 	VALIDATE(CBaddy, field_213, 0x213);
 
+	VALIDATE(CBaddy, field_216, 0x216);
 	VALIDATE(CBaddy, field_218, 0x218);
 	VALIDATE(CBaddy, field_21E, 0x21E);
 	VALIDATE(CBaddy, registerArr, 0x220);
@@ -661,6 +666,9 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_296, 0x296);
 	VALIDATE(CBaddy, field_297, 0x297);
 	VALIDATE(CBaddy, field_298, 0x298);
+	VALIDATE(CBaddy, field_299, 0x299);
+	VALIDATE(CBaddy, field_29A, 0x29A);
+	VALIDATE(CBaddy, field_29B, 0x29B);
 
 	VALIDATE(CBaddy, field_2A0, 0x2A0);
 	VALIDATE(CBaddy, field_2A4, 0x2A4);
