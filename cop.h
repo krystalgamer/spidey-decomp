@@ -7,6 +7,7 @@
 class CCop : public CBaddy {
 
 public:
+	EXPORT CCop(int*, int);
 	unsigned char copStartPad[0x1C];
 
 	int field_340;
@@ -18,8 +19,10 @@ public:
 	int field_36C;
 	int field_370;
 	int field_374;
-
-	unsigned char endPad[0x1C];
+	unsigned char padAfter374[0x37C - 0x374 - 4];
+	int field_37C;
+	unsigned char endPad[0x394 - 0x37C - 4];
 };
 
 void validate_CCop(void);
+EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);

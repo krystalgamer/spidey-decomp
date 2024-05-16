@@ -2,7 +2,8 @@
 #include "validate.h"
 
 //Revisit
-void __inline CVenom::Lookaround(void){
+void __inline CVenom::Lookaround(void)
+{
 
 	int v2; // r0
 
