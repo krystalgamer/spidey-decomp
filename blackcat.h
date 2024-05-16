@@ -6,6 +6,7 @@
 class CBlackCat : public CBaddy {
 public:
 	
+	EXPORT CBlackCat(int*, int);
 	int field_324;
 	int field_328;
 	int field_32C;
@@ -21,3 +22,4 @@ public:
 };
 
 void validate_CBlackCat(void);
+EXPORT void BlackCat_CreateBlackCat(const unsigned int *stack, unsigned int *result);
