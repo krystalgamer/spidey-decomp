@@ -6,7 +6,9 @@
 
 class CMJ : public CBaddy {
 
+public:
 	EXPORT void AI(void);
+	EXPORT CMJ(int*, __int16);
 };
 
 
