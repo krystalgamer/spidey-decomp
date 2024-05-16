@@ -15,3 +15,4 @@ public:
 };
 
 void validate_CJonah(void);
+EXPORT void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result);

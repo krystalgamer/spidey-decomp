@@ -80,6 +80,22 @@ CJonah::CJonah(int* a2, int a3)
 	Panel_CreateHealthBar(this, 316);
 }
 
+// @Ok
+void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	if (v2)
+	{
+		*result = reinterpret_cast<unsigned int>(new CJonah(v2, v3));
+	}
+	else
+	{
+		*result = reinterpret_cast<unsigned int>(new CJonah());
+	}
+}
+
 void validate_CJonah(void){
 	VALIDATE_SIZE(CJonah, 0x380);
 
