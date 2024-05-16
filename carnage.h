@@ -28,3 +28,4 @@ public:
 
 void validate_CCarnage(void);
 EXPORT void CreateSonicBubbleVertexWobbler(void);
+EXPORT void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result);

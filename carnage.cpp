@@ -44,6 +44,15 @@ CCarnage::CCarnage(int* a2, int a3)
 void CreateSonicBubbleVertexWobbler(void)
 {}
 
+// @Ok
+void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	*result = reinterpret_cast<unsigned int>(new CCarnage(v2, v3));
+}
+
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 
