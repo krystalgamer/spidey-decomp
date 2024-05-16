@@ -11,3 +11,4 @@ public:
 
 
 void validate_CLizard(void);
+EXPORT void Lizard_CreateLizard(const unsigned int *, unsigned int *);

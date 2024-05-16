@@ -41,6 +41,15 @@ CLizard::CLizard(int* a2, __int16 a3)
 	this->field_DC = 0;
 }
 
+// @Ok
+void Lizard_CreateLizard(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	*result = reinterpret_cast<unsigned int>(new CLizard(v2, v3));
+}
+
 void validate_CLizard(void){
 	VALIDATE_SIZE(CLizard, 0x324);
 }
