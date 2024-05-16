@@ -221,3 +221,9 @@ int Utils_CalcAim(CSVector* a1, CVector* a2, CVector* a3)
 	a1->vz = 0;
 	return v7;
 }
+
+// @TODO
+int Utils_GetValueFromDifficultyLevel(int, int, int, int)
+{
+	return 0x16052024;
+}

@@ -18,5 +18,6 @@ EXPORT CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*);
 EXPORT int Utils_GetGroundHeight(CVector*, int, int, CBody**);
 EXPORT int Utils_LineOfSight(CVector*, CVector*, CVector*, int);
 EXPORT int Utils_CalcAim(CSVector*, CVector*, CVector*);
+EXPORT int Utils_GetValueFromDifficultyLevel(int, int, int, int);
 
 #endif
