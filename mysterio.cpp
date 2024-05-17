@@ -1,6 +1,40 @@
 #include "mysterio.h"
 #include "validate.h"
 
+// @TODO
+CMysterio::CMysterio(int*, int)
+{
+}
+
+// @NotOk
+// Globals
+CMysterio::CMysterio(void)
+{
+	this->field_37C = 0;
+	this->field_380 = 0;
+	this->field_384 = 0;
+
+	this->InitItem("mysterio");
+
+	this->mFlags |= 0x480;
+	this->field_3C = 0x54E0F0;
+}
+
+// @Ok
+void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	if (v2)
+	{
+		*result = reinterpret_cast<unsigned int>(new CMysterio(v2, v3));
+	}
+	else
+	{
+		*result = reinterpret_cast<unsigned int>(new CMysterio());
+	}
+}
 
 void validate_CMystFoot(void){
 	VALIDATE_SIZE(CMystFoot, 0x324);

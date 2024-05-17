@@ -17,6 +17,10 @@ public:
 
 class CMysterio : public CBaddy {
 	public:
+
+	EXPORT CMysterio(int*, int);
+	EXPORT CMysterio(void);
+
 	int field_324;
 	unsigned char padAfter324[0x4];
 
@@ -55,3 +59,4 @@ class CMysterio : public CBaddy {
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
+EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
