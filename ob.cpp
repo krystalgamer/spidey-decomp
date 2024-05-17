@@ -541,8 +541,6 @@ void CSuper::RunAnim(__int16 a2, int a3, int a4)
 	this->field_142 = (unsigned __int16)v7 == (unsigned __int16)v8;
 }
 
-static int * const gTimerRelated = (int*)0x006B4CA8;
-
 // @NotOk
 // timerRelated needs to be fixed and call to print_if_false looks wrong
 void CBody::EveryFrame(void)
