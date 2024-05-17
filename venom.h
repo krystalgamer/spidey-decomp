@@ -8,6 +8,7 @@ class CVenom : public CBaddy {
 
 public:
 
+	EXPORT CVenom(int*, int);
 	EXPORT void Lookaround(void);
 
 	unsigned char venomStartPad[0x18];
@@ -61,3 +62,4 @@ public:
 
 
 void validate_CVenom(void);
+EXPORT void Venom_CreateVenom(const unsigned int *stack, unsigned int *result);

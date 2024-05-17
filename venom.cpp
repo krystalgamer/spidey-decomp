@@ -32,6 +32,19 @@ void __inline CVenom::Lookaround(void)
 
 }
 
+// @TODO
+CVenom::CVenom(int*, int)
+{}
+
+// @Ok
+void Venom_CreateVenom(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	*result = reinterpret_cast<unsigned int>(new CVenom(v2, v3));
+}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
