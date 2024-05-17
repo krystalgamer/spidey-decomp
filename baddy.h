@@ -37,7 +37,8 @@ public:
 	EXPORT void ParseScript(unsigned __int16*);
 
 	int field_194;
-	unsigned char padAfter194[0x1A8-0x194-4];
+	int field_198;
+	unsigned char padAfter198[0x1A8-0x198-4];
 
 	CVector field_1A8;
 
