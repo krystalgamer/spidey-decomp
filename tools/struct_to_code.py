@@ -39,7 +39,7 @@ def main(argv, argc):
             offset = name.split('_')[1]
             offset = f'0x{offset}'
 
-            to_validate(name, 'CCamera', offset)
+            to_validate(name, 'CSimby', offset)
 
 
 

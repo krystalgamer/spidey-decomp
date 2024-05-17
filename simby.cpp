@@ -2,12 +2,108 @@
 #include "validate.h"
 
 
+// @TODO
+CSimby::CSimby(int* a2, int a3)
+{
+}
+
+// @NotOk
+// Globals
+CSimby::CSimby(void)
+{
+	this->field_350 = 0;
+	this->field_354 = 0;
+	this->field_358 = 0;
+	this->field_35C = 0;
+	this->field_360 = 0;
+	this->field_364 = 0;
+	this->field_368 = 0;
+	this->field_36C = 0;
+	this->field_370 = 0;
+	this->field_374 = 0;
+	this->field_378 = 0;
+	this->field_37C = 0;
+	this->field_380 = 0;
+	this->field_384 = 0;
+	this->field_388 = 0;
+	this->field_38C = 0;
+	this->field_390 = 0;
+	this->field_394 = 0;
+	this->field_3DC = 0;
+	this->field_3E0 = 0;
+	this->field_3E4 = 0;
+	this->field_3F8 = 0;
+	this->field_3FC = 0;
+	this->field_400 = 0;
+	this->field_404 = 0;
+	this->field_408 = 0;
+	this->field_40C = 0;
+
+	this->InitItem("symbi_02");
+	this->field_38 = 324;
+
+	int * dword_682C5C = reinterpret_cast<int*>(0x682C5C);
+	if (!*dword_682C5C)
+		MakeVertexWibbler();
+
+	*dword_682C5C = *dword_682C5C + 1;
+}
+
+// @Ok
+void Simby_CreateSimby(const unsigned int *stack, unsigned int *result)
+{
+	int* v2 = reinterpret_cast<int*>(*stack);
+	int v3 = static_cast<int>(stack[1]);
+
+	if (v2)
+	{
+		*result = reinterpret_cast<unsigned int>(new CSimby(v2, v3));
+	}
+	else
+	{
+		*result = reinterpret_cast<unsigned int>(new CSimby());
+	}
+}
+
+// @TODO
+void MakeVertexWibbler(void)
+{}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 }
 
 void validate_CSimby(void){
 	VALIDATE_SIZE(CSimby, 0x460);
+
+	VALIDATE(CSimby, field_350, 0x350);
+	VALIDATE(CSimby, field_354, 0x354);
+	VALIDATE(CSimby, field_358, 0x358);
+	VALIDATE(CSimby, field_35C, 0x35C);
+	VALIDATE(CSimby, field_360, 0x360);
+	VALIDATE(CSimby, field_364, 0x364);
+	VALIDATE(CSimby, field_368, 0x368);
+	VALIDATE(CSimby, field_36C, 0x36C);
+	VALIDATE(CSimby, field_370, 0x370);
+	VALIDATE(CSimby, field_374, 0x374);
+	VALIDATE(CSimby, field_378, 0x378);
+	VALIDATE(CSimby, field_37C, 0x37C);
+	VALIDATE(CSimby, field_380, 0x380);
+	VALIDATE(CSimby, field_384, 0x384);
+	VALIDATE(CSimby, field_388, 0x388);
+	VALIDATE(CSimby, field_38C, 0x38C);
+	VALIDATE(CSimby, field_390, 0x390);
+	VALIDATE(CSimby, field_394, 0x394);
+	VALIDATE(CSimby, field_39C, 0x39C);
+	VALIDATE(CSimby, field_3DC, 0x3DC);
+	VALIDATE(CSimby, field_3E0, 0x3E0);
+	VALIDATE(CSimby, field_3E4, 0x3E4);
+	VALIDATE(CSimby, field_3F8, 0x3F8);
+	VALIDATE(CSimby, field_3FC, 0x3FC);
+	VALIDATE(CSimby, field_400, 0x400);
+	VALIDATE(CSimby, field_404, 0x404);
+	VALIDATE(CSimby, field_408, 0x408);
+	VALIDATE(CSimby, field_40C, 0x40C);
 }
 
 void validate_CSimbyBase(void){
