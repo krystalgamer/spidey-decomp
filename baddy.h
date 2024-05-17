@@ -12,6 +12,7 @@ struct SStateFlags{
 class CBaddy : public CSuper {
 
 public:
+	EXPORT CBaddy(void);
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
 	EXPORT void CleanUpMessages(int, int);
@@ -41,8 +42,9 @@ public:
 	unsigned char padAfter198[0x1A8-0x198-4];
 
 	CVector field_1A8;
+	CVector field_1B4[5];
+	unsigned char padAfter1B4[0x4];
 
-	unsigned char baddyPad[0x40];
 	int field_1F4;
 	int field_1F8;
 	__int16 field_1FC;
@@ -62,11 +64,12 @@ public:
 	unsigned char field_211;
 	unsigned char field_212;
 	unsigned char field_213;
-	unsigned char padAfter213[0x216 - 0x213 - 1];
+	unsigned char padAfter213[1];
 
 	__int16 field_216;
 	int field_218;
-	unsigned char padAFter218[0x2];
+	unsigned char padAFter218[0x1];
+	unsigned char field_21D;
 
 	__int16 field_21E;
 
@@ -80,8 +83,9 @@ public:
 
 	int field_23C;
 
-	unsigned char asdfkjfdsPad[0x15-0xC];
-
+	int field_240;
+	int field_244;
+	int field_248;
 	int field_24C;
 
 
@@ -110,10 +114,22 @@ public:
 
 	int field_2B4;
 	CVector field_2B8;
-	unsigned char shittestPad[0x14-8];
+
+	int field_2C4;
+	int field_2C8;
+	int field_2CC;
+
+
 	CVector field_2D0;
 
-	unsigned char shitPad[0x14];
+	__int16 field_2DC;
+	__int16 field_2DE;
+	__int16 field_2E0;
+	__int16 field_2E2;
+	__int16 field_2E4;
+	__int16 field_2E6;
+	CSVector field_2E8;
+	unsigned char padAfter2E8[0x2F0 - 0x2E8 - sizeof(CSVector)];
 
 
 	int field_2F0;

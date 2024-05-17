@@ -694,6 +694,7 @@ void validate_CSuper(void){
 	__int16 field_148;
 	*/
 	
+	VALIDATE(CSuper, field_F4, 0xF4);
 	VALIDATE(CSuper, field_F8, 0xF8);
 	VALIDATE(CSuper, field_FC, 0xFC);
 	VALIDATE(CSuper, field_100, 0x100);

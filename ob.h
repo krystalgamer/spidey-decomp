@@ -157,7 +157,7 @@ public:
 	EXPORT void RunAnim(__int16, int, int);
 
 
-	int padTopUnkn;
+	int field_F4;
 
 	int field_F8;
 	int field_FC;

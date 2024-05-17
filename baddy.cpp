@@ -625,6 +625,60 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 void CBaddy::ParseScript(unsigned __int16*)
 {}
 
+// @NotOk
+// Globals
+CBaddy::CBaddy(void)
+{
+	this->field_1A8.vx = 0;
+	this->field_1A8.vy = 0;
+	this->field_1A8.vz = 0;
+
+	for(int i=0; i<5; i++)
+	{
+		this->field_1B4[i].vx = 0;
+		this->field_1B4[i].vy = 0;
+		this->field_1B4[i].vz = 0;
+	}
+
+	this->field_240 = 0;
+	this->field_244 = 0;
+	this->field_248 = 0;
+	this->field_27C.vx = 0;
+	this->field_27C.vy = 0;
+	this->field_27C.vz = 0;
+	this->field_2B8.vx = 0;
+	this->field_2B8.vy = 0;
+	this->field_2B8.vz = 0;
+	this->field_2C4 = 0;
+	this->field_2C8 = 0;
+	this->field_2CC = 0;
+	this->field_2D0.vx = 0;
+	this->field_2D0.vy = 0;
+	this->field_2D0.vz = 0;
+	this->field_2DC = 0;
+	this->field_2DE = 0;
+	this->field_2E0 = 0;
+	this->field_2E2 = 0;
+	this->field_2E4 = 0;
+	this->field_2E6 = 0;
+	this->field_2E8.vx = 0;
+	this->field_2E8.vy = 0;
+	this->field_2E8.vz = 0;
+	this->field_2FC.vx = 0;
+	this->field_2FC.vy = 0;
+	this->field_2FC.vz = 0;
+
+	int *dword_56E98C = reinterpret_cast<int*>(0x56E98C);
+	this->field_21D = *dword_56E98C;
+	*dword_56E98C = *dword_56E98C + 1;
+
+	this->field_DC = 128;
+	this->field_F4 = 128;
+	this->field_DE = -1;
+	this->field_216 = 32;
+	this->field_D8 = 64;
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 
@@ -632,6 +686,7 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_198, 0x198);
 
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
+	VALIDATE(CBaddy, field_1B4, 0x1B4);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);
 	VALIDATE(CBaddy, field_1F8, 0x1F8);
 	VALIDATE(CBaddy, field_1FC, 0x1FC);
@@ -650,12 +705,18 @@ void validate_CBaddy(void){
 
 	VALIDATE(CBaddy, field_216, 0x216);
 	VALIDATE(CBaddy, field_218, 0x218);
+	VALIDATE(CBaddy, field_21D, 0x21D);
 	VALIDATE(CBaddy, field_21E, 0x21E);
 	VALIDATE(CBaddy, registerArr, 0x220);
 
 	VALIDATE(CBaddy, field_230, 0x230);
 	VALIDATE(CBaddy, field_234, 0x234);
 	VALIDATE(CBaddy, field_23C, 0x23C);
+
+	VALIDATE(CBaddy, field_240, 0x240);
+	VALIDATE(CBaddy, field_244, 0x244);
+	VALIDATE(CBaddy, field_248, 0x248);
+
 	VALIDATE(CBaddy, field_24C, 0x24C);
 
 
@@ -681,7 +742,23 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_2B0, 0x2B0);
 	VALIDATE(CBaddy, field_2B4, 0x2B4);
 	VALIDATE(CBaddy, field_2B8, 0x2B8);
+
+
+	VALIDATE(CBaddy, field_2C4, 0x2C4);
+	VALIDATE(CBaddy, field_2C8, 0x2C8);
+	VALIDATE(CBaddy, field_2CC, 0x2CC);
+
 	VALIDATE(CBaddy, field_2D0, 0x2D0);
+
+	VALIDATE(CBaddy, field_2DC, 0x2DC);
+	VALIDATE(CBaddy, field_2DE, 0x2DE);
+
+	VALIDATE(CBaddy, field_2E0, 0x2E0);
+	VALIDATE(CBaddy, field_2E2, 0x2E2);
+	VALIDATE(CBaddy, field_2E4, 0x2E4);
+	VALIDATE(CBaddy, field_2E6, 0x2E6);
+	VALIDATE(CBaddy, field_2E8, 0x2E8);
+
 
 	VALIDATE(CBaddy, field_2F0, 0x2F0);
 	VALIDATE(CBaddy, field_2F4, 0x2F4);
