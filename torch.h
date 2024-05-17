@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef TORCH_H
+#define TORCH_H
+
 #include "baddy.h"
 #include "export.h"
 
@@ -7,6 +10,7 @@ class CTorch : public CBaddy {
 
 public:
 
+	EXPORT CTorch(int* a2, int a3);
 
 	int field_324;
 	int field_328;	
@@ -27,3 +31,5 @@ public:
 
 
 void validate_CTorch(void);
+EXPORT void Torch_CreateTorch(const unsigned int *stack, unsigned int *result);
+#endif 
