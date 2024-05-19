@@ -1,18 +1,36 @@
 import sys
 
-DECL = False
+DECL = True
+Debug = False
 
 def to_decl(name, ty):
 
     if ty == 'db':
         print(f'unsigned char {name};')
+        return
     elif ty == 'dw':
         print(f'__int16 {name};')
+        return
     elif ty == 'dd':
         print(f'int {name};')
+        return
+
+    raise Exception(f"FUCK {name} {ty}")
 
 def to_validate(name, cname, offset):
     print(f'VALIDATE({cname}, {name}, {offset});')
+
+def ida_filter(line):
+
+    if 'dd' in line:
+        return True
+    if 'dw' in line:
+        return True
+    if 'db' in line:
+        return True
+
+    return False
+
 
 def main(argv, argc):
 
@@ -24,22 +42,25 @@ def main(argv, argc):
     with open(file, 'r') as fp:
         lines = fp.readlines()
 
-    lines = filter(lambda x: 'field_' in x, lines)
+    lines = filter(ida_filter, lines)
     lines = map(lambda x: x.strip(), lines)
     lines = map(lambda x: x.split(), lines)
-    lines = map(lambda x: (x[1], x[2]), lines)
+    lines = map(lambda x: (x[1], x[2], int(x[0], 16)), lines)
 
     lines = list(lines)
 
-    for (name, ty) in lines:
+    for (name, ty, offset) in lines:
+
+        if Debug:
+            print(name, ty, offset)
+            continue
+
 
         if DECL:
             to_decl(name, ty)
         else:
-            offset = name.split('_')[1]
-            offset = f'0x{offset}'
-
-            to_validate(name, 'CSimby', offset)
+            h = f'{offset:x}'.upper()
+            to_validate(name, 'SEntry', f'0x{h}')
 
 
 

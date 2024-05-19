@@ -1,108 +1,22 @@
-00000350 field_350       dd ?
-00000354 field_354       dd ?
-00000358 field_358       dd ?
-0000035C field_35C       dd ?
-00000360 field_360       dd ?
-00000364 field_364       dd ?
-00000368 field_368       dd ?
-0000036C field_36C       dd ?
-00000370 field_370       dd ?
-00000374 field_374       dd ?
-00000378 field_378       dd ?
-0000037C field_37C       dd ?
-00000380 field_380       dd ?
-00000384 field_384       dd ?
-00000388 field_388       dd ?
-0000038C field_38C       dd ?
-00000390 field_390       dd ?
-00000394 field_394       dd ?
-00000398                 db ? ; undefined
-00000399                 db ? ; undefined
-0000039A                 db ? ; undefined
-0000039B                 db ? ; undefined
-0000039C field_39C       dd ?
-000003A0                 db ? ; undefined
-000003A1                 db ? ; undefined
-000003A2                 db ? ; undefined
-000003A3                 db ? ; undefined
-000003A4                 db ? ; undefined
-000003A5                 db ? ; undefined
-000003A6                 db ? ; undefined
-000003A7                 db ? ; undefined
-000003A8                 db ? ; undefined
-000003A9                 db ? ; undefined
-000003AA                 db ? ; undefined
-000003AB                 db ? ; undefined
-000003AC                 db ? ; undefined
-000003AD                 db ? ; undefined
-000003AE                 db ? ; undefined
-000003AF                 db ? ; undefined
-000003B0                 db ? ; undefined
-000003B1                 db ? ; undefined
-000003B2                 db ? ; undefined
-000003B3                 db ? ; undefined
-000003B4                 db ? ; undefined
-000003B5                 db ? ; undefined
-000003B6                 db ? ; undefined
-000003B7                 db ? ; undefined
-000003B8                 db ? ; undefined
-000003B9                 db ? ; undefined
-000003BA                 db ? ; undefined
-000003BB                 db ? ; undefined
-000003BC                 db ? ; undefined
-000003BD                 db ? ; undefined
-000003BE                 db ? ; undefined
-000003BF                 db ? ; undefined
-000003C0                 db ? ; undefined
-000003C1                 db ? ; undefined
-000003C2                 db ? ; undefined
-000003C3                 db ? ; undefined
-000003C4                 db ? ; undefined
-000003C5                 db ? ; undefined
-000003C6                 db ? ; undefined
-000003C7                 db ? ; undefined
-000003C8                 db ? ; undefined
-000003C9                 db ? ; undefined
-000003CA                 db ? ; undefined
-000003CB                 db ? ; undefined
-000003CC                 db ? ; undefined
-000003CD                 db ? ; undefined
-000003CE                 db ? ; undefined
-000003CF                 db ? ; undefined
-000003D0                 db ? ; undefined
-000003D1                 db ? ; undefined
-000003D2                 db ? ; undefined
-000003D3                 db ? ; undefined
-000003D4                 db ? ; undefined
-000003D5                 db ? ; undefined
-000003D6                 db ? ; undefined
-000003D7                 db ? ; undefined
-000003D8                 db ? ; undefined
-000003D9                 db ? ; undefined
-000003DA                 db ? ; undefined
-000003DB                 db ? ; undefined
-000003DC field_3DC       dd ?
-000003E0 field_3E0       dd ?
-000003E4 field_3E4       dd ?
-000003E8                 db ? ; undefined
-000003E9                 db ? ; undefined
-000003EA                 db ? ; undefined
-000003EB                 db ? ; undefined
-000003EC                 db ? ; undefined
-000003ED                 db ? ; undefined
-000003EE                 db ? ; undefined
-000003EF                 db ? ; undefined
-000003F0                 db ? ; undefined
-000003F1                 db ? ; undefined
-000003F2                 db ? ; undefined
-000003F3                 db ? ; undefined
-000003F4                 db ? ; undefined
-000003F5                 db ? ; undefined
-000003F6                 db ? ; undefined
-000003F7                 db ? ; undefined
-000003F8 field_3F8       dd ?
-000003FC field_3FC       dd ?
-00000400 field_400       dd ?
-00000404 field_404       dd ?
-00000408 field_408       dd ?
-0000040C field_40C       dd ?
+00000000 name            dd ?                    ; offset
+00000004 val_a           dw ?
+00000006 val_b           dw ?
+00000008 field_8         dw ?
+0000000A field_A         dw ?
+0000000C unk_a           db ?
+0000000D unk_b           db ?
+0000000E unk_c           db ?
+0000000F unk_d           db ?
+00000010 unk_e           db ?
+00000011 field_11        db ?
+00000012 field_12        db ?
+00000013 field_13        db ?
+00000014 field_14        db ?
+00000015 field_15        db ?
+00000016 field_16        db ?
+00000017 field_17        db ?
+00000018 field_18        db ?
+00000019 field_19        db ?
+0000001A field_1A        db ?
+0000001B field_1B        db ?
+0000001C what            dd ?
