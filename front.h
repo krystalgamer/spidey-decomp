@@ -37,6 +37,8 @@ public:
 	EXPORT virtual ~CMenu();
 
 	EXPORT CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, int LineSep);
+	EXPORT void SetLine(char);
+	EXPORT void Reset(void);
 
 	int ptr_to;
 	__int16 menu_width;
@@ -50,7 +52,7 @@ public:
 	char mJustification;
 	unsigned char padAfterJust;
 
-	unsigned char selected_index;
+	unsigned char mLine;
 	unsigned char mCursorLine;
 	unsigned char padAfterCursorLine[4];
 

@@ -3,8 +3,7 @@
 
 
 
-// @NotOk
-// Missing reset call
+// @Ok
 CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, int LineSep)
 {
 	this->mX = x;
@@ -46,11 +45,43 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->field_30 = 0;
 	this->field_34 = 0;
 	this->field_38 = 0;
-	this->selected_index = 0;
+	this->mLine = 0;
 	this->field_1B = -1;
 	this->scrollbar_zero = 1;
 
-	// Reset
+	this->Reset();
+}
+
+
+// @Ok
+void CMenu::Reset(void)
+{
+	this->SetLine(0);
+}
+
+// @Ok
+// loop offset starts in field_8, instead of unk_b, but that's fine
+void CMenu::SetLine(char Line)
+{
+	this->mLine = Line;
+
+	SEntry *entries = this->mEntry;
+	for(int i = 0; i<40; i++)
+	{
+		__int16 v5;
+
+		if (i != this->mLine)
+		{
+			v5 = entries[i].field_A;
+		}
+		else
+		{
+			v5 = entries[i].field_8;
+		}
+
+		entries[i].val_b = v5;
+		entries[i].val_a = v5;
+	}
 }
 
 CMenu::~CMenu()
@@ -71,7 +102,7 @@ void validate_CMenu(void)
 	VALIDATE(CMenu, scrollbar_one, 0x10);
 	VALIDATE(CMenu, scrollbar_zero, 0x11);
 	VALIDATE(CMenu, mJustification, 0x12);
-	VALIDATE(CMenu, selected_index, 0x14);
+	VALIDATE(CMenu, mLine, 0x14);
 
 	VALIDATE(CMenu, mCursorLine, 0x15);
 	VALIDATE(CMenu, mNumLines,  0x1A);
