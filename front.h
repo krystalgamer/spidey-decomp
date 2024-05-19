@@ -46,6 +46,7 @@ public:
 	EXPORT void CentreX(void);
 	EXPORT int FindEntry(const char*);
 	EXPORT void EntryOff(const char*);
+	EXPORT void SetSelColor(unsigned int, int, int, int);
 
 	int ptr_to;
 	unsigned __int16 menu_width;

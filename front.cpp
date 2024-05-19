@@ -55,6 +55,18 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 
 
 // @Ok
+void CMenu::SetSelColor(unsigned int a2, int a3, int a4, int a5)
+{
+	this->mEntry[a2].unk_c = a3;
+	this->mEntry[a2].unk_d = a4;
+	this->mEntry[a2].unk_e = a5;
+
+	this->mEntry[a2].field_14 = 150 * a3 / 256;
+	this->mEntry[a2].field_15 = 150 * a4 / 256;
+	this->mEntry[a2].field_16 = 150 * a5 / 256;
+}
+
+// @Ok
 int __inline CMenu::FindEntry(const char* a2)
 {
 	for(int i = 0; i<this->mNumLines; i++)
@@ -75,10 +87,10 @@ int __inline CMenu::FindEntry(const char* a2)
 // while for the if it does the weird jump
 void CMenu::EntryOff(const char* a2)
 {
-	SEntry *result = &this->mEntry[this->FindEntry(a2)];
-	if (result->unk_b)
+	int res = this->FindEntry(a2);
+	if (this->mEntry[res].unk_b)
 	{
-		result->unk_b = 0;
+		this->mEntry[res].unk_b = 0;
 		this->field_32--;
 	}
 }
