@@ -41,13 +41,13 @@ public:
 	EXPORT void Reset(void);
 	EXPORT void SetRedText(unsigned char);
 	EXPORT int ChoiceIs(const char*);
+	EXPORT void AdjustWidth(int);
 
 	int ptr_to;
 	__int16 menu_width;
 	__int16 text_val_b;
-	__int16 text_val_a;
-	char unk_a;
-	char unk_b;
+	int width_val_a;
+
 	char scrollbar_one;
 	char scrollbar_zero;
 

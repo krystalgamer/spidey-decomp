@@ -53,6 +53,13 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->Reset();
 }
 
+
+// @Ok
+void CMenu::AdjustWidth(int width)
+{
+	this->width_val_a = width;
+}
+
 // @Ok
 int CMenu::ChoiceIs(const char* pString)
 {
@@ -129,9 +136,7 @@ void validate_CMenu(void)
 	VALIDATE(CMenu, ptr_to, 0x4);
 	VALIDATE(CMenu, menu_width, 0x8);
 	VALIDATE(CMenu, text_val_b, 0xA);
-	VALIDATE(CMenu, text_val_a, 0xC);
-	VALIDATE(CMenu, unk_a, 0xE);
-	VALIDATE(CMenu, unk_b, 0xF);
+	VALIDATE(CMenu, width_val_a, 0xC);
 
 	VALIDATE(CMenu, scrollbar_one, 0x10);
 	VALIDATE(CMenu, scrollbar_zero, 0x11);
