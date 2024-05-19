@@ -43,16 +43,17 @@ public:
 	EXPORT int ChoiceIs(const char*);
 	EXPORT void AdjustWidth(int);
 	EXPORT int FinishedZooming(void);
+	EXPORT void CentreX(void);
 
 	int ptr_to;
-	__int16 menu_width;
+	unsigned __int16 menu_width;
 	__int16 text_val_b;
 	int width_val_a;
 
 	char scrollbar_one;
 	char scrollbar_zero;
 
-	char mJustification;
+	unsigned char mJustification;
 	unsigned char padAfterJust;
 
 	unsigned char mLine;

@@ -53,6 +53,29 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->Reset();
 }
 
+// @Ok
+// has the sub eax, 0 for some reason
+void CMenu::CentreX(void)
+{
+	int just = this->mJustification;
+
+	if (just)
+	{
+		switch(just)
+		{
+			case 1:
+				this->mX = (512 - this->menu_width) / 2;
+				return;
+			case 2:
+				this->mX = this->menu_width + (512 - this->menu_width) / 2;
+				return;
+		}
+	}
+	else
+	{
+		this->mX = 256;
+	}
+}
 
 // @Ok
 int CMenu::FinishedZooming(void)
