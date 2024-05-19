@@ -55,6 +55,18 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 
 
 // @Ok
+int CMenu::FinishedZooming(void)
+{
+	int *ptr_to = reinterpret_cast<int*>(this->ptr_to);
+	if (!ptr_to)
+	{
+		return 1;
+	}
+
+	return ptr_to[12] != 0;
+}
+
+// @Ok
 void CMenu::AdjustWidth(int width)
 {
 	this->width_val_a = width;

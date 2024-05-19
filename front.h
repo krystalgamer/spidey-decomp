@@ -42,6 +42,7 @@ public:
 	EXPORT void SetRedText(unsigned char);
 	EXPORT int ChoiceIs(const char*);
 	EXPORT void AdjustWidth(int);
+	EXPORT int FinishedZooming(void);
 
 	int ptr_to;
 	__int16 menu_width;
