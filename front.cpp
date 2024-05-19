@@ -52,6 +52,28 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->Reset();
 }
 
+// @Ok
+// slightly different registers but the same
+void CMenu::SetRedText(unsigned char Line)
+{
+	print_if_false(Line < this->mNumLines, "Bad line sent to SetRedText");
+
+	this->mEntry[Line].unk_c = 255;
+	this->mEntry[Line].unk_d = 0;
+	this->mEntry[Line].unk_d = -1;
+
+	this->mEntry[Line].field_15 = 0;
+	this->mEntry[Line].field_16 = 0;
+
+	this->mEntry[Line].field_11 = 96;
+	this->mEntry[Line].field_12 = 0;
+	this->mEntry[Line].field_13 = 0;
+
+	
+	this->mEntry[Line].field_17 = 96;
+	this->mEntry[Line].field_18 = 0;
+	this->mEntry[Line].field_19 = 0;
+}
 
 // @Ok
 void CMenu::Reset(void)

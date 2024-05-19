@@ -39,6 +39,7 @@ public:
 	EXPORT CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, int LineSep);
 	EXPORT void SetLine(char);
 	EXPORT void Reset(void);
+	EXPORT void SetRedText(unsigned char);
 
 	int ptr_to;
 	__int16 menu_width;
