@@ -53,6 +53,36 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->Reset();
 }
 
+
+// @Ok
+int __inline CMenu::FindEntry(const char* a2)
+{
+	for(int i = 0; i<this->mNumLines; i++)
+	{
+		if (Utils_CompareStrings(a2, this->mEntry[i].name))
+		{
+			return i;
+		};
+	}
+	
+	print_if_false(0, "Entry not found");
+	return 0;
+}
+
+
+// @Ok
+// On the assignement it's weird has it properly addresses the offset
+// while for the if it does the weird jump
+void CMenu::EntryOff(const char* a2)
+{
+	SEntry *result = &this->mEntry[this->FindEntry(a2)];
+	if (result->unk_b)
+	{
+		result->unk_b = 0;
+		this->field_32--;
+	}
+}
+
 // @Ok
 // has the sub eax, 0 for some reason
 void CMenu::CentreX(void)
