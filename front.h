@@ -7,7 +7,7 @@
 
 struct SEntry
 {
-	int name;
+	char* name;
 	__int16 val_a;
 	__int16 val_b;
 	__int16 field_8;
@@ -40,6 +40,7 @@ public:
 	EXPORT void SetLine(char);
 	EXPORT void Reset(void);
 	EXPORT void SetRedText(unsigned char);
+	EXPORT int ChoiceIs(const char*);
 
 	int ptr_to;
 	__int16 menu_width;

@@ -1,5 +1,6 @@
 #include "front.h"
 #include "validate.h"
+#include "utils.h"
 
 
 
@@ -50,6 +51,17 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 	this->scrollbar_zero = 1;
 
 	this->Reset();
+}
+
+// @Ok
+int CMenu::ChoiceIs(const char* pString)
+{
+	if (this->mLine < 0x28)
+	{
+		return Utils_CompareStrings(pString, this->mEntry[this->mLine].name);
+	}
+
+	return 0;
 }
 
 // @Ok
