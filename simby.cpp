@@ -74,6 +74,10 @@ void MakeVertexWibbler(void)
 void CSimby::FlashUpdate(void)
 {
 	
+#define BYTE0(x) ((x) & 0xFF)
+#define BYTE1(x) (BYTE0((x >> 8)))
+#define BYTE2(x) (BYTE0((x >> 16)))
+
 	if (this->field_328)
 	{
 		this->mFlags |= 0x400;
@@ -82,8 +86,7 @@ void CSimby::FlashUpdate(void)
 		this->field_24 = ((this->field_32A + this->field_24) & 0xFF) | (((this->field_32E + (this->field_24 >> 0x10)) << 16) & 0xFF0000) | ((((this->field_24 >> 8) + this->field_32C) << 8) & 0xFF00);
 		*/
 
-    this->field_24 = ((this->field_24 + this->field_32A) & 0xFF) | ( (((this->field_32E + (this->field_24 >> 16)) << 16) & 0xFF0000) |
-			(((this->field_24) + (this->field_32C >> 8)) & 0xFF) << 8);
+		this->field_24 = BYTE0(this->field_24 + this->field_32A) | ((BYTE1(this->field_24) + this->field_32C) << 8) | ((BYTE2(this->field_24) + this->field_32E) << 16) ;
 
 																							                            
 
