@@ -54,6 +54,32 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 }
 
 // @Ok
+int __inline CMenu::GetMenuHeight(void)
+{
+  int v1 = 0;
+  int v2 = 0;
+
+  for ( int i = this->mCursorLine;
+        i < this->mNumLines && i < (this->mCursorLine + this->field_1B);
+        i++ )
+  {
+    if ( this->mEntry[i].unk_b )
+    {
+      v1 += this->mEntry[i].unk_a;
+      v2++;
+    }
+  }
+
+  return v1 + (v2 - 1) * this->mLineSep;
+}
+
+// @Ok
+void CMenu::CentreY(void)
+{
+	this->mY = (240 - this->GetMenuHeight()) / 2;
+}
+
+// @Ok
 void CMenu::NonGouraud(void)
 {
 	for(int i = 0; i < 40; i++)

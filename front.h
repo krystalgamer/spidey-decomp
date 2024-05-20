@@ -50,6 +50,8 @@ public:
 	EXPORT void SetSelColor(unsigned int, int, int, int);
 	EXPORT void SetNormalColor(unsigned int, int, int, int);
 	EXPORT void NonGouraud(void);
+	EXPORT int GetMenuHeight(void);
+	EXPORT void CentreY(void);
 
 	int ptr_to;
 	unsigned __int16 menu_width;
@@ -67,7 +69,7 @@ public:
 	unsigned char padAfterCursorLine[4];
 
 	unsigned char mNumLines;
-	char field_1B;
+	unsigned char field_1B;
 	unsigned char padAfterNumLines[2];
 
 	__int16 field_1E;
