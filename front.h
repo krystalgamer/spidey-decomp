@@ -49,6 +49,7 @@ public:
 	EXPORT void EntryOn(const char* a2);
 	EXPORT void SetSelColor(unsigned int, int, int, int);
 	EXPORT void SetNormalColor(unsigned int, int, int, int);
+	EXPORT void NonGouraud(void);
 
 	int ptr_to;
 	unsigned __int16 menu_width;

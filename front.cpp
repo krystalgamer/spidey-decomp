@@ -54,6 +54,20 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 }
 
 // @Ok
+void CMenu::NonGouraud(void)
+{
+	for(int i = 0; i < 40; i++)
+	{
+		this->mEntry[i].field_14 = this->mEntry[i].unk_c;
+		this->mEntry[i].field_15 = this->mEntry[i].unk_d;
+		this->mEntry[i].field_16 = this->mEntry[i].unk_e;
+		this->mEntry[i].field_17 = this->mEntry[i].field_11;
+		this->mEntry[i].field_18 = this->mEntry[i].field_12;
+		this->mEntry[i].field_19 = this->mEntry[i].field_13;
+	}
+}
+
+// @Ok
 void CMenu::SetNormalColor(unsigned int a2, int a3, int a4, int a5)
 {
 	this->mEntry[a2].field_11 = a3;
