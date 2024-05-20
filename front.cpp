@@ -54,6 +54,27 @@ CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, i
 }
 
 // @Ok
+void CMenu::GetEntryXY(const char* entry, int* x, int* y)
+{
+	*x = this->mX;
+	*y = this->mY;
+
+	for ( int i = this->mCursorLine;
+			i < this->mNumLines
+				&& i < (this->mCursorLine + this->field_1B);
+			i++ )
+	{
+		*y += this->mEntry[i].unk_a;
+		if ( this->mEntry[i].unk_b )
+		{
+			if ( Utils_CompareStrings(entry, this->mEntry[i].name) )
+				return;
+			*y += this->mLineSep;
+		}
+	}
+}
+
+// @Ok
 int __inline CMenu::GetMenuHeight(void)
 {
   int v1 = 0;

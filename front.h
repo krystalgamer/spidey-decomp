@@ -52,6 +52,7 @@ public:
 	EXPORT void NonGouraud(void);
 	EXPORT int GetMenuHeight(void);
 	EXPORT void CentreY(void);
+	EXPORT void GetEntryXY(const char*, int*, int*);
 
 	int ptr_to;
 	unsigned __int16 menu_width;
