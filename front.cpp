@@ -93,6 +93,16 @@ int __inline CMenu::FindEntry(const char* a2)
 	return 0;
 }
 
+// @Ok
+void CMenu::EntryOn(const char* a2)
+{
+	int res = this->FindEntry(a2);
+	if (!this->mEntry[res].unk_b)
+	{
+		this->mEntry[res].unk_b = 1;
+		this->field_32--;
+	}
+}
 
 // @Ok
 // On the assignement it's weird has it properly addresses the offset

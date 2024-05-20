@@ -46,6 +46,7 @@ public:
 	EXPORT void CentreX(void);
 	EXPORT int FindEntry(const char*);
 	EXPORT void EntryOff(const char*);
+	EXPORT void EntryOn(const char* a2);
 	EXPORT void SetSelColor(unsigned int, int, int, int);
 	EXPORT void SetNormalColor(unsigned int, int, int, int);
 

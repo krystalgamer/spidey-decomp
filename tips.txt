@@ -65,3 +65,5 @@ if (x == -1){
 ```
 
 worse code
+
+- classes/structures with other inner structures/arrays will have weird indexing (i.e SEntry in CMenu)
