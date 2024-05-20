@@ -69,12 +69,54 @@ void Simby_CreateSimby(const unsigned int *stack, unsigned int *result)
 void MakeVertexWibbler(void)
 {}
 
+// @NotOk
+// can't get it to match should be good enough
+void CSimby::FlashUpdate(void)
+{
+	
+	if (this->field_328)
+	{
+		this->mFlags |= 0x400;
+
+		/*
+		this->field_24 = ((this->field_32A + this->field_24) & 0xFF) | (((this->field_32E + (this->field_24 >> 0x10)) << 16) & 0xFF0000) | ((((this->field_24 >> 8) + this->field_32C) << 8) & 0xFF00);
+		*/
+
+    this->field_24 = ((this->field_24 + this->field_32A) & 0xFF) | ( (((this->field_32E + (this->field_24 >> 16)) << 16) & 0xFF0000) |
+			(((this->field_24) + (this->field_32C >> 8)) & 0xFF) << 8);
+
+																							                            
+
+		if (!--this->field_328)
+		{
+
+			if (this->field_330 & 0x2000000)
+			{
+				this->mFlags |= 0x400;
+			}
+			else
+			{
+				this->mFlags &= 0xFBFF;
+			}
+
+			this->field_24 = this->field_330;
+			this->field_330 = 0;
+		}
+	}
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 }
 
 void validate_CSimby(void){
 	VALIDATE_SIZE(CSimby, 0x460);
+
+	VALIDATE(CSimby, field_328, 0x328);
+	VALIDATE(CSimby, field_32A, 0x32A);
+	VALIDATE(CSimby, field_32C, 0x32C);
+	VALIDATE(CSimby, field_32E, 0x32E);
+	VALIDATE(CSimby, field_330, 0x330);
 
 	VALIDATE(CSimby, field_350, 0x350);
 	VALIDATE(CSimby, field_354, 0x354);

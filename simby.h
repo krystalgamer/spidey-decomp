@@ -15,7 +15,16 @@ class CSimby : public CBaddy {
 public:
 	EXPORT CSimby(int*, int);
 	EXPORT CSimby(void);
-	unsigned char padTop[0x350-0x324];
+	EXPORT void FlashUpdate(void);
+
+	unsigned char padTop[0x328-0x324];
+
+	__int16 field_328;
+	unsigned __int16 field_32A;
+	unsigned __int16 field_32C;
+	__int16 field_32E;
+	int field_330;
+	unsigned char padAfter330[0x350-0x330-4];
 
 	int field_350;
 	int field_354;
