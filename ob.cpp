@@ -21,6 +21,11 @@ void* CItem::operator new(unsigned int size) {
   return result;
 }
 
+void CItem::operator delete(void *ptr)
+{
+	Mem_Delete(ptr);
+}
+
 
 /// @NotOk
 // missing 3C assignement need to understand what it is
@@ -44,7 +49,12 @@ __inline CItem::CItem()
 	///this->field_3C = ???;
 }
 
-CItem::~CItem(){}
+// @Ok
+// First part is for delete[]
+// second is for delete, nothing to do
+CItem::~CItem()
+{
+}
 
 
 // @NotOk

@@ -217,8 +217,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	puts("[*] Validation done!");
 
+	__asm {
 
+		      //int 3
 
+			 }
+	CItem* items = new CItem[1];
 	while(1){}
 
 
