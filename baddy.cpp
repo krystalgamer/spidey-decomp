@@ -679,6 +679,77 @@ CBaddy::CBaddy(void)
 	this->field_D8 = 64;
 }
 
+// @NotOk
+// Figure out name
+void CBaddy::UnknownCBaddyFunction(int, int)
+{
+}
+
+// @TODO
+int CBaddy::TugImpulse(CVector*, CVector*, CVector*)
+{
+	return 0x21052024;
+}
+
+// @NotOk
+// Figure out name
+void CBaddy::UnknownCBaddyFunctionTwo()
+{
+}
+
+// @NotOk
+// Figure out name
+void CBaddy::UnknownCBaddyFunctionThree(int, int)
+{
+}
+
+// @Ok
+char CBaddy::UnknownCBaddyFunctionFour(int)
+{
+	return 0;
+}
+
+// @TODO
+void CBaddy::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics(0);
+}
+
+// @NotOk
+// Figure out name
+void CBaddy::UnknownCBaddyFunctionFive(int)
+{
+}
+
+// @TODO
+int CBaddy::GetClosest(int, int)
+{
+	return 0x888999;
+}
+
+// @TODO
+int CBaddy::ExecuteCommand(unsigned __int16)
+{
+	return 0x21052025;
+}
+
+// @TODO
+void CBaddy::SetVariable(unsigned __int16)
+{
+	printf("test");
+}
+
+// @TODO
+unsigned int CBaddy::GetVariable(unsigned __int16)
+{
+	return 0x696940;
+}
+
+// @TODO
+void CBaddy::DoPhysics(int)
+{
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

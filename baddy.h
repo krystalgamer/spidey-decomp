@@ -32,10 +32,23 @@ public:
 	EXPORT int Die(int);
 	EXPORT void CleanUpAIPRocList(int);
 	EXPORT int BumpedIntoSpidey(int);
-	EXPORT int PlayerIsVisible(int);
 	EXPORT int ShouldFall(int, int);
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
 	EXPORT void ParseScript(unsigned __int16*);
+	EXPORT void DoPhysics(int);
+
+	EXPORT virtual int PlayerIsVisible(int);
+	EXPORT virtual void UnknownCBaddyFunction(int, int);
+	EXPORT virtual int TugImpulse(CVector*, CVector*, CVector*);
+	EXPORT virtual void UnknownCBaddyFunctionTwo(void);
+	EXPORT virtual void UnknownCBaddyFunctionThree(int, int);
+	EXPORT virtual char UnknownCBaddyFunctionFour(int);
+	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT virtual void UnknownCBaddyFunctionFive(int);
+	EXPORT virtual int GetClosest(int, int);
+	EXPORT virtual int ExecuteCommand(unsigned __int16);
+	EXPORT virtual void SetVariable(unsigned __int16);
+	EXPORT virtual unsigned int GetVariable(unsigned __int16);
 
 	int field_194;
 	int field_198;
