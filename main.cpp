@@ -43,6 +43,7 @@
 #include "m3dinit.h"
 #include "spidey.h"
 #include "message.h"
+#include "bullet.h"
 
 template<bool b>
 
@@ -213,6 +214,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CTrapWebEffect();
 	validate_CMenu();
 	validate_SEntry();
+	validate_CBullet();
 
 
 	puts("[*] Validation done!");
