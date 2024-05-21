@@ -58,6 +58,8 @@ public:
 	int field_45C;
 	int field_460;
 	int field_464;
+	
+	// @TODO venom has two secret virtual fucnctions
 };
 
 

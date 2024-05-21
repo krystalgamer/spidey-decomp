@@ -679,8 +679,7 @@ CBaddy::CBaddy(void)
 	this->field_D8 = 64;
 }
 
-// @NotOk
-// Figure out name
+// @Ok
 void CBaddy::CreateCombatImpactEffect(CVector*, int)
 {
 }

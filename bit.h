@@ -22,8 +22,9 @@ class CBit
 		unsigned char mProtected;
 
 		EXPORT CBit();
-		virtual ~CBit();
+		EXPORT virtual ~CBit();
 		EXPORT void* operator new(unsigned int size);
+		EXPORT void operator delete(void*);
 		EXPORT void Die();
 		EXPORT CBit* AttachTo(CBit** to);
 		EXPORT void SetPos(const CVector &pos);

@@ -21,6 +21,7 @@ void* CItem::operator new(unsigned int size) {
   return result;
 }
 
+// @Ok
 void CItem::operator delete(void *ptr)
 {
 	Mem_Delete(ptr);

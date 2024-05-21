@@ -58,8 +58,14 @@ void* CBit::operator new(unsigned int size) {
 	return result;
 }
 
+
+// @Ok
+void CBit::operator delete(void* ptr)
+{
+	Mem_Delete(ptr);
+}
+
 CBit::~CBit(){
-	this->mNext = NULL;
 }
 
 void CBit::Die(void){
