@@ -681,7 +681,7 @@ CBaddy::CBaddy(void)
 
 // @NotOk
 // Figure out name
-void CBaddy::UnknownCBaddyFunction(int, int)
+void CBaddy::CreateCombatImpactEffect(CVector*, int)
 {
 }
 
