@@ -56,6 +56,21 @@ CItem::~CItem()
 {
 }
 
+// @Ok
+void CBody::AI(void)
+{
+}
+
+// @Ok
+int CBody::Hit(SHitInfo*)
+{
+	return 1;
+}
+
+// @TODO
+void CBody::UnknownVirtualFuction(void)
+{
+}
 
 // @NotOk
 // indices not matching, rest is okay

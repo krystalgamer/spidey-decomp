@@ -4,6 +4,7 @@
 #include "bit.h"
 #include "ps2funcs.h"
 
+struct SHitInfo;
 static unsigned char * const Regions = (unsigned char*)0x006B2449;
 static int *** const CItemRelatedList = (int***)0x006B2454;
 
@@ -124,7 +125,11 @@ public:
 
 
 	EXPORT int IsDead(void) const;
-	EXPORT void Die(void);
+	EXPORT virtual void Die(void);
+	EXPORT virtual void AI(void);
+	EXPORT virtual int Hit(SHitInfo*);
+	EXPORT virtual void UnknownVirtualFuction(void);
+
 	EXPORT void ShadowOn(void);
 	EXPORT void KillShadow(void);
 	EXPORT void EveryFrame(void);
