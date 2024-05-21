@@ -232,7 +232,7 @@ void CBody::Suspend(CBody **a2)
 	print_if_false((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
 	print_if_false(a2 != 0, "woops");
 
-	//vtable call here
+	this->UnknownVirtualFuction();
 
 	this->field_40 = a2;
 	this->DeleteFrom(a2);
@@ -244,8 +244,7 @@ void CBody::Suspend(CBody **a2)
 
 
 
-// @NotOk
-// missing vtable call
+// @Ok
 void CBody::InterleaveAI(void)
 {
 	if (this->mFlags & 2)
@@ -259,7 +258,7 @@ void CBody::InterleaveAI(void)
 		this->EveryFrame();
 	}
 
-	// vcall here
+	this->AI();
 }
 
 // @Ok
