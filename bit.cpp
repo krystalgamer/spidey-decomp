@@ -191,11 +191,26 @@ void CFT4Bit::SetAnim(int a2){
 }
 
 
+// @TODO
 int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
 {
 	return 0x420690;
 }
 
+// @Ok
+void CBit::Move(void)
+{
+}
+
+// @Ok
+void MoveList(CBit *pBit)
+{
+	for (CBit *p = pBit; p; p = p->mNext)
+	{
+		if (!p->mDead)
+			p->Move();
+	}
+}
 
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);

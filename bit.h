@@ -23,6 +23,7 @@ class CBit
 
 		EXPORT CBit();
 		EXPORT virtual ~CBit();
+		EXPORT virtual void Move(void);
 		EXPORT void* operator new(unsigned int size);
 		EXPORT void operator delete(void*);
 		EXPORT void Die();
@@ -112,6 +113,7 @@ class CSmokeTrail : public CNonRenderedBit
 };
 
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
+EXPORT void MoveList(CBit *);
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
