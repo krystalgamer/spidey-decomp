@@ -10,6 +10,8 @@
 class CBullet : public CBody
 {
 	public:
+		EXPORT CBullet(void);
+
 		unsigned char padTop[0x114-0xF4];
 
 		int field_114;
