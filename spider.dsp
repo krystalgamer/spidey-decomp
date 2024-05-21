@@ -108,6 +108,10 @@ SOURCE=.\blackcat.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bullet.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\camera.cpp
 # End Source File
 # Begin Source File
@@ -325,6 +329,10 @@ SOURCE=.\bit2.h
 # Begin Source File
 
 SOURCE=.\blackcat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bullet.h
 # End Source File
 # Begin Source File
 
