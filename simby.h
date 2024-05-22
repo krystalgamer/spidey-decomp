@@ -70,9 +70,20 @@ public:
 	unsigned char padFull[0x334 - 0x324];
 };
 
+class CSimbySlimeBase : public CQuadBit
+{
+	public:
+		EXPORT void ScaleUp(void);
+
+		unsigned char topPad[0xA4-0x84];
+		int field_A4;
+		unsigned char bottomPad[0x114-0xA4-4];
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
+void validate_CSimbySlimeBase(void);
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);
 

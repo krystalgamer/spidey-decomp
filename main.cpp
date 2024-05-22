@@ -219,6 +219,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CBullet();
 	validate_SLinkInfo();
 	validate_CElectrify();
+	validate_CSimbySlimeBase();
 
 
 	puts("[*] Validation done!");
