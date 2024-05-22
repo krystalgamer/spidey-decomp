@@ -114,6 +114,20 @@ void CSimbySlimeBase::ScaleUp(void)
 	this->field_A4 = 32;
 }
 
+// @Ok
+void CSimbySlimeBase::ScaleDown(void)
+{
+	this->field_A4 = -32;
+}
+
+// @Ok
+void CSimbySlimeBase::ScaleDownAndDie(void)
+{
+	this->ScaleDown();
+	this->field_9C = 1;
+	this->mProtected = 0;
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 }
@@ -165,5 +179,6 @@ void validate_CSimbySlimeBase(void)
 {
 	VALIDATE_SIZE(CSimbySlimeBase, 0x114);
 	
+	VALIDATE(CSimbySlimeBase, field_9C, 0x9C);
 	VALIDATE(CSimbySlimeBase, field_A4, 0xA4);
 }

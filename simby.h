@@ -74,8 +74,13 @@ class CSimbySlimeBase : public CQuadBit
 {
 	public:
 		EXPORT void ScaleUp(void);
+		EXPORT void ScaleDown(void);
+		EXPORT void ScaleDownAndDie(void);
 
-		unsigned char topPad[0xA4-0x84];
+		unsigned char topPad[0x9C-0x84];
+		int field_9C;
+		unsigned char padAfter9C[0xA4-0x9C-4];
+
 		int field_A4;
 		unsigned char bottomPad[0x114-0xA4-4];
 };
