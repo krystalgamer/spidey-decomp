@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef MYSTERIO_H
+#define MYSTERIO_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -56,7 +59,16 @@ class CMysterio : public CBaddy {
 
 };
 
+class CMysterioLaser : public CNonRenderedBit
+{
+	public:
+		unsigned char fullPad[0x28];
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
+void validate_CMysterioLaser(void);
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
+
+#endif

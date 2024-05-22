@@ -220,6 +220,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SLinkInfo();
 	validate_CElectrify();
 	validate_CSimbySlimeBase();
+	validate_CMysterioLaser();
 
 
 	puts("[*] Validation done!");

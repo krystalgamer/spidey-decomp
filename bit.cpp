@@ -256,9 +256,9 @@ void validate_CBit(void)
 	VALIDATE(CBit, mPos, 0x10);
 	VALIDATE(CBit, mVel, 0x1C);
 	VALIDATE(CBit, mAcc, 0x28);
-	VALIDATE(CBit, mProtected, 0x3A);
 	VALIDATE(CBit, mDead, 0x37);
 	VALIDATE(CBit, mFrigDeltaZ, 0x38);
+	VALIDATE(CBit, mProtected, 0x3A);
 }
 
 void validate_CSmokeTrail(void)

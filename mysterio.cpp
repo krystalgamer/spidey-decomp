@@ -72,3 +72,8 @@ void validate_CSoftSpot(void){
 	VALIDATE(CSoftSpot, field_330, 0x330);
 	VALIDATE(CSoftSpot, field_334, 0x334);
 }
+
+void validate_CMysterioLaser(void)
+{
+	VALIDATE_SIZE(CMysterioLaser, 0x64);
+}
