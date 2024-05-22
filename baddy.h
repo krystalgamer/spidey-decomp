@@ -154,7 +154,9 @@ public:
 	unsigned char padAfter308[0x314 - 0x308 - 4];
 
 	__int16 field_314;
-	unsigned char asdfahsudfausdhuasduhPad[6];
+	unsigned __int16 padAfter314;
+
+	int field_318;
 	SStateFlags field_31C;
 	int dumbAssPad;
 };

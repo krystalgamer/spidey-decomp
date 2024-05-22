@@ -110,7 +110,7 @@ int CJonah::LinkedHidingPlaceStillExists(int)
 }
 
 // @Ok
-int CJonah::StartRunningToNextRoom(void)
+int __inline CJonah::StartRunningToNextRoom(void)
 {
 	if (this->field_370)
 	{
@@ -127,10 +127,46 @@ int CJonah::StartRunningToNextRoom(void)
 
 			return 1;
 		}
-
 	}
 
 	return 0;
+}
+
+// @NotOk
+// missing part findscorp
+void CJonah::TakeHit(void)
+{
+
+	int v3;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			v3 = this->FindScorp();
+			if (v3)
+			{
+			}
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_318 = 0;
+				if (!this->StartRunningToNextRoom())
+				{
+					this->field_31C.bothFlags = 1;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+	}
+}
+
+// @TODO
+int CJonah::FindScorp(void)
+{
+	return 0x22052024;
 }
 
 void validate_CJonah(void){
