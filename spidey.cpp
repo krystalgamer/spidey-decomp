@@ -647,6 +647,8 @@ void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
 
+	VALIDATE(CPlayer, field_194, 0x194);
+
 	VALIDATE(CPlayer, field_1A8, 0x1A8);
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
 

@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "bit.h"
 #include "ps2funcs.h"
+#include "mem.h"
 
 struct SHitInfo;
 static unsigned char * const Regions = (unsigned char*)0x006B2449;
@@ -172,7 +173,11 @@ public:
 	int field_108;
 
 	int field_10C;
-	unsigned char padB[0x10-4];
+	unsigned char padAfter10C[4];
+
+	SHandle field_114;
+	unsigned char padAfter114[0x11C-0x114-sizeof(SHandle)];
+
 	int SNbrFaces;
 	int alsoOutlineRelated;
 	unsigned char outlineR;

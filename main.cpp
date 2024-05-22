@@ -45,6 +45,7 @@
 #include "message.h"
 #include "bullet.h"
 #include "trig.h"
+#include "effects.h"
 
 template<bool b>
 
@@ -217,6 +218,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SEntry();
 	validate_CBullet();
 	validate_SLinkInfo();
+	validate_CElectrify();
 
 
 	puts("[*] Validation done!");

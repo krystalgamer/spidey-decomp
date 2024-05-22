@@ -112,6 +112,16 @@ class CSmokeTrail : public CNonRenderedBit
 		{}
 };
 
+class CSpecialDisplay : public CBit
+{
+	public:
+};
+
+class CSimpleTexturedRibbon : public CSpecialDisplay
+{
+	public:
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 

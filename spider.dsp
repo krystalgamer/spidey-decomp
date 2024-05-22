@@ -132,6 +132,10 @@ SOURCE=.\docock.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\effects.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\exp.cpp
 # End Source File
 # Begin Source File
@@ -357,6 +361,10 @@ SOURCE=.\cop.h
 # Begin Source File
 
 SOURCE=.\docock.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\effects.h
 # End Source File
 # Begin Source File
 
