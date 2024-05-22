@@ -44,6 +44,7 @@
 #include "spidey.h"
 #include "message.h"
 #include "bullet.h"
+#include "trig.h"
 
 template<bool b>
 
@@ -215,6 +216,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CMenu();
 	validate_SEntry();
 	validate_CBullet();
+	validate_SLinkInfo();
 
 
 	puts("[*] Validation done!");

@@ -1,4 +1,6 @@
 #include "trig.h"
+#include "validate.h"
+
 
 // @TODO
 int Trig_GetLevelId(void)
@@ -19,3 +21,12 @@ void* Trig_GetLinksPointer(int)
 // @TODO
 void Trig_SendPulse(unsigned __int16*)
 {}
+
+void validate_SLinkInfo(void)
+{
+	VALIDATE_SIZE(SLinkInfo, 0xC);
+
+	VALIDATE(SLinkInfo, field_0, 0x0);
+	VALIDATE(SLinkInfo, field_4, 0x4);
+	VALIDATE(SLinkInfo, field_8, 0x8);
+}

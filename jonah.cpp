@@ -96,6 +96,13 @@ void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result)
 	}
 }
 
+// @Ok
+void CJonah::GraspWaypoint(SLinkInfo* a2)
+{
+	this->field_2F8 = a2->field_0;
+	this->field_1F4 = a2->field_8;
+}
+
 void validate_CJonah(void){
 	VALIDATE_SIZE(CJonah, 0x380);
 

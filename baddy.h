@@ -147,8 +147,8 @@ public:
 
 	int field_2F0;
 	int field_2F4;
+	int field_2F8;
 
-	unsigned char shitterPad[0x4];
 	CVector field_2FC;
 	int field_308;
 	unsigned char padAfter308[0x314 - 0x308 - 4];
