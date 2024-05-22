@@ -114,6 +114,7 @@ class CPlayer : public CSuper
 		EXPORT void PriorToVenomDistanceAttack(CVector);
 		EXPORT void SwitchToStandMode(void);
 		EXPORT void TidyUpZipWebLandingPosition(int);
+		EXPORT void CreateFists(unsigned char);
 };
 
 void validate_CPlayer(void);

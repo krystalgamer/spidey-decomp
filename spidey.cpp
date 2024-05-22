@@ -14,6 +14,33 @@
 #include "m3dcolij.h"
 #include "m3dzone.h"
 
+// @NotOk
+// validate later
+void CPlayer::CreateFists(unsigned char a2)
+{
+	if (a2 & 1)
+	{
+		this->field_194 &= 0xFFFFFFDF;
+		this->field_194 |= 0x40;
+	}
+	else
+	{
+		this->field_194 &= 0xFFFFFFBF;
+		this->field_194 |= 0x20;
+	}
+
+	if (a2 & 2)
+	{
+		this->field_194 &= 0xFFFFFBFF;
+		this->field_194 |= 0x800;
+	}
+	else
+	{
+		this->field_194 &= 0xFFFFF7FF;
+		this->field_194 |= 0x400;
+	}
+}
+
 // @Ok
 void CPlayer::SetIgnoreInputTimer(int a2)
 {
