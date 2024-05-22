@@ -7,6 +7,8 @@
 class CChopper : public CBaddy {
 public:
 
+	EXPORT void SetHeightMode(int);
+
 	unsigned char padChopperStart[0xC];
 	int field_330;
 	int field_334;
@@ -23,7 +25,10 @@ public:
 	int field_364;
 	int field_368;
 	int field_36C;
-	unsigned char padAfter36C[0x10];
+	unsigned char padAfter36C[0x374-0x36C-4];
+
+	int field_374;
+	unsigned char padAfter374[0x380-0x374-4];
 
 	int field_380;
 	unsigned char padAfter380[0x4];

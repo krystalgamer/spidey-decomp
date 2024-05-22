@@ -1,6 +1,8 @@
 #include "chopper.h"
 #include "validate.h"
 
+// @NotOk
+// verify later
 void CBulletFrag::Move()
 {
   this->mPos.vx += this->mVel.vx;
@@ -12,7 +14,13 @@ void CBulletFrag::Move()
 
   if ( ++this->field_C > (int)(unsigned __int16)this->field_E )
 	  this->Die();
-  }
+}
+
+// @Ok
+void __inline CChopper::SetHeightMode(int mode)
+{
+	this->field_374 = mode;
+}
 
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
@@ -28,6 +36,9 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_364, 0x364);
 	VALIDATE(CChopper, field_368, 0x368);
 	VALIDATE(CChopper, field_36C, 0x36C);
+
+	VALIDATE(CChopper, field_374, 0x374);
+
 	VALIDATE(CChopper, field_380, 0x380);
 	VALIDATE(CChopper, field_388, 0x388);
 	VALIDATE(CChopper, field_38C, 0x38C);
