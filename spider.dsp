@@ -136,6 +136,10 @@ SOURCE=.\exp.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FontTools.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\friction.cpp
 # End Source File
 # Begin Source File
@@ -361,6 +365,10 @@ SOURCE=.\exp.h
 # Begin Source File
 
 SOURCE=.\export.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FontTools.h
 # End Source File
 # Begin Source File
 
