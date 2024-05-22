@@ -97,16 +97,51 @@ void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result)
 }
 
 // @Ok
-void CJonah::GraspWaypoint(SLinkInfo* a2)
+void __inline CJonah::GraspWaypoint(SLinkInfo* a2)
 {
 	this->field_2F8 = a2->field_0;
 	this->field_1F4 = a2->field_8;
 }
 
+// @TODO
+int CJonah::LinkedHidingPlaceStillExists(int)
+{
+	return 0x69694040;
+}
+
+// @Ok
+int CJonah::StartRunningToNextRoom(void)
+{
+	if (this->field_370)
+	{
+		if ((this->field_218 & 0x200) || (this->field_330 >= 80 && !this->LinkedHidingPlaceStillExists(0)))
+		{
+			SLinkInfo linkInfo;
+			linkInfo.field_8 = 4;
+			linkInfo.field_0 = this->field_36C;
+			this->GraspWaypoint(&linkInfo);
+
+			this->field_31C.bothFlags = 7;
+			this->dumbAssPad = 0;
+			this->field_218 |= 0x102;
+
+			return 1;
+		}
+
+	}
+
+	return 0;
+}
+
 void validate_CJonah(void){
 	VALIDATE_SIZE(CJonah, 0x380);
+
+	VALIDATE(CJonah, field_330, 0x330);
 
 	VALIDATE(CJonah, field_34C, 0x34C);
 	VALIDATE(CJonah, field_350, 0x350);
 	VALIDATE(CJonah, field_354, 0x354);
+
+	VALIDATE(CJonah, field_36C, 0x36C);
+	VALIDATE(CJonah, field_370, 0x370);
 }
