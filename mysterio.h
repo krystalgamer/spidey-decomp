@@ -68,10 +68,25 @@ class CMysterioLaser : public CNonRenderedBit
 		unsigned char padBottom[0x64-0x4C-4];
 };
 
+class CGoldFish : public CBody
+{
+	public:
+		EXPORT void AngryMode(void);
+		EXPORT void NormalMode(void);
+
+		unsigned char pad[0xF8-0xF4];
+
+		int field_F8;
+
+		unsigned char bottomPad[0x110-0xF8-4];
+
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
 void validate_CMysterioLaser(void);
+void validate_CGoldFish(void);
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
 
 #endif

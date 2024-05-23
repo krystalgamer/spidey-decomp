@@ -42,6 +42,18 @@ void __inline CMysterioLaser::SetDamage(int damage)
 	this->field_4C = damage;
 }
 
+// @Ok
+void __inline CGoldFish::AngryMode(void)
+{
+	this->field_F8 = 1;
+}
+
+// @Ok
+void __inline CGoldFish::NormalMode(void)
+{
+	this->field_F8 = 0;
+}
+
 void validate_CMystFoot(void){
 	VALIDATE_SIZE(CMystFoot, 0x324);
 }
@@ -84,4 +96,11 @@ void validate_CMysterioLaser(void)
 	VALIDATE_SIZE(CMysterioLaser, 0x64);
 
 	VALIDATE(CMysterioLaser, field_4C, 0x4C);
+}
+
+void validate_CGoldFish(void)
+{
+	VALIDATE_SIZE(CGoldFish, 0x110);
+
+	VALIDATE(CGoldFish, field_F8, 0xF8);
 }

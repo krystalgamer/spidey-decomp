@@ -227,6 +227,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_Font();
 	validate_CTurretLaser();
 	validate_CLaserFence();
+	validate_CGoldFish();
 
 
 	puts("[*] Validation done!");
