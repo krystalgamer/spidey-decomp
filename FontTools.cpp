@@ -1,4 +1,5 @@
 #include "FontTools.h"
+#include "validate.h"
 
 // @Ok
 int Font::isEscapeChar(char a1)
@@ -23,3 +24,15 @@ int Font::isEscapeChar(char a1)
 	return ((a1 != 0x5E) - 1) & 0x000000FA;
 }
 
+// @Ok
+int __inline Font::GetCharMap(void)
+{
+	return this->field_58;
+}
+
+void validate_Font(void)
+{
+	VALIDATE_SIZE(Font, 0x5C);
+
+	VALIDATE(Font, field_58, 0x58);
+}

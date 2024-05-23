@@ -46,6 +46,8 @@
 #include "bullet.h"
 #include "trig.h"
 #include "effects.h"
+#include "FontTools.h"
+
 
 template<bool b>
 
@@ -221,6 +223,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CElectrify();
 	validate_CSimbySlimeBase();
 	validate_CMysterioLaser();
+	validate_Font();
 
 
 	puts("[*] Validation done!");
