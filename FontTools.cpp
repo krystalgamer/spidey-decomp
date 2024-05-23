@@ -30,6 +30,39 @@ int __inline Font::GetCharMap(void)
 	return this->field_58;
 }
 
+
+// @Ok
+void __inline Font::SetCharMap(int a2)
+{
+	this->field_58 = a2;
+	for (int i = 0; i < 256; i++)
+	{
+		this->field_5F[i] = this->getCharIndex(i);
+	}
+}
+
+// @TODO
+char Font::getCharIndex(char)
+{
+	return (char)0xFF;
+}
+
+static Font* FontList[6];
+
+// NotOk
+// globals
+// managed to make it match with the this->field_58 = this->field_58, by deref through array
+void FontManager::ResetCharMaps(void)
+{
+	for (int i = 0; i<6; i++)
+	{
+		if (FontList[i])
+		{
+			FontList[i]->SetCharMap(FontList[i]->GetCharMap());
+		}
+	}
+}
+
 void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x5C);
