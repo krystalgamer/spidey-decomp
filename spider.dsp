@@ -92,6 +92,18 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\ai.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\algebra.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\backgrnd.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\baddy.cpp
 # End Source File
 # Begin Source File
@@ -104,7 +116,15 @@ SOURCE=.\bit2.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bitmap256.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\blackcat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bmr.cpp
 # End Source File
 # Begin Source File
 
@@ -120,7 +140,19 @@ SOURCE=.\carnage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\chain.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\chopper.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\chunk.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cinema.cpp
 # End Source File
 # Begin Source File
 
@@ -128,7 +160,43 @@ SOURCE=.\cop.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\crate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\db.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcfileio.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcmemcard.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcmodel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcshellutils.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\decomp.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\docock.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DXinit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DXsound.cpp
 # End Source File
 # Begin Source File
 
@@ -137,6 +205,10 @@ SOURCE=.\effects.cpp
 # Begin Source File
 
 SOURCE=.\exp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\flash.cpp
 # End Source File
 # Begin Source File
 
@@ -156,7 +228,47 @@ SOURCE=.\hostage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Image.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\init.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\jonah.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l1a3bomb.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l2a1lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a5lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a6lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a7lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a1lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a2lsc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a3lsc.cpp
 # End Source File
 # Begin Source File
 
@@ -165,6 +277,14 @@ SOURCE=.\lizard.cpp
 # Begin Source File
 
 SOURCE=.\lizman.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\localtxt.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LThread.cpp
 # End Source File
 # Begin Source File
 
@@ -192,6 +312,10 @@ SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\manipob.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mem.cpp
 # End Source File
 # Begin Source File
@@ -208,6 +332,10 @@ SOURCE=.\mj.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\music.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mysterio.cpp
 # End Source File
 # Begin Source File
@@ -216,11 +344,83 @@ SOURCE=.\ob.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\pack.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pal.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\panel.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\pcdcBkup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcMem.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcPad.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCGfx.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCInput.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCMovie.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCMusic.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCShell.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCTex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCTimer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\physics.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\platform.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\post.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\powerup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PRE.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2card.cpp
 # End Source File
 # Begin Source File
 
@@ -240,6 +440,10 @@ SOURCE=.\ps2m3d.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2pad.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2redbook.cpp
 # End Source File
 # Begin Source File
@@ -252,7 +456,23 @@ SOURCE=.\quat.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\reloc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\reloc_g.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\rfront.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\rhino.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sbinit.cpp
 # End Source File
 # Begin Source File
 
@@ -264,6 +484,10 @@ SOURCE=.\screen.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\shatter.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\shell.cpp
 # End Source File
 # Begin Source File
@@ -272,7 +496,15 @@ SOURCE=.\simby.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\smoke.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\spclone.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\spid_ai0.cpp
 # End Source File
 # Begin Source File
 
@@ -280,7 +512,15 @@ SOURCE=.\spidey.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SpideyDX.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\spool.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stubs.cpp
 # End Source File
 # Begin Source File
 
@@ -292,6 +532,14 @@ SOURCE=.\superock.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SwapTriggerData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\switch.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\thug.cpp
 # End Source File
 # Begin Source File
@@ -300,11 +548,19 @@ SOURCE=.\torch.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\training.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\trig.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\turret.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tweak.cpp
 # End Source File
 # Begin Source File
 
@@ -324,16 +580,40 @@ SOURCE=.\venom.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\vram.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\weapons.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\web.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\wire.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\zrhinog.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\ai.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\algebra.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\backgrnd.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\baddy.h
@@ -348,7 +628,15 @@ SOURCE=.\bit2.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\bitmap256.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\blackcat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bmr.h
 # End Source File
 # Begin Source File
 
@@ -364,7 +652,19 @@ SOURCE=.\carnage.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\chain.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\chopper.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\chunk.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cinema.h
 # End Source File
 # Begin Source File
 
@@ -372,7 +672,43 @@ SOURCE=.\cop.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\crate.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\db.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcfileio.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcmemcard.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcmodel.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\dcshellutils.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\decomp.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\docock.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DXinit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DXsound.h
 # End Source File
 # Begin Source File
 
@@ -385,6 +721,10 @@ SOURCE=.\exp.h
 # Begin Source File
 
 SOURCE=.\export.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\flash.h
 # End Source File
 # Begin Source File
 
@@ -404,7 +744,47 @@ SOURCE=.\hostage.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Image.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\init.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\jonah.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l1a3bomb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l2a1lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a5lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a6lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l5a7lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a1lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a2lsc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\l6a3lsc.h
 # End Source File
 # Begin Source File
 
@@ -413,6 +793,14 @@ SOURCE=.\lizard.h
 # Begin Source File
 
 SOURCE=.\lizman.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\localtxt.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LThread.h
 # End Source File
 # Begin Source File
 
@@ -436,6 +824,10 @@ SOURCE=.\m3dzone.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\manipob.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mem.h
 # End Source File
 # Begin Source File
@@ -452,6 +844,10 @@ SOURCE=.\mj.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\music.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mysterio.h
 # End Source File
 # Begin Source File
@@ -460,11 +856,83 @@ SOURCE=.\ob.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\pack.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pal.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\panel.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\pcdcBkup.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcMem.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pcdcPad.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCGfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCInput.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCMovie.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCMusic.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCShell.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCTex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PCTimer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\physics.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\platform.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\post.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\powerup.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PRE.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2card.h
 # End Source File
 # Begin Source File
 
@@ -484,6 +952,10 @@ SOURCE=.\ps2m3d.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2pad.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2redbook.h
 # End Source File
 # Begin Source File
@@ -496,7 +968,23 @@ SOURCE=.\quat.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\reloc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\reloc_g.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\rfront.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\rhino.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Sbinit.h
 # End Source File
 # Begin Source File
 
@@ -508,6 +996,10 @@ SOURCE=.\screen.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\shatter.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\shell.h
 # End Source File
 # Begin Source File
@@ -516,11 +1008,23 @@ SOURCE=.\simby.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\smoke.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\spclone.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\spid_ai0.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\spidey.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SpideyDX.h
 # End Source File
 # Begin Source File
 
