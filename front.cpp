@@ -3,6 +3,13 @@
 #include "utils.h"
 
 
+// @NotOk
+// Globals
+static int gFrontGauge;
+void __inline Front_GaugeOff(void)
+{
+	gFrontGauge = 0;
+}
 
 // @Ok
 CMenu::CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, int LineSep)

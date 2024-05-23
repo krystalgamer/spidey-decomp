@@ -91,4 +91,6 @@ public:
 void validate_SEntry(void);
 void validate_CMenu(void);
 
+EXPORT void Front_GaugeOff(void);
+
 #endif
