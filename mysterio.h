@@ -62,7 +62,10 @@ class CMysterio : public CBaddy {
 class CMysterioLaser : public CNonRenderedBit
 {
 	public:
-		unsigned char fullPad[0x28];
+		EXPORT void SetDamage(int);
+		unsigned char fullPad[0xD];
+		int field_4C;
+		unsigned char padBottom[0x64-0x4C-4];
 };
 
 void validate_CMystFoot(void);
