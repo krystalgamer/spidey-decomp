@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef PSHELL_H
+#define PSHELL_H
+
 #include "export.h"
 #include "ob.h"
 
@@ -26,3 +29,7 @@ public:
 
 	EXPORT int ScrollBarHitTest(int a2, int a3);
 };
+
+EXPORT int PShell_GetNumCostumePSXs(void);
+
+#endif
