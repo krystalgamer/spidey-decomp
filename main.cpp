@@ -224,6 +224,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSimbySlimeBase();
 	validate_CMysterioLaser();
 	validate_Font();
+	validate_CTurretLaser();
 
 
 	puts("[*] Validation done!");

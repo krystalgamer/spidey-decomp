@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef TURRET_H
+#define TURRET_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -22,5 +25,18 @@ public:
 	unsigned char fullpad[0x8];
 };
 
+class CTurretLaser : public CNonRenderedBit
+{
+	public:
+		EXPORT void SetDamage(int);
+
+		unsigned char topPad[0xD];
+		int field_4C;
+		unsigned char bottomPad[0x64-0x4C];
+};
+
 void validate_CTurret(void);
 void validate_CTurretBase(void);
+void validate_CTurretLaser(void);
+
+#endif

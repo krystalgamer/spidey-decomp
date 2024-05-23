@@ -16,7 +16,13 @@ void __inline CTurret::TargetLockDynamic(CBody *a2)
 	}
 }
 
-void validate_CTurret(void){
+void CTurretLaser::SetDamage(int damage)
+{
+	this->field_4C = damage;
+}
+
+void validate_CTurret(void)
+{
 	VALIDATE_SIZE(CTurret, 0x37C);
 
 	VALIDATE(CTurret, field_324, 0x324);
@@ -24,6 +30,14 @@ void validate_CTurret(void){
 	VALIDATE(CTurret, field_378, 0x378);
 }
 
-void validate_CTurretBase(void){
+void validate_CTurretBase(void)
+{
 		VALIDATE_SIZE(CTurretBase, 0xFC);
+}
+
+void validate_CTurretLaser(void)
+{
+		VALIDATE_SIZE(CTurretLaser, 0x64);
+
+		VALIDATE(CTurretLaser, field_4C, 0x4C);
 }
