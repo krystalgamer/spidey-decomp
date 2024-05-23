@@ -47,6 +47,7 @@
 #include "trig.h"
 #include "effects.h"
 #include "FontTools.h"
+#include "wire.h"
 
 
 template<bool b>
@@ -225,6 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CMysterioLaser();
 	validate_Font();
 	validate_CTurretLaser();
+	validate_CLaserFence();
 
 
 	puts("[*] Validation done!");

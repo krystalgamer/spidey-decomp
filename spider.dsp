@@ -326,6 +326,10 @@ SOURCE=.\venom.cpp
 
 SOURCE=.\web.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\wire.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -565,6 +569,10 @@ SOURCE=.\venom.h
 # Begin Source File
 
 SOURCE=.\web.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\wire.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
