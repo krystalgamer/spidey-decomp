@@ -32,7 +32,7 @@ class CTurretLaser : public CNonRenderedBit
 
 		unsigned char topPad[0xD];
 		int field_4C;
-		unsigned char bottomPad[0x64-0x4C];
+		unsigned char bottomPad[0x64-0x4C-4];
 };
 
 void validate_CTurret(void);
