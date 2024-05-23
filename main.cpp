@@ -48,6 +48,7 @@
 #include "effects.h"
 #include "FontTools.h"
 #include "wire.h"
+#include "powerup.h"
 
 
 template<bool b>
@@ -228,6 +229,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CTurretLaser();
 	validate_CLaserFence();
 	validate_CGoldFish();
+	validate_CPowerUp();
 
 
 	puts("[*] Validation done!");
