@@ -228,6 +228,10 @@ SOURCE=.\ps2funcs.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ps2gamefmv.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ps2lowsfx.cpp
 # End Source File
 # Begin Source File
@@ -461,6 +465,10 @@ SOURCE=.\platform.h
 # Begin Source File
 
 SOURCE=.\ps2funcs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ps2gamefmv.h
 # End Source File
 # Begin Source File
 
