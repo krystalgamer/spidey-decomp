@@ -24,7 +24,13 @@ class Image : public CClass
 class SlicedImage2 : public Image
 {
 	public:
-		unsigned char pad[0x10];
+		EXPORT int screenHeight(void);
+
+		unsigned char padTop[0x6];
+
+		__int16 field_16;
+
+		unsigned char padBottom[0x20-0x16-4];
 };
 
 EXPORT void validate_Image(void);

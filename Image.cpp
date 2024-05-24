@@ -15,9 +15,16 @@ Image::Image(void)
 	this->field_C = 4096;
 }
 
+// @Ok
+int SlicedImage2::screenHeight(void)
+{
+	return (this->field_C * this->field_16) >> 12;
+}
+
 void validate_SlicedImage(void)
 {
 	VALIDATE_SIZE(SlicedImage2, 0x20);
+	VALIDATE(SlicedImage2, field_16, 0x16);
 }
 
 void validate_Image(void)
