@@ -1,6 +1,20 @@
 #include "Image.h"
 #include "validate.h"
 
+// @Ok
+Image::Image(void)
+{
+	this->field_4 = 0;
+	this->field_5 = 0;
+	this->field_6 = 0;
+	this->field_7 = 0x80;
+	this->field_8 = 0x80;
+	this->field_9 = 0x80;
+	this->field_A = 0;
+	this->field_B = 0;
+	this->field_C = 4096;
+}
+
 void validate_SlicedImage(void)
 {
 	VALIDATE_SIZE(SlicedImage2, 0x20);
