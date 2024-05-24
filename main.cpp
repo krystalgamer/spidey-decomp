@@ -49,6 +49,7 @@
 #include "FontTools.h"
 #include "wire.h"
 #include "powerup.h"
+#include "switch.h"
 
 
 template<bool b>
@@ -230,6 +231,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CLaserFence();
 	validate_CGoldFish();
 	validate_CPowerUp();
+	validate_CSwitch();
 
 
 	puts("[*] Validation done!");
