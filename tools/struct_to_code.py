@@ -1,6 +1,6 @@
 import sys
 
-DECL = False
+DECL = True
 Debug = False
 
 def to_decl(name, ty):
@@ -60,7 +60,7 @@ def main(argv, argc):
             to_decl(name, ty)
         else:
             h = f'{offset:x}'.upper()
-            to_validate(name, 'CGPolyLine', f'0x{h}')
+            to_validate(name, 'Image', f'0x{h}')
 
 
 

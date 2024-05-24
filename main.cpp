@@ -52,6 +52,7 @@
 #include "powerup.h"
 #include "switch.h"
 #include "chain.h"
+#include "Image.h"
 
 
 // @Ok
@@ -259,6 +260,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSwitch();
 	validate_CChain();
 	validate_CGLine();
+	validate_SlicedImage();
+	validate_Image();
 
 
 	puts("[*] Validation done!");
