@@ -51,6 +51,7 @@
 #include "wire.h"
 #include "powerup.h"
 #include "switch.h"
+#include "chain.h"
 
 
 // @Ok
@@ -256,6 +257,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CGoldFish();
 	validate_CPowerUp();
 	validate_CSwitch();
+	validate_CChain();
 
 
 	puts("[*] Validation done!");
