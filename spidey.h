@@ -119,6 +119,8 @@ class CPlayer : public CSuper
 		EXPORT void CreateFists(unsigned char);
 };
 
+EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
+
 void validate_CPlayer(void);
 
 #endif

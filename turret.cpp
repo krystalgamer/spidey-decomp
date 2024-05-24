@@ -2,11 +2,13 @@
 #include "validate.h"
 
 
+// @Ok
 void __inline CTurret::TargetLockAbsolute(const CVector &a1){
 	this->field_344 = a1;
 	this->field_218 |= 4;
 }
 
+// @Ok
 void __inline CTurret::TargetLockDynamic(CBody *a2)
 {
 	if ( !a2->IsDead() )
@@ -16,9 +18,16 @@ void __inline CTurret::TargetLockDynamic(CBody *a2)
 	}
 }
 
+// @Ok
 void CTurretLaser::SetDamage(int damage)
 {
 	this->field_4C = damage;
+}
+
+// @Ok
+void __inline CTurret::ClearTargetLock(void)
+{
+	this->field_218 &= 0xFFFFFFE3;
 }
 
 void validate_CTurret(void)
@@ -41,3 +50,4 @@ void validate_CTurretLaser(void)
 
 		VALIDATE(CTurretLaser, field_4C, 0x4C);
 }
+

@@ -643,6 +643,17 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 	}while(i<4096);
 }
 
+static const char* gUserFunctionName;
+static unsigned int gUserFunctionSize;
+
+// @NotOk
+// global
+void Spidey_SetUserFunction(const char *a1, unsigned int a2)
+{
+	gUserFunctionName = a1;
+	gUserFunctionSize = a2;
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);

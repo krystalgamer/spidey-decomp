@@ -11,6 +11,7 @@ class CTurret : public CBaddy {
 public:
 	EXPORT void TargetLockAbsolute(const CVector &);
 	EXPORT void TargetLockDynamic(CBody *a2);
+	EXPORT void ClearTargetLock(void);
 
 	CVector field_324;
 	unsigned char padAfter324[0x20 - sizeof(CVector)];
