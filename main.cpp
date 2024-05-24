@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include "main.h"
 #include "ob.h"
 #include "vector.h"
 #include "friction.h"
@@ -51,6 +52,24 @@
 #include "powerup.h"
 #include "switch.h"
 
+
+// @Ok
+void * CClass::operator new(unsigned int size)
+{
+	void *result = DCMem_New(size, 0, 1, 0, 1);
+
+	unsigned int adjusted_size = ((size + 3) & 0xFFFFFFFC) >> 2;
+	if ( adjusted_size )
+		memset(result, 0, 4 * adjusted_size);
+
+	return result;
+}
+
+// @Ok
+void CItem::operator delete(void *ptr)
+{
+	Mem_Delete(ptr);
+}
 
 template<bool b>
 
