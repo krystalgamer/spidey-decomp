@@ -532,3 +532,12 @@ int ratan2(int x, int y)
 	return atan2((double)x, (double)y) * 651.0006103515625;
 
 }
+
+static int gClutRelated;
+
+// @NotOk
+// Globals
+int GetClut(int, int a2)
+{
+	return a2 - gClutRelated;
+}

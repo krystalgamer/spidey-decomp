@@ -78,3 +78,5 @@ EXPORT MATRIX* RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 
 EXPORT int ratan2(int, int);
+
+EXPORT int GetClut(int, int);
