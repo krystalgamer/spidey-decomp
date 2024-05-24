@@ -10,6 +10,7 @@ class CClass
 
 	EXPORT void * operator new(unsigned int size);
 	EXPORT void operator delete(void*);
+	EXPORT virtual ~CClass();
 };
 
 #endif

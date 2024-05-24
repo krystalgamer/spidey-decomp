@@ -54,7 +54,7 @@
 
 
 // @Ok
-void * CClass::operator new(unsigned int size)
+void* CClass::operator new(unsigned int size)
 {
 	void *result = DCMem_New(size, 0, 1, 0, 1);
 
@@ -66,9 +66,14 @@ void * CClass::operator new(unsigned int size)
 }
 
 // @Ok
-void CItem::operator delete(void *ptr)
+void CClass::operator delete(void *ptr)
 {
 	Mem_Delete(ptr);
+}
+
+// @Ok
+CClass::~CClass()
+{
 }
 
 template<bool b>

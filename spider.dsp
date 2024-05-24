@@ -824,6 +824,10 @@ SOURCE=.\m3dzone.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\main.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\manipob.h
 # End Source File
 # Begin Source File
