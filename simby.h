@@ -16,6 +16,7 @@ public:
 	EXPORT CSimby(int*, int);
 	EXPORT CSimby(void);
 	EXPORT void FlashUpdate(void);
+	EXPORT void SetAlertModeTimer(int);
 
 	unsigned char padTop[0x328-0x324];
 
@@ -24,7 +25,10 @@ public:
 	unsigned __int16 field_32C;
 	__int16 field_32E;
 	int field_330;
-	unsigned char padAfter330[0x350-0x330-4];
+	unsigned char padAfter330[0x348-0x330-4];
+
+	int field_348;
+	unsigned char padAfter348[0x350-0x348-4];
 
 	int field_350;
 	int field_354;

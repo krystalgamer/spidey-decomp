@@ -2,6 +2,13 @@
 #include "validate.h"
 
 
+// @Ok
+void __inline CSimby::SetAlertModeTimer(int timer)
+{
+	if (this->field_348 < timer)
+		this->field_348 = timer;
+}
+
 // @TODO
 CSimby::CSimby(int* a2, int a3)
 {
@@ -140,6 +147,8 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_32C, 0x32C);
 	VALIDATE(CSimby, field_32E, 0x32E);
 	VALIDATE(CSimby, field_330, 0x330);
+
+	VALIDATE(CSimby, field_348, 0x348);
 
 	VALIDATE(CSimby, field_350, 0x350);
 	VALIDATE(CSimby, field_354, 0x354);
