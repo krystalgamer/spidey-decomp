@@ -5,7 +5,9 @@
 
 
 class CScorpion : public CBaddy {
-	unsigned char padScoprtion[0xC28-0x324];
+	public:
+		EXPORT void NextRoom(void);
+		unsigned char padScoprtion[0xC28-0x324];
 };
 
 void validate_CScorpion(void);
