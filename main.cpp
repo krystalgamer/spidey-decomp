@@ -53,6 +53,7 @@
 #include "switch.h"
 #include "chain.h"
 #include "Image.h"
+#include "ps2pad.h"
 
 
 // @Ok
@@ -262,6 +263,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CGLine();
 	validate_SlicedImage();
 	validate_Image();
+	validate_SControl();
 
 
 	puts("[*] Validation done!");
