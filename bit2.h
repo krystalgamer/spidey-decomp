@@ -28,6 +28,7 @@ public:
 class CGLine : public CBit
 {
 	public:
+		EXPORT void SetRGB1(unsigned char, unsigned char, unsigned char);
 		EXPORT CGLine(void);
 
 		int field_3C;

@@ -18,6 +18,12 @@ CGLine::CGLine(void)
 	this->AttachTo(reinterpret_cast<CBit**>(0x56E9CC));
 }
 
+// @Ok
+void CGLine::SetRGB1(unsigned char a2, unsigned char a3, unsigned char a4)
+{
+	this->field_40 = a2 | (a4 << 16) | (a3 << 8);
+}
+
 void validate_CGPolyLine(void){
 	VALIDATE_SIZE(CGPolyLine, 0x58);
 
