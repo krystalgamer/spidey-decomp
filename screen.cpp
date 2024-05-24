@@ -1,7 +1,11 @@
 #include "screen.h"
 
 
-// @TODO
-void Screen_TargetOn(bool)
+static bool gScreenTarget;
+
+// @NotOk
+// Globals
+void Screen_TargetOn(bool value)
 {
+	gScreenTarget = value;
 }
