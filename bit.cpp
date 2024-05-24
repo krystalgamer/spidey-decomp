@@ -212,6 +212,32 @@ void MoveList(CBit *pBit)
 	}
 }
 
+static unsigned char gSparkR;
+static unsigned char gSparkG;
+static unsigned char gSparkB;
+
+// @NotOk
+// Globals
+void Bit_SetSparkRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+	gSparkR = r;
+	gSparkG = g;
+	gSparkB = b;
+}
+
+static unsigned char gSparkFadeR;
+static unsigned char gSparkFadeG;
+static unsigned char gSparkFadeB;
+
+// @NotOk
+// Globals
+void Bit_SetSparkFadeRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+	gSparkFadeR = r;
+	gSparkFadeG = g;
+	gSparkFadeB = b;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
