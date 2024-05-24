@@ -258,6 +258,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CPowerUp();
 	validate_CSwitch();
 	validate_CChain();
+	validate_CGLine();
 
 
 	puts("[*] Validation done!");

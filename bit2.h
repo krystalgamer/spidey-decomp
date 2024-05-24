@@ -25,6 +25,22 @@ public:
 	unsigned char field_57;
 };
 
+class CGLine : public CBit
+{
+	public:
+		EXPORT CGLine(void);
+
+		int field_3C;
+		int field_40;
+		int field_44;
+		int field_48;
+		int field_4C;
+		int field_50;
+		int field_54;
+		int field_58;
+};
+
 void validate_CGPolyLine(void);
+void validate_CGLine(void);
 
 #endif
