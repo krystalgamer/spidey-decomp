@@ -8,5 +8,6 @@
 #include "ob.h"
 
 EXPORT void Panel_CreateHealthBar(const CBody*, int);
+EXPORT void Panel_DestroyCompass(void);
 
 #endif
