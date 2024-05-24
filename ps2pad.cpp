@@ -1,6 +1,14 @@
 #include "ps2pad.h"
 #include "validate.h"
 
+static int gPadActuator[255];
+// @NotOk
+// global
+void Pad_ActuatorOff(unsigned char a1, unsigned char)
+{
+	gPadActuator[a1] = 1;
+}
+
 // @Ok
 void Pad_SetDigitalMapping(SControl *pControl, int a2, int a3, int a4, int a5)
 {

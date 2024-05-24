@@ -16,6 +16,7 @@ struct SControl
 };
 
 EXPORT void Pad_SetDigitalMapping(SControl*, int, int, int, int);
+EXPORT void Pad_ActuatorOff(unsigned char, unsigned char);
 
 void validate_SControl(void);
 
