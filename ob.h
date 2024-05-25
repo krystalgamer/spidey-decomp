@@ -33,7 +33,7 @@ public:
 	int field_30;
 
 	CItem *field_34;
-	__int16 field_38;
+	unsigned __int16 field_38;
 	unsigned char padAfter38[2];
 
 

@@ -758,6 +758,29 @@ void CBaddy::Baddy_SendSignal(void)
 		Trig_SendSignalToLinks(ptr);
 }
 
+static CBaddy* gBaddylist;
+
+// @Ok
+CBaddy* FindBaddyOfType(int type)
+{
+	CBaddy *current = gBaddylist;
+
+	if (current)
+	{
+		while (current)
+		{
+			if (current->field_38 == type)
+			{
+				return current;
+			}
+
+			current = reinterpret_cast<CBaddy*>(current->field_20);
+		}
+	}
+
+	return NULL;
+}
+
 void validate_CBaddy(void){
 	VALIDATE_SIZE(CBaddy, 0x324);
 

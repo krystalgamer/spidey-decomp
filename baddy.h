@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef BADDY_H
+#define BADDY_H
+
 #include "export.h"
 #include "ob.h"
 
@@ -172,6 +176,10 @@ public:
 	__int16 field_32E;
 };
 
+EXPORT CBaddy* FindBaddyOfType(int);
+
 void validate_CBaddy(void);
 void validate_CScriptOnlyBaddy(void);
 void validate_SStateFlags(void);
+
+#endif
