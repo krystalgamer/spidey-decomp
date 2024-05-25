@@ -6,5 +6,6 @@
 #include "export.h"
 
 EXPORT int PCINPUT_GetMouseStatus(void);
+EXPORT void PCINPUT_SetMouseBound(int, int, int, int);
 
 #endif
