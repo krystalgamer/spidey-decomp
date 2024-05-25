@@ -45,6 +45,23 @@ int __inline countBits(unsigned int value)
 	return bits;
 }
 
+// @Ok
+int __inline countLeadingBits(unsigned int value)
+{
+	int bits = 0;
+
+	if (!value)
+		return 0;
+
+	while(!(value & 1))
+	{
+		value >>= 1;
+		bits++;
+	}
+
+	return bits;
+}
+
 void validate_WeirdTextureHolder(void)
 {
 	VALIDATE_SIZE(WeirdTextureHolder, 0x68);

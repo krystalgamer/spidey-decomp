@@ -20,6 +20,7 @@ EXPORT float PCTex_GetTextureWScale(int);
 EXPORT float PCTex_GetTextureHScale(int);
 EXPORT int PCTex_GetTextureFlags(int);
 EXPORT int countBits(unsigned int);
+EXPORT int countLeadingBits(unsigned int);
 
 void validate_WeirdTextureHolder(void);
 
