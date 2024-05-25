@@ -54,6 +54,8 @@
 #include "chain.h"
 #include "Image.h"
 #include "ps2pad.h"
+#include "bitmap256.h"
+#include "PCTex.h"
 
 
 // @Ok
@@ -264,6 +266,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SlicedImage();
 	validate_Image();
 	validate_SControl();
+	validate_Bitmap256();
+	validate_WeirdTextureHolder();
 
 
 	puts("[*] Validation done!");
