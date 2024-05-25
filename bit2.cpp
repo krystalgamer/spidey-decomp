@@ -24,6 +24,17 @@ void CGLine::SetRGB1(unsigned char a2, unsigned char a3, unsigned char a4)
 	this->field_40 = a2 | (a4 << 16) | (a3 << 8);
 }
 
+// @NotOk
+// figure out what the ptr is
+void CPolyLine::SetSemiTransparent(void)
+{
+	for (int i = 0; i < this->field_40; i++)
+	{
+		unsigned char * ptr = reinterpret_cast<unsigned char*>(this->field_44);
+		ptr[0x10*i] |= 2;
+	}
+}
+
 void validate_CGPolyLine(void){
 	VALIDATE_SIZE(CGPolyLine, 0x58);
 
@@ -50,4 +61,12 @@ void validate_CGLine(void)
 	VALIDATE(CGLine, field_50, 0x50);
 	VALIDATE(CGLine, field_54, 0x54);
 	VALIDATE(CGLine, field_58, 0x58);
+}
+
+void validate_CPolyLine(void)
+{
+	VALIDATE_SIZE(CPolyLine, 0x48);
+
+	VALIDATE(CPolyLine, field_40, 0x40);
+	VALIDATE(CPolyLine, field_44, 0x44);
 }

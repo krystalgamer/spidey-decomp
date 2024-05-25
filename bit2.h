@@ -41,7 +41,18 @@ class CGLine : public CBit
 		int field_58;
 };
 
+class CPolyLine : public CBit
+{
+	public:
+		EXPORT void SetSemiTransparent(void);
+		unsigned char topPad;
+
+		int field_40;
+		int field_44;
+};
+
 void validate_CGPolyLine(void);
+void validate_CPolyLine(void);
 void validate_CGLine(void);
 
 #endif
