@@ -8,5 +8,6 @@
 EXPORT int PCINPUT_GetMouseStatus(void);
 EXPORT void PCINPUT_SetMouseBound(int, int, int, int);
 EXPORT void PCINPUT_GetMousePosition(int*, int*);
+EXPORT void PCINPUT_FreezeControllerAxes(void);
 
 #endif

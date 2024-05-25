@@ -35,3 +35,14 @@ void PCINPUT_GetMousePosition(int *x, int *y)
 	*x = gMouseX;
 	*y = gMouseY;
 }
+
+static unsigned char gControllerAxesRelatedOne;
+static int gControllerAxesRelatedTwo = -1;
+
+// @NotOk
+// Globals
+void PCINPUT_FreezeControllerAxes(void)
+{
+	gControllerAxesRelatedOne = 1;
+	gControllerAxesRelatedTwo = -1;
+}
