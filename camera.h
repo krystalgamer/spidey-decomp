@@ -171,6 +171,8 @@ public:
 
 };
 
+EXPORT __int16 CalcTheta(__int16, __int16);
+
 void validate_CCamera(void);
 
 #endif

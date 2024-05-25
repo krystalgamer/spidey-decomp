@@ -255,6 +255,18 @@ void CCamera::SetCamYDistance(__int16, unsigned __int16)
 void CCamera::SetCamAngle(__int16, unsigned __int16)
 {}
 
+// @NotOk
+// Revisit when used (return type seems wrong)
+__int16 __inline CalcTheta(__int16 a1, __int16 a2)
+{
+	__int16 v2 = (a2 & 0xFFF) - (a1 & 0xFFF);
+	if (v2 > 2048)
+		return v2 - 4096;
+	if (v2 < -2048)
+		return v2 + 4096;
+	return v2;
+}
+
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
 
