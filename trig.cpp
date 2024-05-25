@@ -22,6 +22,10 @@ void* Trig_GetLinksPointer(int)
 void Trig_SendPulse(unsigned __int16*)
 {}
 
+// @TODO
+void Trig_SendSignalToLinks(unsigned __int16*)
+{}
+
 void validate_SLinkInfo(void)
 {
 	VALIDATE_SIZE(SLinkInfo, 0xC);

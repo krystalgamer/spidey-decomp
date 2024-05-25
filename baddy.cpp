@@ -708,7 +708,7 @@ char CBaddy::UnknownCBaddyFunctionFour(int)
 	return 0;
 }
 
-// @TODO
+// @Ok
 void CBaddy::Shouldnt_DoPhysics_Be_Virtual(void)
 {
 	this->DoPhysics(0);
@@ -747,6 +747,15 @@ unsigned int CBaddy::GetVariable(unsigned __int16)
 // @TODO
 void CBaddy::DoPhysics(int)
 {
+}
+
+// @Ok
+void CBaddy::Baddy_SendSignal(void)
+{
+	unsigned __int16 *ptr = reinterpret_cast<unsigned __int16*>(
+			Trig_GetLinksPointer((unsigned __int16)this->field_DE));
+	if (ptr)
+		Trig_SendSignalToLinks(ptr);
 }
 
 void validate_CBaddy(void){

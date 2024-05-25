@@ -36,6 +36,7 @@ public:
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
 	EXPORT void ParseScript(unsigned __int16*);
 	EXPORT void DoPhysics(int);
+	EXPORT void Baddy_SendSignal(void);
 
 	EXPORT virtual int PlayerIsVisible(int);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);
