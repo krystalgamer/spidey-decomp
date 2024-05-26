@@ -1,5 +1,6 @@
 #include "cop.h"
 #include "validate.h"
+#include "ps2lowsfx.h"
 
 // @NotOk
 // globals
@@ -44,6 +45,12 @@ void Cop_CreateCop(const unsigned int *stack, unsigned int *result)
 	int v3 = static_cast<int>(stack[1]);
 
 	*result = reinterpret_cast<unsigned int>(new CCop(v2, v3));
+}
+
+// @Ok
+void CCop::Victorious(void)
+{
+	SFX_PlayPos(0x8024, &this->mPos, 0);
 }
 
 void validate_CCop(void){

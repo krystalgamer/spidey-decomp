@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef COP_H
+#define COP_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -8,6 +11,8 @@ class CCop : public CBaddy {
 
 public:
 	EXPORT CCop(int*, int);
+	EXPORT void Victorious(void);
+
 	unsigned char copStartPad[0x1C];
 
 	int field_340;
@@ -26,3 +31,4 @@ public:
 
 void validate_CCop(void);
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
+#endif
