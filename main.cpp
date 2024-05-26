@@ -269,6 +269,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_Bitmap256();
 	validate_WeirdTextureHolder();
 	validate_CPolyLine();
+	validate_CSonicBubble();
 
 
 	puts("[*] Validation done!");

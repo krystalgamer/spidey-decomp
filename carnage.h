@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef CARNAGE_H
+#define CARNAGE_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -25,7 +28,16 @@ public:
 	int field_378;
 };
 
+class CSonicBubble : public CBody
+{
+	public:
+		EXPORT CSonicBubble(void);
+};
+
 
 void validate_CCarnage(void);
+void validate_CSonicBubble(void);
 EXPORT void CreateSonicBubbleVertexWobbler(void);
 EXPORT void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result);
+
+#endif

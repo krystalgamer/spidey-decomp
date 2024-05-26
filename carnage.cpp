@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "trig.h"
 #include "panel.h"
+#include "spool.h"
 
 
 // @NotOk
@@ -53,6 +54,19 @@ void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CCarnage(v2, v3));
 }
 
+// @NotOk
+// globals
+CSonicBubble::CSonicBubble(void)
+{
+	this->InitItem(gObjFile);
+
+	this->mModel = Spool_GetModel(0xE9DD4877, gObjFileRegion);
+	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+
+	this->mCBodyFlags &= 0xFFFFFFEF;
+	this->field_DC = 0;
+}
+
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 
@@ -66,4 +80,9 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_370, 0x370);
 	VALIDATE(CCarnage, field_374, 0x374);
 	VALIDATE(CCarnage, field_378, 0x378);
+}
+
+void validate_CSonicBubble(void)
+{
+	VALIDATE_SIZE(CSonicBubble, 0xF8);
 }

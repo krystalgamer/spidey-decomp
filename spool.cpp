@@ -41,3 +41,9 @@ int Spool_FindRegion(const char *a1)
 
 	return -1;
 }
+
+// @TODO
+unsigned int Spool_GetModel(unsigned int Checksum, int Region)
+{
+	return 0x26052024;
+}
