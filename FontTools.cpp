@@ -82,6 +82,19 @@ void FontManager::AllShadowOff(void)
 	}
 }
 
+// @NotOk
+// globals
+void FontManager::AllShadowOn(void)
+{
+	for (int i = 0; i<6; i++)
+	{
+		if (FontList[i])
+		{
+			FontList[i]->field_21 = 1;
+		}
+	}
+}
+
 void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x160);

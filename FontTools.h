@@ -33,6 +33,7 @@ class FontManager
 		EXPORT static void ResetCharMaps(void);
 		EXPORT static char* GetFontName(Font*);
 		EXPORT static void AllShadowOff(void);
+		EXPORT static void AllShadowOn(void);
 };
 
 void validate_Font(void);
