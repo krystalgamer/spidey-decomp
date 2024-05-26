@@ -654,6 +654,14 @@ void Spidey_SetUserFunction(const char *a1, unsigned int a2)
 	gUserFunctionSize = a2;
 }
 
+// @Ok
+unsigned char CPlayer::CanITalkRightNow(void)
+{
+	if (this->field_E1C & 0x800080)
+		return 0;
+	return 1;
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);

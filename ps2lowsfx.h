@@ -9,6 +9,7 @@
 
 EXPORT void SFX_PlayPos(unsigned int, CVector*, int);
 EXPORT void SFX_LevelStart(void);
+EXPORT void SFX_SetReverbType(unsigned char);
 
 #endif
 

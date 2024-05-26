@@ -117,6 +117,7 @@ class CPlayer : public CSuper
 		EXPORT void SwitchToStandMode(void);
 		EXPORT void TidyUpZipWebLandingPosition(int);
 		EXPORT void CreateFists(unsigned char);
+		EXPORT unsigned char CanITalkRightNow(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
