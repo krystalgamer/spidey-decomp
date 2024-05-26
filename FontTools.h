@@ -13,8 +13,12 @@ class Font
 		EXPORT int isEscapeChar(char);
 		EXPORT char getCharIndex(char);
 
-		unsigned char pad[0x38];
-		char field_38[1];
+		unsigned char pad[0x21];
+
+		unsigned char field_21;
+		unsigned char padAfter21[0x38-0x21-1];
+
+		char field_38[1]; //name don't know how big
 		unsigned char padAfter38[0x58-0x38-1];
 
 		int field_58;
@@ -28,6 +32,7 @@ class FontManager
 	public:
 		EXPORT static void ResetCharMaps(void);
 		EXPORT static char* GetFontName(Font*);
+		EXPORT static void AllShadowOff(void);
 };
 
 void validate_Font(void);

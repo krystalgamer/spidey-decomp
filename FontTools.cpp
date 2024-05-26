@@ -63,15 +63,30 @@ void FontManager::ResetCharMaps(void)
 	}
 }
 
+// @Ok
 char* FontManager::GetFontName(Font* pFont)
 {
 	return pFont->field_38;
+}
+
+// @NotOk
+// globals
+void FontManager::AllShadowOff(void)
+{
+	for (int i = 0; i<6; i++)
+	{
+		if (FontList[i])
+		{
+			FontList[i]->field_21 = 0;
+		}
+	}
 }
 
 void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x160);
 
+	VALIDATE(Font, field_21, 0x21);
 	VALIDATE(Font, field_38, 0x38);
 	VALIDATE(Font, field_58, 0x58);
 	VALIDATE(Font, field_5F, 0x5F);
