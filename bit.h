@@ -115,6 +115,7 @@ class CSmokeTrail : public CNonRenderedBit
 class CSpecialDisplay : public CBit
 {
 	public:
+		EXPORT CSpecialDisplay(void);
 };
 
 class CSimpleTexturedRibbon : public CSpecialDisplay

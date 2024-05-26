@@ -68,11 +68,13 @@ void CBit::operator delete(void* ptr)
 CBit::~CBit(){
 }
 
+// @Ok
 void CBit::Die(void){
 	print_if_false(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
 }
 
+// @Ok
 CBit* CBit::AttachTo(CBit** to){
 
 	CBit* tmp;
@@ -89,12 +91,14 @@ CBit* CBit::AttachTo(CBit** to){
 	return result;
 }
 
+// @Ok
 void CBit::SetPos(const CVector &pos){
 
 	this->mPos = pos;
 }
 
 
+// @Ok
 void CBit::DeleteFrom(CBit **lst){
 	
 	CBit* next = this->mNext;
@@ -112,26 +116,31 @@ void CBit::DeleteFrom(CBit **lst){
 	}
 }
 
+// @Ok
 void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 {
   this->mTint = a2 | ((a4 << 16) & 0xFF0000 | (a3 << 8) & 0xFF00) & 0xFFFFFF00;
 }
 
 
+// @Ok
 void CQuadBit::SetSemiTransparent()
 {
 	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFFFE) | 0x2C0;
 }
 
+// @Ok
 void CQuadBit::SetOpaque(){
 	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFDBF) | 0x80;
 }
 
 
+// @Ok
 void CQuadBit::SetSubtractiveTransparency(){
 	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFF7F) | 0x340;
 }
 
+// @Ok
 void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5)
 {
 	this->mPos = a2;
@@ -163,10 +172,12 @@ void CFT4Bit::SetScale(unsigned short s){
 }
 
 
+// @Ok
 void CFT4Bit::SetSemiTransparent(){
 	this->mCodeBGR |= 0x2000000;
 }
 
+// @Ok
 void CFT4Bit::SetTransparency(unsigned char t){
 	this->mCodeBGR = t | this->mCodeBGR & 0xFF000000 | ((t | (t << 8)) << 8);
 }
@@ -236,6 +247,13 @@ void Bit_SetSparkFadeRGB(unsigned char r, unsigned char g, unsigned char b)
 	gSparkFadeR = r;
 	gSparkFadeG = g;
 	gSparkFadeB = b;
+}
+
+// @NotOk
+// globals
+CSpecialDisplay::CSpecialDisplay(void)
+{
+	this->AttachTo(reinterpret_cast<CBit**>(0x56EB34));
 }
 
 void validate_CFlatBit(void){
