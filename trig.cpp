@@ -40,6 +40,15 @@ void Trig_ClearTrigMenu(void)
 	gRestartPoints = 0;
 }
 
+// @Ok
+unsigned char* SkipFlags(unsigned char* ptr)
+{
+	while(*ptr != 0xFF)
+		ptr++;
+
+	return ptr+1;
+}
+
 void validate_SLinkInfo(void)
 {
 	VALIDATE_SIZE(SLinkInfo, 0xC);
