@@ -18,6 +18,7 @@ EXPORT void Trig_GetPosition(CVector*, int);
 EXPORT void* Trig_GetLinksPointer(int);
 EXPORT void Trig_SendPulse(unsigned __int16*);
 EXPORT void Trig_SendSignalToLinks(unsigned __int16*);
+EXPORT void Trig_ClearTrigMenu(void);
 
 void validate_SLinkInfo(void);
 
