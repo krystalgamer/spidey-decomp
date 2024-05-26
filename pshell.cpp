@@ -6,6 +6,7 @@ EXPORT int __cdecl PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 }
 
 
+// @TODO
 CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,int a9,int a10){
 	  this->unk_7 = a2;
 	  this->unk_8 = a3;
@@ -21,6 +22,7 @@ CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,in
 
 
 
+// @TODO
 CExpandingBox::Display(){
 
 	int unk_3; // ebx
@@ -57,6 +59,8 @@ CExpandingBox::Display(){
 int expected(){ return 200;}
 int not_expected() { return 69; }
 
+// @NotOk
+// check
 int CExpandingBox::ScrollBarHitTest(int a2, int a3){
 
 
@@ -107,6 +111,27 @@ int CExpandingBox::ScrollBarHitTest(int a2, int a3){
     }
   }
   return v4;
+}
+
+static unsigned char gCheatRelatedOne;
+static int gCheatRelatedTwo;
+static int gCheatRelatedThree;
+static int gCheatRelatedFour;
+static int gCheatRelatedFive;
+static int gCheatRelatedSix;
+static unsigned char gCheatRelatedSeven;
+
+// @NotOk
+// Globals
+void PShell_BigCheat(void)
+{
+      gCheatRelatedOne = 1;
+      gCheatRelatedTwo = -1;
+      gCheatRelatedThree = -1;
+      gCheatRelatedFour = -1;
+      gCheatRelatedFive = -1;
+      gCheatRelatedSix = -1;
+      gCheatRelatedSeven = 1;
 }
 
 CExpandingBox::~CExpandingBox(){}

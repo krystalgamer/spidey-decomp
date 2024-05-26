@@ -7,6 +7,8 @@ class CLizMan : public CBaddy {
 public:
 	EXPORT void PlaySingleAnim(__int16, int, int);
 	EXPORT void StandStill(void);
+	EXPORT void SwitchFromMatrixToEuler(void);
+	EXPORT void StopClimbing(void);
 
 	unsigned char padLizStart[0x4];
 
@@ -22,7 +24,10 @@ public:
 
 
 	int field_374;
-	unsigned char padAfter374[0x398-0x374-4];
+	unsigned char padAfter374[0x390-0x374-4];
+
+	unsigned char field_390;
+	unsigned char padAfter390[0x398-0x390-1];
 
 	int field_398;
 	unsigned char padAfter398[0x3AC - 0x398 - 4];

@@ -26,6 +26,17 @@ void __inline CLizMan::StandStill(void)
 	}
 }
 
+// @TODO
+void CLizMan::SwitchFromMatrixToEuler(void)
+{}
+
+// @Ok
+void CLizMan::StopClimbing(void)
+{
+	this->SwitchFromMatrixToEuler();
+	this->field_390 = 0;
+}
+
 void validate_CLizMan(void){
 	VALIDATE_SIZE(CLizMan, 0x3B8);
 
@@ -36,6 +47,7 @@ void validate_CLizMan(void){
 	VALIDATE(CLizMan, field_340, 0x340);
 
 	VALIDATE(CLizMan, field_374, 0x374);
+	VALIDATE(CLizMan, field_390, 0x390);
 	VALIDATE(CLizMan, field_398, 0x398);
 	VALIDATE(CLizMan, field_3AC, 0x3AC);
 }
