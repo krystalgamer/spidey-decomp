@@ -32,6 +32,9 @@ class CSonicBubble : public CBody
 {
 	public:
 		EXPORT CSonicBubble(void);
+		EXPORT void SetScale(int);
+
+		int field_F4;
 };
 
 

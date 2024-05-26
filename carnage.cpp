@@ -67,6 +67,15 @@ CSonicBubble::CSonicBubble(void)
 	this->field_DC = 0;
 }
 
+// @Ok
+void CSonicBubble::SetScale(int scale)
+{
+	this->field_28 = 0;
+	this->field_2A = 0;
+	this->field_2C = 0;
+	this->mFlags |= 0x200;
+}
+
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 
@@ -85,4 +94,6 @@ void validate_CCarnage(void){
 void validate_CSonicBubble(void)
 {
 	VALIDATE_SIZE(CSonicBubble, 0xF8);
+
+	VALIDATE(CSonicBubble, 0xF4, field_F4);
 }
