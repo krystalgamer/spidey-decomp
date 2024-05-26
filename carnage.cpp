@@ -95,5 +95,5 @@ void validate_CSonicBubble(void)
 {
 	VALIDATE_SIZE(CSonicBubble, 0xF8);
 
-	VALIDATE(CSonicBubble, 0xF4, field_F4);
+	VALIDATE(CSonicBubble, field_F4, 0xF4);
 }

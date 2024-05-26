@@ -25,14 +25,17 @@ int CCamera::SetMode(ECameraMode mode){
 	return oldMode;
 }
 
+// @Ok
 void CCamera::SetCollisionRayLR(int a2){
 	this->field_264 = a2;
 }
 
+// @Ok
 void CCamera::SetCollisionRayBack(int a2){
 	this->field_268 = a2;
 }
 
+// @Ok
 void CCamera::SetCollisionAngLR(__int16 a2){
 	this->field_26C = a2;
 }
@@ -41,6 +44,7 @@ void CCamera::SetCollisionAngBack(__int16 a2){
 	this->field_26E = a2;
 }
 
+// @Ok
 void CCamera::SetZoom(int a2, unsigned __int16 a3){
 
 	this->field_174 = a3;
@@ -55,11 +59,13 @@ void CCamera::SetZoom(int a2, unsigned __int16 a3){
 	}
 }
 
+// @Ok
 int CCamera::GetZoom(void) const{
 	return this->mZoom;
 }
 
 
+// @Ok
 void CCamera::PushMode(void){
 
 	int mode = this->mMode;
@@ -71,6 +77,7 @@ void CCamera::PushMode(void){
 	}
 }
 
+// @Ok
 void CCamera::PopMode(void){
 
 	int mode = this->field_280;
@@ -89,6 +96,7 @@ void CCamera::CM_Normal(void){
 }
 
 
+// @Ok
 void CCamera::SetStartPosition(void){
 
 	if ( this->mMode == 3 )
@@ -101,6 +109,7 @@ void CCamera::SetStartPosition(void){
 
 }
 
+// @NotOk
 // Revisit
 void CCamera::SetFixedPosMode(CVector *a2, unsigned __int16 a3){
 
@@ -116,6 +125,7 @@ void CCamera::SetFixedPosMode(CVector *a2, unsigned __int16 a3){
 }
 
 
+// @NotOk
 // Revisit
 // Not matching but the same, compiler generates codeblock for else statement twice for some reason
 void CCamera::CM_FixedPosAngles(void){
@@ -168,6 +178,7 @@ void CCamera::CM_FixedPosAngles(void){
 
 static CVector * const stru_56F260 = (CVector*)0x56F260;
 
+// @NotOk
 // Revisit, needs validation
 void CCamera::CM_FixedPos(void){
 
@@ -265,6 +276,14 @@ __int16 __inline CalcTheta(__int16 a1, __int16 a2)
 	if (v2 < -2048)
 		return v2 + 4096;
 	return v2;
+}
+
+
+// @Ok
+void CCamera::GetPosition(CVector * dst)
+{
+	CVector *src = &this->mPos;
+	*dst = *src;
 }
 
 void validate_CCamera(void){

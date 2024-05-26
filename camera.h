@@ -33,6 +33,7 @@ public:
 	EXPORT void CM_FixedPos(void);
 	EXPORT void SetCamYDistance(__int16, unsigned __int16);
 	EXPORT void SetCamAngle(__int16, unsigned __int16);
+	EXPORT void GetPosition(CVector *);
 
 
 	int padTop;
