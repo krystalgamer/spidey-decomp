@@ -137,6 +137,7 @@ EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
 EXPORT void Bit_SetSparkFadeRGB(unsigned char, unsigned char, unsigned char);
+EXPORT void Bit_SetSparkTrajectory(CSVector *);
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);

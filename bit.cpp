@@ -262,6 +262,15 @@ void CGlow::SetCentreRGB(unsigned char a2, unsigned char a3, unsigned char a4)
 	this->field_4C = 0x32000000 | (((a4 << 8) | a3) << 8) | a2;
 }
 
+static CSVector gSparkTrajectory;
+
+// @NotOk
+// global
+void Bit_SetSparkTrajectory(CSVector *pVec)
+{
+	gSparkTrajectory = *pVec;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
