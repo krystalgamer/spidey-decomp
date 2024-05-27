@@ -43,6 +43,17 @@ void BlackCat_CreateBlackCat(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CBlackCat(v2, v3));
 }
 
+
+// @Ok
+void CBlackCat::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CBlackCat::DoPhysics(void)
+{}
+
 void validate_CBlackCat(void){
 	VALIDATE_SIZE(CBlackCat, 0x354);
 

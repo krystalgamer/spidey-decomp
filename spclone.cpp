@@ -2,6 +2,16 @@
 #include "validate.h"
 
 
+// @Ok
+void CSpClone::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CSpClone::DoPhysics(void)
+{}
+
 void validate_CSpClone(void){
 	VALIDATE_SIZE(CSpClone, 0x350);
 

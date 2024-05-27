@@ -9,6 +9,8 @@
 class CCarnage : public CBaddy {
 public:
 	EXPORT CCarnage(int*, int);
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
 
 	unsigned char carnageStartPad[0x10];
 

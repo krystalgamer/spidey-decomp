@@ -76,6 +76,16 @@ void CSonicBubble::SetScale(int scale)
 	this->mFlags |= 0x200;
 }
 
+// @Ok
+void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CCarnage::DoPhysics(void)
+{}
+
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 

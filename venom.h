@@ -10,6 +10,8 @@ public:
 
 	EXPORT CVenom(int*, int);
 	EXPORT void Lookaround(void);
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
 
 	unsigned char venomStartPad[0x18];
 	unsigned char field_33C;

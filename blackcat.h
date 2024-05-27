@@ -7,6 +7,9 @@ class CBlackCat : public CBaddy {
 public:
 	
 	EXPORT CBlackCat(int*, int);
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
+
 	int field_324;
 	int field_328;
 	int field_32C;

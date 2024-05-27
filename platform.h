@@ -5,6 +5,9 @@
 
 class CPlatform : public CBaddy {
 public:
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
+
 	unsigned char platPat[0x38];
 };
 

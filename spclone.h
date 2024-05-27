@@ -6,6 +6,8 @@
 
 class CSpClone : public CBaddy {
 public:
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
 
 	int padTop;
 

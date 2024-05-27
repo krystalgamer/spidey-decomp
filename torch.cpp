@@ -40,6 +40,16 @@ void Torch_CreateTorch(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CTorch(v2, v3));
 }
 
+// @Ok
+void CTorch::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CTorch::DoPhysics(void)
+{}
+
 void validate_CTorch(void){
 	VALIDATE_SIZE(CTorch, 0x354);
 

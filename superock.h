@@ -11,6 +11,8 @@ class CSuperDocOck : public CBaddy {
 
 public:
 	EXPORT CSuperDocOck(int*, int);
+	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT void DoPhysics(void);
 	unsigned char padTop[0x32C-0x324];
 
 	int field_32C;

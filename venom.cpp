@@ -45,6 +45,16 @@ void Venom_CreateVenom(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CVenom(v2, v3));
 }
 
+// @Ok
+void CVenom::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CVenom::DoPhysics(void)
+{}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 

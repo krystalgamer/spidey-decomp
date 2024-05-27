@@ -50,6 +50,15 @@ void SuperDocOck_CreateSuperDocOck(const unsigned int *stack, unsigned int *resu
 	*result = reinterpret_cast<unsigned int>(new CSuperDocOck(v2, v3));
 }
 
+// @Ok
+void CSuperDocOck::Shouldnt_DoPhysics_Be_Virtual(void)
+{
+	this->DoPhysics();
+}
+
+// @TODO
+void CSuperDocOck::DoPhysics(void)
+{}
 
 void validate_CSuperDocOck(void){
 	VALIDATE_SIZE(CSuperDocOck, 0x414);
