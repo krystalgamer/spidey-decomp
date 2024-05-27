@@ -270,6 +270,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_WeirdTextureHolder();
 	validate_CPolyLine();
 	validate_CSonicBubble();
+	validate_CGlow();
 
 
 	puts("[*] Validation done!");

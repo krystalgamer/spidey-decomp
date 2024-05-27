@@ -256,6 +256,12 @@ CSpecialDisplay::CSpecialDisplay(void)
 	this->AttachTo(reinterpret_cast<CBit**>(0x56EB34));
 }
 
+// @Ok
+void CGlow::SetCentreRGB(unsigned char a2, unsigned char a3, unsigned char a4)
+{
+	this->field_4C = 0x32000000 | (((a4 << 8) | a3) << 8) | a2;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -290,6 +296,8 @@ void validate_CQuadBit(void)
 	VALIDATE(CQuadBit, mTint, 0x6C);
 }
 
+
+
 void validate_CBit(void)
 {
 	VALIDATE(CBit, mPrevious, 0x4);
@@ -308,4 +316,11 @@ void validate_CBit(void)
 void validate_CSmokeTrail(void)
 {
 	VALIDATE_SIZE(CSmokeTrail, 0x58);
+}
+
+void validate_CGlow(void)
+{
+	VALIDATE_SIZE(CGlow, 0x5C);
+
+	VALIDATE(CGlow, field_4C, 0x4C);
 }

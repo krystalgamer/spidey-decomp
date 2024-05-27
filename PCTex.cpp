@@ -62,6 +62,13 @@ int __inline countLeadingBits(unsigned int value)
 	return bits;
 }
 
+// @NotOk
+// Globals
+int PCTex_GetTextureSplitID(int index, int id)
+{
+	return gGlobalTextures[index].split[id];
+}
+
 void validate_WeirdTextureHolder(void)
 {
 	VALIDATE_SIZE(WeirdTextureHolder, 0x68);
@@ -70,4 +77,5 @@ void validate_WeirdTextureHolder(void)
 	VALIDATE(WeirdTextureHolder, wScale, 0x4);
 	VALIDATE(WeirdTextureHolder, hScale, 0x8);
 	VALIDATE(WeirdTextureHolder, flags, 0xC);
+	VALIDATE(WeirdTextureHolder, split, 0x10);
 }

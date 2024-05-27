@@ -123,6 +123,16 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 	public:
 };
 
+class CGlow : public CBit
+{
+	public:
+		EXPORT void SetCentreRGB(unsigned char, unsigned char, unsigned char);
+		unsigned char padTop[0x10];
+
+		int field_4C;
+		unsigned char padBottom[0x5C-0x4C-4];
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -134,3 +144,4 @@ void validate_CQuadBit(void);
 void validate_CBit(void);
 void validate_CNonRenderedBit(void);
 void validate_CSmokeTrail(void);
+void validate_CGlow(void);
