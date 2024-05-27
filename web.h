@@ -64,9 +64,15 @@ public:
 	int field_138;
 };
 
-class CSwinger : public CBody {
-public:
-	unsigned char padFull[0x99];
+class CSwinger : public CBody 
+{
+	public:
+		EXPORT int IsOneTimeToDie(void);
+		unsigned char padTop[0x180-0xF4];
+
+		int field_180;
+
+		unsigned char padBottom[0x190-0x180-4];
 };
 
 class CSplat : public CQuadBit {

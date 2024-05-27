@@ -36,6 +36,12 @@ int Web_GetGroundY(const CVector* a1)
 void CTrapWebEffect::Burst(void)
 {}
 
+// @Ok
+int CSwinger::IsOneTimeToDie(void)
+{
+	return this->field_180 >= 4096;
+}
+
 void validate_CImpactWeb(void){
 	VALIDATE_SIZE(CImpactWeb, 0x8C);
 }
@@ -87,6 +93,8 @@ void validate_CWeb(void){
 
 void validate_CSwinger(void){
 	VALIDATE_SIZE(CSwinger, 0x190);
+
+	VALIDATE(CSwinger, field_180, 0x180);
 }
 
 void validate_CTrapWebEffect(void)
