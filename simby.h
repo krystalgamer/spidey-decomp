@@ -17,6 +17,7 @@ public:
 	EXPORT CSimby(void);
 	EXPORT void FlashUpdate(void);
 	EXPORT void SetAlertModeTimer(int);
+	EXPORT void ClearAttackData(void);
 
 	unsigned char padTop[0x328-0x324];
 
@@ -56,8 +57,10 @@ public:
 	int field_3DC;
 	int field_3E0;
 	int field_3E4;
-	unsigned char padAfter3E4[0x3F8-0x3E4-4];
+	unsigned char padAfter3E4[0x3F0-0x3E4-4];
 
+	int field_3F0;
+	unsigned char padAfter3F0[4];
 
 	int field_3F8;
 	int field_3FC;

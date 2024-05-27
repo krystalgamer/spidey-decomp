@@ -135,6 +135,16 @@ void CSimbySlimeBase::ScaleDownAndDie(void)
 	this->mProtected = 0;
 }
 
+static int gSimbyAttackData;
+
+// @NotOk
+// global
+void __inline CSimby::ClearAttackData(void)
+{
+	gSimbyAttackData &= ~this->field_3F0;
+	this->field_3F0 = 0;
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 }
@@ -172,6 +182,9 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_3DC, 0x3DC);
 	VALIDATE(CSimby, field_3E0, 0x3E0);
 	VALIDATE(CSimby, field_3E4, 0x3E4);
+
+	VALIDATE(CSimby, field_3F0, 0x3F0);
+
 	VALIDATE(CSimby, field_3F8, 0x3F8);
 	VALIDATE(CSimby, field_3FC, 0x3FC);
 	VALIDATE(CSimby, field_400, 0x400);
