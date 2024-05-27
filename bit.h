@@ -58,6 +58,7 @@ public:
 class CFT4Bit : public CBit {
 
 public:
+	EXPORT CFT4Bit(void);
 	EXPORT virtual ~CFT4Bit();
 	EXPORT void SetAnimSpeed(short);
 	EXPORT void SetScale(unsigned short);

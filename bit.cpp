@@ -280,6 +280,14 @@ void Bit_SetSparkTrajectoryCone(const CSVector *pVec)
 	gSparkTrajectoryCone = *pVec;
 }
 
+// @Ok
+CFT4Bit::CFT4Bit(void)
+{
+	this->mAnimSpeed = 0x80;
+	this->mScale = 400;
+	this->mCodeBGR = 0x2C808080;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);

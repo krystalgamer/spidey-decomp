@@ -153,6 +153,12 @@ int CVector::Length(void)
 	return M3dMaths_SquareRoot0(v4.vx + v4.vy + v4.vz);
 }
 
+void CVector::Zero(void)
+{
+	this->vx = 0;
+	this->vy = 0;
+	this->vz = 0;
+}
 
 
 void validate_CVector(void)
