@@ -22,6 +22,14 @@ void __inline CChopper::SetHeightMode(int mode)
 	this->field_374 = mode;
 }
 
+// @Ok
+void __inline CSniperTarget::BulletResult(bool result)
+{
+	this->field_FC++;
+	if (result)
+		this->field_128 = true;
+}
+
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
 
@@ -65,3 +73,13 @@ void validate_CBulletFrag(void){
 void validate_CSniperSplat(void){
 	VALIDATE_SIZE(CSniperSplat, 0x88);
 }
+
+void validate_CSniperTarget(void)
+{
+	VALIDATE_SIZE(CSniperTarget, 0x15C);
+
+	VALIDATE(CSniperTarget, field_FC, 0xFC);
+	VALIDATE(CSniperTarget, field_128, 0x128);
+}
+
+

@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef CHOPPER_H
+#define CHOPPER_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -67,6 +70,21 @@ public:
 	int field_84;
 };
 
+class CSniperTarget : public CBody
+{
+	public:
+		EXPORT void BulletResult(bool);
+		unsigned char padTop[0xFC-0xF4];
+		int field_FC;
+		unsigned char padAfterFC[0x128-0xFC-0x4];
+
+		bool field_128;
+		unsigned char padBottom[0x15C-0x128-1];
+};
+
 void validate_CChopper(void);
 void validate_CBulletFrag(void);
 void validate_CSniperSplat(void);
+void validate_CSniperTarget(void);
+
+#endif
