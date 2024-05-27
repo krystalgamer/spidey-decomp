@@ -65,6 +65,7 @@ class CFT4Bit : public CBit
 		EXPORT void SetSemiTransparent();
 		EXPORT void SetTransparency(unsigned char t);
 		EXPORT void SetAnim(int);
+		EXPORT void IncFrameWithWrap(void);
 
 		unsigned short mTransDecay;
 		unsigned short mScaleDelay;
@@ -142,6 +143,12 @@ class CLinked2EndedBit : public CFT4Bit
 		CVector field_64;
 };
 
+class CRibbonBit : public CLinked2EndedBit
+{
+	public:
+		EXPORT virtual void Move(void);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -157,3 +164,4 @@ void validate_CNonRenderedBit(void);
 void validate_CSmokeTrail(void);
 void validate_CGlow(void);
 void validate_CLinked2EndedBit(void);
+void validate_CRibbonBit(void);

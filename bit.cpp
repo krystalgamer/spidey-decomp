@@ -298,6 +298,17 @@ CLinked2EndedBit::CLinked2EndedBit(void)
 	this->AttachTo(reinterpret_cast<CBit**>(0x56EB40));
 }
 
+// @Ok
+void CRibbonBit::Move(void)
+{
+	this->IncFrameWithWrap();
+}
+
+// @TODO
+void CFT4Bit::IncFrameWithWrap(void)
+{
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -366,4 +377,9 @@ void validate_CLinked2EndedBit(void)
 
 	VALIDATE(CLinked2EndedBit, field_58, 0x58);
 	VALIDATE(CLinked2EndedBit, field_64, 0x64);
+}
+
+void validate_CRibbonBit(void)
+{
+	VALIDATE_SIZE(CRibbonBit, 0x70);
 }

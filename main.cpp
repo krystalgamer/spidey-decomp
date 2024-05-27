@@ -272,6 +272,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSonicBubble();
 	validate_CGlow();
 	validate_CLinked2EndedBit();
+	validate_CRibbonBit();
 
 
 	puts("[*] Validation done!");
