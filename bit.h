@@ -55,34 +55,34 @@ public:
 
 };
 
-class CFT4Bit : public CBit {
+class CFT4Bit : public CBit
+{
+	public:
+		EXPORT CFT4Bit(void);
+		EXPORT virtual ~CFT4Bit();
+		EXPORT void SetAnimSpeed(short);
+		EXPORT void SetScale(unsigned short);
+		EXPORT void SetSemiTransparent();
+		EXPORT void SetTransparency(unsigned char t);
+		EXPORT void SetAnim(int);
 
-public:
-	EXPORT CFT4Bit(void);
-	EXPORT virtual ~CFT4Bit();
-	EXPORT void SetAnimSpeed(short);
-	EXPORT void SetScale(unsigned short);
-	EXPORT void SetSemiTransparent();
-	EXPORT void SetTransparency(unsigned char t);
-	EXPORT void SetAnim(int);
+		unsigned short mTransDecay;
+		unsigned short mScaleDelay;
+		unsigned int mCodeBGR;
 
-	unsigned short mTransDecay;
-	unsigned short mScaleDelay;
-	unsigned int mCodeBGR;
+		unsigned char mDeleteAnimOnDestruction;
+		unsigned char padAfterDeleteAnim[0x3];
 
-	unsigned char mDeleteAnimOnDestruction;
-	unsigned char padAfterDeleteAnim[0x3];
+		int animRelated1;
+		int animRelated5;
+		unsigned char padAfteranimRelated5[0x1];
 
-	int animRelated1;
-	int animRelated5;
-	unsigned char padAfteranimRelated5[0x1];
+		unsigned char animRelated3;
+		unsigned char animRelated4;
+		unsigned char animRelated2;
 
-	unsigned char animRelated3;
-	unsigned char animRelated4;
-	unsigned char animRelated2;
-
-	short mAnimSpeed;
-	short mScale;
+		short mAnimSpeed;
+		short mScale;
 };
 
 class CFlatBit : public CFT4Bit {
@@ -134,6 +134,14 @@ class CGlow : public CBit
 		unsigned char padBottom[0x5C-0x4C-4];
 };
 
+class CLinked2EndedBit : public CFT4Bit
+{
+	public:
+		EXPORT CLinked2EndedBit(void);
+		CVector field_58;
+		CVector field_64;
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -148,3 +156,4 @@ void validate_CBit(void);
 void validate_CNonRenderedBit(void);
 void validate_CSmokeTrail(void);
 void validate_CGlow(void);
+void validate_CLinked2EndedBit(void);

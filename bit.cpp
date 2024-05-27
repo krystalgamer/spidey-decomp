@@ -288,13 +288,22 @@ CFT4Bit::CFT4Bit(void)
 	this->mCodeBGR = 0x2C808080;
 }
 
+// @NotOk
+// globals
+CLinked2EndedBit::CLinked2EndedBit(void)
+{
+	this->field_58.Zero();
+	this->field_64.Zero();
+
+	this->AttachTo(reinterpret_cast<CBit**>(0x56EB40));
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
 	VALIDATE(CFlatBit, mSemiTransparencyRate, 0x5E);
 	VALIDATE(CFlatBit, mPostScale, 0x60);
 	VALIDATE(CFlatBit, mAngFric, 0x65);
-
 }
 
 void validate_CFT4Bit(void){
@@ -349,4 +358,12 @@ void validate_CGlow(void)
 	VALIDATE_SIZE(CGlow, 0x5C);
 
 	VALIDATE(CGlow, field_4C, 0x4C);
+}
+
+void validate_CLinked2EndedBit(void)
+{
+	VALIDATE_SIZE(CLinked2EndedBit, 0x70);
+
+	VALIDATE(CLinked2EndedBit, field_58, 0x58);
+	VALIDATE(CLinked2EndedBit, field_64, 0x64);
 }
