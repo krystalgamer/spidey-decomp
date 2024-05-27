@@ -266,9 +266,18 @@ static CSVector gSparkTrajectory;
 
 // @NotOk
 // global
-void Bit_SetSparkTrajectory(CSVector *pVec)
+void Bit_SetSparkTrajectory(const CSVector *pVec)
 {
 	gSparkTrajectory = *pVec;
+}
+
+static CSVector gSparkTrajectoryCone;
+
+// @NotOk
+// global
+void Bit_SetSparkTrajectoryCone(const CSVector *pVec)
+{
+	gSparkTrajectoryCone = *pVec;
 }
 
 void validate_CFlatBit(void){
