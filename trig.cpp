@@ -49,6 +49,19 @@ unsigned char* SkipFlags(unsigned char* ptr)
 	return ptr+1;
 }
 
+static int* gTrigCollisionRelated;
+
+// @NotOk
+// Globals
+// unknown memory accesses
+void Trig_ResetCPCollisionFlags(void)
+{
+	for(int *ptr = gTrigCollisionRelated; ptr; ptr = reinterpret_cast<int*>(ptr[5]))
+	{
+		*reinterpret_cast<unsigned char*>(&ptr[1]) = 0;
+	}
+}
+
 void validate_SLinkInfo(void)
 {
 	VALIDATE_SIZE(SLinkInfo, 0xC);

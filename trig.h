@@ -20,6 +20,7 @@ EXPORT void Trig_SendPulse(unsigned __int16*);
 EXPORT void Trig_SendSignalToLinks(unsigned __int16*);
 EXPORT void Trig_ClearTrigMenu(void);
 EXPORT unsigned char* SkipFlags(unsigned char*);
+EXPORT void Trig_ResetCPCollisionFlags(void);
 
 void validate_SLinkInfo(void);
 
