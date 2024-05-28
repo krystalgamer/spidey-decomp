@@ -274,6 +274,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CLinked2EndedBit();
 	validate_CRibbonBit();
 	validate_CSniperTarget();
+	validate_CVenomWrap();
 
 
 	puts("[*] Validation done!");

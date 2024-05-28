@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef VENOM_H
+#define VENOM_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -64,6 +67,17 @@ public:
 	// @TODO venom has two secret virtual fucnctions
 };
 
+class CVenomWrap : public CNonRenderedBit
+{
+	public:
+		EXPORT void Die(void);
+		unsigned char fullPad[0x20];
+};
 
 void validate_CVenom(void);
+void validate_CVenomWrap(void);
 EXPORT void Venom_CreateVenom(const unsigned int *stack, unsigned int *result);
+
+
+
+#endif

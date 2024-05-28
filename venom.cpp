@@ -55,6 +55,11 @@ void CVenom::Shouldnt_DoPhysics_Be_Virtual(void)
 void CVenom::DoPhysics(void)
 {}
 
+void CVenomWrap::Die(void)
+{
+	CBit::Die();
+}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
@@ -94,4 +99,9 @@ void validate_CVenom(void){
 	VALIDATE(CVenom, field_45C, 0x45C);
 	VALIDATE(CVenom, field_460, 0x460);
 	VALIDATE(CVenom, field_464, 0x464);
+}
+
+void validate_CVenomWrap(void)
+{
+	VALIDATE_SIZE(CVenomWrap, 0x5C);
 }

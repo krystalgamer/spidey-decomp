@@ -21,5 +21,6 @@ EXPORT int Utils_GetValueFromDifficultyLevel(int, int, int, int);
 
 EXPORT int Rnd(int);
 EXPORT void Utils_InitialRand(int);
+EXPORT int catan(int);
 
 #endif
