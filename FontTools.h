@@ -38,7 +38,6 @@ class FontManager
 };
 
 
-static Font* FontRelated;
 
 void validate_Font(void);
 #endif
