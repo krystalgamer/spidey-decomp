@@ -57,6 +57,7 @@
 #include "bitmap256.h"
 #include "PCTex.h"
 #include "smoke.h"
+#include "panel.h"
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -279,6 +280,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CTexturedRibbon();
 	validate_CDomeShockWave();
 	validate_CMysterioHeadCircle();
+	validate_SAnimFrame();
 
 
 	puts("[*] Validation done!");

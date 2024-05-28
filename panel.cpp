@@ -1,4 +1,5 @@
 #include "panel.h"
+#include "validate.h"
 
 
 // @TODO
@@ -21,4 +22,27 @@ static unsigned char gPanelStatus;
 void Panel_DestroyCompass(void)
 {
 	gPanelStatus = 0;
+}
+
+// @Ok
+int Panel_DrawTexturedPoly(SAnimFrame* pFrame, int a2)
+{
+	return Panel_DrawTexturedPoly(pFrame->pTexture, a2);
+}
+
+// @TODO
+int Panel_DrawTexturedPoly(Texture*, int)
+{
+	return 0x28052024;
+}
+
+void validate_SAnimFrame(void)
+{
+	VALIDATE_SIZE(SAnimFrame, 0x8);
+
+	VALIDATE(SAnimFrame, OffX, 0x0);
+	VALIDATE(SAnimFrame, OffY, 0x1);
+	VALIDATE(SAnimFrame, Width, 0x2);
+	VALIDATE(SAnimFrame, Height, 0x3);
+	VALIDATE(SAnimFrame, pTexture, 0x4);
 }
