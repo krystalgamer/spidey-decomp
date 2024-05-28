@@ -91,6 +91,12 @@ class CTrapWebEffect : public CNonRenderedBit
 		unsigned char topPad[0x3F4];
 };
 
+class CDomeShockWave : public CNonRenderedBit
+{
+	public:
+		EXPORT void ResetHitFlags(CBody*);
+		unsigned char fullPad[0x5C];
+};
 
 EXPORT int Web_GetGroundY(const CVector*);
 
@@ -103,5 +109,6 @@ void validate_CWeb(void);
 void validate_CSwinger(void);
 void validate_CSplat(void);
 void validate_CTrapWebEffect(void);
+void validate_CDomeShockWave(void);
 
 #endif

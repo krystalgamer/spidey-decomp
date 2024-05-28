@@ -277,6 +277,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CVenomWrap();
 	validate_CSmokeJet();
 	validate_CTexturedRibbon();
+	validate_CDomeShockWave();
 
 
 	puts("[*] Validation done!");

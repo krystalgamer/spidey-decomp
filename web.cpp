@@ -49,6 +49,14 @@ void CSwinger::SetSpideyAnimFrame(int a2)
 	globalSuper->field_128 = (a2 * (this->field_180 - 2048)) >> 11;
 }
 
+
+// @Ok
+void __inline CDomeShockWave::ResetHitFlags(CBody* body)
+{
+	for(CBody *cur = body; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+		cur->mCBodyFlags &= 0xFEFF;
+}
+
 void validate_CImpactWeb(void){
 	VALIDATE_SIZE(CImpactWeb, 0x8C);
 }
@@ -107,4 +115,9 @@ void validate_CSwinger(void){
 void validate_CTrapWebEffect(void)
 {
 	VALIDATE_SIZE(CTrapWebEffect, 0x430);
+}
+
+void validate_CDomeShockWave(void)
+{
+	VALIDATE_SIZE(CDomeShockWave, 0x98);
 }
