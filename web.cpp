@@ -42,6 +42,13 @@ int CSwinger::IsOneTimeToDie(void)
 	return this->field_180 >= 4096;
 }
 
+// @NotOk
+// globals
+void CSwinger::SetSpideyAnimFrame(int a2)
+{
+	globalSuper->field_128 = (a2 * (this->field_180 - 2048)) >> 11;
+}
+
 void validate_CImpactWeb(void){
 	VALIDATE_SIZE(CImpactWeb, 0x8C);
 }

@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef WEB_H
+#define WEB_H
+
 #include "bit.h"
 #include "export.h"
 #include "ob.h"
@@ -68,6 +72,7 @@ class CSwinger : public CBody
 {
 	public:
 		EXPORT int IsOneTimeToDie(void);
+		EXPORT void SetSpideyAnimFrame(int);
 		unsigned char padTop[0x180-0xF4];
 
 		int field_180;
@@ -98,3 +103,5 @@ void validate_CWeb(void);
 void validate_CSwinger(void);
 void validate_CSplat(void);
 void validate_CTrapWebEffect(void);
+
+#endif
