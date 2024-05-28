@@ -82,11 +82,22 @@ class CGoldFish : public CBody
 
 };
 
+class CMysterioHeadCircle : public CQuadBit
+{
+	public:
+		EXPORT void NormalMode(void);
+		EXPORT void AngryMode(void);
+		unsigned char topPad[4];
+		int field_88;
+		int field_8C;
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
 void validate_CMysterioLaser(void);
 void validate_CGoldFish(void);
+void validate_CMysterioHeadCircle(void);
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
 
 #endif

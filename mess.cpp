@@ -27,16 +27,16 @@ void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
 	gRGBBottom = a2 | (a3 << 8) | (a4 << 16);
 }
 
-static Font* FontRelated;
+static Font FontRelated;
 
 // @NotOk
 // global
 void Mess_UnloadFont(void)
 {
-	FontManager::UnloadFont(FontRelated);
+	FontManager::UnloadFont(&FontRelated);
 }
 
 char* Mess_GetCurrentFont(void)
 {
-	return FontManager::GetFontName(FontRelated);
+	return FontManager::GetFontName(&FontRelated);
 }

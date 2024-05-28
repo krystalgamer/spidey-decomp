@@ -58,6 +58,22 @@ void validate_CMystFoot(void){
 	VALIDATE_SIZE(CMystFoot, 0x324);
 }
 
+// @Ok
+void __inline CMysterioHeadCircle::NormalMode(void)
+{
+	if (this->field_8C)
+		this->field_88 >>= 1;
+	this->field_8C = 0;
+}
+
+// @Ok
+void __inline CMysterioHeadCircle::AngryMode(void)
+{
+	if (!this->field_8C)
+		this->field_88 <<= 1;
+	this->field_8C = 1;
+}
+
 void validate_CMysterio(void){
 	VALIDATE_SIZE(CMysterio, 0x3D0);
 
@@ -103,4 +119,12 @@ void validate_CGoldFish(void)
 	VALIDATE_SIZE(CGoldFish, 0x110);
 
 	VALIDATE(CGoldFish, field_F8, 0xF8);
+}
+
+void validate_CMysterioHeadCircle(void)
+{
+	VALIDATE_SIZE(CMysterioHeadCircle, 0x90);
+
+	VALIDATE(CMysterioHeadCircle, field_88, 0x88);
+	VALIDATE(CMysterioHeadCircle, field_8C, 0x8C);
 }
