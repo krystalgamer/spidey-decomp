@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "trig.h"
 #include "panel.h"
+#include "ps2m3d.h"
 
 // @NotOk
 // globals
@@ -72,6 +73,12 @@ void DocOck_CreateDocOck(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CDocOc(v2, v3));
 }
 
+// @Ok
+void CDocOc::RenderClaws(void)
+{
+	M3d_Render(this->field_570);
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -84,4 +91,5 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_4EC, 0x4EC);
 	VALIDATE(CDocOc, field_50C, 0x50C);
 	VALIDATE(CDocOc, field_554, 0x554);
+	VALIDATE(CDocOc, field_570, 0x570);
 }

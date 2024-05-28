@@ -10,6 +10,7 @@ class CDocOc : public CBaddy {
 
 public:
 	EXPORT CDocOc(int*, int);
+	EXPORT void RenderClaws(void);
 
 	int field_324;
 	int field_328;
@@ -28,7 +29,11 @@ public:
 	unsigned char padAfter514[0x40-4];
 
 	int field_554;
-	unsigned char padAfter554[0x38];
+	unsigned char padAfter554[0x570-0x554-4];
+
+	void* field_570;
+
+	unsigned char padBottom[0x590-0x570-4];
 };
 
 
