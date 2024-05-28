@@ -140,12 +140,6 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 }
 
 // @TODO
-int Rnd(int)
-{
-	return 0x420420;
-}
-
-// @TODO
 CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*)
 {
 	return reinterpret_cast<CBody*>(0x13052024);
@@ -227,3 +221,27 @@ int Utils_GetValueFromDifficultyLevel(int, int, int, int)
 {
 	return 0x16052024;
 }
+
+static int gRndRelatedOne;
+static int gRndRelatedTwo;
+static int gRndRelatedThree;
+
+// @Ok
+void Utils_InitialRand(int a)
+{
+	gRndRelatedTwo = 0x12B9B0A1;
+	gRndRelatedOne = a;
+	gRndRelatedThree = 0xAA2FB3F;
+}
+
+// @Ok
+int Rnd(int n)
+{
+	int result; // eax
+	gRndRelatedOne = gRndRelatedThree + gRndRelatedOne * gRndRelatedTwo;
+	gRndRelatedTwo = (gRndRelatedOne >> 4) + (gRndRelatedOne ^ gRndRelatedTwo);
+	result = (n * (unsigned __int16)gRndRelatedOne) >> 16;
+	gRndRelatedThree = gRndRelatedThree + (gRndRelatedOne >> 3) - 0x10101010;
+	return result;
+}
+
