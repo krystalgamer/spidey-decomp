@@ -14,7 +14,13 @@ void SFX_LevelStart(void)
 }
 
 static unsigned char gReverbType;
-void SFX_SetReverbType(unsigned char reverb)
+void __inline SFX_SetReverbType(unsigned char reverb)
 {
 	gReverbType = reverb != 0;
+}
+
+// @Ok
+void SFX_ReverbOff(void)
+{
+	SFX_SetReverbType(0);
 }
