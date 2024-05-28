@@ -55,6 +55,7 @@ void CVenom::Shouldnt_DoPhysics_Be_Virtual(void)
 void CVenom::DoPhysics(void)
 {}
 
+// @Ok
 void CVenomWrap::Die(void)
 {
 	CBit::Die();

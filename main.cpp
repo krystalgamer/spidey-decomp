@@ -56,7 +56,7 @@
 #include "ps2pad.h"
 #include "bitmap256.h"
 #include "PCTex.h"
-
+#include "smoke.h"
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -275,6 +275,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CRibbonBit();
 	validate_CSniperTarget();
 	validate_CVenomWrap();
+	validate_CSmokeJet();
+	validate_CTexturedRibbon();
 
 
 	puts("[*] Validation done!");

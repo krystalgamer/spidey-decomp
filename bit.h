@@ -1,6 +1,7 @@
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
+#ifndef BIT_H
+#define BIT_H
 
 #include "vector.h"
 
@@ -149,6 +150,15 @@ class CRibbonBit : public CLinked2EndedBit
 		EXPORT virtual void Move(void);
 };
 
+class CTexturedRibbon : public CSpecialDisplay
+{
+	public:
+		EXPORT void CTexturedRibbon::SetOuterRGBi(int, unsigned char, unsigned char, unsigned char);
+		unsigned char topPad[0x60-0x3C];
+		int* field_60;
+
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -165,3 +175,6 @@ void validate_CSmokeTrail(void);
 void validate_CGlow(void);
 void validate_CLinked2EndedBit(void);
 void validate_CRibbonBit(void);
+void validate_CTexturedRibbon(void);
+
+#endif

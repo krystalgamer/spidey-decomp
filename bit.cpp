@@ -309,6 +309,12 @@ void CFT4Bit::IncFrameWithWrap(void)
 {
 }
 
+// @Ok
+void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4, unsigned char a5)
+{
+	this->field_60[index+1] = (a3 | (((a5 << 8) | a4) << 8));
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -382,4 +388,9 @@ void validate_CLinked2EndedBit(void)
 void validate_CRibbonBit(void)
 {
 	VALIDATE_SIZE(CRibbonBit, 0x70);
+}
+
+void validate_CTexturedRibbon(void)
+{
+	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }
