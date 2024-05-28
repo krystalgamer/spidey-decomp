@@ -95,6 +95,10 @@ void FontManager::AllShadowOn(void)
 	}
 }
 
+// @TODO
+void FontManager::UnloadFont(Font*)
+{}
+
 void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x160);

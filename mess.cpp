@@ -1,4 +1,5 @@
 #include "mess.h"
+#include "FontTools.h"
 
 static unsigned char gTextJustify;
 
@@ -24,4 +25,11 @@ static int gRGBBottom;
 void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
 {
 	gRGBBottom = a2 | (a3 << 8) | (a4 << 16);
+}
+
+// @NotOk
+// global
+void Mess_UnloadFont(void)
+{
+	FontManager::UnloadFont(FontRelated);
 }
