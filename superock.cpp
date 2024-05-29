@@ -1,5 +1,6 @@
 #include "superock.h"
 #include "validate.h"
+#include "ps2m3d.h"
 
 // @NotOk
 // globals
@@ -60,6 +61,12 @@ void CSuperDocOck::Shouldnt_DoPhysics_Be_Virtual(void)
 void CSuperDocOck::DoPhysics(void)
 {}
 
+// @Ok
+void CSuperDocOck::RenderClaws(void)
+{
+	M3d_Render(this->field_3F4);
+}
+
 void validate_CSuperDocOck(void){
 	VALIDATE_SIZE(CSuperDocOck, 0x414);
 
@@ -72,4 +79,6 @@ void validate_CSuperDocOck(void){
 	VALIDATE(CSuperDocOck, field_370, 0x370);
 	VALIDATE(CSuperDocOck, field_374, 0x374);
 	VALIDATE(CSuperDocOck, field_3D8, 0x3D8);
+
+	VALIDATE(CSuperDocOck, field_3F4, 0x3F4);
 }

@@ -13,6 +13,8 @@ public:
 	EXPORT CSuperDocOck(int*, int);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
+	EXPORT void RenderClaws(void);
+
 	unsigned char padTop[0x32C-0x324];
 
 	int field_32C;
@@ -29,8 +31,10 @@ public:
 	unsigned char padAfter374[0x3D8-0x374-4];
 
 	int field_3D8;
+	unsigned char padAfter3D8[0x3F4-0x3D8-4];
 
-	unsigned char padBottom[0x414-0x3D8-4];
+	void *field_3F4;
+	unsigned char padBottom[0x414-0x3F4-4];
 };
 
 
