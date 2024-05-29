@@ -21,6 +21,7 @@ EXPORT void Trig_SendSignalToLinks(unsigned __int16*);
 EXPORT void Trig_ClearTrigMenu(void);
 EXPORT unsigned char* SkipFlags(unsigned char*);
 EXPORT void Trig_ResetCPCollisionFlags(void);
+EXPORT int GetFlag(unsigned char, unsigned char *);
 
 void validate_SLinkInfo(void);
 

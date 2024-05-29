@@ -62,6 +62,21 @@ void Trig_ResetCPCollisionFlags(void)
 	}
 }
 
+// @NotOk
+// check inline later
+int __inline GetFlag(unsigned char flag, unsigned char *pData)
+{
+	while (*pData != 0xFF)
+	{
+		if (*pData == flag)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 void validate_SLinkInfo(void)
 {
 	VALIDATE_SIZE(SLinkInfo, 0xC);
