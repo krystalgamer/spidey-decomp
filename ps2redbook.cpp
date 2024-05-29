@@ -20,3 +20,19 @@ void Redbook_XAAllow(bool allowed)
 {
 	gXAAllowed = allowed;
 }
+
+// @TODO
+void Redbook_XAReset(void)
+{
+}
+
+// @TODO
+void Redbook_XAInit(void)
+{}
+
+// @Ok
+void Redbook_XAInitAtStart(void)
+{
+	Redbook_XAReset();
+	Redbook_XAInit();
+}
