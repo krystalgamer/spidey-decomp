@@ -79,6 +79,13 @@ void CDocOc::RenderClaws(void)
 	M3d_Render(this->field_570);
 }
 
+// @Ok
+void __inline CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
+{
+	this->field_4C4 = 0;
+	this->RunAnim(a2, a3, a4);
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -88,6 +95,9 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_330, 0x330);
 	VALIDATE(CDocOc, field_334, 0x334);
 	VALIDATE(CDocOc, field_4A8, 0x4A8);
+
+	VALIDATE(CDocOc, field_4C4, 0x4C4);
+
 	VALIDATE(CDocOc, field_4EC, 0x4EC);
 	VALIDATE(CDocOc, field_50C, 0x50C);
 	VALIDATE(CDocOc, field_554, 0x554);
