@@ -61,8 +61,8 @@ public:
 
 	CVector field_1A8;
 	CVector field_1B4[5];
-	unsigned char padAfter1B4[0x4];
 
+	int field_1F0;
 	int field_1F4;
 	int field_1F8;
 	__int16 field_1FC;

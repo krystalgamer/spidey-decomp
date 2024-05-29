@@ -37,6 +37,33 @@ void CLizMan::StopClimbing(void)
 	this->field_390 = 0;
 }
 
+// @TODO
+void CLizMan::FlyAcrossRoom(void)
+{
+	switch(this->dumbAssPad)
+	{
+		case 3:
+			if (this->IsSafeToSwitchToFollowWaypoints())
+			{
+				this->field_31C.bothFlags = 2;
+			}
+			else
+			{
+				this->field_31C.bothFlags = 1;
+			}
+			this->dumbAssPad = 0;
+
+	}
+}
+
+// @Ok
+int __inline CLizMan::IsSafeToSwitchToFollowWaypoints(void)
+{
+	if (this->field_1F0 || this->field_1F4 > 0)
+		return 1;
+	return 0;
+}
+
 void validate_CLizMan(void){
 	VALIDATE_SIZE(CLizMan, 0x3B8);
 

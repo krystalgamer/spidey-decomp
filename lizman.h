@@ -9,6 +9,8 @@ public:
 	EXPORT void StandStill(void);
 	EXPORT void SwitchFromMatrixToEuler(void);
 	EXPORT void StopClimbing(void);
+	EXPORT int IsSafeToSwitchToFollowWaypoints(void);
+	EXPORT void FlyAcrossRoom(void);
 
 	unsigned char padLizStart[0x4];
 

@@ -33,6 +33,8 @@ class SlicedImage2 : public Image
 		unsigned char padBottom[0x20-0x16-4];
 };
 
-EXPORT void validate_Image(void);
-EXPORT void validate_SlicedImage(void);
+EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);
+
+void validate_Image(void);
+void validate_SlicedImage(void);
 #endif

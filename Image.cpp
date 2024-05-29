@@ -1,5 +1,6 @@
 #include "Image.h"
 #include "validate.h"
+#include "dcshellutils.h"
 
 // @Ok
 Image::Image(void)
@@ -19,6 +20,13 @@ Image::Image(void)
 int SlicedImage2::screenHeight(void)
 {
 	return (this->field_C * this->field_16) >> 12;
+}
+
+// @Ok
+int Load8BitBMP_2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5)
+{
+	Load8BitBMP2(a1, a2, a3, a4, a5, false);
+	return 1;
 }
 
 void validate_SlicedImage(void)
