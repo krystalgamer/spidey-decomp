@@ -40,3 +40,9 @@ char* Mess_GetCurrentFont(void)
 {
 	return FontManager::GetFontName(&FontRelated);
 }
+
+// @Ok
+int Mess_TextHeight(char *pStr)
+{
+	return FontRelated.height(pStr);
+}

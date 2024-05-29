@@ -12,6 +12,7 @@ class Font
 		EXPORT void SetCharMap(int);
 		EXPORT int isEscapeChar(char);
 		EXPORT char getCharIndex(char);
+		EXPORT int height(char*);
 
 		unsigned char pad[0x21];
 
