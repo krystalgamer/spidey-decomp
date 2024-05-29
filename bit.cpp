@@ -315,6 +315,16 @@ void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4
 	this->field_60[index+1] = (a3 | (((a5 << 8) | a4) << 8));
 }
 
+// @NotOk
+// understand what 3C is
+void CGlow::SetRadius(int radius)
+{
+	for (int i = 0; i < this->field_44; i++)
+	{
+		this->field_3C[2*i] = radius;
+	}
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -373,6 +383,9 @@ void validate_CSmokeTrail(void)
 void validate_CGlow(void)
 {
 	VALIDATE_SIZE(CGlow, 0x5C);
+
+	VALIDATE(CGlow, field_3C, 0x3C);
+	VALIDATE(CGlow, field_44, 0x44);
 
 	VALIDATE(CGlow, field_4C, 0x4C);
 }

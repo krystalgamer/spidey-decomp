@@ -130,7 +130,13 @@ class CGlow : public CBit
 {
 	public:
 		EXPORT void SetCentreRGB(unsigned char, unsigned char, unsigned char);
-		unsigned char padTop[0x10];
+		EXPORT void SetRadius(int);
+
+		int* field_3C;
+		unsigned char padAfter3C[0x44-0x3C-4];
+
+		unsigned int field_44;
+		unsigned char padAfter44[0x4C-0x44-4];
 
 		int field_4C;
 		unsigned char padBottom[0x5C-0x4C-4];
