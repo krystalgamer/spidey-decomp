@@ -128,3 +128,8 @@ void validate_CMysterioHeadCircle(void)
 	VALIDATE(CMysterioHeadCircle, field_88, 0x88);
 	VALIDATE(CMysterioHeadCircle, field_8C, 0x8C);
 }
+
+void validate_CFadePalettes(void)
+{
+	VALIDATE_SIZE(CFadePalettes, 0x460);
+}

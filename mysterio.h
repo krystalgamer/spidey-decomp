@@ -92,12 +92,20 @@ class CMysterioHeadCircle : public CQuadBit
 		int field_8C;
 };
 
+class CFadePalettes : public CNonRenderedBit
+{
+	public:
+		unsigned char fullPad[0x424];
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
 void validate_CMysterioLaser(void);
 void validate_CGoldFish(void);
 void validate_CMysterioHeadCircle(void);
+void validate_CFadePalettes(void);
+
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
 
 #endif
