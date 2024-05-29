@@ -23,4 +23,6 @@ EXPORT int Rnd(int);
 EXPORT void Utils_InitialRand(int);
 EXPORT int catan(int);
 
+EXPORT unsigned int Utils_GenerateCRC(const char*);
+
 #endif

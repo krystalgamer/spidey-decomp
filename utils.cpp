@@ -245,3 +245,8 @@ int Rnd(int n)
 	return result;
 }
 
+// @TODO
+unsigned int Utils_GenerateCRC(const char*)
+{
+	return 0x29052024;
+}
