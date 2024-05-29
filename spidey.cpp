@@ -662,6 +662,15 @@ unsigned char CPlayer::CanITalkRightNow(void)
 	return 1;
 }
 
+// @Ok
+unsigned char CPlayer::SetFireWebbing(void)
+{
+	this->field_5E8 = 1;
+	this->field_5D4 = 4096;
+	this->field_5D0++;
+	return 1;
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -678,6 +687,7 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_588, 0x588);
 
 
+	VALIDATE(CPlayer, field_5D0, 0x5D0);
 	VALIDATE(CPlayer, field_5D4, 0x5D4);
 	VALIDATE(CPlayer, field_5D8, 0x5D8);
 

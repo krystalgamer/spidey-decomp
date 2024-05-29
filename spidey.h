@@ -24,9 +24,10 @@ class CPlayer : public CSuper
 		int field_580;
 		int field_584;
 		int field_588;
-		unsigned char padAfter584[0x5D4-0x588-4];
+		unsigned char padAfter584[0x5D0-0x588-4];
 
 
+		int field_5D0;
 		int field_5D4;
 		int field_5D8;
 		unsigned char padAfter5D8[0x5E8-0x5D8-4];
@@ -118,6 +119,7 @@ class CPlayer : public CSuper
 		EXPORT void TidyUpZipWebLandingPosition(int);
 		EXPORT void CreateFists(unsigned char);
 		EXPORT unsigned char CanITalkRightNow(void);
+		EXPORT unsigned char SetFireWebbing(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
