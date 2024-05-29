@@ -120,6 +120,7 @@ class CPlayer : public CSuper
 		EXPORT void CreateFists(unsigned char);
 		EXPORT unsigned char CanITalkRightNow(void);
 		EXPORT unsigned char SetFireWebbing(void);
+		EXPORT void GetHookPosition(CVector*, unsigned char);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

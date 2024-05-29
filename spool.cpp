@@ -47,3 +47,13 @@ unsigned int Spool_GetModel(unsigned int Checksum, int Region)
 {
 	return 0x26052024;
 }
+
+// @NotOk
+// understand this piece of shit
+unsigned int *Spool_SkipPackets(unsigned int *a1)
+{
+	unsigned int *i; // r4
+	for ( i = (unsigned int *)((char *)a1 + a1[1]); *i != -1; i = (unsigned int *)((char *)i + i[1] + 8) );
+
+	return i + 1;
+}

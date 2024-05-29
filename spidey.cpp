@@ -671,6 +671,12 @@ unsigned char CPlayer::SetFireWebbing(void)
 	return 1;
 }
 
+// @Ok
+void __inline CPlayer::GetHookPosition(CVector* a2, unsigned char a3)
+{
+	M3dUtils_GetHookPosition(reinterpret_cast<VECTOR*>(a2), this, a3);
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
