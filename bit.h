@@ -124,8 +124,9 @@ class CSpecialDisplay : public CBit
 class CSimpleTexturedRibbon : public CSpecialDisplay
 {
 	public:
+		EXPORT void SetRGB(unsigned char, unsigned char, unsigned char);
 
-		__int16 field_3C;
+		unsigned __int16 field_3C;
 		unsigned char padAfter3C[0x48-0x3C-2];
 
 		int* field_48;

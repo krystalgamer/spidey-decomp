@@ -10,7 +10,7 @@
 class CElectrify : public CSimpleTexturedRibbon
 {
 	public:
-		unsigned char pad[37];
+		unsigned char pad[21];
 
 		EXPORT CElectrify(CSuper*, int);
 };

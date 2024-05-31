@@ -325,6 +325,19 @@ void CGlow::SetRadius(int radius)
 	}
 }
 
+// @Ok
+// slightly different register allocation
+void CSimpleTexturedRibbon::SetRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+	int value = (r | (((b << 8) | g) << 8));
+	int *ptr = this->field_48;
+
+	int i = 0;
+	for (i = 0; i < this->field_3C + 1; i++)
+		ptr[i] = value;
+
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
