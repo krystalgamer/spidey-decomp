@@ -11,6 +11,7 @@ class CManipOb : public CBody
 	public:
 		EXPORT void CalculateThrowPosition(CVector*, int);
 		EXPORT void ThrowPos(CVector *, int);
+		EXPORT void Throw(CVector *);
 
 		unsigned char padTop[0x10C-0xF4];
 		int field_10C;
