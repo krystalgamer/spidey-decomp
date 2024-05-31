@@ -250,3 +250,9 @@ unsigned int Utils_GenerateCRC(const char*)
 {
 	return 0x29052024;
 }
+
+// @TODO
+int Utils_LinearFilter(int, int, int)
+{
+	return 0x31052024;
+}

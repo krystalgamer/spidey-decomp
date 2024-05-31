@@ -11,6 +11,7 @@ class CChopper : public CBaddy {
 public:
 
 	EXPORT void SetHeightMode(int);
+	EXPORT void AdjustSineWaveAmplitude(int, int);
 
 	unsigned char padChopperStart[0xC];
 	int field_330;
@@ -19,8 +20,9 @@ public:
 	int field_33C;
 	int field_340;
 	int field_344;
-	unsigned char padAfter344[0x14-4];
+	unsigned char padAfter344[0x354-0x344-4];
 
+	int field_354;
 	int field_358;
 	unsigned char padAfter358[0x360-0x358-4];
 

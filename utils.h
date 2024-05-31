@@ -25,4 +25,6 @@ EXPORT int catan(int);
 
 EXPORT unsigned int Utils_GenerateCRC(const char*);
 
+EXPORT int Utils_LinearFilter(int, int, int);
+
 #endif

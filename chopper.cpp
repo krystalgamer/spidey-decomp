@@ -1,5 +1,6 @@
 #include "chopper.h"
 #include "validate.h"
+#include "utils.h"
 
 // @NotOk
 // verify later
@@ -30,6 +31,16 @@ void __inline CSniperTarget::BulletResult(bool result)
 		this->field_128 = true;
 }
 
+// @Ok
+void __inline CChopper::AdjustSineWaveAmplitude(int a2, int a3)
+{
+	int tmp = this->field_354;
+	if (tmp != a2)
+	{
+		this->field_354 = Utils_LinearFilter(tmp, a2, a3);
+	}
+}
+
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
 
@@ -39,6 +50,9 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_33C, 0x33C);
 	VALIDATE(CChopper, field_340, 0x340);
 	VALIDATE(CChopper, field_344, 0x344);
+
+	VALIDATE(CChopper, field_354, 0x354);
+
 	VALIDATE(CChopper, field_358, 0x358);
 	VALIDATE(CChopper, field_360, 0x360);
 	VALIDATE(CChopper, field_364, 0x364);
