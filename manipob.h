@@ -21,7 +21,10 @@ class CManipOb : public CBody
 
 		unsigned char padTop[0x10C-0xF4];
 		int field_10C;
-		unsigned char padBottom[0x128-0x10C-4];
+		unsigned char padAfter10C[0x124-0x10C-4];
+
+		unsigned char field_124;
+		unsigned char padBottom[0x128-0x124-1];
 
 };
 

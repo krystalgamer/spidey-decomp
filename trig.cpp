@@ -77,6 +77,10 @@ int __inline GetFlag(unsigned char flag, unsigned char *pData)
 	return 0;
 }
 
+// @TODO
+void Trig_SendPulseToNode(int)
+{}
+
 void validate_SLinkInfo(void)
 {
 	VALIDATE_SIZE(SLinkInfo, 0xC);

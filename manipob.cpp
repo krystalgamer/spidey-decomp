@@ -1,6 +1,7 @@
 #include "manipob.h"
 #include "utils.h"
 #include "validate.h"
+#include "trig.h"
 
 // @TODO
 void CManipOb::CalculateThrowPosition(CVector*, int)
@@ -75,13 +76,20 @@ void CManipOb::Chunk(SLineInfo*, CVector*)
 void CManipOb::TurnOffShadow(void)
 {}
 
-// @TODO
-void CManipOb::SendPulse(void)
-{}
+// @Ok
+void __inline CManipOb::SendPulse(void)
+{
+	if(!this->field_124)
+	{
+		this->field_124 = 1;
+		Trig_SendPulseToNode(reinterpret_cast<int>(Trig_GetLinksPointer(this->field_DE)));
+	}
+}
 
 void validate_CManipOb(void)
 {
 	VALIDATE_SIZE(CManipOb, 0x128);
 
 	VALIDATE(CManipOb, field_10C, 0x10C);
+	VALIDATE(CManipOb, field_124, 0x124);
 }
