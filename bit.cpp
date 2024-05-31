@@ -335,7 +335,17 @@ void CSimpleTexturedRibbon::SetRGB(unsigned char r, unsigned char g, unsigned ch
 	int i = 0;
 	for (i = 0; i < this->field_3C + 1; i++)
 		ptr[i] = value;
+}
 
+// @Ok
+void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+	int value = (r | (((b << 8) | g) << 8));
+
+	for (unsigned int i = 0; i < this->field_44; i++)
+	{
+		this->field_3C[(2*i)+1] = value;
+	}
 }
 
 void validate_CFlatBit(void){

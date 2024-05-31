@@ -137,6 +137,7 @@ class CGlow : public CBit
 	public:
 		EXPORT void SetCentreRGB(unsigned char, unsigned char, unsigned char);
 		EXPORT void SetRadius(int);
+		EXPORT void SetRGB(unsigned char, unsigned char, unsigned char);
 
 		int* field_3C;
 		unsigned char padAfter3C[0x44-0x3C-4];
