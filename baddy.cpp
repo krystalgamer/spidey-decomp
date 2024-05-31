@@ -739,7 +739,7 @@ void CBaddy::SetVariable(unsigned __int16)
 }
 
 // @TODO
-unsigned int CBaddy::GetVariable(unsigned __int16)
+unsigned __int16 CBaddy::GetVariable(unsigned __int16)
 {
 	return 0x696940;
 }

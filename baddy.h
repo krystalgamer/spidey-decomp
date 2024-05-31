@@ -53,7 +53,7 @@ public:
 	EXPORT virtual int GetClosest(int, int);
 	EXPORT virtual int ExecuteCommand(unsigned __int16);
 	EXPORT virtual void SetVariable(unsigned __int16);
-	EXPORT virtual unsigned int GetVariable(unsigned __int16);
+	EXPORT virtual unsigned __int16 GetVariable(unsigned __int16);
 
 	int field_194;
 	int field_198;

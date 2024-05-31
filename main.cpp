@@ -59,6 +59,7 @@
 #include "smoke.h"
 #include "panel.h"
 #include "manipob.h"
+#include "mess.h"
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -285,6 +286,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CFadePalettes();
 	validate_CSimpleTexturedRibbon();
 	validate_CManipOb();
+	validate_SimpleMessage();
 
 
 	puts("[*] Validation done!");

@@ -5,6 +5,10 @@
 
 #include "export.h"
 
+struct SimpleMessage
+{
+};
+
 EXPORT void Mess_SetTextJustify(unsigned char);
 EXPORT void Mess_SetScale(int);
 EXPORT void Mess_SetRGBBottom(unsigned char, unsigned char, unsigned char);
@@ -12,6 +16,10 @@ EXPORT char* Mess_GetCurrentFont(void);
 EXPORT void Mess_UnloadFont(void);
 EXPORT int Mess_TextHeight(char *);
 
+EXPORT void Mess_ClearSimpleMessageList(void);
+EXPORT void DeleteSimpleMessage(SimpleMessage*);
+
+void validate_SimpleMessage(void);
 
 #endif
 

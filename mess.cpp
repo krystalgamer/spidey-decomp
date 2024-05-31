@@ -46,3 +46,27 @@ int Mess_TextHeight(char *pStr)
 {
 	return FontRelated.height(pStr);
 }
+
+static SimpleMessage** SimpleMessageList;
+
+// @NotOk
+// Revisit  to see if loop is ok
+void Mess_ClearSimpleMessageList(void)
+{
+	while (1)
+	{
+		SimpleMessage* cur = *SimpleMessageList;
+		if (!cur)
+			break;
+
+		DeleteSimpleMessage(cur);
+	}
+}
+
+// @TODO
+void DeleteSimpleMessage(SimpleMessage*)
+{}
+
+void validate_SimpleMessage(void)
+{
+}
