@@ -124,6 +124,11 @@ class CSpecialDisplay : public CBit
 class CSimpleTexturedRibbon : public CSpecialDisplay
 {
 	public:
+
+		__int16 field_3C;
+		unsigned char padAfter3C[0x48-0x3C-2];
+
+		int* field_48;
 };
 
 class CGlow : public CBit
@@ -182,5 +187,6 @@ void validate_CGlow(void);
 void validate_CLinked2EndedBit(void);
 void validate_CRibbonBit(void);
 void validate_CTexturedRibbon(void);
+void validate_CSimpleTexturedRibbon(void);
 
 #endif

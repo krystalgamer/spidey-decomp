@@ -407,3 +407,11 @@ void validate_CTexturedRibbon(void)
 {
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }
+
+void validate_CSimpleTexturedRibbon(void)
+{
+	VALIDATE_SIZE(CSimpleTexturedRibbon, 0x4C);
+
+	VALIDATE(CSimpleTexturedRibbon, field_3C, 0x3C);
+	VALIDATE(CSimpleTexturedRibbon, field_48, 0x48);
+}

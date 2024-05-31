@@ -282,6 +282,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CMysterioHeadCircle();
 	validate_SAnimFrame();
 	validate_CFadePalettes();
+	validate_CSimpleTexturedRibbon();
 
 
 	puts("[*] Validation done!");
