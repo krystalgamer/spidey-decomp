@@ -58,6 +58,7 @@
 #include "PCTex.h"
 #include "smoke.h"
 #include "panel.h"
+#include "manipob.h"
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -283,6 +284,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SAnimFrame();
 	validate_CFadePalettes();
 	validate_CSimpleTexturedRibbon();
+	validate_CManipOb();
 
 
 	puts("[*] Validation done!");
