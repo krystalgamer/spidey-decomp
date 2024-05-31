@@ -169,7 +169,9 @@ public:
 
 	int field_F4;
 
-	int field_F8;
+	unsigned __int16 field_F8;
+	unsigned char padAfterF8[2];
+
 	int field_FC;
 	int field_100;
 	int field_104;
