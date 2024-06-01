@@ -125,6 +125,7 @@ class CPlayer : public CSuper
 		EXPORT void GetHookPosition(CVector*, unsigned char);
 		EXPORT void DestroyJumpingSmashKickTrail(void);
 		EXPORT void DestroyHandTrails(void);
+		EXPORT void DeleteStuff(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

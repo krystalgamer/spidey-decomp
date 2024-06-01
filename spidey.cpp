@@ -715,6 +715,17 @@ void CPlayer::DestroyHandTrails(void)
 	}
 }
 
+// @Ok
+void CPlayer::DeleteStuff(void)
+{
+	Screen_TargetOn(false);
+	if (this->field_C90)
+	{
+		Mem_Delete(reinterpret_cast<void*>(this->field_C90));
+		this->field_C90 = 0;
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
