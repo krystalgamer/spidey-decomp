@@ -11,11 +11,14 @@ class CSwitch : public CBody
 	public:
 		EXPORT void SwitchInactive(void);
 		EXPORT CVector* GetAutoAimTargetPointer(void);
+		EXPORT void SwitchOff(void);
 
 		unsigned char padTop[0x100-0xF4];
 
 		int field_100;
-		unsigned char padAfter100[0x10C-0x100-4];
+
+		CItem* field_104;
+		CItem* field_108;
 
 		CVector field_10C;
 		CVector field_118;
@@ -23,4 +26,5 @@ class CSwitch : public CBody
 };
 
 void validate_CSwitch(void);
+EXPORT void Switch_SetVisible(bool, CItem*);
 #endif
