@@ -114,7 +114,7 @@ public:
 
 	__int16 field_DC;
 
-	__int16 field_DE;
+	unsigned __int16 field_DE;
 
 	unsigned char stopPPPad[0x2];
 

@@ -8,7 +8,11 @@
 
 class CPunchOb : public CBaddy {
 public:
-	unsigned char padFull[0x32C - 0x324];
+	EXPORT void SendPulse(void);
+	unsigned char padTop[4];
+
+	unsigned char field_328;
+	unsigned char padFull[0x32C - 0x328 - 1];
 };
 
 class CSimby : public CBaddy {

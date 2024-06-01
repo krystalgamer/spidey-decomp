@@ -1,5 +1,6 @@
 #include "simby.h"
 #include "validate.h"
+#include "trig.h"
 
 
 // @Ok
@@ -145,8 +146,20 @@ void __inline CSimby::ClearAttackData(void)
 	this->field_3F0 = 0;
 }
 
+// @Ok
+void CPunchOb::SendPulse(void)
+{
+	if (!this->field_328)
+	{
+		this->field_328 = 1;
+		Trig_SendPulse(reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->field_DE)));
+	}
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
+
+	VALIDATE(CPunchOb, field_328, 0x328);
 }
 
 void validate_CSimby(void){
