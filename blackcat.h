@@ -9,6 +9,8 @@ public:
 	EXPORT CBlackCat(int*, int);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
+	EXPORT void KillAllCommandBlocks(void);
+	EXPORT int* KillCommandBlock(int*);
 
 	int field_324;
 	int field_328;

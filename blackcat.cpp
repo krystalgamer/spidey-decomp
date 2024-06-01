@@ -54,6 +54,17 @@ void CBlackCat::Shouldnt_DoPhysics_Be_Virtual(void)
 void CBlackCat::DoPhysics(void)
 {}
 
+// @TODO
+int* CBlackCat::KillCommandBlock(int*)
+{
+	return (int*)0x01062024;
+}
+
+void CBlackCat::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_350); cur; cur = this->KillCommandBlock(cur));
+}
+
 void validate_CBlackCat(void){
 	VALIDATE_SIZE(CBlackCat, 0x354);
 
