@@ -1,6 +1,7 @@
 #include "simby.h"
 #include "validate.h"
 #include "trig.h"
+#include "utils.h"
 
 
 // @Ok
@@ -25,9 +26,11 @@ CSimby::CSimby(void)
 	this->field_35C = 0;
 	this->field_360 = 0;
 	this->field_364 = 0;
-	this->field_368 = 0;
-	this->field_36C = 0;
-	this->field_370 = 0;
+
+	this->field_368.vx = 0;
+	this->field_368.vy = 0;
+	this->field_368.vz = 0;
+
 	this->field_374 = 0;
 	this->field_378 = 0;
 	this->field_37C = 0;
@@ -156,6 +159,17 @@ void CPunchOb::SendPulse(void)
 	}
 }
 
+// @Ok
+void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
+{
+	CSVector v4;
+	v4.vy = a3;
+	v4.vx = 0;
+	v4.vz = 0;
+
+	Utils_GetVecFromMagDir(a2, 1, &v4);
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 
@@ -179,9 +193,9 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_35C, 0x35C);
 	VALIDATE(CSimby, field_360, 0x360);
 	VALIDATE(CSimby, field_364, 0x364);
+
 	VALIDATE(CSimby, field_368, 0x368);
-	VALIDATE(CSimby, field_36C, 0x36C);
-	VALIDATE(CSimby, field_370, 0x370);
+
 	VALIDATE(CSimby, field_374, 0x374);
 	VALIDATE(CSimby, field_378, 0x378);
 	VALIDATE(CSimby, field_37C, 0x37C);
@@ -191,6 +205,9 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_38C, 0x38C);
 	VALIDATE(CSimby, field_390, 0x390);
 	VALIDATE(CSimby, field_394, 0x394);
+
+	VALIDATE(CSimby, field_398, 0x398);
+
 	VALIDATE(CSimby, field_39C, 0x39C);
 	VALIDATE(CSimby, field_3DC, 0x3DC);
 	VALIDATE(CSimby, field_3E0, 0x3E0);

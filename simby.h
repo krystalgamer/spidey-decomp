@@ -22,6 +22,7 @@ public:
 	EXPORT void FlashUpdate(void);
 	EXPORT void SetAlertModeTimer(int);
 	EXPORT void ClearAttackData(void);
+	EXPORT void SetUpUnitFromDirection(CVector*, int);
 
 	unsigned char padTop[0x328-0x324];
 
@@ -41,9 +42,9 @@ public:
 	int field_35C;
 	int field_360;
 	int field_364;
-	int field_368;
-	int field_36C;
-	int field_370;
+
+	CVector field_368;
+
 	int field_374;
 	int field_378;
 	int field_37C;
@@ -53,7 +54,7 @@ public:
 	int field_38C;
 	int field_390;
 	int field_394;
-	unsigned char padAfter394[4];
+	int field_398;
 
 	int field_39C;
 	unsigned char padAfter39C[0x3Dc-0x39C-4];

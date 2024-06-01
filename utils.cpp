@@ -256,3 +256,7 @@ int Utils_LinearFilter(int, int, int)
 {
 	return 0x31052024;
 }
+
+// @TODO
+void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
+{}

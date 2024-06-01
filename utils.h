@@ -26,5 +26,6 @@ EXPORT int catan(int);
 EXPORT unsigned int Utils_GenerateCRC(const char*);
 
 EXPORT int Utils_LinearFilter(int, int, int);
+EXPORT void Utils_GetVecFromMagDir(CVector*, int, CSVector*);
 
 #endif
