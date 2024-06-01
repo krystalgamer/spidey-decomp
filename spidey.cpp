@@ -696,6 +696,25 @@ void CPlayer::DestroyJumpingSmashKickTrail(void)
 	}
 }
 
+// @NotOk
+// revisit without casts
+void CPlayer::DestroyHandTrails(void)
+{
+	if (this->field_58C)
+	{
+		int *tmp = reinterpret_cast<int*>(this->field_58C);
+		tmp[21] = 1;
+		this->field_58C = NULL;
+	}
+
+	if (this->field_590)
+	{
+		int *tmp = reinterpret_cast<int*>(this->field_590);
+		tmp[21] = 1;
+		this->field_590 = NULL;
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -708,9 +727,12 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_56C, 0x56C);
 
 	VALIDATE(CPlayer, field_580, 0x580);
+
 	VALIDATE(CPlayer, field_584, 0x584);
 	VALIDATE(CPlayer, field_588, 0x588);
 
+	VALIDATE(CPlayer, field_58C, 0x58C);
+	VALIDATE(CPlayer, field_590, 0x590);
 
 	VALIDATE(CPlayer, field_5D0, 0x5D0);
 	VALIDATE(CPlayer, field_5D4, 0x5D4);
