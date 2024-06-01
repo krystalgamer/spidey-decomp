@@ -296,6 +296,22 @@ CMenu::~CMenu()
 {
 }
 
+// @Ok
+void CMenu::EntryEnable(unsigned int a2, unsigned int a3)
+{
+	this->mEntry[a2].what = a3 == 0;
+	if (a3)
+	{
+		this->SetNormalColor(a2, 69, 60, 107);
+		this->SetSelColor(a2, 128, 128, 128);
+	}
+	else
+	{
+		this->SetNormalColor(a2, 26, 23, 41);
+		this->SetSelColor(a2, 26, 23, 41);
+	}
+}
+
 void validate_CMenu(void)
 {
 	VALIDATE_SIZE(CMenu, 0x53C);
