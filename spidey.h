@@ -22,8 +22,8 @@ class CPlayer : public CSuper
 		unsigned char padAfter56C[0x580-0x56C-4];
 
 		int field_580;
-		int field_584;
-		int field_588;
+		CSmokeTrail* field_584;
+		CSmokeTrail* field_588;
 		unsigned char padAfter584[0x5D0-0x588-4];
 
 
@@ -121,6 +121,7 @@ class CPlayer : public CSuper
 		EXPORT unsigned char CanITalkRightNow(void);
 		EXPORT unsigned char SetFireWebbing(void);
 		EXPORT void GetHookPosition(CVector*, unsigned char);
+		EXPORT void DestroyJumpingSmashKickTrail(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

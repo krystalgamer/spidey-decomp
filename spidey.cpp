@@ -480,7 +480,7 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 				*(reinterpret_cast<unsigned char*>(&args) + 2),
 				*(reinterpret_cast<unsigned char*>(&args) + 1));
 
-		this->field_584 = reinterpret_cast<int>(smokeTrail);
+		this->field_584 = smokeTrail;
 	}
 
 	if (!this->field_588)
@@ -497,7 +497,7 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 				*(reinterpret_cast<unsigned char*>(&args) + 2),
 				*(reinterpret_cast<unsigned char*>(&args) + 1));
 
-		this->field_588 = reinterpret_cast<int>(smokeTrail);
+		this->field_588 = smokeTrail;
 	}
 }
 
@@ -675,6 +675,25 @@ unsigned char CPlayer::SetFireWebbing(void)
 void __inline CPlayer::GetHookPosition(CVector* a2, unsigned char a3)
 {
 	M3dUtils_GetHookPosition(reinterpret_cast<VECTOR*>(a2), this, a3);
+}
+
+// @NotOk
+// revisit without casts
+void CPlayer::DestroyJumpingSmashKickTrail(void)
+{
+	if (this->field_584)
+	{
+		int *tmp = reinterpret_cast<int*>(this->field_584);
+		tmp[21] = 1;
+		this->field_584 = NULL;
+	}
+
+	if (this->field_588)
+	{
+		int *tmp = reinterpret_cast<int*>(this->field_588);
+		tmp[21] = 1;
+		this->field_588 = NULL;
+	}
 }
 
 void validate_CPlayer(void)
