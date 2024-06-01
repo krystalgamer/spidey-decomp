@@ -86,6 +86,20 @@ void __inline CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 	this->RunAnim(a2, a3, a4);
 }
 
+// @TODO
+void CDocOc::PlayIdleOrGloatAnim(void)
+{}
+
+void __inline CDocOc::Gloat(void)
+{
+	if(this->field_142)
+	{
+		this->field_31C.bothFlags = 2;
+		this->dumbAssPad = 0;
+		this->PlayIdleOrGloatAnim();
+	}
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 

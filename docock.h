@@ -12,6 +12,8 @@ public:
 	EXPORT CDocOc(int*, int);
 	EXPORT void RenderClaws(void);
 	EXPORT void PlaySingleAnim(unsigned int , int, int);
+	EXPORT void Gloat(void);
+	EXPORT void PlayIdleOrGloatAnim(void);
 
 	int field_324;
 	int field_328;
