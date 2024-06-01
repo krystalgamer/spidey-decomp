@@ -216,12 +216,6 @@ int Utils_CalcAim(CSVector* a1, CVector* a2, CVector* a3)
 	return v7;
 }
 
-// @TODO
-int Utils_GetValueFromDifficultyLevel(int, int, int, int)
-{
-	return 0x16052024;
-}
-
 static int gRndRelatedOne;
 static int gRndRelatedTwo;
 static int gRndRelatedThree;
@@ -357,3 +351,19 @@ int Utils_LinearFilter(int, int, int)
 // @TODO
 void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 {}
+
+static int DifficultyLevel;
+int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
+{
+	switch (DifficultyLevel)
+	{
+		case 0:
+			return a1;
+		case 1:
+			return a2;
+		case 2:
+			return a3;
+		default:
+			return a4;
+	}
+}
