@@ -1,6 +1,33 @@
+#pragma once
+
+#ifndef SHELL_H
+#define SHELL_H
+
 #include "ob.h"
 #include "export.h"
 
+
+class CWobblyGlow : public CGlow
+{
+	public:
+		EXPORT virtual void Move(void);
+
+		int field_5C[1]; // @TODO
+		unsigned char padAfter5C[0x9C-0x5C-4];
+
+		int field_9C;
+		int field_A0;
+};
+
+class CShellMysterioHeadGlow : public CWobblyGlow
+{
+	public:
+		EXPORT virtual void Move(void);
+
+		unsigned __int16 field_A4;
+
+		unsigned char padBottom[0xA8-0xA4-2];
+};
 
 class CRudeWordHitterSpidey : public CSuper {
 public:
@@ -29,3 +56,7 @@ public:
 
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
+void validate_CWobblyGlow(void);
+void validate_CShellMysterioHeadGlow(void);
+
+#endif

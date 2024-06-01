@@ -411,6 +411,8 @@ void validate_CGlow(void)
 	VALIDATE(CGlow, field_44, 0x44);
 
 	VALIDATE(CGlow, field_4C, 0x4C);
+
+	VALIDATE(CGlow, field_54, 0x54);
 }
 
 void validate_CLinked2EndedBit(void)

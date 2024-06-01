@@ -146,7 +146,11 @@ class CGlow : public CBit
 		unsigned char padAfter44[0x4C-0x44-4];
 
 		int field_4C;
-		unsigned char padBottom[0x5C-0x4C-4];
+		unsigned char padAfter4C[0x54-0x4C-4];
+
+		unsigned __int16 field_54;
+
+		unsigned char padBottom[0x5C-0x54-2];
 };
 
 class CLinked2EndedBit : public CFT4Bit
