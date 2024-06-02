@@ -13,6 +13,8 @@ public:
 	EXPORT CTorch(int* a2, int a3);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
+	EXPORT int* KillCommandBlock(int*);
+	EXPORT void KillAllCommandBlocks(void);
 
 	int field_324;
 	int field_328;	
@@ -28,7 +30,7 @@ public:
 	unsigned char field_348;
 
 	int field_34C;
-	int field_350;
+	int* field_350;
 };
 
 

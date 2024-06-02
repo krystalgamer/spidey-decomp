@@ -50,6 +50,20 @@ void CTorch::Shouldnt_DoPhysics_Be_Virtual(void)
 void CTorch::DoPhysics(void)
 {}
 
+// @TODO
+__inline int* CTorch::KillCommandBlock(int*)
+{
+	return (int*)0x02062024;
+}
+
+// @NotOk
+// Revisit
+void CTorch::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_350); cur; cur = this->KillCommandBlock(cur));
+	this->field_350 = 0;
+}
+
 void validate_CTorch(void){
 	VALIDATE_SIZE(CTorch, 0x354);
 
