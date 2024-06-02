@@ -170,6 +170,18 @@ void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
 	Utils_GetVecFromMagDir(a2, 1, &v4);
 }
 
+
+// @TODO
+CEmber::CEmber(const CVector*, int)
+{}
+
+// @Ok
+void Simby_CreateEmber(const unsigned int* a1, unsigned int*)
+{
+	const CVector *vec = reinterpret_cast<const CVector*>(a1);
+	new CEmber(vec, vec->vy);
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 
@@ -233,4 +245,9 @@ void validate_CSimbySlimeBase(void)
 	
 	VALIDATE(CSimbySlimeBase, field_9C, 0x9C);
 	VALIDATE(CSimbySlimeBase, field_A4, 0xA4);
+}
+
+void validate_CEmber(void)
+{
+	VALIDATE_SIZE(CEmber, 0x90);
 }

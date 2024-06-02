@@ -97,11 +97,21 @@ class CSimbySlimeBase : public CQuadBit
 		unsigned char bottomPad[0x114-0xA4-4];
 };
 
+class CEmber : public CFlatBit
+{
+	public:
+		EXPORT CEmber(const CVector*, int);
+		unsigned char pad[1];
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
 void validate_CSimbySlimeBase(void);
+void validate_CEmber(void);
+
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);
+EXPORT void Simby_CreateEmber(const unsigned int*, unsigned int*);
 
 #endif
