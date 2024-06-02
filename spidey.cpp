@@ -739,6 +739,20 @@ void CPlayer::StopAlertMusic(void)
 	}
 }
 
+// @TODO
+__inline int* CPlayer::KillCommandBlock(int*)
+{
+	return (int*)0x02062024;
+}
+
+// @NotOk
+// Revisit
+void CPlayer::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_1BC); cur; cur = this->KillCommandBlock(cur));
+	this->field_1BC = 0;
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -747,6 +761,8 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_1A8, 0x1A8);
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
+
+	VALIDATE(CPlayer, field_1BC, 0x1BC);
 
 	VALIDATE(CPlayer, field_528, 0x528);
 	VALIDATE(CPlayer, field_52C, 0x52C);

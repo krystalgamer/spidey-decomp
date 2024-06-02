@@ -16,7 +16,10 @@ class CPlayer : public CSuper
 
 		int field_1A8;
 		char field_1AC;
-		unsigned char padAfter1AC[0x528-0x1AC-1];
+		unsigned char padAfter1AC[0x1BC-0x1AC-1];
+
+		int* field_1BC;
+		unsigned char padAfter1BC[0x528-0x1BC-4];
 
 		int field_528;
 		int field_52C;
@@ -134,6 +137,8 @@ class CPlayer : public CSuper
 		EXPORT void DestroyHandTrails(void);
 		EXPORT void DeleteStuff(void);
 		EXPORT void StopAlertMusic(void);
+		EXPORT void KillAllCommandBlocks(void);
+		EXPORT int* KillCommandBlock(int*);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
