@@ -12,6 +12,7 @@
 class CThug : public CBaddy {
 public:
 	EXPORT CThug(int*, int);
+	EXPORT void ClearAttackFlags(void);
 
 	unsigned char padTop[0x370-0x324];
 
@@ -32,7 +33,10 @@ public:
 	unsigned char padAfter3B0[0x3B8-0x3B0-4];
 
 	int field_3B8;
-	unsigned char padBottom[0x3C0 - 0x3B8 - 4];
+
+	unsigned char field_3BC;
+	unsigned char field_3BD;
+	unsigned char padBottom[0x3C0 - 0x3BD - 1];
 };
 
 class CThugPing : public CSimpleAnim

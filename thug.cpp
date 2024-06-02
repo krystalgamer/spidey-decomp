@@ -79,6 +79,26 @@ void CThugPing::Move(void)
 		this->Die();
 }
 
+static CThug* gGlobalThug;
+static unsigned char gAttackFlagRelated;
+
+// @Ok
+void CThug::ClearAttackFlags(void)
+{
+
+	if ( gGlobalThug == this )
+	{
+		gGlobalThug = 0;
+	}
+	else if (this->field_3BC & 2)
+	{
+		gAttackFlagRelated &= ~this->field_3BD;
+	}
+
+	this->field_3BC = 0;
+	this->field_3BD = 0;
+}
+
 
 void validate_CThug(void){
 	VALIDATE_SIZE(CThug, 0x3C0);
