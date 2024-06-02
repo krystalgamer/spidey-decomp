@@ -24,3 +24,7 @@ void SFX_ReverbOff(void)
 {
 	SFX_SetReverbType(0);
 }
+
+// @TODO
+void SFX_Stop(unsigned int)
+{}

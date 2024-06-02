@@ -13,6 +13,7 @@
 #include "trig.h"
 #include "m3dcolij.h"
 #include "m3dzone.h"
+#include "ps2lowsfx.h"
 
 // @NotOk
 // validate later
@@ -726,6 +727,18 @@ void CPlayer::DeleteStuff(void)
 	}
 }
 
+// @Ok
+void CPlayer::StopAlertMusic(void)
+{
+	this->field_52C = 0;
+	this->field_528 = 0;
+	if (this->field_538)
+	{
+		SFX_Stop(this->field_538);
+		this->field_538 = 0;
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
@@ -734,6 +747,10 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_1A8, 0x1A8);
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
+
+	VALIDATE(CPlayer, field_528, 0x528);
+	VALIDATE(CPlayer, field_52C, 0x52C);
+	VALIDATE(CPlayer, field_538, 0x538);
 
 	VALIDATE(CPlayer, field_56C, 0x56C);
 

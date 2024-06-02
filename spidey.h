@@ -16,7 +16,14 @@ class CPlayer : public CSuper
 
 		int field_1A8;
 		char field_1AC;
-		unsigned char padAfter1AC[0x56C-0x1AC-1];
+		unsigned char padAfter1AC[0x528-0x1AC-1];
+
+		int field_528;
+		int field_52C;
+		unsigned char padAfter52C[0x538-0x52C-4];
+
+		unsigned int field_538;
+		unsigned char padAfter538[0x56C-0x538-4];
 
 		int field_56C;
 		unsigned char padAfter56C[0x580-0x56C-4];
@@ -126,6 +133,7 @@ class CPlayer : public CSuper
 		EXPORT void DestroyJumpingSmashKickTrail(void);
 		EXPORT void DestroyHandTrails(void);
 		EXPORT void DeleteStuff(void);
+		EXPORT void StopAlertMusic(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

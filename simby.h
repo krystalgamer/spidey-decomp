@@ -101,7 +101,7 @@ class CEmber : public CFlatBit
 {
 	public:
 		EXPORT CEmber(const CVector*, int);
-		unsigned char pad[1];
+		unsigned char pad[0x28];
 };
 
 void validate_CPunchOb(void);
