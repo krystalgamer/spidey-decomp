@@ -32,5 +32,7 @@ EXPORT int PShell_GetNumCostumePSXs(void);
 EXPORT void PShell_BigCheat(void);
 EXPORT void PShell_NormalFont(void);
 EXPORT void PShell_DefaultText(void);
+EXPORT void PShell_SmallFont(void);
+EXPORT void PShell_InstructionalText(void);
 
 #endif

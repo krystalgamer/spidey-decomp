@@ -152,3 +152,19 @@ void PShell_DefaultText(void)
 	Mess_SetRGB(0x80, 0x80, 0x80, 0);
 	Mess_SetRGBBottom(0x45, 60, 107);
 }
+
+// @Ok
+void PShell_SmallFont(void)
+{
+	Mess_SetScale(256);
+	Mess_SetCurrentFont("sp_fnt02.fnt");
+}
+
+// @Ok
+void PShell_InstructionalText(void)
+{
+	PShell_SmallFont();
+	Mess_SetTextJustify(0);
+	Mess_SetRGB(0x45u, 0x3Cu, 0x6Bu, 0);
+	Mess_SetRGBBottom(0x28u, 35, 62);
+}
