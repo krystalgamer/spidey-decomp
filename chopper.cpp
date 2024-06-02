@@ -41,6 +41,25 @@ void __inline CChopper::AdjustSineWaveAmplitude(int a2, int a3)
 	}
 }
 
+// @Ok
+void CChopper::AngleToTargetAngle(void)
+{
+	int v1 = (this->field_360 & 0xFFF) - (this->mAngles.vy - 0xFFF);
+
+	if (v1 > 2048)
+	{
+		v1 -= 4096;
+	}
+	else if (v1 < -2048)
+	{
+		v1 += 4096;
+	}
+
+
+	this->csVector1.vy = v1 >> 5;
+	this->mAngles.vy += this->csVector1.vy;
+}
+
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
 
