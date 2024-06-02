@@ -86,6 +86,16 @@ void __inline CManipOb::SendPulse(void)
 	}
 }
 
+// @Ok
+void CManipOb::Pickup(void)
+{
+	this->mFlags |= 0x20;
+	this->mFlags |= 0x800;
+
+	this->TurnOffShadow();
+	this->SendPulse();
+}
+
 void validate_CManipOb(void)
 {
 	VALIDATE_SIZE(CManipOb, 0x128);
