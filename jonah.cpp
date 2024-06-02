@@ -1,6 +1,7 @@
 #include "jonah.h"
 #include "validate.h"
 #include "panel.h"
+#include "utils.h"
 
 int JoelJewtCheatCode = 0;
 
@@ -137,7 +138,7 @@ int __inline CJonah::StartRunningToNextRoom(void)
 void CJonah::TakeHit(void)
 {
 
-	int v3;
+	CBaddy* v3;
 	switch (this->dumbAssPad)
 	{
 		case 0:
@@ -164,9 +165,19 @@ void CJonah::TakeHit(void)
 }
 
 // @TODO
-int CJonah::FindScorp(void)
+CBaddy* CJonah::FindScorp(void)
 {
-	return 0x22052024;
+	return (CBaddy*)0x22052024;
+}
+
+// @Ok
+unsigned __int16 CJonah::DistToScorp(void)
+{
+	CBaddy* pScorp = this->FindScorp();
+	if (!pScorp)
+		return 0xFFFF;
+
+	return Utils_CrapDist(pScorp->mPos, this->mPos);
 }
 
 void validate_CJonah(void){

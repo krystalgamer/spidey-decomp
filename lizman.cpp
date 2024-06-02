@@ -64,6 +64,26 @@ int __inline CLizMan::IsSafeToSwitchToFollowWaypoints(void)
 	return 0;
 }
 
+static CLizMan* gGlobalLizMan;
+static unsigned char gLizManAttackFlag;
+
+// @NotOk
+// globals
+void __inline CLizMan::ClearAttackFlags(void)
+{
+	if (gGlobalLizMan == this)
+	{
+		gGlobalLizMan = NULL;
+	}
+	else if ((this->field_39C & 2))
+	{
+		gLizManAttackFlag &= ~this->field_39D;
+	}
+
+	this->field_39C = 0;
+	this->field_39D = 0;
+}
+
 void validate_CLizMan(void){
 	VALIDATE_SIZE(CLizMan, 0x3B8);
 
@@ -76,5 +96,9 @@ void validate_CLizMan(void){
 	VALIDATE(CLizMan, field_374, 0x374);
 	VALIDATE(CLizMan, field_390, 0x390);
 	VALIDATE(CLizMan, field_398, 0x398);
+
+	VALIDATE(CLizMan, field_39C, 0x39C);
+	VALIDATE(CLizMan, field_39D, 0x39D);
+
 	VALIDATE(CLizMan, field_3AC, 0x3AC);
 }

@@ -15,7 +15,8 @@ public:
 	EXPORT int LinkedHidingPlaceStillExists(int);
 	EXPORT int StartRunningToNextRoom(void);
 	EXPORT void TakeHit(void);
-	EXPORT int FindScorp(void);
+	EXPORT CBaddy* FindScorp(void);
+	EXPORT unsigned __int16 DistToScorp(void);
 
 
 	int dumbAssPad;

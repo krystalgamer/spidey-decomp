@@ -11,6 +11,7 @@ public:
 	EXPORT void StopClimbing(void);
 	EXPORT int IsSafeToSwitchToFollowWaypoints(void);
 	EXPORT void FlyAcrossRoom(void);
+	EXPORT void ClearAttackFlags(void);
 
 	unsigned char padLizStart[0x4];
 
@@ -32,7 +33,9 @@ public:
 	unsigned char padAfter390[0x398-0x390-1];
 
 	int field_398;
-	unsigned char padAfter398[0x3AC - 0x398 - 4];
+	unsigned char field_39C;
+	unsigned char field_39D;
+	unsigned char padAfter39C[0x3AC - 0x39C - 4];
 
 	int field_3AC;
 	unsigned char padLizManEnd[0x3B8-0x3AC-4];
