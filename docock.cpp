@@ -90,6 +90,7 @@ void __inline CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 void CDocOc::PlayIdleOrGloatAnim(void)
 {}
 
+// @Ok
 void __inline CDocOc::Gloat(void)
 {
 	if(this->field_142)
@@ -100,6 +101,21 @@ void __inline CDocOc::Gloat(void)
 	}
 }
 
+// @TODO
+__inline int* CDocOc::KillCommandBlock(int*)
+{
+	return (int*)0x02062024;
+}
+
+// @NotOk
+// Revisit
+void CDocOc::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_4AC); cur; cur = this->KillCommandBlock(cur));
+	this->field_4AC = 0;
+}
+
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -108,7 +124,9 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_32C, 0x32C);
 	VALIDATE(CDocOc, field_330, 0x330);
 	VALIDATE(CDocOc, field_334, 0x334);
+
 	VALIDATE(CDocOc, field_4A8, 0x4A8);
+	VALIDATE(CDocOc, field_4AC, 0x4AC);
 
 	VALIDATE(CDocOc, field_4C4, 0x4C4);
 

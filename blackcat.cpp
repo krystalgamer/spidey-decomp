@@ -60,9 +60,12 @@ int* CBlackCat::KillCommandBlock(int*)
 	return (int*)0x01062024;
 }
 
+// @NotOk
+// Revisit
 void CBlackCat::KillAllCommandBlocks(void)
 {
 	for (int* cur = reinterpret_cast<int*>(this->field_350); cur; cur = this->KillCommandBlock(cur));
+	this->field_350 = 0;
 }
 
 void validate_CBlackCat(void){

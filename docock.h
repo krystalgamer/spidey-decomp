@@ -14,6 +14,8 @@ public:
 	EXPORT void PlaySingleAnim(unsigned int , int, int);
 	EXPORT void Gloat(void);
 	EXPORT void PlayIdleOrGloatAnim(void);
+	EXPORT void KillAllCommandBlocks(void);
+	EXPORT int* KillCommandBlock(int*);
 
 	int field_324;
 	int field_328;
@@ -23,7 +25,8 @@ public:
 	unsigned char padAfter334[0xC];
 
 	int field_4A8;
-	unsigned char padAfter4A8[0x4C4-0x4A8-4];
+	int field_4AC;
+	unsigned char padAfter4AC[0x4C4-0x4AC-4];
 
 	int field_4C4;
 	unsigned char padAfter4C4[0x4EC-0x4C4-4];
