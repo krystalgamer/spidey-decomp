@@ -292,6 +292,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CSimpleAnim();
 	validate_CCopPing();
 	validate_SHook();
+	validate_Spidey_CIcon();
 
 	puts("[*] Validation done!");
 

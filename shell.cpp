@@ -1,6 +1,7 @@
 #pragma once
 #include "shell.h"
 #include "validate.h"
+#include "ps2m3d.h"
 
 // @Ok
 void __inline CDummy::FadeBack(void)
@@ -28,6 +29,16 @@ void CShellMysterioHeadGlow::Move(void)
 {
 	CWobblyGlow::Move();
 	this->field_54 += this->field_A4;
+}
+
+void Spidey_CIcon::AI(void)
+{
+	this->mAngles.vy += 50;
+	if (this->mFlags & 2)
+	{
+		this->UpdateFrame();
+		M3d_BuildTransform(this);
+	}
 }
 
 void validate_CRudeWordHitterSpidey(void){
@@ -64,4 +75,9 @@ void validate_CWobblyGlow(void)
 
 	VALIDATE(CWobblyGlow, field_9C, 0x9C);
 	VALIDATE(CWobblyGlow, field_A0, 0xA0);
+}
+
+void validate_Spidey_CIcon(void)
+{
+	VALIDATE_SIZE(Spidey_CIcon, 0x1A4);
 }

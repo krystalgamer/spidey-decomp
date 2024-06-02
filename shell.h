@@ -54,9 +54,18 @@ public:
 	CVector field_418[128];
 };
 
+class Spidey_CIcon : public CSuper
+{
+	public:
+		EXPORT void AI(void);
+
+		unsigned char pad[0x10];
+};
+
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
 void validate_CWobblyGlow(void);
 void validate_CShellMysterioHeadGlow(void);
+void validate_Spidey_CIcon(void);
 
 #endif
