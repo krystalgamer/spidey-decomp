@@ -77,6 +77,26 @@ void CCopPing::Move(void)
 		this->Die();
 }
 
+static CCop* gCopGlobal;
+static unsigned char gAttackFlagsRelated;
+
+// @NotOk
+// globals
+void CCop::ClearAttackFlags(void)
+{
+	if (gCopGlobal == this)
+	{
+		gCopGlobal = NULL;
+	}
+	else if((this->field_390 & 2))
+	{
+		gAttackFlagsRelated &= ~this->field_391;
+	}
+
+	this->field_390 = 0;
+	this->field_391 = 0;
+}
+
 void validate_CCop(void){
 	VALIDATE_SIZE(CCop, 0x394);
 	VALIDATE(CCop, field_340, 0x340);
@@ -88,6 +108,9 @@ void validate_CCop(void){
 	VALIDATE(CCop, field_374, 0x374);
 
 	VALIDATE(CCop, field_37C, 0x37C);
+
+	VALIDATE(CCop, field_390, 0x390);
+	VALIDATE(CCop, field_391, 0x391);
 }
 
 void validate_CCopPing(void)
