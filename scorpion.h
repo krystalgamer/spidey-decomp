@@ -11,9 +11,12 @@ class CScorpion : public CBaddy {
 	public:
 		EXPORT void NextRoom(void);
 		EXPORT void* GetCurrentTarget(void);
+		EXPORT CSuper* FindJonah(void);
 
 
-		unsigned char padTop[0xBF0-0x324];
+		unsigned char padTop[0xBEC-0x324];
+
+		CSuper* field_BEC;
 
 		SHandle field_BF0;
 		unsigned char padAfterBF0[0xBF8-0xBF0 - sizeof(SHandle)];
