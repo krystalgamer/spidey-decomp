@@ -67,6 +67,17 @@ void Mess_ClearSimpleMessageList(void)
 void DeleteSimpleMessage(SimpleMessage*)
 {}
 
+
+// @TODO
+void Mess_SetRGB(unsigned char, unsigned char, unsigned char, int)
+{}
+
+// @TODO
+void Mess_SetCurrentFont(char *)
+{}
+
 void validate_SimpleMessage(void)
 {
 }
+
+

@@ -1,4 +1,5 @@
 #include "pshell.h"
+#include "mess.h"
 
 
 EXPORT int __cdecl PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
@@ -135,3 +136,19 @@ void PShell_BigCheat(void)
 }
 
 CExpandingBox::~CExpandingBox(){}
+
+// @Ok
+void PShell_NormalFont(void)
+{
+	Mess_SetScale(256);
+	Mess_SetCurrentFont("sp_fnt00.fnt");
+}
+
+// @Ok
+void PShell_DefaultText(void)
+{
+	PShell_NormalFont();
+	Mess_SetTextJustify(0);
+	Mess_SetRGB(0x80, 0x80, 0x80, 0);
+	Mess_SetRGBBottom(0x45, 60, 107);
+}
