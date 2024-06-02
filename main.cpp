@@ -294,6 +294,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SHook();
 	validate_Spidey_CIcon();
 	validate_CEmber();
+	validate_CThugPing();
 
 	puts("[*] Validation done!");
 

@@ -139,6 +139,7 @@ class CPlayer : public CSuper
 		EXPORT void StopAlertMusic(void);
 		EXPORT void KillAllCommandBlocks(void);
 		EXPORT int* KillCommandBlock(int*);
+		EXPORT void Die(void);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

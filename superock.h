@@ -14,6 +14,8 @@ public:
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 	EXPORT void RenderClaws(void);
+	EXPORT void KillAllCommandBlocks(void);
+	EXPORT int* KillCommandBlock(int*);
 
 	unsigned char padTop[0x32C-0x324];
 
@@ -23,7 +25,8 @@ public:
 	unsigned char padAfter334[0x344-0x334-4];
 
 	int field_344;
-	unsigned char padAfter344[0x36C-0x344-4];
+	int* field_348;
+	unsigned char padAfter348[0x36C-0x348-4];
 
 	int field_36C;
 	int field_370;

@@ -67,6 +67,20 @@ void CSuperDocOck::RenderClaws(void)
 	M3d_Render(this->field_3F4);
 }
 
+// @TODO
+__inline int* CSuperDocOck::KillCommandBlock(int*)
+{
+	return (int*)0x02062024;
+}
+
+// @NotOk
+// Revisit
+void CSuperDocOck::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_348); cur; cur = this->KillCommandBlock(cur));
+	this->field_348 = 0;
+}
+
 void validate_CSuperDocOck(void){
 	VALIDATE_SIZE(CSuperDocOck, 0x414);
 
@@ -75,6 +89,7 @@ void validate_CSuperDocOck(void){
 	VALIDATE(CSuperDocOck, field_334, 0x334);
 
 	VALIDATE(CSuperDocOck, field_344, 0x344);
+	VALIDATE(CSuperDocOck, field_348, 0x348);
 	VALIDATE(CSuperDocOck, field_36C, 0x36C);
 	VALIDATE(CSuperDocOck, field_370, 0x370);
 	VALIDATE(CSuperDocOck, field_374, 0x374);

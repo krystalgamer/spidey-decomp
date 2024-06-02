@@ -1,6 +1,7 @@
 #include "thug.h"
 #include "validate.h"
 #include "trig.h"
+#include "m3dutils.h"
 
 // @NotOk
 // Globals
@@ -54,6 +55,31 @@ void Thug_CreateTHug(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CThug(v2, v3));
 }
 
+// @Ok
+void __inline CThugPing::SetPosition(void)
+{
+	CSuper* v2 = reinterpret_cast<CSuper*>(Mem_RecoverPointer(&this->field_70));
+
+	if (!v2)
+		this->Die();
+	else
+		M3dUtils_GetDynamicHookPosition(
+				reinterpret_cast<VECTOR*>(&this->mPos),
+				v2,
+				&this->field_78);
+}
+
+// @Ok
+void CThugPing::Move(void)
+{
+	this->SetPosition();
+	Bit_ReduceRGB(&this->mCodeBGR, 7);
+
+	if ((this->mCodeBGR & 0xFFFFFF) == 0)
+		this->Die();
+}
+
+
 void validate_CThug(void){
 	VALIDATE_SIZE(CThug, 0x3C0);
 
@@ -70,4 +96,12 @@ void validate_CThug(void){
 	VALIDATE(CThug, field_394, 0x394);
 	VALIDATE(CThug, field_3B0, 0x3B0);
 	VALIDATE(CThug, field_3B8, 0x3B8);
+}
+
+void validate_CThugPing(void)
+{
+	VALIDATE_SIZE(CThugPing, 0x80);
+
+	VALIDATE(CThugPing, field_70, 0x70);
+	VALIDATE(CThugPing, field_78, 0x78);
 }

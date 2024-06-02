@@ -5,6 +5,8 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "mem.h"
+#include "m3dutils.h"
 
 
 class CThug : public CBaddy {
@@ -33,7 +35,21 @@ public:
 	unsigned char padBottom[0x3C0 - 0x3B8 - 4];
 };
 
+class CThugPing : public CSimpleAnim
+{
+	public:
+		EXPORT void Move(void);
+		EXPORT void SetPosition(void);
+
+		unsigned char padTop[8];
+		SHandle field_70;
+		unsigned char padAfter70[4];
+		SHook field_78;
+};
+
 void validate_CThug(void);
+void validate_CThugPing(void);
+
 EXPORT void Thug_CreateTHug(const unsigned int *stack, unsigned int *result);
 
 #endif

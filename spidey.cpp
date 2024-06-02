@@ -753,6 +753,16 @@ void CPlayer::KillAllCommandBlocks(void)
 	this->field_1BC = 0;
 }
 
+// @Ok
+void CPlayer::Die(void)
+{
+	if (!this->IsDead())
+	{
+		this->mCBodyFlags |= 0x40;
+		this->mFlags |= 1;
+	}
+}
+
 void validate_CPlayer(void)
 {
 	VALIDATE_SIZE(CPlayer, 0xEFC);
