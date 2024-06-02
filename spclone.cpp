@@ -12,6 +12,20 @@ void CSpClone::Shouldnt_DoPhysics_Be_Virtual(void)
 void CSpClone::DoPhysics(void)
 {}
 
+// @TODO
+__inline int* CSpClone::KillCommandBlock(int*)
+{
+	return (int*)0x02062024;
+}
+
+// @NotOk
+// Revisit
+void CSpClone::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_34C); cur; cur = this->KillCommandBlock(cur));
+	this->field_34C = 0;
+}
+
 void validate_CSpClone(void){
 	VALIDATE_SIZE(CSpClone, 0x350);
 
