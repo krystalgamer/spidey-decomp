@@ -53,6 +53,30 @@ void CCop::Victorious(void)
 	SFX_PlayPos(0x8024, &this->mPos, 0);
 }
 
+// @Ok
+void __inline CCopPing::SetPosition(void)
+{
+	CSuper* v2 = reinterpret_cast<CSuper*>(Mem_RecoverPointer(&this->field_70));
+
+	if (!v2)
+		this->Die();
+	else
+		M3dUtils_GetDynamicHookPosition(
+				reinterpret_cast<VECTOR*>(&this->mPos),
+				v2,
+				&this->field_78);
+}
+
+// @Ok
+void CCopPing::Move(void)
+{
+	this->SetPosition();
+	Bit_ReduceRGB(&this->mCodeBGR, 7);
+
+	if ((this->mCodeBGR & 0xFFFFFF) == 0)
+		this->Die();
+}
+
 void validate_CCop(void){
 	VALIDATE_SIZE(CCop, 0x394);
 	VALIDATE(CCop, field_340, 0x340);
@@ -64,4 +88,12 @@ void validate_CCop(void){
 	VALIDATE(CCop, field_374, 0x374);
 
 	VALIDATE(CCop, field_37C, 0x37C);
+}
+
+void validate_CCopPing(void)
+{
+	VALIDATE_SIZE(CCopPing, 0x80);
+
+	VALIDATE(CCopPing, field_70, 0x70);
+	VALIDATE(CCopPing, field_78, 0x78);
 }

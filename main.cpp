@@ -289,7 +289,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_SimpleMessage();
 	validate_CShellMysterioHeadGlow();
 	validate_CWobblyGlow();
-
+	validate_CSimpleAnim();
+	validate_CCopPing();
+	validate_SHook();
 
 	puts("[*] Validation done!");
 

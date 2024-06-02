@@ -176,12 +176,18 @@ class CTexturedRibbon : public CSpecialDisplay
 
 };
 
+class CSimpleAnim : public CFlatBit
+{
+	public:
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
 EXPORT void Bit_SetSparkFadeRGB(unsigned char, unsigned char, unsigned char);
 EXPORT void Bit_SetSparkTrajectory(const CSVector *);
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
+EXPORT void Bit_ReduceRGB(unsigned int*, int);
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
@@ -194,5 +200,6 @@ void validate_CLinked2EndedBit(void);
 void validate_CRibbonBit(void);
 void validate_CTexturedRibbon(void);
 void validate_CSimpleTexturedRibbon(void);
+void validate_CSimpleAnim(void);
 
 #endif

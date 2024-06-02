@@ -348,6 +348,10 @@ void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 	}
 }
 
+// @TODO
+void Bit_ReduceRGB(unsigned int*, int)
+{}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -439,4 +443,8 @@ void validate_CSimpleTexturedRibbon(void)
 
 	VALIDATE(CSimpleTexturedRibbon, field_3C, 0x3C);
 	VALIDATE(CSimpleTexturedRibbon, field_48, 0x48);
+}
+
+void validate_CSimpleAnim(void)
+{
 }

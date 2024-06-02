@@ -5,6 +5,8 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "mem.h"
+#include "m3dutils.h"
 
 
 class CCop : public CBaddy {
@@ -29,6 +31,23 @@ public:
 	unsigned char endPad[0x394 - 0x37C - 4];
 };
 
+class CCopPing : public CSimpleAnim
+{
+	public:
+		EXPORT void Move(void);
+		EXPORT void SetPosition(void);
+
+		unsigned char padTop[8];
+		SHandle field_70;
+		unsigned char padAfter70[4];
+
+		SHook field_78;
+};
+
 void validate_CCop(void);
+void validate_CCopPing(void);
+
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
+
+
 #endif
