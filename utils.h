@@ -28,4 +28,6 @@ EXPORT unsigned int Utils_GenerateCRC(const char*);
 EXPORT int Utils_LinearFilter(int, int, int);
 EXPORT void Utils_GetVecFromMagDir(CVector*, int, CSVector*);
 
+EXPORT int Utils_XZDist(const CVector*, const CVector *);
+
 #endif

@@ -367,3 +367,15 @@ int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
 			return a4;
 	}
 }
+
+// @Ok
+int Utils_XZDist(const CVector* a1, const CVector *a2)
+{
+	int v2 = ((a1->vx - a2->vx) >> 12);
+	v2 *= v2;
+
+	int v3 = ((a1->vz - a2->vz) >> 12);
+	v3 *= v3;
+
+	return M3dMaths_SquareRoot0(v2 + v3);
+}
