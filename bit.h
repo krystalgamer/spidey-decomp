@@ -67,6 +67,7 @@ class CFT4Bit : public CBit
 		EXPORT void SetTransparency(unsigned char t);
 		EXPORT void SetAnim(int);
 		EXPORT void IncFrameWithWrap(void);
+		EXPORT void SetFrame(int);
 
 		unsigned short mTransDecay;
 		unsigned short mScaleDelay;
@@ -75,13 +76,13 @@ class CFT4Bit : public CBit
 		unsigned char mDeleteAnimOnDestruction;
 		unsigned char padAfterDeleteAnim[0x3];
 
-		int animRelated1;
-		int animRelated5;
+		int field_48;
+		int field_4C;
 		unsigned char padAfteranimRelated5[0x1];
 
-		unsigned char animRelated3;
-		unsigned char animRelated4;
-		unsigned char animRelated2;
+		unsigned char field_51;
+		unsigned char field_52;
+		unsigned char field_53;
 
 		short mAnimSpeed;
 		short mScale;

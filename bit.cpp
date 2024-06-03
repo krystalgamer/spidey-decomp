@@ -193,12 +193,12 @@ void CFT4Bit::SetAnim(int a2){
 	print_if_false(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
 	int v4 = gAnimTable[a2];
-	this->animRelated1 = v4;
+	this->field_48 = v4;
 	v5 = *(char *)(v4 - 4);
-	this->animRelated2 = 0;
-	this->animRelated3 = v5;
-	this->animRelated4 = 0;
-	this->animRelated5 = this->animRelated1;
+	this->field_53 = 0;
+	this->field_51 = v5;
+	this->field_52 = 0;
+	this->field_4C = this->field_48;
 }
 
 
@@ -352,6 +352,18 @@ void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 void Bit_ReduceRGB(unsigned int*, int)
 {}
 
+// @Ok
+void CFT4Bit::SetFrame(int a2)
+{
+	print_if_false(a2 >= 0 && a2 < this->field_51, "Bad frame sent to SetFrame");
+	print_if_false(this->field_48 != 0, "SetFrame called before SetAnim");
+
+	this->field_52 = a2;
+	this->field_53 = 0;
+
+	this->field_4C = this->field_48 + 8 * (char)a2;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -364,12 +376,12 @@ void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
 
 	VALIDATE(CFT4Bit, mDeleteAnimOnDestruction, 0x44);
-	VALIDATE(CFT4Bit, animRelated1, 0x48);
-	VALIDATE(CFT4Bit, animRelated5, 0x4C);
+	VALIDATE(CFT4Bit, field_48, 0x48);
+	VALIDATE(CFT4Bit, field_4C, 0x4C);
 
-	VALIDATE(CFT4Bit, animRelated3, 0x51);
-	VALIDATE(CFT4Bit, animRelated4, 0x52);
-	VALIDATE(CFT4Bit, animRelated2, 0x53);
+	VALIDATE(CFT4Bit, field_51, 0x51);
+	VALIDATE(CFT4Bit, field_52, 0x52);
+	VALIDATE(CFT4Bit, field_53, 0x53);
 
 	VALIDATE(CFT4Bit, mAnimSpeed, 0x54);
 	VALIDATE(CFT4Bit, mScale, 0x56);
