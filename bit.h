@@ -81,9 +81,13 @@ class CFT4Bit : public CBit
 		EXPORT void SetTint(unsigned char, unsigned char, unsigned char);
 		EXPORT void SetTexture(Texture*);
 		EXPORT void SetTexture(unsigned int);
+		EXPORT int Fade(int);
 
+		unsigned __int16 field_3C;
+		/*
 		unsigned short mTransDecay;
 		unsigned short mScaleDelay;
+		*/
 		unsigned int mCodeBGR;
 
 		unsigned char mDeleteAnimOnDestruction;

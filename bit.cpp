@@ -274,6 +274,43 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 	this->field_51 = 1;
 }
 
+// @Ok
+// not matching becausae they assign all mCodeBGR at beggining
+int CFT4Bit::Fade(int a2)
+{
+	int mCodeBGR = this->mCodeBGR;
+
+	if (!(mCodeBGR & 0xFFFFFF))
+	{
+		this->Die();
+		return 1;
+	}
+
+	unsigned __int16 v6 = this->field_3C;
+	unsigned char v10;
+	if (v6 > (unsigned __int16)(this->mCodeBGR & 0xFF))
+		v10 = 0;
+	else
+		v10 = (this->mCodeBGR & 0xFF) - (this->field_3C & 0xFF);
+
+	unsigned char v7;
+	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF00) >> 8))
+		v7 = 0;
+	else
+		v7 = ((this->mCodeBGR & 0xFF00) >> 8) - (this->field_3C & 0xFF);
+
+	unsigned char v8;
+	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF0000) >> 16))
+		v8 = 0;
+	else
+		v8 = ((this->mCodeBGR & 0xFFFF00) >> 16) - (this->field_3C & 0xFF);
+
+
+	this->mCodeBGR = (mCodeBGR & 0xFF000000) | (((v8 << 8) | v7) << 8) | v10;
+
+	return 0;
+}
+
 // @TODO
 int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
 {
@@ -445,6 +482,8 @@ void validate_CFlatBit(void){
 }
 
 void validate_CFT4Bit(void){
+	VALIDATE(CFT4Bit, field_3C, 0x3C);
+
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
 
 	VALIDATE(CFT4Bit, mDeleteAnimOnDestruction, 0x44);
