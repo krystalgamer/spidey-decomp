@@ -479,12 +479,23 @@ void CFT4Bit::SetTransDecay(int decay)
 	this->mTransDecay = decay;
 }
 
+// @NotOk
+// Globals
+CFlatBit::CFlatBit(void)
+{
+	this->AttachTo(reinterpret_cast<CBit**>(0x56EA50));
+
+	this->field_65 = 0x32;
+	this->field_5E = 1;
+	this->mPostScale = 0x10001000;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
-	VALIDATE(CFlatBit, mSemiTransparencyRate, 0x5E);
+	VALIDATE(CFlatBit, field_5E, 0x5E);
 	VALIDATE(CFlatBit, mPostScale, 0x60);
-	VALIDATE(CFlatBit, mAngFric, 0x65);
+	VALIDATE(CFlatBit, field_65, 0x65);
 }
 
 void validate_CFT4Bit(void){

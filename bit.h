@@ -110,13 +110,14 @@ class CFlatBit : public CFT4Bit {
 
 public:
 
+	EXPORT CFlatBit(void);
 	__int16 field_58;
 	__int16 field_5A;
 	unsigned char padAfter5A[0x2];
-	unsigned short mSemiTransparencyRate;
+	unsigned short field_5E;
 	unsigned int mPostScale;
 	unsigned char pad1;
-	unsigned char mAngFric;
+	unsigned char field_65;
 
 
 };
