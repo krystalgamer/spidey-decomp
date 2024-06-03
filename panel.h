@@ -6,10 +6,8 @@
 
 #include "export.h"
 #include "ob.h"
+#include "texture.h"
 
-// @TODO go to types.h
-struct Texture
-{};
 
 struct SAnimFrame
 {
@@ -27,5 +25,6 @@ EXPORT int Panel_DrawTexturedPoly(SAnimFrame*, int);
 EXPORT int Panel_DrawTexturedPoly(Texture*, int);
 
 void validate_SAnimFrame(void);
+void validate_Texture(void);
 
 #endif

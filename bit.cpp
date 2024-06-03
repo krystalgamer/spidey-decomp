@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 #include "validate.h"
+#include "panel.h"
 
 
 volatile static int BitCount = 0;
@@ -185,6 +186,7 @@ void CFT4Bit::SetTransparency(unsigned char t){
 static int * const gAnimTable = (int*)0x0056EA64;
 static const unsigned int maxANimTableEntry = 0x1D;
 
+// @Ok
 void CFT4Bit::SetAnim(int a2){
 
 	char v5; // cl
@@ -193,14 +195,51 @@ void CFT4Bit::SetAnim(int a2){
 	print_if_false(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
 	int v4 = gAnimTable[a2];
-	this->field_48 = v4;
+	this->mPSXAnim = reinterpret_cast<SCFT4BitTexture*>(v4);
 	v5 = *(char *)(v4 - 4);
 	this->field_53 = 0;
 	this->field_51 = v5;
 	this->field_52 = 0;
-	this->field_4C = this->field_48;
+	this->field_4C = this->mPSXAnim;
 }
 
+// @Ok
+void CFT4Bit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
+{
+	int tmp = this->mCodeBGR & 0xFF000000;
+	this->mCodeBGR = a2 | tmp | (((a4 << 8) | a3) << 8);
+}
+
+// @Ok
+void CFT4Bit::SetTexture(Texture* a2)
+{
+	int v4; // ecx
+	int v5; // eax
+	int v6; // edx
+	int v7; // ecx
+
+	print_if_false(this->mPSXAnim == 0, "mpPSXAnim already set?");
+	print_if_false(a2 != 0, "No Texture for SetTexture");
+
+	this->mPSXAnim = (SCFT4BitTexture *)DCMem_New(8, 0, 1, 0, 1);
+
+	this->mDeleteAnimOnDestruction = 1;
+
+	v4 = (unsigned __int8)a2->field_9;
+	v5 = (unsigned __int8)a2->field_4 - (unsigned __int8)a2->field_0;
+	v6 = (unsigned __int8)a2->field_1;
+
+	this->mPSXAnim->field_2 = v5;
+
+	v7 = v4 - v6;
+	this->mPSXAnim->field_3 = v7;
+	this->mPSXAnim->field_0 = v5 / -2;
+	this->mPSXAnim->field_1 = v7 / -2;
+	this->mPSXAnim->field_4 = (int)a2;
+	this->field_4C = this->mPSXAnim;
+
+	this->field_51 = 1;
+}
 
 // @TODO
 int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
@@ -356,12 +395,12 @@ void Bit_ReduceRGB(unsigned int*, int)
 void CFT4Bit::SetFrame(int a2)
 {
 	print_if_false(a2 >= 0 && a2 < this->field_51, "Bad frame sent to SetFrame");
-	print_if_false(this->field_48 != 0, "SetFrame called before SetAnim");
+	print_if_false(this->mPSXAnim != 0, "SetFrame called before SetAnim");
 
 	this->field_52 = a2;
 	this->field_53 = 0;
 
-	this->field_4C = this->field_48 + 8 * (char)a2;
+	this->field_4C = &this->mPSXAnim[(char)a2];
 }
 
 void validate_CFlatBit(void){
@@ -376,7 +415,7 @@ void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
 
 	VALIDATE(CFT4Bit, mDeleteAnimOnDestruction, 0x44);
-	VALIDATE(CFT4Bit, field_48, 0x48);
+	VALIDATE(CFT4Bit, mPSXAnim, 0x48);
 	VALIDATE(CFT4Bit, field_4C, 0x4C);
 
 	VALIDATE(CFT4Bit, field_51, 0x51);
@@ -459,4 +498,16 @@ void validate_CSimpleTexturedRibbon(void)
 
 void validate_CSimpleAnim(void)
 {
+}
+
+void validate_SCFT4BitTexture(void)
+{
+	VALIDATE_SIZE(SCFT4BitTexture, 0x8);
+
+	VALIDATE(SCFT4BitTexture, field_0, 0x0);
+	VALIDATE(SCFT4BitTexture, field_1, 0x1);
+	VALIDATE(SCFT4BitTexture, field_2, 0x2);
+	VALIDATE(SCFT4BitTexture, field_3, 0x3);
+
+	VALIDATE(SCFT4BitTexture, field_4, 0x4);
 }

@@ -1044,6 +1044,10 @@ SOURCE=.\superock.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\texture.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\thug.h
 # End Source File
 # Begin Source File

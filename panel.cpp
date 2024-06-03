@@ -46,3 +46,11 @@ void validate_SAnimFrame(void)
 	VALIDATE(SAnimFrame, Height, 0x3);
 	VALIDATE(SAnimFrame, pTexture, 0x4);
 }
+
+void validate_Texture(void)
+{
+	VALIDATE(Texture, field_0, 0x0);
+	VALIDATE(Texture, field_1, 0x1);
+	VALIDATE(Texture, field_4, 0x4);
+	VALIDATE(Texture, field_9, 0x9);
+}

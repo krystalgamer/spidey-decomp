@@ -4,6 +4,7 @@
 #define BIT_H
 
 #include "vector.h"
+#include "texture.h"
 
 class CBit
 {
@@ -56,6 +57,15 @@ public:
 
 };
 
+struct SCFT4BitTexture
+{
+	unsigned char field_0;
+	unsigned char field_1;
+	unsigned char field_2;
+	unsigned char field_3;
+	int field_4;
+};
+
 class CFT4Bit : public CBit
 {
 	public:
@@ -68,6 +78,8 @@ class CFT4Bit : public CBit
 		EXPORT void SetAnim(int);
 		EXPORT void IncFrameWithWrap(void);
 		EXPORT void SetFrame(int);
+		EXPORT void SetTint(unsigned char, unsigned char, unsigned char);
+		EXPORT void SetTexture(Texture*);
 
 		unsigned short mTransDecay;
 		unsigned short mScaleDelay;
@@ -76,8 +88,8 @@ class CFT4Bit : public CBit
 		unsigned char mDeleteAnimOnDestruction;
 		unsigned char padAfterDeleteAnim[0x3];
 
-		int field_48;
-		int field_4C;
+		SCFT4BitTexture *mPSXAnim;
+		SCFT4BitTexture *field_4C;
 		unsigned char padAfteranimRelated5[0x1];
 
 		unsigned char field_51;
@@ -202,5 +214,6 @@ void validate_CRibbonBit(void);
 void validate_CTexturedRibbon(void);
 void validate_CSimpleTexturedRibbon(void);
 void validate_CSimpleAnim(void);
+void validate_SCFT4BitTexture(void);
 
 #endif
