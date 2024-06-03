@@ -685,9 +685,9 @@ void CBaddy::CreateCombatImpactEffect(CVector*, int)
 }
 
 // @TODO
-int CBaddy::TugImpulse(CVector*, CVector*, CVector*)
+unsigned char CBaddy::TugImpulse(CVector*, CVector*, CVector*)
 {
-	return 0x21052024;
+	return (unsigned char)0x21052024;
 }
 
 // @NotOk

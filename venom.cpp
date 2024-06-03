@@ -1,5 +1,6 @@
 #include "venom.h"
 #include "validate.h"
+#include "mem.h"
 
 //Revisit
 void __inline CVenom::Lookaround(void)
@@ -73,6 +74,16 @@ void CVenom::KillAllCommandBlocks(void)
 {
 	for (int* cur = reinterpret_cast<int*>(this->field_35C); cur; cur = this->KillCommandBlock(cur));
 	this->field_35C = 0;
+}
+
+// @Ok
+unsigned char CVenom::TugImpulse(CVector *a2, CVector *a3, CVector *a4)
+{
+	if (a4)
+		Mem_Delete(a4);
+	this->field_218 |= 0x200;
+
+	return 0;
 }
 
 void validate_CVenom(void){

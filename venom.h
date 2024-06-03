@@ -17,6 +17,7 @@ public:
 	EXPORT void DoPhysics(void);
 	EXPORT int* KillCommandBlock(int*);
 	EXPORT void KillAllCommandBlocks(void);
+	EXPORT unsigned char TugImpulse(CVector *, CVector *, CVector *);
 
 	unsigned char venomStartPad[0x18];
 	unsigned char field_33C;

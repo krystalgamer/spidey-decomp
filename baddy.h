@@ -44,7 +44,7 @@ public:
 
 	EXPORT virtual int PlayerIsVisible(int);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);
-	EXPORT virtual int TugImpulse(CVector*, CVector*, CVector*);
+	EXPORT virtual unsigned char TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void UnknownCBaddyFunctionTwo(void);
 	EXPORT virtual void UnknownCBaddyFunctionThree(int, int);
 	EXPORT virtual char UnknownCBaddyFunctionFour(int);
