@@ -20,6 +20,7 @@ class CRhinoNasalSteam : public CFlatBit
 {
 	public:
 		EXPORT CRhinoNasalSteam(CVector*, CVector*);
+		EXPORT void Move(void);
 };
 
 void validate_CRhino(void);

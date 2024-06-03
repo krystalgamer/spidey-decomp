@@ -108,6 +108,48 @@ CRhinoNasalSteam::CRhinoNasalSteam(CVector* a2, CVector* a3)
 	this->field_58 = Rnd(4096);
 }
 
+// @Ok
+// minor decomp diff
+void CRhinoNasalSteam::Move(void)
+{
+
+	__int16 mAnimSpeed = this->mAnimSpeed;
+
+	if (mAnimSpeed)
+	{
+		unsigned __int16 v3 = (this->field_52 << 8) | this->field_53;
+		unsigned __int16 v4 = mAnimSpeed + v3;
+
+		this->field_53 = v4;
+		v4 >>= 8;
+		this->field_52 = v4;
+
+		if ( (char)v4 >= (int)this->field_51)
+		{
+			this->mAnimSpeed = 0;
+			this->field_52 = this->field_51 - 1;
+		}
+
+		int index = this->field_52;
+		this->field_4C = &this->mPSXAnim[index];
+	}
+
+	this->mPos += this->mVel;
+
+	bool v7 = ++this->field_C <= 30;
+	this->mVel.vy -= 1024;
+
+	if (!v7 )
+	{
+		this->Die();
+	}
+	else
+	{
+		this->SetTransparency(64 - 2 * (this->field_C & 0xFF));
+		this->SetScale(Rnd(4) + 4 * (this->field_C + 32));
+	}
+}
+
 void validate_CRhino(void){
 	VALIDATE_SIZE(CRhino, 0x424);
 
