@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef RHINO_H
+#define RHINO_H
+
 #include "export.h"
 #include "baddy.h"
 
@@ -13,5 +16,15 @@ public:
 	unsigned char padAfter344[0x424-0x344-4];
 };
 
+class CRhinoNasalSteam : public CFlatBit
+{
+	public:
+		EXPORT CRhinoNasalSteam(CVector*, CVector*);
+};
+
 void validate_CRhino(void);
+void validate_CRhinoNasalSteam(void);
 EXPORT void Rhino_CreateRhino(const unsigned int *stack, unsigned int *result);
+
+
+#endif

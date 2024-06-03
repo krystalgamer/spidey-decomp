@@ -300,6 +300,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CAIProc_LookAt();
 	validate_Texture();
 	validate_SCFT4BitTexture();
+	validate_CRhinoNasalSteam();
 
 	puts("[*] Validation done!");
 

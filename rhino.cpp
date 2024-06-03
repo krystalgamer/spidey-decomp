@@ -93,8 +93,28 @@ void Rhino_CreateRhino(const unsigned int *stack, unsigned int *result)
 	}
 }
 
+
+// @Ok
+CRhinoNasalSteam::CRhinoNasalSteam(CVector* a2, CVector* a3)
+{
+	this->mPos = *a2;
+	this->mVel = *a3;
+
+	this->SetAnim(1);
+	this->SetSemiTransparent();
+	this->SetTransparency(64);
+	this->SetAnimSpeed(128);
+	this->SetScale(128);
+	this->field_58 = Rnd(4096);
+}
+
 void validate_CRhino(void){
 	VALIDATE_SIZE(CRhino, 0x424);
 
 	VALIDATE(CRhino, field_344, 0x344);
+}
+
+void validate_CRhinoNasalSteam(void)
+{
+	VALIDATE_SIZE(CRhinoNasalSteam, 0x68);
 }
