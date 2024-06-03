@@ -63,7 +63,7 @@ struct SCFT4BitTexture
 	unsigned char field_1;
 	unsigned char field_2;
 	unsigned char field_3;
-	int field_4;
+	Texture *field_4;
 };
 
 class CFT4Bit : public CBit
@@ -80,6 +80,7 @@ class CFT4Bit : public CBit
 		EXPORT void SetFrame(int);
 		EXPORT void SetTint(unsigned char, unsigned char, unsigned char);
 		EXPORT void SetTexture(Texture*);
+		EXPORT void SetTexture(unsigned int);
 
 		unsigned short mTransDecay;
 		unsigned short mScaleDelay;

@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 #include "validate.h"
-#include "panel.h"
+#include "spool.h"
 
 
 volatile static int BitCount = 0;
@@ -211,7 +211,7 @@ void CFT4Bit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 }
 
 // @Ok
-void CFT4Bit::SetTexture(Texture* a2)
+void CFT4Bit::SetTexture(Texture* pTexture)
 {
 	int v4; // ecx
 	int v5; // eax
@@ -219,15 +219,15 @@ void CFT4Bit::SetTexture(Texture* a2)
 	int v7; // ecx
 
 	print_if_false(this->mPSXAnim == 0, "mpPSXAnim already set?");
-	print_if_false(a2 != 0, "No Texture for SetTexture");
+	print_if_false(pTexture != 0, "No Texture for SetTexture");
 
 	this->mPSXAnim = (SCFT4BitTexture *)DCMem_New(8, 0, 1, 0, 1);
 
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (unsigned __int8)a2->field_9;
-	v5 = (unsigned __int8)a2->field_4 - (unsigned __int8)a2->field_0;
-	v6 = (unsigned __int8)a2->field_1;
+	v4 = (unsigned __int8)pTexture->field_9;
+	v5 = (unsigned __int8)pTexture->field_4 - (unsigned __int8)pTexture->field_0;
+	v6 = (unsigned __int8)pTexture->field_1;
 
 	this->mPSXAnim->field_2 = v5;
 
@@ -235,7 +235,40 @@ void CFT4Bit::SetTexture(Texture* a2)
 	this->mPSXAnim->field_3 = v7;
 	this->mPSXAnim->field_0 = v5 / -2;
 	this->mPSXAnim->field_1 = v7 / -2;
-	this->mPSXAnim->field_4 = (int)a2;
+	this->mPSXAnim->field_4 = pTexture;
+	this->field_4C = this->mPSXAnim;
+
+	this->field_51 = 1;
+}
+
+// @Ok
+void CFT4Bit::SetTexture(unsigned int Checksum)
+{
+	int v4; // ecx
+	int v5; // eax
+	int v6; // edx
+	int v7; // ecx
+
+	print_if_false(this->mPSXAnim == 0, "mpPSXAnim already set?");
+
+	Texture *pTexture = Spool_FindTextureEntry(Checksum);
+	print_if_false(pTexture != 0, "Bad checksum sent to SetTexture");
+
+	this->mPSXAnim = (SCFT4BitTexture *)DCMem_New(8, 0, 1, 0, 1);
+
+	this->mDeleteAnimOnDestruction = 1;
+
+	v4 = (unsigned __int8)pTexture->field_9;
+	v5 = (unsigned __int8)pTexture->field_4 - (unsigned __int8)pTexture->field_0;
+	v6 = (unsigned __int8)pTexture->field_1;
+
+	this->mPSXAnim->field_2 = v5;
+
+	v7 = v4 - v6;
+	this->mPSXAnim->field_3 = v7;
+	this->mPSXAnim->field_0 = v5 / -2;
+	this->mPSXAnim->field_1 = v7 / -2;
+	this->mPSXAnim->field_4 = pTexture;
 	this->field_4C = this->mPSXAnim;
 
 	this->field_51 = 1;

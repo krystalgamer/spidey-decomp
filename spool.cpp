@@ -57,3 +57,9 @@ unsigned int *Spool_SkipPackets(unsigned int *a1)
 
 	return i + 1;
 }
+
+// @TODO
+Texture* Spool_FindTextureEntry(unsigned int)
+{
+	return (Texture*)0x03062024;
+}
