@@ -61,12 +61,27 @@ void CVenomWrap::Die(void)
 	CBit::Die();
 }
 
+// @TODO
+__inline int* CVenom::KillCommandBlock(int*)
+{
+	return (int*)0x03062024;
+}
+
+// @NotOk
+// Revisit
+void CVenom::KillAllCommandBlocks(void)
+{
+	for (int* cur = reinterpret_cast<int*>(this->field_35C); cur; cur = this->KillCommandBlock(cur));
+	this->field_35C = 0;
+}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
 	VALIDATE(CVenom, field_33C, 0x33C);
 	VALIDATE(CVenom, field_33D, 0x33D);
 	VALIDATE(CVenom, field_358, 0x358);
+	VALIDATE(CVenom, field_35C, 0x35C);
 
 	VALIDATE(CVenom, field_37C, 0x37C);
 	VALIDATE(CVenom, field_380, 0x380);

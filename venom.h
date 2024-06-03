@@ -15,6 +15,8 @@ public:
 	EXPORT void Lookaround(void);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
+	EXPORT int* KillCommandBlock(int*);
+	EXPORT void KillAllCommandBlocks(void);
 
 	unsigned char venomStartPad[0x18];
 	unsigned char field_33C;
@@ -22,7 +24,8 @@ public:
 	unsigned char venomPadAfter33D[0x24 - 12];
 
 	int field_358;
-	unsigned char venomPadAfter358[0x20];
+	int* field_35C;
+	unsigned char venomPadAfter35C[0x37C-0x35C-4];
 
 	int field_37C;
 	int field_380;
