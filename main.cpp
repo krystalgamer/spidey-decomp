@@ -60,6 +60,7 @@
 #include "panel.h"
 #include "manipob.h"
 #include "mess.h"
+#include "ai.h"
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -295,6 +296,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_Spidey_CIcon();
 	validate_CEmber();
 	validate_CThugPing();
+	validate_CAIProc();
+	validate_CAIProc_LookAt();
 
 	puts("[*] Validation done!");
 

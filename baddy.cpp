@@ -42,7 +42,7 @@ int CBaddy::TrapWeb(void){
 // Replace fastcall with proper call
 void CBaddy::CleanUpMessages(int a2, int a3)
 {
-	int v3 = this->field_28C;
+	int v3 = reinterpret_cast<int>(this->field_28C);
 	int v4;
 
 
@@ -182,34 +182,6 @@ CBody* CBaddy::StruckGameObject(int a2, int a3)
 
 	  return result;
 }
-
-
-// @NotOk
-// Only tested for (1, 0, 0) which is Ok
-// others might be wrong
-void __inline CBaddy::MarkAIProcList(int a2, int a3, int a4)
-{
-	int it;
-	int current;
-
-	it = this->field_28C;
-	while (it)
-	{
-		current = it;
-		it = *reinterpret_cast<int*>(it + 28);
-
-		if (a2 && !(*reinterpret_cast<int*>(current + 8) & 0x20000) ||
-				a3 && (((*reinterpret_cast<int*>(current + 8)) & 0xFF00) == a3))
-		{
-			*reinterpret_cast<int*>(current+16) |= 1;
-		}
-		else if (a4 && (*reinterpret_cast<int*>(current + 8) & 0xFF00) == a4)
-		{
-			*reinterpret_cast<int*>(current + 16) |= 16;
-		}
-	}
-}
-
 
 // @Ok
 void CBaddy::Neutralize(void)
@@ -468,7 +440,7 @@ int CBaddy::Die(int a2)
 // Calling a vfunc with fastcall, basically matching but polluting edx
 void CBaddy::CleanUpAIPRocList(int a2)
 {
-	int v2 = this->field_28C;
+	int v2 = reinterpret_cast<int>(this->field_28C);
 	int v3;
 
 
@@ -779,6 +751,32 @@ CBaddy* FindBaddyOfType(int type)
 	}
 
 	return NULL;
+}
+
+// @Ok
+void CBaddy::MarkAIProcList(int a2, int a3, int a4)
+{
+	unsigned int *head = this->field_28C;
+	while (head)
+	{
+		unsigned int *v5 = head;
+		head = reinterpret_cast<unsigned int*>(head[7]);
+
+		unsigned int v6;
+		if (a2 && !(v5[2] & 0x20000) || a3 && (v5[2] & 0xFF00) == a3)
+		{
+			v6 = v5[4] | 1;
+		}
+		else
+		{
+			if (!a4 || (v5[2] & 0xFF00) != a4)
+				continue;
+
+			v6 = v5[4] | 4;
+		}
+
+		v5[4] = v6;
+	}
 }
 
 void validate_CBaddy(void){
