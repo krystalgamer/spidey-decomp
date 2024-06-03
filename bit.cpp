@@ -286,24 +286,24 @@ int CFT4Bit::Fade(int a2)
 		return 1;
 	}
 
-	unsigned __int16 v6 = this->field_3C;
+	unsigned __int16 v6 = this->mTransDecay;
 	unsigned char v10;
 	if (v6 > (unsigned __int16)(this->mCodeBGR & 0xFF))
 		v10 = 0;
 	else
-		v10 = (this->mCodeBGR & 0xFF) - (this->field_3C & 0xFF);
+		v10 = (this->mCodeBGR & 0xFF) - (this->mTransDecay & 0xFF);
 
 	unsigned char v7;
 	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF00) >> 8))
 		v7 = 0;
 	else
-		v7 = ((this->mCodeBGR & 0xFF00) >> 8) - (this->field_3C & 0xFF);
+		v7 = ((this->mCodeBGR & 0xFF00) >> 8) - (this->mTransDecay & 0xFF);
 
 	unsigned char v8;
 	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF0000) >> 16))
 		v8 = 0;
 	else
-		v8 = ((this->mCodeBGR & 0xFFFF00) >> 16) - (this->field_3C & 0xFF);
+		v8 = ((this->mCodeBGR & 0xFFFF00) >> 16) - (this->mTransDecay & 0xFF);
 
 
 	this->mCodeBGR = (mCodeBGR & 0xFF000000) | (((v8 << 8) | v7) << 8) | v10;
@@ -473,6 +473,12 @@ void CFT4Bit::SetFrame(int a2)
 	this->field_4C = &this->mPSXAnim[(char)a2];
 }
 
+// @Ok
+void CFT4Bit::SetTransDecay(int decay)
+{
+	this->mTransDecay = decay;
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -482,7 +488,7 @@ void validate_CFlatBit(void){
 }
 
 void validate_CFT4Bit(void){
-	VALIDATE(CFT4Bit, field_3C, 0x3C);
+	VALIDATE(CFT4Bit, mTransDecay, 0x3C);
 
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
 
