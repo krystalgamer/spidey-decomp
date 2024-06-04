@@ -9,6 +9,11 @@
 class CAIProc : public CClass
 {
 	public:
+		EXPORT int Wait(void);
+
+		unsigned char topPad[0x8];
+		int field_C;
+		int field_10;
 };
 
 class CAIProc_LookAt : public CAIProc
