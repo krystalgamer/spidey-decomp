@@ -1036,6 +1036,10 @@ SOURCE=.\spool.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\stateflags.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\submarin.h
 # End Source File
 # Begin Source File

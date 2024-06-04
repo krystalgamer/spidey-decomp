@@ -8,6 +8,7 @@
 #include "vector.h"
 #include "baddy.h"
 #include "mem.h"
+#include "stateflags.h"
 
 enum AIProcType
 {
@@ -17,6 +18,8 @@ enum AIProcType
 	UNK_260 = 260,
 
 	PROC_FALL_TYPE = 770,
+
+	STATE_SWITCH_SEND_MESSAGE = 0x60601,
 };
 
 class CAIProc : public CClass
@@ -63,10 +66,19 @@ class CAIProc_Fall : public CAIProc
 		EXPORT CAIProc_Fall(CBaddy *, int);
 };
 
+class CAIProc_StateSwitchSendMessage : public CAIProc
+{
+	public:
+		EXPORT CAIProc_StateSwitchSendMessage(CBaddy *, int);
+		SStateFlags mFlags;
+		int field_24;
+};
+
 
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
 void validate_CAIProc_RotY(void);
 void validate_CAIProc_Fall(void);
+void validate_CAIProc_StateSwitchSendMessage(void);
 
 #endif

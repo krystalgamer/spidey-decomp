@@ -303,6 +303,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CRhinoNasalSteam();
 	validate_CAIProc_RotY();
 	validate_CAIProc_Fall();
+	validate_CAIProc_StateSwitchSendMessage();
 
 	puts("[*] Validation done!");
 

@@ -97,6 +97,15 @@ CAIProc_Fall::CAIProc_Fall(CBaddy *pBaddy, int a3)
 	this->AttachProc(PROC_FALL_TYPE, pBaddy, a3);
 }
 
+// @Ok
+CAIProc_StateSwitchSendMessage::CAIProc_StateSwitchSendMessage(CBaddy *pBaddy, int a3)
+{
+	this->AttachProc(STATE_SWITCH_SEND_MESSAGE, pBaddy, 0);
+
+	this->mFlags = pBaddy->field_31C;
+	this->field_24 = a3;
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -134,4 +143,12 @@ void validate_CAIProc_RotY(void)
 void validate_CAIProc_Fall(void)
 {
 	VALIDATE_SIZE(CAIProc_Fall, 0x20);
+}
+
+void validate_CAIProc_StateSwitchSendMessage(void)
+{
+	VALIDATE_SIZE(CAIProc_StateSwitchSendMessage, 0x28);
+
+	VALIDATE(CAIProc_StateSwitchSendMessage, mFlags, 0x20);
+	VALIDATE(CAIProc_StateSwitchSendMessage, field_24, 0x24);
 }

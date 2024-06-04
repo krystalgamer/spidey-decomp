@@ -5,13 +5,7 @@
 
 #include "export.h"
 #include "ob.h"
-
-struct SStateFlags{
-	union {
-		__int16 flags[2];
-		int bothFlags;
-	};
-};
+#include "stateflags.h"
 
 class CBaddy : public CSuper {
 
