@@ -139,6 +139,24 @@ CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int
 	this->field_30 = reinterpret_cast<CVector*>(DCMem_New(12 * setBits, 0, 1, 0, 1));
 }
 
+// @Ok
+CAIProc_AccZ::CAIProc_AccZ(CBaddy* pBaddy, int Accel, int a4, int a5)
+{
+	print_if_false(Accel != 0, "no accelration specificed");
+
+	this->AttachProc(ACCZ, pBaddy, a5);
+
+	this->field_24 = a4 >> 4 << 12;
+	if (this->field_24)
+		pBaddy->field_2A8 |= 0x80000000;
+
+	int v9 = Accel >> 4 << 12;
+	if (this->field_24 > pBaddy->field_27C.vz)
+		this->field_20 = abs(v9);
+	else
+		this->field_20 = -abs(v9);
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -197,4 +215,12 @@ void validate_CAIProc_MonitorAttack(void)
 	VALIDATE(CAIProc_MonitorAttack, field_28, 0x28);
 	VALIDATE(CAIProc_MonitorAttack, field_2C, 0x2C);
 	VALIDATE(CAIProc_MonitorAttack, field_30, 0x30);
+}
+
+void validate_CAIProc_AccZ(void)
+{
+	VALIDATE_SIZE(CAIProc_AccZ, 0x28);
+
+	VALIDATE(CAIProc_AccZ, field_20, 0x20);
+	VALIDATE(CAIProc_AccZ, field_24, 0x24);
 }

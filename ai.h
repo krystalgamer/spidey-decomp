@@ -23,6 +23,8 @@ enum AIProcType
 	STATE_SWITCH_SEND_MESSAGE = 0x60601,
 
 	MONITOR_ATTACK = 1281,
+
+	ACCZ = 1025,
 };
 
 class CAIProc : public CClass
@@ -90,11 +92,20 @@ class CAIProc_MonitorAttack : public CAIProc
 		unsigned char pad[4];
 };
 
+class CAIProc_AccZ : public CAIProc
+{
+	public:
+		EXPORT CAIProc_AccZ(CBaddy*, int, int, int);
+		int field_20;
+		int field_24;
+};
+
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
 void validate_CAIProc_RotY(void);
 void validate_CAIProc_Fall(void);
 void validate_CAIProc_StateSwitchSendMessage(void);
 void validate_CAIProc_MonitorAttack(void);
+void validate_CAIProc_AccZ(void);
 
 #endif
