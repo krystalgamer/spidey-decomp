@@ -10,6 +10,14 @@
 #include "mem.h"
 #include "stateflags.h"
 
+struct SMoveToInfo
+{
+	CVector field_0;
+	int field_C;
+	int field_10;
+	int field_14;
+};
+
 enum AIProcType
 {
 	UNK_257 = 257,
@@ -25,6 +33,7 @@ enum AIProcType
 	MONITOR_ATTACK = 1281,
 
 	ACCZ = 1025,
+	MOVE_TO = 1794,
 };
 
 class CAIProc : public CClass
@@ -100,6 +109,16 @@ class CAIProc_AccZ : public CAIProc
 		int field_24;
 };
 
+class CAIProc_MoveTo : public CAIProc
+{
+	public:
+		EXPORT CAIProc_MoveTo(CBaddy*, SMoveToInfo*, int);
+		CVector field_20;
+		int field_2C;
+		CVector field_30;
+		unsigned char padBottom[0x40-0x30-sizeof(CVector)];
+};
+
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
 void validate_CAIProc_RotY(void);
@@ -107,5 +126,7 @@ void validate_CAIProc_Fall(void);
 void validate_CAIProc_StateSwitchSendMessage(void);
 void validate_CAIProc_MonitorAttack(void);
 void validate_CAIProc_AccZ(void);
+void validate_SMoveToInfo(void);
+void validate_CAIProc_MoveTo(void);
 
 #endif

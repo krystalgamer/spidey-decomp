@@ -1,6 +1,7 @@
 #include "ai.h"
 #include "validate.h"
 #include <cmath>
+#include "ps2funcs.h"
 
 
 // @NotOk
@@ -157,6 +158,53 @@ CAIProc_AccZ::CAIProc_AccZ(CBaddy* pBaddy, int Accel, int a4, int a5)
 		this->field_20 = -abs(v9);
 }
 
+CAIProc_MoveTo::CAIProc_MoveTo(CBaddy* pBaddy, SMoveToInfo* pMove, int a4)
+{
+	this->field_20.vx = 0;
+	this->field_20.vy = 0;
+	this->field_20.vz = 0;
+
+	this->field_30.vx = 0;
+	this->field_30.vy = 0;
+	this->field_30.vz = 0;
+
+	CVector v10;
+	v10.vx = 0;
+	v10.vy = 0;
+	v10.vz = 0;
+
+	this->AttachProc(MOVE_TO, pBaddy, a4);
+
+	this->field_30 = pMove->field_0;
+	this->field_2C = 0;
+
+	this->field_20 = (this->field_30 - pBaddy->mPos) >> 12;
+
+	if (!this->field_20.vx && !this->field_20.vy && !this->field_20.vz)
+		this->field_20.vx = 1;
+
+	VectorNormal(
+			reinterpret_cast<VECTOR*>(&this->field_20),
+			reinterpret_cast<VECTOR*>(&this->field_20));
+
+	print_if_false(this->field_20.vy == 0, "fix this mr. matt duncan");
+	this->field_20 *= pMove->field_C;
+	this->field_20 >>= 4;
+
+	if (pMove->field_10)
+	{
+		v10 = this->field_30 - pBaddy->mPos;
+		v10 <<= 2;
+		v10 += pBaddy->mPos; 
+
+		new CAIProc_LookAt(pBaddy, 0, &v10, 0x10000, pMove->field_10, pMove->field_14);
+	}
+	else
+	{
+		this->pBaddy->field_288 |= 0x10000;
+	}
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -223,4 +271,23 @@ void validate_CAIProc_AccZ(void)
 
 	VALIDATE(CAIProc_AccZ, field_20, 0x20);
 	VALIDATE(CAIProc_AccZ, field_24, 0x24);
+}
+
+void validate_SMoveToInfo(void)
+{
+	VALIDATE_SIZE(SMoveToInfo, 0x18);
+
+	VALIDATE(SMoveToInfo, field_0, 0x0);
+	VALIDATE(SMoveToInfo, field_C, 0xC);
+	VALIDATE(SMoveToInfo, field_10, 0x10);
+	VALIDATE(SMoveToInfo, field_14, 0x14);
+}
+
+void validate_CAIProc_MoveTo(void)
+{
+	VALIDATE_SIZE(CAIProc_MoveTo, 0x40);
+
+	VALIDATE(CAIProc_MoveTo, field_20, 0x20);
+	VALIDATE(CAIProc_MoveTo, field_2C, 0x2C);
+	VALIDATE(CAIProc_MoveTo, field_30, 0x30);
 }
