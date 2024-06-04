@@ -106,6 +106,26 @@ CAIProc_StateSwitchSendMessage::CAIProc_StateSwitchSendMessage(CBaddy *pBaddy, i
 	this->field_24 = a3;
 }
 
+// @Ok
+CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int a5, int a6)
+{
+	this->AttachProc(MONITOR_ATTACK, pBaddy, a6);
+
+	this->field_20 = pBaddy->field_12A;
+	this->field_24 = a3;
+	this->field_28 = a3 + a5 - 1;
+	this->field_2C = a4;
+
+	int setBits = 0;
+	for (int i = 0; i < 32; i++)
+	{
+		if ((1 << i) & a4)
+			setBits++;
+	}
+
+	this->field_30 = reinterpret_cast<CVector*>(DCMem_New(12 * setBits, 0, 1, 0, 1));
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -151,4 +171,15 @@ void validate_CAIProc_StateSwitchSendMessage(void)
 
 	VALIDATE(CAIProc_StateSwitchSendMessage, mFlags, 0x20);
 	VALIDATE(CAIProc_StateSwitchSendMessage, field_24, 0x24);
+}
+
+void validate_CAIProc_MonitorAttack(void)
+{
+	VALIDATE_SIZE(CAIProc_MonitorAttack, 0x38);
+
+	VALIDATE(CAIProc_MonitorAttack, field_20, 0x20);
+	VALIDATE(CAIProc_MonitorAttack, field_24, 0x24);
+	VALIDATE(CAIProc_MonitorAttack, field_28, 0x28);
+	VALIDATE(CAIProc_MonitorAttack, field_2C, 0x2C);
+	VALIDATE(CAIProc_MonitorAttack, field_30, 0x30);
 }

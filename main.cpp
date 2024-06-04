@@ -304,6 +304,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CAIProc_RotY();
 	validate_CAIProc_Fall();
 	validate_CAIProc_StateSwitchSendMessage();
+	validate_CAIProc_MonitorAttack();
 
 	puts("[*] Validation done!");
 

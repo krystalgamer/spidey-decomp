@@ -20,6 +20,8 @@ enum AIProcType
 	PROC_FALL_TYPE = 770,
 
 	STATE_SWITCH_SEND_MESSAGE = 0x60601,
+
+	MONITOR_ATTACK = 1281,
 };
 
 class CAIProc : public CClass
@@ -74,11 +76,23 @@ class CAIProc_StateSwitchSendMessage : public CAIProc
 		int field_24;
 };
 
+class CAIProc_MonitorAttack : public CAIProc
+{
+	public:
+		EXPORT CAIProc_MonitorAttack(CBaddy*, int, int, int, int);
+		int field_20;
+		int field_24;
+		int field_28;
+		int field_2C;
+		CVector *field_30;
+		unsigned char pad[4];
+};
 
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
 void validate_CAIProc_RotY(void);
 void validate_CAIProc_Fall(void);
 void validate_CAIProc_StateSwitchSendMessage(void);
+void validate_CAIProc_MonitorAttack(void);
 
 #endif
