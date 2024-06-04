@@ -91,6 +91,12 @@ CAIProc_RotY::CAIProc_RotY(CBaddy* pBaddy, int a3, int numFrames, int a5)
 	this->field_24 = a3 / numFrames;
 }
 
+// @Ok
+CAIProc_Fall::CAIProc_Fall(CBaddy *pBaddy, int a3)
+{
+	this->AttachProc(PROC_FALL_TYPE, pBaddy, a3);
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -123,4 +129,9 @@ void validate_CAIProc_RotY(void)
 
 	VALIDATE(CAIProc_RotY, field_20, 0x20);
 	VALIDATE(CAIProc_RotY, field_24, 0x24);
+}
+
+void validate_CAIProc_Fall(void)
+{
+	VALIDATE_SIZE(CAIProc_Fall, 0x20);
 }

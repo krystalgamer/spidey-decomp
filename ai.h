@@ -15,6 +15,8 @@ enum AIProcType
 	UNK_258 = 258,
 
 	UNK_260 = 260,
+
+	PROC_FALL_TYPE = 770,
 };
 
 class CAIProc : public CClass
@@ -55,9 +57,16 @@ class CAIProc_RotY : public CAIProc
 		int field_24;
 };
 
+class CAIProc_Fall : public CAIProc
+{
+	public:
+		EXPORT CAIProc_Fall(CBaddy *, int);
+};
+
 
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
 void validate_CAIProc_RotY(void);
+void validate_CAIProc_Fall(void);
 
 #endif
