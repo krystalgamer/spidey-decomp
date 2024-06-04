@@ -110,8 +110,9 @@ public:
 	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30 - 0xC];
 	__int16 attributeArr[6];
 	CVector field_27C;
+
+	int field_288;
 	
-	unsigned char weirdpad[0x02];
 	unsigned int  *field_28C;
 	int field_290;
 	unsigned char field_294;

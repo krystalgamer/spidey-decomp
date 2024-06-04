@@ -181,7 +181,6 @@ public:
 	unsigned char padAfter10C[4];
 
 	SHandle field_114;
-	unsigned char padAfter114[0x11C-0x114-sizeof(SHandle)];
 
 	int SNbrFaces;
 	int alsoOutlineRelated;

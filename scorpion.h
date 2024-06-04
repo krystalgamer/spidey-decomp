@@ -19,7 +19,6 @@ class CScorpion : public CBaddy {
 		CSuper* field_BEC;
 
 		SHandle field_BF0;
-		unsigned char padAfterBF0[0xBF8-0xBF0 - sizeof(SHandle)];
 
 		int field_BF8;
 

@@ -363,10 +363,12 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 }
 
 
-// @Ok
+// @NotOk
 // slightly different due to many jumps to same printf_if_false, no biggie
-int Mem_MakeHandle(void* a1)
+// completly wrong
+SHandle Mem_MakeHandle(void* a1)
 {
+	/*
 	char *v1; // esi
 	int v2; // eax
 	char *v3; // esi
@@ -400,6 +402,10 @@ int Mem_MakeHandle(void* a1)
 		}
 	}
 	return 0;
+	*/
+
+	SHandle tmp;
+	return tmp;
 }
 
 
@@ -433,9 +439,10 @@ void *Mem_RecoverPointer(SHandle *a1)
 }
 
 void validate_SHandle(void){
-	VALIDATE_SIZE(SHandle, 4);
+	VALIDATE_SIZE(SHandle, 8);
 
 	VALIDATE(SHandle, field_0, 0x0);
+	VALIDATE(SHandle, field_4, 0x4);
 }
 
 void validate_SBlockHeader(void){

@@ -47,7 +47,6 @@ class CThugPing : public CSimpleAnim
 
 		unsigned char padTop[8];
 		SHandle field_70;
-		unsigned char padAfter70[4];
 		SHook field_78;
 };
 

@@ -825,6 +825,8 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, attributeArr, 0x270);
 	VALIDATE(CBaddy, field_27C, 0x27C);
 
+	VALIDATE(CBaddy, field_288, 0x288);
+
 	VALIDATE(CBaddy, field_28C, 0x28C);
 	VALIDATE(CBaddy, field_290, 0x290);
 	VALIDATE(CBaddy, field_294, 0x294);

@@ -3,6 +3,12 @@
 #include "export.h"
 
 
+struct SHandle
+{
+	int field_0;
+	int field_4;
+};
+
 struct SBlockHeader {
 
 	unsigned int ParentHeap;
@@ -20,12 +26,7 @@ EXPORT void Mem_Copy(void*, void*, int);
 EXPORT void *Mem_NewTop(unsigned int);
 EXPORT void *Mem_CoreNew(unsigned int);
 EXPORT void *DCMem_New(unsigned int, int, int, void*, bool);
-EXPORT int Mem_MakeHandle(void*);
-
-struct SHandle
-{
-	int field_0;
-};
+EXPORT SHandle Mem_MakeHandle(void*);
 
 EXPORT void *Mem_RecoverPointer(SHandle*);
 
