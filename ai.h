@@ -14,6 +14,7 @@ enum AIProcType
 {
 	UNK_257 = 257,
 	UNK_258 = 258,
+	LOOKAT_TWO = 259,
 
 	UNK_260 = 260,
 
@@ -44,9 +45,10 @@ class CAIProc_LookAt : public CAIProc
 {
 	public:
 		EXPORT CAIProc_LookAt(CBaddy*, CBody*, CVector *, int, int, int);
+		EXPORT CAIProc_LookAt(CBaddy*, int, int, int, int);
 		EXPORT void SetUpVariables(int, int);
 
-		unsigned char topPad[4];
+		int field_20;
 		SHandle field_24;
 		CVector field_2C;
 

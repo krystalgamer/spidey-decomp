@@ -82,6 +82,19 @@ CAIProc_LookAt::CAIProc_LookAt(CBaddy* a2, CBody* a3, CVector * pTargetPos, int 
 }
 
 // @Ok
+CAIProc_LookAt::CAIProc_LookAt(CBaddy* pBaddy, int a3, int a4, int a5, int a6)
+{
+	this->field_2C.vx = 0;
+	this->field_2C.vy = 0;
+	this->field_2C.vz = 0;
+
+	this->AttachProc(LOOKAT_TWO, pBaddy, a4);
+	this->field_20 = a3;
+
+	this->SetUpVariables(a6, a5);
+}
+
+// @Ok
 CAIProc_RotY::CAIProc_RotY(CBaddy* pBaddy, int a3, int numFrames, int a5)
 {
 	this->AttachProc(UNK_260, pBaddy, a5);
@@ -143,6 +156,8 @@ void validate_CAIProc(void)
 void validate_CAIProc_LookAt(void)
 {
 	VALIDATE_SIZE(CAIProc_LookAt, 0x40);
+
+	VALIDATE(CAIProc_LookAt, field_20, 0x20);
 
 	VALIDATE(CAIProc_LookAt, field_24, 0x24);
 	VALIDATE(CAIProc_LookAt, field_2C, 0x2C);
