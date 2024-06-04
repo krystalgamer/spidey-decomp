@@ -81,6 +81,16 @@ CAIProc_LookAt::CAIProc_LookAt(CBaddy* a2, CBody* a3, CVector * pTargetPos, int 
 	this->SetUpVariables(a7, a6);
 }
 
+// @Ok
+CAIProc_RotY::CAIProc_RotY(CBaddy* pBaddy, int a3, int numFrames, int a5)
+{
+	this->AttachProc(UNK_260, pBaddy, a5);
+
+	print_if_false(numFrames > 0, "numFrames <= 0 illegal. you're under arrest dipshit.");
+	this->field_20 = numFrames;
+	this->field_24 = a3 / numFrames;
+}
+
 void validate_CAIProc(void)
 {
 	VALIDATE(CAIProc, pBaddy, 0x4);
@@ -105,4 +115,12 @@ void validate_CAIProc_LookAt(void)
 	VALIDATE(CAIProc_LookAt, field_38, 0x38);
 	VALIDATE(CAIProc_LookAt, field_3C, 0x3C);
 
+}
+
+void validate_CAIProc_RotY(void)
+{
+	VALIDATE_SIZE(CAIProc_RotY, 0x28);
+
+	VALIDATE(CAIProc_RotY, field_20, 0x20);
+	VALIDATE(CAIProc_RotY, field_24, 0x24);
 }

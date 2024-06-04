@@ -13,6 +13,8 @@ enum AIProcType
 {
 	UNK_257 = 257,
 	UNK_258 = 258,
+
+	UNK_260 = 260,
 };
 
 class CAIProc : public CClass
@@ -45,8 +47,17 @@ class CAIProc_LookAt : public CAIProc
 		int field_3C;
 };
 
+class CAIProc_RotY : public CAIProc
+{
+	public:
+		EXPORT CAIProc_RotY(CBaddy*, int, int ,int);
+		int field_20;
+		int field_24;
+};
+
 
 void validate_CAIProc(void);
 void validate_CAIProc_LookAt(void);
+void validate_CAIProc_RotY(void);
 
 #endif
