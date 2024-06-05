@@ -95,6 +95,12 @@ CAIProc_LookAt::CAIProc_LookAt(CBaddy* pBaddy, int a3, int a4, int a5, int a6)
 	this->SetUpVariables(a6, a5);
 }
 
+// @TODO
+void CAIProc_LookAt::Execute(void)
+{
+	print_if_false(this != 0, "LOOOOL");
+}
+
 // @Ok
 CAIProc_RotY::CAIProc_RotY(CBaddy* pBaddy, int a3, int numFrames, int a5)
 {
@@ -158,6 +164,7 @@ CAIProc_AccZ::CAIProc_AccZ(CBaddy* pBaddy, int Accel, int a4, int a5)
 		this->field_20 = -abs(v9);
 }
 
+// @Ok
 CAIProc_MoveTo::CAIProc_MoveTo(CBaddy* pBaddy, SMoveToInfo* pMove, int a4)
 {
 	this->field_20.vx = 0;
@@ -203,6 +210,82 @@ CAIProc_MoveTo::CAIProc_MoveTo(CBaddy* pBaddy, SMoveToInfo* pMove, int a4)
 	{
 		this->pBaddy->field_288 |= 0x10000;
 	}
+}
+
+
+// @Ok
+void CAIProc_MoveTo::Execute(void)
+{
+	print_if_false((this->pBaddy->field_27C.vx | this->pBaddy->field_27C.vz) == 0, "Shitfucker");
+
+	CBaddy *v4;
+	int v5;
+	int result;
+
+	int v3 = this->pBaddy->field_80;
+
+	if ( this->field_3C
+		|| ((v4 = this->pBaddy, v5 = v4->field_288, (v5 & 0x10000) != 0) ? (v4->field_288 = v5 & 0xFFFEFFFF,
+
+		result = 1) : (result = 0),
+
+		(this->field_3C = result) != 0) )
+	{
+		if (this->field_20.vx)
+		{
+			CBaddy *baddy = this->pBaddy;
+			int v11 = baddy->mPos.vx + (v3 * this->field_20.vx);
+
+			if ( baddy->mPos.vx > this->field_30.vx == v11 > this->field_30.vx )
+			{
+				baddy->mPos.vx = v11;
+			}
+
+			else
+			{
+				baddy->mPos.vx = this->field_30.vx;
+				this->field_20.vx = 0;
+			}
+		}
+
+		if (this->field_20.vz)
+		{
+			CBaddy *baddy = this->pBaddy;
+			int v16 = baddy->mPos.vz + (v3 * this->field_20.vz);
+
+			if ( baddy->mPos.vz > this->field_30.vz == v16 > this->field_30.vz )
+			{
+				baddy->mPos.vz = v16;
+			}
+			else
+			{
+				baddy->mPos.vz = this->field_30.vz;
+				this->field_20.vz = 0;
+			}
+		}
+
+		if ( (this->field_20.vz | this->field_20.vx) == 0)
+		{
+			this->pBaddy->field_2A8 &= 0xF7FFFFFF;
+			this->pBaddy->field_2AC |= 0x80000;
+
+			if (this->field_14)
+			{
+				this->pBaddy->field_288 |= this->field_14;
+				this->field_14 &= 0xF0F0;
+			}
+
+			this->field_10 |= 1;
+		}
+		else
+		{
+			this->pBaddy->field_2A8 |= 0x80000000;
+			this->pBaddy->field_2AC |= 0x40000;
+		}
+	}
+
+	if (this->field_1C)
+		this->field_1C->Execute();
 }
 
 void validate_CAIProc(void)
@@ -290,4 +373,5 @@ void validate_CAIProc_MoveTo(void)
 	VALIDATE(CAIProc_MoveTo, field_20, 0x20);
 	VALIDATE(CAIProc_MoveTo, field_2C, 0x2C);
 	VALIDATE(CAIProc_MoveTo, field_30, 0x30);
+	VALIDATE(CAIProc_MoveTo, field_3C, 0x3C);
 }

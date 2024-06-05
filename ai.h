@@ -41,6 +41,7 @@ class CAIProc : public CClass
 	public:
 		EXPORT int Wait(void);
 		EXPORT void AttachProc(AIProcType, CBaddy*, int);
+		EXPORT virtual void Execute(void) = 0;
 
 		CBaddy* pBaddy;
 		AIProcType mAIProcType;
@@ -58,6 +59,7 @@ class CAIProc_LookAt : public CAIProc
 		EXPORT CAIProc_LookAt(CBaddy*, CBody*, CVector *, int, int, int);
 		EXPORT CAIProc_LookAt(CBaddy*, int, int, int, int);
 		EXPORT void SetUpVariables(int, int);
+		EXPORT virtual void Execute(void);
 
 		int field_20;
 		SHandle field_24;
@@ -113,10 +115,12 @@ class CAIProc_MoveTo : public CAIProc
 {
 	public:
 		EXPORT CAIProc_MoveTo(CBaddy*, SMoveToInfo*, int);
+		EXPORT virtual void Execute(void);
+
 		CVector field_20;
 		int field_2C;
 		CVector field_30;
-		unsigned char padBottom[0x40-0x30-sizeof(CVector)];
+		int field_3C;
 };
 
 void validate_CAIProc(void);
