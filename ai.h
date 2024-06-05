@@ -112,6 +112,8 @@ class CAIProc_AccZ : public CAIProc
 {
 	public:
 		EXPORT CAIProc_AccZ(CBaddy*, int, int, int);
+		EXPORT void Execute(void);
+
 		int field_20;
 		int field_24;
 };

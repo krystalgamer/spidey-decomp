@@ -20,11 +20,13 @@ int __inline CAIProc::Wait(void)
 
 	int v3 = this->field_C;
 
-	if (v3 <= 0)
-		return 0;
+	if (v3 > 0)
+	{
+		this->field_C = v3 - 1;
+		return v3;
+	}
 
-	this->field_C--;
-	return v3;
+	return 0;
 }
 
 // @NotOk
@@ -97,9 +99,18 @@ CAIProc_LookAt::CAIProc_LookAt(CBaddy* pBaddy, int a3, int a4, int a5, int a6)
 }
 
 // @TODO
+// barely started, wait doesnt' seem to match ffs
 void CAIProc_LookAt::Execute(void)
 {
-	print_if_false(this != 0, "LOOOOL");
+	if (this->Wait())
+	{
+		if (this->field_1C)
+			this->field_1C->Execute();
+	}
+	else
+	{
+		print_if_false(this != 0, "CONAA");
+	}
 }
 
 // @Ok
@@ -234,6 +245,71 @@ CAIProc_AccZ::CAIProc_AccZ(CBaddy* pBaddy, int Accel, int a4, int a5)
 		this->field_20 = abs(v9);
 	else
 		this->field_20 = -abs(v9);
+}
+
+// @NotOk
+// Wait inline makes this hard
+void CAIProc_AccZ::Execute(void)
+{
+	int wait = this->Wait();
+	if (wait)
+	{
+		if (wait == 2)
+		{
+			this->pBaddy->gVec.vz = 0;
+		}
+	}
+	else
+	{
+		if ( this->field_20 >= 0 )
+		{
+			if ( this->field_24 <= this->pBaddy->field_27C.vz + this->field_20 )
+			{
+				this->pBaddy->field_27C.vz = this->field_24;
+				if ( !this->field_24 )
+					this->pBaddy->field_2A8 &= 0xF7FFFFFF;
+
+				this->pBaddy->gVec.vz = 0;
+
+				if ( this->field_14 )
+				{
+					this->pBaddy->field_288 |= this->field_14;
+					this->field_14 &= 0xF0F0;
+				}
+
+				this->field_10 |= 1;
+			}
+			else
+			{
+				this->pBaddy->gVec.vz = this->field_20;
+			}
+		}	
+		else
+		{
+			if ( this->field_24 >= this->pBaddy->field_27C.vz + this->field_20 )
+			{
+				this->pBaddy->field_27C.vz = this->field_24;
+				if ( !this->field_24 )
+					this->pBaddy->field_2A8 &= 0xF7FFFFFF;
+
+				this->pBaddy->gVec.vz = 0;
+				if ( this->field_14 )
+				{
+					this->pBaddy->field_288 |= this->field_14;
+					this->field_14 &= 0xF0F0;
+				}
+
+				this->field_10 |= 1;
+			}
+			else
+			{
+				this->pBaddy->gVec.vz = this->field_20;
+			}
+		}
+	}
+
+	if (this->field_1C)
+		this->field_1C->Execute();
 }
 
 // @Ok
