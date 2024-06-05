@@ -2,6 +2,7 @@
 #include "validate.h"
 #include <cmath>
 #include "ps2funcs.h"
+#include "message.h"
 
 
 // @NotOk
@@ -124,6 +125,19 @@ CAIProc_StateSwitchSendMessage::CAIProc_StateSwitchSendMessage(CBaddy *pBaddy, i
 
 	this->mFlags = pBaddy->field_31C;
 	this->field_24 = a3;
+}
+
+// @Ok
+void CAIProc_StateSwitchSendMessage::Execute(void)
+{
+	if (this->pBaddy->field_31C.bothFlags != this->mFlags.bothFlags)
+	{
+		new CMessage(NULL, this->pBaddy, this->field_24, NULL);
+		this->field_10 |= 1;
+	}
+
+	if (this->field_1C)
+		this->field_1C->Execute();
 }
 
 // @Ok

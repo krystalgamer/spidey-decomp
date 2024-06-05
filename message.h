@@ -5,14 +5,15 @@
 #define MESSAGE_H
 
 #include "baddy.h"
+#include "main.h"
 
 struct SMessageData
 {};
 
-class CMessage
+class CMessage : public CClass
 {
 	public:
-		unsigned char pad[0x44];
+		unsigned char pad[0x40];
 
 		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)
 		{
