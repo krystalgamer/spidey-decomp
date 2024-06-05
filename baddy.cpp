@@ -7,6 +7,11 @@
 #include <cmath>
 #include "trig.h"
 
+// @TODO
+int CBaddy::SmackSpidey(int, CVector*, int, int)
+{
+	return 0x06062024;
+}
 
 // @NotOk
 // Global

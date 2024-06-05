@@ -81,6 +81,7 @@ class CAIProc_Fall : public CAIProc
 {
 	public:
 		EXPORT CAIProc_Fall(CBaddy *, int);
+		EXPORT void Execute(void);
 };
 
 class CAIProc_StateSwitchSendMessage : public CAIProc
@@ -97,12 +98,14 @@ class CAIProc_MonitorAttack : public CAIProc
 {
 	public:
 		EXPORT CAIProc_MonitorAttack(CBaddy*, int, int, int, int);
+		EXPORT void Execute(void);
+
 		int field_20;
 		int field_24;
 		int field_28;
 		int field_2C;
 		CVector *field_30;
-		unsigned char pad[4];
+		int field_34;
 };
 
 class CAIProc_AccZ : public CAIProc

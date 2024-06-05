@@ -118,6 +118,33 @@ CAIProc_Fall::CAIProc_Fall(CBaddy *pBaddy, int a3)
 	this->AttachProc(PROC_FALL_TYPE, pBaddy, a3);
 }
 
+// @TODO
+void CAIProc_Fall::Execute(void)
+{
+	if (this->pBaddy->field_2A8 & 0x400)
+	{
+		int v2 = this->pBaddy->field_308;
+
+		if (this->pBaddy->mPos.vy >= v2)
+		{
+			this->pBaddy->mPos.vy = v2;
+			if (this->field_14)
+			{
+				this->pBaddy->field_288 |= field_14;
+				this->field_14 &= 0xF0F0;
+			}
+			this->field_10 |= 1;
+		}
+	}
+	else
+	{
+		this->field_10 |= 1;
+	}
+
+	if (this->field_1C)
+		this->field_1C->Execute();
+}
+
 // @Ok
 CAIProc_StateSwitchSendMessage::CAIProc_StateSwitchSendMessage(CBaddy *pBaddy, int a3)
 {
@@ -158,6 +185,37 @@ CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int
 	}
 
 	this->field_30 = reinterpret_cast<CVector*>(DCMem_New(12 * setBits, 0, 1, 0, 1));
+}
+
+// @TODO
+void CAIProc_MonitorAttack::Execute(void)
+{
+	if (this->pBaddy->field_12A != this->field_20)
+	{
+		this->field_10 |= 1;
+	}
+	else
+	{
+		if ( this->pBaddy->field_128 >= this->field_24 && this->pBaddy->field_128 <= this->field_28 )
+		{
+			if (this->pBaddy->SmackSpidey(this->field_2C, this->field_30, this->field_34, this->field_14))
+			{
+				if (this->field_14)
+				{
+					this->pBaddy->field_288 |= this->field_14;
+					this->field_14 &= 0xF0F0;
+				}
+
+				this->field_10 |= 1;
+			}
+
+			this->field_34 = 1;
+		}
+
+	}
+
+	if (this->field_1C)
+		this->field_1C->Execute();
 }
 
 // @Ok
@@ -360,6 +418,7 @@ void validate_CAIProc_MonitorAttack(void)
 	VALIDATE(CAIProc_MonitorAttack, field_28, 0x28);
 	VALIDATE(CAIProc_MonitorAttack, field_2C, 0x2C);
 	VALIDATE(CAIProc_MonitorAttack, field_30, 0x30);
+	VALIDATE(CAIProc_MonitorAttack, field_34, 0x34);
 }
 
 void validate_CAIProc_AccZ(void)
