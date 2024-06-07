@@ -7,16 +7,20 @@ on:
     branches: [ "master" ]
 
 jobs:
+
   build-linux:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install 32-bit g++
+    - name: Install 32-bit libs
       run: sudo apt install g++-multilib
     - name: Setup Makefile
-      run: cmake -B out
+      run: CXX=${{ matrix.compiler }} cmake -B out
     - name: Build
       run: cmake --build out
     - name: Run
