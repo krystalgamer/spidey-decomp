@@ -10,7 +10,7 @@
 
 // @Ok
 // Random move from global to eax and test eax, eax that doesn't change shit
-void* CItem::operator new(unsigned int size) {
+void* CItem::operator new(size_t size) {
 
   void *result = DCMem_New(size, 0, 1, 0, 1);
 

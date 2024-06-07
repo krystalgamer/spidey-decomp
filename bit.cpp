@@ -38,7 +38,7 @@ CBit::CBit() {
  * to it storing the result in a global variable. For some reason
  * both PC and MAC remove the store
  */
-void* CBit::operator new(unsigned int size) {
+void* CBit::operator new(size_t size) {
 
 	void *result;
 	if (TotalBitUsage == 0)

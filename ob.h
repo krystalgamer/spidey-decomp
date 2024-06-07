@@ -44,7 +44,7 @@ public:
 
 
 
-	EXPORT void * operator new(unsigned int size);
+	EXPORT void * operator new(size_t size);
 	EXPORT void operator delete(void*);
 
 	EXPORT CItem();

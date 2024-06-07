@@ -4,7 +4,11 @@
 int lowGraphics;
 int CurrentSuit;
 
+#if _WIN32
 static const char SuitNames[5][32];
+#else
+static const char SuitNames[5][32] = { 0 };
+#endif
 
 // @NotOk
 // Change constants with proper variables

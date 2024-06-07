@@ -71,7 +71,7 @@
 #include <cstring>
 
 // @Ok
-void* CClass::operator new(unsigned int size)
+void* CClass::operator new(size_t size)
 {
 	void *result = DCMem_New(size, 0, 1, 0, 1);
 
@@ -326,9 +326,10 @@ int main()
 	validate_CNonRenderedBit();
 
 	puts("[*] Validation done!");
-	CItem* items = new CItem[1];
+
 
 #ifdef _OLD_WINDOWS
+	CItem* items = new CItem[1];
 	__asm {
 
 		      //int 3

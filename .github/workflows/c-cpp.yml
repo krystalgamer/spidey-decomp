@@ -13,8 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install 32-bit g++ and cmake
-      run: sudo apt install g++-multilib cmake
+    - name: Install 32-bit g++
+      run: sudo apt install g++-multilib
     - name: Setup Makefile
       run: cmake -B out
     - name: Build
@@ -36,3 +36,18 @@ jobs:
     - name: Run
       working-directory: ./out
       run: Release\spider.exe
+
+  build-mac:
+
+    runs-on: macos-13
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Makefile
+      run: cmake -B out
+    - name: Build
+      continue-on-error: true
+      run: cmake --build out
+    - name: Run
+      continue-on-error: true
+      run: ./out/spider

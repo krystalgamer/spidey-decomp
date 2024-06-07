@@ -27,7 +27,7 @@ class CBit
 		EXPORT CBit();
 		EXPORT virtual ~CBit();
 		EXPORT virtual void Move(void);
-		EXPORT void* operator new(unsigned int size);
+		EXPORT void* operator new(size_t size);
 		EXPORT void operator delete(void*);
 		EXPORT void Die();
 		EXPORT CBit* AttachTo(CBit** to);

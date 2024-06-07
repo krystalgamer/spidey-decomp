@@ -23,7 +23,7 @@
 
 #include <cstdio>
 
-#ifdef __linux__
+#ifndef _WIN32
 #define __int16 short
 #define __int8 char
 #endif
