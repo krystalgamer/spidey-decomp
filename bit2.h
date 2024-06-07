@@ -9,7 +9,7 @@
 class CGPolyLine : public CBit {
 public:
 
-	unsigned char padTop[0x40-0x3B-4];
+	unsigned char padTop[0x40-0x3C];
 
 	int field_40;
 	CVector field_44;
@@ -45,7 +45,7 @@ class CPolyLine : public CBit
 {
 	public:
 		EXPORT void SetSemiTransparent(void);
-		unsigned char topPad;
+		unsigned char topPad[4];
 
 		int field_40;
 		int field_44;

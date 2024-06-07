@@ -106,7 +106,7 @@ class CPlayer : public CSuper
 		char field_E2D;
 		char field_E2E;
 
-		unsigned char padBottomPlayer[0xEFC-0xE2E-1];
+		unsigned char padBottomPlayer[(0xEFC-0xE2E)-0x1];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);

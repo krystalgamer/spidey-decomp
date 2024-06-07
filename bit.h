@@ -190,7 +190,7 @@ class CRibbonBit : public CLinked2EndedBit
 class CTexturedRibbon : public CSpecialDisplay
 {
 	public:
-		EXPORT void CTexturedRibbon::SetOuterRGBi(int, unsigned char, unsigned char, unsigned char);
+		EXPORT void SetOuterRGBi(int, unsigned char, unsigned char, unsigned char);
 		unsigned char topPad[0x60-0x3C];
 		int* field_60;
 

@@ -60,7 +60,7 @@ void CBaddy::CleanUpMessages(int a2, int a3)
 		{
 			if (v4)
 			{
-				typedef void (__fastcall *wtvHappeningPtr)(void*, void*, int);
+				typedef void (FASTCALL *wtvHappeningPtr)(void*, void*, int);
 				wtvHappeningPtr wtvHappening = reinterpret_cast<wtvHappeningPtr>(**reinterpret_cast<int**>(v3));
 				wtvHappening(reinterpret_cast<void*>(v3), NULL, 1);
 			}
@@ -458,7 +458,7 @@ void CBaddy::CleanUpAIPRocList(int a2)
 		{
 			if (v3)
 			{
-				typedef void (__fastcall *wtvHappeningPtr)(void*, void*, int);
+				typedef void (FASTCALL *wtvHappeningPtr)(void*, void*, int);
 				wtvHappeningPtr wtvHappening = reinterpret_cast<wtvHappeningPtr>(**reinterpret_cast<int**>(v3));
 				wtvHappening(reinterpret_cast<void*>(v3), NULL, 1);
 			}

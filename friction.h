@@ -1,10 +1,11 @@
 // friction.h: interface for the CFriction class.
 //
 //////////////////////////////////////////////////////////////////////
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
+
+#ifndef FRICTION_H
+#define FRICTION_H
 
 class CFriction  
 {
@@ -14,3 +15,5 @@ public:
     unsigned char vz;
 
 };
+
+#endif

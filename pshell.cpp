@@ -2,7 +2,7 @@
 #include "mess.h"
 
 
-EXPORT int __cdecl PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
+EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 	return 69;
 }
 

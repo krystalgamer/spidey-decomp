@@ -529,6 +529,7 @@ void validate_CQuadBit(void)
 
 void validate_CBit(void)
 {
+	VALIDATE_SIZE(CBit, 0x3C);
 	VALIDATE(CBit, mPrevious, 0x4);
 	VALIDATE(CBit, mNext, 0x8);
 

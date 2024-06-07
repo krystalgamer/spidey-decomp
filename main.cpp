@@ -1,6 +1,13 @@
 #define WINDOWS_LEAN_AND_MEAN
 
+#ifdef __WIN32
 #include <windows.h>
+#else
+#define WINAPI
+#define HINSTANCE int
+#define PSTR char*
+#endif
+
 
 #include "main.h"
 #include "ob.h"
@@ -61,6 +68,7 @@
 #include "manipob.h"
 #include "mess.h"
 #include "ai.h"
+#include <cstring>
 
 // @Ok
 void* CClass::operator new(unsigned int size)
@@ -118,20 +126,27 @@ void compile_time_assertions(){
 	//StaticAssert<sizeof(CMJ)==0x324>::assert();
 
 	StaticAssert<sizeof(MATRIX)==0x20>::assert();
+
+	StaticAssert<sizeof(__int16)==2>::assert();
+	StaticAssert<sizeof(__int8)==1>::assert();
 }
 
+extern int FAIL_VALIDATION;
+
+#ifdef __WIN32
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PSTR lpCmdLine, int nCmdShow)
+#else
+int main()
+#endif
 {
 	compile_time_assertions();
 
 
-
+#ifdef __WIN32
 	AllocConsole();
-
-
-
 	freopen("CONOUT$", "w", stdout);
+#endif
 
 
 
@@ -310,15 +325,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	validate_CAIProc_MoveTo();
 
 	puts("[*] Validation done!");
+	CItem* items = new CItem[1];
 
+#ifdef __WIN32
 	__asm {
 
 		      //int 3
 
 			 }
-	CItem* items = new CItem[1];
 	while(1){}
+#endif
 
 
-    return 0;
+
+    return FAIL_VALIDATION;
 }

@@ -5,3 +5,4 @@ Release/
 **/env/
 *.swp
 *.opt
+out/

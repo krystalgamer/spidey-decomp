@@ -1,0 +1,24 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install 32-bit g++ and cmake
+      run: sudo apt install g++-multilib cmake
+    - name: Setup Makefile
+      run: cmake -B out
+    - name: Build
+      run: cmake --build out
+    - name: Run
+      run: ./out/spider
+

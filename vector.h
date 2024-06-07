@@ -1,11 +1,11 @@
 // vector.h: interface for the CVector class.
 //
 //////////////////////////////////////////////////////////////////////
-
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
+#ifndef VECTOR_H
+#define VECTOR_H
+
 
 #include "export.h"
 #include "friction.h"
@@ -63,3 +63,5 @@ struct SVector {
 void validate_CVector(void);
 void validate_CSVector(void);
 void validate_SVector(void);
+
+#endif
