@@ -1,6 +1,6 @@
 #define WINDOWS_LEAN_AND_MEAN
 
-#ifdef __WIN32
+#ifdef _WIN32
 #include <windows.h>
 #else
 #define WINAPI
@@ -133,7 +133,7 @@ void compile_time_assertions(){
 
 extern int FAIL_VALIDATION;
 
-#ifdef __WIN32
+#ifdef _OLD_WINDOWS
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PSTR lpCmdLine, int nCmdShow)
 #else
@@ -143,7 +143,7 @@ int main()
 	compile_time_assertions();
 
 
-#ifdef __WIN32
+#ifdef _OLD_WINDOWS
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
 #endif
@@ -323,11 +323,12 @@ int main()
 	validate_CAIProc_AccZ();
 	validate_SMoveToInfo();
 	validate_CAIProc_MoveTo();
+	validate_CNonRenderedBit();
 
 	puts("[*] Validation done!");
 	CItem* items = new CItem[1];
 
-#ifdef __WIN32
+#ifdef _OLD_WINDOWS
 	__asm {
 
 		      //int 3

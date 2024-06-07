@@ -31,7 +31,7 @@ class CTurretLaser : public CNonRenderedBit
 	public:
 		EXPORT void SetDamage(int);
 
-		unsigned char topPad[0x11];
+		unsigned char topPad[0x11-4];
 		int field_4C;
 		unsigned char bottomPad[0x64-0x4C-4];
 };

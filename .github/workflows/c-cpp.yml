@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-linux:
 
     runs-on: ubuntu-latest
 
@@ -22,3 +22,17 @@ jobs:
     - name: Run
       run: ./out/spider
 
+  build-win:
+    runs-on: windows-2022
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+    - uses: actions/checkout@v4
+    - name: Generate solution
+      run: cmake -B out -A Win32
+    - name: Compile
+      working-directory: ./out
+      run: msbuild spider.sln /p:Platform=Win32 /p:Configuration=Release
+    - name: Run
+      working-directory: ./out
+      run: Release\spider.exe

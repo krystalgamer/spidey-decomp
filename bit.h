@@ -22,6 +22,7 @@ class CBit
 		unsigned char mDead;
 		unsigned __int16 mFrigDeltaZ;
 		unsigned char mProtected;
+		unsigned char bottomPad;
 
 		EXPORT CBit();
 		EXPORT virtual ~CBit();

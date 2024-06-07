@@ -63,7 +63,7 @@ class CMysterioLaser : public CNonRenderedBit
 {
 	public:
 		EXPORT void SetDamage(int);
-		unsigned char fullPad[0x11];
+		unsigned char fullPad[0x11-4];
 		int field_4C;
 		unsigned char padBottom[0x64-0x4C-4];
 };

@@ -3,6 +3,16 @@
 #ifndef EXPORT_H
 #define EXPORT_H
 
+#ifdef _MSC_VER
+
+#if _MSC_VER < 1300
+#define _OLD_WINDOWS
+#else
+#define _NEW_WINDOWS
+#endif
+
+#endif
+
 #ifdef _WIN32
 #define EXPORT __declspec( dllexport )
 #define FASTCALL __fastcall

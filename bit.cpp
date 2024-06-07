@@ -601,3 +601,8 @@ void validate_SCFT4BitTexture(void)
 
 	VALIDATE(SCFT4BitTexture, field_4, 0x4);
 }
+
+void validate_CNonRenderedBit(void)
+{
+	VALIDATE_SIZE(CNonRenderedBit, 0x3C);
+}

@@ -24,7 +24,7 @@ CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,in
 
 
 // @TODO
-CExpandingBox::Display(){
+int CExpandingBox::Display(){
 
 	int unk_3; // ebx
 	int v2; // eax

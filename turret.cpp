@@ -48,6 +48,8 @@ void validate_CTurretLaser(void)
 {
 		VALIDATE_SIZE(CTurretLaser, 0x64);
 
+		VALIDATE(CTurretLaser, topPad, 0x3C);
 		VALIDATE(CTurretLaser, field_4C, 0x4C);
+
 }
 
