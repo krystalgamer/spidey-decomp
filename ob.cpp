@@ -73,8 +73,9 @@ void CBody::UnknownVirtualFuction(void)
 {
 }
 
-// @NotOk
-// indices not matching, rest is okay
+extern SPSXRegion PSXRegion[];
+
+// @Ok
 void CItem::InitItem(const char * a1)
 {
 
@@ -82,11 +83,10 @@ void CItem::InitItem(const char * a1)
 	this->mRegion = Region;
 	this->mModel = 0;
 
-	int index = (Region & 0xFF)  * 0x11;
 
-	if (Regions[index])
+	if (PSXRegion[Region].Filename[9])
 	{
-		int *tmp = *CItemRelatedList[index];
+		u32 *tmp = *PSXRegion[Region].field_14;
 		tmp[2] = 0x64000;
 		tmp[3] = 0xFF9C0064;
 		tmp[4] = 0xFF9C0064;

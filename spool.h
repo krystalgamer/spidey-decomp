@@ -20,8 +20,13 @@ struct SPSXRegion {
 	u32 *pModelChecksums;
 	// offset: 0010 (36 bytes)
 	void **ppModels; // SMode
+
 	// offset: 0014
+	/*
 	u32 *pPSX;
+	*/
+	u32 **field_14;
+
 	// offset: 0018
 	u32 *pAnimFile;
 	// offset: 001C
