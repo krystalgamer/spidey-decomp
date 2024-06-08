@@ -35,7 +35,7 @@ struct SPSXRegion {
 	// offset: 002C
 	u32 *pColourPulseData;
 	// offset: 0030
-	short *mpAnimTranslation;
+	i16 *mpAnimTranslation;
 	// offset: 0034
 	u16 NumParts;
 	// offset: 0036
@@ -50,8 +50,7 @@ struct SPSXRegion {
 	char Pad[2];
 	// offset: 003C
 	int Size;
-
-	u8 padBottom;
+	u32 padBottom;
 };
 
 
@@ -59,6 +58,9 @@ EXPORT int Spool_FindRegion(const char *);
 EXPORT unsigned int Spool_GetModel(unsigned int, int);
 EXPORT unsigned int *Spool_SkipPackets(unsigned int *);
 EXPORT Texture*  Spool_FindTextureEntry(unsigned int);
+EXPORT void Spool_ClearAllPSXs(void);
+EXPORT void ClearRegion(int, int);
+EXPORT void Spool_RemoveUnusedTextures(void);
 
 void validate_SPSXRegion(void);
 

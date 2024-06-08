@@ -2,6 +2,9 @@
 #include "utils.h"
 #include "validate.h"
 
+const int NUM_REGIONS = 40;
+SPSXRegion PSXRegion[NUM_REGIONS];
+
 int lowGraphics;
 int CurrentSuit;
 
@@ -69,9 +72,31 @@ Texture* Spool_FindTextureEntry(unsigned int)
 	return (Texture*)0x03062024;
 }
 
+// @TODO
+void ClearRegion(int, int)
+{
+}
+
+// @TODO
+void Spool_RemoveUnusedTextures(void)
+{}
+
+// @Ok
+void Spool_ClearAllPSXs(void)
+{
+	for (i32 i = 0; i < NUM_REGIONS; i++)
+	{
+		if (!PSXRegion[i].Protected)
+			ClearRegion(i, 1);
+	}
+
+	Spool_RemoveUnusedTextures();
+}
+
 void validate_SPSXRegion(void)
 {
 	VALIDATE_SIZE(SPSXRegion, 0x44);
 
 	VALIDATE(SPSXRegion, Filename, 0x0);
+	VALIDATE(SPSXRegion, Protected, 0xB);
 }
