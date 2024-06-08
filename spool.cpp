@@ -1,5 +1,6 @@
 #include "spool.h"
 #include "utils.h"
+#include "validate.h"
 
 int lowGraphics;
 int CurrentSuit;
@@ -66,4 +67,11 @@ unsigned int *Spool_SkipPackets(unsigned int *a1)
 Texture* Spool_FindTextureEntry(unsigned int)
 {
 	return (Texture*)0x03062024;
+}
+
+void validate_SPSXRegion(void)
+{
+	VALIDATE_SIZE(SPSXRegion, 0x44);
+
+	VALIDATE(SPSXRegion, Filename, 0x0);
 }

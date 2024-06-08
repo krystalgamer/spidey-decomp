@@ -69,6 +69,7 @@
 #include "mess.h"
 #include "ai.h"
 #include <cstring>
+#include "spool.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -324,6 +325,7 @@ int main()
 	validate_SMoveToInfo();
 	validate_CAIProc_MoveTo();
 	validate_CNonRenderedBit();
+	validate_SPSXRegion();
 
 	puts("[*] Validation done!");
 
