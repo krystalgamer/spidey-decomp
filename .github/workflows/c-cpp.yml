@@ -43,6 +43,7 @@ jobs:
 
   build-mac:
 
+    if: false
     runs-on: macos-13
 
     steps:

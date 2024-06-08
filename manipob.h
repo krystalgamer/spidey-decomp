@@ -10,7 +10,7 @@
 class CManipOb : public CBody
 {
 	public:
-		EXPORT void CalculateThrowPosition(CVector*, int);
+		EXPORT void CalculateThrowPositionArray(CVector*, int);
 		EXPORT void ThrowPos(CVector *, int);
 		EXPORT void Throw(CVector *);
 		EXPORT void Smash(void);
@@ -20,7 +20,14 @@ class CManipOb : public CBody
 		EXPORT void SendPulse(void);
 		EXPORT void Pickup(void);
 
-		unsigned char padTop[0x10C-0xF4];
+		u8 padTop[0xf8-0xF4];
+
+		i32 mNumVectors;
+		CVector *pVectors;
+		i32 field_100;
+
+		u8 padAfter100[0x10C-0x100-4];
+
 		int field_10C;
 		unsigned char padAfter10C[0x124-0x10C-4];
 

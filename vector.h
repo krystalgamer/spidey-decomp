@@ -13,9 +13,10 @@
 class CVector  
 {
 public: 
-	int vx;
-	int vy;
-	int vz;
+	i32 vx;
+	i32 vy;
+	i32 vz;
+
 	EXPORT void KillSmall();
 	EXPORT CVector* operator-=(const CVector& other);
 	EXPORT CVector* operator>>=(const int& other);
@@ -49,14 +50,14 @@ EXPORT CVector operator>>(const CVector& lhs, const int& other);
 class CSVector{
 
 public:
-	short vx;
-	short vy;
-	short vz;
+	i16 vx;
+	i16 vy;
+	i16 vz;
 
 };
 
 struct SVector {
-	__int16 vx, vy, vz;
+	i16 vx, vy, vz;
 
 };
 
