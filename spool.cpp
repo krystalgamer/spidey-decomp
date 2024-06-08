@@ -1,9 +1,10 @@
 #include "spool.h"
 #include "utils.h"
 #include "validate.h"
+#include "utils.h"
 
-const int NUM_REGIONS = 40;
-SPSXRegion PSXRegion[NUM_REGIONS];
+const int MAXPSX = 40;
+SPSXRegion PSXRegion[MAXPSX];
 
 int lowGraphics;
 int CurrentSuit;
@@ -82,9 +83,46 @@ void Spool_RemoveUnusedTextures(void)
 {}
 
 // @Ok
+void Spool_ClearPSX(const char* Filename)
+{
+
+	char v3[32]; // [esp+8h] [ebp-40h] BYREF
+	char v4[32]; // [esp+28h] [ebp-20h] BYREF
+
+	print_if_false(Filename != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(Filename, v3, 32);
+
+	if ( !lowGraphics && Utils_CompareStrings(v3, "spidey") )
+		Utils_CopyString(SuitNames[CurrentSuit], v3, 32);
+
+	print_if_false(v3 != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(v3, v4, 32);
+
+	if ( !lowGraphics && Utils_CompareStrings(v4, "spidey") )
+		Utils_CopyString(SuitNames[CurrentSuit], v4, 32);
+
+	i32 index = 0;
+
+	while (1)
+	{
+		if (Utils_CompareStrings(v4, PSXRegion[index].Filename))
+			break;
+
+		index++;
+		if (index > MAXPSX)
+		{
+			index = -1;
+			break;
+		}
+	}
+
+	ClearRegion(index, 1);
+}
+
+// @Ok
 void Spool_ClearAllPSXs(void)
 {
-	for (i32 i = 0; i < NUM_REGIONS; i++)
+	for (i32 i = 0; i < MAXPSX; i++)
 	{
 		if (!PSXRegion[i].Protected)
 			ClearRegion(i, 1);
@@ -98,5 +136,8 @@ void validate_SPSXRegion(void)
 	VALIDATE_SIZE(SPSXRegion, 0x44);
 
 	VALIDATE(SPSXRegion, Filename, 0x0);
+	VALIDATE(SPSXRegion, Usable, 0xA);
 	VALIDATE(SPSXRegion, Protected, 0xB);
+	VALIDATE(SPSXRegion, pModelChecksums, 0xC);
+	VALIDATE(SPSXRegion, LowRes, 0x3B);
 }

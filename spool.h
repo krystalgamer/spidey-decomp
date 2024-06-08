@@ -46,8 +46,10 @@ struct SPSXRegion {
 	u8 KeepTexturesInRAM;
 	// offset: 0039
 	u8 WhichHeap;
-	// offset: 003A (2 bytes)
-	char Pad[2];
+
+	u8 Pad;
+
+	u8 LowRes;
 	// offset: 003C
 	int Size;
 	u32 padBottom;
@@ -61,6 +63,7 @@ EXPORT Texture*  Spool_FindTextureEntry(unsigned int);
 EXPORT void Spool_ClearAllPSXs(void);
 EXPORT void ClearRegion(int, int);
 EXPORT void Spool_RemoveUnusedTextures(void);
+EXPORT void Spool_ClearPSX(const char*);
 
 void validate_SPSXRegion(void);
 
