@@ -86,7 +86,7 @@ void CItem::InitItem(const char * a1)
 
 	if (PSXRegion[Region].Filename[9])
 	{
-		u32 *tmp = *PSXRegion[Region].field_14;
+		u32 *tmp = *reinterpret_cast<u32**>(PSXRegion[Region].ppModels);
 		tmp[2] = 0x64000;
 		tmp[3] = 0xFF9C0064;
 		tmp[4] = 0xFF9C0064;

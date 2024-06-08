@@ -18,6 +18,9 @@ struct SPSXRegion {
 	u8 Protected;
 	// offset: 000C
 	u32 *pModelChecksums;
+
+	u32 padAfterChecksum;
+
 	// offset: 0010 (36 bytes)
 	void **ppModels; // SMode
 
@@ -25,7 +28,7 @@ struct SPSXRegion {
 	/*
 	u32 *pPSX;
 	*/
-	u32 **field_14;
+	u32 *pPSX;
 
 	// offset: 0018
 	u32 *pAnimFile;
@@ -43,6 +46,7 @@ struct SPSXRegion {
 	i16 *mpAnimTranslation;
 	// offset: 0034
 	u16 NumParts;
+	/*
 	// offset: 0036
 	u8 Fastable;
 	// offset: 0037
@@ -51,10 +55,12 @@ struct SPSXRegion {
 	u8 KeepTexturesInRAM;
 	// offset: 0039
 	u8 WhichHeap;
+	*/
 
 	u8 Pad;
 
 	u8 LowRes;
+
 	// offset: 003C
 	int Size;
 	u32 padBottom;

@@ -139,5 +139,11 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, Usable, 0xA);
 	VALIDATE(SPSXRegion, Protected, 0xB);
 	VALIDATE(SPSXRegion, pModelChecksums, 0xC);
+	VALIDATE(SPSXRegion, ppModels, 0x14);
+	VALIDATE(SPSXRegion, pAnimFile, 0x1C);
+	VALIDATE(SPSXRegion, pHierarchy, 0x20);
+	VALIDATE(SPSXRegion, pColourTable, 0x28);
+	VALIDATE(SPSXRegion, pTexWibData, 0x2C);
+	VALIDATE(SPSXRegion, pColourPulseData, 0x30);
 	VALIDATE(SPSXRegion, LowRes, 0x3B);
 }
