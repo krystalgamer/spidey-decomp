@@ -15,6 +15,7 @@ public:
 	EXPORT void HelpOutBuddy(CMessage*);
 	EXPORT void RunToWhereTheActionIs(CVector*);
 	EXPORT void PlayHitWallSound(void);
+	EXPORT void StandStill(void);
 
 	EXPORT virtual void SetThugType(int);
 
