@@ -528,7 +528,10 @@ void CSuper::ApplyPose(__int16 *a2){
 // @NotOk
 // slightly different register allocation
 // relies on global Animations
-void CSuper::RunAnim(__int16 a2, int a3, int a4)
+void CSuper::RunAnim(
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
 	int mRegion; // ecx
 	unsigned __int16 v6; // dx

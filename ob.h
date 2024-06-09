@@ -164,7 +164,7 @@ public:
 	EXPORT void UpdateFrame(void);
 	EXPORT void CycleAnim(int a2, char a3);
 	EXPORT void ApplyPose(__int16 *a2);
-	EXPORT void RunAnim(__int16, int, int);
+	EXPORT void RunAnim(i32, i32, i32);
 
 
 	int field_F4;

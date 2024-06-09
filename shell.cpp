@@ -1,7 +1,63 @@
-#pragma once
 #include "shell.h"
 #include "validate.h"
 #include "ps2m3d.h"
+#include "utils.h"
+
+// @Ok
+void CDummy::SelectNewTrack(int a2)
+{
+	this->field_1B8 = 0;
+	this->field_1BC = 0;
+
+	if (this->field_1A4 || this->field_1A8 || this->field_1AC)
+	{
+		do
+		{
+			switch(Rnd(3))
+			{
+				case 0:
+					this->field_1B8 = this->field_1A4;
+					break;
+				case 1:
+					this->field_1B8 = this->field_1A8;
+					break;
+				case 2:
+					this->field_1B8 = this->field_1AC;
+					break;
+			}
+		}
+		while(!this->field_1B8);
+
+		print_if_false(*this->field_1B8 != 0xFFFF, "First anim must not be 0xFFFF");
+
+		if (a2)
+		{
+			u16 *v7 = this->field_1B8;
+			i32 i = 0;
+			for (i = 0; *v7 != 0xFFFF; i++)
+				v7++;
+
+			i32 v9 = 0;
+			i32 v10;
+			do
+			{
+				v10 = Rnd(i);
+				v9++;
+			}
+			while (this->field_1B8[v10] == this->field_12A && v9 < 100);
+
+			if (this->field_1B8[v10] != this->field_12A)
+				this->field_1B8 = &this->field_1B8[v10];
+		}
+
+		this->field_1BC = this->field_1B8;
+		this->RunAnim(*this->field_1BC, 0, -1);
+	}
+	else
+	{
+		this->RunAnim(this->field_1C0, 0, -1);
+	}
+}
 
 // @Ok
 void __inline CDummy::FadeAway(void)
@@ -47,6 +103,7 @@ void CShellMysterioHeadGlow::Move(void)
 	this->field_54 += this->field_A4;
 }
 
+// @Ok
 void Spidey_CIcon::AI(void)
 {
 	this->mAngles.vy += 50;
@@ -63,6 +120,13 @@ void validate_CRudeWordHitterSpidey(void){
 
 void validate_CDummy(void){
 	VALIDATE_SIZE(CDummy, 0xA18);
+
+	VALIDATE(CDummy, field_1A4, 0x1A4);
+	VALIDATE(CDummy, field_1A8, 0x1A8);
+	VALIDATE(CDummy, field_1AC, 0x1AC);
+	VALIDATE(CDummy, field_1B8, 0x1B8);
+	VALIDATE(CDummy, field_1BC, 0x1BC);
+	VALIDATE(CDummy, field_1C0, 0x1C0);
 
 	VALIDATE(CDummy, field_1F8, 0x1F8);
 	VALIDATE(CDummy, field_1FC, 0x1FC);
