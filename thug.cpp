@@ -3,6 +3,7 @@
 #include "trig.h"
 #include "m3dutils.h"
 #include "message.h"
+#include "ps2lowsfx.h"
 
 // @NotOk
 // Globals
@@ -153,6 +154,22 @@ void CThug::HelpOutBuddy(CMessage *pMessage)
 
 		if (pItem)
 			this->RunToWhereTheActionIs(&pItem->mPos);
+	}
+}
+
+// @Ok
+void __inline CThug::PlayHitWallSound(void)
+{
+	if (!this->field_1F8)
+	{
+		if (this->field_218 & 0x400)
+		{
+			SFX_PlayPos(0x802F, &this->mPos, 0);
+		}
+		else
+		{
+			SFX_PlayPos(0x802E, &this->mPos, 0);
+		}
 	}
 }
 
