@@ -214,6 +214,26 @@ void CThug::DieAfterFlyingAcrossRoom(void)
 	this->dumbAssPad = 0;
 }
 
+// @Ok
+void __inline CThug::RunAppropriateHitAnim(void)
+{
+	i32 anim;
+	if (this->field_218 & 0x10000)
+	{
+		anim = this->field_38 != 304 ? 38 : 43;
+	}
+	else if (this->field_218 & 0x20000)
+	{
+		anim = this->field_38 != 304 ? 37 : 42;
+	}
+	else
+	{
+		anim = this->field_38 != 304 ? 18 : 25;
+	}
+
+	this->RunAnim(anim, 0, -1);
+}
+
 void validate_CThug(void){
 
 	VALIDATE_SIZE(CThug, 0x3C0);
