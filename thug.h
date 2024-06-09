@@ -19,6 +19,7 @@ public:
 	EXPORT i32 ShouldFall(i32, i32);
 	EXPORT void DieAfterFlyingAcrossRoom(void);
 	EXPORT void RunAppropriateHitAnim(void);
+	EXPORT void StopShooting(void);
 
 	EXPORT virtual void SetThugType(int);
 

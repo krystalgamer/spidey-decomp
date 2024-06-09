@@ -234,6 +234,28 @@ void __inline CThug::RunAppropriateHitAnim(void)
 	this->RunAnim(anim, 0, -1);
 }
 
+// @Ok
+void __inline CThug::StopShooting(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->RunAnim(9, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 void validate_CThug(void){
 
 	VALIDATE_SIZE(CThug, 0x3C0);
