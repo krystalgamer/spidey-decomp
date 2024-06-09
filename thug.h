@@ -16,6 +16,8 @@ public:
 	EXPORT void RunToWhereTheActionIs(CVector*);
 	EXPORT void PlayHitWallSound(void);
 	EXPORT void StandStill(void);
+	EXPORT i32 ShouldFall(i32, i32);
+	EXPORT void DieAfterFlyingAcrossRoom(void);
 
 	EXPORT virtual void SetThugType(int);
 

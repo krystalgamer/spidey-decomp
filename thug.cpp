@@ -190,6 +190,30 @@ void __inline CThug::StandStill(void)
 	}
 }
 
+// @TODO
+i32 CThug::ShouldFall(i32, i32)
+{
+	return 0x09062024;
+}
+
+// @Ok
+void CThug::DieAfterFlyingAcrossRoom(void)
+{
+	if (this->ShouldFall(200, 0x5F000))
+	{
+		this->field_218 &= 0xFFFFFFFD;
+		this->field_31C.bothFlags = 22;
+	}
+	else
+	{
+		this->SetHeight(1, 100, 600);
+		this->PlayHitWallSound();
+		this->field_31C.bothFlags = 26;
+	}
+
+	this->dumbAssPad = 0;
+}
+
 void validate_CThug(void){
 
 	VALIDATE_SIZE(CThug, 0x3C0);
