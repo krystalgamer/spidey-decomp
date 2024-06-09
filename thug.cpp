@@ -4,6 +4,7 @@
 #include "m3dutils.h"
 #include "message.h"
 #include "ps2lowsfx.h"
+#include "utils.h"
 
 // @NotOk
 // Globals
@@ -255,6 +256,26 @@ void __inline CThug::StopShooting(void)
 			break;
 	}
 }
+
+// @TODO
+i32 CThug::AddPointToPath(CVector*, i32)
+{
+	return 0x09062024;
+}
+
+// @Ok
+i32 CThug::TryAddingCollidePointToPath(CVector* pVector)
+{
+	if (Utils_CrapDist(*pVector, this->mPos) < 0x64)
+		return 0;
+
+	CVector v5 = *pVector - this->mPos;
+	v5 >>= 0xC;
+	v5 *= 0xE74;
+	v5 += this->mPos;
+	return this->AddPointToPath(&v5, 0);
+}
+
 
 void validate_CThug(void){
 

@@ -3,12 +3,14 @@
 #include <cmath>
 
 
-int Utils_CrapDist(const CVector& a,const CVector& b){
+// @NotOk
+// @Test
+u32 Utils_CrapDist(const CVector& a,const CVector& b){
 
 	
-	int dX = a.vx - b.vx;
-	int dY = a.vy - b.vy;
-	int dZ = a.vz - b.vz;
+	i32 dX = a.vx - b.vx;
+	i32 dY = a.vy - b.vy;
+	i32 dZ = a.vz - b.vz;
 
     if (dX < 0) {
         dX = -dX;
@@ -46,7 +48,9 @@ int Utils_CrapDist(const CVector& a,const CVector& b){
     return ((dZ >> 1) + dX + (dY >>2)) >> 12;
 }
 
-int Utils_CrapXZDist(const CVector& a,const CVector& b) {
+// @NotOk
+// @Test
+u32 Utils_CrapXZDist(const CVector& a,const CVector& b) {
     CVector tmp = a;
     tmp.vy = b.vy;
     return Utils_CrapDist(tmp, b);
@@ -61,9 +65,6 @@ int Utils_CompareStrings(const char* left, const char* right) {
 	if (left == NULL || right == NULL){
 		return 0;
 	}
-
-
-
 
     if (right != NULL){
 
