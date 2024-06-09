@@ -13,7 +13,7 @@ void CLizard::AI(void)
 		this->CycleAnim(this->field_12A == 0 ? 5 : 0, 1);
 	}
 
-	if (this->field_290)
+	if (this->pMessage)
 	{
 		this->CleanUpMessages(1, 0);
 	}

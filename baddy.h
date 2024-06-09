@@ -13,6 +13,7 @@ union IntToBytes
 	u8 Bytes[4];
 };
 
+class CMessage;
 class CBaddy : public CSuper {
 
 public:
@@ -115,7 +116,7 @@ public:
 	int field_288;
 	
 	unsigned int  *field_28C;
-	int field_290;
+	CMessage* pMessage;
 
 	IntToBytes field_294;
 	IntToBytes field_298;

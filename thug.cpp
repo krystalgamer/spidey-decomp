@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "trig.h"
 #include "m3dutils.h"
+#include "message.h"
 
 // @NotOk
 // Globals
@@ -137,6 +138,22 @@ void CThug::SetThugType(int type)
 			print_if_false(0, "Unknown thug type!");
 	}
 
+}
+
+// @TODO
+void CThug::RunToWhereTheActionIs(CVector*)
+{}
+
+// @Ok
+void CThug::HelpOutBuddy(CMessage *pMessage)
+{
+	if (this->field_31C.bothFlags == 2 || this->field_31C.bothFlags == 1)
+	{
+		CItem *pItem = reinterpret_cast<CItem*>(Mem_RecoverPointer(&pMessage->mHandle));
+
+		if (pItem)
+			this->RunToWhereTheActionIs(&pItem->mPos);
+	}
 }
 
 void validate_CThug(void){

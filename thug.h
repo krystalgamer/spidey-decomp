@@ -12,6 +12,9 @@ class CThug : public CBaddy {
 public:
 	EXPORT CThug(int*, int);
 	EXPORT void ClearAttackFlags(void);
+	EXPORT void HelpOutBuddy(CMessage*);
+	EXPORT void RunToWhereTheActionIs(CVector*);
+
 	EXPORT virtual void SetThugType(int);
 
 	u8 padTop[0x370-0x324];

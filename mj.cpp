@@ -6,7 +6,7 @@
 // @Ok
 void CMJ::AI(void) 
 {
-	if (this->field_290){
+	if (this->pMessage){
 		this->CleanUpMessages(1, 0);
 	}
 
