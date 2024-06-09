@@ -31,7 +31,10 @@ class CShellMysterioHeadGlow : public CWobblyGlow
 
 class CRudeWordHitterSpidey : public CSuper {
 public:
-	unsigned char fullPad[24];
+	EXPORT CRudeWordHitterSpidey(void);
+	u32 field_194;
+
+	unsigned char bottomPad[0x1AC-0x194-4];
 };
 
 class CDummy : public CSuper {

@@ -135,8 +135,31 @@ void Spidey_CIcon::AI(void)
 	}
 }
 
+// @NotOk
+// globals
+CRudeWordHitterSpidey::CRudeWordHitterSpidey(void)
+{
+	this->InitItem("spidey");
+	this->mFlags |= 0x480;
+
+	this->field_3C = 0x552710; // <- global
+
+	this->field_194 |= 0x420;
+
+	this->RunAnim(0, 0, -1);
+
+	this->field_128 = 18;
+	this->mPos.vx = 0xFFF92000;
+	this->mPos.vy = 0x104000;
+	this->mPos.vz = 0x1F4000;
+	this->mAngles.vy = 0xFD76;
+}
+
 void validate_CRudeWordHitterSpidey(void){
 	VALIDATE_SIZE(CRudeWordHitterSpidey, 0x1AC);
+
+	
+	VALIDATE(CRudeWordHitterSpidey, field_194, 0x194);
 }
 
 void validate_CDummy(void){
