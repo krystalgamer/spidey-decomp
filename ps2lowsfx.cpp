@@ -28,3 +28,7 @@ void SFX_ReverbOff(void)
 // @TODO
 void SFX_Stop(unsigned int)
 {}
+
+// @TODO
+void SFX_Play(u32, i16, i32)
+{}

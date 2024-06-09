@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "ps2m3d.h"
 #include "utils.h"
+#include "ps2lowsfx.h"
 
 // @Ok
 void CDummy::SelectNewAnim(void)
@@ -155,11 +156,70 @@ CRudeWordHitterSpidey::CRudeWordHitterSpidey(void)
 	this->mAngles.vy = 0xFD76;
 }
 
+// @Ok
+void CRudeWordHitterSpidey::AI(void)
+{
+	this->field_1A8++;
+	if (this->field_1A8 > 60)
+	{
+		this->mPos.vy += 0x14000;
+	}
+	else
+	{
+		this->mPos.vy -= 0x14000;
+		if (this->mPos.vy < 0x91000)
+		{
+			this->mPos.vy = 0x91000;
+		}
+	}
+
+	if (this->field_142)
+	{
+		if (!this->field_12A)
+		{
+			this->RunAnim(0x64, 0, -1);
+		}
+		else
+		{
+			this->RunAnim(0, 0, -1);
+		}
+	}
+
+	this->UpdateFrame();
+
+	if (this->field_128 == 7 && !this->field_1A4)
+	{
+		switch (Rnd(4))
+		{
+			case 0:
+				SFX_Play(0xE, 0x2000, 0);
+				break;
+			case 1:
+				SFX_Play(0xF, 0x2000, 0);
+				break;
+			case 2:
+				SFX_Play(0x10, 0x2000, 0);
+				break;
+			case 3:
+				SFX_Play(0x11, 0x2000, 0);
+				break;
+			default:
+				break;
+		}
+
+		this->field_1A4 = 1;
+	}
+
+	M3d_BuildTransform(this);
+}
+
 void validate_CRudeWordHitterSpidey(void){
 	VALIDATE_SIZE(CRudeWordHitterSpidey, 0x1AC);
 
 	
 	VALIDATE(CRudeWordHitterSpidey, field_194, 0x194);
+	VALIDATE(CRudeWordHitterSpidey, field_1A4, 0x1A4);
+	VALIDATE(CRudeWordHitterSpidey, field_1A8, 0x1A8);
 }
 
 void validate_CDummy(void){
