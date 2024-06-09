@@ -4,6 +4,22 @@
 #include "ps2m3d.h"
 
 // @Ok
+void __inline CDummy::FadeAway(void)
+{
+	this->field_1F8 = 1;
+	this->field_1FC = 0;
+
+	this->mFlags &= 0xFF7F;
+	this->mFlags |= 0x800;
+
+	this->field_24 = 0x202020;
+
+	this->OutlineOn();
+	this->SetOutlineSemiTransparent();
+	this->SetOutlineRGB(0, 0, 0);
+}
+
+// @Ok
 void __inline CDummy::FadeBack(void)
 {
 	this->field_1FC = 1;

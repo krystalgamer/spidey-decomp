@@ -37,6 +37,7 @@ public:
 class CDummy : public CSuper {
 public:
 	EXPORT void FadeBack(void);
+	EXPORT void FadeAway(void);
 	unsigned char padStart[0x1F8-0x194];
 
 	int field_1F8;
