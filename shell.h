@@ -39,16 +39,17 @@ public:
 	EXPORT void FadeBack(void);
 	EXPORT void FadeAway(void);
 	EXPORT void SelectNewTrack(int);
+	EXPORT void SelectNewAnim(void);
 	unsigned char padStart[0x1A4-0x194];
 
-	u16 *field_1A4;
-	u16 *field_1A8;
-	u16 *field_1AC;
+	u16* field_1A4;
+	u16* field_1A8;
+	u16* field_1AC;
 
 	u8 padAfter1AC[0x1B8-0x1AC-4];
 
-	u16 *field_1B8;
-	u16 *field_1BC;
+	u16* field_1B8;
+	u16* field_1BC;
 	i32 field_1C0;
 
 	u8 padAfter1BC[0x1F8-0x1C0-4];

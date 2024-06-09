@@ -4,6 +4,27 @@
 #include "utils.h"
 
 // @Ok
+void CDummy::SelectNewAnim(void)
+{
+	if (this->field_1B8)
+	{
+		this->field_1B8++;
+		if (*this->field_1B8 == 0xFFFF)
+		{
+			this->SelectNewTrack(0);
+		}
+		else
+		{
+			this->RunAnim(*this->field_1B8, 0, -1);
+		}
+	}
+	else
+	{
+		this->RunAnim(this->field_1C0, 0, -1);
+	}
+}
+
+// @Ok
 void CDummy::SelectNewTrack(int a2)
 {
 	this->field_1B8 = 0;
