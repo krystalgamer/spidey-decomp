@@ -18,6 +18,7 @@ EXPORT void M3dUtils_BuildPose(CSuper*);
 EXPORT void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int);
 EXPORT void M3dUtils_GetHookPosition(VECTOR*, CSuper*, int);
 EXPORT void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*);
+EXPORT void M3dUtils_ReadHooksPacket(CSuper*, void*);
 
 void validate_SHook(void);
 

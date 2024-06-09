@@ -67,14 +67,15 @@ CJonah::CJonah(int* a2, int a3)
 	this->field_E2 = 120;
 
 	unsigned char * ptr = reinterpret_cast<unsigned char*>(0x552008);
-	this->field_294 = ptr[0];
-	this->field_295 = ptr[1];
-	this->field_296 = ptr[2];
-	this->field_297 = ptr[3];
-	this->field_298 = ptr[4];
-	this->field_299 = ptr[5];
-	this->field_29A = ptr[6];
-	this->field_29B = ptr[7];
+	this->field_294.Bytes[0] = ptr[0];
+	this->field_294.Bytes[1] = ptr[1];
+	this->field_294.Bytes[2] = ptr[2];
+	this->field_294.Bytes[3] = ptr[3];
+
+	this->field_298.Bytes[0] = ptr[4];
+	this->field_298.Bytes[1] = ptr[5];
+	this->field_298.Bytes[2] = ptr[6];
+	this->field_298.Bytes[3] = ptr[7];
 
 	this->mCBodyFlags &= 0xFFEF;
 	this->ParseScript(reinterpret_cast<unsigned __int16*>(v5));

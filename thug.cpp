@@ -99,10 +99,49 @@ void CThug::ClearAttackFlags(void)
 	this->field_3BD = 0;
 }
 
+static i32 gThugTypeRelatedFirstFirst;
+static i32 gThugTypeRelatedFirstSecond;
+static u8 gThugTypeRelatedFirstThird;
+
+static i32 gThugTypeRelatedSecondFirst;
+static i32 gThugTypeRelatedSecondSecond;
+static u8 gThugTypeRelatedSecondThird;
+
+// @NotOk
+// globals
+void CThug::SetThugType(int type)
+{
+	this->field_38 = type;
+	switch (type)
+	{
+		case 304:
+			this->InitItem("thug");
+			this->field_21E = 100;
+
+			this->field_294.Int = gThugTypeRelatedFirstFirst;
+			this->field_298.Int = gThugTypeRelatedFirstSecond;
+			M3dUtils_ReadHooksPacket(this, &gThugTypeRelatedFirstThird);
+
+			break;
+		case 312:
+			if (Trig_GetLevelId() == 513)
+				this->InitItem("henchngt");
+			else
+				this->InitItem("henchman");
+
+			this->field_294.Int = gThugTypeRelatedSecondFirst;
+			this->field_298.Int = gThugTypeRelatedSecondSecond;
+			M3dUtils_ReadHooksPacket(this, &gThugTypeRelatedSecondThird);
+			break;
+		default:
+			print_if_false(0, "Unknown thug type!");
+	}
+
+}
 
 void validate_CThug(void){
-	VALIDATE_SIZE(CThug, 0x3C0);
 
+	VALIDATE_SIZE(CThug, 0x3C0);
 
 	VALIDATE(CThug, field_370, 0x370);
 	VALIDATE(CThug, field_374, 0x374);
@@ -116,6 +155,8 @@ void validate_CThug(void){
 	VALIDATE(CThug, field_394, 0x394);
 	VALIDATE(CThug, field_3B0, 0x3B0);
 	VALIDATE(CThug, field_3B8, 0x3B8);
+
+	VALIDATE_SIZE(IntToBytes, 0x4);
 }
 
 void validate_CThugPing(void)

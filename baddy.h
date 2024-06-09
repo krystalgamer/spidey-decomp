@@ -7,6 +7,12 @@
 #include "ob.h"
 #include "stateflags.h"
 
+union IntToBytes
+{
+	i32 Int;
+	u8 Bytes[4];
+};
+
 class CBaddy : public CSuper {
 
 public:
@@ -110,14 +116,9 @@ public:
 	
 	unsigned int  *field_28C;
 	int field_290;
-	unsigned char field_294;
-	unsigned char field_295;
-	unsigned char field_296;
-	unsigned char field_297;
-	unsigned char field_298;
-	unsigned char field_299;
-	unsigned char field_29A;
-	unsigned char field_29B;
+
+	IntToBytes field_294;
+	IntToBytes field_298;
 	unsigned char padAfter298[0x2A0 - 0x29B - 1];
 
 	int field_2A0;

@@ -8,13 +8,13 @@
 #include "mem.h"
 #include "m3dutils.h"
 
-
 class CThug : public CBaddy {
 public:
 	EXPORT CThug(int*, int);
 	EXPORT void ClearAttackFlags(void);
+	EXPORT virtual void SetThugType(int);
 
-	unsigned char padTop[0x370-0x324];
+	u8 padTop[0x370-0x324];
 
 	int field_370;
 	int field_374;

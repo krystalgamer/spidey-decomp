@@ -834,14 +834,9 @@ void validate_CBaddy(void){
 
 	VALIDATE(CBaddy, field_28C, 0x28C);
 	VALIDATE(CBaddy, field_290, 0x290);
+
 	VALIDATE(CBaddy, field_294, 0x294);
-	VALIDATE(CBaddy, field_295, 0x295);
-	VALIDATE(CBaddy, field_296, 0x296);
-	VALIDATE(CBaddy, field_297, 0x297);
 	VALIDATE(CBaddy, field_298, 0x298);
-	VALIDATE(CBaddy, field_299, 0x299);
-	VALIDATE(CBaddy, field_29A, 0x29A);
-	VALIDATE(CBaddy, field_29B, 0x29B);
 
 	VALIDATE(CBaddy, field_2A0, 0x2A0);
 	VALIDATE(CBaddy, field_2A4, 0x2A4);
