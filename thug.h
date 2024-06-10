@@ -29,37 +29,44 @@ public:
 	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
 	EXPORT u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT void LookConfused(void);
+	EXPORT void Acknowledge(void);
 
 	EXPORT virtual void SetThugType(int);
 
 	u8 padTop[0x330-0x324];
 
 	i32 field_330;
-	u8 padAfter330[0x354-0x330-4];
+	u8 padAfter330[0x33C-0x330-4];
+
+	i32 field_33C;
+	u8 padAfter33C[0x354-0x33C-4];
 
 	SHandle mHandle;
-	u8 padAfter354[0x370-0x354-sizeof(SHandle)];
+	SHandle mHandleTwo;
+	u8 padAfter354[0x370-0x35C-sizeof(SHandle)];
 
-	int field_370;
-	int field_374;
-	int field_378;
-	int field_37C;
-	int field_380;
-	int field_384;
-	int field_388;
-	int field_38C;
+	i32 field_370;
+	i32 field_374;
+	i32 field_378;
+	i32 field_37C;
+	i32 field_380;
+	i32 field_384;
+	i32 field_388;
+	i32 field_38C;
 	u8 padAfter38C[0x394 - 0x38C - 4];
 
-	int field_394;
-	u8 padAfter394[0x3A4-0x394-4];
+	i32 field_394;
+	i32 field_398;
+	i32 field_39C;
+	u8 padAfter39C[0x3A4-0x39C-4];
 
 	CVector* field_3A4;
 	u8 padAfter3A4[0x3B0-0x3A4-4];
 
-	int field_3B0;
+	i32 field_3B0;
 	u8 padAfter3B0[0x3B8-0x3B0-4];
 
-	int field_3B8;
+	i32 field_3B8;
 
 	u8 field_3BC;
 	u8 field_3BD;

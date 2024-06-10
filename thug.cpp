@@ -6,6 +6,69 @@
 #include "ps2lowsfx.h"
 #include "utils.h"
 #include "ai.h"
+#include "ps2redbook.h"
+
+// @Ok
+void CThug::Acknowledge(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mCBodyFlags |= 0x10;
+			this->Neutralize();
+
+			if (this->field_398 < 0)
+			{
+				this->RunAnim(this->field_38 != 304 ? 39 : 32, 0, -1);
+				Redbook_XAPlayPos(this->field_39C, -this->field_398, &this->mPos, 20);
+			}
+
+			if (Mem_RecoverPointer(&this->mHandleTwo))
+			{
+				new CAIProc_LookAt(
+						this,
+						reinterpret_cast<CBody*>(this->mHandleTwo.field_0),
+						0,
+						2,
+						70,
+						200);
+			}
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+				this->CycleAnim(this->field_298.Bytes[0], 1);
+
+			if (!this->field_33C)
+			{
+				if (this->field_398 > 0)
+				{
+					Redbook_XAPlayPos(this->field_39C, this->field_398, &this->mPos, 20);
+					this->RunAnim(this->field_38 != 304 ? 40 : 32, 0, -1);
+					this->dumbAssPad++;
+					return;
+				}
+
+				this->field_33C = 2000;
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+
+			break;
+		case 2:
+			if (this->field_142)
+			{
+				this->field_33C = 2000;
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void CThug::LookConfused(void)
@@ -507,8 +570,10 @@ void validate_CThug(void){
 	VALIDATE_SIZE(CThug, 0x3C0);
 
 	VALIDATE(CThug, field_330, 0x330);
+	VALIDATE(CThug, field_33C, 0x33C);
 
 	VALIDATE(CThug, mHandle, 0x354);
+	VALIDATE(CThug, mHandleTwo, 0x35C);
 
 	VALIDATE(CThug, field_370, 0x370);
 	VALIDATE(CThug, field_374, 0x374);
@@ -520,6 +585,8 @@ void validate_CThug(void){
 	VALIDATE(CThug, field_38C, 0x38C);
 
 	VALIDATE(CThug, field_394, 0x394);
+	VALIDATE(CThug, field_398, 0x398);
+	VALIDATE(CThug, field_39C, 0x39C);
 
 	VALIDATE(CThug, field_3A4, 0x3A4);
 

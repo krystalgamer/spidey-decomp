@@ -2,6 +2,12 @@
 
 
 // @TODO
+u8 Redbook_XAPlayPos(int, int, CVector*, int)
+{
+	return static_cast<u8>(0x10062024);
+}
+
+// @TODO
 void Redbook_XAStop(void)
 {
 }
