@@ -25,6 +25,7 @@ public:
 	EXPORT void SetHitDirectionFlag(CVector*);
 	EXPORT void SetParamByIndex(i32, i32);
 	EXPORT void GetReadyToShootHostage(CMessage*);
+	EXPORT void CheckFallBack(void);
 
 	EXPORT virtual void SetThugType(int);
 

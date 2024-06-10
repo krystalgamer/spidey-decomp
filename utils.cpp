@@ -380,3 +380,7 @@ int Utils_XZDist(const CVector* a1, const CVector *a2)
 
 	return M3dMaths_SquareRoot0(v2 + v3);
 }
+
+// @TODO
+void Utils_RotateY(CVector*, CVector*, int)
+{}

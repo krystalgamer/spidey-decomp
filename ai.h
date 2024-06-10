@@ -73,6 +73,13 @@ class CAIProc_RotY : public CAIProc
 {
 	public:
 		EXPORT CAIProc_RotY(CBaddy*, int, int ,int);
+
+		// @TODO
+		// this doesn't exist, i'm confused
+		void Execute(void)
+		{
+		}
+
 		int field_20;
 		int field_24;
 };

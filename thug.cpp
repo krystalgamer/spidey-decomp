@@ -8,6 +8,28 @@
 #include "ai.h"
 
 // @Ok
+void CThug::CheckFallBack(void)
+{
+	CVector v6;
+	CVector a3;
+
+	a3.vx = 0;
+	a3.vy = 0;
+	a3.vz = 0;
+
+	v6.vz = ((this->field_2A8 & 0x10) ? -75 : 75) << 12;
+	v6.vy = 0;
+	v6.vx = 0;
+
+	Utils_RotateY(&a3, &v6, this->mAngles.vy);
+
+	if ( this->PathCheck(&this->mPos, &(this->mPos + a3), 0, 55) == 2 )
+	{
+		new CAIProc_RotY(this, 2047, 4, 0);
+	}
+}
+
+// @Ok
 void CThug::GetReadyToShootHostage(CMessage *pMessage)
 {
 	CItem *pItem = reinterpret_cast<CItem*>(Mem_RecoverPointer(&pMessage->mHandle));
