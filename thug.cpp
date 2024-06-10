@@ -7,6 +7,55 @@
 #include "utils.h"
 #include "ai.h"
 
+// @Ok
+void CThug::LookConfused(void)
+{
+	i32 v3;
+
+	switch ( this->dumbAssPad )
+	{
+		case 0:
+			this->field_1F8 = Rnd(3) + 2;
+			this->dumbAssPad++;
+		case 1:
+			this->Neutralize();
+			if ( !this->field_1F8 )
+			{
+				this->field_330 = 0;
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			else
+			{
+				this->dumbAssPad = 5;
+				this->field_1F8 = this->field_1F8 - 1;
+			}
+			break;
+		case 5:
+			v3 = Rnd(1000) + 1000;
+			if ( Rnd(2) )
+				v3 = -v3;
+
+			v3 += this->mAngles.vy;
+
+			new CAIProc_LookAt(this, v3, 2, 80, 200);
+			this->dumbAssPad++;
+
+			break;
+		case 6:
+			this->RunAppropriateAnim();
+			if ( (this->field_288 & 2) != 0 )
+			{
+				this->dumbAssPad = 1;
+				this->field_288 &= 0xFFFFFFFD;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 // @TODO
 i32 CThug::GetLaunched(CVector*, i32, i32, i32)
 {
@@ -456,6 +505,8 @@ i32 CThug::TryAddingCollidePointToPath(CVector* pVector)
 void validate_CThug(void){
 
 	VALIDATE_SIZE(CThug, 0x3C0);
+
+	VALIDATE(CThug, field_330, 0x330);
 
 	VALIDATE(CThug, mHandle, 0x354);
 

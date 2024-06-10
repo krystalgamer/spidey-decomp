@@ -28,10 +28,14 @@ public:
 	EXPORT void CheckFallBack(void);
 	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
 	EXPORT u8 TugImpulse(CVector*, CVector*, CVector*);
+	EXPORT void LookConfused(void);
 
 	EXPORT virtual void SetThugType(int);
 
-	u8 padTop[0x354-0x324];
+	u8 padTop[0x330-0x324];
+
+	i32 field_330;
+	u8 padAfter330[0x354-0x330-4];
 
 	SHandle mHandle;
 	u8 padAfter354[0x370-0x354-sizeof(SHandle)];

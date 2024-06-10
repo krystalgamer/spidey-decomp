@@ -43,6 +43,7 @@ public:
 	EXPORT void DoPhysics(int);
 	EXPORT void Baddy_SendSignal(void);
 	EXPORT int SmackSpidey(int, CVector*, int, int);
+	EXPORT void RunAppropriateAnim(void);
 
 	EXPORT virtual int PlayerIsVisible(int);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);

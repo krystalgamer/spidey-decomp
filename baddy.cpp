@@ -8,6 +8,10 @@
 #include "trig.h"
 
 // @TODO
+void CBaddy::RunAppropriateAnim(void)
+{}
+
+// @TODO
 int CBaddy::SmackSpidey(int, CVector*, int, int)
 {
 	return 0x06062024;
