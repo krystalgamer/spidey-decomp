@@ -7,6 +7,51 @@
 #include "utils.h"
 #include "ai.h"
 
+// @TODO
+i32 CThug::GetLaunched(CVector*, i32, i32, i32)
+{
+	return 0x10062024;
+}
+
+// @Ok
+u8 CThug::TugImpulse(CVector* a2, CVector* a3, CVector* a4)
+{
+	this->field_2A8 &= 0xFFFFFFF7;
+	if (a4)
+	{
+		this->field_31C.bothFlags = 16;
+		this->dumbAssPad = 0;
+		if (this->field_3A4)
+			Mem_Delete(reinterpret_cast<void*>(this->field_3A4));
+
+		this->field_3A4 = a4;
+		return 1;
+	}
+
+	i32 Launched = this->GetLaunched(a3, 0, 80, 0);
+	if (!Launched)
+	{
+		return 0;
+	}
+
+	if (this->field_E2 <= 50)
+	{
+		if (Launched == 1)
+		{
+			this->field_2A8 |= 0x10;
+		}
+		else
+		{
+			this->field_2A8 &= ~0x10;
+		}
+	}
+	this->field_218 |= 0x80000;
+	SFX_PlayPos(0x800F, &this->mPos, 0);
+	this->field_31C.bothFlags = 14;
+	this->dumbAssPad = 0;
+	return 1;
+}
+
 // @Ok
 void CThug::CheckFallBack(void)
 {
@@ -424,6 +469,9 @@ void validate_CThug(void){
 	VALIDATE(CThug, field_38C, 0x38C);
 
 	VALIDATE(CThug, field_394, 0x394);
+
+	VALIDATE(CThug, field_3A4, 0x3A4);
+
 	VALIDATE(CThug, field_3B0, 0x3B0);
 	VALIDATE(CThug, field_3B8, 0x3B8);
 

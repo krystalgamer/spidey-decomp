@@ -26,6 +26,8 @@ public:
 	EXPORT void SetParamByIndex(i32, i32);
 	EXPORT void GetReadyToShootHostage(CMessage*);
 	EXPORT void CheckFallBack(void);
+	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
+	EXPORT u8 TugImpulse(CVector*, CVector*, CVector*);
 
 	EXPORT virtual void SetThugType(int);
 
@@ -42,19 +44,22 @@ public:
 	int field_384;
 	int field_388;
 	int field_38C;
-	unsigned char padAfter38C[0x394 - 0x38C - 4];
+	u8 padAfter38C[0x394 - 0x38C - 4];
 
 	int field_394;
-	unsigned char padAfter394[0x3B0-0x394-4];
+	u8 padAfter394[0x3A4-0x394-4];
+
+	CVector* field_3A4;
+	u8 padAfter3A4[0x3B0-0x3A4-4];
 
 	int field_3B0;
-	unsigned char padAfter3B0[0x3B8-0x3B0-4];
+	u8 padAfter3B0[0x3B8-0x3B0-4];
 
 	int field_3B8;
 
-	unsigned char field_3BC;
-	unsigned char field_3BD;
-	unsigned char padBottom[0x3C0 - 0x3BD - 1];
+	u8 field_3BC;
+	u8 field_3BD;
+	u8 padBottom[0x3C0 - 0x3BD - 1];
 };
 
 class CThugPing : public CSimpleAnim
