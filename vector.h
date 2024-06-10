@@ -43,6 +43,7 @@ EXPORT CVector operator-(const CVector& lhs, const CVector& other);
 EXPORT CVector operator*(const CVector& lhs, const int& other);
 EXPORT CVector operator*(const CVector& lhs, const CVector& other);
 EXPORT CVector operator>>(const CVector& lhs, const int& other);
+EXPORT CVector operator+(const CVector& lhs, const CVector& other);
 
 
 

@@ -138,6 +138,19 @@ CVector operator>>(const CVector& lhs, const int& other)
 }
 
 // @Ok
+CVector operator+(const CVector& lhs, const CVector& other){
+
+	CVector res;
+
+	res.vx = lhs.vx + other.vx;
+	res.vy = lhs.vx + other.vy;
+	res.vz = lhs.vx + other.vz;
+
+	return res;
+}
+
+
+// @Ok
 int CVector::Length(void)
 {
 	CVector v4;

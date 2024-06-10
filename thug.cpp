@@ -6,6 +6,38 @@
 #include "ps2lowsfx.h"
 #include "utils.h"
 
+// @Ok
+void CThug::SetHitDirectionFlag(CVector* pVector)
+{
+	CSVector v4;
+	v4.vx = 0;
+	v4.vy = 0;
+	v4.vz = 0;
+
+	Utils_CalcAim(&v4, &(this->mPos + (*pVector * 300)), &this->mPos);
+
+	i32 v3 = v4.vy - this->mAngles.vy;
+	if (v3 < -2048)
+	{
+		v3 += 4096;
+	}
+	else
+	{
+		if (v3 > 2048)
+			v3 -= 4096;
+	}
+
+	if (v3 < -455)
+	{
+		this->field_218 |= 0x20000;
+	}
+	else
+	{
+		if (v3 > 455)
+			this->field_218 |= 0x10000;
+	}
+}
+
 // @NotOk
 // Globals
 // also a little out of order with the v6 | 1 thing :(

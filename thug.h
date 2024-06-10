@@ -22,6 +22,7 @@ public:
 	EXPORT void StopShooting(void);
 	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT i32 TryAddingCollidePointToPath(CVector*);
+	EXPORT void SetHitDirectionFlag(CVector*);
 
 	EXPORT virtual void SetThugType(int);
 
