@@ -5,8 +5,8 @@
 
 struct SHandle
 {
-	int field_0;
-	int field_4;
+	i32 field_0;
+	i32 field_4;
 };
 
 struct SBlockHeader {

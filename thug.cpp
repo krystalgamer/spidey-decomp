@@ -5,8 +5,35 @@
 #include "message.h"
 #include "ps2lowsfx.h"
 #include "utils.h"
+#include "ai.h"
 
 // @Ok
+void CThug::GetReadyToShootHostage(CMessage *pMessage)
+{
+	CItem *pItem = reinterpret_cast<CItem*>(Mem_RecoverPointer(&pMessage->mHandle));
+	if ( pItem )
+	{
+		if ( Utils_LineOfSight(&this->mPos, &pItem->mPos, 0, 0) )
+		{
+			this->mHandle = pMessage->mHandle;
+
+			this->field_31C.bothFlags = 8;
+			this->dumbAssPad = 0;
+
+			this->Neutralize();
+			new CAIProc_StateSwitchSendMessage(this, 16);
+		}
+		else
+		{
+			new CMessage(this, reinterpret_cast<CBaddy*>(pMessage->mHandle.field_0), 1, 0);
+		}
+
+		pMessage->field_10 |= 1;
+	}
+}
+
+// @Ok
+// @Test
 void CThug::SetParamByIndex(i32 Index, i32 Param)
 {
 	switch ( Index )
@@ -362,6 +389,8 @@ i32 CThug::TryAddingCollidePointToPath(CVector* pVector)
 void validate_CThug(void){
 
 	VALIDATE_SIZE(CThug, 0x3C0);
+
+	VALIDATE(CThug, mHandle, 0x354);
 
 	VALIDATE(CThug, field_370, 0x370);
 	VALIDATE(CThug, field_374, 0x374);

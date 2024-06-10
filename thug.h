@@ -24,10 +24,14 @@ public:
 	EXPORT i32 TryAddingCollidePointToPath(CVector*);
 	EXPORT void SetHitDirectionFlag(CVector*);
 	EXPORT void SetParamByIndex(i32, i32);
+	EXPORT void GetReadyToShootHostage(CMessage*);
 
 	EXPORT virtual void SetThugType(int);
 
-	u8 padTop[0x370-0x324];
+	u8 padTop[0x354-0x324];
+
+	SHandle mHandle;
+	u8 padAfter354[0x370-0x354-sizeof(SHandle)];
 
 	int field_370;
 	int field_374;
