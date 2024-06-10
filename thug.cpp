@@ -7,6 +7,56 @@
 #include "utils.h"
 
 // @Ok
+void CThug::SetParamByIndex(i32 Index, i32 Param)
+{
+	switch ( Index )
+	{
+		case 1:
+			this->field_374 = Param;
+			break;
+		case 2:
+			this->field_370 = Param;
+			break;
+		case 3:
+			this->field_378 = Param;
+			break;
+		case 4:
+			this->field_37C = Param;
+			break;
+		case 5:
+			this->field_380 = Param;
+			break;
+		case 6:
+			this->field_384 = Param;
+			break;
+		case 7:
+			this->field_388 = Param;
+			break;
+		case 8:
+			this->field_38C = Param;
+			break;
+		case 9:
+			this->field_1FC = Param;
+			break;
+		case 10:
+			this->field_394 = Param;
+			break;
+		case 11:
+			if (Param)
+				this->field_218 |= 0x800;
+			else
+				this->field_218 &= 0xFFFFF7FF;
+			break;
+		case 12:
+			this->field_218 |= 0x8000;
+			break;
+		default:
+			print_if_false(0, "Unknown index in C_SET_PARAMETER_BY_INDEX"); 
+			break;
+	}
+}
+
+// @Ok
 void CThug::SetHitDirectionFlag(CVector* pVector)
 {
 	CSVector v4;

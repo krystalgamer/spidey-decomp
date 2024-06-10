@@ -23,6 +23,7 @@ public:
 	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT i32 TryAddingCollidePointToPath(CVector*);
 	EXPORT void SetHitDirectionFlag(CVector*);
+	EXPORT void SetParamByIndex(i32, i32);
 
 	EXPORT virtual void SetThugType(int);
 
