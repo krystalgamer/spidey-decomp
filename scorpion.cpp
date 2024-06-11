@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "ai.h"
 #include "ps2lowsfx.h"
+#include "utils.h"
 
 // @Ok
 void __inline CScorpion::NextRoom(void)
@@ -148,6 +149,45 @@ void CScorpion::Gloat(void)
 					this->field_31C.bothFlags = 2;
 					this->dumbAssPad = 0;
 				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+static CBody* MechList[1];
+
+// @NotOk
+// globals
+void CScorpion::TakeHit(void)
+{
+	switch( this->dumbAssPad)
+	{
+		case 0:
+			this->field_310 = 0;
+			new CAIProc_LookAt(
+					this,
+					MechList[0],
+					0,
+					2,
+					80,
+					200);
+
+			this->field_230 = Utils_GetValueFromDifficultyLevel(40, 30, 21, 21);
+			this->dumbAssPad = 4;
+
+			if (this->field_12A != 10)
+				this->RunAnim(0xA, 0, -1);
+
+			break;
+		case 4:
+			this->RunTimer(&this->field_230);
+			if (this->field_230)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
 			}
 			break;
 		default:

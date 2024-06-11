@@ -16,6 +16,7 @@ class CScorpion : public CBaddy {
 		EXPORT void DoIntroSequence(void);
 		EXPORT void Gloat(void);
 		EXPORT void DetermineTarget(void);
+		EXPORT void TakeHit(void);
 
 
 		unsigned char padTop[0xBEC-0x324];

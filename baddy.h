@@ -155,8 +155,9 @@ public:
 
 	CVector field_2FC;
 	int field_308;
-	unsigned char padAfter308[0x314 - 0x308 - 4];
+	unsigned char padAfter308[0x310 - 0x308 - 4];
 
+	i32 field_310;
 	__int16 field_314;
 	unsigned __int16 padAfter314;
 
