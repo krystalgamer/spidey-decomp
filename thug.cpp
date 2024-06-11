@@ -9,6 +9,98 @@
 #include "ps2redbook.h"
 
 // @TODO
+i32 CThug::MonitorSpitPlease(void)
+{
+	return 0x11062024;
+}
+
+// @TODO
+void CThug::CycleOrContinueAnim(i32, i32, i32, i32)
+{
+}
+
+// @Ok
+void CThug::Guard(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->mCBodyFlags |= 0x10;
+			if (this->field_38 != 304)
+			{
+				this->RunAnim(this->field_298.Bytes[0], 0, -1);
+				this->field_1F8 = Rnd(5) + 8;
+				this->dumbAssPad = 5;
+				break;
+			}
+
+			this->dumbAssPad++;
+			if (this->field_12A == 11)
+			{
+				this->field_142 = 1;
+				break;
+			}
+			else if (this->field_12A != 10)
+			{
+				this->RunAnim(0xAu, 0, -1);
+				break;
+			}
+
+			this->RunAnim(0xA, this->field_128, -1);
+		case 1:
+			if ( this->field_142 )
+			{
+				this->CycleOrContinueAnim(11, -1, -1, -1);
+				this->field_230 = Rnd(30) + 20;
+				this->dumbAssPad++;
+			}
+			break;
+		case 2:
+			if ( this->field_230-- <= 0 )
+			{
+				this->RunAnim(0xCu, 0, -1);
+				this->dumbAssPad++;
+			}
+			break;
+		case 3:
+			if ( this->field_142 )
+			{
+				this->CycleAnim(3, 1);
+				this->field_230 = Rnd(30) + 20;
+				this->dumbAssPad++;
+			}
+			break;
+		case 4:
+			if ( this->field_230-- <= 0 )
+				this->dumbAssPad = 0;
+			break;
+		case 5:
+			if ( this->field_142 )
+			{
+				if ( --this->field_1F8 == 0 )
+				{
+					this->field_1F8 = Rnd(5) + 8;
+					this->RunAnim(0x15, 0, -1);
+					this->dumbAssPad++;
+				}
+				else
+				{
+					this->RunAnim(this->field_298.Bytes[0], 0, -1);
+				}
+			}
+			break;
+		case 6:
+			if ( this->MonitorSpitPlease() )
+				this->dumbAssPad = 5;
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+// @TODO
 u32 CThug::CheckStateFlags(SStateFlags*, int)
 {
 	return 0x11062024;

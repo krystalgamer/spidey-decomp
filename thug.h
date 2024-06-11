@@ -34,6 +34,10 @@ public:
 	EXPORT i32 DistanceToPlayer(i32);
 	EXPORT u32 CheckStateFlags(SStateFlags*, int);
 	EXPORT i32 GetClosest(i32, i32);
+	EXPORT void Guard(void);
+	EXPORT void CycleOrContinueAnim(i32, i32, i32, i32);
+	EXPORT i32 MonitorSpitPlease(void);
+
 
 	EXPORT virtual void SetThugType(int);
 
