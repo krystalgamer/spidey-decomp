@@ -8,6 +8,89 @@
 #include "ai.h"
 #include "ps2redbook.h"
 
+// @NotOk
+// validate
+void CThug::PlaySounds(void)
+{
+	CVector v11;
+	if (this->field_38 == 304)
+	{
+		switch ( this->field_12A )
+		{
+			case 1u:
+				if ( this->field_128 == 27 || this->field_128 == 13 )
+					SFX_PlayPos((Rnd(4) + 32) | 0x80, &this->mPos, 300);
+					return;
+				break;
+			case 8u:
+				if ( this->field_128 == 5 )
+					SFX_PlayPos(0x801D, &this->mPos, 500);
+				break;
+			case 0xEu:
+				if ( this->field_128 == 15 )
+				{
+					v11.vz = 409600;
+					v11.vx = 0;
+					v11.vy = 0;
+					this->MakeSpriteRing(&v11);
+				}
+				break;
+			case 0x1Au:
+				if ( this->field_128 == 23 )
+				{
+					v11.vx = 0;
+					v11.vy = 0;
+					v11.vz = -122880;
+					this->MakeSpriteRing(&v11);
+				}
+				break;
+			case 0x1Cu:
+				if ( this->field_128 == 4 || this->field_128 == 14)
+					SFX_PlayPos((Rnd(4) + 32) | 0x80, &this->mPos, 50);
+				break;
+		}
+	}
+	else
+	{
+		switch ( this->field_12A )
+		{
+			case 5u:
+				if ( this->field_128 == 1 || this->field_128 == 21 )
+				{
+					SFX_PlayPos((Rnd(4) + 32) | 0x80, &this->mPos, 300);
+				}
+				break;
+			case 7u:
+				if ( this->field_128 == 3 )
+					SFX_PlayPos(0x801D, &this->mPos, 500);
+				break;
+			case 0x13u:
+				if ( this->field_128 == 15 )
+				{
+					v11.vx = 0;
+					v11.vy = 0;
+					v11.vz = 204800;
+					this->MakeSpriteRing(&v11);
+				}
+				break;
+			case 0x18u:
+				if ( this->field_128 == 1 || this->field_128 == 12)
+					SFX_PlayPos((Rnd(4) + 32) | 0x80, &this->mPos, 50);
+				break;
+			case 0x1Au:
+				if ( this->field_128 == 28 )
+				{
+					v11.vz = -204800;
+					v11.vx = 0;
+					v11.vy = 0;
+					this->MakeSpriteRing(&v11);
+				}
+				break;
+		}
+	}
+
+}
+
 // @TODO
 i32 CThug::MonitorSpitPlease(void)
 {

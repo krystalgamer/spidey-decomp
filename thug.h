@@ -37,6 +37,7 @@ public:
 	EXPORT void Guard(void);
 	EXPORT void CycleOrContinueAnim(i32, i32, i32, i32);
 	EXPORT i32 MonitorSpitPlease(void);
+	EXPORT void PlaySounds(void);
 
 
 	EXPORT virtual void SetThugType(int);
