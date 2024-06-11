@@ -879,6 +879,12 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_318, 0x318);
 	VALIDATE(CBaddy, field_31C, 0x31C);
 	VALIDATE(CBaddy, dumbAssPad, 0x320);
+
+	VALIDATE_VTABLE(CBaddy, AI, 2);
+	VALIDATE_VTABLE(CBaddy, Hit, 3);
+	VALIDATE_VTABLE(CBaddy, PlayerIsVisible, 5);
+	VALIDATE_VTABLE(CBaddy, TugImpulse, 7);
+	VALIDATE_VTABLE(CBaddy, GetClosest, 13);
 }
 
 

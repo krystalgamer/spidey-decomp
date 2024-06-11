@@ -711,6 +711,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_EC, 0xEC);
 	VALIDATE(CBody, cbodyend, 0xF0);
 
+	VALIDATE_VTABLE(CBody, Die, 1);
 }
 
 void validate_CSuper(void){
