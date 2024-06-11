@@ -12,17 +12,24 @@ class CScorpion : public CBaddy {
 		EXPORT void NextRoom(void);
 		EXPORT void* GetCurrentTarget(void);
 		EXPORT CSuper* FindJonah(void);
+		EXPORT i32 SetJonahHandle(SHandle*);
+		EXPORT void DoIntroSequence(void);
+		EXPORT void Gloat(void);
+		EXPORT void DetermineTarget(void);
 
 
 		unsigned char padTop[0xBEC-0x324];
 
 		CSuper* field_BEC;
 
-		SHandle field_BF0;
+		SHandle hCurrentTarget;
 
-		int field_BF8;
+		i32 field_BF8;
+		u8 padAfterBF8[0xC18-0xBF8-4];
 
-		unsigned char padScoprtion[0xC28-0xBF8-4];
+		i32 field_C18;
+
+		u8 padScorpion[0xC28-0xC18-4];
 };
 
 EXPORT void Scorpion_GetCurrentTarget(unsigned int*, unsigned int*);
