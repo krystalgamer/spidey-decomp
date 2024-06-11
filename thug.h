@@ -30,8 +30,13 @@ public:
 	EXPORT u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT void LookConfused(void);
 	EXPORT void Acknowledge(void);
+	EXPORT void StrikeUpConversation(void);
+	EXPORT i32 DistanceToPlayer(i32);
+	EXPORT u32 CheckStateFlags(SStateFlags*, int);
 
 	EXPORT virtual void SetThugType(int);
+
+	EXPORT virtual i32 GetClosest(i32, i32);
 
 	u8 padTop[0x330-0x324];
 

@@ -8,6 +8,112 @@
 #include "ai.h"
 #include "ps2redbook.h"
 
+// @TODO
+u32 CThug::CheckStateFlags(SStateFlags*, int)
+{
+	return 0x11062024;
+}
+
+// @TODO
+i32 CThug::GetClosest(i32, i32)
+{
+	return 0x11062024;
+}
+
+// @TODO
+i32 CThug::DistanceToPlayer(i32)
+{
+	return 0x11062024;
+}
+
+// @Ok
+void CThug::StrikeUpConversation(void)
+{
+	if (this->DistanceToPlayer(2) <= 1792)
+	{
+		CThug *pThug = reinterpret_cast<CThug*>(this->GetClosest(304, 1));
+
+		if ((pThug || (pThug = reinterpret_cast<CThug*>(this->GetClosest(312, 1))))
+				&& Utils_CrapDist(this->mPos, pThug->mPos) < 0x800)
+		{
+
+			i32 v5;
+			i32 v4 = 4;
+			this->field_398 = Rnd(7);
+			this->field_39C = 4;
+			i32 v6 = 4;
+			switch ( this->field_398 )
+			{
+			case 0:
+				this->field_398 = -3;
+				v5 = 160;
+				break;
+			case 1:
+				this->field_398 = -5;
+				v4 = 6;
+				v5 = 160;
+				break;
+			case 2:
+				this->field_398 = -7;
+				v4 = 8;
+				v5 = 160;
+				break;
+			case 3:
+				this->field_398 = -9;
+				v4 = 10;
+				v5 = 160;
+				this->field_39C = 3;
+				v6 = 3;
+				break;
+			case 4:
+				this->field_398 = -11;
+				v4 = 12;
+				v5 = 160;
+				this->field_39C = 3;
+				v6 = 3;
+				break;
+			case 5:
+				this->field_398 = -13;
+				v4 = 14;
+				v5 = 160;
+				this->field_39C = 3;
+				v6 = 3;
+				break;
+			case 6:
+				this->field_398 = -15;
+				v4 = 14;
+				v5 = 160;
+				this->field_39C = 3;
+				break;
+			default:
+				print_if_false(0, "Too many ack response types.");
+				v4 = 4;
+				v5 = 4;
+				break;
+			}
+
+
+			if (!pThug->field_330
+				&& !pThug->field_33C
+				&& (pThug->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 0x20))
+			{
+				pThug->mHandleTwo = Mem_MakeHandle(this);
+				pThug->field_398 = v4;
+				pThug->field_39C = v6;
+				pThug->field_33C = v5;
+
+				pThug->field_31C.bothFlags = 21;
+				pThug->dumbAssPad = 0;
+
+				this->field_33C = v5;
+				this->mHandleTwo = Mem_MakeHandle(pThug);
+				this->field_31C.bothFlags = 21;
+				this->dumbAssPad = 0;
+			}
+		}
+	}
+}
+
 // @Ok
 void CThug::Acknowledge(void)
 {
