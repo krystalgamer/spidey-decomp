@@ -3,6 +3,104 @@
 #include "ai.h"
 #include "ps2lowsfx.h"
 #include "utils.h"
+#include "web.h"
+
+// @NotOk
+// case 1 is fucked up
+void CScorpion::GetTrapped(void)
+{
+	i32 **v6;
+	i32 v7;
+	i32 v8;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			new CAIProc_StateSwitchSendMessage(this, 14);
+
+			this->CycleAnim(12, 1);
+			this->field_BD4 = 0;
+			this->field_BD8 = 0;
+			this->field_1F8 = 5;
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+				this->CycleAnim(12, 1);
+
+			this->field_324 |= 2;
+			if (this->field_BD8 > 0)
+				this->field_BD8 -= 1;
+
+			if (--this->field_1F8 <= 0)
+			{
+				v6 = reinterpret_cast<i32**>(Mem_RecoverPointer(&this->field_104));
+				if (!v6 || (v7 = this->field_BD4, v8 = v6[17][15], v7 == v8))
+				{
+					this->dumbAssPad++;
+				}
+				else
+				{
+					this->field_BD8 += (8000 * (v8 - v7)) >> 12;
+					this->field_1F8 = 5;
+					this->field_BD4 = v6[17][15];
+				}
+			}
+
+			break;
+		case 2:
+			this->field_324 |= 2;
+			this->RunTimer(&this->field_BD8);
+			if (this->field_BD8 <= 0)
+			{
+				this->RunAnim(0xC,
+						this->field_12A == 12 ? this->field_128 : 0,
+						-1);
+				this->dumbAssPad++;
+			}
+			break;
+		case 3:
+			this->field_324 |= 2;
+			if (this->field_142)
+			{
+				this->RunAnim(0xD, 0, -1);
+				this->dumbAssPad++;
+			}
+			break;
+		case 4:
+			if (this->field_128 >= 10)
+			{
+				if (this->field_104.field_0)
+				{
+					CTrapWebEffect* pWeb = reinterpret_cast<CTrapWebEffect*>(
+							Mem_RecoverPointer(&this->field_104));
+					if (pWeb)
+					{
+						SFX_PlayPos(0x80C6, &this->mPos, 0);
+						pWeb->Burst();
+					}
+					
+					this->field_104.field_0 = 0;
+				}
+				this->field_31C.bothFlags = 12;
+				this->dumbAssPad++;
+			}
+			else
+			{
+				this->field_324 |= 2;
+			}
+			break;
+		case 5:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void __inline CScorpion::NextRoom(void)
@@ -199,6 +297,11 @@ void CScorpion::TakeHit(void)
 
 void validate_CScorpion(void){
 	VALIDATE_SIZE(CScorpion, 0xC28);
+
+	VALIDATE(CScorpion, field_324, 0x324);
+
+	VALIDATE(CScorpion, field_BD4, 0xBD4);
+	VALIDATE(CScorpion, field_BD8, 0xBD8);
 
 	VALIDATE(CScorpion, field_BEC, 0xBEC);
 

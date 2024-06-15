@@ -174,8 +174,7 @@ public:
 
 	int field_FC;
 	int field_100;
-	int field_104;
-	int field_108;
+	SHandle field_104;
 
 	int field_10C;
 	unsigned char padAfter10C[4];

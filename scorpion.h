@@ -17,12 +17,17 @@ class CScorpion : public CBaddy {
 		EXPORT void Gloat(void);
 		EXPORT void DetermineTarget(void);
 		EXPORT void TakeHit(void);
+		EXPORT void GetTrapped(void);
 
 
-		unsigned char padTop[0xBEC-0x324];
+		i32 field_324;
+		u8 padAfter324[0xBD4-0x324-4];
+
+		i32 field_BD4;
+		i32 field_BD8;
+		u8 padAfterBD8[0xBEC-0xBD8-4];
 
 		CSuper* field_BEC;
-
 		SHandle hCurrentTarget;
 
 		i32 field_BF8;

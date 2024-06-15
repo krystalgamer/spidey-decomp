@@ -728,7 +728,6 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_FC, 0xFC);
 	VALIDATE(CSuper, field_100, 0x100);
 	VALIDATE(CSuper, field_104, 0x104);
-	VALIDATE(CSuper, field_108, 0x108);
 
 	VALIDATE(CSuper, field_10C, 0x10C);
 	VALIDATE(CSuper, field_114, 0x114);
