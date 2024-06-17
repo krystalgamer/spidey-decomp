@@ -1,7 +1,28 @@
 #include "lizman.h"
 #include "validate.h"
+#include "message.h"
 
 
+// @TODO
+void CLizMan::RunToWhereActionIs(CVector*)
+{}
+
+// @Ok
+void __inline CLizMan::HelpOutBuddy(CMessage* pMessage)
+{
+	if (!this->field_390)
+	{
+		if (this->field_31C.bothFlags == 2 || this->field_31C.bothFlags == 1)
+		{
+			CItem *pItem = reinterpret_cast<CItem*>(
+					Mem_RecoverPointer(&pMessage->mHandle));
+
+			if (pItem)
+				this->RunToWhereActionIs(&pItem->mPos);
+		}
+	}
+
+}
 
 // @Ok
 void __inline CLizMan::PlaySingleAnim(__int16 a1, int a2, int a3)
