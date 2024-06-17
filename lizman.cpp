@@ -1,7 +1,20 @@
 #include "lizman.h"
 #include "validate.h"
 #include "message.h"
+#include "ps2funcs.h"
 
+
+// @Ok
+void CLizMan::SwitchFromEulerToMatrix(void)
+{
+	if ((this->outlineRelated & 1) == 0)
+	{
+		this->outlineRelated |= 1;
+		M3dMaths_RotMatrixYXZ(
+				reinterpret_cast<SVECTOR*>(&this->mAngles),
+				&this->field_164);
+	}
+}
 
 // @TODO
 void CLizMan::RunToWhereActionIs(CVector*)

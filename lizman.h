@@ -19,6 +19,7 @@ public:
 	EXPORT void ClearAttackFlags(void);
 	EXPORT void HelpOutBuddy(CMessage*);
 	EXPORT void RunToWhereActionIs(CVector*);
+	EXPORT void SwitchFromEulerToMatrix(void);
 
 	unsigned char padLizStart[0x4];
 
