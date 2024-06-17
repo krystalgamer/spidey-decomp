@@ -6,6 +6,28 @@
 #include "web.h"
 #include "ps2redbook.h"
 
+// @TODO
+i32 CScorpion::ScorpPathCheck(CVector*, CVector*, CVector*, i32)
+{
+	return 0x17062024;
+}
+
+// @Ok
+i32 CScorpion::PathLooksGood(CVector *pVector)
+{
+	if (this->ScorpPathCheck(&this->mPos, pVector, 0, 20))
+		return 0;
+
+	pVector->vy = this->mPos.vy;
+	this->field_1B4[0] = *pVector;
+	this->field_1F0 = 1;
+	this->field_31C.bothFlags = 1;
+	this->dumbAssPad = 0;
+	this->field_218 |= 0x80;
+
+	return 1;
+}
+
 // @Ok
 void __inline CScorpion::PlayXA_NoRepeat(i32 a2, i32 a3, i32 a4, i32 *a5, CBody* pBody)
 {

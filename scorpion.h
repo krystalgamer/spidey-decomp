@@ -19,6 +19,8 @@ class CScorpion : public CBaddy {
 		EXPORT void TakeHit(void);
 		EXPORT void GetTrapped(void);
 		EXPORT void PlayXA_NoRepeat(i32, i32, i32, i32*, CBody*);
+		EXPORT i32 ScorpPathCheck(CVector*, CVector*, CVector*, i32);
+		EXPORT i32 PathLooksGood(CVector*);
 
 
 		i32 field_324;
