@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "mem.h"
 
 class CMessage;
 
@@ -20,6 +21,7 @@ public:
 	EXPORT void HelpOutBuddy(CMessage*);
 	EXPORT void RunToWhereActionIs(CVector*);
 	EXPORT void SwitchFromEulerToMatrix(void);
+	EXPORT void Acknowledge(void);
 
 	unsigned char padLizStart[0x4];
 
@@ -31,10 +33,10 @@ public:
 	unsigned char padAfter338[0x340-0x338-4];
 
 	int field_340;
-	unsigned char padAfter340[0x374-0x340-4];
+	unsigned char padAfter340[0x36C-0x340-4];
 
-
-	int field_374;
+	SHandle hLizHandle;
+	i32 field_374;
 	unsigned char padAfter374[0x390-0x374-4];
 
 	u8 field_390;

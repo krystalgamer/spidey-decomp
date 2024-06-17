@@ -2,7 +2,46 @@
 #include "validate.h"
 #include "message.h"
 #include "ps2funcs.h"
+#include "mem.h"
+#include "ai.h"
 
+// @Ok
+void CLizMan::Acknowledge(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->field_340 = 0;
+			this->RunAnim(0, 0, -1);
+
+			if (Mem_RecoverPointer(&this->hLizHandle))
+			{
+				new CAIProc_LookAt(
+						this,
+						reinterpret_cast<CBody*>(this->hLizHandle.field_0),
+						0,
+						2,
+						70,
+						200);
+			}
+
+			this->dumbAssPad++;
+			break;
+		case 1:
+
+			if(this->field_142)
+			{
+				this->field_31C.bothFlags = 25;
+				this->dumbAssPad = 0;
+			}
+			
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void CLizMan::SwitchFromEulerToMatrix(void)
@@ -126,6 +165,8 @@ void validate_CLizMan(void){
 	VALIDATE(CLizMan, field_32C, 0x32C);
 	VALIDATE(CLizMan, field_338, 0x338);
 	VALIDATE(CLizMan, field_340, 0x340);
+
+	VALIDATE(CLizMan, hLizHandle, 0x36C);
 
 	VALIDATE(CLizMan, field_374, 0x374);
 	VALIDATE(CLizMan, field_390, 0x390);
