@@ -22,6 +22,9 @@ public:
 	EXPORT void RunToWhereActionIs(CVector*);
 	EXPORT void SwitchFromEulerToMatrix(void);
 	EXPORT void Acknowledge(void);
+	EXPORT void Guard(void);
+	EXPORT i32 ScanNearbyNodesForJumpTarget(void);
+	EXPORT void CalculateJumpPositionArray(CVector*);
 
 	unsigned char padLizStart[0x4];
 
@@ -36,7 +39,7 @@ public:
 	unsigned char padAfter340[0x36C-0x340-4];
 
 	SHandle hLizHandle;
-	i32 field_374;
+	u32 field_374;
 	unsigned char padAfter374[0x390-0x374-4];
 
 	u8 field_390;

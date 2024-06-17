@@ -4,6 +4,81 @@
 #include "ps2funcs.h"
 #include "mem.h"
 #include "ai.h"
+#include "ps2lowsfx.h"
+#include "utils.h"
+#include "trig.h"
+
+// @TODO
+void CLizMan::CalculateJumpPositionArray(CVector*)
+{}
+
+// @TODO
+i32 CLizMan::ScanNearbyNodesForJumpTarget(void)
+{
+	return 0x17062024;
+}
+
+static CBody* MechList[1];
+static u16 word_5FBC0C;
+
+// @Ok
+void CLizMan::Guard(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_1F8 = 0;
+			this->Neutralize();
+
+			if (*gTimerRelated - this->field_374 < 0x12C)
+			{
+				new CAIProc_LookAt(
+						this,
+						MechList[0],
+						0,
+						0,
+						128,
+						200);
+			}
+
+			this->dumbAssPad++;
+			break;
+		case 1:
+
+			if (word_5FBC0C != 0xFFFF && this->field_12A != 5)
+			{
+				this->PlaySingleAnim(5, 0, -1);
+			}
+
+			this->field_1F8 += this->field_80;
+			if (this->field_1F8 > 120)
+			{
+				this->field_1F8 = 0;
+				i32 target = this->ScanNearbyNodesForJumpTarget();
+				if (target)
+				{
+					CVector v6;
+					v6.vx = 0;
+					v6.vy = 0;
+					v6.vz = 0;
+					this->field_1F0 = 0;
+
+					SFX_PlayPos((Rnd(2) + 134) | 0x80, &this->mPos, 0);
+					Trig_GetPosition(&v6, target);
+					this->field_1F4 = target;
+
+					this->CalculateJumpPositionArray(&v6);
+					this->field_31C.bothFlags = 23;
+					this->dumbAssPad = 0;
+				}
+			}
+
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void CLizMan::Acknowledge(void)
