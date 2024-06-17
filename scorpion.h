@@ -18,6 +18,7 @@ class CScorpion : public CBaddy {
 		EXPORT void DetermineTarget(void);
 		EXPORT void TakeHit(void);
 		EXPORT void GetTrapped(void);
+		EXPORT void PlayXA_NoRepeat(i32, i32, i32, i32*, CBody*);
 
 
 		i32 field_324;
@@ -25,8 +26,9 @@ class CScorpion : public CBaddy {
 
 		i32 field_BD4;
 		i32 field_BD8;
-		u8 padAfterBD8[0xBEC-0xBD8-4];
+		u8 padAfterBD8[0xBE8-0xBD8-4];
 
+		i32 field_BE8;
 		CSuper* field_BEC;
 		SHandle hCurrentTarget;
 
@@ -34,8 +36,11 @@ class CScorpion : public CBaddy {
 		u8 padAfterBF8[0xC18-0xBF8-4];
 
 		i32 field_C18;
+		u8 padAfterC18[0x4];
 
-		u8 padScorpion[0xC28-0xC18-4];
+		i32 field_C20;
+
+		u8 padScorpion[0xC28-0xC20-4];
 };
 
 EXPORT void Scorpion_GetCurrentTarget(unsigned int*, unsigned int*);

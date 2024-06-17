@@ -4,6 +4,25 @@
 #include "ps2lowsfx.h"
 #include "utils.h"
 #include "web.h"
+#include "ps2redbook.h"
+
+// @Ok
+void __inline CScorpion::PlayXA_NoRepeat(i32 a2, i32 a3, i32 a4, i32 *a5, CBody* pBody)
+{
+	if (!this->field_C20)
+	{
+		i32 v11 = a3 + Rnd(a4);
+		if (v11 == *a5 && ++v11 >= a3 + a4)
+		{
+			v11 = a3;
+		}
+
+		*a5 = v11;
+
+		if (Redbook_XAPlayPos(a2, v11, &pBody->mPos, 0))
+				pBody->AttachXA(a2, v11);
+	}
+}
 
 // @NotOk
 // case 1 is fucked up
@@ -303,10 +322,12 @@ void validate_CScorpion(void){
 	VALIDATE(CScorpion, field_BD4, 0xBD4);
 	VALIDATE(CScorpion, field_BD8, 0xBD8);
 
+	VALIDATE(CScorpion, field_BE8, 0xBE8);
 	VALIDATE(CScorpion, field_BEC, 0xBEC);
 
 	VALIDATE(CScorpion, hCurrentTarget, 0xBF0);
 	VALIDATE(CScorpion, field_BF8, 0xBF8);
 
 	VALIDATE(CScorpion, field_C18, 0xC18);
+	VALIDATE(CScorpion, field_C20, 0xC20);
 }
