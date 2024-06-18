@@ -1,6 +1,63 @@
 #include "hostage.h"
 #include "validate.h"
 #include "utils.h"
+#include "ps2redbook.h"
+#include "mem.h"
+#include "ai.h"
+
+extern i32 DifficultyLevel; 
+
+// @Ok
+void CHostage::BegMotherfucker(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+
+			if (Mem_RecoverPointer(&this->field_32C))
+			{
+				new CAIProc_LookAt(
+						this,
+						reinterpret_cast<CBody*>(this->field_32C.field_0),
+						0,
+						0,
+						80,
+						200);
+			}
+
+			if (DifficultyLevel == 2)
+			{
+				this->field_230 = 100;
+			}
+			else if (DifficultyLevel == 3)
+			{
+				this->field_230 = 65;
+			}
+
+			this->CycleAnim((this->field_38 == 315) + 5, 1);
+			this->dumbAssPad++;
+			this->HostageXAPlay(7, Rnd(3) + 9, 50);
+
+			break;
+		case 1:
+			if (--this->field_230 <= 0)
+			{
+				this->field_324 = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+void __inline CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
+{
+	if (Redbook_XAPlayPos(a2, a3, &this->mPos, a4))
+		this->AttachXA(a2, a3);
+}
 
 // @TODO
 void CHostage::CheckIfFreed(void)

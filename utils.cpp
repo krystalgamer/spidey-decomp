@@ -353,7 +353,7 @@ int Utils_LinearFilter(int, int, int)
 void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 {}
 
-static int DifficultyLevel;
+i32 DifficultyLevel;
 int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
 {
 	switch (DifficultyLevel)
