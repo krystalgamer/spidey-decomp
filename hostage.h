@@ -10,6 +10,9 @@ public:
 	EXPORT CHostage(i32*, i32);
 	EXPORT void GetUp(void);
 	EXPORT void DisappearBitch(void);
+	EXPORT void WaitForPlayer(void);
+	EXPORT void CheckIfFreed(void);
+
 
 	i32 field_324;
 	i32 field_328;

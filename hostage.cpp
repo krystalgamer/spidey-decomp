@@ -1,6 +1,42 @@
 #include "hostage.h"
 #include "validate.h"
+#include "utils.h"
 
+// @TODO
+void CHostage::CheckIfFreed(void)
+{
+}
+
+// @Ok
+void CHostage::WaitForPlayer(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			if (--this->field_230 <= 0)
+			{
+				this->RunAnim(1, 0, -1);
+				this->dumbAssPad++;
+				this->field_230 = Rnd(120) + 120;
+			}
+
+			this->CheckIfFreed();
+			break;
+		case 1:
+
+			if (this->field_142)
+			{
+				this->CycleAnim(0, 1);
+				this->dumbAssPad  = 0;
+			}
+
+			this->CheckIfFreed();
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void __inline CHostage::DisappearBitch(void)
