@@ -15,52 +15,57 @@ public:
 	EXPORT void AngleToTargetAngle(void);
 	EXPORT void WaitForTrigger(void);
 
-	unsigned char padChopperStart[0xC];
-	int field_330;
-	int field_334;
-	int field_338;
-	int field_33C;
-	int field_340;
-	int field_344;
-	unsigned char padAfter344[0x354-0x344-4];
+	u8 padChopperStart[0xC-8];
+	i32 field_328;
+	u8 padAfter328[4];
 
-	int field_354;
-	int field_358;
-	unsigned char padAfter358[0x360-0x358-4];
+	i32 field_330;
+	i32 field_334;
+	i32 field_338;
+	i32 field_33C;
+	i32 field_340;
+	i32 field_344;
+	i32 field_348;
 
-	int field_360;
-	int field_364;
-	int field_368;
-	int field_36C;
-	unsigned char padAfter36C[0x374-0x36C-4];
+	u8 padAfter348[0x354-0x348-4];
 
-	int field_374;
-	unsigned char padAfter374[0x380-0x374-4];
+	i32 field_354;
+	i32 field_358;
+	u8 padAfter358[0x360-0x358-4];
 
-	int field_380;
-	unsigned char padAfter380[0x4];
+	i32 field_360;
+	i32 field_364;
+	i32 field_368;
+	i32 field_36C;
+	u8 padAfter36C[0x374-0x36C-4];
 
-	int field_388;
-	int field_38C;
-	int field_390;
-	int field_394;
-	int field_398;
-	int field_39C;
-	unsigned char padAfter39C[0x8];
+	i32 field_374;
+	u8 padAfter374[0x380-0x374-4];
 
-	int field_3A8;
-	int field_3AC;
-	int field_3B0;
-	int field_3B4;
-	int field_3B8;
-	int field_3BC;
-	int field_3C0;
-	unsigned char padAfter3c0[0x4];
+	i32 field_380;
+	i32 field_384;
 
-	int field_3C8;
-	int field_3CC;
-	int field_3D0;
-	unsigned char endChopperPad[0x3d8-0x3d0-4];
+	i32 field_388;
+	i32 field_38C;
+	i32 field_390;
+	i32 field_394;
+	i32 field_398;
+	i32 field_39C;
+	u8 padAfter39C[0x8];
+
+	i32 field_3A8;
+	i32 field_3AC;
+	i32 field_3B0;
+	i32 field_3B4;
+	i32 field_3B8;
+	i32 field_3BC;
+	i32 field_3C0;
+	u8 padAfter3c0[0x4];
+
+	i32 field_3C8;
+	i32 field_3CC;
+	i32 field_3D0;
+	u8 endChopperPad[0x3d8-0x3d0-4];
 };
 
 class CBulletFrag : public CFlatBit {

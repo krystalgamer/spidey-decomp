@@ -90,12 +90,16 @@ void CChopper::AngleToTargetAngle(void)
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
 
+	VALIDATE(CChopper, field_328, 0x328);
+
 	VALIDATE(CChopper, field_330, 0x330);
 	VALIDATE(CChopper, field_334, 0x334);
 	VALIDATE(CChopper, field_338, 0x338);
 	VALIDATE(CChopper, field_33C, 0x33C);
 	VALIDATE(CChopper, field_340, 0x340);
+
 	VALIDATE(CChopper, field_344, 0x344);
+	VALIDATE(CChopper, field_348, 0x348);
 
 	VALIDATE(CChopper, field_354, 0x354);
 
@@ -108,6 +112,8 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_374, 0x374);
 
 	VALIDATE(CChopper, field_380, 0x380);
+	VALIDATE(CChopper, field_384, 0x384);
+
 	VALIDATE(CChopper, field_388, 0x388);
 	VALIDATE(CChopper, field_38C, 0x38C);
 	VALIDATE(CChopper, field_390, 0x390);
