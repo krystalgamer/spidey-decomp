@@ -8,6 +8,12 @@
 #include "trig.h"
 
 // @TODO
+i32 CBaddy::GetNextWaypoint(void)
+{
+	return 0x18062024;
+}
+
+// @TODO
 void CBaddy::RunAppropriateAnim(void)
 {}
 

@@ -7,10 +7,12 @@
 class CHostage : public CBaddy {
 
 public:
-	EXPORT CHostage(int*, int);
-	int field_324;
-	int field_328;
-	int field_32C;
+	EXPORT CHostage(i32*, i32);
+	EXPORT void GetUp(void);
+
+	i32 field_324;
+	i32 field_328;
+	i32 field_32C;
 
 	unsigned char hostagePadp[0x4];
 };

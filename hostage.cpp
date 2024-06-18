@@ -1,6 +1,34 @@
 #include "hostage.h"
 #include "validate.h"
 
+void __inline CHostage::GetUp(void)
+{
+	switch(this->dumbAssPad)
+	{
+		case 0:
+			this->RunAnim(2, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				if (this->GetNextWaypoint())
+				{
+					this->field_324 = 2;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					this->field_324 = 5;
+					this->dumbAssPad = 1;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 CHostage::CHostage(int* a2, int a3)
 {
