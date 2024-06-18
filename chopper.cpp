@@ -2,6 +2,33 @@
 #include "validate.h"
 #include "utils.h"
 
+// @Ok
+void __inline CChopper::WaitForTrigger(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+
+			if (this->field_218 & 4)
+			{
+				this->field_218 &= 0xFB;
+				if (this->GetNextWaypoint())
+				{
+					this->dumbAssPad = 0;
+					this->field_31C.bothFlags = 2;
+				}
+				else
+				{
+					this->dumbAssPad = 0;
+					this->field_31C.bothFlags = 1;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+	}
+}
+
 // @NotOk
 // verify later
 void CBulletFrag::Move()

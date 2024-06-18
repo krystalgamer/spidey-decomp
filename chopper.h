@@ -13,6 +13,7 @@ public:
 	EXPORT void SetHeightMode(int);
 	EXPORT void AdjustSineWaveAmplitude(int, int);
 	EXPORT void AngleToTargetAngle(void);
+	EXPORT void WaitForTrigger(void);
 
 	unsigned char padChopperStart[0xC];
 	int field_330;
