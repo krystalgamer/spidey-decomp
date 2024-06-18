@@ -9,6 +9,7 @@ class CHostage : public CBaddy {
 public:
 	EXPORT CHostage(i32*, i32);
 	EXPORT void GetUp(void);
+	EXPORT void DisappearBitch(void);
 
 	i32 field_324;
 	i32 field_328;

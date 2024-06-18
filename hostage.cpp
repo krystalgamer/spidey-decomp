@@ -1,6 +1,42 @@
 #include "hostage.h"
 #include "validate.h"
 
+
+// @Ok
+void __inline CHostage::DisappearBitch(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 2:
+			if (this->Die(2))
+			{
+				this->Die(3);
+				this->dumbAssPad++;
+			}
+			else
+			{
+				this->SetHeight(0, 100, 600);
+			}
+			break;
+		case 0:
+			this->Neutralize();
+			this->dumbAssPad++;
+		case 1:
+			this->mCBodyFlags &= 0xFFEF;
+			this->field_2A8 |= 0x5000;
+			this->field_DC = 0;
+			this->Die(1);
+			this->dumbAssPad++;
+			break;
+		case 3:
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+// @Ok
 void __inline CHostage::GetUp(void)
 {
 	switch(this->dumbAssPad)
