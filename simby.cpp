@@ -4,6 +4,43 @@
 #include "utils.h"
 #include "mem.h"
 #include "ps2redbook.h"
+#include "ps2lowsfx.h"
+
+static SStateFlags gSimbyFlags;
+
+// @NotOk
+// globals
+void CSimby::PlayGruntSound(void)
+{
+	if (this->CheckStateFlags(&gSimbyFlags, 25) & 0x2000)
+	{
+		this->RunTimer(&this->field_34C);
+
+		if (!this->field_34C)
+		{
+			this->field_34C = Rnd(180) + 180;
+
+			u32 song;
+			switch (Rnd(3))
+			{
+				case 0:
+					song = 349;
+					break;
+				case 1:
+					song = 350;
+					break;
+				case 2:
+					song = 351;
+					break;
+				default:
+					print_if_false(0, "Who's been smokin' crack today?");
+					break;
+			}
+
+			SFX_PlayPos(song | 0x8000, &this->mPos, 0);
+		}
+	}
+}
 
 // @Ok
 i32 CSimby::PlayAndAttachXAPlease(
@@ -259,6 +296,7 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_330, 0x330);
 
 	VALIDATE(CSimby, field_348, 0x348);
+	VALIDATE(CSimby, field_34C, 0x34C);
 
 	VALIDATE(CSimby, field_350, 0x350);
 	VALIDATE(CSimby, field_354, 0x354);

@@ -27,6 +27,7 @@ public:
 	EXPORT void RunAppropriateHitAnim(void);
 	EXPORT i32 FireTrappedToDeath(void);
 	EXPORT i32 PlayAndAttachXAPlease(i32, i32, CBody*, i32);
+	EXPORT void PlayGruntSound(void);
 
 	u8 padTop[0x328-0x324];
 
@@ -38,7 +39,7 @@ public:
 	u8 padAfter330[0x348-0x330-4];
 
 	i32 field_348;
-	u8 padAfter348[0x350-0x348-4];
+	i32 field_34C;
 
 	i32 field_350;
 	i32 field_354;
