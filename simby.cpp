@@ -6,9 +6,64 @@
 #include "ps2redbook.h"
 #include "ps2lowsfx.h"
 #include "ai.h"
+#include "utils.h"
 
 static SStateFlags gSimbyFlags;
 extern CBody* MechList[1];
+// @TODO
+CSimbyShot::CSimbyShot(CVector*)
+{}
+
+// @TODO
+void CSimby::SetUpHandPos(void)
+{}
+
+void CSimby::Shoot(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->CycleAnim(this->field_298.Bytes[0], 1);
+			new CAIProc_LookAt(
+					this,
+					MechList[0],
+					0,
+					2,
+					80,
+					0);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_288 & 2)
+			{
+				this->field_288 &= 0xFFFFFFFD;
+				this->RunAnim(0x2B, 0, -1);
+				this->dumbAssPad++;
+			}
+			break;
+		case 2:
+			if (this->field_128 >= 14)
+			{
+				this->SetUpHandPos();
+				new CSimbyShot(&this->field_3DC);
+				SFX_PlayPos(0x815C, &this->mPos, 0);
+				this->dumbAssPad++;
+			}
+			break;
+		case 3:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 4;
+				this->field_324 = 450 - Rnd(150);
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate.");
+			break;
+	}
+}
 
 // @Ok
 void CSimby::TakeHit(void)
@@ -175,9 +230,10 @@ CSimby::CSimby(void)
 	this->field_38C = 0;
 	this->field_390 = 0;
 	this->field_394 = 0;
-	this->field_3DC = 0;
-	this->field_3E0 = 0;
-	this->field_3E4 = 0;
+	this->field_3DC.vx = 0;
+	this->field_3DC.vy = 0;
+	this->field_3DC.vz = 0;
+
 	this->field_3F8 = 0;
 	this->field_3FC = 0;
 	this->field_400 = 0;
@@ -326,6 +382,8 @@ void validate_CPunchOb(void){
 void validate_CSimby(void){
 	VALIDATE_SIZE(CSimby, 0x460);
 
+	VALIDATE(CSimby, field_324, 0x324);
+
 	VALIDATE(CSimby, field_328, 0x328);
 	VALIDATE(CSimby, field_32A, 0x32A);
 	VALIDATE(CSimby, field_32C, 0x32C);
@@ -362,8 +420,6 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_3D0, 0x3D0);
 
 	VALIDATE(CSimby, field_3DC, 0x3DC);
-	VALIDATE(CSimby, field_3E0, 0x3E0);
-	VALIDATE(CSimby, field_3E4, 0x3E4);
 
 	VALIDATE(CSimby, field_3F0, 0x3F0);
 
@@ -390,4 +446,9 @@ void validate_CSimbySlimeBase(void)
 void validate_CEmber(void)
 {
 	VALIDATE_SIZE(CEmber, 0x90);
+}
+
+void validate_CSimbyShot(void)
+{
+	VALIDATE_SIZE(CSimbyShot, 0xB8);
 }

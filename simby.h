@@ -29,9 +29,11 @@ public:
 	EXPORT i32 PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 	EXPORT void PlayGruntSound(void);
 	EXPORT void TakeHit(void);
+	EXPORT void Shoot(void);
+	EXPORT void SetUpHandPos(void);
 
-	u8 padTop[0x328-0x324];
 
+	i32 field_324;
 	i16 field_328;
 	u16 field_32A;
 	u16 field_32C;
@@ -69,9 +71,7 @@ public:
 	i32 field_3D0;
 	u8 padAfter3D0[0x3DC-0x3D0-4];
 
-	i32 field_3DC;
-	i32 field_3E0;
-	i32 field_3E4;
+	CVector field_3DC;
 	u8 padAfter3E4[0x3F0-0x3E4-4];
 
 	i32 field_3F0;
@@ -114,11 +114,20 @@ class CEmber : public CFlatBit
 		unsigned char pad[0x28];
 };
 
+class CSimbyShot : public CQuadBit
+{
+	public:
+		EXPORT CSimbyShot(CVector*);
+
+		u8 padFull[0x34];
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
 void validate_CSimbySlimeBase(void);
 void validate_CEmber(void);
+void validate_CSimbyShot(void);
 
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);

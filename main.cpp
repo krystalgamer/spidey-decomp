@@ -326,6 +326,7 @@ int main()
 	validate_CAIProc_MoveTo();
 	validate_CNonRenderedBit();
 	validate_SPSXRegion();
+	validate_CSimbyShot();
 
 	puts("[*] Validation done!");
 
