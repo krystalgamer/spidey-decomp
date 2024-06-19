@@ -296,7 +296,7 @@ void CScorpion::Gloat(void)
 	}
 }
 
-static CBody* MechList[1];
+CBody* MechList[1];
 
 // @NotOk
 // globals

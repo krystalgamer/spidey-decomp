@@ -5,8 +5,45 @@
 #include "mem.h"
 #include "ps2redbook.h"
 #include "ps2lowsfx.h"
+#include "ai.h"
 
 static SStateFlags gSimbyFlags;
+extern CBody* MechList[1];
+
+// @Ok
+void CSimby::TakeHit(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_310 = 0;
+
+			new CAIProc_LookAt(
+					this,
+					MechList[0],
+					0,
+					0,
+					80,
+					200);
+
+			this->RunAppropriateHitAnim();
+			this->field_230 = 10;
+			this->dumbAssPad++;
+			break;
+		case 1:
+			this->RunTimer(&this->field_230);
+			if (!this->field_230)
+			{
+				this->RunAnim(this->field_298.Bytes[0], 0, -1);
+				this->field_31C.bothFlags = 4;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @NotOk
 // globals

@@ -28,6 +28,7 @@ public:
 	EXPORT i32 FireTrappedToDeath(void);
 	EXPORT i32 PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 	EXPORT void PlayGruntSound(void);
+	EXPORT void TakeHit(void);
 
 	u8 padTop[0x328-0x324];
 

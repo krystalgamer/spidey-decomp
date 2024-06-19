@@ -18,7 +18,7 @@ i32 CLizMan::ScanNearbyNodesForJumpTarget(void)
 	return 0x17062024;
 }
 
-static CBody* MechList[1];
+extern CBody* MechList[1];
 static u16 word_5FBC0C;
 
 // @Ok
