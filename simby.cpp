@@ -2,6 +2,36 @@
 #include "validate.h"
 #include "trig.h"
 #include "utils.h"
+#include "mem.h"
+#include "ps2redbook.h"
+
+// @Ok
+i32 CSimby::PlayAndAttachXAPlease(
+		i32 a2,
+		i32 a3,
+		CBody *pBody,
+		i32 a5)
+{
+	if (Redbook_XAPlayPos(a2, a3, &pBody->mPos, a5))
+	{
+		pBody->AttachXA(a2, a3);
+		return 1;
+	}
+
+	return 0;
+}
+
+// @NotOk
+// understand ptr
+i32 __inline CSimby::FireTrappedToDeath(void)
+{
+	u8 *v2 = reinterpret_cast<u8*>(Mem_RecoverPointer(&this->field_104));
+	if (!v2 || !v2[1048] || *(i32*)(*((u32*)v2 + 17) + 60) <= 40)
+		return 0;
+	this->field_31C.bothFlags = 23;
+	this->dumbAssPad = 0;
+	return 1;
+}
 
 // @Ok
 void __inline CSimby::RunAppropriateHitAnim(void)

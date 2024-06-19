@@ -25,6 +25,8 @@ public:
 	EXPORT void SetUpUnitFromDirection(CVector*, int);
 	EXPORT void SetUpJumpData(i32, i32);
 	EXPORT void RunAppropriateHitAnim(void);
+	EXPORT i32 FireTrappedToDeath(void);
+	EXPORT i32 PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 
 	u8 padTop[0x328-0x324];
 
