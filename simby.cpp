@@ -3,6 +3,16 @@
 #include "trig.h"
 #include "utils.h"
 
+// @Ok
+void __inline CSimby::RunAppropriateHitAnim(void)
+{
+	if (this->field_218 & 0x10)
+		this->RunAnim(17, 0, -1);
+	else if (this->field_218 & 0x20)
+		this->RunAnim(18, 0, -1);
+	else
+		this->RunAnim(19, 0, -1);
+}
 
 // @Ok
 void __inline CSimby::SetUpJumpData(i32 a2, i32 a3)

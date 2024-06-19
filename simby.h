@@ -24,6 +24,7 @@ public:
 	EXPORT void ClearAttackData(void);
 	EXPORT void SetUpUnitFromDirection(CVector*, int);
 	EXPORT void SetUpJumpData(i32, i32);
+	EXPORT void RunAppropriateHitAnim(void);
 
 	u8 padTop[0x328-0x324];
 
