@@ -5,6 +5,27 @@
 
 
 // @Ok
+void __inline CSimby::SetUpJumpData(i32 a2, i32 a3)
+{
+	i32 v3;
+	if(a3 <= a2)
+	{
+		v3 = 1;
+	}
+	else
+	{
+		v3 = a3 / a2;
+	}
+
+	this->field_3CC = v3;
+
+	if (this->field_3CC < 14)
+		this->field_3CC = 14;
+
+	this->field_3D0 = 4096 / this->field_3CC;
+}
+
+// @Ok
 void __inline CSimby::SetAlertModeTimer(int timer)
 {
 	if (this->field_348 < timer)
@@ -221,6 +242,10 @@ void validate_CSimby(void){
 	VALIDATE(CSimby, field_398, 0x398);
 
 	VALIDATE(CSimby, field_39C, 0x39C);
+
+	VALIDATE(CSimby, field_3CC, 0x3CC);
+	VALIDATE(CSimby, field_3D0, 0x3D0);
+
 	VALIDATE(CSimby, field_3DC, 0x3DC);
 	VALIDATE(CSimby, field_3E0, 0x3E0);
 	VALIDATE(CSimby, field_3E4, 0x3E4);

@@ -23,57 +23,62 @@ public:
 	EXPORT void SetAlertModeTimer(int);
 	EXPORT void ClearAttackData(void);
 	EXPORT void SetUpUnitFromDirection(CVector*, int);
+	EXPORT void SetUpJumpData(i32, i32);
 
-	unsigned char padTop[0x328-0x324];
+	u8 padTop[0x328-0x324];
 
-	__int16 field_328;
-	unsigned __int16 field_32A;
-	unsigned __int16 field_32C;
-	__int16 field_32E;
-	int field_330;
-	unsigned char padAfter330[0x348-0x330-4];
+	i16 field_328;
+	u16 field_32A;
+	u16 field_32C;
+	i16 field_32E;
+	i32 field_330;
+	u8 padAfter330[0x348-0x330-4];
 
-	int field_348;
-	unsigned char padAfter348[0x350-0x348-4];
+	i32 field_348;
+	u8 padAfter348[0x350-0x348-4];
 
-	int field_350;
-	int field_354;
-	int field_358;
-	int field_35C;
-	int field_360;
-	int field_364;
+	i32 field_350;
+	i32 field_354;
+	i32 field_358;
+	i32 field_35C;
+	i32 field_360;
+	i32 field_364;
 
 	CVector field_368;
 
-	int field_374;
-	int field_378;
-	int field_37C;
-	int field_380;
-	int field_384;
-	int field_388;
-	int field_38C;
-	int field_390;
-	int field_394;
-	int field_398;
+	i32 field_374;
+	i32 field_378;
+	i32 field_37C;
+	i32 field_380;
+	i32 field_384;
+	i32 field_388;
+	i32 field_38C;
+	i32 field_390;
+	i32 field_394;
+	i32 field_398;
 
-	int field_39C;
-	unsigned char padAfter39C[0x3Dc-0x39C-4];
+	i32 field_39C;
+	u8 padAfter39C[0x3CC-0x39C-4];
 
-	int field_3DC;
-	int field_3E0;
-	int field_3E4;
-	unsigned char padAfter3E4[0x3F0-0x3E4-4];
+	i32 field_3CC;
+	i32 field_3D0;
+	u8 padAfter3D0[0x3DC-0x3D0-4];
 
-	int field_3F0;
-	unsigned char padAfter3F0[4];
+	i32 field_3DC;
+	i32 field_3E0;
+	i32 field_3E4;
+	u8 padAfter3E4[0x3F0-0x3E4-4];
 
-	int field_3F8;
-	int field_3FC;
-	int field_400;
-	int field_404;
-	int field_408;
-	int field_40C;
-	unsigned char padBottom[0x460 - 0x40C-4];
+	i32 field_3F0;
+	u8 padAfter3F0[4];
+
+	i32 field_3F8;
+	i32 field_3FC;
+	i32 field_400;
+	i32 field_404;
+	i32 field_408;
+	i32 field_40C;
+	u8 padBottom[0x460 - 0x40C-4];
 };
 
 class CSimbyBase : public CBaddy {

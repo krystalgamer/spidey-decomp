@@ -4,7 +4,6 @@
 #include "panel.h"
 #include "spool.h"
 
-
 // @NotOk
 // globals
 CCarnage::CCarnage(int* a2, int a3)
