@@ -22,8 +22,13 @@ public:
 	EXPORT void Lookaround(void);
 	EXPORT void TugWeb(void);
 	EXPORT void AdjustWaterModel(void);
+	EXPORT void PulseL6A4Node(bool);
+	EXPORT void VenomDie(void);
 
-	u8 venomStartPad[0x18-4];
+	u8 venomStartPad[0x18-0xC];
+	i32 field_330;
+	u8 padAfter330[4];
+
 	i32 field_338;
 	u8 field_33C;
 	u8 field_33D;

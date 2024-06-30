@@ -187,9 +187,59 @@ void CVenom::AdjustWaterModel(void)
 
 }
 
+// @TODO
+void CVenom::PulseL6A4Node(bool)
+{}
+
+
+// @Ok
+void CVenom::VenomDie(void)
+{
+	switch (this->dumbAssPad)
+	{
+
+		case 0:
+			this->field_330 = 16;
+			this->field_218 &= 0xFFFFFFF8;
+			this->mAccellorVel.vx = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vz = 0;
+
+			this->mCBodyFlags &= 0xFFEF;
+			this->mFlags &= 0xFFBE;
+			this->field_218 &= 0xFFFFFE7F;
+			this->dumbAssPad++;
+			break;
+		case 1:
+			this->field_330 = 16;
+			if (this->field_142)
+			{
+				this->RunAnim(0x29, 0, -1);
+				this->dumbAssPad++;
+			}
+
+			break;
+		case 2:
+			if (this->field_142)
+			{
+				if (Trig_GetLevelId() == 1540)
+				{
+					this->PulseL6A4Node(false);
+					this->dumbAssPad++;
+				}
+				else
+				{
+					this->Die(0);
+				}
+			}
+			break;
+	}
+}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
+	VALIDATE(CVenom, field_330, 0x330);
 	VALIDATE(CVenom, field_338, 0x338);
 
 	VALIDATE(CVenom, field_33C, 0x33C);
