@@ -156,8 +156,14 @@ void INLINE CVenom::TugWeb(void)
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
+	VALIDATE(CVenom, field_338, 0x338);
+
 	VALIDATE(CVenom, field_33C, 0x33C);
 	VALIDATE(CVenom, field_33D, 0x33D);
+
+	VALIDATE(CVenom, field_340, 0x340);
+	VALIDATE(CVenom, field_348, 0x348);
+
 	VALIDATE(CVenom, field_358, 0x358);
 	VALIDATE(CVenom, field_35C, 0x35C);
 

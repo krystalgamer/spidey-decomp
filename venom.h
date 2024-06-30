@@ -22,10 +22,14 @@ public:
 	EXPORT void Lookaround(void);
 	EXPORT void TugWeb(void);
 
-	u8 venomStartPad[0x18];
+	u8 venomStartPad[0x18-4];
+	i32 field_338;
 	u8 field_33C;
 	u8 field_33D;
-	u8 venomPadAfter33D[0x24 - 12];
+
+	SHandle field_340;
+	i32 field_348;
+	u8 venomPadAfter348[0x358 - 0x348 - 4];
 
 	i32 field_358;
 	i32* field_35C;
