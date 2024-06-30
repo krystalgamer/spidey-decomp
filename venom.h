@@ -18,6 +18,7 @@ public:
 	EXPORT i32* KillCommandBlock(i32*);
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
+	EXPORT void PlayNextFootstepSFX(void);
 
 	u8 venomStartPad[0x18];
 	u8 field_33C;

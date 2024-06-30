@@ -1,6 +1,8 @@
 #include "venom.h"
 #include "validate.h"
 #include "mem.h"
+#include "utils.h"
+#include "ps2lowsfx.h"
 
 //Revisit
 void __inline CVenom::Lookaround(void)
@@ -93,6 +95,20 @@ CVenomElectrified::CVenomElectrified(CSuper* pSuper)
 	print_if_false((pSuper->field_38 == 313), "Non venom sent to CVenomElectrified");
 
 	this->field_3C = Mem_MakeHandle(pSuper);
+}
+
+i32 gVenomFootstepRelated;
+
+// @NotOk
+// globals
+void CVenom::PlayNextFootstepSFX(void)
+{
+	i32 i;
+	for (i = Rnd(4) + 245; i == gVenomFootstepRelated; i = Rnd(4) + 245)
+		;
+
+	gVenomFootstepRelated = i;
+	SFX_PlayPos(i | 0x8000, &this->mPos, 0);
 }
 
 void validate_CVenom(void){
