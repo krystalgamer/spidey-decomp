@@ -105,9 +105,7 @@ public:
 
 	int field_23C;
 
-	int field_240;
-	int field_244;
-	int field_248;
+	CVector field_240;
 	int field_24C;
 
 

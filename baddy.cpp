@@ -627,9 +627,9 @@ CBaddy::CBaddy(void)
 		this->field_1B4[i].vz = 0;
 	}
 
-	this->field_240 = 0;
-	this->field_244 = 0;
-	this->field_248 = 0;
+	this->field_240.vx = 0;
+	this->field_240.vy = 0;
+	this->field_240.vz = 0;
 	this->field_27C.vx = 0;
 	this->field_27C.vy = 0;
 	this->field_27C.vz = 0;
@@ -831,8 +831,6 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_23C, 0x23C);
 
 	VALIDATE(CBaddy, field_240, 0x240);
-	VALIDATE(CBaddy, field_244, 0x244);
-	VALIDATE(CBaddy, field_248, 0x248);
 
 	VALIDATE(CBaddy, field_24C, 0x24C);
 
