@@ -3,6 +3,7 @@
 #include "mem.h"
 #include "utils.h"
 #include "ps2lowsfx.h"
+#include "trig.h"
 
 //Revisit
 void __inline CVenom::Lookaround(void)
@@ -109,6 +110,15 @@ void CVenom::PlayNextFootstepSFX(void)
 
 	gVenomFootstepRelated = i;
 	SFX_PlayPos(i | 0x8000, &this->mPos, 0);
+}
+
+void CVenom::GetTargetPosFromNode(CVector *pVector, i32 a3)
+{
+	Trig_GetPosition(pVector, a3);
+
+	i32 v5 = Utils_GetGroundHeight(pVector, 0, 0x2000, 0);
+	if (v5 != -1)
+		pVector->vy = v5 - (this->field_21E << 12);
 }
 
 void validate_CVenom(void){

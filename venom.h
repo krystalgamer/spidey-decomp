@@ -19,6 +19,7 @@ public:
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
 	EXPORT void PlayNextFootstepSFX(void);
+	EXPORT void GetTargetPosFromNode(CVector *, i32);
 
 	u8 venomStartPad[0x18];
 	u8 field_33C;
