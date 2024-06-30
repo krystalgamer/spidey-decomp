@@ -176,8 +176,7 @@ public:
 	int field_100;
 	SHandle field_104;
 
-	int field_10C;
-	unsigned char padAfter10C[4];
+	SHandle field_10C;
 
 	SHandle field_114;
 

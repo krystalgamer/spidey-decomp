@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "ps2lowsfx.h"
 #include "trig.h"
+#include "web.h"
 
 // @TODO
 CVenom::CVenom(int*, int)
@@ -113,6 +114,41 @@ void INLINE CVenom::Lookaround(void)
 			break;
 		default:
 			print_if_false(0, "Unknown substate");
+			break;
+	}
+}
+
+// @Ok
+void INLINE CVenom::TugWeb(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_218 &= 0xFFFFFFF8;
+			this->mAccellorVel.vz = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vx = 0;
+			this->dumbAssPad++;
+		case 1:
+			if (this->field_218 & 0x200)
+			{
+				this->field_218 &= 0xFFFFFDFF;
+				if (this->field_10C.field_0)
+				{
+					CTrapWebEffect* pWeb = reinterpret_cast<CTrapWebEffect*>(
+							Mem_RecoverPointer(&this->field_10C));
+
+					if (pWeb)
+						pWeb->Burst();
+
+					this->field_10C.field_0 = 0;
+				}
+
+				this->field_31C.bothFlags = 32;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
 			break;
 	}
 }

@@ -20,6 +20,7 @@ public:
 	EXPORT void PlayNextFootstepSFX(void);
 	EXPORT void GetTargetPosFromNode(CVector *, i32);
 	EXPORT void Lookaround(void);
+	EXPORT void TugWeb(void);
 
 	u8 venomStartPad[0x18];
 	u8 field_33C;
