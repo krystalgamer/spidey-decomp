@@ -21,6 +21,7 @@ public:
 	EXPORT void GetTargetPosFromNode(CVector *, i32);
 	EXPORT void Lookaround(void);
 	EXPORT void TugWeb(void);
+	EXPORT void AdjustWaterModel(void);
 
 	u8 venomStartPad[0x18-4];
 	i32 field_338;

@@ -5,14 +5,14 @@
 #include "ps2lowsfx.h"
 #include "trig.h"
 #include "web.h"
+#include "spool.h"
 
 // @TODO
 CVenom::CVenom(int*, int)
 {}
 
 // @Ok
-void Venom_CreateVenom(const unsigned int *stack, unsigned int *result)
-{
+void Venom_CreateVenom(const unsigned int *stack, unsigned int *result) {
 	int* v2 = reinterpret_cast<int*>(*stack);
 	int v3 = static_cast<int>(stack[1]);
 
@@ -151,6 +151,40 @@ void INLINE CVenom::TugWeb(void)
 		default:
 			break;
 	}
+}
+
+extern u8 gObjFileRegion;
+extern CBody* EnvironmentalObjectList[1];
+
+// @Ok
+void CVenom::AdjustWaterModel(void)
+{
+	//SHandle *pHandle = &this->field_340;
+	CBody* pBody = reinterpret_cast<CBody*>(
+			Mem_RecoverPointer(&this->field_340));
+
+	if (!pBody)
+	{
+		u32 Model = Spool_GetModel(0x26D2DBB7, gObjFileRegion);
+
+		for (pBody = EnvironmentalObjectList[0];
+				pBody;
+				pBody = reinterpret_cast<CBody*>(pBody->field_20))
+		{
+			if (pBody->mRegion == gObjFileRegion && pBody->mModel == Model)
+			{
+				this->field_340 = Mem_MakeHandle(pBody);
+				this->field_348 = pBody->mPos.vy;
+				break;
+			}
+		}
+	}
+
+	if (pBody)
+	{
+		pBody->mPos.vy = this->field_348 - 18 * this->field_338;
+	}
+
 }
 
 void validate_CVenom(void){

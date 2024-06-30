@@ -57,6 +57,7 @@ CItem::~CItem()
 {
 }
 
+CBody* EnvironmentalObjectList[1];
 // @Ok
 void CBody::AI(void)
 {
