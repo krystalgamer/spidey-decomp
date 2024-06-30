@@ -327,6 +327,7 @@ int main()
 	validate_CNonRenderedBit();
 	validate_SPSXRegion();
 	validate_CSimbyShot();
+	validate_CVenomElectrified();
 
 	puts("[*] Validation done!");
 

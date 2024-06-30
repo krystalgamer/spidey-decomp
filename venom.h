@@ -11,62 +11,62 @@ class CVenom : public CBaddy {
 
 public:
 
-	EXPORT CVenom(int*, int);
+	EXPORT CVenom(i32*, i32);
 	EXPORT void Lookaround(void);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
-	EXPORT int* KillCommandBlock(int*);
+	EXPORT i32* KillCommandBlock(i32*);
 	EXPORT void KillAllCommandBlocks(void);
-	EXPORT unsigned char TugImpulse(CVector *, CVector *, CVector *);
+	EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
 
-	unsigned char venomStartPad[0x18];
-	unsigned char field_33C;
-	unsigned char field_33D;
-	unsigned char venomPadAfter33D[0x24 - 12];
+	u8 venomStartPad[0x18];
+	u8 field_33C;
+	u8 field_33D;
+	u8 venomPadAfter33D[0x24 - 12];
 
-	int field_358;
-	int* field_35C;
-	unsigned char venomPadAfter35C[0x37C-0x35C-4];
+	i32 field_358;
+	i32* field_35C;
+	u8 venomPadAfter35C[0x37C-0x35C-4];
 
-	int field_37C;
-	int field_380;
-	int field_384;
-	unsigned char venomPadAfter384[0x14];
+	i32 field_37C;
+	i32 field_380;
+	i32 field_384;
+	u8 venomPadAfter384[0x14];
 
-	int field_39C;
-	int field_3A0;
-	int field_3A4;
-	int field_3A8;
+	i32 field_39C;
+	i32 field_3A0;
+	i32 field_3A4;
+	i32 field_3A8;
 	
-	unsigned char venomPadAFter3A8[0x3C];
+	u8 venomPadAFter3A8[0x3C];
 
-	int field_3E8;
-	int field_3EC;
-	int field_3F0;
+	i32 field_3E8;
+	i32 field_3EC;
+	i32 field_3F0;
 
-	unsigned char venomPadAfter3F0[0xC];
+	u8 venomPadAfter3F0[0xC];
 
-	int field_400;
-	int field_404;
-	int field_408;
-	int field_40C;
-	int field_410;
-	int field_414;
-	int field_418;
-	int field_41C;
-	int field_420;
-	unsigned char venomPadAfter420[0x30 - 0x24];
+	i32 field_400;
+	i32 field_404;
+	i32 field_408;
+	i32 field_40C;
+	i32 field_410;
+	i32 field_414;
+	i32 field_418;
+	i32 field_41C;
+	i32 field_420;
+	u8 venomPadAfter420[0x30 - 0x24];
 
-	int field_430;
+	i32 field_430;
 	CQuadBit *field_434;
-	unsigned char venomPadAfter434[0x20-4];
+	u8 venomPadAfter434[0x20-4];
 
 
-	int field_454;
-	int field_458;
-	int field_45C;
-	int field_460;
-	int field_464;
+	i32 field_454;
+	i32 field_458;
+	i32 field_45C;
+	i32 field_460;
+	i32 field_464;
 	
 	// @TODO venom has two secret virtual fucnctions
 };
@@ -75,11 +75,20 @@ class CVenomWrap : public CNonRenderedBit
 {
 	public:
 		EXPORT void Die(void);
-		unsigned char fullPad[0x20];
+		u8 fullPad[0x20];
+};
+
+class CVenomElectrified : public CNonRenderedBit
+{
+	public:
+		EXPORT CVenomElectrified(CSuper*);
+		SHandle field_3C;
+		u8 padBottom[4];
 };
 
 void validate_CVenom(void);
 void validate_CVenomWrap(void);
+void validate_CVenomElectrified(void);
 EXPORT void Venom_CreateVenom(const unsigned int *stack, unsigned int *result);
 
 

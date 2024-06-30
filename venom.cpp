@@ -86,6 +86,15 @@ unsigned char CVenom::TugImpulse(CVector *a2, CVector *a3, CVector *a4)
 	return 0;
 }
 
+// @Ok
+CVenomElectrified::CVenomElectrified(CSuper* pSuper)
+{
+	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
+	print_if_false((pSuper->field_38 == 313), "Non venom sent to CVenomElectrified");
+
+	this->field_3C = Mem_MakeHandle(pSuper);
+}
+
 void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
@@ -131,4 +140,11 @@ void validate_CVenom(void){
 void validate_CVenomWrap(void)
 {
 	VALIDATE_SIZE(CVenomWrap, 0x5C);
+}
+
+void validate_CVenomElectrified(void)
+{
+	VALIDATE_SIZE(CVenomElectrified, 0x48);
+
+	VALIDATE(CVenomElectrified, field_3C, 0x3C);
 }
