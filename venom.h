@@ -12,7 +12,6 @@ class CVenom : public CBaddy {
 public:
 
 	EXPORT CVenom(i32*, i32);
-	EXPORT void Lookaround(void);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 	EXPORT i32* KillCommandBlock(i32*);
@@ -20,6 +19,7 @@ public:
 	EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
 	EXPORT void PlayNextFootstepSFX(void);
 	EXPORT void GetTargetPosFromNode(CVector *, i32);
+	EXPORT void Lookaround(void);
 
 	u8 venomStartPad[0x18];
 	u8 field_33C;

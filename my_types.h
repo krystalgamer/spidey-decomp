@@ -36,5 +36,7 @@ typedef char i8;
 typedef short i16;
 typedef int i32;
 
+#define INLINE __inline
+
 #endif
 

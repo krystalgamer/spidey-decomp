@@ -5,37 +5,6 @@
 #include "ps2lowsfx.h"
 #include "trig.h"
 
-//Revisit
-void __inline CVenom::Lookaround(void)
-{
-
-	int v2; // r0
-
-  v2 = this->dumbAssPad;
-  if ( v2 == 1 )
-  {
-    if ( this->field_142 )
-    {
-      this->field_31C.bothFlags = 32;
-      this->dumbAssPad = 0;
-    }
-  }
-  else if ( v2 >= 1 || v2 < 0 )
-  {
-    print_if_false(0, "Unknown substate");
-  }
-  else
-  {
-    this->field_218 &= 0xFFFFFFF8;
-    this->mAccellorVel.vz = 0;
-    this->mAccellorVel.vy = 0;
-    this->mAccellorVel.vx = 0;
-    this->RunAnim(8, 0, -1);
-    ++this->dumbAssPad;
-  }
-
-}
-
 // @TODO
 CVenom::CVenom(int*, int)
 {}
@@ -112,6 +81,7 @@ void CVenom::PlayNextFootstepSFX(void)
 	SFX_PlayPos(i | 0x8000, &this->mPos, 0);
 }
 
+// @Ok
 void CVenom::GetTargetPosFromNode(CVector *pVector, i32 a3)
 {
 	Trig_GetPosition(pVector, a3);
@@ -119,6 +89,32 @@ void CVenom::GetTargetPosFromNode(CVector *pVector, i32 a3)
 	i32 v5 = Utils_GetGroundHeight(pVector, 0, 0x2000, 0);
 	if (v5 != -1)
 		pVector->vy = v5 - (this->field_21E << 12);
+}
+
+// @Ok
+void INLINE CVenom::Lookaround(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_218 &= 0xFFFFFFF8;
+			this->mAccellorVel.vx = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vz = 0;
+			this->RunAnim(8, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 32;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate");
+			break;
+	}
 }
 
 void validate_CVenom(void){
