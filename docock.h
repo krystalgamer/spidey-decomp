@@ -18,6 +18,7 @@ public:
 	EXPORT int* KillCommandBlock(int*);
 	EXPORT void TakeHit(void);
 	EXPORT void CalculateStage(void);
+	EXPORT void HangAndGetBeaten(void);
 
 	int field_324;
 	int field_328;
@@ -28,7 +29,10 @@ public:
 
 	int field_4A8;
 	int field_4AC;
-	unsigned char padAfter4AC[0x4C4-0x4AC-4];
+	u8 padAfter4AC[0x4B8-0x4AC-4];
+
+	i32 field_4B8;
+	u8 padAfter4B8[0x4C4-0x4B8-4];
 
 	int field_4C4;
 	unsigned char padAfter4C4[0x4EC-0x4C4-4];

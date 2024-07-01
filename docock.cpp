@@ -181,6 +181,54 @@ INLINE void CDocOc::CalculateStage(void)
 	}
 }
 
+// @Ok
+void CDocOc::HangAndGetBeaten(void)
+{
+
+	if (this->field_142)
+	{
+		if (this->field_12A == 23 || this->field_12A == 32)
+		{
+			this->PlaySingleAnim(0x17, 0, -1);
+		}
+		else
+		{
+			this->PlaySingleAnim(0x20, 0, -1);
+		}
+	}
+
+	switch(this->dumbAssPad)
+	{
+		case 0:
+			this->mCBodyFlags |= 0x10;
+			this->field_DC = 100;
+			this->dumbAssPad = 1;
+			break;
+		case 1:
+			if (!this->field_4B8)
+			{
+				this->mCBodyFlags &= 0xFFEF;
+				this->field_DC = 0;
+
+				if (this->field_104.field_0)
+				{
+					CTrapWebEffect *pWeb = reinterpret_cast<CTrapWebEffect*>(
+							Mem_RecoverPointer(&this->field_104));
+
+					if (pWeb)
+						pWeb->Burst();
+
+					this->field_104.field_0 = 0;
+				}
+
+				this->PlaySingleAnim(0x18, 0, -1);
+				this->field_31C.bothFlags = 2048;
+				this->dumbAssPad = 0;
+			}
+			break;
+	}
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -191,6 +239,7 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_334, 0x334);
 
 	VALIDATE(CDocOc, field_4A8, 0x4A8);
+	VALIDATE(CDocOc, field_4B8, 0x4B8);
 	VALIDATE(CDocOc, field_4AC, 0x4AC);
 
 	VALIDATE(CDocOc, field_4C4, 0x4C4);
