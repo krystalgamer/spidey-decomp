@@ -50,7 +50,7 @@ class CAIProc : public CClass
 		int field_14;
 
 		CAIProc* field_18;
-		CAIProc* field_1C;
+		CAIProc* mNext;
 };
 
 class CAIProc_LookAt : public CAIProc

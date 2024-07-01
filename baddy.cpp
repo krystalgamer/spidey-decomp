@@ -6,6 +6,7 @@
 #include "web.h"
 #include <cmath>
 #include "trig.h"
+#include "ai.h"
 
 // @TODO
 i32 CBaddy::GetNextWaypoint(void)
@@ -442,29 +443,19 @@ int CBaddy::Die(int a2)
 	return 0;
 }
 
-
-
-// @NotOk
-// Calling a vfunc with fastcall, basically matching but polluting edx
-void CBaddy::CleanUpAIPRocList(int a2)
+// @Ok
+INLINE void CBaddy::CleanUpAIProcList(i32 a2)
 {
-	int v2 = reinterpret_cast<int>(this->field_28C);
-	int v3;
-
-
-	while (v2)
+	CAIProc *pProc = this->mAIProcList;
+	while (pProc)
 	{
-		v3 = v2;
-		v2 = *reinterpret_cast<int*>(v2 + 28);
-
-		if (a2 || (*reinterpret_cast<unsigned char*>(v3 + 16) & 1))
+		CAIProc *curProc = pProc;
+		pProc = pProc->mNext;
+		if (
+				 a2
+				|| curProc->field_10 & 1)
 		{
-			if (v3)
-			{
-				typedef void (FASTCALL *wtvHappeningPtr)(void*, void*, int);
-				wtvHappeningPtr wtvHappening = reinterpret_cast<wtvHappeningPtr>(**reinterpret_cast<int**>(v3));
-				wtvHappening(reinterpret_cast<void*>(v3), NULL, 1);
-			}
+			delete curProc;
 		}
 	}
 }
@@ -764,7 +755,7 @@ CBaddy* FindBaddyOfType(int type)
 // @Ok
 void CBaddy::MarkAIProcList(int a2, int a3, int a4)
 {
-	unsigned int *head = this->field_28C;
+	unsigned int *head = reinterpret_cast<u32*>(this->mAIProcList);
 	while (head)
 	{
 		unsigned int *v5 = head;
@@ -833,7 +824,7 @@ void validate_CBaddy(void){
 
 	VALIDATE(CBaddy, field_288, 0x288);
 
-	VALIDATE(CBaddy, field_28C, 0x28C);
+	VALIDATE(CBaddy, mAIProcList, 0x28C);
 	VALIDATE(CBaddy, pMessage, 0x290);
 
 	VALIDATE(CBaddy, field_294, 0x294);

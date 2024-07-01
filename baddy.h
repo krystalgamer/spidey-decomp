@@ -14,6 +14,7 @@ union IntToBytes
 };
 
 class CMessage;
+class CAIProc;
 class CBaddy : public CSuper {
 
 public:
@@ -35,7 +36,7 @@ public:
 	EXPORT int SetHeight(int, int, int);
 	EXPORT void SendDeathPulse(void);
 	EXPORT int Die(int);
-	EXPORT void CleanUpAIPRocList(int);
+	EXPORT void CleanUpAIProcList(i32);
 	EXPORT int BumpedIntoSpidey(int);
 	EXPORT int ShouldFall(int, int);
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
@@ -115,7 +116,7 @@ public:
 
 	int field_288;
 	
-	unsigned int  *field_28C;
+	CAIProc *mAIProcList;
 	CMessage* pMessage;
 
 	IntToBytes field_294;

@@ -35,11 +35,11 @@ void __inline CAIProc::AttachProc(AIProcType a2, CBaddy* a3, int a4)
 {
 	this->pBaddy = a3;
 
-	this->field_1C = reinterpret_cast<CAIProc*>(a3->field_28C);
-	if (this->field_1C)
-		this->field_1C->field_18 = this;
+	this->mNext = a3->mAIProcList;
+	if (this->mNext)
+		this->mNext->field_18 = this;
 
-	a3->field_28C = reinterpret_cast<unsigned int*>(this);
+	a3->mAIProcList = this;
 
 	if (!(a2 & 0x40000))
 		a3->MarkAIProcList(0, a2 & 0xFF00, 0);
@@ -104,8 +104,8 @@ void CAIProc_LookAt::Execute(void)
 {
 	if (this->Wait())
 	{
-		if (this->field_1C)
-			this->field_1C->Execute();
+		if (this->mNext)
+			this->mNext->Execute();
 	}
 	else
 	{
@@ -152,8 +152,8 @@ void CAIProc_Fall::Execute(void)
 		this->field_10 |= 1;
 	}
 
-	if (this->field_1C)
-		this->field_1C->Execute();
+	if (this->mNext)
+		this->mNext->Execute();
 }
 
 // @Ok
@@ -174,8 +174,8 @@ void CAIProc_StateSwitchSendMessage::Execute(void)
 		this->field_10 |= 1;
 	}
 
-	if (this->field_1C)
-		this->field_1C->Execute();
+	if (this->mNext)
+		this->mNext->Execute();
 }
 
 // @Ok
@@ -225,8 +225,8 @@ void CAIProc_MonitorAttack::Execute(void)
 
 	}
 
-	if (this->field_1C)
-		this->field_1C->Execute();
+	if (this->mNext)
+		this->mNext->Execute();
 }
 
 // @Ok
@@ -308,8 +308,8 @@ void CAIProc_AccZ::Execute(void)
 		}
 	}
 
-	if (this->field_1C)
-		this->field_1C->Execute();
+	if (this->mNext)
+		this->mNext->Execute();
 }
 
 // @Ok
@@ -432,8 +432,8 @@ void CAIProc_MoveTo::Execute(void)
 		}
 	}
 
-	if (this->field_1C)
-		this->field_1C->Execute();
+	if (this->mNext)
+		this->mNext->Execute();
 }
 
 void validate_CAIProc(void)
@@ -447,7 +447,7 @@ void validate_CAIProc(void)
 	VALIDATE(CAIProc, field_14, 0x14);
 	VALIDATE(CAIProc, field_18, 0x18);
 
-	VALIDATE(CAIProc, field_1C, 0x1C);
+	VALIDATE(CAIProc, mNext, 0x1C);
 }
 
 void validate_CAIProc_LookAt(void)
