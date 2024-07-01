@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef OB_H
+#define  OB_H
+
 #include "export.h"
 #include "vector.h"
 #include "bit.h"
@@ -150,12 +154,14 @@ public:
 	EXPORT void Suspend(CBody**);
 
 	EXPORT CBody();
+	EXPORT ~CBody(void);
 };
 
 class CSuper : public CBody {
 public:
 
 	EXPORT CSuper();
+	EXPORT ~CSuper(void);
 	EXPORT void OutlineOff(void);
 	EXPORT void OutlineOn(void);
 	EXPORT void SetOutlineSemiTransparent(void);
@@ -179,7 +185,7 @@ public:
 
 	SHandle field_114;
 
-	int SNbrFaces;
+	void *field_11C;
 	int alsoOutlineRelated;
 	unsigned char outlineR;
 	unsigned char outlineG;
@@ -190,7 +196,9 @@ public:
 	unsigned __int16 field_12A;
 
 	int outlineRelated;
-	unsigned char padA[0xE];
+	void* field_130;
+	void* field_134;
+	u8 padAfter134[0x13E-0x134-4];
 
 	unsigned char field_13E;
 	unsigned char field_13F;
@@ -218,9 +226,9 @@ public:
 
 	unsigned char padVE[0x14-8];
 	MATRIX field_164;
-	unsigned char padAfter188[0x4];
 
-	int field_188;
+	void *field_184;
+	void* field_188;
 	unsigned char padEE[0x4];
 	__int16 *actualcsuperend;
 };
@@ -231,3 +239,5 @@ void validate_CBody(void);
 void validate_CSuper(void);
 
 static CSuper *globalSuper = (CSuper*)0x006A9038;
+
+#endif

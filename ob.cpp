@@ -53,7 +53,7 @@ __inline CItem::CItem()
 // @Ok
 // First part is for delete[]
 // second is for delete, nothing to do
-CItem::~CItem()
+INLINE CItem::~CItem()
 {
 }
 
@@ -405,7 +405,7 @@ void CSuper::OutlineOff(void){
 // Missing most stuff, only used by CVenom and CDummy
 void CSuper::OutlineOn(void){
 	this->outlineRelated |= 4;
-	if (!this->SNbrFaces){
+	if (!this->field_11C){
 	}
 
 	this->outlineR = -1;
@@ -615,6 +615,44 @@ void CBody::EveryFrame(void)
 
 }
 
+INLINE CBody::~CBody(void)
+{
+	if (this->bodyQuadBit)
+		delete this->bodyQuadBit;
+}
+
+CSuper::~CSuper(void)
+{
+	if (this->field_184)
+		Mem_Delete(this->field_184);
+
+	if (this->field_188)
+		Mem_Delete(this->field_188);
+
+	if (this->field_134)
+		Mem_Delete(this->field_134);
+
+	if (this->field_130)
+		Mem_Delete(this->field_130);
+
+	CItem *first = reinterpret_cast<CItem*>(
+			Mem_RecoverPointer(&this->field_104));
+
+	if (first)
+		delete first;
+
+	CItem *second = reinterpret_cast<CItem*>(
+			Mem_RecoverPointer(&this->field_10C));
+
+	if (second)
+		delete second;
+
+	if (this->field_11C)
+		Mem_Delete(this->field_11C);
+
+	this->field_11C = 0;
+}
+
 void validate_CItem(void){
 
 	VALIDATE_SIZE(CItem, 0x40);
@@ -732,7 +770,7 @@ void validate_CSuper(void){
 
 	VALIDATE(CSuper, field_10C, 0x10C);
 	VALIDATE(CSuper, field_114, 0x114);
-	VALIDATE(CSuper, SNbrFaces, 0x11C);
+	VALIDATE(CSuper, field_11C, 0x11C);
 	VALIDATE(CSuper, alsoOutlineRelated, 0x120);
 	VALIDATE(CSuper, outlineR, 0x124);
 	VALIDATE(CSuper, outlineG, 0x125);
@@ -752,6 +790,9 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_12A, 0x12A);
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
+	VALIDATE(CSuper, field_130, 0x130);
+	VALIDATE(CSuper, field_134, 0x134);
+
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
 
@@ -767,6 +808,7 @@ void validate_CSuper(void){
 
 	VALIDATE(CSuper, field_164, 0x164);
 
+	VALIDATE(CSuper, field_184, 0x184);
 	VALIDATE(CSuper, field_188, 0x188);
 	VALIDATE(CSuper, actualcsuperend, 0x190);
 }
