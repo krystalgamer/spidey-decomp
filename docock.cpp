@@ -164,6 +164,23 @@ void CDocOc::TakeHit(void)
 	}
 }
 
+// @Ok
+INLINE void CDocOc::CalculateStage(void)
+{
+	if (this->field_E2 > 400)
+	{
+		this->field_550 = 1;
+	}
+	else if (this->field_E2 > 200)
+	{
+		this->field_550 = 2;
+	}
+	else
+	{
+		this->field_550 = 3;
+	}
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -180,6 +197,9 @@ void validate_CDocOc(void){
 
 	VALIDATE(CDocOc, field_4EC, 0x4EC);
 	VALIDATE(CDocOc, field_50C, 0x50C);
+
+	VALIDATE(CDocOc, field_550, 0x550);
+
 	VALIDATE(CDocOc, field_554, 0x554);
 	VALIDATE(CDocOc, field_570, 0x570);
 }

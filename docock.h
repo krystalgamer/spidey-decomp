@@ -17,6 +17,7 @@ public:
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT int* KillCommandBlock(int*);
 	EXPORT void TakeHit(void);
+	EXPORT void CalculateStage(void);
 
 	int field_324;
 	int field_328;
@@ -36,8 +37,9 @@ public:
 	unsigned char padAfter4EC[0x1C];
 
 	CVector field_50C;
-	unsigned char padAfter514[0x40-4];
+	unsigned char padAfter50C[0x550-0x50C-sizeof(CVector)];
 
+	i32 field_550;
 	int field_554;
 	unsigned char padAfter554[0x570-0x554-4];
 
