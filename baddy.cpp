@@ -596,6 +596,8 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 void CBaddy::ParseScript(unsigned __int16*)
 {}
 
+i32 NumBaddies;
+
 // @NotOk
 // Globals
 CBaddy::CBaddy(void)
@@ -639,9 +641,8 @@ CBaddy::CBaddy(void)
 	this->field_2FC.vy = 0;
 	this->field_2FC.vz = 0;
 
-	int *dword_56E98C = reinterpret_cast<int*>(0x56E98C);
-	this->field_21D = *dword_56E98C;
-	*dword_56E98C = *dword_56E98C + 1;
+	this->field_21D = NumBaddies++;
+	this->mCBodyFlags |= 0x200;
 
 	this->field_DC = 128;
 	this->field_F4 = 128;
@@ -776,6 +777,15 @@ void CBaddy::MarkAIProcList(int a2, int a3, int a4)
 
 		v5[4] = v6;
 	}
+}
+
+CBaddy::~CBaddy(void)
+{
+	print_if_false(NumBaddies > 0, "Negative NumBaddies");
+	--NumBaddies;
+
+	this->CleanUpAIProcList(1);
+	this->CleanUpMessages(1, 0);
 }
 
 void validate_CBaddy(void){

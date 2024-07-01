@@ -19,6 +19,7 @@ class CBaddy : public CSuper {
 
 public:
 	EXPORT CBaddy(void);
+	EXPORT ~CBaddy(void);
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
 	EXPORT void CleanUpMessages(i32, i32);
@@ -92,7 +93,7 @@ public:
 	__int16 field_216;
 	int field_218;
 	unsigned char padAFter218[0x1];
-	unsigned char field_21D;
+	u8 field_21D;
 
 	__int16 field_21E;
 
