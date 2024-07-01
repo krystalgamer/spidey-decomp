@@ -3,6 +3,8 @@
 #include "trig.h"
 #include "panel.h"
 #include "ps2m3d.h"
+#include "web.h"
+#include "mem.h"
 
 // @NotOk
 // globals
@@ -80,7 +82,7 @@ void CDocOc::RenderClaws(void)
 }
 
 // @Ok
-void __inline CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
+void INLINE CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 {
 	this->field_4C4 = 0;
 	this->RunAnim(a2, a3, a4);
@@ -115,6 +117,52 @@ void CDocOc::KillAllCommandBlocks(void)
 	this->field_4AC = 0;
 }
 
+// @Ok
+void CDocOc::TakeHit(void)
+{
+	CTrapWebEffect *pWeb;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+
+			pWeb = reinterpret_cast<CTrapWebEffect*>(
+					Mem_RecoverPointer(&this->field_104));
+
+			if (pWeb)
+				pWeb->Burst();
+
+			this->field_104.field_0 = 0;
+
+			if (this->field_218 & 0x10)
+			{
+				this->PlaySingleAnim(0x1C, 0, -1);
+			}
+			else if (this->field_218 & 0x20)
+			{
+				this->PlaySingleAnim(0x1D, 0, -1);
+			}
+			else if (this->field_218 & 0x40)
+			{
+				this->PlaySingleAnim(0x1E, 0, -1);
+			}
+			else
+			{
+				this->PlaySingleAnim(0x1B, 0, -1);
+			}
+
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->PlayIdleOrGloatAnim();
+				this->field_31C.bothFlags = 1024;
+				this->dumbAssPad = 1;
+			}
+			break;
+	}
+}
 
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);

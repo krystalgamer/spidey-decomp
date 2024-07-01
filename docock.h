@@ -16,6 +16,7 @@ public:
 	EXPORT void PlayIdleOrGloatAnim(void);
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT int* KillCommandBlock(int*);
+	EXPORT void TakeHit(void);
 
 	int field_324;
 	int field_328;
