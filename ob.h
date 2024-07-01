@@ -198,7 +198,7 @@ public:
 	int outlineRelated;
 	void* field_130;
 	void* field_134;
-	u8 padAfter134[0x13E-0x134-4];
+	u8 padAfter134[0x6];
 
 	unsigned char field_13E;
 	unsigned char field_13F;
