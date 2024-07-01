@@ -20,7 +20,7 @@ public:
 	EXPORT CBaddy(void);
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
-	EXPORT void CleanUpMessages(int, int);
+	EXPORT void CleanUpMessages(i32, i32);
 	EXPORT int CheckStateFlags(SStateFlags *, int);
 	EXPORT int YawTowards(int, int);
 	EXPORT int RunTimer(int*);

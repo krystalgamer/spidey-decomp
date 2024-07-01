@@ -52,28 +52,21 @@ int CBaddy::TrapWeb(void){
 	return 1;
 }
 
-
-// @NotOk
-// Replace fastcall with proper call
-void CBaddy::CleanUpMessages(int a2, int a3)
+// @Ok
+INLINE void CBaddy::CleanUpMessages(i32 a2, i32 a3)
 {
-	int v3 = reinterpret_cast<int>(this->field_28C);
-	int v4;
 
-
-	while (v3)
+	CMessage *pMessage = this->pMessage;
+	while (pMessage)
 	{
-		v4 = v3;
-		v3 = *reinterpret_cast<int*>(v3 + 28);
-
-		if ((*reinterpret_cast<unsigned char*>(v4+16) & 1) || a2 || *reinterpret_cast<int*>(v4+20) == a3)
+		CMessage *curMessage = pMessage;
+		pMessage = pMessage->mNext;
+		if (
+				curMessage->field_10 & 1
+				|| a2
+				|| curMessage->field_14 == a3)
 		{
-			if (v4)
-			{
-				typedef void (FASTCALL *wtvHappeningPtr)(void*, void*, int);
-				wtvHappeningPtr wtvHappening = reinterpret_cast<wtvHappeningPtr>(**reinterpret_cast<int**>(v3));
-				wtvHappening(reinterpret_cast<void*>(v3), NULL, 1);
-			}
+			delete curMessage;
 		}
 	}
 }
