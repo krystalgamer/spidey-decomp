@@ -8,6 +8,8 @@
 #include "trig.h"
 #include "ai.h"
 
+CBaddy* ControlBaddyList;
+
 // @TODO
 i32 CBaddy::GetNextWaypoint(void)
 {

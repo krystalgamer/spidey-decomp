@@ -45,10 +45,7 @@ public:
 	i32 field_4F4;
 	u8 padAfter4F4[0x4FC-0x4F4-4];
 
-	i32* field_4FC;
-	i32* field_500;
-	i32* field_504;
-	i32* field_508;
+	CBaddy* field_4FC[4];
 
 	CVector field_50C;
 	i32 field_518;

@@ -230,9 +230,22 @@ void CDocOc::HangAndGetBeaten(void)
 	}
 }
 
-// @TODO
-void CDocOc::ResolveSwitches(void)
-{}
+extern CBaddy* ControlBaddyList;
+INLINE void CDocOc::ResolveSwitches(void)
+{
+	i32 index = 0;
+	for (CBaddy* pBaddy = ControlBaddyList;
+			pBaddy;
+			pBaddy = reinterpret_cast<CBaddy*>(pBaddy->field_20))
+	{
+		if (pBaddy->field_38 == 407)
+		{
+			this->field_4FC[index++] = pBaddy;
+		}
+	}
+
+	print_if_false(index == 4, "Error");
+}
 
 void CDocOc::Initialise(void)
 {
@@ -241,10 +254,10 @@ void CDocOc::Initialise(void)
 	this->field_4EC = 1;
 	this->field_4F4 = Rnd(4);
 
-	print_if_false(this->field_4FC[64] == 1, "Error0");
-	print_if_false(this->field_500[64] == 1, "Error1");
-	print_if_false(this->field_504[64] == 1, "Error2");
-	print_if_false(this->field_508[64] == 1, "Error3");
+	print_if_false(this->field_4FC[0]->field_100 == 1, "Error0");
+	print_if_false(this->field_4FC[1]->field_100 == 1, "Error1");
+	print_if_false(this->field_4FC[2]->field_100 == 1, "Error2");
+	print_if_false(this->field_4FC[3]->field_100 == 1, "Error3");
 
 	this->field_31C.bothFlags = 0x10000;
 	this->dumbAssPad = 0;
@@ -277,10 +290,6 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_4F4, 0x4F4);
 
 	VALIDATE(CDocOc, field_4FC, 0x4FC);
-	VALIDATE(CDocOc, field_500, 0x500);
-	VALIDATE(CDocOc, field_504, 0x504);
-	VALIDATE(CDocOc, field_508, 0x508);
-
 
 	VALIDATE(CDocOc, field_50C, 0x50C);
 	VALIDATE(CDocOc, field_518, 0x518);

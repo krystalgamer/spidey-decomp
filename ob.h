@@ -178,7 +178,7 @@ public:
 	unsigned char padAfterF8[2];
 
 	int field_FC;
-	int field_100;
+	i32 field_100;
 	SHandle field_104;
 
 	SHandle field_10C;
