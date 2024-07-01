@@ -19,6 +19,8 @@ public:
 	EXPORT void TakeHit(void);
 	EXPORT void CalculateStage(void);
 	EXPORT void HangAndGetBeaten(void);
+	EXPORT void Initialise(void);
+	EXPORT void ResolveSwitches(void);
 
 	int field_324;
 	int field_328;
@@ -38,10 +40,19 @@ public:
 	unsigned char padAfter4C4[0x4EC-0x4C4-4];
 
 	int field_4EC;
-	unsigned char padAfter4EC[0x1C];
+	u8 padAfter4EC[0x4F4-0x4EC-4];
+
+	i32 field_4F4;
+	u8 padAfter4F4[0x4FC-0x4F4-4];
+
+	i32* field_4FC;
+	i32* field_500;
+	i32* field_504;
+	i32* field_508;
 
 	CVector field_50C;
-	unsigned char padAfter50C[0x550-0x50C-sizeof(CVector)];
+	i32 field_518;
+	unsigned char padAfter518[0x550-0x518-4];
 
 	i32 field_550;
 	int field_554;

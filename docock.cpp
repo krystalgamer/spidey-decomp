@@ -5,6 +5,7 @@
 #include "ps2m3d.h"
 #include "web.h"
 #include "mem.h"
+#include "utils.h"
 
 // @NotOk
 // globals
@@ -229,6 +230,33 @@ void CDocOc::HangAndGetBeaten(void)
 	}
 }
 
+// @TODO
+void CDocOc::ResolveSwitches(void)
+{}
+
+void CDocOc::Initialise(void)
+{
+	this->field_518 = 455;
+	this->ResolveSwitches();
+	this->field_4EC = 1;
+	this->field_4F4 = Rnd(4);
+
+	print_if_false(this->field_4FC[64] == 1, "Error0");
+	print_if_false(this->field_500[64] == 1, "Error1");
+	print_if_false(this->field_504[64] == 1, "Error2");
+	print_if_false(this->field_508[64] == 1, "Error3");
+
+	this->field_31C.bothFlags = 0x10000;
+	this->dumbAssPad = 0;
+	this->bodyVector.vy = Utils_GetGroundHeight(&this->mPos, 0, 0x2000, 0);
+	if (this->bodyVector.vy != -1)
+	{
+		this->mPos.vy = this->bodyVector.vy - (this->field_21E << 12);
+	}
+
+	this->CalculateStage();
+}
+
 void validate_CDocOc(void){
 	VALIDATE_SIZE(CDocOc, 0x590);
 
@@ -245,7 +273,17 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_4C4, 0x4C4);
 
 	VALIDATE(CDocOc, field_4EC, 0x4EC);
+
+	VALIDATE(CDocOc, field_4F4, 0x4F4);
+
+	VALIDATE(CDocOc, field_4FC, 0x4FC);
+	VALIDATE(CDocOc, field_500, 0x500);
+	VALIDATE(CDocOc, field_504, 0x504);
+	VALIDATE(CDocOc, field_508, 0x508);
+
+
 	VALIDATE(CDocOc, field_50C, 0x50C);
+	VALIDATE(CDocOc, field_518, 0x518);
 
 	VALIDATE(CDocOc, field_550, 0x550);
 
