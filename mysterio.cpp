@@ -141,6 +141,29 @@ i32 INLINE CMysterio::CheckforCameraShake(i32 a2)
 	return 1;
 }
 
+// @Ok
+void INLINE CMysterio::EnterP2(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->RunAnim(10, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 1;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 void validate_CMysterio(void){
 	VALIDATE_SIZE(CMysterio, 0x3D0);
 

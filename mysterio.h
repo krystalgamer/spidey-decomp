@@ -28,6 +28,7 @@ class CMysterio : public CBaddy {
 	EXPORT i32 CMysterio::PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 	EXPORT void ShakePad(void);
 	EXPORT i32 CheckforCameraShake(i32);
+	EXPORT void EnterP2(void);
 
 	i32 field_324;
 	u8 padAfter324[0x4];
