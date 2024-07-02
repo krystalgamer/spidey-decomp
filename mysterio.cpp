@@ -1,5 +1,6 @@
 #include "mysterio.h"
 #include "validate.h"
+#include "ps2redbook.h"
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -74,6 +75,20 @@ void __inline CMysterioHeadCircle::AngryMode(void)
 	this->field_8C = 1;
 }
 
+// @Ok
+void INLINE CMysterio::MystRedbook_XAPlayPos(
+		i32 a2,
+		i32 a3,
+		CVector *a4,
+		i32 a5)
+{
+	if (Redbook_XAPlay(a2, a3, a5))
+	{
+		this->field_3A0 = 0;
+		this->field_39C = 480;
+	}
+}
+
 void validate_CMysterio(void){
 	VALIDATE_SIZE(CMysterio, 0x3D0);
 
@@ -94,6 +109,10 @@ void validate_CMysterio(void){
 
 	VALIDATE(CMysterio, field_38C, 0x38C);
 	VALIDATE(CMysterio, field_398, 0x398);
+
+	VALIDATE(CMysterio, field_39C, 0x39C);
+	VALIDATE(CMysterio, field_3A0, 0x3A0);
+
 	VALIDATE(CMysterio, field_3A8, 0x3A8);
 }
 

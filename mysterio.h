@@ -21,41 +21,44 @@ public:
 class CMysterio : public CBaddy {
 	public:
 
-	EXPORT CMysterio(int*, int);
+	EXPORT CMysterio(i32*, i32);
 	EXPORT CMysterio(void);
+	EXPORT void MystRedbook_XAPlayPos(i32, i32, CVector*, i32);
 
-	int field_324;
-	unsigned char padAfter324[0x4];
+	i32 field_324;
+	u8 padAfter324[0x4];
 
-	int field_32C;
-	unsigned char padAfter32C[0x358-0x32c-4];
+	i32 field_32C;
+	u8 padAfter32C[0x358-0x32c-4];
 
-	int field_358;
-	unsigned char padAfter358[0x4];
-
-
-	int field_360;
-	int field_364;
-	int field_368;
-	int field_36C;
-	unsigned char padAfter36C[0x4];
-
-	int field_374;
-	int field_378;
-	int field_37C;
-	int field_380;
-	int field_384;
-	unsigned char padAfter384[0x4];
-
-	int field_38C;
-	unsigned char padAfter38c[0x8];
-
-	int field_398;
-	unsigned char padAfter398[0x3a8-0x398-4];
+	i32 field_358;
+	u8 padAfter358[0x4];
 
 
-	int field_3A8;
-	unsigned char mysterioEndPad[0x3d0-0x3a8-4];
+	i32 field_360;
+	i32 field_364;
+	i32 field_368;
+	i32 field_36C;
+	u8 padAfter36C[0x4];
+
+	i32 field_374;
+	i32 field_378;
+	i32 field_37C;
+	i32 field_380;
+	i32 field_384;
+	u8 padAfter384[0x4];
+
+	i32 field_38C;
+	u8 padAfter38c[0x8];
+
+	i32 field_398;
+	i32 field_39C;
+	i32 field_3A0;
+	u8 padAfter3A8[4];
+
+
+	i32 field_3A8;
+	u8 mysterioEndPad[0x3d0-0x3a8-4];
 
 };
 

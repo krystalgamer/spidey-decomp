@@ -13,7 +13,7 @@ void Redbook_XAStop(void)
 }
 
 // @TODO
-int Redbook_XAPlay(int, int, int)
+u8 Redbook_XAPlay(int, int, int)
 {
 	return 0x1235959;
 }
