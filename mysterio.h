@@ -23,7 +23,8 @@ class CMysterio : public CBaddy {
 
 	EXPORT CMysterio(i32*, i32);
 	EXPORT CMysterio(void);
-	EXPORT void MystRedbook_XAPlayPos(i32, i32, CVector*, i32);
+	EXPORT u8 MystRedbook_XAPlayPos(i32, i32, CVector*, i32);
+	EXPORT i32 CMysterio::PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 
 	i32 field_324;
 	u8 padAfter324[0x4];

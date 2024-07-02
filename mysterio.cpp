@@ -76,17 +76,35 @@ void __inline CMysterioHeadCircle::AngryMode(void)
 }
 
 // @Ok
-void INLINE CMysterio::MystRedbook_XAPlayPos(
+u8 INLINE CMysterio::MystRedbook_XAPlayPos(
 		i32 a2,
 		i32 a3,
 		CVector *a4,
 		i32 a5)
 {
-	if (Redbook_XAPlay(a2, a3, a5))
+	u8 res = Redbook_XAPlay(a2, a3, a5);
+	if (res)
 	{
 		this->field_3A0 = 0;
 		this->field_39C = 480;
 	}
+
+	return res;
+}
+
+// @Ok
+i32 INLINE CMysterio::PlayAndAttachXAPlease(
+		i32 a2,
+		i32 a3,
+		CBody* pBody,
+		i32 a5)
+{
+	if (this->MystRedbook_XAPlayPos(a2, a3, &pBody->mPos, a5))
+	{
+		pBody->AttachXA(a2, a3);
+	}
+	
+	return 0;
 }
 
 void validate_CMysterio(void){
