@@ -164,11 +164,53 @@ void INLINE CMysterio::EnterP2(void)
 	}
 }
 
+extern i32 DifficultyLevel;
+
+// @NotOk
+// globals
+// good candidate for tests
+// there's a strange assignemnt but can't tell if it's due to inline or comma operator
+i32 INLINE CMysterio::GetAttackRotSpeed(void)
+{
+	if (!DifficultyLevel)
+	{
+		if (this->field_34C && this->field_350)
+		{
+			return 2;
+		}
+
+		return 5;
+	}
+	else
+	{
+		if (DifficultyLevel == 1)
+		{
+			if (this->field_34C && this->field_350)
+			{
+				return 3;
+			}
+
+			return 9;
+		}
+		else if (this->field_34C && this->field_350)
+		{
+			return 12;
+		}
+
+		return 5;
+
+	}
+}
+
 void validate_CMysterio(void){
 	VALIDATE_SIZE(CMysterio, 0x3D0);
 
 	VALIDATE(CMysterio, field_324, 0x324);
 	VALIDATE(CMysterio, field_32C, 0x32C);
+
+	VALIDATE(CMysterio, field_34C, 0x34C);
+	VALIDATE(CMysterio, field_350, 0x350);
+
 	VALIDATE(CMysterio, field_358, 0x358);
 	VALIDATE(CMysterio, field_360, 0x360);
 
