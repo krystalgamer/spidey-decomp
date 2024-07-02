@@ -16,9 +16,9 @@ struct SLinkInfo
 EXPORT int Trig_GetLevelId(void);
 EXPORT void Trig_GetPosition(CVector*, int);
 EXPORT void* Trig_GetLinksPointer(int);
-EXPORT void Trig_SendPulse(unsigned __int16*);
+EXPORT void Trig_SendPulse(u16*);
 EXPORT void Trig_SendPulseToNode(int);
-EXPORT void Trig_SendSignalToLinks(unsigned __int16*);
+EXPORT void Trig_SendSignalToLinks(u16*);
 EXPORT void Trig_ClearTrigMenu(void);
 EXPORT unsigned char* SkipFlags(unsigned char*);
 EXPORT void Trig_ResetCPCollisionFlags(void);

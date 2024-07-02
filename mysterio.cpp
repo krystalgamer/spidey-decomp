@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "ps2redbook.h"
 #include "ps2pad.h"
+#include "trig.h"
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -199,6 +200,37 @@ i32 INLINE CMysterio::GetAttackRotSpeed(void)
 
 		return 5;
 
+	}
+}
+
+// @Ok
+void CMysterio::SummonAttack(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->RunAnim(10, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_218 >= 58)
+			{
+				Trig_SendPulse(reinterpret_cast<u16*>(
+							Trig_GetLinksPointer(this->field_DE)));
+				this->dumbAssPad++;
+			}
+			break;
+		case 2:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 1;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
 	}
 }
 
