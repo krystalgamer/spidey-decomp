@@ -3,6 +3,7 @@
 #include "ps2redbook.h"
 #include "ps2pad.h"
 #include "trig.h"
+#include "ai.h"
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -229,7 +230,32 @@ void CMysterio::SummonAttack(void)
 			}
 			break;
 		default:
-			print_if_false(0, "Unknown substate!");
+			print_if_false(0, "Unknown substate.");
+			break;
+	}
+}
+
+extern CBody* MechList[1];
+
+// @NotOk
+// globals
+void CMysterio::LookMenacing(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			new CAIProc_LookAt(this, MechList[0], 0, 1, 60, 341);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->RunAnim(8, 0, -1);
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate.");
 			break;
 	}
 }
