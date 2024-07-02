@@ -1,6 +1,7 @@
 #include "mysterio.h"
 #include "validate.h"
 #include "ps2redbook.h"
+#include "ps2pad.h"
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -105,6 +106,21 @@ i32 INLINE CMysterio::PlayAndAttachXAPlease(
 	}
 	
 	return 0;
+}
+
+u8 gActuatorRelated;
+
+// @NotOk
+// globals
+void INLINE CMysterio::ShakePad(void)
+{
+	if (gActuatorRelated)
+	{
+		if (Pad_GetActuatorTime(0, 0) <= 2)
+			Pad_ActuatorOn(0, 6, 0, 1);
+		if (Pad_GetActuatorTime(0, 1) <= 2)
+			Pad_ActuatorOn(0, 10, 1, 0xC8);
+	}
 }
 
 void validate_CMysterio(void){

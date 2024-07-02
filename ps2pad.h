@@ -7,16 +7,18 @@
 
 struct SControl
 {
-	unsigned char pad[0x140];
+	u8 pad[0x140];
 
-	int field_140;
-	int field_144;
-	int field_148;
-	int field_14C;
+	i32 field_140;
+	i32 field_144;
+	i32 field_148;
+	i32 field_14C;
 };
 
-EXPORT void Pad_SetDigitalMapping(SControl*, int, int, int, int);
-EXPORT void Pad_ActuatorOff(unsigned char, unsigned char);
+EXPORT void Pad_SetDigitalMapping(SControl*, i32, i32, i32, i32);
+EXPORT void Pad_ActuatorOff(u8, u8);
+EXPORT u16 Pad_GetActuatorTime(u8, u8);
+EXPORT void Pad_ActuatorOn(u8, u16, u8, u8);
 
 void validate_SControl(void);
 
