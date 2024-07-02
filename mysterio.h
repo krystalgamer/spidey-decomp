@@ -32,6 +32,7 @@ class CMysterio : public CBaddy {
 	EXPORT i32 GetAttackRotSpeed(void);
 	EXPORT void SummonAttack(void);
 	EXPORT void LookMenacing(void);
+	EXPORT void RotateToOptimalAttackAngle(i32, i32);
 
 	i32 field_324;
 	u8 padAfter324[0x4];

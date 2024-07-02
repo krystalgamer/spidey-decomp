@@ -4,6 +4,7 @@
 #include "ps2pad.h"
 #include "trig.h"
 #include "ai.h"
+#include "utils.h"
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -258,6 +259,48 @@ void CMysterio::LookMenacing(void)
 			print_if_false(0, "Unknown substate.");
 			break;
 	}
+}
+
+// @Ok
+void CMysterio::RotateToOptimalAttackAngle(
+		i32 a2,
+		i32 a3)
+{
+	CSVector v7;
+
+	v7.vx = 0;
+	v7.vy = 0;
+	v7.vz = 0;
+
+	Utils_CalcAim(&v7, &this->mPos, &MechList[0]->mPos);
+
+	i32 v4 = v7.vy - this->mAngles.vy;
+
+	if (v4 < -2056)
+	{
+		v4 += 4096;
+	}
+	else if (v4 > 2056)
+	{
+		v4 -= 4096;
+	}
+
+	v4 -= a2;
+	if (v4 < -2056)
+	{
+		v4 += 4096;
+	}
+	else if (v4 > 2056)
+	{
+		v4 -= 4096;
+	}
+
+	new CAIProc_LookAt(
+			this,
+			v4 + this->mAngles.vy,
+			1,
+			a3,
+			200);
 }
 
 void validate_CMysterio(void){
