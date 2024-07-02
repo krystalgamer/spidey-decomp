@@ -14,6 +14,11 @@ enum ECameraMode {
 	ECam_mode_0x11 = 0x11,
 };
 
+enum EShakeType
+{
+	EShake_0x0 = 0x0,
+};
+
 class CCamera : public CBody {
 public:
 	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
@@ -34,6 +39,7 @@ public:
 	EXPORT void SetCamYDistance(__int16, unsigned __int16);
 	EXPORT void SetCamAngle(__int16, unsigned __int16);
 	EXPORT void GetPosition(CVector *);
+	EXPORT void Shake(CVector*, EShakeType);
 
 
 	int padTop;

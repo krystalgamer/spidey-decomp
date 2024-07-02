@@ -2,7 +2,7 @@
 #include "validate.h"
 #include "ps2funcs.h"
 
-
+CCamera *CameraList;
 
 // Not matching, not important
 void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4){
@@ -285,6 +285,11 @@ void CCamera::GetPosition(CVector * dst)
 	CVector *src = &this->mPos;
 	*dst = *src;
 }
+
+
+// @TODO
+void CCamera::Shake(CVector*, EShakeType)
+{}
 
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);

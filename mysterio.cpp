@@ -123,6 +123,24 @@ void INLINE CMysterio::ShakePad(void)
 	}
 }
 
+extern CCamera *CameraList;
+
+// @NotOk
+// globals
+i32 INLINE CMysterio::CheckforCameraShake(i32 a2)
+{
+
+	if (this->field_218 & 8 || this->field_218 < a2)
+		return 0;
+
+	CameraList->Shake(&this->mPos, EShake_0x0);
+
+	this->ShakePad();
+
+	this->field_218 |= 8;
+	return 1;
+}
+
 void validate_CMysterio(void){
 	VALIDATE_SIZE(CMysterio, 0x3D0);
 
