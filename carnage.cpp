@@ -77,6 +77,16 @@ void CSonicBubble::SetScale(int scale)
 	this->mFlags |= 0x200;
 }
 
+
+extern CBaddy* BaddyList;
+
+// @NotOk
+// globals
+CSonicBubble::~CSonicBubble(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+}
+
 // @Ok
 void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
 {
