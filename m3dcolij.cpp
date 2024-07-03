@@ -1,9 +1,17 @@
 #include "m3dinit.h"
 #include "m3dcolij.h"
 #include "validate.h"
+#include "ob.h"
 
+// @TODO
 void M3dColij_InitLineInfo(SLineInfo *)
 {
+}
+
+// @TODO
+i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
+{
+	return 0x03072024;
 }
 
 void validate_SLineInfo(void)

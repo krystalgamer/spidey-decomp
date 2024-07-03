@@ -115,7 +115,7 @@ public:
 
 	int field_D8;
 
-	__int16 field_DC;
+	u16 field_DC;
 
 	unsigned __int16 field_DE;
 

@@ -7,6 +7,70 @@
 #include "utils.h"
 #include "panel.h"
 #include "ps2lowsfx.h"
+#include "m3dutils.h"
+#include "m3dcolij.h"
+
+i32 gAttackRelated;
+extern CBody* MechList[1];
+
+// @Ok
+// not matching but good enough
+i32 CMysterio::MonitorAttack(
+		i32 a2,
+		VECTOR* a3,
+		i32 a4)
+{
+	SHook hook;
+
+
+	hook.Part.vy = a3->vy;
+	i32 res = 0;
+	hook.Part.vz = a3->vz;
+	hook.Part.vx = a3->vx;
+
+	if (this->field_388 != gAttackRelated - 1)
+	{
+		M3dUtils_GetDynamicHookPosition(
+				reinterpret_cast<VECTOR*>(&this->field_37C),
+				this,
+				&hook);
+	}
+	else
+	{
+		CVector v13;
+		CVector v14;
+
+		v13.vx = 0;
+		v13.vy = 0;
+		v13.vz = 0;
+
+		v14.vx = 0;
+		v14.vy = 0;
+		v14.vz = 0;
+
+		M3dUtils_GetDynamicHookPosition(
+				reinterpret_cast<VECTOR*>(&v13),
+				this,
+				&hook);
+
+		if (M3dColij_LineToSphere(
+					&this->field_37C,
+					&v13,
+					&v14,
+					MechList[0],
+					0,
+					((MechList[0]->field_DC + a4) << 12) / MechList[0]->field_DC))
+		{
+			res = 1;
+		}
+
+		this->field_37C = v13;
+	}
+
+	this->field_388 = gAttackRelated;
+
+	return res;
+}
 
 i32 gBossRelated;
 extern CBaddy* BaddyList;
@@ -48,9 +112,9 @@ CMysterio::CMysterio(int*, int)
 // Globals
 CMysterio::CMysterio(void)
 {
-	this->field_37C = 0;
-	this->field_380 = 0;
-	this->field_384 = 0;
+	this->field_37C.vx = 0;
+	this->field_37C.vy = 0;
+	this->field_37C.vz = 0;
 
 	this->InitItem("mysterio");
 
@@ -354,8 +418,8 @@ void validate_CMysterio(void){
 
 	VALIDATE(CMysterio, field_378, 0x378);
 	VALIDATE(CMysterio, field_37C, 0x37C);
-	VALIDATE(CMysterio, field_380, 0x380);
-	VALIDATE(CMysterio, field_384, 0x384);
+
+	VALIDATE(CMysterio, field_388, 0x388);
 
 	VALIDATE(CMysterio, field_38C, 0x38C);
 	VALIDATE(CMysterio, field_398, 0x398);

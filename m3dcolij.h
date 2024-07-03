@@ -8,6 +8,7 @@
 #include "vector.h"
 #include "ps2funcs.h"
 
+class CBody;
 struct SLineInfo
 {
 	CVector vec_0;
@@ -44,5 +45,6 @@ struct SLineInfo
 
 void validate_SLineInfo(void);
 EXPORT void M3dColij_InitLineInfo(SLineInfo *);
+EXPORT i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32);
 
 #endif

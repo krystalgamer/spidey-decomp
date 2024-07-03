@@ -34,6 +34,7 @@ class CMysterio : public CBaddy {
 	EXPORT void SummonAttack(void);
 	EXPORT void LookMenacing(void);
 	EXPORT void RotateToOptimalAttackAngle(i32, i32);
+	EXPORT i32 MonitorAttack(i32, VECTOR*, i32);
 
 	CItem* field_324;
 	u8 padAfter324[0x4];
@@ -55,10 +56,10 @@ class CMysterio : public CBaddy {
 
 	i32 field_374;
 	i32 field_378;
-	i32 field_37C;
-	i32 field_380;
-	i32 field_384;
-	u8 padAfter384[0x4];
+
+	CVector field_37C;
+
+	i32 field_388;
 
 	i32 field_38C;
 	u8 padAfter38c[0x8];
