@@ -93,6 +93,14 @@ void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
+CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
+{
+	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
+	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CCarnageElectrified");
+
+	this->field_3C = Mem_MakeHandle(pSuper);
+}
+
 // @TODO
 void CCarnage::DoPhysics(void)
 {}
@@ -117,4 +125,11 @@ void validate_CSonicBubble(void)
 	VALIDATE_SIZE(CSonicBubble, 0xF8);
 
 	VALIDATE(CSonicBubble, field_F4, 0xF4);
+}
+
+void validate_CCarnageElectrified(void)
+{
+	VALIDATE_SIZE(CCarnageElectrified, 0x48);
+
+	VALIDATE(CCarnageElectrified, field_3C, 0x3C);
 }

@@ -328,6 +328,7 @@ int main()
 	validate_SPSXRegion();
 	validate_CSimbyShot();
 	validate_CVenomElectrified();
+	validate_CCarnageElectrified();
 
 	puts("[*] Validation done!");
 

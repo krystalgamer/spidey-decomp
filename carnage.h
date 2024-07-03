@@ -40,9 +40,18 @@ class CSonicBubble : public CBody
 		int field_F4;
 };
 
+class CCarnageElectrified : public CNonRenderedBit
+{
+	public:
+		EXPORT CCarnageElectrified(CSuper*);
+		SHandle field_3C;
+		u8 bottomPad[4];
+};
+
 
 void validate_CCarnage(void);
 void validate_CSonicBubble(void);
+void validate_CCarnageElectrified(void);
 EXPORT void CreateSonicBubbleVertexWobbler(void);
 EXPORT void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result);
 
