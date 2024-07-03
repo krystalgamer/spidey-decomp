@@ -45,7 +45,7 @@ class CCarnageElectrified : public CNonRenderedBit
 	public:
 		EXPORT CCarnageElectrified(CSuper*);
 		SHandle field_3C;
-		u8 bottomPad[4];
+		i32 field_44;
 };
 
 

@@ -93,7 +93,7 @@ void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
+INLINE CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
 	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CCarnageElectrified");
@@ -132,4 +132,5 @@ void validate_CCarnageElectrified(void)
 	VALIDATE_SIZE(CCarnageElectrified, 0x48);
 
 	VALIDATE(CCarnageElectrified, field_3C, 0x3C);
+	VALIDATE(CCarnageElectrified, field_44, 0x44);
 }
