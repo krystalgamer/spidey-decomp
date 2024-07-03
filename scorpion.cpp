@@ -166,7 +166,7 @@ void Scorpion_GetCurrentTarget(unsigned int* pScorp, unsigned int* pTarget)
 	*pTarget = reinterpret_cast<unsigned int>((*reinterpret_cast<CScorpion**>(pScorp))->GetCurrentTarget());
 }
 
-static CSuper* BaddyList;
+CBaddy* BaddyList;
 
 // @NotOk
 // globals

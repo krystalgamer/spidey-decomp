@@ -24,6 +24,7 @@ class CMysterio : public CBaddy {
 
 	EXPORT CMysterio(i32*, i32);
 	EXPORT CMysterio(void);
+	EXPORT ~CMysterio(void);
 	EXPORT u8 MystRedbook_XAPlayPos(i32, i32, CVector*, i32);
 	EXPORT i32 CMysterio::PlayAndAttachXAPlease(i32, i32, CBody*, i32);
 	EXPORT void ShakePad(void);
@@ -34,7 +35,7 @@ class CMysterio : public CBaddy {
 	EXPORT void LookMenacing(void);
 	EXPORT void RotateToOptimalAttackAngle(i32, i32);
 
-	i32 field_324;
+	CItem* field_324;
 	u8 padAfter324[0x4];
 
 	i32 field_32C;
@@ -48,10 +49,8 @@ class CMysterio : public CBaddy {
 	u8 padAfter358[0x4];
 
 
-	i32 field_360;
-	i32 field_364;
-	i32 field_368;
-	i32 field_36C;
+	SHandle field_360;
+	SHandle field_368;
 	u8 padAfter36C[0x4];
 
 	i32 field_374;
@@ -67,11 +66,14 @@ class CMysterio : public CBaddy {
 	i32 field_398;
 	i32 field_39C;
 	i32 field_3A0;
-	u8 padAfter3A8[4];
+	u8 padAfter3A0[4];
 
 
 	i32 field_3A8;
-	u8 mysterioEndPad[0x3d0-0x3a8-4];
+	u8 padAfter3A8[0x3B8-0x3A8-4];
+
+	u32 field_3B8;
+	u8 mysterioEndPad[0x3d0-0x3b8-4];
 
 };
 

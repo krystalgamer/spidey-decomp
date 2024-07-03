@@ -5,6 +5,39 @@
 #include "trig.h"
 #include "ai.h"
 #include "utils.h"
+#include "panel.h"
+#include "ps2lowsfx.h"
+
+i32 gBossRelated;
+extern CBaddy* BaddyList;
+
+// @Ok
+CMysterio::~CMysterio(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	gBossRelated = 0;
+	Panel_DestroyHealthbar();
+
+	if (this->field_3B8)
+		SFX_Stop(this->field_3B8);
+
+	this->field_3B8 = 0;
+
+	if (this->field_324)
+		delete this->field_324;
+
+
+	CItem* first = reinterpret_cast<CItem*>(Mem_RecoverPointer(&this->field_360));
+	if (first)
+		delete first;
+
+	CItem* second = reinterpret_cast<CItem*>(Mem_RecoverPointer(&this->field_368));
+	if (second)
+		delete second;
+
+
+
+}
 
 // @TODO
 CMysterio::CMysterio(int*, int)
@@ -313,11 +346,10 @@ void validate_CMysterio(void){
 	VALIDATE(CMysterio, field_350, 0x350);
 
 	VALIDATE(CMysterio, field_358, 0x358);
-	VALIDATE(CMysterio, field_360, 0x360);
 
-	VALIDATE(CMysterio, field_364, 0x364);
+	VALIDATE(CMysterio, field_360, 0x360);
 	VALIDATE(CMysterio, field_368, 0x368);
-	VALIDATE(CMysterio, field_36C, 0x36C);
+
 	VALIDATE(CMysterio, field_374, 0x374);
 
 	VALIDATE(CMysterio, field_378, 0x378);
@@ -332,6 +364,8 @@ void validate_CMysterio(void){
 	VALIDATE(CMysterio, field_3A0, 0x3A0);
 
 	VALIDATE(CMysterio, field_3A8, 0x3A8);
+
+	VALIDATE(CMysterio, field_3B8, 0x3B8);
 }
 
 void validate_CSoftSpot(void){
