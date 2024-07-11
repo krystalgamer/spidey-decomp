@@ -45,8 +45,24 @@ class CScorpion : public CBaddy {
 		u8 padScorpion[0xC28-0xC20-4];
 };
 
+class CConstantLaser : public CNonRenderedBit
+{
+	public:
+
+		EXPORT CConstantLaser(i32);
+		EXPORT void SetRGB(u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
+
+		u8 topPad[0x10];
+		u8 field_4C[12];
+		u8 padAfter4C[0x60-0x4C-0xC];
+
+
+		i32 field_60;
+};
+
 EXPORT void Scorpion_GetCurrentTarget(unsigned int*, unsigned int*);
 
 void validate_CScorpion(void);
+void validate_CConstantLaser(void);
 
 #endif

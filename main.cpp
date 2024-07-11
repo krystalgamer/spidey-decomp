@@ -329,6 +329,7 @@ int main()
 	validate_CSimbyShot();
 	validate_CVenomElectrified();
 	validate_CCarnageElectrified();
+	validate_CConstantLaser();
 
 	puts("[*] Validation done!");
 

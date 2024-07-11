@@ -335,6 +335,42 @@ void CScorpion::TakeHit(void)
 	}
 }
 
+// @Ok
+CConstantLaser::CConstantLaser(i32 a2)
+{
+	this->field_60 = a2;
+	this->SetRGB(128, 128, 0, 255, 255, 128, 128, 128, 0, 255, 255, 255);
+}
+
+// @Ok
+INLINE void CConstantLaser::SetRGB(
+		u8 a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		u8 a6,
+		u8 a7,
+		u8 a8,
+		u8 a9,
+		u8 a10,
+		u8 a11,
+		u8 a12,
+		u8 a13)
+{
+	this->field_4C[0] = a2;
+	this->field_4C[1] = a3;
+	this->field_4C[2] = a4;
+	this->field_4C[3] = a5;
+	this->field_4C[4] = a6;
+	this->field_4C[5] = a7;
+	this->field_4C[6] = a8;
+	this->field_4C[7] = a9;
+	this->field_4C[8] = a10;
+	this->field_4C[9] = a11;
+	this->field_4C[10] = a12;
+	this->field_4C[11] = a13;
+}
+
 
 void validate_CScorpion(void){
 	VALIDATE_SIZE(CScorpion, 0xC28);
@@ -352,4 +388,12 @@ void validate_CScorpion(void){
 
 	VALIDATE(CScorpion, field_C18, 0xC18);
 	VALIDATE(CScorpion, field_C20, 0xC20);
+}
+
+void validate_CConstantLaser(void)
+{
+	VALIDATE_SIZE(CConstantLaser, 0x64);
+
+	VALIDATE(CConstantLaser, field_4C, 0x4C);
+	VALIDATE(CConstantLaser, field_60, 0x60);
 }
