@@ -695,9 +695,9 @@ void CBaddy::UnknownCBaddyFunctionFive(int)
 }
 
 // @TODO
-int CBaddy::GetClosest(int, int)
+CBaddy* CBaddy::GetClosest(int, int)
 {
-	return 0x888999;
+	return reinterpret_cast<CBaddy*>(0x888999);
 }
 
 // @TODO

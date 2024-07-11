@@ -4,6 +4,7 @@
 #include "ps2redbook.h"
 #include "mem.h"
 #include "ai.h"
+#include "message.h"
 
 extern i32 DifficultyLevel; 
 
@@ -61,9 +62,22 @@ void __inline CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
 
 extern CBody* MechList[1];
 
-// @TODO
+// @Ok
 void CHostage::TellSomebodyToShootMe(void)
 {
+	if (DifficultyLevel != 1 && DifficultyLevel)
+	{
+		CBaddy *pBaddy = this->GetClosest(304, 0);
+
+		if (pBaddy)
+		{
+			new CMessage(this, pBaddy, 13, 0);
+		}
+		else
+		{
+			new CMessage(this, this, 1, 0);
+		}
+	}
 }
 
 INLINE void CHostage::CheckIfFreed(void)

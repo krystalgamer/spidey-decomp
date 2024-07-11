@@ -190,9 +190,9 @@ u32 CThug::CheckStateFlags(SStateFlags*, int)
 }
 
 // @TODO
-i32 CThug::GetClosest(i32, i32)
+CBaddy* CThug::GetClosest(i32, i32)
 {
-	return 0x11062024;
+	return reinterpret_cast<CBaddy*>(0x11062024);
 }
 
 // @TODO
