@@ -226,6 +226,49 @@ CShellSymBurn::CShellSymBurn(CVector* pVector)
 	this->AttachTo(&MiscList);
 }
 
+SVECTOR gYAnglesRelated;
+
+// @NotOk
+// slightly different assembly, not important
+void CShellSymBurn::AI(void)
+{
+	this->mAngles.vy = gYAnglesRelated.vy + 2048;
+	this->field_28 = 3000;
+	this->field_2C = 3000;
+
+	if (++this->field_1A4 > 60)
+	{
+		i32 v3 = (this->field_24 & 0xFF) - 4;
+		if (v3 < 0)
+			v3 = 0;
+
+		this->field_2A -= 75;
+		this->field_24 = v3 | ((v3 | (v3 << 8)) << 8);
+
+		if (this->field_2A < 0)
+			this->field_2A = 0;
+
+		if (!v3 || !this->field_2A)
+		{
+			this->Die();
+		}
+	}
+	else
+	{
+		i32 v5 = (this->field_24 & 0xFF) - 129;
+		if (v5 < 128)
+			v5 = 128;
+
+		this->field_2A += 800;
+		this->field_24 = v5 | ((v5 | (v5 << 8)) << 8);
+
+		if (this->field_2A > 4096)
+			this->field_2A = 4096;
+	}
+
+	M3d_BuildTransform(this);
+}
+
 void validate_CRudeWordHitterSpidey(void){
 	VALIDATE_SIZE(CRudeWordHitterSpidey, 0x1AC);
 
@@ -282,4 +325,6 @@ void validate_Spidey_CIcon(void)
 void validate_CShellSymBurn(void)
 {
 	VALIDATE_SIZE(CShellSymBurn, 0x1A8);
+
+	VALIDATE(CShellSymBurn, field_1A4, 0x1A4);
 }

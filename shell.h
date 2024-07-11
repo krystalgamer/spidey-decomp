@@ -91,7 +91,11 @@ class CShellSymBurn : public CSuper
 {
 	public:
 		EXPORT CShellSymBurn(CVector*);
-		u8 padBottom[0x1];
+		EXPORT void AI(void);
+
+		u8 padTop[0x10];
+
+		i32 field_1A4;
 };
 
 void validate_CRudeWordHitterSpidey(void);
