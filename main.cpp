@@ -330,6 +330,7 @@ int main()
 	validate_CVenomElectrified();
 	validate_CCarnageElectrified();
 	validate_CConstantLaser();
+	validate_CShellSymBurn();
 
 	puts("[*] Validation done!");
 

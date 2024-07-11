@@ -87,10 +87,18 @@ class Spidey_CIcon : public CSuper
 		unsigned char pad[0x10];
 };
 
+class CShellSymBurn : public CSuper
+{
+	public:
+		EXPORT CShellSymBurn(CVector*);
+		u8 padBottom[0x1];
+};
+
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
 void validate_CWobblyGlow(void);
 void validate_CShellMysterioHeadGlow(void);
 void validate_Spidey_CIcon(void);
+void validate_CShellSymBurn(void);
 
 #endif

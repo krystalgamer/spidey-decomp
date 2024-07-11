@@ -213,6 +213,19 @@ void CRudeWordHitterSpidey::AI(void)
 	M3d_BuildTransform(this);
 }
 
+CBody *MiscList;
+
+// @Ok
+CShellSymBurn::CShellSymBurn(CVector* pVector)
+{
+	this->mPos = *pVector;
+	this->InitItem("fire");
+	this->mFlags |= 0x602;
+	this->field_2A = 0;
+	this->field_24 = 0xFFFFFF;
+	this->AttachTo(&MiscList);
+}
+
 void validate_CRudeWordHitterSpidey(void){
 	VALIDATE_SIZE(CRudeWordHitterSpidey, 0x1AC);
 
@@ -264,4 +277,9 @@ void validate_CWobblyGlow(void)
 void validate_Spidey_CIcon(void)
 {
 	VALIDATE_SIZE(Spidey_CIcon, 0x1A4);
+}
+
+void validate_CShellSymBurn(void)
+{
+	VALIDATE_SIZE(CShellSymBurn, 0x1A8);
 }
