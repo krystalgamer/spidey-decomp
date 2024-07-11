@@ -59,9 +59,24 @@ void __inline CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
 		this->AttachXA(a2, a3);
 }
 
+extern CBody* MechList[1];
+
 // @TODO
-void CHostage::CheckIfFreed(void)
+void CHostage::TellSomebodyToShootMe(void)
 {
+}
+
+INLINE void CHostage::CheckIfFreed(void)
+{
+	if (Utils_CrapDist(MechList[0]->mPos, this->mPos) < 0xC8 || this->field_44 & 1)
+	{
+		if (DifficultyLevel == 1 || DifficultyLevel == 0)
+			this->field_218 |= 1;
+		this->Baddy_SendSignal();
+		this->field_324 = 4;
+		this->dumbAssPad = 0;
+		this->TellSomebodyToShootMe();
+	}
 }
 
 // @Ok

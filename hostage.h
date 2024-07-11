@@ -18,6 +18,7 @@ public:
 	EXPORT void CheckIfFreed(void);
 	EXPORT void HostageXAPlay(i32, i32, i32);
 	EXPORT void BegMotherfucker(void);
+	EXPORT void TellSomebodyToShootMe(void);
 
 
 	i32 field_324;
