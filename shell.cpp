@@ -269,6 +269,128 @@ void CShellSymBurn::AI(void)
 	M3d_BuildTransform(this);
 }
 
+char *gBadWords[30] =
+{
+	"sjnkpc",
+	"cmpxkpc",
+	"bstf",
+	"\x62\x74\x74\x00",
+	"gvdl",
+	"cvhhfs",
+	"xbol",
+	"\x75\x6A\x75\x00"
+	"dvou",
+	"tobudi",
+	"qvttz",
+	"tiju",
+	"qjtt",
+	"\x64\x76\x6E\x00",
+	"\x77\x62\x68\x00",
+	"gfmudi",
+	"tqvol",
+	"\x6B\x6A\x7B\x00",
+	"dpdl",
+	"gjtujoh",
+	"ovutbd",
+	"bobm",
+	"ejmep",
+	"cbtubse",
+	"dpdl",
+	"cvuu",
+	"qfojt",
+	"uxbu",
+	"cjudi",
+};
+
+char *gGoodWords[30] = 
+{
+	"flower",
+	"happy",
+	"pretty",
+	"puppy",
+	"bunny",
+	"donut",
+	"lolly",
+	"love",
+	"nice",
+	"cake",
+	"poppy",
+	"fluffy",
+	"cloud",
+	"rainbow",
+	"icecream",
+	"sugar",
+	"windmill",
+	"iowa",
+	"toffee",
+	"taffy",
+	"candy",
+	"sodapop",
+	"bubble",
+	"cinnamon",
+	"dinosaur",
+	"balloon",
+	"lobster",
+	"honey",
+	"potato",
+	"spice",
+};
+
+// @Ok
+i32 Shell_DeRudify(char inp[INPUT_MAX_SIZE])
+{
+	char buffer[9];
+
+	for (i32 i = 0; ; i++)
+	{
+		if (i >= 29)
+			return 0;
+
+		Utils_CopyString(gBadWords[i], buffer, 9);
+		for (char *j = buffer; *j; j++)
+			--*j;
+
+		if (Shell_ContainsSubString(inp, buffer))
+			break;
+	}
+
+	i32 result = Utils_CopyString(gGoodWords[Rnd(30)], inp, 9);
+	for (i32 k = result; k < 8; k++)
+		inp[k] = '.';
+
+	return result;
+
+}
+
+// @NotOk
+// good candidate for tests
+INLINE i32 Shell_ContainsSubString(const char* hay, const char* needle)
+{
+	for (const char *hayPtr = hay; *hayPtr; hayPtr++)
+	{
+		const char *needlePtr = needle;
+		for (; *needlePtr; needlePtr++)
+		{
+			char needleChar = *needlePtr;
+			char hayChar = hay[needlePtr-needle];
+
+			if (needleChar >= 'A' && needleChar <= 'Z')
+				needleChar += ' ';
+
+			if (hayChar >= 'A' && hayChar <= 'Z')
+				hayChar += ' ';
+
+			if (hayChar != needleChar)
+				break;
+		}
+
+		if (!*needlePtr)
+			return 1;
+	}
+
+	return 0;
+}
+
 void validate_CRudeWordHitterSpidey(void){
 	VALIDATE_SIZE(CRudeWordHitterSpidey, 0x1AC);
 
