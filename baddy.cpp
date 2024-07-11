@@ -694,10 +694,29 @@ void CBaddy::UnknownCBaddyFunctionFive(int)
 {
 }
 
-// @TODO
-CBaddy* CBaddy::GetClosest(int, int)
+extern CBaddy* BaddyList;
+
+// @Ok
+CBaddy* CBaddy::GetClosest(i32 baddyType, i32 inSight)
 {
-	return reinterpret_cast<CBaddy*>(0x888999);
+	i32 distance = 10656;
+	CBaddy* result = 0;
+
+	for ( CBaddy* i = BaddyList; i; i = reinterpret_cast<CBaddy*>(i->field_20))
+	{
+		if ( (!baddyType || i->field_38 == baddyType) && i != this )
+		{
+			i32 v9 = Utils_CrapXZDist(this->mPos, i->mPos);
+			if ( distance > v9
+				&& (!inSight || Utils_LineOfSight(&i->mPos, &this->mPos, 0, 0)) )
+			{
+				distance = v9;
+				result = i;
+			}
+		}
+	}
+
+	return result;
 }
 
 // @TODO
