@@ -46,11 +46,11 @@ void CTorch::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @TODO
+// @BIGTODO
 void CTorch::DoPhysics(void)
 {}
 
-// @TODO
+// @BIGTODO
 __inline int* CTorch::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;

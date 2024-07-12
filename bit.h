@@ -22,7 +22,7 @@ class CBit
 		unsigned char mDead;
 		unsigned __int16 mFrigDeltaZ;
 		unsigned char mProtected;
-		unsigned char bottomPad;
+		unsigned char bitBottomPad;
 
 		EXPORT CBit();
 		EXPORT virtual ~CBit();
@@ -124,7 +124,7 @@ public:
 };
 
 class CNonRenderedBit : public CBit {
-public:
+	public:
 };
 
 class CSmokeTrail : public CNonRenderedBit

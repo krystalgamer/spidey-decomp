@@ -88,7 +88,13 @@ class CTrapWebEffect : public CNonRenderedBit
 {
 	public:
 		EXPORT void Burst(void);
-		unsigned char topPad[0x3F4];
+
+		SHandle field_3C;
+		void *field_44;
+		u8 padAfter44[0x418-0x44-4];
+
+		u8 field_418;
+		u8 bottomPad[0x430-0x418-1];
 };
 
 class CDomeShockWave : public CNonRenderedBit
