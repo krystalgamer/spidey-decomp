@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "m3dcolij.h"
 #include <cstdlib>
 #include <cmath>
 
@@ -140,10 +141,41 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 	return total;
 }
 
-// @TODO
-CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*)
+extern u32 gLineToItemRelated;
+extern CBody *EnvironmentalObjectList[1];
+extern SLineInfo gLineInfo;
+extern i32 gGetGroundRelated;
+
+// @Ok
+CBody* Utils_CheckObjectCollision(
+		CVector* a1,
+		CVector* a2,
+		CBody* a3,
+		CBody* a4)
 {
-	return reinterpret_cast<CBody*>(0x13052024);
+	CBody *result;
+
+	CVector v9;
+	v9.vx = 0;
+	v9.vy = 0;
+	v9.vz = 0;
+
+	result = reinterpret_cast<CBody*>(M3dColij_LineToSphere(a1, a2, &v9, a3, a4, 4096));
+
+	if (!result)
+	{
+		gLineInfo.vec_0 = *a1;
+		gLineInfo.vec_C = *a2;
+
+		M3dColij_InitLineInfo(&gLineInfo);
+
+		gLineToItemRelated = 1;
+		M3dColij_LineToItem(EnvironmentalObjectList[0], &gLineInfo);
+		result = reinterpret_cast<CBody*>(gGetGroundRelated);
+		gLineToItemRelated = 0;
+	}
+
+	return result;
 }
 
 // @TODO

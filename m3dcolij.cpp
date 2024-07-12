@@ -3,6 +3,8 @@
 #include "validate.h"
 #include "ob.h"
 
+u32 gLineToItemRelated;
+
 // @TODO
 void M3dColij_InitLineInfo(SLineInfo *)
 {
@@ -13,6 +15,10 @@ i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
 {
 	return 0x03072024;
 }
+
+// @TODO
+void M3dColij_LineToItem(CItem*, SLineInfo*)
+{}
 
 void validate_SLineInfo(void)
 {

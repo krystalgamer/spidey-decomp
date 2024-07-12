@@ -47,4 +47,6 @@ void validate_SLineInfo(void);
 EXPORT void M3dColij_InitLineInfo(SLineInfo *);
 EXPORT i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32);
 
+EXPORT void M3dColij_LineToItem(CItem*, SLineInfo*);
+
 #endif

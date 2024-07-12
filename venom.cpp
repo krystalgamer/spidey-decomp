@@ -7,9 +7,10 @@
 #include "web.h"
 #include "spool.h"
 
-// @TODO
+// @MEDIUMTODO
 CVenom::CVenom(int*, int)
-{}
+{
+}
 
 // @Ok
 void Venom_CreateVenom(const unsigned int *stack, unsigned int *result) {
@@ -25,7 +26,7 @@ void CVenom::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @TODO
+// @BIGTODO
 void CVenom::DoPhysics(void)
 {}
 
@@ -35,7 +36,7 @@ void CVenomWrap::Die(void)
 	CBit::Die();
 }
 
-// @TODO
+// @BIGTODO
 __inline int* CVenom::KillCommandBlock(int*)
 {
 	return (int*)0x03062024;
@@ -187,9 +188,10 @@ void CVenom::AdjustWaterModel(void)
 
 }
 
-// @TODO
+// @MEDIUMTODO
 void CVenom::PulseL6A4Node(bool)
-{}
+{
+}
 
 
 // @Ok

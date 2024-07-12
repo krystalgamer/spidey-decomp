@@ -6,7 +6,7 @@
 
 
 SLineInfo gLineInfo;
-int gGetGroundRelated;
+i32 gGetGroundRelated;
 int gGetGroundDefaultValue;
 
 
@@ -32,7 +32,7 @@ int Web_GetGroundY(const CVector* a1)
 	return gLineInfo.vec_C.vy;
 }
 
-// @TODO
+// @BIGTODO
 void CTrapWebEffect::Burst(void)
 {
 }
