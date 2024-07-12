@@ -2,7 +2,7 @@
 #include "validate.h"
 
 
-// @TODO
+// @SMALLTODO
 void Panel_CreateHealthBar(const CBody*, int)
 {}
 
@@ -30,7 +30,7 @@ int Panel_DrawTexturedPoly(SAnimFrame* pFrame, int a2)
 	return Panel_DrawTexturedPoly(pFrame->pTexture, a2);
 }
 
-// @TODO
+// @SMALLTODO
 int Panel_DrawTexturedPoly(Texture*, int)
 {
 	return 0x28052024;

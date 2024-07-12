@@ -51,7 +51,7 @@ int Spool_FindRegion(const char *a1)
 	return -1;
 }
 
-// @TODO
+// @MEDIUMTODO
 unsigned int Spool_GetModel(unsigned int Checksum, int Region)
 {
 	return 0x26052024;
@@ -67,18 +67,18 @@ unsigned int *Spool_SkipPackets(unsigned int *a1)
 	return i + 1;
 }
 
-// @TODO
+// @MEDIUMTODO
 Texture* Spool_FindTextureEntry(unsigned int)
 {
 	return (Texture*)0x03062024;
 }
 
-// @TODO
+// @BIGTODO
 void ClearRegion(int, int)
 {
 }
 
-// @TODO
+// @BIGTODO
 void Spool_RemoveUnusedTextures(void)
 {}
 

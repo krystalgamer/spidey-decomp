@@ -41,7 +41,7 @@ void __inline Font::SetCharMap(int a2)
 	}
 }
 
-// @TODO
+// @BIGTODO
 char Font::getCharIndex(char)
 {
 	return (char)0xFF;
@@ -95,11 +95,11 @@ void FontManager::AllShadowOn(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 void FontManager::UnloadFont(Font*)
 {}
 
-// @TODO
+// @SMALLTODO
 int Font::height(char*)
 {
 	return 0x29052024;

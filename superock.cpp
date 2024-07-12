@@ -57,7 +57,7 @@ void CSuperDocOck::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @TODO
+// @BIGTODO
 void CSuperDocOck::DoPhysics(void)
 {}
 
@@ -67,7 +67,7 @@ void CSuperDocOck::RenderClaws(void)
 	M3d_Render(this->field_3F4);
 }
 
-// @TODO
+// @BIGTODO
 __inline int* CSuperDocOck::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;

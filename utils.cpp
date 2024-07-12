@@ -403,7 +403,7 @@ int Utils_LinearFilter(
 
 }
 
-// @TODO
+// @MEDIUMTODO
 void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 {}
 
@@ -435,6 +435,6 @@ int Utils_XZDist(const CVector* a1, const CVector *a2)
 	return M3dMaths_SquareRoot0(v2 + v3);
 }
 
-// @TODO
+// @MEDIUMTODO
 void Utils_RotateY(CVector*, CVector*, int)
 {}

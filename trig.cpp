@@ -2,27 +2,27 @@
 #include "validate.h"
 
 
-// @TODO
+// @MEDIUMTODO
 int Trig_GetLevelId(void)
 {
 	return 0x686868;
 }
 
-// @TODO
+// @BIGTODO
 void Trig_GetPosition(CVector*, int)
 {}
 
-// @TODO
+// @SMALLTODO
 void* Trig_GetLinksPointer(int)
 {
 	return reinterpret_cast<void*>(0x686849);
 }
 
-// @TODO
+// @MEDIUMTODO
 void Trig_SendPulse(unsigned __int16*)
 {}
 
-// @TODO
+// @SMALLTODO
 void Trig_SendSignalToLinks(unsigned __int16*)
 {}
 
@@ -77,7 +77,7 @@ int __inline GetFlag(unsigned char flag, unsigned char *pData)
 	return 0;
 }
 
-// @TODO
+// @BIGTODO
 void Trig_SendPulseToNode(int)
 {}
 

@@ -258,11 +258,11 @@ void CCamera::CM_FixedPos(void){
 
 }
 
-// @TODO
+// @BIGTODO
 void CCamera::SetCamYDistance(__int16, unsigned __int16)
 {}
 
-// @TODO
+// @BIGTODO
 void CCamera::SetCamAngle(__int16, unsigned __int16)
 {}
 
@@ -287,7 +287,7 @@ void CCamera::GetPosition(CVector * dst)
 }
 
 
-// @TODO
+// @MEDIUMTODO
 void CCamera::Shake(CVector*, EShakeType)
 {}
 

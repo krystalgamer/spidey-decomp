@@ -1,7 +1,7 @@
 #include "effects.h"
 #include "validate.h"
 
-// @TODO
+// @MEDIUMTODO
 CElectrify::CElectrify(CSuper*, int)
 {
 }

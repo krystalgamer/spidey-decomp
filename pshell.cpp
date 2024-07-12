@@ -7,7 +7,7 @@ EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 }
 
 
-// @TODO
+// @SMALLTODO
 CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,int a9,int a10){
 	  this->unk_7 = a2;
 	  this->unk_8 = a3;
@@ -23,7 +23,7 @@ CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,in
 
 
 
-// @TODO
+// @MEDIUMTODO
 int CExpandingBox::Display(){
 
 	int unk_3; // ebx

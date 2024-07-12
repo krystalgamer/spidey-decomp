@@ -5,18 +5,18 @@
 
 u32 gLineToItemRelated;
 
-// @TODO
+// @MEDIUMTODO
 void M3dColij_InitLineInfo(SLineInfo *)
 {
 }
 
-// @TODO
+// @BIGTODO
 i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
 {
 	return 0x03072024;
 }
 
-// @TODO
+// @SMALLTODO
 void M3dColij_LineToItem(CItem*, SLineInfo*)
 {}
 

@@ -10,11 +10,11 @@
 
 static SStateFlags gSimbyFlags;
 extern CBody* MechList[1];
-// @TODO
+// @BIGTODO
 CSimbyShot::CSimbyShot(CVector*)
 {}
 
-// @TODO
+// @SMALLTODO
 void CSimby::SetUpHandPos(void)
 {}
 
@@ -201,7 +201,7 @@ void __inline CSimby::SetAlertModeTimer(int timer)
 		this->field_348 = timer;
 }
 
-// @TODO
+// @MEDIUMTODO
 CSimby::CSimby(int* a2, int a3)
 {
 }
@@ -267,7 +267,7 @@ void Simby_CreateSimby(const unsigned int *stack, unsigned int *result)
 	}
 }
 
-// @TODO
+// @MEDIUMTODO
 void MakeVertexWibbler(void)
 {}
 
@@ -362,7 +362,7 @@ void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
 }
 
 
-// @TODO
+// @SMALLTODO
 CEmber::CEmber(const CVector*, int)
 {}
 

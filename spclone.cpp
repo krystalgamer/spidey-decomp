@@ -8,11 +8,11 @@ void CSpClone::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @TODO
+// @BIGTODO
 void CSpClone::DoPhysics(void)
 {}
 
-// @TODO
+// @BIGTODO
 __inline int* CSpClone::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;

@@ -1,7 +1,7 @@
 #include "ps2lowsfx.h"
 
 
-// @TODO
+// @BIGTODO
 void SFX_PlayPos(unsigned int, CVector*, int)
 {}
 
@@ -25,10 +25,10 @@ void SFX_ReverbOff(void)
 	SFX_SetReverbType(0);
 }
 
-// @TODO
+// @BIGTODO
 void SFX_Stop(unsigned int)
 {}
 
-// @TODO
+// @BIGTODO
 void SFX_Play(u32, i16, i32)
 {}

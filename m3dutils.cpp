@@ -1,7 +1,7 @@
 #include "m3dutils.h"
 #include "validate.h"
 
-// @TODO
+// @SMALLTODO
 void M3dUtils_ReadLinksPacket(CSuper*, void*)
 {}
 
@@ -32,24 +32,24 @@ void M3dUtils_InBetween(CSuper *a1)
 	}
 }
 
-// @TODO
+// @BIGTODO
 void M3dUtils_BuildPose(CSuper*)
 {}
 
 
-// @TODO
+// @BIGTODO
 void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)
 {}
 
-// @TODO
+// @BIGTODO
 void M3dUtils_GetHookPosition(VECTOR*, CSuper*, int)
 {}
 
-// @TODO
+// @BIGTODO
 void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)
 {}
 
-// @TODO
+// @SMALLTODO
 void M3dUtils_ReadHooksPacket(CSuper*, void*)
 {}
 

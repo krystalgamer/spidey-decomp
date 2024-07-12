@@ -10,17 +10,17 @@
 
 CBaddy* ControlBaddyList;
 
-// @TODO
+// @SMALLTODO
 i32 CBaddy::GetNextWaypoint(void)
 {
 	return 0x18062024;
 }
 
-// @TODO
+// @SMALLTODO
 void CBaddy::RunAppropriateAnim(void)
 {}
 
-// @TODO
+// @MEDIUMTODO
 int CBaddy::SmackSpidey(int, CVector*, int, int)
 {
 	return 0x06062024;
@@ -146,7 +146,7 @@ int CBaddy::RunTimer(int *a2)
 	return *a2;
 }
 
-// @TODO
+// @BIGTODO
 int CBaddy::PathCheckGuts(CVector*, CVector*, CVector*, int)
 {
 	return 0x14141414;
@@ -594,7 +594,7 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 	return  abs(v14) <= (a2 >> 1);
 }
 
-// @TODO
+// @MEDIUMTODO
 void CBaddy::ParseScript(unsigned __int16*)
 {}
 
@@ -658,7 +658,7 @@ void CBaddy::CreateCombatImpactEffect(CVector*, int)
 {
 }
 
-// @TODO
+// @SMALLTODO
 unsigned char CBaddy::TugImpulse(CVector*, CVector*, CVector*)
 {
 	return (unsigned char)0x21052024;
@@ -719,25 +719,25 @@ CBaddy* CBaddy::GetClosest(i32 baddyType, i32 inSight)
 	return result;
 }
 
-// @TODO
+// @BIGTODO
 int CBaddy::ExecuteCommand(unsigned __int16)
 {
 	return 0x21052025;
 }
 
-// @TODO
+// @MEDIUMTODO
 void CBaddy::SetVariable(unsigned __int16)
 {
 	printf("test");
 }
 
-// @TODO
+// @MEDIUMTODO
 unsigned __int16 CBaddy::GetVariable(unsigned __int16)
 {
 	return 0x696940;
 }
 
-// @TODO
+// @BIGTODO
 void CBaddy::DoPhysics(int)
 {
 }

@@ -89,7 +89,7 @@ void INLINE CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 	this->RunAnim(a2, a3, a4);
 }
 
-// @TODO
+// @SMALLTODO
 void CDocOc::PlayIdleOrGloatAnim(void)
 {}
 
@@ -104,7 +104,7 @@ void __inline CDocOc::Gloat(void)
 	}
 }
 
-// @TODO
+// @BIGTODO
 __inline int* CDocOc::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;

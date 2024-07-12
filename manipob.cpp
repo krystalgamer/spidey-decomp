@@ -105,11 +105,11 @@ void CManipOb::Smash(void)
 	this->Die();
 }
 
-// @TODO
+// @BIGTODO
 void CManipOb::Chunk(SLineInfo*, CVector*)
 {}
 
-// @TODO
+// @SMALLTODO
 void CManipOb::TurnOffShadow(void)
 {}
 

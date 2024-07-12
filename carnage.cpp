@@ -40,7 +40,7 @@ CCarnage::CCarnage(int* a2, int a3)
 	CreateSonicBubbleVertexWobbler();
 }
 
-// @TODO
+// @MEDIUMTODO
 void CreateSonicBubbleVertexWobbler(void)
 {}
 
@@ -101,7 +101,7 @@ INLINE CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
 	this->field_3C = Mem_MakeHandle(pSuper);
 }
 
-// @TODO
+// @BIGTODO
 void CCarnage::DoPhysics(void)
 {}
 

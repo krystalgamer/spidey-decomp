@@ -91,13 +91,13 @@ void CThug::PlaySounds(void)
 
 }
 
-// @TODO
+// @MEDIUMTODO
 i32 CThug::MonitorSpitPlease(void)
 {
 	return 0x11062024;
 }
 
-// @TODO
+// @SMALLTODO
 void CThug::CycleOrContinueAnim(i32, i32, i32, i32)
 {
 }
@@ -183,19 +183,13 @@ void CThug::Guard(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 u32 CThug::CheckStateFlags(SStateFlags*, int)
 {
 	return 0x11062024;
 }
 
-// @TODO
-CBaddy* CThug::GetClosest(i32, i32)
-{
-	return reinterpret_cast<CBaddy*>(0x11062024);
-}
-
-// @TODO
+// @SMALLTODO
 i32 CThug::DistanceToPlayer(i32)
 {
 	return 0x11062024;
@@ -400,7 +394,7 @@ void CThug::LookConfused(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 i32 CThug::GetLaunched(CVector*, i32, i32, i32)
 {
 	return 0x10062024;
@@ -711,7 +705,7 @@ void CThug::SetThugType(int type)
 
 }
 
-// @TODO
+// @BIGTODO
 void CThug::RunToWhereTheActionIs(CVector*)
 {}
 
@@ -760,7 +754,7 @@ void __inline CThug::StandStill(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 i32 CThug::ShouldFall(i32, i32)
 {
 	return 0x09062024;
@@ -826,7 +820,7 @@ void __inline CThug::StopShooting(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 i32 CThug::AddPointToPath(CVector*, i32)
 {
 	return 0x09062024;

@@ -244,7 +244,7 @@ __int16 CPlayer::GetEffectiveHeading(void)
 	return (ratan2(third.vz, third.vx) + 1024) & 0xFFF;
 }
 
-// @TODO
+// @MEDIUMTODO
 void CPlayer::SetTargetTorsoAngle(__int16, int)
 {
 }
@@ -351,7 +351,7 @@ void CPlayer::RenderLookaroundReticle(void)
 	}
 }
 
-// @TODO
+// @BIGTODO
 void CPlayer::DrawRecticle(unsigned __int16, unsigned __int16, unsigned int)
 {}
 
@@ -511,15 +511,15 @@ void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
 	this->RunAnim(a2, a3, a4);
 }
 
-// @TODO
+// @BIGTODO
 void CPlayer::OrientToNormal(bool, CVector*)
 {}
 
-// @TODO
+// @BIGTODO
 void CPlayer::PriorToVenomDistanceAttack(CVector)
 {}
 
-// @TODO
+// @BIGTODO
 void CPlayer::SwitchToStandMode(void)
 {}
 
@@ -739,7 +739,7 @@ void CPlayer::StopAlertMusic(void)
 	}
 }
 
-// @TODO
+// @BIGTODO
 __inline int* CPlayer::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;

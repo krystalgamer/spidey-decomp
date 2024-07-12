@@ -6,7 +6,7 @@
 #include "web.h"
 #include "ps2redbook.h"
 
-// @TODO
+// @SMALLTODO
 i32 CScorpion::ScorpPathCheck(CVector*, CVector*, CVector*, i32)
 {
 	return 0x17062024;
@@ -246,7 +246,7 @@ void CScorpion::DoIntroSequence(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 void CScorpion::DetermineTarget(void)
 {}
 

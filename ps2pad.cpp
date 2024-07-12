@@ -18,13 +18,13 @@ void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i32 a5)
 	pControl->field_14C = a5;
 }
 
-// @TODO
+// @MEDIUMTODO
 u16 Pad_GetActuatorTime(u8, u8)
 {
 	return 0x020702024;
 }
 
-// @TODO
+// @SMALLTODO
 void Pad_ActuatorOn(u8, u16, u8, u8)
 {}
 

@@ -105,7 +105,7 @@ void __inline CJonah::GraspWaypoint(SLinkInfo* a2)
 	this->field_1F4 = a2->field_8;
 }
 
-// @TODO
+// @SMALLTODO
 int CJonah::LinkedHidingPlaceStillExists(int)
 {
 	return 0x69694040;
@@ -165,7 +165,7 @@ void CJonah::TakeHit(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 CBaddy* CJonah::FindScorp(void)
 {
 	return (CBaddy*)0x22052024;

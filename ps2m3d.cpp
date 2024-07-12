@@ -1,11 +1,11 @@
 #include "ps2m3d.h"
 
 
-// @TODO
+// @SMALLTODO
 void M3d_BuildTransform(CSuper* a){
 	a->actualcsuperend = (__int16*)69;
 }
 
-// @TODO
+// @BIGTODO
 void M3d_Render(void*)
 {}

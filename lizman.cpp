@@ -8,11 +8,11 @@
 #include "utils.h"
 #include "trig.h"
 
-// @TODO
+// @MEDIUMTODO
 void CLizMan::CalculateJumpPositionArray(CVector*)
 {}
 
-// @TODO
+// @BIGTODO
 i32 CLizMan::ScanNearbyNodesForJumpTarget(void)
 {
 	return 0x17062024;
@@ -130,7 +130,7 @@ void CLizMan::SwitchFromEulerToMatrix(void)
 	}
 }
 
-// @TODO
+// @BIGTODO
 void CLizMan::RunToWhereActionIs(CVector*)
 {}
 
@@ -174,7 +174,7 @@ void __inline CLizMan::StandStill(void)
 	}
 }
 
-// @TODO
+// @SMALLTODO
 void CLizMan::SwitchFromMatrixToEuler(void)
 {}
 
@@ -185,7 +185,7 @@ void CLizMan::StopClimbing(void)
 	this->field_390 = 0;
 }
 
-// @TODO
+// @MEDIUMTODO
 void CLizMan::FlyAcrossRoom(void)
 {
 	switch(this->dumbAssPad)

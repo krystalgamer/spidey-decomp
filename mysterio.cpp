@@ -103,7 +103,7 @@ CMysterio::~CMysterio(void)
 
 }
 
-// @TODO
+// @MEDIUMTODO
 CMysterio::CMysterio(int*, int)
 {
 }

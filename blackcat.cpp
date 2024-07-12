@@ -50,11 +50,11 @@ void CBlackCat::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @TODO
+// @BIGTODO
 void CBlackCat::DoPhysics(void)
 {}
 
-// @TODO
+// @BIGTODO
 int* CBlackCat::KillCommandBlock(int*)
 {
 	return (int*)0x01062024;

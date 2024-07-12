@@ -63,16 +63,16 @@ void Mess_ClearSimpleMessageList(void)
 	}
 }
 
-// @TODO
+// @BIGTODO
 void DeleteSimpleMessage(SimpleMessage*)
 {}
 
 
-// @TODO
+// @SMALLTODO
 void Mess_SetRGB(unsigned char, unsigned char, unsigned char, int)
 {}
 
-// @TODO
+// @MEDIUMTODO
 void Mess_SetCurrentFont(char *)
 {}
 

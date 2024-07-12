@@ -69,7 +69,7 @@ int CBody::Hit(SHitInfo*)
 	return 1;
 }
 
-// @TODO
+// @UNKTODO
 void CBody::UnknownVirtualFuction(void)
 {
 }

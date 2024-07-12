@@ -1,18 +1,18 @@
 #include "ps2redbook.h"
 
 
-// @TODO
+// @SMALLTODO
 u8 Redbook_XAPlayPos(int, int, CVector*, int)
 {
 	return static_cast<u8>(0x10062024);
 }
 
-// @TODO
+// @SMALLTODO
 void Redbook_XAStop(void)
 {
 }
 
-// @TODO
+// @BIGTODO
 u8 Redbook_XAPlay(int, int, int)
 {
 	return 0x1235959;
@@ -27,12 +27,12 @@ void Redbook_XAAllow(bool allowed)
 	gXAAllowed = allowed;
 }
 
-// @TODO
+// @MEDIUMTODO
 void Redbook_XAReset(void)
 {
 }
 
-// @TODO
+// @BIGTODO
 void Redbook_XAInit(void)
 {}
 

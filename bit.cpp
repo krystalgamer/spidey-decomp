@@ -311,7 +311,7 @@ int CFT4Bit::Fade(int a2)
 	return 0;
 }
 
-// @TODO
+// @MEDIUMTODO
 int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
 {
 	return 0x420690;
@@ -413,7 +413,7 @@ void CRibbonBit::Move(void)
 	this->IncFrameWithWrap();
 }
 
-// @TODO
+// @MEDIUMTODO
 void CFT4Bit::IncFrameWithWrap(void)
 {
 }
@@ -457,7 +457,7 @@ void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 	}
 }
 
-// @TODO
+// @MEDIUMTODO
 void Bit_ReduceRGB(unsigned int*, int)
 {}
 

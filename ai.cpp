@@ -98,7 +98,7 @@ CAIProc_LookAt::CAIProc_LookAt(CBaddy* pBaddy, int a3, int a4, int a5, int a6)
 	this->SetUpVariables(a6, a5);
 }
 
-// @TODO
+// @BIGTODO
 // barely started, wait doesnt' seem to match ffs
 void CAIProc_LookAt::Execute(void)
 {
@@ -129,7 +129,7 @@ CAIProc_Fall::CAIProc_Fall(CBaddy *pBaddy, int a3)
 	this->AttachProc(PROC_FALL_TYPE, pBaddy, a3);
 }
 
-// @TODO
+// @Ok
 void CAIProc_Fall::Execute(void)
 {
 	if (this->pBaddy->field_2A8 & 0x400)
@@ -198,7 +198,7 @@ CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int
 	this->field_30 = reinterpret_cast<CVector*>(DCMem_New(12 * setBits, 0, 1, 0, 1));
 }
 
-// @TODO
+// @Ok
 void CAIProc_MonitorAttack::Execute(void)
 {
 	if (this->pBaddy->field_12A != this->field_20)
