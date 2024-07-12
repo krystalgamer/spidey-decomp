@@ -178,13 +178,13 @@ CBody* Utils_CheckObjectCollision(
 	return result;
 }
 
-// @TODO
+// @SMALLTODO
 int Utils_GetGroundHeight(CVector*, int, int, CBody**)
 {
 	return 0x14052024;
 }
 
-// @TODO
+// @SMALLTODO
 int Utils_LineOfSight(CVector*, CVector*, CVector*, int)
 {
 	return 0x15052024;
@@ -375,10 +375,32 @@ unsigned int Utils_GenerateCRC(const char* buf)
 	return crc;
 }
 
-// @TODO
-int Utils_LinearFilter(int, int, int)
+// @Ok
+// @Test
+int Utils_LinearFilter(
+		i32 a1,
+		i32 a2,
+		i32 delta)
 {
-	return 0x31052024;
+	print_if_false(delta > 0, "delta must be greater than zero");
+
+	if (a1 > a2)
+	{
+		if (a1 - a2 <= delta)
+			return a2;
+
+		return a1 - delta;
+	}
+	else
+	{
+		if (a2 - a1 <= delta)
+		{
+			return a1;
+		}
+
+		return a1 + delta;
+	}
+
 }
 
 // @TODO
