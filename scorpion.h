@@ -21,6 +21,9 @@ class CScorpion : public CBaddy {
 		EXPORT void PlayXA_NoRepeat(i32, i32, i32, i32*, CBody*);
 		EXPORT i32 ScorpPathCheck(CVector*, CVector*, CVector*, i32);
 		EXPORT i32 PathLooksGood(CVector*);
+		EXPORT i32 WhatShouldIDo(void);
+		EXPORT void TargetPlayer(i32);
+		EXPORT i32 GetEnvironmentalObjectTarget(void);
 
 
 		i32 field_324;
@@ -35,8 +38,10 @@ class CScorpion : public CBaddy {
 		SHandle hCurrentTarget;
 
 		i32 field_BF8;
-		u8 padAfterBF8[0xC18-0xBF8-4];
+		u8 padAfterBF8[0xC10-0xBF8-4];
 
+		i32 field_C10;
+		i32 field_C14;
 		i32 field_C18;
 		u8 padAfterC18[0x4];
 

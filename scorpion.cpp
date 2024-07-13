@@ -6,6 +6,8 @@
 #include "web.h"
 #include "ps2redbook.h"
 
+CBody* MechList[1];
+
 // @Ok
 i32 CScorpion::ScorpPathCheck(
 		CVector* a2,
@@ -261,8 +263,78 @@ void CScorpion::DoIntroSequence(void)
 }
 
 // @SMALLTODO
-void CScorpion::DetermineTarget(void)
+i32 CScorpion::WhatShouldIDo(void)
+{
+	return 0x13072024;
+}
+
+
+// @SMALLTODO
+void CScorpion::TargetPlayer(i32)
 {}
+
+// @MEDIUMTODO
+i32 CScorpion::GetEnvironmentalObjectTarget(void)
+{
+	return 0x13072024;
+}
+
+// @Ok
+// @Test
+void CScorpion::DetermineTarget(void)
+{
+	if (this->field_C10)
+	{
+		this->field_BF8 = 2;
+		this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+	}
+	else
+	{
+		if (!this->hCurrentTarget.field_0 || !Mem_RecoverPointer(&this->hCurrentTarget))
+		{
+			this->field_BF8 = 2;
+			this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+		}
+
+		switch (this->WhatShouldIDo())
+		{
+			case 1:
+				if (this->SetJonahHandle(&this->hCurrentTarget))
+				{
+					this->field_BF8 = 1;
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+				break;
+			case 2:
+				if (this->field_C14 || !this->GetEnvironmentalObjectTarget())
+				{
+					if (this->field_31C.bothFlags != 3 || this->field_BF8 != 2)
+					{
+						this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+						this->field_BF8 = 2;
+						this->field_31C.bothFlags = 3;
+						this->dumbAssPad = 0;
+					}
+				}
+				else
+				{
+					this->field_31C.bothFlags = 16;
+					this->dumbAssPad = 0;
+				}
+				break;
+			default:
+				this->TargetPlayer(this->field_C10 <= 180 ? 180 : this->field_C10);
+
+				if (this->field_31C.bothFlags != 3)
+				{
+					this->field_31C.bothFlags = 3;
+					this->dumbAssPad = 0;
+				}
+				break;
+		}
+	}
+}
 
 // @Ok
 void CScorpion::Gloat(void)
@@ -310,7 +382,6 @@ void CScorpion::Gloat(void)
 	}
 }
 
-CBody* MechList[1];
 
 // @NotOk
 // globals
@@ -400,6 +471,8 @@ void validate_CScorpion(void){
 	VALIDATE(CScorpion, hCurrentTarget, 0xBF0);
 	VALIDATE(CScorpion, field_BF8, 0xBF8);
 
+	VALIDATE(CScorpion, field_C10, 0xC10);
+	VALIDATE(CScorpion, field_C14, 0xC14);
 	VALIDATE(CScorpion, field_C18, 0xC18);
 	VALIDATE(CScorpion, field_C20, 0xC20);
 }
