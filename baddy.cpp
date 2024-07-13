@@ -10,10 +10,39 @@
 
 CBaddy* ControlBaddyList;
 
-// @SMALLTODO
+extern u16** gTrigNodes;
+
+// @Ok
 i32 CBaddy::GetNextWaypoint(void)
 {
-	return 0x18062024;
+	if (this->field_1F4 >= 0)
+	{
+		u16 *LinksPointer = reinterpret_cast<u16*>(Trig_GetLinksPointer(this->field_1F4));
+		if (!*LinksPointer)
+			return 0;
+
+		this->field_1F4 = LinksPointer[1];
+
+		u16* v4 = gTrigNodes[this->field_1F4];
+		this->field_2F0 = 0;
+
+		if (*v4 == 1000 || *v4 == 1002)
+		{
+			CVector v9;
+			v9.vx = 0;
+			v9.vy = 0;
+			v9.vz = 0;
+
+			u16 *position = Trig_GetPosition(&v9, this->field_1F4);
+			this->field_2F4 = 0;
+
+			this->ParseScript(&position[3]);
+		}
+
+		return 1;
+	}
+
+	return 0;
 }
 
 // @SMALLTODO

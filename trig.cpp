@@ -1,6 +1,7 @@
 #include "trig.h"
 #include "validate.h"
 
+u16 **gTrigNodes;
 
 // @MEDIUMTODO
 int Trig_GetLevelId(void)
@@ -9,8 +10,10 @@ int Trig_GetLevelId(void)
 }
 
 // @BIGTODO
-void Trig_GetPosition(CVector*, int)
-{}
+u16* Trig_GetPosition(CVector*, int)
+{
+	return reinterpret_cast<u16*>(0x13072024);
+}
 
 // @SMALLTODO
 void* Trig_GetLinksPointer(int)
