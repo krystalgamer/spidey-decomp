@@ -5,6 +5,7 @@
 
 int JoelJewtCheatCode = 0;
 extern CBody* EnvironmentalObjectList[1];
+extern CBaddy* BaddyList;
 
 // @NotOk
 // globals
@@ -209,10 +210,26 @@ void CJonah::TakeHit(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 CBaddy* CJonah::FindScorp(void)
 {
-	return (CBaddy*)0x22052024;
+	if (!Mem_RecoverPointer(&this->field_35C))
+	{
+		for (CBaddy* cur = BaddyList; cur; cur = reinterpret_cast<CBaddy*>(cur->field_20))
+		{
+			if (cur->field_38 == 310)
+			{
+				this->field_35C = Mem_MakeHandle(cur);
+				return cur;
+			}
+		}
+
+		return 0;
+	}
+
+	CBaddy *ret = reinterpret_cast<CBaddy*>(this->field_35C.field_0);
+	print_if_false(ret->field_38 == 310, "What the fuck? Scorp ptr isn't scorp.");
+	return ret;
 }
 
 // @Ok
@@ -234,6 +251,7 @@ void validate_CJonah(void){
 	VALIDATE(CJonah, field_350, 0x350);
 	VALIDATE(CJonah, field_354, 0x354);
 
+	VALIDATE(CJonah, field_35C, 0x35C);
 	VALIDATE(CJonah, field_364, 0x364);
 
 	VALIDATE(CJonah, field_36C, 0x36C);

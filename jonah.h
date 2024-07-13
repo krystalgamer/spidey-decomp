@@ -28,8 +28,9 @@ public:
 	int field_34C;
 	int field_350;
 	int field_354;
-	unsigned char padAfter354[0x364-0x354-4];
+	u8 padAfter354[4];
 
+	SHandle field_35C;
 	SHandle field_364;
 
 	int field_36C;
