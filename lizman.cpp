@@ -7,6 +7,7 @@
 #include "ps2lowsfx.h"
 #include "utils.h"
 #include "trig.h"
+#include "ps2funcs.h"
 
 // @MEDIUMTODO
 void CLizMan::CalculateJumpPositionArray(CVector*)
@@ -176,7 +177,15 @@ void __inline CLizMan::StandStill(void)
 
 // @SMALLTODO
 void CLizMan::SwitchFromMatrixToEuler(void)
-{}
+{
+	if ( this->outlineRelated & 1)
+	{
+		this->outlineRelated &= 0xFFFFFFFE;
+		this->mAngles.vz = 0;
+		this->mAngles.vx = 0;
+		this->mAngles.vy = (3072 - ratan2(-this->field_164.m[2][2], -this->field_164.m[0][2])) & 0xFFF;
+	}
+}
 
 // @Ok
 void CLizMan::StopClimbing(void)
