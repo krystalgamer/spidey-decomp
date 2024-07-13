@@ -192,18 +192,6 @@ void CThug::Guard(void)
 	}
 }
 
-// @SMALLTODO
-u32 CThug::CheckStateFlags(SStateFlags*, int)
-{
-	return 0x11062024;
-}
-
-// @SMALLTODO
-i32 CThug::DistanceToPlayer(i32)
-{
-	return 0x11062024;
-}
-
 INLINE i32 CThug::CanAck(
 		i32 a2,
 		i32 a3,

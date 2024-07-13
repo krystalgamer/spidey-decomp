@@ -142,7 +142,7 @@ INLINE void CBaddy::CleanUpMessages(i32 a2, i32 a3)
 }
 
 // @Ok
-int CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
+u16 CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 
 	if(this->field_314 < 0){
 		if (this->field_31C.bothFlags == -this->field_314)

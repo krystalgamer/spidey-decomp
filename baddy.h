@@ -23,7 +23,7 @@ public:
 	EXPORT int DistanceToPlayer(int a2);
 	EXPORT int TrapWeb(void);
 	EXPORT void CleanUpMessages(i32, i32);
-	EXPORT int CheckStateFlags(SStateFlags *, int);
+	EXPORT u16 CheckStateFlags(SStateFlags *, int);
 	EXPORT int YawTowards(int, int);
 	EXPORT int RunTimer(int*);
 	EXPORT int PathCheckGuts(CVector*, CVector*, CVector*, int);
