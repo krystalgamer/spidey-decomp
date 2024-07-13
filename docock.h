@@ -52,8 +52,11 @@ public:
 	unsigned char padAfter518[0x550-0x518-4];
 
 	i32 field_550;
-	int field_554;
-	unsigned char padAfter554[0x570-0x554-4];
+	i32 field_554;
+	u8 padAfter554[0x55C-0x554-4];
+
+	i32 field_55C;
+	u8 padAfter55C[0x570-0x55C-4];
 
 	void* field_570;
 

@@ -89,9 +89,41 @@ void INLINE CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 	this->RunAnim(a2, a3, a4);
 }
 
-// @SMALLTODO
+extern CBody* MechList[1];
+
+// @Ok
 void CDocOc::PlayIdleOrGloatAnim(void)
-{}
+{
+	if ((this->field_218 & 8) == 0)
+	{
+		if (!this->field_554)
+		{
+			this->PlaySingleAnim(32, 0, -1);
+		}
+		else
+		{
+			this->CalculateStage();
+			if (this->field_55C <= 600 && MechList[0]->field_E2 > 0)
+			{
+				if (this->field_550 == 1)
+					this->PlaySingleAnim(5, 0, -1);
+				else
+					this->PlaySingleAnim(0, 0, -1);
+			}
+			else
+			{
+				if (this->field_550 == 1)
+					this->PlaySingleAnim(35, 0, -1);
+				else
+					this->PlaySingleAnim(1, 0, -1);
+
+				this->field_55C = 0;
+				this->field_31C.bothFlags = 0x8000;
+				this->dumbAssPad = 0;
+			}
+		}
+	}
+}
 
 // @Ok
 void __inline CDocOc::Gloat(void)
@@ -231,6 +263,8 @@ void CDocOc::HangAndGetBeaten(void)
 }
 
 extern CBaddy* ControlBaddyList;
+// @NotOk
+// missing tag
 INLINE void CDocOc::ResolveSwitches(void)
 {
 	i32 index = 0;
@@ -247,6 +281,8 @@ INLINE void CDocOc::ResolveSwitches(void)
 	print_if_false(index == 4, "Error");
 }
 
+// @NotOk
+// missing tag
 void CDocOc::Initialise(void)
 {
 	this->field_518 = 455;
@@ -297,5 +333,6 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_550, 0x550);
 
 	VALIDATE(CDocOc, field_554, 0x554);
+	VALIDATE(CDocOc, field_55C, 0x55C);
 	VALIDATE(CDocOc, field_570, 0x570);
 }
