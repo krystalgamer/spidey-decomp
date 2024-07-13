@@ -7,6 +7,7 @@
 #include "ps2lowsfx.h"
 #include "ai.h"
 #include "utils.h"
+#include "m3dutils.h"
 
 static SStateFlags gSimbyFlags;
 extern CBody* MechList[1];
@@ -14,9 +15,38 @@ extern CBody* MechList[1];
 CSimbyShot::CSimbyShot(CVector*)
 {}
 
-// @SMALLTODO
+// @Ok
 void CSimby::SetUpHandPos(void)
-{}
+{
+	SHook v8;
+	v8.Offset = 14;
+
+	CVector a3;
+	a3.vx = 0;
+	a3.vy = 0;
+	a3.vz = 0;
+
+	CVector a2;
+	a2.vx = 0;
+	a2.vy = 0;
+	a2.vz = 0;
+
+	v8.Part.vz = 0;
+	v8.Part.vy = 0;
+	v8.Part.vx = 0;
+
+	M3dUtils_GetDynamicHookPosition(
+			reinterpret_cast<VECTOR*>(&a3),
+			this,
+			&v8);
+	v8.Offset = 11;
+	M3dUtils_GetDynamicHookPosition(
+			reinterpret_cast<VECTOR*>(&a2),
+			this,
+			&v8);
+
+	this->field_3DC = (a2 + a3) >> 1;
+}
 
 void CSimby::Shoot(void)
 {
