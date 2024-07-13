@@ -725,10 +725,12 @@ void CBaddy::CreateCombatImpactEffect(CVector*, int)
 {
 }
 
-// @SMALLTODO
-unsigned char CBaddy::TugImpulse(CVector*, CVector*, CVector*)
+// @Ok
+u8 CBaddy::TugImpulse(CVector*, CVector*, CVector* a4)
 {
-	return (unsigned char)0x21052024;
+	if (a4)
+		Mem_Delete(a4);
+	return 0;
 }
 
 // @NotOk
