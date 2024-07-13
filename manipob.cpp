@@ -3,7 +3,9 @@
 #include "validate.h"
 #include "trig.h"
 #include "mem.h"
+#include "spool.h"
 
+extern SPSXRegion PSXRegion[];
 static i16 * const word_610C48 = (i16*)0x610C48;
 
 // @NotOk
@@ -109,9 +111,16 @@ void CManipOb::Smash(void)
 void CManipOb::Chunk(SLineInfo*, CVector*)
 {}
 
-// @SMALLTODO
-void CManipOb::TurnOffShadow(void)
-{}
+// @Ok
+INLINE void CManipOb::TurnOffShadow(void)
+{
+	CItem *v1 = this->field_11C;
+	if (v1)
+	{
+		CItem *res = reinterpret_cast<CItem*>(PSXRegion[v1->mRegion].ppModels[v1->mModel]);
+		res->mFlags |= 0x20;
+	}
+}
 
 // @Ok
 void __inline CManipOb::SendPulse(void)
@@ -142,5 +151,6 @@ void validate_CManipOb(void)
 	VALIDATE(CManipOb, field_100, 0x100);
 
 	VALIDATE(CManipOb, field_10C, 0x10C);
+	VALIDATE(CManipOb, field_11C, 0x11C);
 	VALIDATE(CManipOb, field_124, 0x124);
 }

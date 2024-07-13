@@ -29,7 +29,10 @@ class CManipOb : public CBody
 		u8 padAfter100[0x10C-0x100-4];
 
 		int field_10C;
-		unsigned char padAfter10C[0x124-0x10C-4];
+		u8 padAfter10C[0x11C-0x10C-4];
+
+		CItem *field_11C;
+		u8 padAfter11C[0x124-0x11C-4];
 
 		unsigned char field_124;
 		unsigned char padBottom[0x128-0x124-1];

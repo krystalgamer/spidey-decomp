@@ -186,7 +186,7 @@ public:
 
 	SHandle field_114;
 
-	void *field_11C;
+	void* field_11C;
 	int alsoOutlineRelated;
 	unsigned char outlineR;
 	unsigned char outlineG;

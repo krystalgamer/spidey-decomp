@@ -107,7 +107,7 @@ void __inline CJonah::GraspWaypoint(SLinkInfo* a2)
 	this->field_1F4 = a2->field_8;
 }
 
-// @SMALLTODO
+// @Ok
 int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 {
 
