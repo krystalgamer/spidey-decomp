@@ -204,6 +204,30 @@ i32 CThug::DistanceToPlayer(i32)
 	return 0x11062024;
 }
 
+INLINE i32 CThug::CanAck(
+		i32 a2,
+		i32 a3,
+		i32 a4,
+		CThug* pThug)
+{
+		if (!this->field_330
+			&& !this->field_33C
+			&& (this->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 0x20))
+		{
+			this->mHandleTwo = Mem_MakeHandle(pThug);
+			this->field_398 = a3;
+			this->field_39C = a4;
+			this->field_33C = a2;
+
+			this->field_31C.bothFlags = 21;
+			this->dumbAssPad = 0;
+
+			return 1;
+		}
+
+		return 0;
+}
+
 // @Ok
 void CThug::StrikeUpConversation(void)
 {
@@ -271,18 +295,8 @@ void CThug::StrikeUpConversation(void)
 			}
 
 
-			if (!pThug->field_330
-				&& !pThug->field_33C
-				&& (pThug->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 0x20))
+			if (pThug->CanAck(v5, v4, v6, this))
 			{
-				pThug->mHandleTwo = Mem_MakeHandle(this);
-				pThug->field_398 = v4;
-				pThug->field_39C = v6;
-				pThug->field_33C = v5;
-
-				pThug->field_31C.bothFlags = 21;
-				pThug->dumbAssPad = 0;
-
 				this->field_33C = v5;
 				this->mHandleTwo = Mem_MakeHandle(pThug);
 				this->field_31C.bothFlags = 21;

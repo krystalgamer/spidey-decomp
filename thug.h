@@ -37,6 +37,7 @@ public:
 	EXPORT void CycleOrContinueAnim(i32, i32, i32, i32);
 	EXPORT i32 MonitorSpitPlease(void);
 	EXPORT void PlaySounds(void);
+	EXPORT i32 CanAck(i32, i32, i32, CThug*);
 
 
 	EXPORT virtual void SetThugType(int);
