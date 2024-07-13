@@ -47,6 +47,7 @@ public:
 	EXPORT int SmackSpidey(int, CVector*, int, int);
 	EXPORT void RunAppropriateAnim(void);
 	EXPORT i32 GetNextWaypoint(void);
+	EXPORT i32 AddPointToPath(CVector*, i32);
 
 	EXPORT virtual int PlayerIsVisible(int);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);
@@ -122,7 +123,7 @@ public:
 
 	IntToBytes field_294;
 	IntToBytes field_298;
-	unsigned char padAfter298[0x2A0 - 0x29B - 1];
+	i32 field_29C;
 
 	int field_2A0;
 	int field_2A4;

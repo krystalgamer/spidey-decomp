@@ -16,11 +16,9 @@ public:
 	EXPORT void RunToWhereTheActionIs(CVector*);
 	EXPORT void PlayHitWallSound(void);
 	EXPORT void StandStill(void);
-	EXPORT i32 ShouldFall(i32, i32);
 	EXPORT void DieAfterFlyingAcrossRoom(void);
 	EXPORT void RunAppropriateHitAnim(void);
 	EXPORT void StopShooting(void);
-	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT i32 TryAddingCollidePointToPath(CVector*);
 	EXPORT void SetHitDirectionFlag(CVector*);
 	EXPORT void SetParamByIndex(i32, i32);

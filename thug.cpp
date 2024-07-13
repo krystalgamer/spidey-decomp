@@ -796,12 +796,6 @@ void __inline CThug::StandStill(void)
 	}
 }
 
-// @SMALLTODO
-i32 CThug::ShouldFall(i32, i32)
-{
-	return 0x09062024;
-}
-
 // @Ok
 void CThug::DieAfterFlyingAcrossRoom(void)
 {
@@ -860,12 +854,6 @@ void __inline CThug::StopShooting(void)
 			print_if_false(0, "Unknown substate!");
 			break;
 	}
-}
-
-// @SMALLTODO
-i32 CThug::AddPointToPath(CVector*, i32)
-{
-	return 0x09062024;
 }
 
 // @Ok

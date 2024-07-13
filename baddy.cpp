@@ -12,6 +12,57 @@ CBaddy* ControlBaddyList;
 
 extern u16** gTrigNodes;
 
+// @NotOk
+// check when pathcheck is done <3
+i32 CBaddy::AddPointToPath(
+		CVector* pVec,
+		i32 a3)
+{
+	CVector v21;
+	v21.vx = 0;
+	v21.vy = 0;
+	v21.vz = 0;
+
+	CVector v20;
+	v20 = *pVec;
+	v20.vy = this->mPos.vy;
+
+	if (this->field_1F4 > 0)
+	{
+		Trig_GetPosition(&v21, this->field_1F4);
+		v21.vy = this->field_29C;
+
+		if ((!a3 || Utils_CrapDist(v21, v20) < a3) && this->PathCheck(&v21, &v20, 0, 55))
+		{
+			this->field_1F0 = 1;
+			this->field_1B4[0] = v20;
+			this->field_2A8 |= 0x20000000;
+			return 1;
+		}
+	}
+	else if (!this->field_1F0)
+	{
+		this->field_1F0 = 1;
+		this->field_1B4[0] = v20;
+		return 1;
+	}
+
+	for (i32 i = 0; i<4 && i < this->field_1F0; i++)
+	{
+		if ( (!a3 || Utils_CrapDist(this->field_1B4[i], v20) < a3)
+				&& this->PathCheck(&this->field_1B4[i], &v20, 0, 55))
+		{
+			this->field_1F0 = i + 2;
+			this->field_1B4[i+1] = v20;
+			this->field_2A8 |= 0x20000000;
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+
 // @Ok
 i32 CBaddy::GetNextWaypoint(void)
 {
@@ -929,6 +980,7 @@ void validate_CBaddy(void){
 
 	VALIDATE(CBaddy, field_294, 0x294);
 	VALIDATE(CBaddy, field_298, 0x298);
+	VALIDATE(CBaddy, field_29C, 0x29C);
 
 	VALIDATE(CBaddy, field_2A0, 0x2A0);
 	VALIDATE(CBaddy, field_2A4, 0x2A4);
