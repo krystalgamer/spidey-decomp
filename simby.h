@@ -111,7 +111,13 @@ class CEmber : public CFlatBit
 {
 	public:
 		EXPORT CEmber(const CVector*, int);
-		unsigned char pad[0x28];
+
+		CVector field_68;
+		i32 field_74;
+		CVector field_78;
+		i32 field_84;
+		i32 field_88;
+		i32 field_8C;
 };
 
 class CSimbyShot : public CQuadBit

@@ -392,9 +392,36 @@ void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
 }
 
 
-// @SMALLTODO
-CEmber::CEmber(const CVector*, int)
-{}
+// @NotOk
+// missing texture related
+CEmber::CEmber(const CVector* a2, int a3)
+{
+	this->field_68.vx = 0;
+	this->field_68.vy = 0;
+	this->field_68.vz = 0;
+
+	this->mPos = *a2;
+
+	this->field_68.vx = this->mPos.vz;
+	this->field_68.vz = this->mPos.vz;
+
+	this->field_78.vx = Rnd(10) + 10;
+	this->field_78.vy = Rnd(4096);
+	this->field_78.vz = Rnd(4096);
+
+	//this->SetTexture(*(Texture **)(gTextureRelated + 44));
+
+	this->mScale = Rnd(200) + 350;
+	this->field_84 = 255;
+	this->field_88 = 128;
+	this->field_8C = 0;
+
+	this->SetTint(0xFFu, 128, 0);
+	this->SetSemiTransparent();
+	this->field_74 = (a3 * (Rnd(5) + 5)) >> 8;
+
+	this->mVel.vy = (a3 * (Rnd(5) + 6)) << 12 >> 8;
+}
 
 // @Ok
 void Simby_CreateEmber(const unsigned int* a1, unsigned int*)
@@ -476,6 +503,13 @@ void validate_CSimbySlimeBase(void)
 void validate_CEmber(void)
 {
 	VALIDATE_SIZE(CEmber, 0x90);
+
+	VALIDATE(CEmber, field_68, 0x68);
+	VALIDATE(CEmber, field_74, 0x74);
+	VALIDATE(CEmber, field_78, 0x78);
+	VALIDATE(CEmber, field_84, 0x84);
+	VALIDATE(CEmber, field_88, 0x88);
+	VALIDATE(CEmber, field_8C, 0x8C);
 }
 
 void validate_CSimbyShot(void)
