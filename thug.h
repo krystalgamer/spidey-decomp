@@ -36,6 +36,7 @@ public:
 	EXPORT i32 MonitorSpitPlease(void);
 	EXPORT void PlaySounds(void);
 	EXPORT i32 CanAck(i32, i32, i32, CThug*);
+	EXPORT i32 WallHitCheck(CVector*, CVector*, i32);
 
 
 	EXPORT virtual void SetThugType(int);

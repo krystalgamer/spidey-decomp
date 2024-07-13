@@ -405,10 +405,41 @@ void CThug::LookConfused(void)
 	}
 }
 
-// @SMALLTODO
-i32 CThug::GetLaunched(CVector*, i32, i32, i32)
+// @MEDIUMTODO
+i32 CThug::WallHitCheck(CVector*, CVector*, i32)
 {
-	return 0x10062024;
+	return 0x13072024;
+}
+
+// @Ok
+i32 CThug::GetLaunched(
+		CVector* a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
+{
+	i32 v10; // ebx
+	CVector v13; // [esp+10h] [ebp-18h] BYREF
+
+	v13.vy = this->mPos.vy;
+	v13.vx = (a4 + 1) * a2->vx + this->mPos.vx;
+	v13.vz = (a4 + 1) * a2->vz + this->mPos.vz;
+
+	v10 = this->WallHitCheck(&v13, a2, a4);
+
+	if ( v10 == 3 )
+		return 0;
+
+	this->Neutralize();
+	this->mAccellorVel = *a2;
+	this->mAccellorVel.vy = 0;
+
+	if ( !a3 || v10 == 2 )
+	{
+		new CAIProc_LookAt(this, 0, &v13, 0, 80, 200);
+	}
+
+	return v10;
 }
 
 // @Ok
