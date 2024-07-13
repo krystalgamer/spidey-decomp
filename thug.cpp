@@ -97,9 +97,18 @@ i32 CThug::MonitorSpitPlease(void)
 	return 0x11062024;
 }
 
-// @SMALLTODO
-void CThug::CycleOrContinueAnim(i32, i32, i32, i32)
+// @Ok
+void CThug::CycleOrContinueAnim(
+		i32 a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
 {
+	if ( this->field_12A != a2
+			&& this->field_12A != a3
+			&& this->field_12A != a4
+			&& this->field_12A != a5 )
+		this->CycleAnim(a2, 1);
 }
 
 // @Ok
