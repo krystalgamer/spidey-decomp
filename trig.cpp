@@ -3,6 +3,12 @@
 
 u16 **gTrigNodes;
 
+// @SMALLTODO
+void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32)
+{
+	return reinterpret_cast<void*>(0x13072024);
+}
+
 // @MEDIUMTODO
 int Trig_GetLevelId(void)
 {
@@ -86,10 +92,11 @@ void Trig_SendPulseToNode(int)
 
 void validate_SLinkInfo(void)
 {
-	VALIDATE_SIZE(SLinkInfo, 0xC);
+	VALIDATE_SIZE(SLinkInfo, 0x10);
 
 	VALIDATE(SLinkInfo, field_0, 0x0);
 	VALIDATE(SLinkInfo, field_4, 0x4);
 	VALIDATE(SLinkInfo, field_8, 0x8);
+	VALIDATE(SLinkInfo, field_C, 0xC);
 }
 

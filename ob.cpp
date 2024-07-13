@@ -7,6 +7,11 @@
 #include "ps2m3d.h"
 #include "m3dutils.h"
 
+// @SMALLTODO
+CBody* CBody::FindBodyByNode(i32, CBody*)
+{
+	return reinterpret_cast<CBody*>(0x13072024);
+}
 
 // @Ok
 // Random move from global to eax and test eax, eax that doesn't change shit

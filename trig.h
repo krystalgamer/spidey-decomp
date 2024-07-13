@@ -8,9 +8,10 @@
 
 struct SLinkInfo
 {
-	int field_0;
-	int field_4;
-	int field_8;
+	i32 field_0;
+	i32 field_4;
+	i32 field_8;
+	i32 field_C;
 };
 
 EXPORT int Trig_GetLevelId(void);
@@ -23,6 +24,7 @@ EXPORT void Trig_ClearTrigMenu(void);
 EXPORT unsigned char* SkipFlags(unsigned char*);
 EXPORT void Trig_ResetCPCollisionFlags(void);
 EXPORT int GetFlag(unsigned char, unsigned char *);
+EXPORT void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32);
 
 void validate_SLinkInfo(void);
 

@@ -152,6 +152,7 @@ public:
 	EXPORT void UnSuspend(void);
 	EXPORT void DeleteFrom(CBody**);
 	EXPORT void Suspend(CBody**);
+	EXPORT CBody* FindBodyByNode(i32, CBody*);
 
 	EXPORT CBody();
 	EXPORT ~CBody(void);

@@ -4,6 +4,7 @@
 #include "utils.h"
 
 int JoelJewtCheatCode = 0;
+extern CBody* EnvironmentalObjectList[1];
 
 // @NotOk
 // globals
@@ -106,9 +107,52 @@ void __inline CJonah::GraspWaypoint(SLinkInfo* a2)
 }
 
 // @SMALLTODO
-int CJonah::LinkedHidingPlaceStillExists(int)
+int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 {
-	return 0x69694040;
+
+	SLinkInfo infos[4];
+
+	i32 v3 = this->field_1F4;
+	this->field_364.field_0 = 0;
+
+	if (a2)
+	{
+		i32 LinksPointer = reinterpret_cast<i32>(Trig_GetLinkInfoList(this->field_1F4, infos, 4));
+
+		if (!LinksPointer)
+			return 0;
+
+		for (i32 i = 0; i < LinksPointer; i++)
+		{
+			if (infos[i].field_8 == 2)
+			{
+				v3 = infos[i].field_0;
+				i = LinksPointer + 1;
+			}
+		}
+	}
+
+	i32 v6 = reinterpret_cast<i32>(Trig_GetLinkInfoList(v3, infos, 4));
+	if (!v6 || v6 <= 0)
+		return 0;
+
+	for (i32 i = 0; i<v6 ; i++)
+	{
+		if (infos[i].field_4 == 1 || infos[i].field_4 == 2)
+		{
+			CBody *BodyByNode = this->FindBodyByNode(infos[i].field_0, EnvironmentalObjectList[0]);
+
+			if (BodyByNode)
+			{
+				print_if_false(BodyByNode->field_38 == 401, "Hiding place is not a MANIPOB!");
+				this->field_364 = Mem_MakeHandle(BodyByNode);
+				return 1;
+			}
+		}
+
+	}
+
+	return 0;
 }
 
 // @Ok
@@ -189,6 +233,8 @@ void validate_CJonah(void){
 	VALIDATE(CJonah, field_34C, 0x34C);
 	VALIDATE(CJonah, field_350, 0x350);
 	VALIDATE(CJonah, field_354, 0x354);
+
+	VALIDATE(CJonah, field_364, 0x364);
 
 	VALIDATE(CJonah, field_36C, 0x36C);
 	VALIDATE(CJonah, field_370, 0x370);
