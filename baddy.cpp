@@ -45,9 +45,47 @@ i32 CBaddy::GetNextWaypoint(void)
 	return 0;
 }
 
-// @SMALLTODO
+// @NotOk
+// Revisit, slightly different assembly, related to zx
 void CBaddy::RunAppropriateAnim(void)
-{}
+{
+	if (this->field_2AC & 0x40000)
+	{
+		u8 v2 = this->field_294.Bytes[0];
+		u8 v3 = this->field_294.Bytes[1];
+
+		if (v2 != v3)
+		{
+			if (this->field_12A != v3
+					&& this->field_12A != v2)
+			{
+				this->RunAnim(this->field_294.Bytes[0], 0, -1);
+				return;
+			}
+		}
+
+		if (v2 == v3
+				|| this->field_12A != v2
+				|| this->field_142)
+		{
+			this->CycleAnim(this->field_294.Bytes[1], 1);
+		}
+	}
+	else if (this->field_2AC & 0x10000)
+	{
+		if (this->field_12A != this->field_294.Bytes[2] || this->field_142)
+				this->RunAnim(this->field_294.Bytes[2], 0, -1);
+	}
+	else if (this->field_2AC & 0x20000)
+	{
+		if (this->field_12A != this->field_294.Bytes[3] || this->field_142)
+				this->RunAnim(this->field_294.Bytes[3], 0, -1);
+	}
+	else
+	{
+		this->CycleAnim(this->field_298.Bytes[0], 1);
+	}
+}
 
 // @MEDIUMTODO
 int CBaddy::SmackSpidey(int, CVector*, int, int)
