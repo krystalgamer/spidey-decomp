@@ -6,10 +6,24 @@
 #include "web.h"
 #include "ps2redbook.h"
 
-// @SMALLTODO
-i32 CScorpion::ScorpPathCheck(CVector*, CVector*, CVector*, i32)
+// @Ok
+i32 CScorpion::ScorpPathCheck(
+		CVector* a2,
+		CVector* a3,
+		CVector* a4,
+		i32 a5)
 {
-	return 0x17062024;
+	CVector v9; // [sp+38h] [-28h] BYREF
+	CVector v10; // [sp+44h] [-1Ch] BYREF
+
+	v10 = *a2;
+	v9 = *a3;
+
+	v9.vy = this->mPos.vy + ((this->field_21E - 20) << 12);
+	v10.vy = v9.vy;
+	this->FindJonah();
+
+	return this->PathCheck(&v10, &v9, a4, a5);
 }
 
 // @Ok
