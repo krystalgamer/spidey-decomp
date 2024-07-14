@@ -175,7 +175,7 @@ void __inline CLizMan::StandStill(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 void CLizMan::SwitchFromMatrixToEuler(void)
 {
 	if ( this->outlineRelated & 1)

@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "web.h"
 #include "ps2redbook.h"
+#include "reloc.h"
 
 CBody* MechList[1];
 
@@ -186,7 +187,7 @@ CBaddy* BaddyList;
 
 // @NotOk
 // globals
-__inline CSuper* CScorpion::FindJonah(void)
+INLINE CSuper* CScorpion::FindJonah(void)
 {
 	if (this->field_BEC)
 		return field_BEC;
@@ -262,10 +263,18 @@ void CScorpion::DoIntroSequence(void)
 	}
 }
 
-// @SMALLTODO
-i32 CScorpion::WhatShouldIDo(void)
+// @Ok
+INLINE u32 CScorpion::WhatShouldIDo(void)
 {
-	return 0x13072024;
+	CSuper *pJonah = this->FindJonah();
+	if (pJonah)
+	{
+		u32 res;
+		Reloc_CallUserFunction("jonah", 1, reinterpret_cast<u32*>(&pJonah), &res);
+		return res;
+	}
+
+	return 0;
 }
 
 

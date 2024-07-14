@@ -21,7 +21,7 @@ class CScorpion : public CBaddy {
 		EXPORT void PlayXA_NoRepeat(i32, i32, i32, i32*, CBody*);
 		EXPORT i32 ScorpPathCheck(CVector*, CVector*, CVector*, i32);
 		EXPORT i32 PathLooksGood(CVector*);
-		EXPORT i32 WhatShouldIDo(void);
+		EXPORT u32 WhatShouldIDo(void);
 		EXPORT void TargetPlayer(i32);
 		EXPORT i32 GetEnvironmentalObjectTarget(void);
 
