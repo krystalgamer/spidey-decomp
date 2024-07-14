@@ -4,10 +4,46 @@
 i16 **gTrigNodes;
 i32 gNumNodes;
 
-// @SMALLTODO
-void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32)
+// @Ok
+void* Trig_GetLinkInfoList(
+		i32 a1,
+		SLinkInfo* pLink,
+		i32 count)
 {
-	return reinterpret_cast<void*>(0x13072024);
+	i32 result = 0;
+
+	u16* linksPtr = reinterpret_cast<u16*>(Trig_GetLinksPointer(a1));
+
+	if (*linksPtr)
+	{
+		u16 *v8 = linksPtr + 1;
+		result = *linksPtr;
+
+		if (result)
+		{
+			for (i32 i = 0; i<result && i < count; i++, v8++)
+			{
+				i16 *v11 = gTrigNodes[*v8];
+
+				pLink[i].field_0 = *v8;
+				pLink[i].field_4 = *v11;
+				if (*v11 == 1002)
+					pLink[i].field_8 = v11[1];
+				else
+					pLink[i].field_8 = 0;
+				pLink[i].field_C = 0;
+			}
+		}
+	}
+
+
+	if (result <= count)
+	{
+		return reinterpret_cast<void*>(result);
+	}
+
+	return reinterpret_cast<void*>(count);
+
 }
 
 // @MEDIUMTODO
@@ -23,7 +59,7 @@ u16* Trig_GetPosition(CVector*, int)
 }
 
 // @Ok
-i16* Trig_GetLinksPointer(int a1)
+u16* Trig_GetLinksPointer(int a1)
 {
 	print_if_false(a1 >= 0 && a1 < gNumNodes, "Bad node sent to Trig_GetLinksPointer");
 
@@ -36,16 +72,16 @@ i16* Trig_GetLinksPointer(int a1)
 			switch (*trigNodePtr)
 			{
 				case 1:
-					return trigNodePtr + 3;
+					return reinterpret_cast<u16*>(trigNodePtr + 3);
 				case 2:
 				case 3:
 				case 6:
 				case 8:
 				case 9:
 				case 10:
-					return trigNodePtr + 1;
+					return reinterpret_cast<u16*>(trigNodePtr + 1);
 				case 5:
-					return trigNodePtr + 2;
+					return reinterpret_cast<u16*>(trigNodePtr + 2);
 				default:
 					print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
 					print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
@@ -54,7 +90,7 @@ i16* Trig_GetLinksPointer(int a1)
 		}
 		else
 		{
-			return trigNodePtr + 1;
+			return reinterpret_cast<u16*>(trigNodePtr + 1);
 		}
 	}
 	else if (*trigNodePtr <= 0x3E9)
@@ -68,10 +104,10 @@ i16* Trig_GetLinksPointer(int a1)
 				return 0;
 			}
 
-			return trigNodePtr + 2;
+			return reinterpret_cast<u16*>(trigNodePtr + 2);
 		}
 
-		return trigNodePtr + 1;
+		return reinterpret_cast<u16*>(trigNodePtr + 1);
 	}
 	else if (*trigNodePtr != 0x3EA)
 	{
@@ -80,7 +116,7 @@ i16* Trig_GetLinksPointer(int a1)
 		return 0;
 	}
 
-	return trigNodePtr + 2;
+	return reinterpret_cast<u16*>(trigNodePtr + 2);
 }
 
 // @MEDIUMTODO
