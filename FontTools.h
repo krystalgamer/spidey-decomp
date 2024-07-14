@@ -3,9 +3,10 @@
 #ifndef FONTTOOLS_H
 #define FONTTOOLS_H
 
+#include "main.h"
 #include "export.h"
 
-class Font
+class Font : public CClass
 {
 	public:
 		EXPORT int GetCharMap(void);
@@ -14,7 +15,6 @@ class Font
 		EXPORT char getCharIndex(char);
 		EXPORT int height(char*);
 		EXPORT void unload(void);
-		EXPORT virtual ~Font(void);
 		EXPORT i32 heightBelowBaseline(char*);
 		EXPORT i32 heightAboveBaseline(char*);
 

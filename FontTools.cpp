@@ -162,9 +162,6 @@ INLINE void Font::unload(void)
 	}
 }
 
-Font::~Font(void)
-{}
-
 void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x164);

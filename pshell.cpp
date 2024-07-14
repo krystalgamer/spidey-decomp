@@ -1,5 +1,6 @@
 #include "pshell.h"
 #include "mess.h"
+#include "validate.h"
 
 
 EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
@@ -7,18 +8,28 @@ EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 }
 
 
-// @SMALLTODO
-CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,int a9,int a10){
-	  this->unk_7 = a2;
-	  this->unk_8 = a3;
-	  this->unk_3 = a4;
-	  this->unk_4 = a5;
-	  this->unk_1 = a6;
-	  this->unk_2 = a7;
-	  this->unk_5 = a8;
-	  this->unk_6 = a9;
-	  this->unk_9 = a10;
-	  this->unk_11 = 28;
+// @Ok
+CExpandingBox::CExpandingBox(
+		int a2,
+		int a3,
+		int a4,
+		int a5,
+		int a6,
+		int a7,
+		int a8,
+		int a9,
+		int a10)
+{
+	this->field_1C = a2;
+	this->field_20 = a3;
+	this->field_C = a4;
+	this->field_10 = a5;
+	this->field_4 = a6;
+	this->field_8 = a7;
+	this->field_14 = a8;
+	this->field_18 = a9;
+	this->field_24 = a10;
+	this->field_2C = 28;
 }
 
 
@@ -26,6 +37,7 @@ CExpandingBox::CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,in
 // @MEDIUMTODO
 int CExpandingBox::Display(){
 
+	/*
 	int unk_3; // ebx
 	int v2; // eax
 	int unk_4; // eax
@@ -54,17 +66,18 @@ int CExpandingBox::Display(){
 		this->unk_9,
 		this->unk_10,
 		this->unk_11);
-
+		*/
+	return 0x14072024;
 }
 
 int expected(){ return 200;}
 int not_expected() { return 69; }
 
-// @NotOk
-// check
+// @BIGTODO
 int CExpandingBox::ScrollBarHitTest(int a2, int a3){
 
 
+	/*
 	int v4; // r11
   int v5; // r8
   int v6; // r9
@@ -112,6 +125,8 @@ int CExpandingBox::ScrollBarHitTest(int a2, int a3){
     }
   }
   return v4;
+  */
+	return 0x14072024;
 }
 
 static unsigned char gCheatRelatedOne;
@@ -134,8 +149,6 @@ void PShell_BigCheat(void)
       gCheatRelatedSix = -1;
       gCheatRelatedSeven = 1;
 }
-
-CExpandingBox::~CExpandingBox(){}
 
 // @Ok
 void PShell_NormalFont(void)
@@ -168,3 +181,22 @@ void PShell_InstructionalText(void)
 	Mess_SetRGB(0x45u, 0x3Cu, 0x6Bu, 0);
 	Mess_SetRGBBottom(0x28u, 35, 62);
 }
+
+void validate_CExpandingBox(void)
+{
+	VALIDATE_SIZE(CExpandingBox, 0x34);
+
+	VALIDATE(CExpandingBox, field_4, 0x4);
+	VALIDATE(CExpandingBox, field_8, 0x8);
+	VALIDATE(CExpandingBox, field_C, 0xC);
+	VALIDATE(CExpandingBox, field_10, 0x10);
+	VALIDATE(CExpandingBox, field_14, 0x14);
+	VALIDATE(CExpandingBox, field_18, 0x18);
+	VALIDATE(CExpandingBox, field_1C, 0x1C);
+
+	VALIDATE(CExpandingBox, field_20, 0x20);
+	VALIDATE(CExpandingBox, field_24, 0x24);
+
+	VALIDATE(CExpandingBox, field_2C, 0x2C);
+}
+

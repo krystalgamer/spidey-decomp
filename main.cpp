@@ -331,6 +331,7 @@ int main()
 	validate_CCarnageElectrified();
 	validate_CConstantLaser();
 	validate_CShellSymBurn();
+	validate_CExpandingBox();
 
 	puts("[*] Validation done!");
 
