@@ -121,9 +121,21 @@ void FontManager::UnloadFont(Font* pFont)
 }
 
 // @SMALLTODO
-int Font::height(char*)
+i32 Font::heightBelowBaseline(char*)
 {
-	return 0x29052024;
+	return 0x14072024;
+}
+
+// @SMALLTODO
+i32 Font::heightAboveBaseline(char*)
+{
+	return 0x14072024;
+}
+
+// @Ok
+int Font::height(char* txt)
+{
+	return this->heightBelowBaseline(txt) + this->heightAboveBaseline(txt);
 }
 
 // @Ok

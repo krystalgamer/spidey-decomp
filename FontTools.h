@@ -15,6 +15,8 @@ class Font
 		EXPORT int height(char*);
 		EXPORT void unload(void);
 		EXPORT virtual ~Font(void);
+		EXPORT i32 heightBelowBaseline(char*);
+		EXPORT i32 heightAboveBaseline(char*);
 
 		unsigned char pad[0x21-4];
 
