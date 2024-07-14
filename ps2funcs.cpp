@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include "ob.h"
+#include "m3dcolij.h"
 
 EXPORT __int16 gRotMatrix[3][3];
 
@@ -541,3 +542,7 @@ int GetClut(int, int a2)
 {
 	return a2 - gClutRelated;
 }
+
+// @BIGTODO
+void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16)
+{}

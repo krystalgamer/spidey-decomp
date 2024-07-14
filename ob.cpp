@@ -671,6 +671,7 @@ void validate_CItem(void){
 	VALIDATE_SIZE(CItem, 0x40);
 
 	VALIDATE(CItem, mFlags, 0x4);
+	VALIDATE(CItem, field_6, 0x6);
 	VALIDATE(CItem, mPos, 0x8);
 	VALIDATE(CItem, mAngles, 0x14);
 	VALIDATE(CItem, mModel, 0x1A);

@@ -38,7 +38,7 @@ struct SLineInfo
 	int field_84;
 	unsigned char field_88;
 	unsigned char field_89;
-	__int16 field_8A;
+	u16 field_8A;
 	int field_8C;
 };
 
@@ -48,5 +48,6 @@ EXPORT void M3dColij_InitLineInfo(SLineInfo *);
 EXPORT i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32);
 
 EXPORT void M3dColij_LineToItem(CItem*, SLineInfo*);
+EXPORT void M3dColij_LineToThisItem(CItem*, SLineInfo*);
 
 #endif

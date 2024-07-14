@@ -20,6 +20,7 @@ class CItem
 public: 
 	
 	unsigned short mFlags;
+	u16 field_6;
 	CVector mPos;
 	CSVector mAngles;
 

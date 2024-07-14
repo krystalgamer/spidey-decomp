@@ -16,9 +16,37 @@ i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
 	return 0x03072024;
 }
 
+// @BIGTODO
+void M3dColij_LineToThisItem(CItem*, SLineInfo*)
+{
+	printf("M3dColij_LineToThisItem");
+}
+
 // @SMALLTODO
-void M3dColij_LineToItem(CItem*, SLineInfo*)
-{}
+void M3dColij_LineToItem(
+		CItem* pItem,
+		SLineInfo* pLine)
+{
+	if (pItem && pLine->field_44)
+	{
+		gte_SetRotMatrix(&pLine->field_48);
+		M3dAsm_LineColijPreprocessItems(pItem, 0, pLine, pLine->field_8A);
+
+		CItem *curItem = pItem;
+
+		while (curItem)
+		{
+			if (curItem->field_6 != pLine->field_8A)
+			{
+				curItem->field_6 = pLine->field_8A;
+				M3dColij_LineToThisItem(curItem, pLine);
+			}
+
+			curItem = reinterpret_cast<CItem*>(curItem->field_20);
+		}
+
+	}
+}
 
 void validate_SLineInfo(void)
 {

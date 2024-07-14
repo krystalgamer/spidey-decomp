@@ -1,8 +1,13 @@
 #pragma once
 
+#ifndef PS2FUNCS_H
+#define PS2FUNCS_H
+
 #include "export.h"
 #include "quat.h"
 
+
+struct SLineInfo;
 
 struct MATRIX{
 	__int16 m[3][3];
@@ -80,3 +85,7 @@ EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 EXPORT int ratan2(int, int);
 
 EXPORT int GetClut(int, int);
+
+EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
+
+#endif
