@@ -1,7 +1,8 @@
 #include "trig.h"
 #include "validate.h"
 
-u16 **gTrigNodes;
+i16 **gTrigNodes;
+i32 gNumNodes;
 
 // @SMALLTODO
 void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32)
@@ -21,10 +22,65 @@ u16* Trig_GetPosition(CVector*, int)
 	return reinterpret_cast<u16*>(0x13072024);
 }
 
-// @SMALLTODO
-void* Trig_GetLinksPointer(int)
+// @Ok
+i16* Trig_GetLinksPointer(int a1)
 {
-	return reinterpret_cast<void*>(0x686849);
+	print_if_false(a1 >= 0 && a1 < gNumNodes, "Bad node sent to Trig_GetLinksPointer");
+
+	i16* trigNodePtr = gTrigNodes[a1];
+
+	if (*trigNodePtr <= 0xD)
+	{
+		if (*trigNodePtr < 0xC)
+		{
+			switch (*trigNodePtr)
+			{
+				case 1:
+					return trigNodePtr + 3;
+				case 2:
+				case 3:
+				case 6:
+				case 8:
+				case 9:
+				case 10:
+					return trigNodePtr + 1;
+				case 5:
+					return trigNodePtr + 2;
+				default:
+					print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+					print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+					return 0;
+			}
+		}
+		else
+		{
+			return trigNodePtr + 1;
+		}
+	}
+	else if (*trigNodePtr <= 0x3E9)
+	{
+		if (*trigNodePtr < 0x3E8)
+		{
+			if (*trigNodePtr != 0x14)
+			{
+				print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+				print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+				return 0;
+			}
+
+			return trigNodePtr + 2;
+		}
+
+		return trigNodePtr + 1;
+	}
+	else if (*trigNodePtr != 0x3EA)
+	{
+		print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+		print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
+		return 0;
+	}
+
+	return trigNodePtr + 2;
 }
 
 // @MEDIUMTODO
