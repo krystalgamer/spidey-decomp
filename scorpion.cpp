@@ -278,9 +278,13 @@ INLINE u32 CScorpion::WhatShouldIDo(void)
 }
 
 
-// @SMALLTODO
-void CScorpion::TargetPlayer(i32)
-{}
+// @Ok
+INLINE void CScorpion::TargetPlayer(i32 a2)
+{
+	this->field_C10 = a2;
+	this->field_BF8 = 2;
+	this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+}
 
 // @MEDIUMTODO
 i32 CScorpion::GetEnvironmentalObjectTarget(void)
