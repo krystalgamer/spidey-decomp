@@ -7,10 +7,18 @@
 #include "ps2m3d.h"
 #include "m3dutils.h"
 
-// @SMALLTODO
-CBody* CBody::FindBodyByNode(i32, CBody*)
+// @Ok
+CBody* CBody::FindBodyByNode(
+		i32 type,
+		CBody* pBody)
 {
-	return reinterpret_cast<CBody*>(0x13072024);
+	for (CBody *cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	{
+		if (cur->field_DE == type)
+			return cur;
+	}
+
+	return 0;
 }
 
 // @Ok
