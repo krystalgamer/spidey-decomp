@@ -1,5 +1,8 @@
 #include "FontTools.h"
 #include "validate.h"
+#include "pal.h"
+#include "mem.h"
+#include <cstring>
 
 // @Ok
 int Font::isEscapeChar(char a1)
@@ -95,9 +98,27 @@ void FontManager::AllShadowOn(void)
 	}
 }
 
-// @SMALLTODO
-void FontManager::UnloadFont(Font*)
-{}
+
+// @Ok
+void FontManager::UnloadFont(Font* pFont)
+{
+	i32 count = 0;
+	for (; count < 6; count++)
+	{
+		if (FontList[count] && !strcmp(FontList[count]->field_38, pFont->field_38))
+			break;
+	}
+
+	print_if_false(count < 6, "Font %s is not in table", &pFont->field_38);
+
+
+	FontList[count]->unload();
+
+	if (FontList[count])
+		delete FontList[count];
+
+	FontList[count] = 0;
+}
 
 // @SMALLTODO
 int Font::height(char*)
@@ -105,12 +126,46 @@ int Font::height(char*)
 	return 0x29052024;
 }
 
+// @Ok
+INLINE void Font::unload(void)
+{
+	if (this->field_50 != -1)
+		Free16Slot(this->field_50);
+
+	for (i32 i = 0; i < this->field_4C + 1; i++)
+	{
+		Font *ouch = reinterpret_cast<Font*>(this->field_48[2*i]);
+		// @FIXME this should be fixed to the correct type, it just works
+		// because it's invoking a virtual destructor
+		if (ouch)
+			delete ouch;
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(this->field_48));
+
+	if (this->field_160)
+	{
+		Mem_Delete(reinterpret_cast<void*>(this->field_160));
+		this->field_160 = 0;
+	}
+}
+
+Font::~Font(void)
+{}
+
 void validate_Font(void)
 {
-	VALIDATE_SIZE(Font, 0x160);
+	VALIDATE_SIZE(Font, 0x164);
 
 	VALIDATE(Font, field_21, 0x21);
 	VALIDATE(Font, field_38, 0x38);
+
+	VALIDATE(Font, field_48, 0x48);
+	VALIDATE(Font, field_4C, 0x4C);
+	VALIDATE(Font, field_50, 0x50);
+
 	VALIDATE(Font, field_58, 0x58);
 	VALIDATE(Font, field_5F, 0x5F);
+
+	VALIDATE(Font, field_160, 0x160);
 }

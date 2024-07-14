@@ -13,19 +13,28 @@ class Font
 		EXPORT int isEscapeChar(char);
 		EXPORT char getCharIndex(char);
 		EXPORT int height(char*);
+		EXPORT void unload(void);
+		EXPORT virtual ~Font(void);
 
-		unsigned char pad[0x21];
+		unsigned char pad[0x21-4];
 
 		unsigned char field_21;
 		unsigned char padAfter21[0x38-0x21-1];
 
 		char field_38[1]; //name don't know how big
-		unsigned char padAfter38[0x58-0x38-1];
+		unsigned char padAfter38[0x48-0x38-1];
+
+		i32** field_48;
+		i32 field_4C;
+		i32 field_50;
+		u8 padAfter50[0x4];
 
 		int field_58;
 		unsigned char padAfter58[0x5F-0x58-4];
 
 		unsigned char field_5F[256];
+
+		i32 field_160;
 };
 
 class FontManager
