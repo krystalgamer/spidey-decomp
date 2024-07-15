@@ -831,6 +831,8 @@ void validate_CSuper(void){
 
 void validate_SHitInfo(void)
 {
+	VALIDATE_SIZE(SHitInfo, 0x1C);
+
 	VALIDATE(SHitInfo, field_0, 0x0);
 	VALIDATE(SHitInfo, field_4, 0x4);
 	VALIDATE(SHitInfo, field_8, 0x8);

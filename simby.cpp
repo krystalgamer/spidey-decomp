@@ -9,10 +9,95 @@
 #include "utils.h"
 #include "m3dutils.h"
 #include "spidey.h"
+#include "ps2m3d.h"
+#include "web.h"
 
 static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
+extern i32 gAttackRelated;
+
+// @Ok
+void CPunchOb::AI(void)
+{
+	if (this->pMessage)
+		this->CleanUpMessages(1, 0);
+
+	if (this->field_142)
+		this->RunAnim(0, 0, -1);
+
+	M3d_BuildTransform(this);
+
+	if ( !(gAttackRelated & 0xF)
+			&& this->field_31C.bothFlags != 1
+			&& Mem_RecoverPointer(&this->field_104))
+	{
+		this->field_31C.bothFlags = 1;
+		this->dumbAssPad = 0;
+	}
+
+	switch (this->field_31C.bothFlags)
+	{
+		case 1:
+			switch (this->dumbAssPad)
+			{
+				case 0:
+					this->field_1F8 += this->field_80;
+					if (this->field_1F8 > 180)
+					{
+						this->mFlags |= 0x200;
+						this->dumbAssPad = 1;
+					}
+					break;
+				case 1:
+					this->field_2C += 512;
+
+					this->field_2A = this->field_2C;
+					this->field_28 = this->field_2C;
+
+					if (this->field_2C >= 6144)
+					{
+						CTrapWebEffect *pTrap = reinterpret_cast<CTrapWebEffect*>(Mem_RecoverPointer(&this->field_104));
+
+						if (pTrap)
+							pTrap->Burst();
+
+						this->dumbAssPad++;
+					}
+					break;
+				case 2:
+					this->field_2C -= 256;
+
+					this->field_2A = this->field_2C;
+					this->field_28 = this->field_2C;
+
+					if (this->field_2C <= 4096)
+					{
+						this->mFlags &= 0xFDFF;
+						this->field_31C.bothFlags = 0;
+						this->dumbAssPad = 0;
+					}
+
+					break;
+				default:
+					print_if_false(0, "Unknown substate.");
+					break;
+			}
+			break;
+	}
+
+	if (this->field_44 & 1)
+	{
+		SHitInfo v9;
+		v9.field_8 = this->field_E2;
+		v9.field_C.vx = 0;
+		v9.field_C.vy = 0;
+		v9.field_C.vz = 0;
+
+		v9.field_0 = 4;
+		this->Hit(&v9);
+	}
+}
 
 // @BIGTODO
 void Simby_SplattyExplosion(CVector*, CVector*, i32)

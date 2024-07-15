@@ -11,6 +11,8 @@ public:
 	EXPORT CPunchOb(i16*, i32);
 	EXPORT virtual ~CPunchOb(void);
 	EXPORT virtual i32 Hit(SHitInfo*);
+	EXPORT virtual void AI(void);
+
 	EXPORT void SendPulse(void);
 	unsigned char padTop[4];
 

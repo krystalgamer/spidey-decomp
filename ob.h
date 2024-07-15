@@ -19,6 +19,7 @@ struct SHitInfo
 	u8 padAfter8[2];
 
 	CVector field_C;
+	u8 bottomPad[4];
 };
 
 static unsigned char * const Regions = (unsigned char*)0x006B2449;
