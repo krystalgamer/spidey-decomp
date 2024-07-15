@@ -11,6 +11,17 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList[1];
 
+// @Ok
+CManipOb::~CManipOb(void)
+{
+	this->DeleteFrom(&EnvironmentalObjectList[0]);
+
+	if (this->pVectors)
+	{
+		Mem_Delete(reinterpret_cast<void*>(this->pVectors));
+		this->pVectors = 0;
+	}
+}
 
 // @Ok
 CManipOb::CManipOb(

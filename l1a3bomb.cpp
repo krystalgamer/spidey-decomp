@@ -12,6 +12,14 @@ u32 gBombAIRelated;
 extern CPlayer* MechList;
 extern i32 DifficultyLevel;
 
+// @Ok
+CL1A3Bomb::~CL1A3Bomb(void)
+{
+	gBombDieRelatedOne = 0;
+	gBombDieRelatedTwo = 0;
+	gBombDieTimerRelated = *gTimerRelated;
+}
+
 // @BIGTODO
 void CL1A3Bomb::DoPhysics(void)
 {
