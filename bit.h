@@ -109,6 +109,7 @@ class CFlatBit : public CFT4Bit {
 public:
 
 	EXPORT CFlatBit(void);
+	EXPORT ~CFlatBit(void);
 	__int16 field_58;
 	__int16 field_5A;
 	unsigned char padAfter5A[0x2];

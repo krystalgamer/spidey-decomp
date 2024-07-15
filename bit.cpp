@@ -10,6 +10,14 @@
 volatile static int BitCount = 0;
 static int TotalBitUsage = 0;
 
+CFlatBit *FlatBitList;
+
+// @Ok
+CFlatBit::~CFlatBit(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&FlatBitList));
+}
+
 // @Ok
 // @Test
 void CMotionBlur::Move(void)
@@ -146,7 +154,7 @@ CBit::~CBit(){
 }
 
 // @Ok
-INLINE void CBit::Die(void){
+void CBit::Die(void){
 	print_if_false(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
 }
@@ -176,7 +184,7 @@ void CBit::SetPos(const CVector &pos){
 
 
 // @Ok
-void CBit::DeleteFrom(CBit **lst){
+INLINE void CBit::DeleteFrom(CBit **lst){
 	
 	CBit* next = this->mNext;
 	if(next != NULL){
@@ -226,24 +234,35 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 	this->mPosD = a5;
 }
 
+// @Ok
 void CQuadBit::SetTransparency(unsigned char a2){
 	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
 }
 
-void CQuadBit::OrientUsing(CVector *a2, SVector *a3, int a4, int a5){
+// @MEDIUMTODO
+void CQuadBit::OrientUsing(CVector *a2, SVector *a3, int a4, int a5)
+{
 }
 
+// @MEDIUMTODO
 void CQuadBit::SetTexture(int a, int b){
 	
 }
 
-CFT4Bit::~CFT4Bit() {}
+// @Ok
+CFT4Bit::~CFT4Bit()
+{
+	if (this->mDeleteAnimOnDestruction)
+		Mem_Delete(reinterpret_cast<void*>(this->mPSXAnim));
+}
 
 
+// @Ok
 void CFT4Bit::SetAnimSpeed(short s){
 	this->mAnimSpeed = s;
 }
 
+// @Ok
 void CFT4Bit::SetScale(unsigned short s){
 	this->mScale = s;
 }
