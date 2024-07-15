@@ -8,9 +8,11 @@
 #include "ai.h"
 #include "utils.h"
 #include "m3dutils.h"
+#include "spidey.h"
 
 static SStateFlags gSimbyFlags;
-extern CBody* MechList[1];
+extern CPlayer* MechList;
+
 // @BIGTODO
 CSimbyShot::CSimbyShot(CVector*)
 {}
@@ -57,7 +59,7 @@ void CSimby::Shoot(void)
 			this->CycleAnim(this->field_298.Bytes[0], 1);
 			new CAIProc_LookAt(
 					this,
-					MechList[0],
+					MechList,
 					0,
 					2,
 					80,
@@ -105,7 +107,7 @@ void CSimby::TakeHit(void)
 
 			new CAIProc_LookAt(
 					this,
-					MechList[0],
+					MechList,
 					0,
 					0,
 					80,

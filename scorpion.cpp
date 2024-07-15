@@ -6,8 +6,9 @@
 #include "web.h"
 #include "ps2redbook.h"
 #include "reloc.h"
+#include "spidey.h"
 
-CBody* MechList[1];
+CPlayer* MechList;
 
 // @Ok
 i32 CScorpion::ScorpPathCheck(
@@ -283,7 +284,7 @@ INLINE void CScorpion::TargetPlayer(i32 a2)
 {
 	this->field_C10 = a2;
 	this->field_BF8 = 2;
-	this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+	this->hCurrentTarget = Mem_MakeHandle(MechList);
 }
 
 // @MEDIUMTODO
@@ -299,14 +300,14 @@ void CScorpion::DetermineTarget(void)
 	if (this->field_C10)
 	{
 		this->field_BF8 = 2;
-		this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+		this->hCurrentTarget = Mem_MakeHandle(MechList);
 	}
 	else
 	{
 		if (!this->hCurrentTarget.field_0 || !Mem_RecoverPointer(&this->hCurrentTarget))
 		{
 			this->field_BF8 = 2;
-			this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+			this->hCurrentTarget = Mem_MakeHandle(MechList);
 		}
 
 		switch (this->WhatShouldIDo())
@@ -324,7 +325,7 @@ void CScorpion::DetermineTarget(void)
 				{
 					if (this->field_31C.bothFlags != 3 || this->field_BF8 != 2)
 					{
-						this->hCurrentTarget = Mem_MakeHandle(MechList[0]);
+						this->hCurrentTarget = Mem_MakeHandle(MechList);
 						this->field_BF8 = 2;
 						this->field_31C.bothFlags = 3;
 						this->dumbAssPad = 0;
@@ -406,7 +407,7 @@ void CScorpion::TakeHit(void)
 			this->field_310 = 0;
 			new CAIProc_LookAt(
 					this,
-					MechList[0],
+					MechList,
 					0,
 					2,
 					80,

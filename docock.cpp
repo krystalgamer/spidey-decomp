@@ -6,6 +6,9 @@
 #include "web.h"
 #include "mem.h"
 #include "utils.h"
+#include "spidey.h"
+
+extern CPlayer* MechList;
 
 // @NotOk
 // globals
@@ -89,7 +92,6 @@ void INLINE CDocOc::PlaySingleAnim(unsigned int a2, int a3, int a4)
 	this->RunAnim(a2, a3, a4);
 }
 
-extern CBody* MechList[1];
 
 // @Ok
 void CDocOc::PlayIdleOrGloatAnim(void)
@@ -103,7 +105,7 @@ void CDocOc::PlayIdleOrGloatAnim(void)
 		else
 		{
 			this->CalculateStage();
-			if (this->field_55C <= 600 && MechList[0]->field_E2 > 0)
+			if (this->field_55C <= 600 && MechList->field_E2 > 0)
 			{
 				if (this->field_550 == 1)
 					this->PlaySingleAnim(5, 0, -1);

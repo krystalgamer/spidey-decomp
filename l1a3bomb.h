@@ -11,6 +11,7 @@ class CL1A3Bomb : public CManipOb
 	public:
 		EXPORT CL1A3Bomb(u16*, i32);
 		EXPORT virtual void Die(void);
+		EXPORT virtual void Smash(void);
 
 		u8 field_128;
 		u8 field_129;

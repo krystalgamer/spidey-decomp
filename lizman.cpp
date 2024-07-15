@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "trig.h"
 #include "ps2funcs.h"
+#include "spidey.h"
 
 // @MEDIUMTODO
 void CLizMan::CalculateJumpPositionArray(CVector*)
@@ -19,7 +20,7 @@ i32 CLizMan::ScanNearbyNodesForJumpTarget(void)
 	return 0x17062024;
 }
 
-extern CBody* MechList[1];
+extern CPlayer* MechList;
 static u16 word_5FBC0C;
 
 // @Ok
@@ -35,7 +36,7 @@ void CLizMan::Guard(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						MechList[0],
+						MechList,
 						0,
 						0,
 						128,

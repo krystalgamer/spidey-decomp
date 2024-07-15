@@ -66,10 +66,7 @@ class CPlayer : public CSuper
 		int field_C78;
 		int field_C7C;
 		int field_C80;
-		int field_C84;
-		unsigned int padAfterC84;
-
-		int field_C8C;
+		CVector field_C84;
 		int field_C90;
 		unsigned char padAfterC90[0xCB4-0xC90-4];
 

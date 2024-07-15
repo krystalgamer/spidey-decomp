@@ -13,7 +13,6 @@ class CManipOb : public CBody
 		EXPORT void CalculateThrowPositionArray(CVector*, int);
 		EXPORT void ThrowPos(CVector *, int);
 		EXPORT void Throw(CVector *);
-		EXPORT void Smash(void);
 
 		EXPORT void Chunk(SLineInfo*, CVector*);
 		EXPORT void TurnOffShadow(void);
@@ -21,6 +20,8 @@ class CManipOb : public CBody
 		EXPORT void Pickup(void);
 
 		EXPORT CManipOb(u16*, i32);
+
+		EXPORT virtual void Smash(void);
 
 		u8 padTop[0xf8-0xF4];
 

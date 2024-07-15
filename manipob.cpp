@@ -11,6 +11,7 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList[1];
 
+
 // @Ok
 CManipOb::CManipOb(
 		u16* a2,

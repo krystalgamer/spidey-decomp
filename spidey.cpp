@@ -435,7 +435,7 @@ void CPlayer::PutCameraBehind(int a2)
 		}
 		else
 		{
-			int v5 = (1024 - ratan2(this->field_C8C, this->field_C84)) & 0xFFF;
+			int v5 = (1024 - ratan2(this->field_C84.vz, this->field_C84.vx)) & 0xFFF;
 			gGlobalThisCamera->SetCamAngle(v5, a2);
 
 			if (gGlobalThisCamera->mMode == 3)
@@ -808,7 +808,6 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_C7C, 0xC7C);
 	VALIDATE(CPlayer, field_C80, 0xC80);
 	VALIDATE(CPlayer, field_C84, 0xC84);
-	VALIDATE(CPlayer, field_C8C, 0xC8C);
 
 	VALIDATE(CPlayer, field_C90, 0xC90);
 	VALIDATE(CPlayer, field_CB4, 0xCB4);

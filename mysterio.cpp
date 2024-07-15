@@ -9,9 +9,10 @@
 #include "ps2lowsfx.h"
 #include "m3dutils.h"
 #include "m3dcolij.h"
+#include "spidey.h"
 
 i32 gAttackRelated;
-extern CBody* MechList[1];
+extern CPlayer* MechList;
 
 // @Ok
 // not matching but good enough
@@ -57,9 +58,9 @@ i32 CMysterio::MonitorAttack(
 					&this->field_37C,
 					&v13,
 					&v14,
-					MechList[0],
+					MechList,
 					0,
-					((MechList[0]->field_DC + a4) << 12) / MechList[0]->field_DC))
+					((MechList->field_DC + a4) << 12) / MechList->field_DC))
 		{
 			res = 1;
 		}
@@ -333,8 +334,6 @@ void CMysterio::SummonAttack(void)
 	}
 }
 
-extern CBody* MechList[1];
-
 // @NotOk
 // globals
 void CMysterio::LookMenacing(void)
@@ -343,7 +342,7 @@ void CMysterio::LookMenacing(void)
 	{
 		case 0:
 			this->Neutralize();
-			new CAIProc_LookAt(this, MechList[0], 0, 1, 60, 341);
+			new CAIProc_LookAt(this, MechList, 0, 1, 60, 341);
 			this->dumbAssPad++;
 			break;
 		case 1:
@@ -369,7 +368,7 @@ void CMysterio::RotateToOptimalAttackAngle(
 	v7.vy = 0;
 	v7.vz = 0;
 
-	Utils_CalcAim(&v7, &this->mPos, &MechList[0]->mPos);
+	Utils_CalcAim(&v7, &this->mPos, &MechList->mPos);
 
 	i32 v4 = v7.vy - this->mAngles.vy;
 
