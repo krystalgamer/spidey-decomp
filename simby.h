@@ -8,6 +8,7 @@
 
 class CPunchOb : public CBaddy {
 public:
+	EXPORT CPunchOb(i16*, i32);
 	EXPORT void SendPulse(void);
 	unsigned char padTop[4];
 

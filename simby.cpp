@@ -12,6 +12,30 @@
 
 static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
+extern CBaddy* BaddyList;
+
+// @Ok
+CPunchOb::CPunchOb(
+		i16* a2,
+		i32 a3)
+{
+	this->InitItem("sym_gen");
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
+
+	this->mCBodyFlags |= 0x10;
+	this->field_DE = a3;
+
+	this->field_38 = 412;
+	this->field_2A8 |= 2;
+	this->field_DC = 100;
+
+	u16* v6 = reinterpret_cast<u16*>(
+			this->SquirtAngles(reinterpret_cast<i16*>(
+				this->SquirtPos(reinterpret_cast<i32*>(a2)))
+			));
+	this->RunAnim(0, 0, -1);
+	this->ParseScript(v6);
+}
 
 // @BIGTODO
 CSimbyShot::CSimbyShot(CVector*)

@@ -41,7 +41,7 @@ public:
 	EXPORT int BumpedIntoSpidey(int);
 	EXPORT int ShouldFall(int, int);
 	EXPORT int CheckSightCone(int, int, int, int, CBody*);
-	EXPORT void ParseScript(unsigned __int16*);
+	EXPORT void ParseScript(u16*);
 	EXPORT void DoPhysics(int);
 	EXPORT void Baddy_SendSignal(void);
 	EXPORT int SmackSpidey(int, CVector*, int, int);
