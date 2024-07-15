@@ -42,7 +42,7 @@ public:
 	CVector mPosC;
 	CVector mPosD;
 	void* mpTexture;
-	unsigned int mCodeBGR;
+	u32 mCodeBGR;
 	unsigned pad;
 	unsigned int mTint;
 	unsigned char quadPad[0x14];
@@ -85,11 +85,8 @@ class CFT4Bit : public CBit
 		EXPORT int Fade(int);
 		EXPORT void SetTransDecay(int);
 
-		unsigned __int16 mTransDecay;
-		/*
-		unsigned short mTransDecay;
-		unsigned short mScaleDelay;
-		*/
+		u16 mTransDecay;
+		u16 field_3E;
 		unsigned int mCodeBGR;
 
 		unsigned char mDeleteAnimOnDestruction;
@@ -100,7 +97,7 @@ class CFT4Bit : public CBit
 		unsigned char padAfteranimRelated5[0x1];
 
 		unsigned char field_51;
-		unsigned char field_52;
+		i8 field_52;
 		unsigned char field_53;
 
 		short mAnimSpeed;
@@ -202,6 +199,13 @@ class CSimpleAnim : public CFlatBit
 	public:
 };
 
+class CMotionBlur : public CFlatBit
+{
+	public:
+		EXPORT CMotionBlur(CVector*, CVector*, i32,i32,i32,i32);
+		EXPORT virtual void Move(void);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -223,5 +227,6 @@ void validate_CTexturedRibbon(void);
 void validate_CSimpleTexturedRibbon(void);
 void validate_CSimpleAnim(void);
 void validate_SCFT4BitTexture(void);
+void validate_CMotionBlur(void);
 
 #endif

@@ -10,6 +10,82 @@
 volatile static int BitCount = 0;
 static int TotalBitUsage = 0;
 
+// @Ok
+// @Test
+void CMotionBlur::Move(void)
+{
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	this->mScale -= this->field_3E;
+	if (this->mScale < 0)
+	{
+		this->mScale = 0;
+		this->Die();
+		return;
+	}
+
+    u8 mCodeBGR = this->mCodeBGR;
+    i16 mTransDecay = this->mTransDecay;
+
+    u32 v10 = this->mCodeBGR >> 8;
+    u32 mCodeBGR_high = (this->mCodeBGR >> 16);
+
+	u8 v18;
+    if ( mTransDecay > mCodeBGR )
+      v18 = 0;
+    else
+      v18 = mCodeBGR - (this->mTransDecay & 0xFF);
+
+	u8 v12;
+    if ( mTransDecay > (u8)v10 )
+      v12 = 0;
+    else
+      v12 = v10 - (this->mTransDecay & 0xFF);
+
+	u8 v13;
+    if ( mTransDecay > (u8)mCodeBGR_high )
+      v13 = 0;
+    else
+      v13 = mCodeBGR_high - (this->mTransDecay & 0xFF);
+
+	u16 v14 = (v13 << 8) | v12;
+    this->mCodeBGR = v18 | this->mCodeBGR & 0xFF000000 | (v14 << 8);
+
+	if (!(this->mCodeBGR & 0xFFFFFF))
+	{
+		this->Die();
+		return;
+	}
+
+	if ( ++this->field_C & 1)
+	{
+		if ( ++this->field_52 >= this->field_51 )
+			this->field_52 = 0;
+	}
+
+	this->field_4C = &this->mPSXAnim[this->field_52];
+}
+
+// @Ok
+CMotionBlur::CMotionBlur(
+		CVector* a2,
+		CVector* a3,
+		i32 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7)
+{
+	this->mPos = *a2;
+	this->mVel = *a3;
+	this->SetAnim(a4);
+	this->SetSemiTransparent();
+	this->mScale = a5;
+	this->field_3E = a6;
+	this->mTransDecay = a7;
+}
+
 CBit::CBit() {
 
 	this->mPos.vx = 0;
@@ -70,7 +146,7 @@ CBit::~CBit(){
 }
 
 // @Ok
-void CBit::Die(void){
+INLINE void CBit::Die(void){
 	print_if_false(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
 }
@@ -500,6 +576,7 @@ void validate_CFlatBit(void){
 
 void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mTransDecay, 0x3C);
+	VALIDATE(CFT4Bit, field_3E, 0x3E);
 
 	VALIDATE(CFT4Bit, mCodeBGR, 0x40);
 
@@ -605,4 +682,9 @@ void validate_SCFT4BitTexture(void)
 void validate_CNonRenderedBit(void)
 {
 	VALIDATE_SIZE(CNonRenderedBit, 0x3C);
+}
+
+void validate_CMotionBlur(void)
+{
+	VALIDATE_SIZE(CMotionBlur, 0x68);
 }

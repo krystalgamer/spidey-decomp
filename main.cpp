@@ -334,6 +334,7 @@ int main()
 	validate_CShellSymBurn();
 	validate_CExpandingBox();
 	validate_CL1A3Bomb();
+	validate_CMotionBlur();
 
 	puts("[*] Validation done!");
 
