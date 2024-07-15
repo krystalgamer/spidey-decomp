@@ -7,8 +7,47 @@ u32 gBombRelated;
 u8 gBombDieRelatedOne;
 u8 gBombDieRelatedTwo;
 u32 gBombDieTimerRelated;
+u32 gBombAIRelated;
 
 extern CPlayer* MechList;
+extern i32 DifficultyLevel;
+
+// @BIGTODO
+void CL1A3Bomb::DoPhysics(void)
+{
+	printf("CL1A3Bomb::DoPhysics");
+}
+
+// @Ok
+void CL1A3Bomb::AI(void)
+{
+	if (this->field_128 && !gBombAIRelated)
+	{
+		if (!this->field_129)
+		{
+			Trig_SendSignalToLinks(Trig_GetLinksPointer(this->field_DE));
+			this->field_129 = 1;
+		}
+
+		return;
+	}
+	else if (this->field_44 & 1)
+	{
+		this->field_44 &= 0xFFFE;
+
+		if (!this->field_128)
+		{
+			this->field_128 = 1;
+			gBombDieRelatedOne = 1;
+			gBombDieRelatedTwo = 1;
+			gBombAIRelated = DifficultyLevel != 3 ? 7260 : 4260;
+			gBombDieTimerRelated = *gTimerRelated;
+		}
+	}
+
+	if (this->field_10C & 1)
+		this->DoPhysics();
+}
 
 // @Ok
 CL1A3Bomb::CL1A3Bomb(

@@ -220,4 +220,6 @@ void validate_CManipOb(void)
 	VALIDATE(CManipOb, field_11C, 0x11C);
 	VALIDATE(CManipOb, field_120, 0x120);
 	VALIDATE(CManipOb, field_124, 0x124);
+
+	VALIDATE_VTABLE(CManipOb, Smash, 5);
 }
