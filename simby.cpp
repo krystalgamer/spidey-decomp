@@ -14,6 +14,11 @@ static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 
+CPunchOb::~CPunchOb(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+}
+
 // @Ok
 CPunchOb::CPunchOb(
 		i16* a2,
