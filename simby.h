@@ -10,6 +10,7 @@ class CPunchOb : public CBaddy {
 public:
 	EXPORT CPunchOb(i16*, i32);
 	EXPORT virtual ~CPunchOb(void);
+	EXPORT virtual i32 Hit(SHitInfo*);
 	EXPORT void SendPulse(void);
 	unsigned char padTop[4];
 
@@ -140,5 +141,7 @@ void validate_CSimbyShot(void);
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);
 EXPORT void Simby_CreateEmber(const unsigned int*, unsigned int*);
+
+EXPORT void Simby_SplattyExplosion(CVector*, CVector*, i32);
 
 #endif

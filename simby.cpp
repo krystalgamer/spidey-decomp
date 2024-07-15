@@ -14,6 +14,46 @@ static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 
+// @BIGTODO
+void Simby_SplattyExplosion(CVector*, CVector*, i32)
+{}
+
+// @Ok
+i32 CPunchOb::Hit(SHitInfo* pHitInfo)
+{
+	if (this->field_E2 <= 0)
+		return 0;
+
+	if (pHitInfo->field_0 & 2 && pHitInfo->field_4 == 7)
+		pHitInfo->field_8 = this->field_E2;
+
+	if (pHitInfo->field_0 & 4)
+	{
+		this->field_E2 -= pHitInfo->field_8;
+
+		i32 v7 = 8;
+
+		CVector v9;
+		v9.vx = 0;
+		v9.vy = 0;
+		v9.vz = 0;
+
+		Utils_GetVecFromMagDir(&v9, 4096, &this->mAngles);
+		v9 >>= 12;
+
+		if (this->field_E2 <= 0)
+		{
+			v7 = 16;
+			this->SendPulse();
+			this->Die(0);
+		}
+		Simby_SplattyExplosion(&this->mPos, &v9, v7);
+	}
+
+	return 1;
+}
+
+// @Ok
 CPunchOb::~CPunchOb(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
@@ -402,7 +442,7 @@ void __inline CSimby::ClearAttackData(void)
 }
 
 // @Ok
-void CPunchOb::SendPulse(void)
+INLINE void CPunchOb::SendPulse(void)
 {
 	if (!this->field_328)
 	{

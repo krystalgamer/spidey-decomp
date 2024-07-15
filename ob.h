@@ -9,7 +9,18 @@
 #include "ps2funcs.h"
 #include "mem.h"
 
-struct SHitInfo;
+struct SHitInfo
+{
+	u8 field_0;
+	u8 padAfter0[3];
+
+	i32 field_4;
+	i16 field_8;
+	u8 padAfter8[2];
+
+	CVector field_C;
+};
+
 static unsigned char * const Regions = (unsigned char*)0x006B2449;
 static int *** const CItemRelatedList = (int***)0x006B2454;
 
@@ -238,6 +249,7 @@ public:
 void validate_CItem(void);
 void validate_CBody(void);
 void validate_CSuper(void);
+void validate_SHitInfo(void);
 
 static CSuper *globalSuper = (CSuper*)0x006A9038;
 

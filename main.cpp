@@ -335,6 +335,7 @@ int main()
 	validate_CExpandingBox();
 	validate_CL1A3Bomb();
 	validate_CMotionBlur();
+	validate_SHitInfo();
 
 	puts("[*] Validation done!");
 

@@ -828,3 +828,11 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_188, 0x188);
 	VALIDATE(CSuper, actualcsuperend, 0x190);
 }
+
+void validate_SHitInfo(void)
+{
+	VALIDATE(SHitInfo, field_0, 0x0);
+	VALIDATE(SHitInfo, field_4, 0x4);
+	VALIDATE(SHitInfo, field_8, 0x8);
+	VALIDATE(SHitInfo, field_C, 0xC);
+}
