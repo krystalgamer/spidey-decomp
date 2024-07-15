@@ -13,7 +13,6 @@ struct SHitInfo;
 static unsigned char * const Regions = (unsigned char*)0x006B2449;
 static int *** const CItemRelatedList = (int***)0x006B2454;
 
-static const char *gObjFile;
 
 class CItem  
 {
@@ -147,7 +146,7 @@ public:
 
 	EXPORT void InterleaveAI(void);
 	EXPORT int* SquirtPos(int*);
-	EXPORT __int16* SquirtAngles(__int16*);
+	EXPORT i16* SquirtAngles(i16*);
 	EXPORT void AttachXA(int, int);
 	EXPORT void StopMyXA(void);
 	EXPORT void UnSuspend(void);

@@ -7,6 +7,8 @@
 #include "ps2m3d.h"
 #include "m3dutils.h"
 
+const char *gObjFile;
+
 // @Ok
 CBody* CBody::FindBodyByNode(
 		i32 type,
@@ -292,7 +294,7 @@ int* CBody::SquirtPos(int *params)
 }
 
 // @Ok
-__int16* CBody::SquirtAngles(__int16* params)
+i16* CBody::SquirtAngles(i16* params)
 {
 	this->mAngles.vx = *params++;
 	this->mAngles.vy = *params++;

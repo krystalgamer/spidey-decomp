@@ -32,7 +32,7 @@ CDocOc::CDocOc(int *a2, int a3)
 	Trig_GetPosition(&this->field_50C, LinksPointer[1]);
 
 	this->field_4A8 = reinterpret_cast<int>(
-			this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2))));
+			this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2))));
 
 	this->InitItem("docock");
 

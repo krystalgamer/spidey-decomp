@@ -10,7 +10,7 @@ static __int16 * const word_682B64 = (__int16*)0x682B64;
 CRhino::CRhino(int* a2, int a3)
 {
 
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->InitItem("rhino");
 
 	this->mFlags |= 0x480;

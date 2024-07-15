@@ -15,6 +15,12 @@ static const char SuitNames[5][32];
 static const char SuitNames[5][32] = { 0 };
 #endif
 
+// @SMALLTODO
+CItem* Spool_FindEnviroItem(u32)
+{
+	return reinterpret_cast<CItem*>(0x15072024);
+}
+
 // @NotOk
 // Change constants with proper variables
 int Spool_FindRegion(const char *a1)

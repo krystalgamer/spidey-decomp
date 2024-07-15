@@ -15,7 +15,7 @@ CBlackCat::CBlackCat(int* a2, int a3)
 		this->InitItem("bc2");
 	}
 
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->field_21E = 100;
 	this->RunAnim(0xC, 0, -1);

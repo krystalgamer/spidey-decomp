@@ -24,7 +24,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 {
 	this->InitItem("mj");
 
-	this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;

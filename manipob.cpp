@@ -7,6 +7,63 @@
 
 extern SPSXRegion PSXRegion[];
 static i16 * const word_610C48 = (i16*)0x610C48;
+extern const char *gObjFile;
+extern u8 gObjFileRegion;
+extern CBody* EnvironmentalObjectList[1];
+
+// @Ok
+CManipOb::CManipOb(
+		u16* a2,
+		i32 a3)
+{
+	this->field_110 = 0;
+	this->field_114 = 0;
+	this->field_118 = 0;
+
+	this->InitItem(gObjFile);
+	this->AttachTo(&EnvironmentalObjectList[0]);
+
+	this->mFlags = this->mFlags & 0x0FFFD | 0x10;
+	this->field_38 = 401;
+
+	this->field_DE = a3;
+	this->field_78 = 12;
+	this->field_7A = 12;
+	this->field_79 = 12;
+
+	u32* v6 = reinterpret_cast<u32*>(
+			(reinterpret_cast<u32>(
+								   this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))))) + 3)
+			& 0xFFFFFFFC);
+
+	i32 *v8 = reinterpret_cast<i32*>(v6 + 1);
+	this->mModel = Spool_GetModel(*v6, gObjFileRegion);
+
+	if (*v8)
+	{
+		this->field_11C = Spool_FindEnviroItem(*v8++);
+	}
+
+	this->field_120 = reinterpret_cast<i32>(v8);
+
+	i32 *v10 = v8;
+	while (*v10++);
+
+	u16 v12 = *reinterpret_cast<u16*>(v10);
+
+	if (*reinterpret_cast<u16*>(v10) & 1)
+		this->field_10C |= 8;
+
+
+	if (v12 & 2)
+	{
+		this->field_10C |= 0x20;
+	}
+
+	this->field_108 = *(reinterpret_cast<u16*>(v10) + 1);
+	this->field_104 = *(reinterpret_cast<u16*>(v10) + 2);
+
+}
 
 // @NotOk
 // @Test
@@ -150,7 +207,16 @@ void validate_CManipOb(void)
 	VALIDATE(CManipOb, pVectors, 0xFC);
 	VALIDATE(CManipOb, field_100, 0x100);
 
+	VALIDATE(CManipOb, field_104, 0x104);
+	VALIDATE(CManipOb, field_108, 0x108);
+
 	VALIDATE(CManipOb, field_10C, 0x10C);
+
+	VALIDATE(CManipOb, field_110, 0x110);
+	VALIDATE(CManipOb, field_114, 0x114);
+	VALIDATE(CManipOb, field_118, 0x118);
+
 	VALIDATE(CManipOb, field_11C, 0x11C);
+	VALIDATE(CManipOb, field_120, 0x120);
 	VALIDATE(CManipOb, field_124, 0x124);
 }

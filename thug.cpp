@@ -616,7 +616,7 @@ void CThug::SetHitDirectionFlag(CVector* pVector)
 // also a little out of order with the v6 | 1 thing :(
 CThug::CThug(int *a2, int a3)
 {
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	__int16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->field_3B8 = Trig_GetLevelId();
 

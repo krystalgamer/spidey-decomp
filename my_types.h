@@ -33,7 +33,7 @@ typedef unsigned __int16 u16;
 typedef unsigned int u32;
 
 typedef char i8;
-typedef short i16;
+typedef __int16 i16;
 typedef int i32;
 
 #define INLINE __inline

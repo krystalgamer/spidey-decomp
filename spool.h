@@ -6,6 +6,7 @@
 
 #include "export.h"
 #include "texture.h"
+#include "ob.h"
 
 struct SPSXRegion {
 	// offset: 0000 (9 bytes)
@@ -75,6 +76,7 @@ EXPORT void Spool_ClearAllPSXs(void);
 EXPORT void ClearRegion(int, int);
 EXPORT void Spool_RemoveUnusedTextures(void);
 EXPORT void Spool_ClearPSX(const char*);
+EXPORT CItem* Spool_FindEnviroItem(u32);
 
 void validate_SPSXRegion(void);
 

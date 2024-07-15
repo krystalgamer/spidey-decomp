@@ -6,7 +6,7 @@
 // globals
 CCop::CCop(int* a2, int a3)
 {
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->ShadowOn();
 	this->field_D0 = 50;
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));

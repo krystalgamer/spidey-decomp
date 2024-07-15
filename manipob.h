@@ -20,23 +20,30 @@ class CManipOb : public CBody
 		EXPORT void SendPulse(void);
 		EXPORT void Pickup(void);
 
+		EXPORT CManipOb(u16*, i32);
+
 		u8 padTop[0xf8-0xF4];
 
 		i32 mNumVectors;
 		CVector *pVectors;
 		i32 field_100;
 
-		u8 padAfter100[0x10C-0x100-4];
+		i16 field_104;
+		u8 padAfter104[2];
 
-		int field_10C;
-		u8 padAfter10C[0x11C-0x10C-4];
+		i16 field_108;
+
+		i32 field_10C;
+
+		i32 field_110;
+		i32 field_114;
+		i32 field_118;
 
 		CItem *field_11C;
-		u8 padAfter11C[0x124-0x11C-4];
+		u32 field_120;
 
-		unsigned char field_124;
-		unsigned char padBottom[0x128-0x124-1];
-
+		u8 field_124;
+		u8 padAfter124[0x128-0x124-1];
 };
 
 void validate_CManipOb(void);

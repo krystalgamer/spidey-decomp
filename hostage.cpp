@@ -190,7 +190,7 @@ void __inline CHostage::GetUp(void)
 
 CHostage::CHostage(int* a2, int a3)
 {
-	__int16 *afterAngles = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *afterAngles = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
 
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
 	this->ShadowOn();

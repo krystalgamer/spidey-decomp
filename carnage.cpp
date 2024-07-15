@@ -4,6 +4,8 @@
 #include "panel.h"
 #include "spool.h"
 
+extern const char *gObjFile;
+
 // @NotOk
 // globals
 CCarnage::CCarnage(int* a2, int a3)
@@ -16,7 +18,7 @@ CCarnage::CCarnage(int* a2, int a3)
 	this->field_378 = 0;
 
 
-	this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->InitItem("carnage");
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
 

@@ -70,6 +70,7 @@
 #include "ai.h"
 #include <cstring>
 #include "spool.h"
+#include "l1a3bomb.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -332,6 +333,7 @@ int main()
 	validate_CConstantLaser();
 	validate_CShellSymBurn();
 	validate_CExpandingBox();
+	validate_CL1A3Bomb();
 
 	puts("[*] Validation done!");
 
