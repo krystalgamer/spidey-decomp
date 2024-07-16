@@ -3,6 +3,7 @@
 
 i16 **gTrigNodes;
 i32 gNumNodes;
+static SCommandPoint* CommandPoints;
 
 // @Ok
 void* Trig_GetLinkInfoList(
@@ -150,16 +151,13 @@ unsigned char* SkipFlags(unsigned char* ptr)
 	return ptr+1;
 }
 
-static int* gTrigCollisionRelated;
 
-// @NotOk
-// Globals
-// unknown memory accesses
+// @Ok
 void Trig_ResetCPCollisionFlags(void)
 {
-	for(int *ptr = gTrigCollisionRelated; ptr; ptr = reinterpret_cast<int*>(ptr[5]))
+	for(SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
 	{
-		*reinterpret_cast<unsigned char*>(&ptr[1]) = 0;
+		cur->Collision = 0;
 	}
 }
 
@@ -192,3 +190,10 @@ void validate_SLinkInfo(void)
 	VALIDATE(SLinkInfo, field_C, 0xC);
 }
 
+void validate_SCommandPoint(void)
+{
+	VALIDATE_SIZE(SCommandPoint, 0x18);
+
+	VALIDATE(SCommandPoint, Collision, 0x4);
+	VALIDATE(SCommandPoint, pNext, 0x14);
+}

@@ -336,6 +336,7 @@ int main()
 	validate_CL1A3Bomb();
 	validate_CMotionBlur();
 	validate_SHitInfo();
+	validate_SCommandPoint();
 
 	puts("[*] Validation done!");
 

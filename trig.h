@@ -14,6 +14,16 @@ struct SLinkInfo
 	i32 field_C;
 };
 
+struct SCommandPoint
+{
+	u8 padTop[4];
+
+	u8 Collision;
+	u8 padAfter4[0x14-0x4-1];
+
+	struct SCommandPoint* pNext;
+};
+
 EXPORT int Trig_GetLevelId(void);
 EXPORT u16* Trig_GetPosition(CVector*, int);
 EXPORT u16* Trig_GetLinksPointer(int);
@@ -27,5 +37,6 @@ EXPORT int GetFlag(unsigned char, unsigned char *);
 EXPORT void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32);
 
 void validate_SLinkInfo(void);
+void validate_SCommandPoint(void);
 
 #endif
