@@ -2,12 +2,27 @@
 #include "validate.h"
 #include "mem.h"
 
-i16 **gTrigNodes;
-i32 gNumNodes;
+EXPORT i16 **gTrigNodes;
+i32 NumNodes;
 
 EXPORT PendingListEntry PendingListArray[16];
 EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
+
+// @Ok
+SCommandPoint* GetCommandPoint(i32 Node)
+{
+	if (Node != 0xFFF && *gTrigNodes[Node] == 6)
+	{
+		for (SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+		{
+			if (cur->NodeIndex == Node)
+				return cur;
+		}
+	}
+
+	return 0;
+}
 
 // @Ok
 SCommandPoint* CreateCommandPoint(u32 checksum, u16 node, u16* pCommands)
@@ -127,7 +142,7 @@ u16* Trig_GetPosition(CVector*, int)
 // @Ok
 u16* Trig_GetLinksPointer(int node)
 {
-	print_if_false(node >= 0 && node < gNumNodes, "Bad node sent to Trig_GetLinksPointer");
+	print_if_false(node >= 0 && node < NumNodes, "Bad node sent to Trig_GetLinksPointer");
 
 	i16* trigNodePtr = gTrigNodes[node];
 
