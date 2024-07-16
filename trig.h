@@ -34,9 +34,9 @@ struct SCommandPoint
 
 struct PendingListEntry
 {
-	u16 field_0;
+	u16 NodeIndex;
 	u16 field_2;
-	u16* field_4;
+	u16* pCommands;
 };
 
 EXPORT int Trig_GetLevelId(void);
@@ -58,6 +58,9 @@ EXPORT SCommandPoint* GetCommandPoint(i32);
 
 EXPORT SCommandPoint* Trig_TriggerCommandPoint(u32, bool);
 EXPORT void Trig_AddCommandListToPending(u16, u16*);
+EXPORT void Trig_DoPendingCommandLists(void);
+EXPORT void ExecuteCommandList(u16*, i32, i32);
+EXPORT void Trig_DeleteTrigFile(void);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);

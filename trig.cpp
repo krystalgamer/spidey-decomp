@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "mem.h"
 
+EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
 i32 NumNodes;
 
@@ -9,6 +10,42 @@ const i32 MAXPENDING = 16;
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
 EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
+static int gTrigMenu[40];
+static int gRestartPoints;
+EXPORT i32 Restart;
+
+// @Ok
+void Trig_DeleteTrigFile(void)
+{
+	if (gTrigFile)
+	{
+		Mem_Delete(reinterpret_cast<void*>(gTrigFile));
+		gTrigFile = 0;
+	}
+
+	Restart = 0;
+	Trig_ZeroPendingList();
+}
+
+// @BIGTODO
+void ExecuteCommandList(u16*, i32, i32)
+{
+	printf("ExecuteCommandList");
+}
+
+// @Ok
+void Trig_DoPendingCommandLists(void)
+{
+	for (i32 i = 0; i<MAXPENDING && PendingListArray[i].pCommands; i++)
+	{
+		ExecuteCommandList(
+				PendingListArray[i].pCommands,
+				PendingListArray[i].NodeIndex,
+				0);
+	}
+
+	Trig_ZeroPendingList();
+}
 
 //@IGNORE
 void trigLog(const char*, ...)
@@ -20,12 +57,12 @@ void trigLog(const char*, ...)
 INLINE void Trig_AddCommandListToPending(u16 nodeIndex, u16* pCommands)
 {
 	i32 i;
-	for(i = 0; i < MAXPENDING && PendingListArray[i].field_4; i++);
+	for(i = 0; i < MAXPENDING && PendingListArray[i].pCommands; i++);
 
 	print_if_false(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
 
-	PendingListArray[i].field_0 = nodeIndex;
-	PendingListArray[i].field_4 = pCommands;
+	PendingListArray[i].NodeIndex = nodeIndex;
+	PendingListArray[i].pCommands = pCommands;
 }
 
 // @Ok
@@ -110,8 +147,8 @@ INLINE void Trig_ZeroPendingList(void)
 {
 	for (i32 i = 0; i<MAXPENDING; i++)
 	{
-		PendingListArray[i].field_0 = 0;
-		PendingListArray[i].field_4 = 0;
+		PendingListArray[i].NodeIndex = 0;
+		PendingListArray[i].pCommands = 0;
 	}
 }
 
@@ -248,11 +285,7 @@ void Trig_SendPulse(unsigned __int16*)
 void Trig_SendSignalToLinks(unsigned __int16*)
 {}
 
-static int gTrigMenu[40];
-static int gRestartPoints;
-
-// @NotOk
-// Globals
+// @Ok
 void Trig_ClearTrigMenu(void)
 {
 	for (int i = 0; i<40; i++)
@@ -335,7 +368,7 @@ void validate_PendingListEntry(void)
 {
 	VALIDATE_SIZE(PendingListEntry, 0x8);
 
-	VALIDATE(PendingListEntry, field_0, 0x0);
+	VALIDATE(PendingListEntry, NodeIndex, 0x0);
 	VALIDATE(PendingListEntry, field_2, 0x2);
-	VALIDATE(PendingListEntry, field_4, 0x4);
+	VALIDATE(PendingListEntry, pCommands, 0x4);
 }
