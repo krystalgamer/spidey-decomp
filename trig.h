@@ -53,6 +53,7 @@ EXPORT void* Trig_GetLinkInfoList(i32, SLinkInfo*, i32);
 EXPORT void Trig_ResetCPExecutedFlags(void);
 EXPORT void Trig_ZeroPendingList(void);
 EXPORT void Trig_DeleteCommandPoints(void);
+EXPORT SCommandPoint* CreateCommandPoint(u32, u16, u16*);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);

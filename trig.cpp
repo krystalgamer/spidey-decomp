@@ -10,6 +10,30 @@ EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
 
 // @Ok
+SCommandPoint* CreateCommandPoint(u32 checksum, u16 node, u16* pCommands)
+{
+	SCommandPoint* result = static_cast<SCommandPoint*>(DCMem_New(sizeof(SCommandPoint), 0, 1, 0, 1));
+
+	result->pNext = CommandPoints;
+	CommandPoints = result;
+
+	u32 index = (4 * checksum) & 0x3FC;
+	result->pNextSimilar = HashTable[index];
+	HashTable[index] = result;
+
+	result->Collision = 0;
+	result->Executed = 0;
+	result->NodeIndex = node;
+	result->pCommands = pCommands;
+	result->Checksum = checksum;
+	result->PulsesReceived = 0;
+	result->NumPulsesSet = 0;
+	result->NumPulses = 0;
+
+	return result;
+}
+
+// @Ok
 void Trig_DeleteCommandPoints(void)
 {
 	for (i32 i = 0; i<256; i++)
