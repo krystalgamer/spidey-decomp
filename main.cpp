@@ -337,6 +337,7 @@ int main()
 	validate_CMotionBlur();
 	validate_SHitInfo();
 	validate_SCommandPoint();
+	validate_PendingListEntry();
 
 	puts("[*] Validation done!");
 

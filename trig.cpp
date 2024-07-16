@@ -1,9 +1,40 @@
 #include "trig.h"
 #include "validate.h"
+#include "mem.h"
 
 i16 **gTrigNodes;
 i32 gNumNodes;
-static SCommandPoint* CommandPoints;
+
+EXPORT PendingListEntry PendingListArray[16];
+EXPORT SCommandPoint* CommandPoints;
+EXPORT SCommandPoint* HashTable[256];
+
+// @Ok
+void Trig_DeleteCommandPoints(void)
+{
+	for (i32 i = 0; i<256; i++)
+		HashTable[i] = 0;
+
+	for (SCommandPoint *cur = CommandPoints; cur; )
+	{
+		SCommandPoint *next = cur->pNext;
+		Mem_Delete(reinterpret_cast<void*>(cur));
+		cur = next;
+	}
+
+	CommandPoints = 0;
+	Trig_ZeroPendingList();
+}
+
+// @Ok
+INLINE void Trig_ZeroPendingList(void)
+{
+	for (i32 i = 0; i<16; i++)
+	{
+		PendingListArray[i].field_0 = 0;
+		PendingListArray[i].field_4 = 0;
+	}
+}
 
 // @Ok
 void Trig_ResetCPExecutedFlags(void)
@@ -205,8 +236,27 @@ void validate_SCommandPoint(void)
 {
 	VALIDATE_SIZE(SCommandPoint, 0x18);
 
+
+	VALIDATE(SCommandPoint, pCommands, 0x0);
+
 	VALIDATE(SCommandPoint, Collision, 0x4);
 	VALIDATE(SCommandPoint, Executed, 0x5);
 
+	VALIDATE(SCommandPoint, NumPulsesSet, 0x6);
+	VALIDATE(SCommandPoint, PulsesReceived, 0x7);
+	VALIDATE(SCommandPoint, NumPulses, 0x8);
+	VALIDATE(SCommandPoint, NodeIndex, 0xA);
+	VALIDATE(SCommandPoint, Checksum, 0xC);
+
+	VALIDATE(SCommandPoint, pNextSimilar, 0x10);
 	VALIDATE(SCommandPoint, pNext, 0x14);
+}
+
+void validate_PendingListEntry(void)
+{
+	VALIDATE_SIZE(PendingListEntry, 0x8);
+
+	VALIDATE(PendingListEntry, field_0, 0x0);
+	VALIDATE(PendingListEntry, field_2, 0x2);
+	VALIDATE(PendingListEntry, field_4, 0x4);
 }
