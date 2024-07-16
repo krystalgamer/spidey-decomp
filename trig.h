@@ -56,6 +56,9 @@ EXPORT void Trig_DeleteCommandPoints(void);
 EXPORT SCommandPoint* CreateCommandPoint(u32, u16, u16*);
 EXPORT SCommandPoint* GetCommandPoint(i32);
 
+EXPORT SCommandPoint* Trig_TriggerCommandPoint(u32, bool);
+EXPORT void Trig_AddCommandListToPending(u16, u16*);
+
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);
 void validate_PendingListEntry(void);

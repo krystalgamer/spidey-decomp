@@ -5,9 +5,49 @@
 EXPORT i16 **gTrigNodes;
 i32 NumNodes;
 
-EXPORT PendingListEntry PendingListArray[16];
+const i32 MAXPENDING = 16;
+EXPORT PendingListEntry PendingListArray[MAXPENDING];
 EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
+
+//@IGNORE
+void trigLog(const char*, ...)
+{
+	printf("trigLog!");
+}
+
+// @Ok
+INLINE void Trig_AddCommandListToPending(u16 nodeIndex, u16* pCommands)
+{
+	i32 i;
+	for(i = 0; i < MAXPENDING && PendingListArray[i].field_4; i++);
+
+	print_if_false(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
+
+	PendingListArray[i].field_0 = nodeIndex;
+	PendingListArray[i].field_4 = pCommands;
+}
+
+// @Ok
+SCommandPoint* Trig_TriggerCommandPoint(u32 checksum, bool assert)
+{
+	for (SCommandPoint *pSearch = HashTable[(checksum)&0xFF]; pSearch; pSearch = pSearch->pNextSimilar)
+	{
+		if (pSearch->Checksum == checksum)
+		{
+			pSearch->Collision = 1;
+			if (!pSearch->Executed)
+			{
+				trigLog("\tCommandPoint Triggered: node %i", pSearch->NodeIndex);
+				Trig_AddCommandListToPending(pSearch->NodeIndex, pSearch->pCommands);
+				pSearch->Executed = 1;
+				return pSearch;
+			}
+		}
+	}
+
+	return 0;
+}
 
 // @Ok
 SCommandPoint* GetCommandPoint(i32 Node)
@@ -32,7 +72,7 @@ SCommandPoint* CreateCommandPoint(u32 checksum, u16 node, u16* pCommands)
 	result->pNext = CommandPoints;
 	CommandPoints = result;
 
-	u32 index = (4 * checksum) & 0x3FC;
+	u32 index = (checksum) & 0xFF;
 	result->pNextSimilar = HashTable[index];
 	HashTable[index] = result;
 
@@ -68,7 +108,7 @@ void Trig_DeleteCommandPoints(void)
 // @Ok
 INLINE void Trig_ZeroPendingList(void)
 {
-	for (i32 i = 0; i<16; i++)
+	for (i32 i = 0; i<MAXPENDING; i++)
 	{
 		PendingListArray[i].field_0 = 0;
 		PendingListArray[i].field_4 = 0;
