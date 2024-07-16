@@ -6,6 +6,16 @@ i32 gNumNodes;
 static SCommandPoint* CommandPoints;
 
 // @Ok
+void Trig_ResetCPExecutedFlags(void)
+{
+	for(SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+	{
+		if (cur->Executed && !cur->Collision)
+			cur->Executed = 0;
+	}
+}
+
+// @Ok
 void* Trig_GetLinkInfoList(
 		i32 a1,
 		SLinkInfo* pLink,
@@ -60,11 +70,11 @@ u16* Trig_GetPosition(CVector*, int)
 }
 
 // @Ok
-u16* Trig_GetLinksPointer(int a1)
+u16* Trig_GetLinksPointer(int node)
 {
-	print_if_false(a1 >= 0 && a1 < gNumNodes, "Bad node sent to Trig_GetLinksPointer");
+	print_if_false(node >= 0 && node < gNumNodes, "Bad node sent to Trig_GetLinksPointer");
 
-	i16* trigNodePtr = gTrigNodes[a1];
+	i16* trigNodePtr = gTrigNodes[node];
 
 	if (*trigNodePtr <= 0xD)
 	{
@@ -130,6 +140,7 @@ void Trig_SendSignalToLinks(unsigned __int16*)
 
 static int gTrigMenu[40];
 static int gRestartPoints;
+
 // @NotOk
 // Globals
 void Trig_ClearTrigMenu(void)
@@ -143,12 +154,12 @@ void Trig_ClearTrigMenu(void)
 }
 
 // @Ok
-unsigned char* SkipFlags(unsigned char* ptr)
+unsigned char* SkipFlags(unsigned char* pFlags)
 {
-	while(*ptr != 0xFF)
-		ptr++;
+	while(*pFlags != 0xFF)
+		pFlags++;
 
-	return ptr+1;
+	return pFlags+1;
 }
 
 
@@ -163,11 +174,11 @@ void Trig_ResetCPCollisionFlags(void)
 
 // @NotOk
 // check inline later
-int __inline GetFlag(unsigned char flag, unsigned char *pData)
+INLINE u8 GetFlag(unsigned char flag, unsigned char *pFlags)
 {
-	while (*pData != 0xFF)
+	while (*pFlags != 0xFF)
 	{
-		if (*pData == flag)
+		if (*pFlags == flag)
 		{
 			return 1;
 		}
@@ -195,5 +206,7 @@ void validate_SCommandPoint(void)
 	VALIDATE_SIZE(SCommandPoint, 0x18);
 
 	VALIDATE(SCommandPoint, Collision, 0x4);
+	VALIDATE(SCommandPoint, Executed, 0x5);
+
 	VALIDATE(SCommandPoint, pNext, 0x14);
 }
