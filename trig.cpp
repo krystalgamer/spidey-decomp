@@ -3,6 +3,7 @@
 #include "mem.h"
 #include "utils.h"
 #include "spidey.h"
+#include "ob.h"
 
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
@@ -27,6 +28,33 @@ extern CPlayer* MechList;
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");
+}
+
+// @Ok
+void KillInList(i32 Node, CBody* pList, i32 How)
+{
+	for (CBody *cur = pList; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	{
+		if (cur->field_DE == Node)
+		{
+			switch (How)
+			{
+				case 0:
+					cur->Die();
+					break;
+				case 1:
+					SHitInfo hitInfo;
+					hitInfo.field_8 = cur->field_E2;
+					hitInfo.field_C.vx = 0;
+					hitInfo.field_C.vy = 0;
+					hitInfo.field_C.vz = 0;
+					hitInfo.field_0 = 4;
+					cur->Hit(&hitInfo);
+					break;
+			}
+		}
+	}
+
 }
 
 // @BIGTODO
