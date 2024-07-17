@@ -1,10 +1,11 @@
 #include "trig.h"
 #include "validate.h"
 #include "mem.h"
+#include "utils.h"
 
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
-i32 NumNodes;
+EXPORT i32 NumNodes;
 
 const i32 MAXPENDING = 16;
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
@@ -13,6 +14,43 @@ EXPORT SCommandPoint* HashTable[256];
 static int gTrigMenu[40];
 static int gRestartPoints;
 EXPORT i32 Restart;
+EXPORT i32 RestartNode;
+EXPORT i32 gReStartDeathRelated;
+
+//@IGNORE
+void trigLog(const char*, ...)
+{
+	printf("trigLog!");
+}
+
+// @Ok
+void Trig_SetRestart(char *pName)
+{
+	RestartNode = 0xFFFF;
+	for (i32 curNode = 0; curNode < NumNodes; curNode++)
+	{
+		if (*gTrigNodes[curNode] == 8)
+		{
+			CVector v3;
+			v3.vx = 0;
+			v3.vy = 0;
+			v3.vz = 0;
+
+			u16* Position = Trig_GetPosition(&v3, curNode);
+			
+			if (Utils_CompareStrings(reinterpret_cast<char*>(&Position[3]), pName))
+			{
+				RestartNode = curNode;
+				trigLog("Set RestartNode = %i", curNode);
+				if (!Utils_CompareStrings(pName, "re_start_death"))
+					gReStartDeathRelated = 1;
+				return;
+			}
+		}
+	}
+
+	print_if_false(0, "Restart point ");
+}
 
 // @Ok
 INLINE char *SkipString(char *pText)
@@ -56,12 +94,6 @@ void Trig_DoPendingCommandLists(void)
 	}
 
 	Trig_ZeroPendingList();
-}
-
-//@IGNORE
-void trigLog(const char*, ...)
-{
-	printf("trigLog!");
 }
 
 // @Ok

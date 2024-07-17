@@ -62,6 +62,7 @@ EXPORT void Trig_DoPendingCommandLists(void);
 EXPORT void ExecuteCommandList(u16*, i32, i32);
 EXPORT void Trig_DeleteTrigFile(void);
 EXPORT char *SkipString(char *);
+EXPORT void Trig_SetRestart(char *);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);
