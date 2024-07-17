@@ -15,6 +15,17 @@ static int gRestartPoints;
 EXPORT i32 Restart;
 
 // @Ok
+INLINE char *SkipString(char *pText)
+{
+	while(*pText)
+		pText++;
+
+	pText++;
+
+	return &pText[reinterpret_cast<u32>(pText) & 1];
+}
+
+// @Ok
 void Trig_DeleteTrigFile(void)
 {
 	if (gTrigFile)
