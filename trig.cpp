@@ -389,9 +389,17 @@ u16* Trig_GetLinksPointer(int node)
 	return reinterpret_cast<u16*>(trigNodePtr + 2);
 }
 
-// @MEDIUMTODO
-void Trig_SendPulse(unsigned __int16*)
-{}
+// @Ok
+void Trig_SendPulse(u16* pLinkInfo)
+{
+	u16 NumLinks = pLinkInfo[0];
+	u16* pLink = &pLinkInfo[1];
+
+	for (i32 curLink = 0; curLink < NumLinks; curLink++)
+	{
+		Trig_SendPulseToNode(pLink[curLink]);
+	}
+}
 
 // @SMALLTODO
 void Trig_SendSignalToLinks(unsigned __int16*)
