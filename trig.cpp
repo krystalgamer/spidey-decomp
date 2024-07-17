@@ -5,7 +5,7 @@
 #include "spidey.h"
 
 EXPORT void* gTrigFile;
-EXPORT u16 **gTrigNodes;
+EXPORT i16 **gTrigNodes;
 EXPORT i32 NumNodes;
 
 const i32 MAXPENDING = 16;
@@ -29,6 +29,12 @@ void trigLog(const char*, ...)
 	printf("trigLog!");
 }
 
+// @BIGTODO
+void Trig_CreateObject(i32)
+{
+	printf("Trig_CreateObject");
+}
+
 // @Ok
 void Trig_ExecuteAutoexec(void)
 {
@@ -39,7 +45,7 @@ void Trig_ExecuteAutoexec(void)
 	{
 		for (i32 curNode = 0; curNode < NumNodes; curNode++)
 		{
-			u16 *v5 = gTrigNodes[curNode];
+			u16 *v5 = reinterpret_cast<u16*>(gTrigNodes[curNode]);
 			if (*v5 == 15)
 			{
 				trigLog("*** Executing AUTOEXEC2 Node %i ***", curNode);
@@ -51,7 +57,7 @@ void Trig_ExecuteAutoexec(void)
 
 	for (i32 curNode = 0; curNode < NumNodes; curNode++)
 	{
-		u16 *v5 = gTrigNodes[curNode];
+		u16 *v5 = reinterpret_cast<u16*>(gTrigNodes[curNode]);
 		if (*v5 == 4)
 		{
 			trigLog("*** Executing AUTOEXEC Node %i ***", curNode);
@@ -193,7 +199,7 @@ SCommandPoint* Trig_TriggerCommandPoint(u32 checksum, bool assert)
 }
 
 // @Ok
-SCommandPoint* GetCommandPoint(i32 Node)
+INLINE SCommandPoint* GetCommandPoint(i32 Node)
 {
 	if (Node != 0xFFF && *gTrigNodes[Node] == 6)
 	{
@@ -287,7 +293,7 @@ void* Trig_GetLinkInfoList(
 		{
 			for (i32 i = 0; i<result && i < count; i++, v8++)
 			{
-				u16 *v11 = gTrigNodes[*v8];
+				u16 *v11 = reinterpret_cast<u16*>(gTrigNodes[*v8]);
 
 				pLink[i].field_0 = *v8;
 				pLink[i].field_4 = *v11;
@@ -436,9 +442,33 @@ INLINE u8 GetFlag(unsigned char flag, unsigned char *pFlags)
 	return 0;
 }
 
-// @BIGTODO
-void Trig_SendPulseToNode(int)
-{}
+// @Ok
+void Trig_SendPulseToNode(i32 NodeIndex)
+{
+	print_if_false(NodeIndex >= 0 && NodeIndex < NumNodes, "Bad node sent to Trig_SendPulseToNode");
+	trigLog("\tSending pulse to node %i", NodeIndex);
+
+	SCommandPoint *pCommand;
+	switch(*gTrigNodes[NodeIndex])
+	{
+		case 1:
+		case 5:
+		case 7:
+		case 20:
+			Trig_CreateObject(NodeIndex);
+			break;
+		case 6:
+			pCommand = GetCommandPoint(NodeIndex);
+			print_if_false(pCommand != 0, "Sent pulse to command point node before command point was created");
+
+			pCommand->PulsesReceived++;
+			Trig_AddCommandListToPending(NodeIndex, pCommand->pCommands);
+
+			break;
+		default:
+			return;
+	}
+}
 
 void validate_SLinkInfo(void)
 {
