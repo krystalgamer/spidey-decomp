@@ -137,6 +137,7 @@ class CPlayer : public CSuper
 		EXPORT void KillAllCommandBlocks(void);
 		EXPORT int* KillCommandBlock(int*);
 		EXPORT void Die(void);
+		EXPORT void SetStartOrientation(CSVector*);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

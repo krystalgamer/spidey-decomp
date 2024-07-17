@@ -15,6 +15,12 @@
 #include "m3dzone.h"
 #include "ps2lowsfx.h"
 
+// @SMALLTODO
+void CPlayer::SetStartOrientation(CSVector*)
+{
+	printf("CPlayer::SetStartOrientation");
+}
+
 // @NotOk
 // validate later
 void CPlayer::CreateFists(unsigned char a2)

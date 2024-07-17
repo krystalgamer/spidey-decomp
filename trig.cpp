@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "mem.h"
 #include "utils.h"
+#include "spidey.h"
 
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
@@ -17,10 +18,38 @@ EXPORT i32 Restart;
 EXPORT i32 RestartNode;
 EXPORT i32 gReStartDeathRelated;
 
+extern CPlayer* MechList;
+
 //@IGNORE
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");
+}
+
+// @Ok
+void Trig_ExecuteRestart(void)
+{
+	print_if_false(RestartNode != 0xFFFF, "Tried to execute a restart with no restart node set");
+	print_if_false(*gTrigNodes[RestartNode] == 8, "Eh? Restart node isn't a restart node!");
+	print_if_false(MechList != 0, "Tried to execute a restart with a NULL MechList");
+
+	CVector v7;
+	v7.vx = 0;
+	v7.vy = 0;
+	v7.vz = 0;
+
+	CSVector *Position = reinterpret_cast<CSVector*>(Trig_GetPosition(&v7, RestartNode));
+
+	MechList->mPos = v7;
+	MechList->SetStartOrientation(Position);
+
+	char *v3 = reinterpret_cast<char*>(&Position[1]);
+	trigLog("*** Executing Restart Node: %s ***", v3);
+
+	v3 = SkipString(v3);
+
+	Trig_ZeroPendingList();
+	ExecuteCommandList(reinterpret_cast<u16*>(v3), RestartNode, 1);
 }
 
 // @Ok
