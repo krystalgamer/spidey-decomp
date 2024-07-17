@@ -2,6 +2,8 @@
 #include "mess.h"
 #include "validate.h"
 
+EXPORT i32 JoelJewCheatCode;
+
 
 EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 	return 69;

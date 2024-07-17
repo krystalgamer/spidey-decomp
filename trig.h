@@ -64,6 +64,7 @@ EXPORT void Trig_DeleteTrigFile(void);
 EXPORT char *SkipString(char *);
 EXPORT void Trig_SetRestart(char *);
 EXPORT void Trig_ExecuteRestart(void);
+EXPORT void Trig_ExecuteAutoexec(void);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);

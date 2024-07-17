@@ -5,7 +5,7 @@
 #include "spidey.h"
 
 EXPORT void* gTrigFile;
-EXPORT i16 **gTrigNodes;
+EXPORT u16 **gTrigNodes;
 EXPORT i32 NumNodes;
 
 const i32 MAXPENDING = 16;
@@ -17,6 +17,9 @@ static int gRestartPoints;
 EXPORT i32 Restart;
 EXPORT i32 RestartNode;
 EXPORT i32 gReStartDeathRelated;
+EXPORT i32 EndLevelNode;
+
+extern i32 JoelJewCheatCode;
 
 extern CPlayer* MechList;
 
@@ -24,6 +27,37 @@ extern CPlayer* MechList;
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");
+}
+
+// @Ok
+void Trig_ExecuteAutoexec(void)
+{
+	print_if_false(gTrigFile != 0, "No trigger file");
+	EndLevelNode = 0xFFFF;
+
+	if (JoelJewCheatCode)
+	{
+		for (i32 curNode = 0; curNode < NumNodes; curNode++)
+		{
+			u16 *v5 = gTrigNodes[curNode];
+			if (*v5 == 15)
+			{
+				trigLog("*** Executing AUTOEXEC2 Node %i ***", curNode);
+				ExecuteCommandList(v5 + 1, curNode, 1);
+				return;
+			}
+		}
+	}
+
+	for (i32 curNode = 0; curNode < NumNodes; curNode++)
+	{
+		u16 *v5 = gTrigNodes[curNode];
+		if (*v5 == 4)
+		{
+			trigLog("*** Executing AUTOEXEC Node %i ***", curNode);
+			ExecuteCommandList(v5 + 1, curNode, 1);
+		}
+	}
 }
 
 // @Ok
@@ -253,7 +287,7 @@ void* Trig_GetLinkInfoList(
 		{
 			for (i32 i = 0; i<result && i < count; i++, v8++)
 			{
-				i16 *v11 = gTrigNodes[*v8];
+				u16 *v11 = gTrigNodes[*v8];
 
 				pLink[i].field_0 = *v8;
 				pLink[i].field_4 = *v11;
@@ -293,7 +327,7 @@ u16* Trig_GetLinksPointer(int node)
 {
 	print_if_false(node >= 0 && node < NumNodes, "Bad node sent to Trig_GetLinksPointer");
 
-	i16* trigNodePtr = gTrigNodes[node];
+	i16* trigNodePtr = reinterpret_cast<i16*>(gTrigNodes[node]);
 
 	if (*trigNodePtr <= 0xD)
 	{

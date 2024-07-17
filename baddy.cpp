@@ -10,7 +10,7 @@
 
 CBaddy* ControlBaddyList;
 
-extern i16** gTrigNodes;
+extern u16** gTrigNodes;
 
 // @NotOk
 // check when pathcheck is done <3
@@ -74,7 +74,7 @@ i32 CBaddy::GetNextWaypoint(void)
 
 		this->field_1F4 = LinksPointer[1];
 
-		i16* v4 = gTrigNodes[this->field_1F4];
+		u16* v4 = gTrigNodes[this->field_1F4];
 		this->field_2F0 = 0;
 
 		if (*v4 == 1000 || *v4 == 1002)
