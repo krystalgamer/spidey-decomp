@@ -31,6 +31,16 @@ void trigLog(const char*, ...)
 }
 
 // @Ok
+void SendSignalToNode(CBody* pBody, i32 NodeIndex)
+{
+	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	{
+		if (cur->field_DE == NodeIndex)
+			cur->field_44 |= 1;
+	}
+}
+
+// @Ok
 INLINE void SendSuspend(CBody** ppList, i32 NodeIndex)
 {
 	for (CBody* cur = *ppList; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
