@@ -71,6 +71,7 @@ EXPORT void Trig_CreateObject(i32);
 EXPORT void KillInList(i32, CBody*, i32);
 EXPORT void SendSuspend(CBody**, i32);
 EXPORT void SendSignalToNode(CBody*, i32);
+EXPORT void SendUnSuspend(CBody*, i32);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);
