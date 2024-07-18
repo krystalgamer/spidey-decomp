@@ -4,7 +4,7 @@
 #include "utils.h"
 
 int JoelJewtCheatCode = 0;
-extern CBody* EnvironmentalObjectList[1];
+extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
 // @NotOk
@@ -141,7 +141,7 @@ int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 	{
 		if (infos[i].field_4 == 1 || infos[i].field_4 == 2)
 		{
-			CBody *BodyByNode = this->FindBodyByNode(infos[i].field_0, EnvironmentalObjectList[0]);
+			CBody *BodyByNode = this->FindBodyByNode(infos[i].field_0, EnvironmentalObjectList);
 
 			if (BodyByNode)
 			{

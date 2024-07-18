@@ -9,12 +9,12 @@ extern SPSXRegion PSXRegion[];
 static i16 * const word_610C48 = (i16*)0x610C48;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
-extern CBody* EnvironmentalObjectList[1];
+extern CBody* EnvironmentalObjectList;
 
 // @Ok
 CManipOb::~CManipOb(void)
 {
-	this->DeleteFrom(&EnvironmentalObjectList[0]);
+	this->DeleteFrom(&EnvironmentalObjectList);
 
 	if (this->pVectors)
 	{
@@ -33,7 +33,7 @@ CManipOb::CManipOb(
 	this->field_118 = 0;
 
 	this->InitItem(gObjFile);
-	this->AttachTo(&EnvironmentalObjectList[0]);
+	this->AttachTo(&EnvironmentalObjectList);
 
 	this->mFlags = this->mFlags & 0x0FFFD | 0x10;
 	this->field_38 = 401;

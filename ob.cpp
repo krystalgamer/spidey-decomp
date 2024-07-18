@@ -8,6 +8,7 @@
 #include "m3dutils.h"
 
 const char *gObjFile;
+CBody* EnvironmentalObjectList;
 
 // @Ok
 CBody* CBody::FindBodyByNode(
@@ -72,7 +73,6 @@ INLINE CItem::~CItem()
 {
 }
 
-CBody* EnvironmentalObjectList[1];
 // @Ok
 void CBody::AI(void)
 {

@@ -7,6 +7,10 @@
 #include "web.h"
 #include "spool.h"
 
+
+extern u8 gObjFileRegion;
+extern CBody* EnvironmentalObjectList;
+
 // @MEDIUMTODO
 CVenom::CVenom(int*, int)
 {
@@ -154,9 +158,6 @@ void INLINE CVenom::TugWeb(void)
 	}
 }
 
-extern u8 gObjFileRegion;
-extern CBody* EnvironmentalObjectList[1];
-
 // @Ok
 void CVenom::AdjustWaterModel(void)
 {
@@ -168,7 +169,7 @@ void CVenom::AdjustWaterModel(void)
 	{
 		u32 Model = Spool_GetModel(0x26D2DBB7, gObjFileRegion);
 
-		for (pBody = EnvironmentalObjectList[0];
+		for (pBody = EnvironmentalObjectList;
 				pBody;
 				pBody = reinterpret_cast<CBody*>(pBody->field_20))
 		{

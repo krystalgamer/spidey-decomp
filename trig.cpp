@@ -3,7 +3,7 @@
 #include "mem.h"
 #include "utils.h"
 #include "spidey.h"
-#include "ob.h"
+#include "baddy.h"
 
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
@@ -23,11 +23,58 @@ EXPORT i32 EndLevelNode;
 extern i32 JoelJewCheatCode;
 
 extern CPlayer* MechList;
+extern CBaddy* ControlBaddyList;
+extern CBaddy* BaddyList;
+extern CBody* EnvironmentalObjectList;
 
 //@IGNORE
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");
+}
+
+// @Ok
+void SendSuspendOrActivate(u16* pLinkInfo, i32 signalType)
+{
+	switch(signalType)
+	{
+		case 4:
+		case 5:
+			break;
+		default:
+			print_if_false(0, "Bad signalType");
+			break;
+	}
+
+	print_if_false(*pLinkInfo !=0, "Node sending an activate or \n suspen is not lined\n to anything");
+
+	u16 numIters = *pLinkInfo;
+
+	u16* nodeIndexPtr = pLinkInfo + 1;
+
+	for (i32 i = 0; i < numIters; i++)
+	{
+		i16 *node = gTrigNodes[nodeIndexPtr[i]];
+
+		switch(*node)
+		{
+			case 1:
+			case 7:
+				if (signalType == 5)
+				{
+					SendSuspend(reinterpret_cast<CBody**>(&BaddyList), nodeIndexPtr[i]);
+					SendSuspend(reinterpret_cast<CBody**>(&ControlBaddyList), nodeIndexPtr[i]);
+					SendSuspend(reinterpret_cast<CBody**>(&EnvironmentalObjectList), nodeIndexPtr[i]);
+				}
+				else
+				{
+					SendUnSuspend(BaddyList, nodeIndexPtr[i]);
+					SendUnSuspend(ControlBaddyList, nodeIndexPtr[i]);
+					SendUnSuspend(EnvironmentalObjectList, nodeIndexPtr[i]);
+				}
+				break;
+		}
+	}
 }
 
 // @Ok

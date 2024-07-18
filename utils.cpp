@@ -3,6 +3,11 @@
 #include <cstdlib>
 #include <cmath>
 
+extern u32 gLineToItemRelated;
+extern CBody *EnvironmentalObjectList;
+extern SLineInfo gLineInfo;
+extern i32 gGetGroundRelated;
+
 
 // @NotOk
 // @Test
@@ -141,11 +146,6 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 	return total;
 }
 
-extern u32 gLineToItemRelated;
-extern CBody *EnvironmentalObjectList[1];
-extern SLineInfo gLineInfo;
-extern i32 gGetGroundRelated;
-
 // @Ok
 CBody* Utils_CheckObjectCollision(
 		CVector* a1,
@@ -170,7 +170,7 @@ CBody* Utils_CheckObjectCollision(
 		M3dColij_InitLineInfo(&gLineInfo);
 
 		gLineToItemRelated = 1;
-		M3dColij_LineToItem(EnvironmentalObjectList[0], &gLineInfo);
+		M3dColij_LineToItem(EnvironmentalObjectList, &gLineInfo);
 		result = reinterpret_cast<CBody*>(gGetGroundRelated);
 		gLineToItemRelated = 0;
 	}
