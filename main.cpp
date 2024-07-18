@@ -345,6 +345,7 @@ int main()
 	validate_PendingListEntry();
 	validate_CSpecialDisplay();
 	validate_CSkidMark();
+	validate_TextureEntry();
 
 	puts("[*] Validation done!");
 

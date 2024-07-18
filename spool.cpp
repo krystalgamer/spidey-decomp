@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "validate.h"
 #include "utils.h"
+#include <cstring>
 
 const int MAXPSX = 40;
 EXPORT SPSXRegion PSXRegion[MAXPSX];
@@ -12,6 +13,8 @@ EXPORT i32 CurrentSuit;
 
 EXPORT u8 gGiveDefaultTexture;
 EXPORT i32** gUnknownRelatedToFind;
+
+EXPORT TextureEntry gTextureEntries[256];
 
 #if _WIN32
 static const char SuitNames[5][32];
@@ -160,6 +163,28 @@ Texture *Spool_FindTextureEntry(u32 checksum)
 	return pSearch;
 }
 
+// NotOk
+// understand th ereturn for index >= 256
+Texture *Spool_FindTextureEntry(char *name)
+{
+	char localName[256];
+	strcpy(localName, name);
+	strlwr(localName);
+
+	i32 index;
+	for (index = 0; index < 256; index++)
+	{
+		TextureEntry *currentEntry = &gTextureEntries[index];
+		if (!strcmp(currentEntry->Name, localName) && currentEntry->Active)
+			break;
+	}
+
+	if (index >= 256)
+		return reinterpret_cast<Texture*>(gUnknownRelatedToFind[1]);
+
+	return Spool_FindTextureEntry(gTextureEntries[index].Checksum);
+}
+
 void validate_SPSXRegion(void)
 {
 	VALIDATE_SIZE(SPSXRegion, 0x44);
@@ -175,4 +200,13 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, pTexWibData, 0x2C);
 	VALIDATE(SPSXRegion, pColourPulseData, 0x30);
 	VALIDATE(SPSXRegion, LowRes, 0x3B);
+}
+
+void validate_TextureEntry(void)
+{
+	VALIDATE_SIZE(TextureEntry, 0x28);
+
+	VALIDATE(TextureEntry, Active, 0x0);
+	VALIDATE(TextureEntry, Name, 0x1);
+	VALIDATE(TextureEntry, Checksum, 0x24);
 }

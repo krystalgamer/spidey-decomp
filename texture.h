@@ -21,4 +21,11 @@ struct Texture
 	Texture *pNext;
 };
 
+struct TextureEntry
+{
+	u8 Active;
+	char Name[35];
+	u32 Checksum;
+};
+
 #endif

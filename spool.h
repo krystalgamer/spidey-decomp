@@ -77,7 +77,9 @@ EXPORT void Spool_RemoveUnusedTextures(void);
 EXPORT void Spool_ClearPSX(const char*);
 EXPORT CItem* Spool_FindEnviroItem(u32);
 EXPORT Texture* Spool_FindTextureEntry(u32);
+EXPORT Texture* Spool_FindTextureEntry(char *);
 
 void validate_SPSXRegion(void);
+void validate_TextureEntry(void);
 
 #endif
