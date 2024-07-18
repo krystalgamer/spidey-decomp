@@ -4,10 +4,14 @@
 #include "utils.h"
 
 const int MAXPSX = 40;
-SPSXRegion PSXRegion[MAXPSX];
+EXPORT SPSXRegion PSXRegion[MAXPSX];
+EXPORT Texture* TextureChecksumHashTable[512];
 
-int lowGraphics;
-int CurrentSuit;
+EXPORT i32 lowGraphics;
+EXPORT i32 CurrentSuit;
+
+EXPORT u8 gGiveDefaultTexture;
+EXPORT i32** gUnknownRelatedToFind;
 
 #if _WIN32
 static const char SuitNames[5][32];
@@ -73,12 +77,6 @@ unsigned int *Spool_SkipPackets(unsigned int *a1)
 	return i + 1;
 }
 
-// @MEDIUMTODO
-Texture* Spool_FindTextureEntry(unsigned int)
-{
-	return (Texture*)0x03062024;
-}
-
 // @BIGTODO
 void ClearRegion(int, int)
 {
@@ -135,6 +133,31 @@ void Spool_ClearAllPSXs(void)
 	}
 
 	Spool_RemoveUnusedTextures();
+}
+
+// @NotOk
+// understand the unknown variable
+Texture *Spool_FindTextureEntry(u32 checksum)
+{
+	Texture *pSearch;
+	for (pSearch = TextureChecksumHashTable[checksum & 511];
+			pSearch;
+			pSearch = pSearch->pNext)
+	{
+		if (pSearch->Checksum == checksum)
+			break;
+	}
+
+	if (!pSearch)
+	{
+		if (!gGiveDefaultTexture)
+		{
+			print_if_false(0, "Can't find texture from checksum %ld", checksum);
+			return reinterpret_cast<Texture*>(gUnknownRelatedToFind[1]);
+		}
+	}
+
+	return pSearch;
 }
 
 void validate_SPSXRegion(void)

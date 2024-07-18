@@ -71,12 +71,12 @@ struct SPSXRegion {
 EXPORT int Spool_FindRegion(const char *);
 EXPORT unsigned int Spool_GetModel(unsigned int, int);
 EXPORT unsigned int *Spool_SkipPackets(unsigned int *);
-EXPORT Texture*  Spool_FindTextureEntry(unsigned int);
 EXPORT void Spool_ClearAllPSXs(void);
 EXPORT void ClearRegion(int, int);
 EXPORT void Spool_RemoveUnusedTextures(void);
 EXPORT void Spool_ClearPSX(const char*);
 EXPORT CItem* Spool_FindEnviroItem(u32);
+EXPORT Texture* Spool_FindTextureEntry(u32);
 
 void validate_SPSXRegion(void);
 

@@ -6,14 +6,19 @@
 // @TODO go to types.h
 struct Texture
 {
-	unsigned char field_0;
-	unsigned char field_1;
-	unsigned char padAfter1[0x4-0x1-1];
+	u8 field_0;
+	u8 field_1;
+	u8 padAfter1[0x4-0x1-1];
 
-	int field_4;
-	unsigned char padAfter4[0x9-0x4-4];
+	i32 field_4;
+	u8 padAfter4[0x9-0x4-4];
 
-	unsigned char field_9;
+	u8 field_9;
+	u8 padAfter9[0x14-0x9-1];
+
+	u32 Checksum;
+	u8 padAfter14[0x20-0x14-4];
+	Texture *pNext;
 };
 
 #endif
