@@ -16,11 +16,21 @@
 #include "ps2lowsfx.h"
 
 EXPORT CPlayer* MechList;
+EXPORT CVector gGlobalNormal;
 
 // @SMALLTODO
-void CPlayer::SetStartOrientation(CSVector*)
+void CPlayer::SetStartOrientation(CSVector* pVector)
 {
-	printf("CPlayer::SetStartOrientation");
+	SVECTOR a1;
+	MATRIX a2;
+
+	a1.vx = 0;
+	a1.vy = pVector->vy;
+	a1.vz = 0;
+
+	M3dMaths_RotMatrixYXZ(&a1, &a2);
+	MulMatrix(&this->field_164, &a2);
+	this->OrientToNormal(0, &gGlobalNormal);
 }
 
 // @NotOk
@@ -521,7 +531,9 @@ void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
 
 // @BIGTODO
 void CPlayer::OrientToNormal(bool, CVector*)
-{}
+{
+	printf("CPlayer::OrientToNormal");
+}
 
 // @BIGTODO
 void CPlayer::PriorToVenomDistanceAttack(CVector)

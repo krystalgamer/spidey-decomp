@@ -169,6 +169,13 @@ Texture *Spool_FindTextureEntry(u32 checksum)
 	return pSearch;
 }
 
+#ifndef _WIN32
+void strlwr(char* inp)
+{
+	// @TODO later date
+}
+#endif
+
 // NotOk
 // understand th ereturn for index >= 256
 Texture *Spool_FindTextureEntry(char *name)
