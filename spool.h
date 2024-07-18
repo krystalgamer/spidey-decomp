@@ -78,6 +78,8 @@ EXPORT void Spool_ClearPSX(const char*);
 EXPORT CItem* Spool_FindEnviroItem(u32);
 EXPORT Texture* Spool_FindTextureEntry(u32);
 EXPORT Texture* Spool_FindTextureEntry(char *);
+EXPORT u32 Spool_FindTextureChecksum(char *);
+EXPORT u32 Spool_GetModelChecksum(CItem *);
 
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);

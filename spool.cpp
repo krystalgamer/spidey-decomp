@@ -22,6 +22,12 @@ static const char SuitNames[5][32];
 static const char SuitNames[5][32] = { 0 };
 #endif
 
+// @Ok
+u32 Spool_GetModelChecksum(CItem *pItem)
+{
+	return PSXRegion[pItem->mRegion].pModelChecksums[pItem->mModel];
+}
+
 // @SMALLTODO
 CItem* Spool_FindEnviroItem(u32)
 {
@@ -183,6 +189,26 @@ Texture *Spool_FindTextureEntry(char *name)
 		return reinterpret_cast<Texture*>(gUnknownRelatedToFind[1]);
 
 	return Spool_FindTextureEntry(gTextureEntries[index].Checksum);
+}
+
+u32 Spool_FindTextureChecksum(char *name)
+{
+	char localName[256];
+	strcpy(localName, name);
+	strlwr(localName);
+
+	i32 index;
+	for (index = 0; index < 256; index++)
+	{
+		TextureEntry *currentEntry = &gTextureEntries[index];
+		if (!strcmp(currentEntry->Name, localName) && currentEntry->Active)
+			break;
+	}
+
+	if (index < 256)
+		return gTextureEntries[index].Checksum;
+
+	return 0;
 }
 
 void validate_SPSXRegion(void)
