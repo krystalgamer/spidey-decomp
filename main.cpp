@@ -338,6 +338,7 @@ int main()
 	validate_SHitInfo();
 	validate_SCommandPoint();
 	validate_PendingListEntry();
+	validate_CSpecialDisplay();
 
 	puts("[*] Validation done!");
 

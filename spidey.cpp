@@ -15,6 +15,8 @@
 #include "m3dzone.h"
 #include "ps2lowsfx.h"
 
+EXPORT CPlayer* MechList;
+
 // @SMALLTODO
 void CPlayer::SetStartOrientation(CSVector*)
 {

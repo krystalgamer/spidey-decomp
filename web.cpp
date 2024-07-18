@@ -117,7 +117,6 @@ void validate_CTrapWebEffect(void)
 {
 	VALIDATE_SIZE(CTrapWebEffect, 0x430);
 
-	VALIDATE(CTrapWebEffect, bitBottomPad, 0x3B);
 	VALIDATE(CTrapWebEffect, field_3C, 0x3C);
 	VALIDATE(CTrapWebEffect, field_44, 0x44);
 	VALIDATE(CTrapWebEffect, field_418, 0x418);

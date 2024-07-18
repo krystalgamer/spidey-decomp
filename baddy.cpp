@@ -8,9 +8,10 @@
 #include "trig.h"
 #include "ai.h"
 
-CBaddy* ControlBaddyList;
+EXPORT CBaddy* ControlBaddyList;
+EXPORT CBaddy* BaddyList;
 
-extern i16** gTrigNodes;
+extern u16** gTrigNodes;
 
 // @NotOk
 // check when pathcheck is done <3
@@ -813,8 +814,6 @@ void CBaddy::Shouldnt_DoPhysics_Be_Virtual(void)
 void CBaddy::UnknownCBaddyFunctionFive(int)
 {
 }
-
-extern CBaddy* BaddyList;
 
 // @Ok
 CBaddy* CBaddy::GetClosest(i32 baddyType, i32 inSight)

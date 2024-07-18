@@ -73,6 +73,7 @@ EXPORT void SendSuspend(CBody**, i32);
 EXPORT void SendSignalToNode(CBody*, i32);
 EXPORT void SendUnSuspend(CBody*, i32);
 EXPORT void SendSuspendOrActivate(u16*, i32);
+EXPORT void SendKillFromNode(i32, i32);
 
 void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);

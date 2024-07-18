@@ -9,6 +9,7 @@
 
 const char *gObjFile;
 CBody* EnvironmentalObjectList;
+CBody* PowerUpList;
 
 // @Ok
 CBody* CBody::FindBodyByNode(

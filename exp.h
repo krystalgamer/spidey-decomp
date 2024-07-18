@@ -11,6 +11,7 @@ class CItemFrag : public CBit
 		unsigned char itemFragPad[0x7C];
 };
 
+EXPORT void Exp_HitEnvItem(CItem*, u32*, i32);
 void validate_CItemFrag(void);
 
 #endif

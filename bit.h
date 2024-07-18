@@ -22,7 +22,7 @@ class CBit
 		unsigned char mDead;
 		unsigned __int16 mFrigDeltaZ;
 		unsigned char mProtected;
-		unsigned char bitBottomPad;
+		u8 mType;
 
 		EXPORT CBit();
 		EXPORT virtual ~CBit();
@@ -145,10 +145,9 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 	public:
 		EXPORT void SetRGB(unsigned char, unsigned char, unsigned char);
 
-		unsigned __int16 field_3C;
-		unsigned char padAfter3C[0x48-0x3C-2];
-
-		int* field_48;
+		u16 field_3C;
+		u8 padAfter3C[0x48-0x3C-2];
+		i32* field_48;
 };
 
 class CGlow : public CBit
@@ -190,9 +189,8 @@ class CTexturedRibbon : public CSpecialDisplay
 {
 	public:
 		EXPORT void SetOuterRGBi(int, unsigned char, unsigned char, unsigned char);
-		unsigned char topPad[0x60-0x3C];
-		int* field_60;
-
+		u8 topPad[0x60-0x3C];
+		i32* field_60;
 };
 
 class CSimpleAnim : public CFlatBit
@@ -229,5 +227,6 @@ void validate_CSimpleTexturedRibbon(void);
 void validate_CSimpleAnim(void);
 void validate_SCFT4BitTexture(void);
 void validate_CMotionBlur(void);
+void validate_CSpecialDisplay(void);
 
 #endif

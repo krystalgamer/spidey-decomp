@@ -10,7 +10,8 @@
 volatile static int BitCount = 0;
 static int TotalBitUsage = 0;
 
-CFlatBit *FlatBitList;
+EXPORT CFlatBit *FlatBitList;
+EXPORT CSpecialDisplay *SpecialDisplayList;
 
 // @Ok
 CFlatBit::~CFlatBit(void)
@@ -637,6 +638,7 @@ void validate_CBit(void)
 	VALIDATE(CBit, mDead, 0x37);
 	VALIDATE(CBit, mFrigDeltaZ, 0x38);
 	VALIDATE(CBit, mProtected, 0x3A);
+	VALIDATE(CBit, mType, 0x3B);
 }
 
 void validate_CSmokeTrail(void)
@@ -706,4 +708,9 @@ void validate_CNonRenderedBit(void)
 void validate_CMotionBlur(void)
 {
 	VALIDATE_SIZE(CMotionBlur, 0x68);
+}
+
+void validate_CSpecialDisplay(void)
+{
+	VALIDATE_SIZE(CSpecialDisplay, 0x3C);
 }

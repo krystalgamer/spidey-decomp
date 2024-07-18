@@ -4,9 +4,11 @@
 #include "utils.h"
 #include "spidey.h"
 #include "baddy.h"
+#include "spool.h"
+#include "exp.h"
 
 EXPORT void* gTrigFile;
-EXPORT i16 **gTrigNodes;
+EXPORT u16 **gTrigNodes;
 EXPORT i32 NumNodes;
 
 const i32 MAXPENDING = 16;
@@ -19,6 +21,7 @@ EXPORT i32 Restart;
 EXPORT i32 RestartNode;
 EXPORT i32 gReStartDeathRelated;
 EXPORT i32 EndLevelNode;
+extern CSpecialDisplay *SpecialDisplayList;
 
 extern i32 JoelJewCheatCode;
 
@@ -26,11 +29,90 @@ extern CPlayer* MechList;
 extern CBaddy* ControlBaddyList;
 extern CBaddy* BaddyList;
 extern CBody* EnvironmentalObjectList;
+extern CBody* PowerUpList;
 
 //@IGNORE
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");
+}
+
+// @NotOk
+// SpecialDisplayList shitty ass polymorphism
+// need to understand what's type 9
+void SendKillFromNode(i32 Node, i32 How)
+{
+	print_if_false(Node >= 0 && Node < NumNodes, "Bad node sent to SendKillFromNode");
+
+	u16 *pLinkInfo = Trig_GetLinksPointer(Node);
+
+	u16 NumLinks = *pLinkInfo;
+	u16* nodeIndexPtr = pLinkInfo + 1;
+
+	for (i32 i = 0; i < NumLinks; i++)
+	{
+		u16 nodeIndex = nodeIndexPtr[i];
+
+		u16 *node = gTrigNodes[nodeIndex];
+		switch (*node)
+		{
+			case 1:
+				if (node[1] == 409)
+				{
+					for (
+							CSpecialDisplay *cur = SpecialDisplayList;
+							cur;
+							cur = reinterpret_cast<CSpecialDisplay*>(cur->mNext))
+					{
+						if (cur->mType == 9)
+						{
+							if (*reinterpret_cast<u16*>(reinterpret_cast<u8*>(cur)+0x6A) == nodeIndex)
+							{
+								cur->Die();
+							}
+						}
+					}
+				}
+				else
+				{
+					KillInList(nodeIndex, BaddyList, How);
+					KillInList(nodeIndex, ControlBaddyList, How);
+					KillInList(nodeIndex, EnvironmentalObjectList, How);
+				}
+				break;
+			case 2:
+			case 9:
+
+				u32 v20;
+				CItem* EnviroItem;
+
+				v20 = reinterpret_cast<u32>(&node[node[1] + 1]);
+				if (v20 & 2)
+					v20 += 2;
+
+				EnviroItem = Spool_FindEnviroItem(v20);
+				if (EnviroItem)
+				{
+					if (How == 1)
+					{
+						Exp_HitEnvItem(EnviroItem, 0, 0xFFFF);
+					}
+					else
+					{
+						EnviroItem->mFlags |= 1;
+					}
+				}
+				break;
+			case 4:
+			case 20:
+				KillInList(nodeIndex, PowerUpList, How);
+				break;
+			default:
+				break;
+		}
+	}
+
+
 }
 
 // @Ok
@@ -54,7 +136,7 @@ void SendSuspendOrActivate(u16* pLinkInfo, i32 signalType)
 
 	for (i32 i = 0; i < numIters; i++)
 	{
-		i16 *node = gTrigNodes[nodeIndexPtr[i]];
+		u16 *node = gTrigNodes[nodeIndexPtr[i]];
 
 		switch(*node)
 		{
@@ -434,17 +516,18 @@ u16* Trig_GetPosition(CVector*, int)
 }
 
 // @Ok
-u16* Trig_GetLinksPointer(int node)
+INLINE u16* Trig_GetLinksPointer(int node)
 {
 	print_if_false(node >= 0 && node < NumNodes, "Bad node sent to Trig_GetLinksPointer");
 
-	i16* trigNodePtr = reinterpret_cast<i16*>(gTrigNodes[node]);
+	u16* trigNodePtr = gTrigNodes[node];
+	i32 trigNodeValue = *reinterpret_cast<u16*>(trigNodePtr);
 
-	if (*trigNodePtr <= 0xD)
+	if (trigNodeValue <= 0xD)
 	{
-		if (*trigNodePtr < 0xC)
+		if (trigNodeValue < 0xC)
 		{
-			switch (*trigNodePtr)
+			switch (trigNodeValue)
 			{
 				case 1:
 					return reinterpret_cast<u16*>(trigNodePtr + 3);
@@ -468,11 +551,11 @@ u16* Trig_GetLinksPointer(int node)
 			return reinterpret_cast<u16*>(trigNodePtr + 1);
 		}
 	}
-	else if (*trigNodePtr <= 0x3E9)
+	else if (trigNodeValue <= 0x3E9)
 	{
-		if (*trigNodePtr < 0x3E8)
+		if (trigNodeValue < 0x3E8)
 		{
-			if (*trigNodePtr != 0x14)
+			if (trigNodeValue != 0x14)
 			{
 				print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
 				print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
@@ -484,7 +567,7 @@ u16* Trig_GetLinksPointer(int node)
 
 		return reinterpret_cast<u16*>(trigNodePtr + 1);
 	}
-	else if (*trigNodePtr != 0x3EA)
+	else if (trigNodeValue != 0x3EA)
 	{
 		print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");
 		print_if_false(0, "Unrecognized node type in\n Trig_GetLinksPointer");

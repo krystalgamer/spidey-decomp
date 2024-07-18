@@ -8,7 +8,8 @@
 #include "reloc.h"
 #include "spidey.h"
 
-CPlayer* MechList;
+extern CPlayer* MechList;
+extern CBaddy* BaddyList;
 
 // @Ok
 i32 CScorpion::ScorpPathCheck(
@@ -184,7 +185,6 @@ void Scorpion_GetCurrentTarget(unsigned int* pScorp, unsigned int* pTarget)
 	*pTarget = reinterpret_cast<unsigned int>((*reinterpret_cast<CScorpion**>(pScorp))->GetCurrentTarget());
 }
 
-CBaddy* BaddyList;
 
 // @NotOk
 // globals
