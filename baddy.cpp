@@ -11,7 +11,7 @@
 EXPORT CBaddy* ControlBaddyList;
 EXPORT CBaddy* BaddyList;
 
-extern u16** gTrigNodes;
+extern i16** gTrigNodes;
 
 // @NotOk
 // check when pathcheck is done <3

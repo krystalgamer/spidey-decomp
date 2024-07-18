@@ -8,7 +8,7 @@
 #include "exp.h"
 
 EXPORT void* gTrigFile;
-EXPORT u16 **gTrigNodes;
+EXPORT i16 **gTrigNodes;
 EXPORT i32 NumNodes;
 
 const i32 MAXPENDING = 16;
@@ -53,7 +53,7 @@ void SendKillFromNode(i32 Node, i32 How)
 	{
 		u16 nodeIndex = nodeIndexPtr[i];
 
-		u16 *node = gTrigNodes[nodeIndex];
+		i16 *node = reinterpret_cast<i16*>(gTrigNodes[nodeIndex]);
 		switch (*node)
 		{
 			case 1:
@@ -66,7 +66,7 @@ void SendKillFromNode(i32 Node, i32 How)
 					{
 						if (cur->mType == 9)
 						{
-							if (*reinterpret_cast<u16*>(reinterpret_cast<u8*>(cur)+0x6A) == nodeIndex)
+							if (*reinterpret_cast<i16*>(reinterpret_cast<u8*>(cur)+0x6A) == nodeIndex)
 							{
 								cur->Die();
 							}
@@ -86,7 +86,7 @@ void SendKillFromNode(i32 Node, i32 How)
 				u32 v20;
 				CItem* EnviroItem;
 
-				v20 = reinterpret_cast<u32>(&node[node[1] + 1]);
+				v20 = reinterpret_cast<u32>(&node[node[1] + 2]);
 				if (v20 & 2)
 					v20 += 2;
 
@@ -136,7 +136,7 @@ void SendSuspendOrActivate(u16* pLinkInfo, i32 signalType)
 
 	for (i32 i = 0; i < numIters; i++)
 	{
-		u16 *node = gTrigNodes[nodeIndexPtr[i]];
+		u16 *node = reinterpret_cast<u16*>(gTrigNodes[nodeIndexPtr[i]]);
 
 		switch(*node)
 		{
@@ -520,7 +520,7 @@ INLINE u16* Trig_GetLinksPointer(int node)
 {
 	print_if_false(node >= 0 && node < NumNodes, "Bad node sent to Trig_GetLinksPointer");
 
-	u16* trigNodePtr = gTrigNodes[node];
+	u16* trigNodePtr = reinterpret_cast<u16*>(gTrigNodes[node]);
 	i32 trigNodeValue = *reinterpret_cast<u16*>(trigNodePtr);
 
 	if (trigNodeValue <= 0xD)
@@ -589,9 +589,28 @@ void Trig_SendPulse(u16* pLinkInfo)
 	}
 }
 
-// @SMALLTODO
-void Trig_SendSignalToLinks(unsigned __int16*)
-{}
+// @Ok
+void Trig_SendSignalToLinks(u16* pLinkInfo)
+{
+	print_if_false(*pLinkInfo != 0, "Node sending signal is not linked\n to anything");
+
+	u16 NumLinks = *pLinkInfo;
+	u16 *pLink = pLinkInfo+1;
+
+	for (i32 i = 0; i < NumLinks; i++)
+	{
+		u32 nodeIndex = pLink[i];
+		switch (*gTrigNodes[nodeIndex])
+		{
+			case 1:
+			case 7:
+				SendSignalToNode(BaddyList, nodeIndex);
+				SendSignalToNode(ControlBaddyList, nodeIndex);
+				SendSignalToNode(EnvironmentalObjectList, nodeIndex);
+				break;
+		}
+	}
+}
 
 // @Ok
 void Trig_ClearTrigMenu(void)
