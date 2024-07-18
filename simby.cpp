@@ -586,6 +586,15 @@ void Simby_CreateEmber(const unsigned int* a1, unsigned int*)
 	new CEmber(vec, vec->vy);
 }
 
+// @SMALLTODO
+// figure out the globals involved
+CSkidMark::CSkidMark(void)
+{
+	this->SetSemiTransparent();
+	this->SetTint(0x2F, 9, 44);
+	this->mType = 18;
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 
@@ -671,4 +680,9 @@ void validate_CEmber(void)
 void validate_CSimbyShot(void)
 {
 	VALIDATE_SIZE(CSimbyShot, 0xB8);
+}
+
+void validate_CSkidMark(void)
+{
+	VALIDATE_SIZE(CSkidMark, 0x84);
 }

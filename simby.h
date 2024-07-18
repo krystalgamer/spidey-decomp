@@ -133,12 +133,19 @@ class CSimbyShot : public CQuadBit
 		u8 padFull[0x34];
 };
 
+class CSkidMark : public CQuadBit
+{
+	public:
+		EXPORT CSkidMark(void);
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
 void validate_CSimbySlimeBase(void);
 void validate_CEmber(void);
 void validate_CSimbyShot(void);
+void validate_CSkidMark(void);
 
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);

@@ -129,8 +129,13 @@ void compile_time_assertions(){
 
 	StaticAssert<sizeof(MATRIX)==0x20>::assert();
 
-	StaticAssert<sizeof(__int16)==2>::assert();
-	StaticAssert<sizeof(__int8)==1>::assert();
+	StaticAssert<sizeof(u32)==4>::assert();
+	StaticAssert<sizeof(u16)==2>::assert();
+	StaticAssert<sizeof(u8)==1>::assert();
+
+	StaticAssert<sizeof(i32)==4>::assert();
+	StaticAssert<sizeof(i16)==2>::assert();
+	StaticAssert<sizeof(i8)==1>::assert();
 }
 
 extern int FAIL_VALIDATION;
@@ -339,6 +344,7 @@ int main()
 	validate_SCommandPoint();
 	validate_PendingListEntry();
 	validate_CSpecialDisplay();
+	validate_CSkidMark();
 
 	puts("[*] Validation done!");
 
