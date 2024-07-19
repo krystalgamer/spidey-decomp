@@ -15,6 +15,8 @@ class CSwitch : public CBody
 		EXPORT void SignalAttachedItems(void);
 		EXPORT void SwitchOn(void);
 
+		EXPORT virtual ~CSwitch(void);
+
 		unsigned char padTop[0xF8-0xF4];
 
 		i32 field_F8;

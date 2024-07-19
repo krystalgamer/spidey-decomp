@@ -1,6 +1,15 @@
 #include "switch.h"
 #include "trig.h"
+#include "baddy.h"
 #include "validate.h"
+
+extern CBaddy* ControlBaddyList;
+
+// @Ok
+CSwitch::~CSwitch(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&ControlBaddyList));
+}
 
 // @Ok
 INLINE void CSwitch::SwitchOn(void)
