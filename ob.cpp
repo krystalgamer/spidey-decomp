@@ -9,7 +9,6 @@
 
 const char *gObjFile;
 CBody* EnvironmentalObjectList;
-CBody* PowerUpList;
 
 void CBody::DeleteStuff(void)
 {

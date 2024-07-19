@@ -9,6 +9,7 @@
 class CPowerUp : public CBody
 {
 	public:
+		EXPORT virtual ~CPowerUp(void);
 		EXPORT CPowerUp(u16, CVector*, CVector*, u32, i32, i32);
 		EXPORT void SetGravity(i32, i32);
 		EXPORT void SetNode(i32);

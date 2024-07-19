@@ -5,6 +5,13 @@
 #include "validate.h"
 
 extern i32 TotalBitUsage;
+EXPORT CBody* PowerUpList;
+
+CPowerUp::~CPowerUp(void)
+{
+	this->DeleteFrom(&PowerUpList);
+	this->DeleteStuff();
+}
 
 // @Ok
 void CPowerUp::Die(void)
