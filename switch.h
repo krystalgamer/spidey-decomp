@@ -33,5 +33,6 @@ class CSwitch : public CBody
 };
 
 void validate_CSwitch(void);
+EXPORT CSwitch* Switch_GetCSwitchObjectFromItem(CItem *);
 EXPORT void Switch_SetVisible(bool, CItem*);
 #endif

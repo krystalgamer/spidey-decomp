@@ -6,6 +6,25 @@
 extern CBaddy* ControlBaddyList;
 
 // @Ok
+CSwitch* Switch_GetCSwitchObjectFromItem(CItem *pItem)
+{
+	print_if_false(pItem != 0, "Bad item");
+
+	for (CItem *cur = ControlBaddyList; cur; cur = reinterpret_cast<CItem*>(cur->field_20))
+	{
+		if (cur->field_38 == 407)
+		{
+			CSwitch* pSwitch = reinterpret_cast<CSwitch*>(cur);
+
+			if (pSwitch->field_104 == pItem || pSwitch->field_108 == pItem)
+				return pSwitch;
+		}
+	}
+
+	return 0;
+}
+
+// @Ok
 CSwitch::~CSwitch(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&ControlBaddyList));
