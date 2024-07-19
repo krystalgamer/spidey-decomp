@@ -11,6 +11,11 @@ const char *gObjFile;
 CBody* EnvironmentalObjectList;
 CBody* PowerUpList;
 
+void CBody::DeleteStuff(void)
+{
+	printf("CBody::DeleteStuff");
+}
+
 // @Ok
 CBody* CBody::FindBodyByNode(
 		i32 type,
@@ -83,11 +88,6 @@ void CBody::AI(void)
 int CBody::Hit(SHitInfo*)
 {
 	return 1;
-}
-
-// @UNKTODO
-void CBody::UnknownVirtualFuction(void)
-{
 }
 
 extern SPSXRegion PSXRegion[];
@@ -250,7 +250,7 @@ void CBody::Suspend(CBody **a2)
 	print_if_false((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
 	print_if_false(a2 != 0, "woops");
 
-	this->UnknownVirtualFuction();
+	this->DeleteStuff();
 
 	this->field_40 = a2;
 	this->DeleteFrom(a2);

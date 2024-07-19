@@ -147,7 +147,7 @@ public:
 	EXPORT virtual void Die(void);
 	EXPORT virtual void AI(void);
 	EXPORT virtual int Hit(SHitInfo*);
-	EXPORT virtual void UnknownVirtualFuction(void);
+	EXPORT virtual void DeleteStuff(void);
 
 	EXPORT void ShadowOn(void);
 	EXPORT void KillShadow(void);

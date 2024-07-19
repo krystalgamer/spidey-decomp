@@ -5,6 +5,34 @@
 
 extern i32 TotalBitUsage;
 
+// @MEDIUMTODO
+CPowerUp::CPowerUp(
+		u16,
+		CVector*,
+		CVector*,
+		u32,
+		i32,
+		i32)
+{
+	printf("CPowerUp");
+}
+
+// @NotOk
+// understand the type of F8
+void CPowerUp::DeleteStuff(void)
+{
+	this->KillShadow();
+
+	if (this->field_130)
+		delete this->field_130;
+	this->field_130 = 0;
+
+	CItem *unk = reinterpret_cast<CItem*>(this->field_F8);
+	if (unk)
+		delete unk;
+	this->field_F8 = 0;
+}
+
 // @Ok
 void CPowerUp::CreateBit(void)
 {
@@ -61,6 +89,10 @@ void validate_CPowerUp(void)
 {
 	VALIDATE_SIZE(CPowerUp, 0x138);
 
+	VALIDATE(CPowerUp, field_F8, 0xF8);
+
 	VALIDATE(CPowerUp, field_100, 0x100);
 	VALIDATE(CPowerUp, field_106, 0x106);
+
+	VALIDATE_VTABLE(CPowerUp, DeleteStuff, 4);
 }
