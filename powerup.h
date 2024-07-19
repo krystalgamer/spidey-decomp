@@ -34,7 +34,7 @@ class CPowerUp : public CBody
 		u16 field_108;
 		u8 padAfter108[0x10C-0x108-2];
 		i32 field_10C;
-		u8 padAfter10C[0x11E-0x10C-4];
+		u8 padAfter10C[0xE];
 
 
 		u16 field_11E;

@@ -10,6 +10,93 @@ extern i32 NumNodes;
 extern i16 **gTrigNodes;
 
 // @Ok
+// @Test
+void CSwitch::AI(void)
+{
+	if (this->field_44 & 1)
+	{
+		this->field_44 &= 0xFFFE;
+		switch (this->field_100)
+		{
+			case 0:
+				this->SwitchOff();
+				break;
+			case 1:
+				this->SwitchOn();
+				this->SignalAttachedItems();
+				break;
+			case 2:
+				this->SwitchInactive();
+				break;
+			default:
+				print_if_false(0, "invalid switch state");
+				break;
+		}
+	}
+
+	if (this->field_100 == 2 || this->field_100 == 3 || this->field_100 == 4)
+	{
+		if (this->field_FC)
+		{
+			this->field_F8 += this->field_80;
+
+			if (this->field_F8 > this->field_FC)
+			{
+				this->field_F8 = 0;
+
+				if (this->field_100 == 2)
+				{
+					this->SwitchOff();
+				}
+				else
+				{
+					this->PulseLFA1Node(this->field_124 == 0 ? 3 : 2);
+					this->field_100 = 5;
+				}
+			}
+		}
+	}
+
+	if (this->field_100 == 3 || this->field_100 == 4)
+	{
+		this->field_108->mFlags &= 0xFFFE;
+
+		u32 res;
+		u32 Int = this->field_108->field_24 & 0xFF;
+		if (Int < 0x80)
+		{
+			Int += this->field_80;
+
+			res = (((Int << 8 ) | Int) << 8) | Int;
+		}
+		else
+		{
+			res = 0x808080;
+		}
+
+		this->field_24 = res;
+	}
+
+	if (this->field_100 == 5)
+	{
+		u32 v18 = 4 * this->field_80;
+		u32 v19 = this->field_108->field_24 & 0xFF;
+
+		if (v19 > v18)
+		{
+			u32 diff = v19 - v18;
+			this->field_108->field_24 = (((diff << 8) | diff) << 8) | diff;
+		}
+		else
+		{
+			this->field_108->mFlags |= 0x21;
+			reinterpret_cast<CBody*>(this->field_108)->Die();
+			this->field_108->field_24 = 0;
+		}
+	}
+}
+
+// @Ok
 void CSwitch::PulseLFA1Node(i32 a1)
 {
 	CVector v3;

@@ -18,11 +18,12 @@ class CSwitch : public CBody
 		EXPORT void PulseLFA1Node(i32);
 
 		EXPORT virtual ~CSwitch(void);
+		EXPORT virtual void AI(void);
 
 		unsigned char padTop[0xF8-0xF4];
 
-		i32 field_F8;
-		i16 field_FC;
+		u32 field_F8;
+		u16 field_FC;
 		u8 padAfterF8[2];
 
 		i32 field_100;
