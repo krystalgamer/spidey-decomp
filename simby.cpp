@@ -595,6 +595,17 @@ CSkidMark::CSkidMark(void)
 	this->mType = 18;
 }
 
+// @Ok
+void CSkidMark::Move(void)
+{
+	if (++this->field_C > 40)
+	{
+		Bit_ReduceRGB(&this->mTint, 2);
+		if (!(0xFFFFFF & this->mTint))
+			this->Die();
+	}
+}
+
 void validate_CPunchOb(void){
 	VALIDATE_SIZE(CPunchOb, 0x32C);
 

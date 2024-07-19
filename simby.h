@@ -137,6 +137,7 @@ class CSkidMark : public CQuadBit
 {
 	public:
 		EXPORT CSkidMark(void);
+		EXPORT virtual void Move(void);
 };
 
 void validate_CPunchOb(void);

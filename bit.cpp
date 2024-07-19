@@ -555,7 +555,9 @@ void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 
 // @MEDIUMTODO
 void Bit_ReduceRGB(unsigned int*, int)
-{}
+{
+	printf("Bit_ReduceRGB");
+}
 
 // @Ok
 void CFT4Bit::SetFrame(int a2)
