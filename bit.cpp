@@ -7,8 +7,8 @@
 #include "spool.h"
 
 
-volatile static int BitCount = 0;
-static int TotalBitUsage = 0;
+volatile static i32 BitCount = 0;
+EXPORT i32 TotalBitUsage = 0;
 
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
