@@ -3,6 +3,16 @@
 #include "validate.h"
 
 // @Ok
+INLINE void CSwitch::SwitchOn(void)
+{
+	this->field_F8 = 0;
+	this->field_100 = 2;
+
+	Switch_SetVisible(1, this->field_108);
+	Switch_SetVisible(0, this->field_104);
+}
+
+// @Ok
 void CSwitch::SignalAttachedItems(void)
 {
 	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
@@ -54,6 +64,8 @@ void __inline CSwitch::SwitchOff(void)
 void validate_CSwitch(void)
 {
 	VALIDATE_SIZE(CSwitch, 0x128);
+
+	VALIDATE(CSwitch, field_F8, 0xF8);
 
 	VALIDATE(CSwitch, field_100, 0x100);
 

@@ -13,10 +13,14 @@ class CSwitch : public CBody
 		EXPORT CVector* GetAutoAimTargetPointer(void);
 		EXPORT void SwitchOff(void);
 		EXPORT void SignalAttachedItems(void);
+		EXPORT void SwitchOn(void);
 
-		unsigned char padTop[0x100-0xF4];
+		unsigned char padTop[0xF8-0xF4];
 
-		int field_100;
+		i32 field_F8;
+		u8 padAfterF8[4];
+
+		i32 field_100;
 
 		CItem* field_104;
 		CItem* field_108;
