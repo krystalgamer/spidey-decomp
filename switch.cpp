@@ -6,11 +6,52 @@
 
 extern CBaddy* ControlBaddyList;
 extern CPlayer* MechList;
+extern i32 NumNodes;
+extern i16 **gTrigNodes;
 
-// @SMALLTODO
-void CSwitch::PulseLFA1Node(i32)
+// @Ok
+void CSwitch::PulseLFA1Node(i32 a1)
 {
-	printf("CSwitch::PulseLFA1Node");
+	CVector v3;
+	i32 nodeIndex = 1;
+	v3.vx = 0;
+	v3.vy = 0;
+	v3.vz = 0;
+
+	if (NumNodes > 1)
+	{
+		for (; nodeIndex < NumNodes; nodeIndex++)
+		{
+			if (*gTrigNodes[nodeIndex] != 1)
+				continue;
+			Trig_GetPosition(&v3, nodeIndex);
+			switch (a1)
+			{
+				case 0:
+					if ( (v3.vx & 0xFFFFF000) != 409600 || v3.vy || v3.vz)
+						break;
+					Trig_SendPulseToNode(nodeIndex);
+					return;
+				case 1:
+					if (v3.vx || v3.vy || v3.vz)
+						break;
+					Trig_SendPulseToNode(nodeIndex);
+					return;
+				case 2:
+					if ( (v3.vx & 0xFFFFF000) != 409600 || v3.vy || (v3.vz & 0xFFFFF000) != 409600)
+						break;
+					Trig_SendPulseToNode(nodeIndex);
+					return;
+				case 3:
+					if ( v3.vx || v3.vy || (v3.vz & 0xFFFFF000) != 409600)
+						break;
+					Trig_SendPulseToNode(nodeIndex);
+					return;
+			}
+		}
+	}
+
+	print_if_false(0, "Node not found?");
 }
 
 // @Ok
