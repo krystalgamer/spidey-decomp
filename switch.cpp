@@ -1,5 +1,12 @@
 #include "switch.h"
+#include "trig.h"
 #include "validate.h"
+
+// @Ok
+void CSwitch::SignalAttachedItems(void)
+{
+	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
+}
 
 // @Ok
 void __inline CSwitch::SwitchInactive(void)

@@ -12,6 +12,7 @@ class CSwitch : public CBody
 		EXPORT void SwitchInactive(void);
 		EXPORT CVector* GetAutoAimTargetPointer(void);
 		EXPORT void SwitchOff(void);
+		EXPORT void SignalAttachedItems(void);
 
 		unsigned char padTop[0x100-0xF4];
 
