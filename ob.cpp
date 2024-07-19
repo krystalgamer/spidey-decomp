@@ -768,6 +768,9 @@ void validate_CBody(void){
 	VALIDATE(CBody, cbodyend, 0xF0);
 
 	VALIDATE_VTABLE(CBody, Die, 1);
+	VALIDATE_VTABLE(CBody, AI, 2);
+	VALIDATE_VTABLE(CBody, Hit, 3);
+	VALIDATE_VTABLE(CBody, DeleteStuff, 4);
 }
 
 void validate_CSuper(void){

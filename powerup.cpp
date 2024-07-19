@@ -1,9 +1,34 @@
 #include "powerup.h"
 #include "spool.h"
+#include "trig.h"
 
 #include "validate.h"
 
 extern i32 TotalBitUsage;
+
+// @Ok
+void CPowerUp::Die(void)
+{
+	if (!this->IsDead())
+	{
+		if (this->field_38 != 11 && this->field_100)
+		{
+			Trig_SendPulse(Trig_GetLinksPointer(this->field_106));
+		}
+
+		if (this->field_108 != 0xFFFF)
+		{
+			u16 LinkInfo[2];
+			LinkInfo[0] = 1;
+			LinkInfo[1] = this->field_108;
+
+			Trig_SendSignalToLinks(LinkInfo);
+		}
+
+		this->mCBodyFlags |= 0x40;
+		this->mFlags |= 1;
+	}
+}
 
 // @MEDIUMTODO
 CPowerUp::CPowerUp(
@@ -93,6 +118,7 @@ void validate_CPowerUp(void)
 
 	VALIDATE(CPowerUp, field_100, 0x100);
 	VALIDATE(CPowerUp, field_106, 0x106);
+	VALIDATE(CPowerUp, field_108, 0x108);
 
 	VALIDATE_VTABLE(CPowerUp, DeleteStuff, 4);
 }
