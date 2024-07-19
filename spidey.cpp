@@ -17,6 +17,40 @@
 
 EXPORT CPlayer* MechList;
 EXPORT CVector gGlobalNormal;
+extern i32 CurrentSuit;
+
+// @Ok
+u8 CPlayer::IncreaseWebbing(i32 amount)
+{
+	if (this->field_E2 <= 0)
+		return 0;
+
+	i32 v3 = 10;
+	if (CurrentSuit == 6 || CurrentSuit == 9 || CurrentSuit == 10)
+		v3 = 2;
+
+	if ( (this->mWebbing >= 4096 || this->field_5E8) && this->field_5D8 >= v3)
+		return 0;
+
+	this->mWebbing += amount;
+
+	if (this->mWebbing > 4096)
+	{
+		if (this->field_5D8 < v3)
+		{
+			this->field_5D8++;
+			this->mWebbing -= 4096;
+			this->field_5DC = *gTimerRelated;
+			this->field_5D0++;
+			return 1;
+		}
+
+		this->mWebbing = 4096;
+	}
+
+	this->field_5D0++;
+	return 1;
+}
 
 // @SMALLTODO
 void CPlayer::SetStartOrientation(CSVector* pVector)
@@ -298,17 +332,17 @@ char CPlayer::DecreaseWebbing(int a2)
 			v4 = v3 >> 12;
 		}
 
-		int v5 = this->field_5D4;
+		int v5 = this->mWebbing;
 		if (v5 > v4)
 		{
-			this->field_5D4 = v5 - v4;
+			this->mWebbing = v5 - v4;
 			return 1;
 		}
 
 		int v7 = this->field_5D8;
 		if (v7)
 		{
-			this->field_5D4 = v5 - v4 + 4096;
+			this->mWebbing = v5 - v4 + 4096;
 			this->field_5D8 = v7 - 1;
 			SFX_PlayPos(0x1E, &this->mPos, 0);
 			this->field_5E8 = 0;
@@ -687,7 +721,7 @@ unsigned char CPlayer::CanITalkRightNow(void)
 unsigned char CPlayer::SetFireWebbing(void)
 {
 	this->field_5E8 = 1;
-	this->field_5D4 = 4096;
+	this->mWebbing = 4096;
 	this->field_5D0++;
 	return 1;
 }
@@ -809,8 +843,9 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_590, 0x590);
 
 	VALIDATE(CPlayer, field_5D0, 0x5D0);
-	VALIDATE(CPlayer, field_5D4, 0x5D4);
+	VALIDATE(CPlayer, mWebbing, 0x5D4);
 	VALIDATE(CPlayer, field_5D8, 0x5D8);
+	VALIDATE(CPlayer, field_5DC, 0x5DC);
 
 	VALIDATE(CPlayer, field_5E8, 0x5E8);
 

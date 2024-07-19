@@ -39,10 +39,11 @@ class CPlayer : public CSuper
 		unsigned char padAfter584[0x5D0-0x590-4];
 
 
-		int field_5D0;
-		int field_5D4;
-		int field_5D8;
-		unsigned char padAfter5D8[0x5E8-0x5D8-4];
+		i32 field_5D0;
+		i32 mWebbing;
+		i32 field_5D8;
+		i32 field_5DC;
+		u8 padAfter5DC[0x5E8-0x5DC-4];
 
 		char field_5E8;
 		unsigned char padAfter5E8[0x89C-0x5E8-4];
@@ -138,6 +139,7 @@ class CPlayer : public CSuper
 		EXPORT int* KillCommandBlock(int*);
 		EXPORT void Die(void);
 		EXPORT void SetStartOrientation(CSVector*);
+		EXPORT u8 IncreaseWebbing(i32);
 };
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
