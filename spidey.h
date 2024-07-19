@@ -25,13 +25,14 @@ class CPlayer : public CSuper
 		int field_52C;
 		unsigned char padAfter52C[0x538-0x52C-4];
 
-		unsigned int field_538;
-		unsigned char padAfter538[0x56C-0x538-4];
+		u32 field_538;
+		u8 padAfter538[0x568-0x538-4];
 
-		int field_56C;
+		i32 field_568;
+		i32 field_56C;
 		unsigned char padAfter56C[0x580-0x56C-4];
 
-		int field_580;
+		i32 field_580;
 		CSmokeTrail* field_584;
 		CSmokeTrail* field_588;
 		CSmokeTrail* field_58C;

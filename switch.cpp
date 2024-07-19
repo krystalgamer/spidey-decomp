@@ -1,9 +1,47 @@
 #include "switch.h"
 #include "trig.h"
 #include "baddy.h"
+#include "spidey.h"
 #include "validate.h"
 
 extern CBaddy* ControlBaddyList;
+extern CPlayer* MechList;
+
+// @SMALLTODO
+void CSwitch::PulseLFA1Node(i32)
+{
+	printf("CSwitch::PulseLFA1Node");
+}
+
+// @Ok
+void CSwitch::Flick(void)
+{
+	switch (this->field_100)
+	{
+		case 1:
+			this->SwitchOn();
+			this->SignalAttachedItems();
+			break;
+		case 2:
+			this->SwitchOff();
+			if (!this->field_FC)
+				this->SignalAttachedItems();
+			break;
+		case 3:
+		case 4:
+			if (MechList)
+				MechList->field_568 += this->field_124 ? -1 : 1;
+			this->PulseLFA1Node(this->field_124 == 0);
+			this->field_100 = 5;
+			break;
+		case 5:
+			if (MechList)
+				MechList->field_568 += this->field_124 ? -1 : 1;
+			break;
+		default:
+			return;
+	}
+}
 
 // @Ok
 CSwitch* Switch_GetCSwitchObjectFromItem(CItem *pItem)
@@ -41,7 +79,7 @@ INLINE void CSwitch::SwitchOn(void)
 }
 
 // @Ok
-void CSwitch::SignalAttachedItems(void)
+INLINE void CSwitch::SignalAttachedItems(void)
 {
 	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
 }
@@ -94,6 +132,7 @@ void validate_CSwitch(void)
 	VALIDATE_SIZE(CSwitch, 0x128);
 
 	VALIDATE(CSwitch, field_F8, 0xF8);
+	VALIDATE(CSwitch, field_FC, 0xFC);
 
 	VALIDATE(CSwitch, field_100, 0x100);
 
@@ -102,4 +141,6 @@ void validate_CSwitch(void)
 
 	VALIDATE(CSwitch, field_10C, 0x10C);
 	VALIDATE(CSwitch, field_118, 0x118);
+
+	VALIDATE(CSwitch, field_124, 0x124);
 }

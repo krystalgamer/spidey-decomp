@@ -14,13 +14,16 @@ class CSwitch : public CBody
 		EXPORT void SwitchOff(void);
 		EXPORT void SignalAttachedItems(void);
 		EXPORT void SwitchOn(void);
+		EXPORT void Flick(void);
+		EXPORT void PulseLFA1Node(i32);
 
 		EXPORT virtual ~CSwitch(void);
 
 		unsigned char padTop[0xF8-0xF4];
 
 		i32 field_F8;
-		u8 padAfterF8[4];
+		i16 field_FC;
+		u8 padAfterF8[2];
 
 		i32 field_100;
 
@@ -29,7 +32,8 @@ class CSwitch : public CBody
 
 		CVector field_10C;
 		CVector field_118;
-		unsigned char padBottom[0x128-0x118-sizeof(CVector)];
+		u8 field_124;
+		unsigned char padBottom[0x128-0x124-1];
 };
 
 void validate_CSwitch(void);
