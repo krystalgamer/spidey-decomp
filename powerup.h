@@ -14,6 +14,8 @@ class CPowerUp : public CBody
 		EXPORT void SetGravity(i32, i32);
 		EXPORT void SetNode(i32);
 		EXPORT void CreateBit(void);
+		EXPORT void CheckAge(void);
+
 		EXPORT virtual void Die(void);
 		EXPORT virtual void DeleteStuff(void);
 
@@ -22,13 +24,22 @@ class CPowerUp : public CBody
 		u8 padAfterF8[0x100-0xF8-4];
 
 		u8 field_100;
-		u8 padAfter100[0x106-0x100-1];
+		u8 field_101;
+		u8 field_102;
+		u8 padAfter102[0x106-0x102-1];
 
 		u16 field_106;
 		u16 field_108;
-		u8 padAfter108[0x130-0x108-2];
+		u8 padAfter108[0x11E-0x108-2];
 
+		u16 field_11E;
+		u16 field_120;
+		u8 padAfter120[0x12C-0x120-2];
+
+		u16 field_12C;
+		u8 padAfter12C[2];
 		CFlatBit* field_130;
+
 		u8 padBottom[0x138-0x130-4];
 };
 

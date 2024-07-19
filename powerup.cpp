@@ -1,12 +1,58 @@
 #include "powerup.h"
 #include "spool.h"
 #include "trig.h"
+#include "exp.h"
 
 #include "validate.h"
 
 extern i32 TotalBitUsage;
 EXPORT CBody* PowerUpList;
+EXPORT i32 gPowerUpRelated;
 
+// @Ok
+void CPowerUp::CheckAge(void)
+{
+	if (this->field_12C != 0xFFFF)
+	{
+		if (this->field_12C)
+			this->field_12C--;
+
+		if (this->field_12C < 0x3C)
+			this->field_120 = this->field_12C * this->field_11E / 60;
+
+		if (this->field_12C < 0x3C && this->field_12C > 0x1E)
+		{
+				if (gPowerUpRelated & 2)
+					this->field_102 = 1;
+				else
+					this->field_102 = 0;
+		}
+		if (this->field_12C <= 0x1E)
+		{
+			if (gPowerUpRelated & 1)
+				this->field_102 = 1;
+			else
+				this->field_102 = 0;
+		}
+
+		if (this->field_101)
+		{
+			if (this->field_102)
+				this->mFlags &= 0xFFFE;
+			else
+				this->mFlags |= 1;
+		}
+
+		if (!this->field_12C)
+		{
+			if (this->field_E4 <= 0x1F40)
+				Exp_GlowFlash(&this->mPos, 20, 0xFF, 0xFF, 0xFF, 4, 1, 20);
+			this->Die();
+		}
+	}
+}
+
+// @Ok
 CPowerUp::~CPowerUp(void)
 {
 	this->DeleteFrom(&PowerUpList);
@@ -124,8 +170,16 @@ void validate_CPowerUp(void)
 	VALIDATE(CPowerUp, field_F8, 0xF8);
 
 	VALIDATE(CPowerUp, field_100, 0x100);
+	VALIDATE(CPowerUp, field_101, 0x101);
+	VALIDATE(CPowerUp, field_102, 0x102);
+
 	VALIDATE(CPowerUp, field_106, 0x106);
 	VALIDATE(CPowerUp, field_108, 0x108);
+
+	VALIDATE(CPowerUp, field_11E, 0x11E);
+	VALIDATE(CPowerUp, field_120, 0x120);
+
+	VALIDATE(CPowerUp, field_12C, 0x12C);
 
 	VALIDATE_VTABLE(CPowerUp, DeleteStuff, 4);
 }

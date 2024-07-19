@@ -135,11 +135,11 @@ public:
 
 	__int16 field_E2;
 
-	unsigned char padAfterE2[4];
+	u16 field_E4;
 
-	int field_E8;
-	int field_EC;
-	int cbodyend;
+	i32 field_E8;
+	i32 field_EC;
+	i32 cbodyend;
 
 
 
