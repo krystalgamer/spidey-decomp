@@ -15,6 +15,31 @@ EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 // @Ok
+CWobblyGlow::CWobblyGlow(
+		CVector* Pos,
+		i32 InnerRadius,
+		i32 FringeRadius,
+		i32 Amp,
+		u8 r0,
+		u8 g0,
+		u8 b0,
+		u8 r1,
+		u8 g1,
+		u8 b1)
+	: CGlow(Pos, InnerRadius, FringeRadius, r0, g0, b0, r1, g1, b1)
+{
+	this->mAmplitude = Amp * InnerRadius / 256;
+
+	this->mInnerRadius = InnerRadius;
+
+	for (i32 i = 0; i < this->field_44; i++)
+	{
+		this->mInc[i] = Rnd(4096);
+		this->mT[i] = Rnd(50) + 200;
+	}
+}
+
+// @Ok
 // @Test
 void CShellRhinoNasalSteam::Move(void)
 {
@@ -263,15 +288,15 @@ void __inline CDummy::FadeBack(void)
 
 static const __int16 *word_610C48 = (__int16*)0x610C48;
 
-// @Not
+// @NotOk
 // Global
 void __inline CWobblyGlow::Move(void)
 {
 	for (unsigned int i = 0; i < this->field_44; i++)
 	{
-		this->field_5C[8+i] += this->field_5C[i];
-		int v3 = this->field_5C[8+i];
-		this->field_3C[2*i] = this->field_A0 + this->field_9C * word_610C48[2 * (v3 & 0xFFF)] / 4096;
+		this->mInc[8+i] += this->mInc[i];
+		int v3 = this->mInc[8+i];
+		this->field_3C[2*i] = this->mInnerRadius + this->mAmplitude * word_610C48[2 * (v3 & 0xFFF)] / 4096;
 	}
 }
 
@@ -590,10 +615,11 @@ void validate_CWobblyGlow(void)
 {
 	VALIDATE_SIZE(CWobblyGlow, 0xA4);
 
-	VALIDATE(CWobblyGlow, field_5C, 0x5C);
+	VALIDATE(CWobblyGlow, mInc, 0x5C);
+	VALIDATE(CWobblyGlow, mT, 0x7C);
 
-	VALIDATE(CWobblyGlow, field_9C, 0x9C);
-	VALIDATE(CWobblyGlow, field_A0, 0xA0);
+	VALIDATE(CWobblyGlow, mAmplitude, 0x9C);
+	VALIDATE(CWobblyGlow, mInnerRadius, 0xA0);
 }
 
 void validate_Spidey_CIcon(void)

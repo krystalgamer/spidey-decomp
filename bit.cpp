@@ -13,6 +13,21 @@ EXPORT i32 TotalBitUsage = 0;
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
+// @MEDIUMTODO
+CGlow::CGlow(
+		CVector* pVector,
+		i32 a3,
+		i32 a4,
+		u8 a5,
+		u8 a6,
+		u8 a7,
+		u8 a8,
+		u8 a9,
+		u8 a10)
+{
+	printf("CGlow::CGlow");
+}
+
 // @Ok
 CFlatBit::~CFlatBit(void)
 {

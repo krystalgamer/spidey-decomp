@@ -153,9 +153,10 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 class CGlow : public CBit
 {
 	public:
-		EXPORT void SetCentreRGB(unsigned char, unsigned char, unsigned char);
-		EXPORT void SetRadius(int);
-		EXPORT void SetRGB(unsigned char, unsigned char, unsigned char);
+		EXPORT CGlow(CVector*, i32, i32, u8, u8, u8, u8, u8, u8);
+		EXPORT void SetCentreRGB(u8, u8, u8);
+		EXPORT void SetRadius(i32);
+		EXPORT void SetRGB(u8, u8, u8);
 
 		int* field_3C;
 		unsigned char padAfter3C[0x44-0x3C-4];

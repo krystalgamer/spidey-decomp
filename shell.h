@@ -10,13 +10,14 @@
 class CWobblyGlow : public CGlow
 {
 	public:
+		EXPORT CWobblyGlow(CVector*, i32, i32, i32, u8, u8, u8, u8, u8, u8);
 		EXPORT virtual void Move(void);
 
-		int field_5C[1]; // @TODO
-		unsigned char padAfter5C[0x9C-0x5C-4];
+		i32 mInc[8];
+		i32 mT[8];
 
-		int field_9C;
-		int field_A0;
+		i32 mAmplitude;
+		i32 mInnerRadius;
 };
 
 class CShellMysterioHeadGlow : public CWobblyGlow
