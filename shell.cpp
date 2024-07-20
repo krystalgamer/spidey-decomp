@@ -15,6 +15,43 @@ EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 // @Ok
+// @Test
+void CShellRhinoNasalSteam::Move(void)
+{
+	if (this->mAnimSpeed)
+	{
+		i16 v3 = (this->field_52 << 8) | this->field_53;
+		v3 += this->mAnimSpeed;
+
+		this->field_53 = v3;
+		v3 >>= 8;
+
+		this->field_52 = v3;
+
+		if (this->field_52 >= this->field_51)
+		{
+			this->mAnimSpeed = 0;
+			this->field_52 = this->field_51 - 1;
+		}
+
+		this->field_4C = &this->mPSXAnim[this->field_52];
+	}
+
+	this->mPos += this->mVel;
+
+	this->mVel.vy -= 1024;
+	if (++this->field_C > 30)
+	{
+		this->Die();
+	}
+	else
+	{
+		this->SetTransparency(64 - 2 * (0xFF & this->field_C));
+		this->SetScale(Rnd(4) + 4 *(this->field_C + 32));
+	}
+}
+
+// @Ok
 CShellRhinoNasalSteam::CShellRhinoNasalSteam(
 		CVector* a2,
 		CVector* a3)

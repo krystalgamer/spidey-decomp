@@ -132,6 +132,7 @@ class CShellRhinoNasalSteam : public CFlatBit
 {
 	public:
 		EXPORT CShellRhinoNasalSteam(CVector*, CVector*);
+		EXPORT virtual void Move(void);
 };
 
 static const i32 INPUT_MAX_SIZE = 9;
