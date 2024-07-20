@@ -102,10 +102,10 @@ class CShellVenomElectrified : public CNonRenderedBit
 {
 	public:
 		EXPORT CShellVenomElectrified(CSuper*);
+		EXPORT virtual void Move(void);
 
 		SHandle field_3C;
-
-		u8 padBottom[0x48-0x3C-sizeof(SHandle)];
+		i32 field_44;
 };
 
 static const i32 INPUT_MAX_SIZE = 9;

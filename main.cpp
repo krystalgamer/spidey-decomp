@@ -347,6 +347,10 @@ int main()
 	validate_CSkidMark();
 	validate_TextureEntry();
 	validate_CShellVenomElectrified();
+	validate_CSkinGoo();
+	validate_SSkinGooSource();
+	validate_SSkinGooSource2();
+	validate_SSkinGooParams();
 
 	puts("[*] Validation done!");
 

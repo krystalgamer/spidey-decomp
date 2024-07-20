@@ -3,6 +3,31 @@
 #include "ps2m3d.h"
 #include "utils.h"
 #include "ps2lowsfx.h"
+#include "effects.h"
+
+EXPORT SSkinGooSource gVenomSkinGooSource;
+EXPORT SSkinGooParams gVenomSkinGooParams;
+
+// @Ok
+void CShellVenomElectrified::Move(void)
+{
+	CSuper *pSuper = static_cast<CSuper*>(Mem_RecoverPointer(&this->field_3C));
+
+	if (!pSuper)
+	{
+		this->Die();
+		return;
+	}
+
+	M3d_BuildTransform(pSuper);
+
+	if (++this->field_44 > 0)
+	{
+		new CSkinGoo(pSuper, &gVenomSkinGooSource, 19, &gVenomSkinGooParams);
+		this->field_44 = 0;
+	}
+
+}
 
 // @Ok
 CShellVenomElectrified::CShellVenomElectrified(CSuper* pSuper)
@@ -465,4 +490,5 @@ void validate_CShellVenomElectrified(void)
 	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
 
 	VALIDATE(CShellVenomElectrified, field_3C, 0x3C);
+	VALIDATE(CShellVenomElectrified, field_44, 0x44);
 }

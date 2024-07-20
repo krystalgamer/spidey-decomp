@@ -1,12 +1,25 @@
 #include "effects.h"
 #include "validate.h"
 
+extern int CurrentSuit;
+
+
+// @MEDIUMTODO
+CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource*, i32, SSkinGooParams*)
+{
+	printf("CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource*, i32, SSkinGooParams*)");
+}
+
+// @MEDIUMTODO
+CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource2*, i32, SSkinGooParams*)
+{
+	printf("CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource2*, i32, SSkinGooParams*)");
+}
+
 // @MEDIUMTODO
 CElectrify::CElectrify(CSuper*, int)
 {
 }
-
-extern int CurrentSuit;
 
 // @Ok
 void __inline Effects_UnElectrify(CSuper* pSuper)
@@ -41,4 +54,21 @@ void Effects_Electrify(CSuper* pSuper)
 void validate_CElectrify(void)
 {
 	VALIDATE_SIZE(CElectrify, 0x64);
+}
+
+void validate_CSkinGoo(void)
+{
+	VALIDATE_SIZE(CSkinGoo, 0xD8);
+}
+
+void validate_SSkinGooSource(void)
+{
+}
+
+void validate_SSkinGooSource2(void)
+{
+}
+
+void validate_SSkinGooParams(void)
+{
 }
