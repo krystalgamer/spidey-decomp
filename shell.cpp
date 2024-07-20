@@ -16,6 +16,80 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 extern CVector gGlobalNormal;
 
+
+// @Ok
+// @Test
+void CShellSimbyMeltSplat::Move(void)
+{
+	switch (this->field_84)
+	{
+		case 0:
+			this->field_88 += 10;
+			if (this->field_88 >= this->field_8C)
+				this->field_84 = 1;
+
+			break;
+		case 1:
+			Bit_ReduceRGB(&this->mTint, 10);
+			if (!(0xFFFFFF & this->mTint))
+					this->Die();
+			break;
+	}
+
+	CVector a3 = (this->field_88 * this->field_9C);
+	CVector v11 = (this->field_88 * this->field_A8);
+
+	this->mPos = (this->field_90 - a3) - v11;
+
+	this->mPosB = (this->field_90 + a3) - v11;
+
+	this->mPosC = (this->field_90 - a3) + v11;
+
+	this->mPosD = (this->field_90 + a3) + v11;
+}
+
+// @Ok
+CShellSimbyMeltSplat::CShellSimbyMeltSplat(CVector* pVec)
+{
+	this->field_90.vx = 0;
+	this->field_90.vy = 0;
+	this->field_90.vz = 0;
+
+	this->field_9C.vx = 0;
+	this->field_9C.vy = 0;
+	this->field_9C.vz = 0;
+
+	this->field_A8.vx = 0;
+	this->field_A8.vy = 0;
+	this->field_A8.vz = 0;
+
+	this->SetTexture(0x3AF6DFF);
+	this->SetSemiTransparent();
+	this->SetTint(0xFF, 0, 0);
+
+	this->field_8C = Rnd(50) + 70;
+	this->field_90 = *pVec;
+
+	SVECTOR v11;
+	v11.vx = 0;
+	v11.vy = -4096;
+	v11.vz = 0;
+
+	this->OrientUsing(&this->field_90, &v11, 1, 1, Rnd(4096));
+
+	this->field_9C = (this->mPosB - this->mPos) >> 1;
+	this->field_A8 = (this->mPosC - this->mPos) >> 1;
+
+	this->Move();
+	this->mType = 21;
+}
+
+// @MEDIUMTODO
+void CShellEmber::Move(void)
+{
+	printf("CShellEmber::Move");
+}
+
 // @Ok
 // @Test
 CShellEmber::CShellEmber(
@@ -717,4 +791,17 @@ void validate_CShellEmber(void)
 	VALIDATE(CShellEmber, field_84, 0x84);
 	VALIDATE(CShellEmber, field_88, 0x88);
 	VALIDATE(CShellEmber, field_8C, 0x8C);
+}
+
+void validate_CShellSimbyMeltSplat(void)
+{
+	VALIDATE_SIZE(CShellSimbyMeltSplat, 0xB4);
+
+	VALIDATE(CShellSimbyMeltSplat, field_84, 0x84);
+	VALIDATE(CShellSimbyMeltSplat, field_88, 0x88);
+	VALIDATE(CShellSimbyMeltSplat, field_8C, 0x8C);
+
+	VALIDATE(CShellSimbyMeltSplat, field_90, 0x90);
+	VALIDATE(CShellSimbyMeltSplat, field_9C, 0x9C);
+	VALIDATE(CShellSimbyMeltSplat, field_A8, 0xA8);
 }

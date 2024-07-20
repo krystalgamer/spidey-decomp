@@ -14,6 +14,18 @@ EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
 // @MEDIUMTODO
+void CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)
+{
+	printf("CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)");
+}
+
+// @SMALLTODO
+void CQuadBit::SetTexture(u32)
+{
+	printf("CQuadBit::SetTexture(u32)");
+}
+
+// @MEDIUMTODO
 CGlow::CGlow(
 		CVector* pVector,
 		i32 a3,

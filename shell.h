@@ -141,6 +141,7 @@ class CShellEmber : public CFlatBit
 {
 	public:
 		EXPORT CShellEmber(CVector*, i32);
+		EXPORT virtual void Move(void);
 
 		i32 field_68;
 		i32 field_6C;
@@ -152,6 +153,21 @@ class CShellEmber : public CFlatBit
 		i32 field_84;
 		i32 field_88;
 		i32 field_8C;
+};
+
+class CShellSimbyMeltSplat : public CQuadBit
+{
+	public:
+		EXPORT CShellSimbyMeltSplat(CVector*);
+		EXPORT virtual void Move(void);
+
+
+		i32 field_84;
+		i32 field_88;
+		i32 field_8C;
+		CVector field_90;
+		CVector field_9C;
+		CVector field_A8;
 };
 
 static const i32 INPUT_MAX_SIZE = 9;
@@ -170,5 +186,6 @@ void validate_CShellCarnageElectrified(void);
 void validate_CShellSuperDocOckElectrified(void);
 void validate_CShellRhinoNasalSteam(void);
 void validate_CShellEmber(void);
+void validate_CShellSimbyMeltSplat(void);
 
 #endif
