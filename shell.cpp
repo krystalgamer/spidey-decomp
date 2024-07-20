@@ -14,6 +14,14 @@ EXPORT SSkinGooParams gCarnageSkinGooParams;
 EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
+extern CVector gGlobalNormal;
+
+// @Ok
+CShellMysterioHeadGlow::CShellMysterioHeadGlow(void)
+	: CWobblyGlow(&gGlobalNormal, 150, 120, 90, 255, 255, 255, 0x80u, 0, 0xFFu)
+{
+}
+
 // @Ok
 CWobblyGlow::CWobblyGlow(
 		CVector* Pos,

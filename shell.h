@@ -23,6 +23,7 @@ class CWobblyGlow : public CGlow
 class CShellMysterioHeadGlow : public CWobblyGlow
 {
 	public:
+		EXPORT CShellMysterioHeadGlow(void);
 		EXPORT virtual void Move(void);
 
 		unsigned __int16 field_A4;
