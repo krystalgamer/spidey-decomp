@@ -11,6 +11,40 @@ EXPORT SSkinGooParams gVenomSkinGooParams;
 EXPORT SSkinGooSource gCarnageSkinGooSource;
 EXPORT SSkinGooParams gCarnageSkinGooParams;
 
+EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
+EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
+
+// @Ok
+// skin goo params are not okay
+void CShellSuperDocOckElectrified::Move(void)
+{
+	CSuper *pSuper = static_cast<CSuper*>(Mem_RecoverPointer(&this->field_3C));
+
+	if (!pSuper)
+	{
+		this->Die();
+		return;
+	}
+
+	M3d_BuildTransform(pSuper);
+
+	if (++this->field_44 > 0)
+	{
+		new CSkinGoo(pSuper, &gSuperDocOckSkinGooSource, 19, &gSuperDocOckSkinGooParams);
+		this->field_44 = 0;
+	}
+
+}
+
+// @Ok
+CShellSuperDocOckElectrified::CShellSuperDocOckElectrified(CSuper* pSuper)
+{
+	print_if_false(pSuper != 0, "NULL pointer");
+	print_if_false(pSuper->field_38 == 309, "Non SuperDocOck");
+
+	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
+}
+
 // @Ok
 // skin goo params are not okay
 void CShellCarnageElectrified::Move(void)
@@ -530,6 +564,14 @@ void validate_CShellVenomElectrified(void)
 }
 
 void validate_CShellCarnageElectrified(void)
+{
+	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
+
+	VALIDATE(CShellVenomElectrified, field_3C, 0x3C);
+	VALIDATE(CShellVenomElectrified, field_44, 0x44);
+}
+
+void validate_CShellSuperDocOckElectrified(void)
 {
 	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
 

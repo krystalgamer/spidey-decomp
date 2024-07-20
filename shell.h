@@ -118,6 +118,16 @@ class CShellCarnageElectrified : public CNonRenderedBit
 		i32 field_44;
 };
 
+class CShellSuperDocOckElectrified : public CNonRenderedBit
+{
+	public:
+		EXPORT CShellSuperDocOckElectrified(CSuper*);
+		EXPORT virtual void Move(void);
+
+		SHandle field_3C;
+		i32 field_44;
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -131,5 +141,6 @@ void validate_Spidey_CIcon(void);
 void validate_CShellSymBurn(void);
 void validate_CShellVenomElectrified(void);
 void validate_CShellCarnageElectrified(void);
+void validate_CShellSuperDocOckElectrified(void);
 
 #endif
