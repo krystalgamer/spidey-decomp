@@ -5,6 +5,15 @@
 #include "ps2lowsfx.h"
 
 // @Ok
+CShellVenomElectrified::CShellVenomElectrified(CSuper* pSuper)
+{
+	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
+	print_if_false(pSuper->field_38 == 313, "Non venom sent to CShellVenomElectrified");
+
+	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
+}
+
+// @Ok
 void CDummy::SelectNewAnim(void)
 {
 	if (this->field_1B8)
@@ -449,4 +458,11 @@ void validate_CShellSymBurn(void)
 	VALIDATE_SIZE(CShellSymBurn, 0x1A8);
 
 	VALIDATE(CShellSymBurn, field_1A4, 0x1A4);
+}
+
+void validate_CShellVenomElectrified(void)
+{
+	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
+
+	VALIDATE(CShellVenomElectrified, field_3C, 0x3C);
 }

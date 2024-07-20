@@ -98,6 +98,16 @@ class CShellSymBurn : public CSuper
 		i32 field_1A4;
 };
 
+class CShellVenomElectrified : public CNonRenderedBit
+{
+	public:
+		EXPORT CShellVenomElectrified(CSuper*);
+
+		SHandle field_3C;
+
+		u8 padBottom[0x48-0x3C-sizeof(SHandle)];
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -109,5 +119,6 @@ void validate_CWobblyGlow(void);
 void validate_CShellMysterioHeadGlow(void);
 void validate_Spidey_CIcon(void);
 void validate_CShellSymBurn(void);
+void validate_CShellVenomElectrified(void);
 
 #endif

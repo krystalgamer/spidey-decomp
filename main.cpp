@@ -346,6 +346,7 @@ int main()
 	validate_CSpecialDisplay();
 	validate_CSkidMark();
 	validate_TextureEntry();
+	validate_CShellVenomElectrified();
 
 	puts("[*] Validation done!");
 
