@@ -353,6 +353,7 @@ int main()
 	validate_SSkinGooParams();
 	validate_CShellCarnageElectrified();
 	validate_CShellSuperDocOckElectrified();
+	validate_CShellRhinoNasalSteam();
 
 	puts("[*] Validation done!");
 

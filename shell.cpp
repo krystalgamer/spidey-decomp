@@ -15,6 +15,22 @@ EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 // @Ok
+CShellRhinoNasalSteam::CShellRhinoNasalSteam(
+		CVector* a2,
+		CVector* a3)
+{
+	this->mPos = *a2;
+	this->mVel = *a3;
+
+	this->SetAnim(1);
+	this->SetSemiTransparent();
+	this->SetTransparency(0x40);
+	this->SetAnimSpeed(128);
+	this->SetScale(128);
+	this->field_58 = Rnd(4096);
+}
+
+// @Ok
 // skin goo params are not okay
 void CShellSuperDocOckElectrified::Move(void)
 {
@@ -577,4 +593,9 @@ void validate_CShellSuperDocOckElectrified(void)
 
 	VALIDATE(CShellVenomElectrified, field_3C, 0x3C);
 	VALIDATE(CShellVenomElectrified, field_44, 0x44);
+}
+
+void validate_CShellRhinoNasalSteam(void)
+{
+	VALIDATE_SIZE(CShellRhinoNasalSteam, 0x68);
 }

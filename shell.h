@@ -128,6 +128,12 @@ class CShellSuperDocOckElectrified : public CNonRenderedBit
 		i32 field_44;
 };
 
+class CShellRhinoNasalSteam : public CFlatBit
+{
+	public:
+		EXPORT CShellRhinoNasalSteam(CVector*, CVector*);
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -142,5 +148,6 @@ void validate_CShellSymBurn(void);
 void validate_CShellVenomElectrified(void);
 void validate_CShellCarnageElectrified(void);
 void validate_CShellSuperDocOckElectrified(void);
+void validate_CShellRhinoNasalSteam(void);
 
 #endif
