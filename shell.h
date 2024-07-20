@@ -137,6 +137,23 @@ class CShellRhinoNasalSteam : public CFlatBit
 		EXPORT virtual void Move(void);
 };
 
+class CShellEmber : public CFlatBit
+{
+	public:
+		EXPORT CShellEmber(CVector*, i32);
+
+		i32 field_68;
+		i32 field_6C;
+		i32 field_70;
+		i32 field_74;
+		i32 field_78;
+		i32 field_7C;
+		i32 field_80;
+		i32 field_84;
+		i32 field_88;
+		i32 field_8C;
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -152,5 +169,6 @@ void validate_CShellVenomElectrified(void);
 void validate_CShellCarnageElectrified(void);
 void validate_CShellSuperDocOckElectrified(void);
 void validate_CShellRhinoNasalSteam(void);
+void validate_CShellEmber(void);
 
 #endif

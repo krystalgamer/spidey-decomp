@@ -354,6 +354,7 @@ int main()
 	validate_CShellCarnageElectrified();
 	validate_CShellSuperDocOckElectrified();
 	validate_CShellRhinoNasalSteam();
+	validate_CShellEmber();
 
 	puts("[*] Validation done!");
 

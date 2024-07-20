@@ -17,6 +17,38 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 extern CVector gGlobalNormal;
 
 // @Ok
+// @Test
+CShellEmber::CShellEmber(
+		CVector* pVec,
+		i32 a3)
+{
+	this->field_68 = 0;
+	this->field_6C = 0;
+	this->field_70 = 0;
+
+	this->mPos = *pVec;
+	this->field_68 = this->mPos.vx;
+	this->field_70 = this->mPos.vz;
+
+	this->field_78 = Rnd(10) + 10;
+	this->field_7C = Rnd(4096);
+	this->field_80 = Rnd(4096);
+
+	this->SetTexture(0x13C0A001);
+	this->mScale = Rnd(200) + 350;
+
+	this->field_84 = 255;
+	this->field_88 = 128;
+	this->field_8C = 0;
+
+	this->SetTint(0xFF, 128, 0);
+	this->SetSemiTransparent();
+
+	this->field_74 = (a3 * (Rnd(5) + 5)) > 8;
+	this->mVel.vy = (a3 * (Rnd(5) + 6)) << 12 >> 8;
+}
+
+// @Ok
 CShellMysterioHeadGlow::CShellMysterioHeadGlow(void)
 	: CWobblyGlow(&gGlobalNormal, 150, 120, 90, 255, 255, 255, 0x80u, 0, 0xFFu)
 {
@@ -669,4 +701,20 @@ void validate_CShellSuperDocOckElectrified(void)
 void validate_CShellRhinoNasalSteam(void)
 {
 	VALIDATE_SIZE(CShellRhinoNasalSteam, 0x68);
+}
+
+void validate_CShellEmber(void)
+{
+	VALIDATE_SIZE(CShellEmber, 0x90);
+
+	VALIDATE(CShellEmber, field_68, 0x68);
+	VALIDATE(CShellEmber, field_6C, 0x6C);
+	VALIDATE(CShellEmber, field_70, 0x70);
+	VALIDATE(CShellEmber, field_74, 0x74);
+	VALIDATE(CShellEmber, field_78, 0x78);
+	VALIDATE(CShellEmber, field_7C, 0x7C);
+	VALIDATE(CShellEmber, field_80, 0x80);
+	VALIDATE(CShellEmber, field_84, 0x84);
+	VALIDATE(CShellEmber, field_88, 0x88);
+	VALIDATE(CShellEmber, field_8C, 0x8C);
 }
