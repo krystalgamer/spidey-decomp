@@ -351,6 +351,7 @@ int main()
 	validate_SSkinGooSource();
 	validate_SSkinGooSource2();
 	validate_SSkinGooParams();
+	validate_CShellCarnageElectrified();
 
 	puts("[*] Validation done!");
 

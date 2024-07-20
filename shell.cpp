@@ -8,7 +8,43 @@
 EXPORT SSkinGooSource gVenomSkinGooSource;
 EXPORT SSkinGooParams gVenomSkinGooParams;
 
+EXPORT SSkinGooSource gCarnageSkinGooSource;
+EXPORT SSkinGooParams gCarnageSkinGooParams;
+
 // @Ok
+// skin goo params are not okay
+void CShellCarnageElectrified::Move(void)
+{
+	CSuper *pSuper = static_cast<CSuper*>(Mem_RecoverPointer(&this->field_3C));
+
+	if (!pSuper)
+	{
+		this->Die();
+		return;
+	}
+
+	M3d_BuildTransform(pSuper);
+
+	if (++this->field_44 > 0)
+	{
+		new CSkinGoo(pSuper, &gCarnageSkinGooSource, 19, &gCarnageSkinGooParams);
+		this->field_44 = 0;
+	}
+
+}
+
+// @Ok
+CShellCarnageElectrified::CShellCarnageElectrified(CSuper* pSuper)
+{
+	print_if_false(pSuper != 0, "NULL pSuper sent to CShellCarnageElectrified");
+	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CShellCarnageElectrified");
+
+	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
+}
+
+
+// @NotOk
+// skin goo params are not okay
 void CShellVenomElectrified::Move(void)
 {
 	CSuper *pSuper = static_cast<CSuper*>(Mem_RecoverPointer(&this->field_3C));
@@ -486,6 +522,14 @@ void validate_CShellSymBurn(void)
 }
 
 void validate_CShellVenomElectrified(void)
+{
+	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
+
+	VALIDATE(CShellVenomElectrified, field_3C, 0x3C);
+	VALIDATE(CShellVenomElectrified, field_44, 0x44);
+}
+
+void validate_CShellCarnageElectrified(void)
 {
 	VALIDATE_SIZE(CShellVenomElectrified, 0x48);
 
