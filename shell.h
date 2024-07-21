@@ -181,6 +181,7 @@ class CShellGoldFish : public CBody
 {
 	public:
 		EXPORT CShellGoldFish(CDummy*);
+		EXPORT virtual ~CShellGoldFish(void);
 
 		u8 padTop[4];
 		SHandle field_F8;

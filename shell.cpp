@@ -19,6 +19,12 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 extern CVector gGlobalNormal;
 
 // @Ok
+CShellGoldFish::~CShellGoldFish(void)
+{
+	this->DeleteFrom(&MiscList);
+}
+
+// @Ok
 CShellGoldFish::CShellGoldFish(CDummy *pDummy)
 {
 	this->field_F8 = Mem_MakeHandle(reinterpret_cast<void*>(pDummy));
