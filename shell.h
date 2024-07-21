@@ -177,6 +177,17 @@ class CShellSimbyFireDeath : public CNonRenderedBit
 		u8 fullPad[0x15];
 };
 
+class CShellGoldFish : public CBody
+{
+	public:
+		EXPORT CShellGoldFish(CDummy*);
+
+		u8 padTop[4];
+		SHandle field_F8;
+
+		u8 padBottom[0x118-0xF8-sizeof(SHandle)];
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -195,5 +206,6 @@ void validate_CShellRhinoNasalSteam(void);
 void validate_CShellEmber(void);
 void validate_CShellSimbyMeltSplat(void);
 void validate_CShellSimbyFireDeath(void);
+void validate_CShellGoldFish(void);
 
 #endif

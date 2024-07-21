@@ -357,6 +357,7 @@ int main()
 	validate_CShellEmber();
 	validate_CShellSimbyMeltSplat();
 	validate_CShellSimbyFireDeath();
+	validate_CShellGoldFish();
 
 	puts("[*] Validation done!");
 

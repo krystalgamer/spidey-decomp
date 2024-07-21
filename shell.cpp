@@ -5,6 +5,8 @@
 #include "ps2lowsfx.h"
 #include "effects.h"
 
+EXPORT CBody *MiscList;
+
 EXPORT SSkinGooSource gVenomSkinGooSource;
 EXPORT SSkinGooParams gVenomSkinGooParams;
 
@@ -15,6 +17,22 @@ EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 extern CVector gGlobalNormal;
+
+// @Ok
+CShellGoldFish::CShellGoldFish(CDummy *pDummy)
+{
+	this->field_F8 = Mem_MakeHandle(reinterpret_cast<void*>(pDummy));
+
+	this->InitItem("goldfish");
+	this->field_38 = 506;
+	this->AttachTo(&MiscList);
+
+	this->mFlags |= 0x200;
+	this->csVector1.vy = 50;
+	this->field_2C = 10000;
+	this->field_2A = 10000;
+	this->field_28 = 10000;
+}
 
 // @MEDIUMTODO
 CShellSimbyFireDeath::CShellSimbyFireDeath(CDummy*)
@@ -514,7 +532,6 @@ void CRudeWordHitterSpidey::AI(void)
 	M3d_BuildTransform(this);
 }
 
-CBody *MiscList;
 
 // @Ok
 CShellSymBurn::CShellSymBurn(CVector* pVector)
@@ -814,4 +831,11 @@ void validate_CShellSimbyMeltSplat(void)
 void validate_CShellSimbyFireDeath(void)
 {
 	VALIDATE_SIZE(CShellSimbyFireDeath, 0x54);
+}
+
+void validate_CShellGoldFish(void)
+{
+	VALIDATE_SIZE(CShellGoldFish, 0x118);
+
+	VALIDATE(CShellGoldFish, field_F8, 0xF8);
 }
