@@ -360,6 +360,7 @@ int main()
 	validate_CShellGoldFish();
 	validate_CShellMysterioHeadCircle();
 	validate_SpideyIconRelated();
+	validate_CGlowFlash();
 
 	puts("[*] Validation done!");
 

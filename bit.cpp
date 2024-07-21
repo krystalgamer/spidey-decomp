@@ -13,6 +13,12 @@ EXPORT i32 TotalBitUsage = 0;
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
+
+// @SMALLTODO
+CGlow::CGlow(u32 a1, u32 a2)
+{
+}
+
 // @MEDIUMTODO
 void CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)
 {

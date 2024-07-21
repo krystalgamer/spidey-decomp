@@ -160,6 +160,7 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 class CGlow : public CBit
 {
 	public:
+		EXPORT CGlow(u32, u32);
 		EXPORT CGlow(CVector*, i32, i32, u8, u8, u8, u8, u8, u8);
 		EXPORT void SetCentreRGB(u8, u8, u8);
 		EXPORT void SetRadius(i32);
