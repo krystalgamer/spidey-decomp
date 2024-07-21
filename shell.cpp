@@ -16,7 +16,41 @@ EXPORT SSkinGooParams gCarnageSkinGooParams;
 EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
+EXPORT i32 gShellMysterioRelated;
+
 extern CVector gGlobalNormal;
+
+// @MEDIUMTODO
+void CShellMysterioHeadCircle::Move(void)
+{
+}
+
+// @Ok
+CShellMysterioHeadCircle::~CShellMysterioHeadCircle(void)
+{
+	--gShellMysterioRelated;
+}
+
+// @Ok
+CShellMysterioHeadCircle::CShellMysterioHeadCircle(CDummy *pDummy)
+{
+	this->field_84 = Mem_MakeHandle(reinterpret_cast<void*>(pDummy));
+
+	this->SetTexture(0xB968C0FD);
+	this->SetSemiTransparent();
+
+	this->field_90 = Rnd(100) + 100 * gShellMysterioRelated + 50;
+
+	if (gShellMysterioRelated & 1)
+		this->field_90 *= -1;
+
+	++gShellMysterioRelated;
+}
+
+// @MEDIUMTODO
+void CShellGoldFish::AI(void)
+{
+}
 
 // @Ok
 CShellGoldFish::~CShellGoldFish(void)
@@ -844,4 +878,18 @@ void validate_CShellGoldFish(void)
 	VALIDATE_SIZE(CShellGoldFish, 0x118);
 
 	VALIDATE(CShellGoldFish, field_F8, 0xF8);
+	VALIDATE(CShellGoldFish, field_100, 0x100);
+	VALIDATE(CShellGoldFish, field_104, 0x104);
+	VALIDATE(CShellGoldFish, field_108, 0x108);
+	VALIDATE(CShellGoldFish, field_10C, 0x10C);
+	VALIDATE(CShellGoldFish, field_110, 0x110);
+	VALIDATE(CShellGoldFish, field_114, 0x114);
+}
+
+void validate_CShellMysterioHeadCircle(void)
+{
+	VALIDATE_SIZE(CShellMysterioHeadCircle, 0x94);
+
+	VALIDATE(CShellMysterioHeadCircle, field_84, 0x84);
+	VALIDATE(CShellMysterioHeadCircle, field_90, 0x90);
 }

@@ -182,11 +182,29 @@ class CShellGoldFish : public CBody
 	public:
 		EXPORT CShellGoldFish(CDummy*);
 		EXPORT virtual ~CShellGoldFish(void);
+		EXPORT virtual void AI(void);
 
 		u8 padTop[4];
 		SHandle field_F8;
+		i32 field_100;
+		i32 field_104;
+		i32 field_108;
+		i32 field_10C;
+		i32 field_110;
+		i32 field_114;
+};
 
-		u8 padBottom[0x118-0xF8-sizeof(SHandle)];
+class CShellMysterioHeadCircle : public CQuadBit
+{
+	public:
+		EXPORT CShellMysterioHeadCircle(CDummy*);
+		EXPORT virtual ~CShellMysterioHeadCircle(void);
+		EXPORT virtual void Move(void);
+
+		SHandle field_84;
+		u8 padAfter84[4];
+
+		i32 field_90;
 };
 
 static const i32 INPUT_MAX_SIZE = 9;
@@ -208,5 +226,6 @@ void validate_CShellEmber(void);
 void validate_CShellSimbyMeltSplat(void);
 void validate_CShellSimbyFireDeath(void);
 void validate_CShellGoldFish(void);
+void validate_CShellMysterioHeadCircle(void);
 
 #endif
