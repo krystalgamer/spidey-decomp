@@ -27,6 +27,30 @@ EXPORT SpideyIconRelated SpideyIcons[8];
 
 extern CVector gGlobalNormal;
 
+
+const i32 NUM_LEVELS = 34;
+EXPORT u8 LevelIndexes[NUM_LEVELS];
+
+// @Ok
+i32 CalcIndexOfContinueLevel(void)
+{
+	i32 bar = 1000000;
+	for (i32 i = 0; i < NUM_LEVELS; i++)
+	{
+		if (LevelIndexes[i] < bar)
+			bar = LevelIndexes[i];
+	}
+
+	i32 index;
+	for (index = 0; index < NUM_LEVELS; index++)
+	{
+		if (LevelIndexes[i] == bar)
+			break;
+	}
+
+	return index;
+}
+
 // @Ok
 void Spidey_CIcon::SetIcon(i32 option)
 {
