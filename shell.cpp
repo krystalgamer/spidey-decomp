@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "ps2lowsfx.h"
 #include "effects.h"
+#include "spool.h"
 
 EXPORT CBody *MiscList;
 
@@ -17,8 +18,68 @@ EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 EXPORT i32 gShellMysterioRelated;
+extern SPSXRegion PSXRegion[];
+
+
+// @BIGTODO
+// fill these
+EXPORT SpideyIconRelated SpideyIcons[8];
 
 extern CVector gGlobalNormal;
+
+// @Ok
+void Spidey_CIcon::SetIcon(i32 option)
+{
+	print_if_false(option >= 0 && (u32)option < 8, "Bad option");
+
+	if (SpideyIcons[option].IconModel < 0)
+	{
+		this->mFlags |= 1;
+		return;
+	}
+
+	this->InitItem(SpideyIcons[option].Name);
+
+	i32 iconModel = SpideyIcons[option].IconModel;
+	if (iconModel < 0)
+	{
+		this->mFlags |= 1;
+	}
+	else
+	{
+		print_if_false(iconModel < reinterpret_cast<i32>(PSXRegion[this->mRegion].ppModels[-1]),
+				"Bad icon model");
+
+		this->mFlags &= 0xFFFE;
+		this->mModel = iconModel;
+	}
+
+
+	if (PSXRegion[this->mRegion].Filename[9])
+	{
+		this->mFlags |= 0x482;
+		// @FIXME
+		this->field_3C = 0x552A70;
+		this->RunAnim(0, 0, -1);
+	}
+	else
+	{
+		this->mFlags &= 0xFB7D;
+		this->field_3C = 0;
+	}
+
+	this->mPos.vy = SpideyIcons[option].field_10 << 12;
+	this->mPos.vz = SpideyIcons[option].field_14 << 12;
+
+	this->mAngles.vx = SpideyIcons[option].field_8;
+	this->mAngles.vz = SpideyIcons[option].field_C;
+}
+
+// @Ok
+Spidey_CIcon::Spidey_CIcon(i32 icon)
+{
+	this->SetIcon(icon);
+}
 
 // @Ok
 // @Test
@@ -942,4 +1003,17 @@ void validate_CShellMysterioHeadCircle(void)
 
 	VALIDATE(CShellMysterioHeadCircle, field_84, 0x84);
 	VALIDATE(CShellMysterioHeadCircle, field_90, 0x90);
+}
+
+void validate_SpideyIconRelated(void)
+{
+	VALIDATE_SIZE(SpideyIconRelated, 0x28);
+
+	VALIDATE(SpideyIconRelated, Name, 0x0);
+	VALIDATE(SpideyIconRelated, IconModel, 0x4);
+	VALIDATE(SpideyIconRelated, field_8, 0x8);
+	VALIDATE(SpideyIconRelated, field_C, 0xC);
+	VALIDATE(SpideyIconRelated, field_10, 0x10);
+	VALIDATE(SpideyIconRelated, field_14, 0x14);
+	VALIDATE(SpideyIconRelated, field_18, 0x18);
 }

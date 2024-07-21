@@ -85,7 +85,9 @@ class Spidey_CIcon : public CSuper
 {
 	public:
 		EXPORT Spidey_CIcon(i32, i32, i32);
+		EXPORT Spidey_CIcon(i32);
 		EXPORT void AI(void);
+		EXPORT void SetIcon(i32);
 
 		unsigned char pad[0x10];
 };
@@ -208,6 +210,23 @@ class CShellMysterioHeadCircle : public CQuadBit
 		i32 field_90;
 };
 
+struct SpideyIconRelated
+{
+	char *Name;
+	i32 IconModel;
+	i16 field_8;
+	u8 padAfter8[2];
+
+	i16 field_C;
+	u8 padAfterC[2];
+
+	i32 field_10;
+	i32 field_14;
+	i32 field_18;
+
+	u8 padBottom[0x28-0x18-4];
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -229,5 +248,6 @@ void validate_CShellSimbyMeltSplat(void);
 void validate_CShellSimbyFireDeath(void);
 void validate_CShellGoldFish(void);
 void validate_CShellMysterioHeadCircle(void);
+void validate_SpideyIconRelated(void);
 
 #endif

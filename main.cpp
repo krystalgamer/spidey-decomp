@@ -359,6 +359,7 @@ int main()
 	validate_CShellSimbyFireDeath();
 	validate_CShellGoldFish();
 	validate_CShellMysterioHeadCircle();
+	validate_SpideyIconRelated();
 
 	puts("[*] Validation done!");
 
