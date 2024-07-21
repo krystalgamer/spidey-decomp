@@ -20,6 +20,36 @@ EXPORT i32 gShellMysterioRelated;
 
 extern CVector gGlobalNormal;
 
+// @Ok
+INLINE void CallAI(CBody *pList)
+{
+	CBody* pCur = pList;
+	if (pCur)
+	{
+		for (
+				CBody *pNext = reinterpret_cast<CBody*>(pCur->field_20);
+				;
+				pNext = reinterpret_cast<CBody*>(pNext->field_20))
+		{
+			if (pCur->mCBodyFlags & 0x40)
+			{
+				if (pCur->mCBodyFlags & 0x80)
+				{
+					delete pCur;
+				}
+			}
+			else
+			{
+				pCur->InterleaveAI();
+			}
+
+			pCur = pNext;
+			if (!pNext)
+				break;
+		}
+	}
+}
+
 // @MEDIUMTODO
 void CShellMysterioHeadCircle::Move(void)
 {

@@ -211,6 +211,7 @@ static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
 EXPORT i32 Shell_ContainsSubString(const char*, const char*);
+EXPORT void CallAI(CBody *);
 
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
