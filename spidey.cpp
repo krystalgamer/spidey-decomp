@@ -14,12 +14,41 @@
 #include "m3dcolij.h"
 #include "m3dzone.h"
 #include "ps2lowsfx.h"
+#include "spool.h"
 
 EXPORT CPlayer* MechList;
 EXPORT CVector gGlobalNormal;
 extern i32 CurrentSuit;
 
 EXPORT void *gSpideyHeadModel;
+extern SPSXRegion PSXRegion[];
+
+// @MEDIUMTODO
+// understand ppModels
+void Spidey_CopyHeadModel(i32 Region)
+{
+	if (!gSpideyHeadModel)
+	{
+		u16 * ptr = static_cast<u16*>(PSXRegion[Region].ppModels[7]);
+		u16 size = ptr[1];
+
+		u16* result = static_cast<u16*>(DCMem_New(8 * size, 1, 1, 0, 1));
+		gSpideyHeadModel = static_cast<void*>(result);
+
+		for (u16 *i = &reinterpret_cast<u16*>(ptr)[14];
+				size-- != 0;
+				i += 4)
+		{
+			result[0] = i[0];
+			result[1] = i[1];
+			result[2] = i[2];
+			result[3] = i[3];
+
+			result += 4;
+		}
+
+	}
+}
 
 // @Ok
 void Spidey_FreeHeadModel(void)

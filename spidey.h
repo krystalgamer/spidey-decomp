@@ -145,6 +145,7 @@ class CPlayer : public CSuper
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
 EXPORT void Spidey_FreeHeadModel(void);
+EXPORT void Spidey_CopyHeadModel(i32);
 
 void validate_CPlayer(void);
 
