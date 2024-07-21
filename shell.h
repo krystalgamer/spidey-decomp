@@ -170,6 +170,13 @@ class CShellSimbyMeltSplat : public CQuadBit
 		CVector field_A8;
 };
 
+class CShellSimbyFireDeath : public CNonRenderedBit
+{
+	public:
+		EXPORT CShellSimbyFireDeath(CDummy*);
+		u8 fullPad[0x15];
+};
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
@@ -187,5 +194,6 @@ void validate_CShellSuperDocOckElectrified(void);
 void validate_CShellRhinoNasalSteam(void);
 void validate_CShellEmber(void);
 void validate_CShellSimbyMeltSplat(void);
+void validate_CShellSimbyFireDeath(void);
 
 #endif

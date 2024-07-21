@@ -16,6 +16,11 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 extern CVector gGlobalNormal;
 
+// @MEDIUMTODO
+CShellSimbyFireDeath::CShellSimbyFireDeath(CDummy*)
+{
+	printf("CShellSimbyFireDeath::CShellSimbyFireDeath(CDummy*)");
+}
 
 // @Ok
 // @Test
@@ -804,4 +809,9 @@ void validate_CShellSimbyMeltSplat(void)
 	VALIDATE(CShellSimbyMeltSplat, field_90, 0x90);
 	VALIDATE(CShellSimbyMeltSplat, field_9C, 0x9C);
 	VALIDATE(CShellSimbyMeltSplat, field_A8, 0xA8);
+}
+
+void validate_CShellSimbyFireDeath(void)
+{
+	VALIDATE_SIZE(CShellSimbyFireDeath, 0x54);
 }

@@ -356,6 +356,7 @@ int main()
 	validate_CShellRhinoNasalSteam();
 	validate_CShellEmber();
 	validate_CShellSimbyMeltSplat();
+	validate_CShellSimbyFireDeath();
 
 	puts("[*] Validation done!");
 
