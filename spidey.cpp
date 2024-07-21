@@ -19,6 +19,15 @@ EXPORT CPlayer* MechList;
 EXPORT CVector gGlobalNormal;
 extern i32 CurrentSuit;
 
+EXPORT void *gSpideyHeadModel;
+
+// @Ok
+void Spidey_FreeHeadModel(void)
+{
+	Mem_Delete(static_cast<void*>(gSpideyHeadModel));
+	gSpideyHeadModel = 0;
+}
+
 // @Ok
 u8 CPlayer::IncreaseWebbing(i32 amount)
 {
