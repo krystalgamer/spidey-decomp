@@ -42,11 +42,16 @@ public:
 	CVector mPosB;
 	CVector mPosC;
 	CVector mPosD;
-	void* mpTexture;
+	Texture* mpTexture;
 	u32 mCodeBGR;
 	unsigned pad;
-	unsigned int mTint;
-	unsigned char quadPad[0x14];
+	u32 mTint;
+	u8 padAfter6C[4];
+
+	u32 field_74;
+	u32 field_78;
+	u32 field_7C;
+	u32 field_80;
 
 	EXPORT void SetTint(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void SetSemiTransparent();

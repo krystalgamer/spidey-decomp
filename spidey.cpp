@@ -90,7 +90,7 @@ u8 CPlayer::IncreaseWebbing(i32 amount)
 	return 1;
 }
 
-// @SMALLTODO
+// @Ok
 void CPlayer::SetStartOrientation(CSVector* pVector)
 {
 	SVECTOR a1;

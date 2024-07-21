@@ -58,6 +58,9 @@ void validate_Texture(void)
 
 	VALIDATE(Texture, field_9, 0x9);
 
+	VALIDATE(Texture, TexWin, 0xC);
+	VALIDATE(Texture, Usage, 0x12);
+
 	VALIDATE(Texture, Checksum, 0x14);
 	VALIDATE(Texture, pNext, 0x20);
 }

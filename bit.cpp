@@ -19,10 +19,26 @@ void CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)
 	printf("CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)");
 }
 
-// @SMALLTODO
-void CQuadBit::SetTexture(u32)
+// @NotOk
+// @Test
+// remove reinterpret cast, understand whta devs did
+void CQuadBit::SetTexture(u32 checksum)
 {
-	printf("CQuadBit::SetTexture(u32)");
+	Texture *pTexture = Spool_FindTextureEntry(checksum);
+	this->mpTexture = pTexture;
+
+	if (pTexture)
+	{
+		if (pTexture->Usage & 0xF0)
+			this->mCodeBGR |= 0x20;
+
+		// @FIXME
+		u32* arr = reinterpret_cast<u32*>(pTexture);
+		this->field_74 = arr[0];
+		this->field_74 = arr[1];
+		this->field_74 = arr[2];
+		this->field_80 = pTexture->TexWin;
+	}
 }
 
 // @MEDIUMTODO
@@ -643,12 +659,19 @@ void validate_CFT4Bit(void){
 
 void validate_CQuadBit(void)
 {
+	VALIDATE_SIZE(CQuadBit, 0x84);
+
 	VALIDATE(CQuadBit, mPosB, 0x3C);
 	VALIDATE(CQuadBit, mPosC, 0x48);
 	VALIDATE(CQuadBit, mPosD, 0x54);
 	VALIDATE(CQuadBit, mpTexture, 0x60);
 	VALIDATE(CQuadBit, mCodeBGR, 0x64);
 	VALIDATE(CQuadBit, mTint, 0x6C);
+
+	VALIDATE(CQuadBit, field_74, 0x74);
+	VALIDATE(CQuadBit, field_78, 0x78);
+	VALIDATE(CQuadBit, field_7C, 0x7C);
+	VALIDATE(CQuadBit, field_80, 0x80);
 }
 
 

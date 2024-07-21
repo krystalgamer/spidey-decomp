@@ -14,8 +14,12 @@ struct Texture
 	u8 padAfter4[0x9-0x4-4];
 
 	u8 field_9;
-	u8 padAfter9[0x14-0x9-1];
+	u8 padAfter9[0xC-0x9-1];
 
+
+	u32 TexWin;
+	u8 padAfterC[0x12-0xC-4];
+	u16 Usage;
 	u32 Checksum;
 	u8 padAfter14[0x20-0x14-4];
 	Texture *pNext;
