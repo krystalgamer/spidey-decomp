@@ -84,6 +84,7 @@ public:
 class Spidey_CIcon : public CSuper
 {
 	public:
+		EXPORT Spidey_CIcon(i32, i32, i32);
 		EXPORT void AI(void);
 
 		unsigned char pad[0x10];

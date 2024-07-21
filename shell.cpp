@@ -21,6 +21,26 @@ EXPORT i32 gShellMysterioRelated;
 extern CVector gGlobalNormal;
 
 // @Ok
+// @Test
+Spidey_CIcon::Spidey_CIcon(i32 a2, i32 a3, i32 a4)
+{
+	this->mPos.vx = a2 << 12;
+	this->mPos.vy = a3 << 12;
+	this->mPos.vz = a4 << 12;
+
+	this->InitItem("items");
+
+	this->mModel = 5;
+	this->mFlags &= 0xFB7D;
+
+	this->field_3C = 0;
+	this->mFlags |= 0x200;
+	this->field_28 = 2048;
+	this->field_2A = 2048;
+	this->field_2C = 2048;
+}
+
+// @Ok
 INLINE void CallAI(CBody *pList)
 {
 	CBody* pCur = pList;
