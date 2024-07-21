@@ -32,6 +32,7 @@ const i32 NUM_LEVELS = 34;
 EXPORT u8 LevelIndexes[NUM_LEVELS];
 
 // @Ok
+// @Test
 i32 CalcIndexOfContinueLevel(void)
 {
 	i32 bar = 1000000;
@@ -44,7 +45,7 @@ i32 CalcIndexOfContinueLevel(void)
 	i32 index;
 	for (index = 0; index < NUM_LEVELS; index++)
 	{
-		if (LevelIndexes[i] == bar)
+		if (LevelIndexes[index] == bar)
 			break;
 	}
 
