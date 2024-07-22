@@ -88,13 +88,32 @@ class CSniperTarget : public CBody
 {
 	public:
 		EXPORT CSniperTarget(i32);
+		EXPORT virtual ~CSniperTarget(void);
 		EXPORT void BulletResult(bool);
-		unsigned char padTop[0xFC-0xF4];
-		int field_FC;
-		unsigned char padAfterFC[0x128-0xFC-0x4];
+
+		u8 padTop[0xFC-0xF4];
+		i32 field_FC;
+		u8 padAfterFC[0x104-0xFC-0x4];
+
+		CVector field_104;
+		i32 field_110;
+		i32 field_114;
+		i32 field_118;
+		Texture* field_11C;
+		i32 field_120;
+		u8 padAfter120[0x128-0x120-4];
 
 		bool field_128;
-		unsigned char padBottom[0x15C-0x128-1];
+		u8 padAfter128[0x13C-0x128-1];
+
+		i32 field_13C;
+		i32 field_140;
+		i32 field_144;
+		i32 field_148;
+		i32 field_14C;
+		i32 field_150;
+
+		u8 padBottom[0x15C-0x150-4];
 };
 
 class CSearchlight : public CBody
@@ -126,6 +145,7 @@ class CMachineGunBullet : public CGLine
 		EXPORT CMachineGunBullet(CVector*, CVector*, CChopper*);
 		EXPORT CMachineGunBullet(CVector*, CVector*);
 		EXPORT void Common(CVector*, CVector*);
+		EXPORT virtual void Move(void);
 
 		i32 field_5C;
 		i32 field_60;

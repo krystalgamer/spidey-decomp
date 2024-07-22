@@ -8,6 +8,12 @@
 extern CBaddy* ControlBaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+// @BIGTODO
+void CMachineGunBullet::Move(void)
+{
+	printf("CMachineGunBullet::Move(void)");
+}
+
 // @MEDIUMTODO
 void CMachineGunBullet::Common(CVector*, CVector*)
 {
@@ -150,10 +156,40 @@ CSniperSplat::CSniperSplat(CVector* a2, SVECTOR* a3)
 	this->mType = 33;
 }
 
-// @SMALLTODO
-CSniperTarget::CSniperTarget(i32)
+// @Ok
+CSniperTarget::~CSniperTarget(void)
 {
-	printf("CSniperTarget::CSniperTarget(i32)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&ControlBaddyList));
+}
+
+// @Ok
+CSniperTarget::CSniperTarget(i32 a2)
+{
+	this->field_104.vx = 0;
+	this->field_104.vy = 0;
+	this->field_104.vz = 0;
+	this->field_110 = 0;
+	this->field_114 = 0;
+	this->field_118 = 0;
+	this->field_13C = 0;
+	this->field_140 = 0;
+	this->field_144 = 0;
+	this->field_148 = 0;
+	this->field_14C = 0;
+	this->field_150 = 0;
+
+	this->field_38 = 323;
+	Trig_GetPosition(&this->mPos, a2);
+
+	u16* LinksPointer = Trig_GetLinksPointer(a2);
+	print_if_false(*LinksPointer != 0, "No link for snipertarget");
+
+	Trig_GetPosition(&this->field_104, LinksPointer[1]);
+
+	this->field_11C = Spool_FindTextureEntry("snipertarget02");
+	this->field_120 = 180;
+
+	this->AttachTo(reinterpret_cast<CBody**>(&ControlBaddyList));
 }
 
 // @SMALLTODO
@@ -389,7 +425,22 @@ void validate_CSniperTarget(void)
 	VALIDATE_SIZE(CSniperTarget, 0x15C);
 
 	VALIDATE(CSniperTarget, field_FC, 0xFC);
+
+	VALIDATE(CSniperTarget, field_104, 0x104);
+	VALIDATE(CSniperTarget, field_110, 0x110);
+	VALIDATE(CSniperTarget, field_114, 0x114);
+	VALIDATE(CSniperTarget, field_118, 0x118);
+	VALIDATE(CSniperTarget, field_11C, 0x11C);
+	VALIDATE(CSniperTarget, field_120, 0x120);
+
 	VALIDATE(CSniperTarget, field_128, 0x128);
+
+	VALIDATE(CSniperTarget, field_13C, 0x13C);
+	VALIDATE(CSniperTarget, field_140, 0x140);
+	VALIDATE(CSniperTarget, field_144, 0x144);
+	VALIDATE(CSniperTarget, field_148, 0x148);
+	VALIDATE(CSniperTarget, field_14C, 0x14C);
+	VALIDATE(CSniperTarget, field_150, 0x150);
 }
 
 void validate_CSearchlight(void)
