@@ -91,9 +91,32 @@ class CSniperTarget : public CBody
 		unsigned char padBottom[0x15C-0x128-1];
 };
 
+class CSearchlight : public CBody
+{
+	public:
+		EXPORT CSearchlight(i32);
+		EXPORT virtual ~CSearchlight(void);
+		EXPORT virtual void AI(void);
+		EXPORT virtual void SpecialRenderer(void);
+
+
+		u8 padTop[4];
+		i32 field_F8;
+		i32 field_FC;
+
+		i32 field_100;
+		CVector field_104;
+		CVector field_110;
+		CVector field_11C;
+		u8 padAfter11C[0x138-0x11C-sizeof(CVector)];
+
+		CVector field_138[66];
+};
+
 void validate_CChopper(void);
 void validate_CBulletFrag(void);
 void validate_CSniperSplat(void);
 void validate_CSniperTarget(void);
+void validate_CSearchlight(void);
 
 #endif

@@ -362,6 +362,7 @@ int main()
 	validate_SpideyIconRelated();
 	validate_CGlowFlash();
 	validate_SChainData();
+	validate_CSearchlight();
 
 	puts("[*] Validation done!");
 

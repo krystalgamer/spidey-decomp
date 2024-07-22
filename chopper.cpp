@@ -1,9 +1,72 @@
 #include "chopper.h"
 #include "validate.h"
 #include "utils.h"
+#include "baddy.h"
+#include "trig.h"
+
+extern CBaddy* ControlBaddyList;
+
+// @MEDIUMTODO
+void CSearchlight::SpecialRenderer(void)
+{
+	printf("CSearchlight::SpecialRenderer(void)");
+}
 
 // @Ok
-void __inline CChopper::WaitForTrigger(void)
+CSearchlight::~CSearchlight(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&ControlBaddyList));
+}
+
+// @BIGTODO
+void CSearchlight::AI(void)
+{
+}
+
+// @Ok
+CSearchlight::CSearchlight(i32 a2)
+{
+	this->field_104.vx = 0;
+	this->field_104.vy = 0;
+	this->field_104.vz = 0;
+
+	this->field_110.vx = 0;
+	this->field_110.vy = 0;
+	this->field_110.vz = 0;
+
+	this->field_11C.vx = 0;
+	this->field_11C.vy = 0;
+	this->field_11C.vz = 0;
+
+	for (i32 i = 0; i < 66; i++)
+	{
+		this->field_138[i].vx = 0;
+		this->field_138[i].vy = 0;
+		this->field_138[i].vz = 0;
+	}
+
+	this->field_38 = 322;
+	this->AttachTo(reinterpret_cast<CBody**>(&ControlBaddyList));
+
+	Trig_GetPosition(&this->mPos, a2);
+	u16 *LinksPointer = Trig_GetLinksPointer(a2);
+	print_if_false(*LinksPointer == 0, "No path for searchlight");
+
+	this->field_F8 = LinksPointer[1];
+	Trig_GetPosition(&this->field_104, this->field_F8);
+
+	u16 *OtherLinks = Trig_GetLinksPointer(this->field_F8);
+	print_if_false(*OtherLinks == 0, "No path for searchlight");
+
+	this->field_FC = OtherLinks[1];
+	Trig_GetPosition(&this->field_110, this->field_FC);
+
+	this->field_11C = (this->field_110 - this->field_104) / 240;
+	this->field_100 = 0;
+}
+
+// @Ok
+INLINE void CChopper::WaitForTrigger(void)
 {
 	switch (this->dumbAssPad)
 	{
@@ -45,7 +108,7 @@ void CBulletFrag::Move()
 }
 
 // @Ok
-void __inline CChopper::SetHeightMode(int mode)
+INLINE void CChopper::SetHeightMode(int mode)
 {
 	this->field_374 = mode;
 }
@@ -148,4 +211,17 @@ void validate_CSniperTarget(void)
 	VALIDATE(CSniperTarget, field_128, 0x128);
 }
 
+void validate_CSearchlight(void)
+{
+	VALIDATE_SIZE(CSearchlight, 0x450);
 
+	VALIDATE(CSearchlight, field_F8, 0xF8);
+	VALIDATE(CSearchlight, field_FC, 0xFC);
+	VALIDATE(CSearchlight, field_100, 0x100);
+	VALIDATE(CSearchlight, field_104, 0x104);
+	VALIDATE(CSearchlight, field_110, 0x110);
+	VALIDATE(CSearchlight, field_11C, 0x11C);
+	VALIDATE(CSearchlight, field_138, 0x138);
+
+	VALIDATE_VTABLE(CSearchlight, SpecialRenderer, 5);
+}
