@@ -123,6 +123,7 @@ class CMachineGunBullet : public CGLine
 {
 	public:
 		EXPORT CMachineGunBullet(CVector*, CVector*, CSniperTarget*);
+		EXPORT CMachineGunBullet(CVector*, CVector*, CChopper*);
 		EXPORT void Common(CVector*, CVector*);
 
 		i32 field_5C;
@@ -142,7 +143,8 @@ class CMachineGunBullet : public CGLine
 
 
 		SHandle field_8C;
-		u8 padAfter8C[0xA4-0x8C-sizeof(SHandle)];
+		SHandle field_94;
+		u8 padAfter8C[0xA4-0x94-sizeof(SHandle)];
 
 
 

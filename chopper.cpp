@@ -15,6 +15,31 @@ void CMachineGunBullet::Common(CVector*, CVector*)
 }
 
 // @Ok
+INLINE CMachineGunBullet::CMachineGunBullet(CVector* a2, CVector* a3, CChopper* pChopper)
+{
+	this->field_5C = 0;
+	this->field_60 = 0;
+	this->field_64 = 0;
+
+	this->field_68 = 0;
+	this->field_6C = 0;
+	this->field_70 = 0;
+
+	this->field_80 = 0;
+	this->field_82 = 0;
+	this->field_84 = 0;
+
+	this->field_A8 = 0;
+	this->field_AC = 0;
+	this->field_B0 = 0;
+
+	this->Common(a2, a3);
+
+	this->field_94 = Mem_MakeHandle(static_cast<void*>(pChopper));
+	this->field_A4 = 5;
+}
+
+// @Ok
 INLINE CMachineGunBullet::CMachineGunBullet(CVector* a2, CVector* a3, CSniperTarget* pSniper)
 {
 	this->field_5C = 0;
@@ -375,6 +400,7 @@ void validate_CMachineGunBullet(void)
 	VALIDATE(CMachineGunBullet, field_84, 0x84);
 
 	VALIDATE(CMachineGunBullet, field_8C, 0x8C);
+	VALIDATE(CMachineGunBullet, field_94, 0x94);
 
 	VALIDATE(CMachineGunBullet, field_A4, 0xA4);
 
