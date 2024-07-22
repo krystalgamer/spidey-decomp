@@ -3,8 +3,55 @@
 #include "utils.h"
 #include "baddy.h"
 #include "trig.h"
+#include "spool.h"
 
 extern CBaddy* ControlBaddyList;
+
+// @Ok
+CSniperSplat::CSniperSplat(CVector* a2, SVECTOR* a3)
+{
+	this->SetTexture(Spool_FindTextureChecksum("WebBall_Crater_01"));
+	this->SetTint(64, 64, 64);
+	this->SetSubtractiveTransparency();
+
+	i32 first = Rnd(30) + 30;
+	i32 second = Rnd(30) + 30;
+	i32 third = Rnd(4096);
+
+	this->OrientUsing(a2, a3, first, second, third);
+
+	this->mType = 33;
+}
+
+// @SMALLTODO
+CSniperTarget::CSniperTarget(i32)
+{
+	printf("CSniperTarget::CSniperTarget(i32)");
+}
+
+// @SMALLTODO
+CChopper::CChopper(i16*, i32)
+{
+	printf("CChopper::CChopper");
+}
+
+// @Ok
+void Chopper_CreateChopper(u32* a1, u32* a2)
+{
+	i16* v3 = reinterpret_cast<i16*>(a1[0]);
+	i32 v4 = a1[1];
+
+	*a2 = reinterpret_cast<u32>(new CChopper(v3, v4));
+}
+
+
+// @Ok
+void Chopper_CreateSniper(u32* a1, u32* a2)
+{
+	i32 v3 = *a1;
+
+	*a2 = reinterpret_cast<u32>(new CSniperTarget(v3));
+}
 
 // @Ok
 void Chopper_CreateSearchlight(u32* a1, u32* a2)

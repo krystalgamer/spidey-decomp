@@ -10,6 +10,7 @@
 class CChopper : public CBaddy {
 public:
 
+	EXPORT CChopper(i16*, i32);
 	EXPORT void SetHeightMode(int);
 	EXPORT void AdjustSineWaveAmplitude(int, int);
 	EXPORT void AngleToTargetAngle(void);
@@ -76,12 +77,14 @@ public:
 
 class CSniperSplat : public CQuadBit {
 public:
+	EXPORT CSniperSplat(CVector*, SVECTOR*);
 	int field_84;
 };
 
 class CSniperTarget : public CBody
 {
 	public:
+		EXPORT CSniperTarget(i32);
 		EXPORT void BulletResult(bool);
 		unsigned char padTop[0xFC-0xF4];
 		int field_FC;
@@ -120,5 +123,7 @@ void validate_CSniperTarget(void);
 void validate_CSearchlight(void);
 
 EXPORT void Chopper_CreateSearchlight(u32*, u32*);
+EXPORT void Chopper_CreateSniper(u32*, u32*);
+EXPORT void Chopper_CreateChopper(u32*, u32*);
 
 #endif
