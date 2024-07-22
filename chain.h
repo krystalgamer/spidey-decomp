@@ -5,20 +5,37 @@
 
 #include "export.h"
 #include "main.h"
+#include "vector.h"
 
-// @Ok
+struct SChainData
+{
+	CVector field_0;
+	i32 field_C;
+	i32 field_10;
+	i32 field_14;
+	CVector field_18;
+	u8 field_24;
+	u8 padBottom[0x28-0x24-1];
+};
+
 class CChain : public CClass
 {
 	public:
-		EXPORT void SetGroundY(int);
+		EXPORT CChain(CVector*, i32, i32, i32, i32, i32);
+		EXPORT void SetGroundY(i32);
+		EXPORT virtual ~CChain(void);
 
-		unsigned char padTop[0x18-4];
-
-		int field_18;
-		int field_1C;
-
-		unsigned char padBottom[0x28-0x1C-4];
+		SChainData* field_4;
+		i32 field_8;
+		i32 field_C;
+		i32 field_10;
+		i32 field_14;
+		i32 field_18;
+		i32 field_1C;
+		i32 field_20;
+		i32 field_24;
 };
 
 void validate_CChain(void);
+void validate_SChainData(void);
 #endif

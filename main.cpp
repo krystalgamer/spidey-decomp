@@ -361,6 +361,7 @@ int main()
 	validate_CShellMysterioHeadCircle();
 	validate_SpideyIconRelated();
 	validate_CGlowFlash();
+	validate_SChainData();
 
 	puts("[*] Validation done!");
 
