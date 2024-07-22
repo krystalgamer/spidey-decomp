@@ -3,6 +3,12 @@
 
 #include "validate.h"
 
+// @MEDIUMTODO
+void CChain::Move(void)
+{
+	printf("CChain::Move(void)");
+}
+
 // @NotOk
 // @Test
 CChain::CChain(
@@ -29,9 +35,9 @@ CChain::CChain(
 
 		v8[i].field_18 = v8[i].field_0;
 
-		v8[i].field_14 = 0;
-		v8[i].field_10 = 0;
-		v8[i].field_C = 0;
+		v8[i].field_C.vz = 0;
+		v8[i].field_C.vy = 0;
+		v8[i].field_C.vx = 0;
 	}
 }
 
@@ -70,8 +76,6 @@ void validate_SChainData(void)
 
 	VALIDATE(SChainData, field_0, 0x0);
 	VALIDATE(SChainData, field_C, 0xC);
-	VALIDATE(SChainData, field_10, 0x10);
-	VALIDATE(SChainData, field_14, 0x14);
 	VALIDATE(SChainData, field_18, 0x18);
 	VALIDATE(SChainData, field_24, 0x24);
 }

@@ -10,9 +10,7 @@
 struct SChainData
 {
 	CVector field_0;
-	i32 field_C;
-	i32 field_10;
-	i32 field_14;
+	CVector field_C;
 	CVector field_18;
 	u8 field_24;
 	u8 padBottom[0x28-0x24-1];
@@ -24,6 +22,7 @@ class CChain : public CClass
 		EXPORT CChain(CVector*, i32, i32, i32, i32, i32);
 		EXPORT void SetGroundY(i32);
 		EXPORT virtual ~CChain(void);
+		EXPORT void Move(void);
 
 		SChainData* field_4;
 		i32 field_8;
