@@ -15,6 +15,30 @@ void CMachineGunBullet::Common(CVector*, CVector*)
 }
 
 // @Ok
+INLINE CMachineGunBullet::CMachineGunBullet(CVector* a2, CVector* a3)
+{
+	this->field_5C = 0;
+	this->field_60 = 0;
+	this->field_64 = 0;
+
+	this->field_68 = 0;
+	this->field_6C = 0;
+	this->field_70 = 0;
+
+	this->field_80 = 0;
+	this->field_82 = 0;
+	this->field_84 = 0;
+
+	this->field_A8 = 0;
+	this->field_AC = 0;
+	this->field_B0 = 0;
+
+	this->Common(a2, a3);
+
+	this->field_A4 = 15;
+}
+
+// @Ok
 INLINE CMachineGunBullet::CMachineGunBullet(CVector* a2, CVector* a3, CChopper* pChopper)
 {
 	this->field_5C = 0;

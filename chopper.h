@@ -124,6 +124,7 @@ class CMachineGunBullet : public CGLine
 	public:
 		EXPORT CMachineGunBullet(CVector*, CVector*, CSniperTarget*);
 		EXPORT CMachineGunBullet(CVector*, CVector*, CChopper*);
+		EXPORT CMachineGunBullet(CVector*, CVector*);
 		EXPORT void Common(CVector*, CVector*);
 
 		i32 field_5C;
