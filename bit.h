@@ -7,6 +7,15 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+#define FLATBIT_VELOCITIES_SIZE (4096)
+#define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
+
+struct SFlatBitVelocity
+{
+	i16 vxVel;
+	i16 vzVel;
+};
+
 class CBit
 {
 	public:
@@ -117,8 +126,8 @@ public:
 
 	EXPORT CFlatBit(void);
 	EXPORT ~CFlatBit(void);
-	__int16 field_58;
-	__int16 field_5A;
+	i16 field_58;
+	i16 field_5A;
 	unsigned char padAfter5A[0x2];
 	unsigned short field_5E;
 	unsigned int mPostScale;
@@ -237,5 +246,6 @@ void validate_CSimpleAnim(void);
 void validate_SCFT4BitTexture(void);
 void validate_CMotionBlur(void);
 void validate_CSpecialDisplay(void);
+void validate_SFlatBitVelocity(void);
 
 #endif

@@ -71,8 +71,8 @@ public:
 
 class CBulletFrag : public CFlatBit {
 public:
-	EXPORT void Move(void);
-
+	EXPORT CBulletFrag(CVector*);
+	EXPORT virtual void Move(void);
 };
 
 class CSniperSplat : public CQuadBit {

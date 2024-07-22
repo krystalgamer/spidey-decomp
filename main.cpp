@@ -363,6 +363,7 @@ int main()
 	validate_CGlowFlash();
 	validate_SChainData();
 	validate_CSearchlight();
+	validate_SFlatBitVelocity();
 
 	puts("[*] Validation done!");
 

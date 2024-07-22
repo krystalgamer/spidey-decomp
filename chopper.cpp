@@ -6,6 +6,30 @@
 #include "spool.h"
 
 extern CBaddy* ControlBaddyList;
+extern SFlatBitVelocity FlatBitVelocities[];
+
+
+CBulletFrag::CBulletFrag(CVector* a2)
+{
+	this->mPos = *a2;
+	this->SetTexture(0xF5A14AFF);
+	this->mScale = Rnd(200) + 350;
+
+	i32 v3 = Rnd(4096);
+	i32 v4 = Rnd(10) + 10;
+
+	this->mVel.vx = v4 * FlatBitVelocities[v3 & FLATBIT_VELOCITIES_MAX_INDEX].vxVel;
+	this->mVel.vz = v4 * FlatBitVelocities[v3 & FLATBIT_VELOCITIES_MAX_INDEX].vzVel;
+
+	this->mVel.vy = -81920 - (Rnd(30) << 12);
+	this->field_5A = 500;
+
+	if (Rnd(2))
+		this->field_5A *= -1;
+
+	this->mPostScale = 0xC001000;
+	this->field_E = Rnd(10) + 10;
+}
 
 // @Ok
 void CSniperSplat::Move(void)
@@ -181,7 +205,7 @@ void CBulletFrag::Move()
 
   this->field_58 += this->field_5A;
 
-  if ( ++this->field_C > (int)(unsigned __int16)this->field_E )
+  if ( ++this->field_C > (i32)(u16)this->field_E )
 	  this->Die();
 }
 

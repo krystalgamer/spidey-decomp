@@ -13,6 +13,7 @@ EXPORT i32 TotalBitUsage = 0;
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
+EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
 CGlow::CGlow(u32 a1, u32 a2)
@@ -771,4 +772,12 @@ void validate_CMotionBlur(void)
 void validate_CSpecialDisplay(void)
 {
 	VALIDATE_SIZE(CSpecialDisplay, 0x3C);
+}
+
+void validate_SFlatBitVelocity(void)
+{
+	VALIDATE_SIZE(SFlatBitVelocity, 0x4);
+
+	VALIDATE(SFlatBitVelocity, vxVel, 0x0);
+	VALIDATE(SFlatBitVelocity, vzVel, 0x2);
 }
