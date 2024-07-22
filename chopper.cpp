@@ -8,6 +8,29 @@
 extern CBaddy* ControlBaddyList;
 
 // @Ok
+void CSniperSplat::Move(void)
+{
+	switch (this->field_84)
+	{
+		case 0:
+			this->field_84 = 1;
+			break;
+		case 1:
+			if (++this->field_C > 30)
+				this->field_84 = 2;
+			break;
+		case 2:
+			Bit_ReduceRGB(&this->mTint, 3);
+			if (!(0xFFFFFF & this->mTint))
+				this->Die();
+			break;
+		default:
+			print_if_false(0, "Bad CSplat mode");
+			break;
+	}
+}
+
+// @Ok
 CSniperSplat::CSniperSplat(CVector* a2, SVECTOR* a3)
 {
 	this->SetTexture(Spool_FindTextureChecksum("WebBall_Crater_01"));

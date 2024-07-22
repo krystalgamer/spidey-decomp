@@ -78,7 +78,9 @@ public:
 class CSniperSplat : public CQuadBit {
 public:
 	EXPORT CSniperSplat(CVector*, SVECTOR*);
-	int field_84;
+	EXPORT virtual void Move(void);
+	u8 field_84;
+	u8 padBottom[3];
 };
 
 class CSniperTarget : public CBody
