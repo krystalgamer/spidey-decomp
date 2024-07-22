@@ -364,6 +364,7 @@ int main()
 	validate_SChainData();
 	validate_CSearchlight();
 	validate_SFlatBitVelocity();
+	validate_CMachineGunBullet();
 
 	puts("[*] Validation done!");
 

@@ -8,7 +8,38 @@
 extern CBaddy* ControlBaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+// @MEDIUMTODO
+void CMachineGunBullet::Common(CVector*, CVector*)
+{
+	printf("CMachineGunBullet::Common(CVector*, CVector*)");
+}
 
+// @Ok
+INLINE CMachineGunBullet::CMachineGunBullet(CVector* a2, CVector* a3, CSniperTarget* pSniper)
+{
+	this->field_5C = 0;
+	this->field_60 = 0;
+	this->field_64 = 0;
+
+	this->field_68 = 0;
+	this->field_6C = 0;
+	this->field_70 = 0;
+
+	this->field_80 = 0;
+	this->field_82 = 0;
+	this->field_84 = 0;
+
+	this->field_A8 = 0;
+	this->field_AC = 0;
+	this->field_B0 = 0;
+
+	this->Common(a2, a3);
+
+	this->field_8C = Mem_MakeHandle(static_cast<void*>(pSniper));
+	this->field_A4 = 10;
+}
+
+// @Ok
 CBulletFrag::CBulletFrag(CVector* a2)
 {
 	this->mPos = *a2;
@@ -194,8 +225,7 @@ INLINE void CChopper::WaitForTrigger(void)
 	}
 }
 
-// @NotOk
-// verify later
+// @Ok
 void CBulletFrag::Move()
 {
   this->mPos.vx += this->mVel.vx;
@@ -216,7 +246,7 @@ INLINE void CChopper::SetHeightMode(int mode)
 }
 
 // @Ok
-void __inline CSniperTarget::BulletResult(bool result)
+INLINE void CSniperTarget::BulletResult(bool result)
 {
 	this->field_FC++;
 	if (result)
@@ -326,4 +356,29 @@ void validate_CSearchlight(void)
 	VALIDATE(CSearchlight, field_138, 0x138);
 
 	VALIDATE_VTABLE(CSearchlight, SpecialRenderer, 5);
+}
+
+void validate_CMachineGunBullet(void)
+{
+	VALIDATE_SIZE(CMachineGunBullet, 0xB8);
+
+	VALIDATE(CMachineGunBullet, field_5C, 0x5C);
+	VALIDATE(CMachineGunBullet, field_60, 0x60);
+	VALIDATE(CMachineGunBullet, field_64, 0x64);
+
+	VALIDATE(CMachineGunBullet, field_68, 0x68);
+	VALIDATE(CMachineGunBullet, field_6C, 0x6C);
+	VALIDATE(CMachineGunBullet, field_70, 0x70);
+
+	VALIDATE(CMachineGunBullet, field_80, 0x80);
+	VALIDATE(CMachineGunBullet, field_82, 0x82);
+	VALIDATE(CMachineGunBullet, field_84, 0x84);
+
+	VALIDATE(CMachineGunBullet, field_8C, 0x8C);
+
+	VALIDATE(CMachineGunBullet, field_A4, 0xA4);
+
+	VALIDATE(CMachineGunBullet, field_A8, 0xA8);
+	VALIDATE(CMachineGunBullet, field_AC, 0xAC);
+	VALIDATE(CMachineGunBullet, field_B0, 0xB0);
 }

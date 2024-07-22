@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "bit2.h"
 
 
 class CChopper : public CBaddy {
@@ -118,11 +119,49 @@ class CSearchlight : public CBody
 		CVector field_138[66];
 };
 
+class CMachineGunBullet : public CGLine
+{
+	public:
+		EXPORT CMachineGunBullet(CVector*, CVector*, CSniperTarget*);
+		EXPORT void Common(CVector*, CVector*);
+
+		i32 field_5C;
+		i32 field_60;
+		i32 field_64;
+
+		i32 field_68;
+		i32 field_6C;
+		i32 field_70;
+		u8 padAfter70[0x80-0x70-4];
+
+
+		i16 field_80;
+		i16 field_82;
+		i16 field_84;
+		u8 padAfter84[4];
+
+
+		SHandle field_8C;
+		u8 padAfter8C[0xA4-0x8C-sizeof(SHandle)];
+
+
+
+		i16 field_A4;
+		u8 padAfterA4[0xA8-0xA4-2];
+
+
+		i32 field_A8;
+		i32 field_AC;
+		i32 field_B0;
+		u8 padBottom[0xB8-0xB0-4];
+};
+
 void validate_CChopper(void);
 void validate_CBulletFrag(void);
 void validate_CSniperSplat(void);
 void validate_CSniperTarget(void);
 void validate_CSearchlight(void);
+void validate_CMachineGunBullet(void);
 
 EXPORT void Chopper_CreateSearchlight(u32*, u32*);
 EXPORT void Chopper_CreateSniper(u32*, u32*);
