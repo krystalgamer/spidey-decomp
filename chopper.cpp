@@ -6,6 +6,14 @@
 
 extern CBaddy* ControlBaddyList;
 
+// @Ok
+void Chopper_CreateSearchlight(u32* a1, u32* a2)
+{
+	i32 v3 = *a1;
+
+	*a2 = reinterpret_cast<u32>(new CSearchlight(v3));
+}
+
 // @MEDIUMTODO
 void CSearchlight::SpecialRenderer(void)
 {

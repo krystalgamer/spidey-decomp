@@ -119,4 +119,6 @@ void validate_CSniperSplat(void);
 void validate_CSniperTarget(void);
 void validate_CSearchlight(void);
 
+EXPORT void Chopper_CreateSearchlight(u32*, u32*);
+
 #endif
