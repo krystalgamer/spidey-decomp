@@ -4,15 +4,20 @@
 #include "baddy.h"
 #include "trig.h"
 #include "spool.h"
+#include <cstring>
+#include "ps2lowsfx.h"
 
 extern CBaddy* ControlBaddyList;
+extern CBaddy* BaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
 extern i32 DifficultyLevel;
 extern i16 **gTrigNodes;
 
+extern const char *gObjFile;
+extern u8 gObjFileRegion;
+
 // @Ok
-// @Test
 INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 {
 	for (u16 *LinksPointer = Trig_GetLinksPointer(a2);
@@ -28,10 +33,27 @@ INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 	return 0;
 }
 
-// @TODO
+// @Ok
 void CChopperMissile::CommonInitialisation(void)
 {
-	printf("CChopperMissile::CommonInitialisation(void)");
+	this->field_38 = 321;
+
+	this->InitItem(gObjFile);
+	this->mFlags &= ~2u;
+	this->mCBodyFlags &= ~0x10u;
+
+	this->mModel = Spool_GetModel(0x8CEF63CD, gObjFileRegion);
+	this->field_DC = 0;
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
+
+	this->field_F8 = new CSmokeTrail(&this->mPos, 6, 80, 80, 96);
+
+	this->field_F8->mProtected = 1;
+	this->field_F8->SetScale(768);
+	
+	char v7[16] = "ChopperTarget01";
+	this->field_124 = Spool_FindTextureEntry(v7);
+	this->field_10C = SFX_PlayPos(0x8001u, &this->mPos, 0);
 }
 
 // @Ok
@@ -566,10 +588,15 @@ void validate_CChopperMissile(void)
 {
 	VALIDATE_SIZE(CChopperMissile, 0x128);
 
+	VALIDATE(CChopperMissile, field_F8, 0xF8);
+
 	VALIDATE(CChopperMissile, field_FC, 0xFC);
 	VALIDATE(CChopperMissile, field_100, 0x100);
 	VALIDATE(CChopperMissile, field_104, 0x104);
 
+	VALIDATE(CChopperMissile, field_10C, 0x10C);
+
 	VALIDATE(CChopperMissile, field_110, 0x110);
 	VALIDATE(CChopperMissile, field_120, 0x120);
+	VALIDATE(CChopperMissile, field_124, 0x124);
 }

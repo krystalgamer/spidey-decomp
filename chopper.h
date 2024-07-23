@@ -190,19 +190,20 @@ class CChopperMissile : public CBody
 		EXPORT i32 GetFinalTargetNode(i32);
 		EXPORT void CommonInitialisation(void);
 
-		u8 padTop[8];
+		u8 padTop[4];
 
+		CSmokeTrail *field_F8;
 		i32 field_FC;
 		i32 field_100;
 		i32 field_104;
-		u8 padAfter104[8];
+		u8 padAfter104[4];
 
+		i32 field_10C;
 		CVector field_110;
 		u8 padAfter110[4];
 
 		i32 field_120;
-
-		u8 padBottom[0x128-0x120-4];
+		Texture* field_124;
 };
 
 void validate_CChopper(void);

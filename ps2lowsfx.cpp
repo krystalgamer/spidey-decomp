@@ -2,8 +2,10 @@
 
 
 // @BIGTODO
-void SFX_PlayPos(unsigned int, CVector*, int)
-{}
+i32 SFX_PlayPos(u32, CVector*, i32)
+{
+	return 0x23072024;
+}
 
 static unsigned char gSfxStatus;
 // @NotOk

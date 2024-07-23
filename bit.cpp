@@ -16,6 +16,28 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
+void CRibbon::SetScale(i32)
+{
+	printf("void CRibbon:SetScale(i32)");
+}
+
+// @SMALLTODO
+CRibbon::CRibbon(CVector*, i32, i32, i32, i32, i32, i32)
+{
+	printf("CRibbon::CRibbon(CVector*, i32, i32, i32, i32, i32, i32)");
+}
+
+// @SMALLTODO
+CSmokeTrail::CSmokeTrail(
+		CVector* a2,
+		i32 a3,
+		i32, i32, i32)
+	: CRibbon(a2, a3, 2, 2, 2, 400, 1)
+{
+	printf("CSmokeTrail::CSmokeTrail(CVector*, i32, i32, i32, i32)");
+}
+
+// @SMALLTODO
 CGlow::CGlow(u32 a1, u32 a2)
 {
 }

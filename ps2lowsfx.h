@@ -7,7 +7,7 @@
 #include "export.h"
 #include "vector.h"
 
-EXPORT void SFX_PlayPos(u32, CVector*, i32);
+EXPORT i32 SFX_PlayPos(u32, CVector*, i32);
 EXPORT void SFX_LevelStart(void);
 EXPORT void SFX_SetReverbType(unsigned char);
 EXPORT void SFX_ReverbOff(void);

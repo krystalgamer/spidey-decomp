@@ -141,13 +141,19 @@ class CNonRenderedBit : public CBit {
 	public:
 };
 
-class CSmokeTrail : public CNonRenderedBit
+class CRibbon : public CNonRenderedBit
+{
+	public:
+		EXPORT CRibbon(CVector*, i32, i32, i32, i32, i32, i32);
+		EXPORT void SetScale(i32);
+};
+
+class CSmokeTrail : public CRibbon
 {
 	public:
 		unsigned char pad[28];
 
-		EXPORT CSmokeTrail(CVector*, int, int, int ,int)
-		{}
+		EXPORT CSmokeTrail(CVector*, i32, i32, i32, i32);
 };
 
 class CSpecialDisplay : public CBit
@@ -247,5 +253,6 @@ void validate_SCFT4BitTexture(void);
 void validate_CMotionBlur(void);
 void validate_CSpecialDisplay(void);
 void validate_SFlatBitVelocity(void);
+void validate_CRibbon(void);
 
 #endif
