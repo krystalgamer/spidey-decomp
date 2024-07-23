@@ -9,12 +9,23 @@ extern CBaddy* ControlBaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
 extern i32 DifficultyLevel;
+extern i16 **gTrigNodes;
 
-// @TODO
-i32 CChopperMissile::GetFinalTargetNode(i32)
+// @Ok
+// @Test
+INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 {
-	printf("i32 CChopperMissile::GetFinalTargetNode(i32)");
-	return 0x23072024;
+	for (u16 *LinksPointer = Trig_GetLinksPointer(a2);
+			LinksPointer;
+			LinksPointer = Trig_GetLinksPointer(LinksPointer[1]))
+	{
+		
+		i32 v9 = LinksPointer[1];
+
+		if (*gTrigNodes[v9] != 1002)
+			return v9;
+	}
+	return 0;
 }
 
 // @TODO
