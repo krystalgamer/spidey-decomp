@@ -19,6 +19,9 @@ public:
 	EXPORT void AngleToTargetAngle(void);
 	EXPORT void WaitForTrigger(void);
 
+	EXPORT virtual void FireMissileAtWaypoint(u32);
+	EXPORT virtual void SetFlag(u16, i16);
+
 	u32 field_324;
 	u32 field_328;
 	u8 padAfter328[4];

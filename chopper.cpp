@@ -17,6 +17,16 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
+
+// @Ok
+void CChopper::SetFlag(u16 a2, i16 a3)
+{
+	if (a2)
+		print_if_false(0, "Bad param");
+	else
+		this->field_380 = a3 != 0;
+}
+
 // @Ok
 CChopper::~CChopper(void)
 {
@@ -604,6 +614,8 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_3C8, 0x3C8);
 	VALIDATE(CChopper, field_3CC, 0x3CC);
 	VALIDATE(CChopper, field_3D0, 0x3D0);
+
+	VALIDATE_VTABLE(CChopper, SetFlag, 19);
 }
 
 void validate_CBulletFrag(void){
