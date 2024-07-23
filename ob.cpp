@@ -296,7 +296,7 @@ i16* CBody::SquirtPos(i16* p_info)
 
 // @FIXME
 // this should be deleted
-INLINE i16* CBody::SquirtPos(i32 *params)
+i16* CBody::SquirtPos(i32 *params)
 {
 	return this->SquirtPos(reinterpret_cast<i16*>(params));
 }

@@ -36,6 +36,9 @@ public:
 	EXPORT i32 InCameraPath(void);
 	EXPORT void GetOutOfCameraPath(void);
 	EXPORT i32 GetToDesiredPos(void);
+	// @FIXME
+	EXPORT void FireMachineGunAtWaypointV(void);
+	EXPORT void TrackSpidey(void);
 	
 
 	EXPORT virtual void FireMissileAtWaypoint(u32);

@@ -20,6 +20,19 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 extern CPlayer* MechList;
 
+// @SMALLTODO
+void CChopper::TrackSpidey(void)
+{
+	printf("void CChopper::TrackSpidey(void)");
+}
+
+// @MEDIUMTODO
+// @FIXME name does not have a V
+void CChopper::FireMachineGunAtWaypointV(void)
+{
+	printf("void CChopper::FireMachineGunAtWaypoint(void)");
+}
+
 // @Ok
 INLINE i32 CChopper::GetToDesiredPos(void)
 {
