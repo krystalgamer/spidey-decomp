@@ -365,6 +365,7 @@ int main()
 	validate_CSearchlight();
 	validate_SFlatBitVelocity();
 	validate_CMachineGunBullet();
+	validate_CChopperMissile();
 
 	puts("[*] Validation done!");
 

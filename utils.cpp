@@ -8,6 +8,7 @@ extern CBody *EnvironmentalObjectList;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 
+EXPORT i32 DifficultyLevel;
 
 // @NotOk
 // @Test
@@ -407,7 +408,6 @@ int Utils_LinearFilter(
 void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 {}
 
-i32 DifficultyLevel;
 int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
 {
 	switch (DifficultyLevel)

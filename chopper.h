@@ -183,12 +183,35 @@ class CMachineGunBullet : public CGLine
 		u8 padBottom[0xB8-0xB0-4];
 };
 
+class CChopperMissile : public CBody
+{
+	public:
+		EXPORT CChopperMissile(CVector*, CSuper*, i32, i32);
+		EXPORT i32 GetFinalTargetNode(i32);
+		EXPORT void CommonInitialisation(void);
+
+		u8 padTop[8];
+
+		i32 field_FC;
+		i32 field_100;
+		i32 field_104;
+		u8 padAfter104[8];
+
+		CVector field_110;
+		u8 padAfter110[4];
+
+		i32 field_120;
+
+		u8 padBottom[0x128-0x120-4];
+};
+
 void validate_CChopper(void);
 void validate_CBulletFrag(void);
 void validate_CSniperSplat(void);
 void validate_CSniperTarget(void);
 void validate_CSearchlight(void);
 void validate_CMachineGunBullet(void);
+void validate_CChopperMissile(void);
 
 EXPORT void Chopper_CreateSearchlight(u32*, u32*);
 EXPORT void Chopper_CreateSniper(u32*, u32*);

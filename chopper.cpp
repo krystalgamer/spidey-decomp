@@ -8,6 +8,47 @@
 extern CBaddy* ControlBaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+extern i32 DifficultyLevel;
+
+// @TODO
+i32 CChopperMissile::GetFinalTargetNode(i32)
+{
+	printf("i32 CChopperMissile::GetFinalTargetNode(i32)");
+	return 0x23072024;
+}
+
+// @TODO
+void CChopperMissile::CommonInitialisation(void)
+{
+	printf("CChopperMissile::CommonInitialisation(void)");
+}
+
+// @Ok
+CChopperMissile::CChopperMissile(
+		CVector* a2,
+		CSuper* a3,
+		i32 a4,
+		i32 a5)
+{
+	this->field_110.vx = 0;
+	this->field_110.vy = 0;
+	this->field_110.vz = 0;
+
+	this->field_FC = a5;
+	this->field_100 = a4;
+
+	this->mPos = *a2;
+
+	Trig_GetPosition(&this->field_110, a4);
+
+	this->field_104 = this->GetFinalTargetNode(a4);
+
+	if (DifficultyLevel == 3)
+		this->field_120 = 20;
+
+	this->CommonInitialisation();
+}
+
 // @MEDIUMTODO
 void CSearchlight::CalculateSearchlight(CSVector*)
 {
@@ -508,4 +549,16 @@ void validate_CMachineGunBullet(void)
 	VALIDATE(CMachineGunBullet, field_A8, 0xA8);
 	VALIDATE(CMachineGunBullet, field_AC, 0xAC);
 	VALIDATE(CMachineGunBullet, field_B0, 0xB0);
+}
+
+void validate_CChopperMissile(void)
+{
+	VALIDATE_SIZE(CChopperMissile, 0x128);
+
+	VALIDATE(CChopperMissile, field_FC, 0xFC);
+	VALIDATE(CChopperMissile, field_100, 0x100);
+	VALIDATE(CChopperMissile, field_104, 0x104);
+
+	VALIDATE(CChopperMissile, field_110, 0x110);
+	VALIDATE(CChopperMissile, field_120, 0x120);
 }
