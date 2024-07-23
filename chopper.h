@@ -187,6 +187,7 @@ class CChopperMissile : public CBody
 {
 	public:
 		EXPORT CChopperMissile(CVector*, CSuper*, i32, i32);
+		EXPORT virtual ~CChopperMissile(void);
 		EXPORT i32 GetFinalTargetNode(i32);
 		EXPORT void CommonInitialisation(void);
 

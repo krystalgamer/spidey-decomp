@@ -18,6 +18,18 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
 // @Ok
+CChopperMissile::~CChopperMissile(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+
+	if (this->field_10C)
+		SFX_Stop(this->field_10C);
+
+	if (this->field_F8)
+		delete this->field_F8;
+}
+
+// @Ok
 INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 {
 	for (u16 *LinksPointer = Trig_GetLinksPointer(a2);
