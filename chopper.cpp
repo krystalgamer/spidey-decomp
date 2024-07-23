@@ -17,6 +17,29 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
+// @Ok
+void CChopper::FireMissileAtWaypoint(u32 a2)
+{
+	CVector v10;
+	v10.vx = 0;
+	v10.vy = 0;
+	v10.vz = 0;
+
+	M3dUtils_GetHookPosition(
+			reinterpret_cast<VECTOR*>(&v10),
+			this,
+			this->field_3B4);
+
+	u32 res;
+	if ( this->field_3B4 == 9 )
+		res = 2;
+	else
+		res = this->field_3B4 + 1;
+
+	this->field_3B4 = res;
+
+	new CChopperMissile(&v10, this, a2, 0);
+}
 
 // @Ok
 void CChopper::SetFlag(u16 a2, i16 a3)
@@ -110,7 +133,7 @@ void CChopperMissile::CommonInitialisation(void)
 }
 
 // @Ok
-CChopperMissile::CChopperMissile(
+INLINE CChopperMissile::CChopperMissile(
 		CVector* a2,
 		CSuper* a3,
 		i32 a4,
@@ -615,6 +638,7 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_3CC, 0x3CC);
 	VALIDATE(CChopper, field_3D0, 0x3D0);
 
+	VALIDATE_VTABLE(CChopper, FireMissileAtWaypoint, 17);
 	VALIDATE_VTABLE(CChopper, SetFlag, 19);
 }
 

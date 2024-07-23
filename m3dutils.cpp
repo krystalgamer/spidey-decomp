@@ -42,8 +42,10 @@ void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)
 {}
 
 // @BIGTODO
-void M3dUtils_GetHookPosition(VECTOR*, CSuper*, int)
-{}
+void M3dUtils_GetHookPosition(VECTOR*, CSuper*, i32)
+{
+	printf("void M3dUtils_GetHookPosition(VECTOR*, CSuper*, int)");
+}
 
 // @BIGTODO
 void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)
