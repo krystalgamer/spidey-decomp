@@ -13,6 +13,7 @@ public:
 
 	EXPORT CChopper(i16*, i32);
 	EXPORT virtual ~CChopper(void);
+	EXPORT virtual void AI(void);
 
 	EXPORT void SetHeightMode(int);
 	EXPORT void AdjustSineWaveAmplitude(int, int);
@@ -25,6 +26,11 @@ public:
 	EXPORT i32 DoWaypointAction(void);
 	EXPORT i32 GetToPos(CVector*);
 	EXPORT void SetTargetAngleFromPos(CVector*);
+	EXPORT void RotateBlades(void);
+	EXPORT void AimGunPod(void);
+	EXPORT void FollowWaypoints(void);
+	EXPORT void SetDesiredPosForTrackMode(void);
+	EXPORT void ShotCollision(CVector*, CVector*);
 
 	EXPORT virtual void FireMissileAtWaypoint(u32);
 	EXPORT virtual void FireMachineGunAtWaypoint(u32, u32);

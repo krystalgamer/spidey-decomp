@@ -6,6 +6,7 @@
 #include "spool.h"
 #include "ps2lowsfx.h"
 #include "m3dutils.h"
+#include "exp.h"
 
 extern CBaddy* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -16,6 +17,43 @@ extern i16 **gTrigNodes;
 
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
+
+// @Ok
+void CChopper::ShotCollision(CVector *a2, CVector *a3)
+{
+	new CGlowFlash(a2, 5, 0xA0u, 144, 96, 16, 0, 0, 0, 0, 50, 20, 1, 20, 10, 40, 20, 10, 2);
+	new CMachineGunBullet(a2, a3, this);
+}
+
+// @SMALLTODO
+void CChopper::SetDesiredPosForTrackMode(void)
+{
+	printf("void CChopper::SetDesiredPosForTrackMode(void)");
+}
+
+// @SMALLTODO
+void CChopper::AI(void)
+{
+	printf("void CChopper::AI(void)");
+}
+
+// @SMALLTODO
+void CChopper::FollowWaypoints(void)
+{
+	printf("void CChopper::FollowWaypoints(void)");
+}
+
+// @SMALLTODO
+void CChopper::AimGunPod(void)
+{
+	printf("void CChopper::AimGunPod(void)");
+}
+
+// @SMALLTODO
+void CChopper::RotateBlades(void)
+{
+	printf("void CChopper::RotateBlades(void)");
+}
 
 // @Ok
 INLINE void CChopper::SetTargetAngleFromPos(CVector* a2)
