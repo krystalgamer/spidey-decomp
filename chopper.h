@@ -31,6 +31,12 @@ public:
 	EXPORT void FollowWaypoints(void);
 	EXPORT void SetDesiredPosForTrackMode(void);
 	EXPORT void ShotCollision(CVector*, CVector*);
+	EXPORT void Shoot(void);
+	EXPORT void StartStrafeOnslaught(void);
+	EXPORT i32 InCameraPath(void);
+	EXPORT void GetOutOfCameraPath(void);
+	EXPORT i32 GetToDesiredPos(void);
+	
 
 	EXPORT virtual void FireMissileAtWaypoint(u32);
 	EXPORT virtual void FireMachineGunAtWaypoint(u32, u32);
@@ -44,8 +50,9 @@ public:
 
 	CVector field_33C;
 	i32 field_348;
+	i32 field_34C;
 
-	u8 padAfter348[0x354-0x348-4];
+	u8 padAfter34C[0x354-0x34C-4];
 
 	i32 field_354;
 	i32 field_358;

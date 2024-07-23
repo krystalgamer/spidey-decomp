@@ -7,6 +7,7 @@
 #include "ps2lowsfx.h"
 #include "m3dutils.h"
 #include "exp.h"
+#include "spidey.h"
 
 extern CBaddy* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -17,6 +18,42 @@ extern i16 **gTrigNodes;
 
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
+extern CPlayer* MechList;
+
+// @Ok
+INLINE i32 CChopper::GetToDesiredPos(void)
+{
+	CVector v13 = (MechList->mPos - this->field_33C);
+
+	v13.vy = this->field_34C;
+	return this->GetToPos(&v13);
+}
+
+// @SMALLTODO
+void CChopper::GetOutOfCameraPath(void)
+{
+	printf("void CChopper::GetOutOfCameraPath(void)");
+}
+
+
+// @SMALLTODO
+i32 CChopper::InCameraPath(void)
+{
+	printf("i32 CChopper::InCameraPath(void)");
+	return 0x23072024;
+}
+
+// @SMALLTODO
+void CChopper::StartStrafeOnslaught(void)
+{
+	printf("void CChopper::StartStrafeOnslaught(void)");
+}
+
+// @SMALLTODO
+void CChopper::Shoot(void)
+{
+	printf("void CChopper::Shoot(void)");
+}
 
 // @Ok
 void CChopper::ShotCollision(CVector *a2, CVector *a3)
@@ -733,6 +770,7 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_33C, 0x33C);
 
 	VALIDATE(CChopper, field_348, 0x348);
+	VALIDATE(CChopper, field_34C, 0x34C);
 
 	VALIDATE(CChopper, field_354, 0x354);
 
