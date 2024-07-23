@@ -12,13 +12,15 @@ class CChopper : public CBaddy {
 public:
 
 	EXPORT CChopper(i16*, i32);
+	EXPORT virtual ~CChopper(void);
+
 	EXPORT void SetHeightMode(int);
 	EXPORT void AdjustSineWaveAmplitude(int, int);
 	EXPORT void AngleToTargetAngle(void);
 	EXPORT void WaitForTrigger(void);
 
-	u8 padChopperStart[0xC-8];
-	i32 field_328;
+	u32 field_324;
+	u32 field_328;
 	u8 padAfter328[4];
 
 	CVector field_330;

@@ -17,6 +17,18 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
+// @Ok
+CChopper::~CChopper(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+
+	if (this->field_328)
+		SFX_Stop(this->field_328);
+
+	if (this->field_324)
+		SFX_Stop(this->field_324);
+}
+
 // @SMALLTODO
 void CChopperMissile::AI(void)
 {
@@ -554,6 +566,7 @@ void CChopper::AngleToTargetAngle(void)
 void validate_CChopper(void){
 	VALIDATE_SIZE(CChopper, 0x3D8);
 
+	VALIDATE(CChopper, field_324, 0x324);
 	VALIDATE(CChopper, field_328, 0x328);
 
 	VALIDATE(CChopper, field_330, 0x330);
