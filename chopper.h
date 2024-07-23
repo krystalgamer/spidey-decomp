@@ -19,6 +19,10 @@ public:
 	EXPORT void AngleToTargetAngle(void);
 	EXPORT void WaitForTrigger(void);
 
+	EXPORT void SetHeight(void);
+	EXPORT void DoChopperPhysics(void);
+	EXPORT i32 DoArrivalAction(void);
+
 	EXPORT virtual void FireMissileAtWaypoint(u32);
 	EXPORT virtual void FireMachineGunAtWaypoint(u32, u32);
 	EXPORT virtual void SetFlag(u16, i16);

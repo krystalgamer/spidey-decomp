@@ -18,6 +18,32 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
 // @Ok
+i32 CChopper::DoArrivalAction(void)
+{
+	i16* ptr = gTrigNodes[this->field_1F4];
+	if (ptr[0] == 1002 && ptr[1] == 7)
+	{
+		this->field_31C.bothFlags = 3;
+		this->dumbAssPad = 0;
+		return 1;
+	}
+
+	return 0;
+}
+
+// @SMALLTODO
+void CChopper::DoChopperPhysics(void)
+{
+	printf("void CChopper::DoChopperPhysics(void)");
+}
+
+// @SMALLTODO
+void CChopper::SetHeight(void)
+{
+	printf("void CChopper::SetHeight(void)");
+}
+
+// @Ok
 void CChopper::FireMachineGunAtWaypoint(u32 a2, u32 a3)
 {
 	Trig_GetPosition(&this->field_33C, a2);
