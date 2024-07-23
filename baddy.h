@@ -98,7 +98,7 @@ public:
 
 	__int16 field_21E;
 
-	__int16 registerArr[6];
+	i16 registerArr[6];
 	unsigned char adsfPad[0x2C - 0x18 - 4 - 0xC];
 
 	int field_230;

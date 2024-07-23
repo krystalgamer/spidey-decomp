@@ -20,6 +20,7 @@ public:
 	EXPORT void WaitForTrigger(void);
 
 	EXPORT virtual void FireMissileAtWaypoint(u32);
+	EXPORT virtual void FireMachineGunAtWaypoint(u32, u32);
 	EXPORT virtual void SetFlag(u16, i16);
 
 	u32 field_324;
