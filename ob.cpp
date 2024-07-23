@@ -7,8 +7,8 @@
 #include "ps2m3d.h"
 #include "m3dutils.h"
 
-const char *gObjFile;
-CBody* EnvironmentalObjectList;
+EXPORT const char *gObjFile;
+EXPORT CBody* EnvironmentalObjectList;
 
 void CBody::DeleteStuff(void)
 {

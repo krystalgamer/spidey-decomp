@@ -21,12 +21,9 @@ public:
 	i32 field_328;
 	u8 padAfter328[4];
 
-	i32 field_330;
-	i32 field_334;
-	i32 field_338;
-	i32 field_33C;
-	i32 field_340;
-	i32 field_344;
+	CVector field_330;
+
+	CVector field_33C;
 	i32 field_348;
 
 	u8 padAfter348[0x354-0x348-4];
@@ -190,6 +187,11 @@ class CChopperMissile : public CBody
 		EXPORT virtual ~CChopperMissile(void);
 		EXPORT i32 GetFinalTargetNode(i32);
 		EXPORT void CommonInitialisation(void);
+		EXPORT i32 Explode(void);
+
+
+		EXPORT virtual void AI(void);
+		EXPORT virtual void DrawTargetRecticle(void);
 
 		u8 padTop[4];
 

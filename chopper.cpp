@@ -4,8 +4,8 @@
 #include "baddy.h"
 #include "trig.h"
 #include "spool.h"
-#include <cstring>
 #include "ps2lowsfx.h"
+#include "m3dutils.h"
 
 extern CBaddy* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -16,6 +16,25 @@ extern i16 **gTrigNodes;
 
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
+
+// @SMALLTODO
+void CChopperMissile::AI(void)
+{
+	printf("void CChopperMissile::AI(void)");
+}
+
+// @SMALLTODO
+i32 CChopperMissile::Explode(void)
+{
+	printf("i32 CChopperMissile::Explode(void)");
+	return 0x23072024;
+}
+
+// @BIGTODO
+void CChopperMissile::DrawTargetRecticle(void)
+{
+	printf("void CChopperMissile::DrawTargetRecticle(void)");
+}
 
 // @Ok
 CChopperMissile::~CChopperMissile(void)
@@ -302,10 +321,65 @@ CSniperTarget::CSniperTarget(i32 a2)
 	this->AttachTo(reinterpret_cast<CBody**>(&ControlBaddyList));
 }
 
-// @SMALLTODO
-CChopper::CChopper(i16*, i32)
+// @NotOk
+// unknown global
+CChopper::CChopper(i16* a2, i32 a3)
 {
-	printf("CChopper::CChopper");
+	this->field_330.vx = 0;
+	this->field_330.vy = 0;
+	this->field_330.vz = 0;
+
+	this->field_33C.vx = 0;
+	this->field_33C.vy = 0;
+	this->field_33C.vz = 0;
+
+	this->field_364 = 0;
+	this->field_368 = 0;
+	this->field_36C = 0;
+	this->field_388 = 0;
+	this->field_38C = 0;
+	this->field_390 = 0;
+	this->field_394 = 0;
+	this->field_398 = 0;
+	this->field_39C = 0;
+	this->field_3A8 = 0;
+	this->field_3AC = 0;
+	this->field_3B0 = 0;
+	this->field_3B8 = 0;
+	this->field_3BC = 0;
+	this->field_3C0 = 0;
+	this->field_3C8 = 0;
+	this->field_3CC = 0;
+	this->field_3D0 = 0;
+
+
+	this->InitItem("chopper");
+	this->mFlags |= 4u;
+
+	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))));
+
+	this->field_38 = 318;
+	this->field_78 = 3;
+	this->field_79 = 3;
+	this->field_7A = 3;
+	this->mCBodyFlags &= ~0x10u;
+	this->field_DC = 0;
+	CBody::AttachTo(reinterpret_cast<CBody**>(&BaddyList));
+
+	this->field_1F4 = a3;
+	this->field_DE = a3;
+	this->field_31C.bothFlags = 0;
+
+	this->field_380 = 1;
+	this->field_3B4 = 2;
+
+	this->field_33C = this->mPos;
+	this->field_330 = this->field_33C;
+
+	this->field_360 = 2048;
+	this->field_358 = 2048;
+	this->mAngles.vy = 2048;
+	M3dUtils_ReadHooksPacket(this, reinterpret_cast<void*>(0x548F88));
 }
 
 // @Ok
@@ -483,12 +557,9 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_328, 0x328);
 
 	VALIDATE(CChopper, field_330, 0x330);
-	VALIDATE(CChopper, field_334, 0x334);
-	VALIDATE(CChopper, field_338, 0x338);
-	VALIDATE(CChopper, field_33C, 0x33C);
-	VALIDATE(CChopper, field_340, 0x340);
 
-	VALIDATE(CChopper, field_344, 0x344);
+	VALIDATE(CChopper, field_33C, 0x33C);
+
 	VALIDATE(CChopper, field_348, 0x348);
 
 	VALIDATE(CChopper, field_354, 0x354);
@@ -611,4 +682,6 @@ void validate_CChopperMissile(void)
 	VALIDATE(CChopperMissile, field_110, 0x110);
 	VALIDATE(CChopperMissile, field_120, 0x120);
 	VALIDATE(CChopperMissile, field_124, 0x124);
+
+	VALIDATE_VTABLE(CChopperMissile, DrawTargetRecticle, 5);
 }

@@ -5,6 +5,7 @@
 #include "spool.h"
 
 extern const char *gObjFile;
+EXPORT u8 gObjFileRegion;
 
 // @NotOk
 // globals
@@ -55,7 +56,6 @@ void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CCarnage(v2, v3));
 }
 
-u8 gObjFileRegion;
 
 // @NotOk
 // globals
