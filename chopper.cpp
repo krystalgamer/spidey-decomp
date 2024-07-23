@@ -8,6 +8,30 @@
 extern CBaddy* ControlBaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+// @MEDIUMTODO
+void CSearchlight::CalculateSearchlight(CSVector*)
+{
+	printf("CSearchlight::CalculateSearchlight(CSVector*)");
+}
+
+// @MEDIUMTODO
+void CSearchlight::CheckPointInScreenTri(u32, u32, u32, u32)
+{
+	printf("CSearchlight::CheckPointInScreenTri(u32, u32, u32, u32)");
+}
+
+// @BIGTODO
+void CSniperTarget::DrawTargetRecticle(void)
+{
+	printf("CSniperTarget::DrawTargetRecticle(void)");
+}
+
+// @MEDIUMTODO
+void CSniperTarget::AI(void)
+{
+	printf("CSniperTarget::AI(void)");
+}
+
 // @BIGTODO
 void CMachineGunBullet::Move(void)
 {
@@ -441,6 +465,8 @@ void validate_CSniperTarget(void)
 	VALIDATE(CSniperTarget, field_148, 0x148);
 	VALIDATE(CSniperTarget, field_14C, 0x14C);
 	VALIDATE(CSniperTarget, field_150, 0x150);
+
+	VALIDATE_VTABLE(CSniperTarget, DrawTargetRecticle, 5);
 }
 
 void validate_CSearchlight(void)

@@ -90,6 +90,8 @@ class CSniperTarget : public CBody
 		EXPORT CSniperTarget(i32);
 		EXPORT virtual ~CSniperTarget(void);
 		EXPORT void BulletResult(bool);
+		EXPORT virtual void AI(void);
+		EXPORT virtual void DrawTargetRecticle(void);
 
 		u8 padTop[0xFC-0xF4];
 		i32 field_FC;
@@ -120,6 +122,8 @@ class CSearchlight : public CBody
 {
 	public:
 		EXPORT CSearchlight(i32);
+		EXPORT void CalculateSearchlight(CSVector*);
+		EXPORT void CheckPointInScreenTri(u32, u32, u32, u32);
 		EXPORT virtual ~CSearchlight(void);
 		EXPORT virtual void AI(void);
 		EXPORT virtual void SpecialRenderer(void);
