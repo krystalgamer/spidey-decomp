@@ -17,6 +17,23 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
+// @Ok
+INLINE void CChopper::SetTargetAngleFromPos(CVector* a2)
+{
+	CSVector v4;
+	v4.vx = 0;
+	v4.vy = 0;
+	v4.vz = 0;
+	Utils_CalcAim(&v4, &this->mPos, a2);
+	this->field_360 = v4.vy;
+}
+
+// @SMALLTODO
+i32 CChopper::GetToPos(CVector*)
+{
+	printf("i32 CChopper::GetToPos(CVector*)");
+	return 0x23072024;
+}
 
 // @Ok
 i32 CChopper::DoWaypointAction(void)
