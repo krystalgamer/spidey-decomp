@@ -157,7 +157,13 @@ public:
 	EXPORT void AttachTo(CBody**);
 
 	EXPORT void InterleaveAI(void);
-	EXPORT int* SquirtPos(int*);
+
+	// @FIXME
+	// delete
+	EXPORT i16* SquirtPos(i32*);
+
+	EXPORT i16* SquirtPos(i16*);
+
 	EXPORT i16* SquirtAngles(i16*);
 	EXPORT void AttachXA(int, int);
 	EXPORT void StopMyXA(void);

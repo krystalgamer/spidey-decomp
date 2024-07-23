@@ -279,28 +279,36 @@ void CBody::InterleaveAI(void)
 }
 
 // @Ok
-// almost close, lea on original mov on mine
-int* CBody::SquirtPos(int *params)
+// @Test
+i16* CBody::SquirtPos(i16* p_info)
 {
-	print_if_false(((int)params & 3) == 0, "Bad alignment");
+	i32 *walker = reinterpret_cast<i32*>(p_info);
+	print_if_false(((i32)walker & 3) == 0, "Bad alignment");
 
-	this->mPos.vx = *params++ << 12;
+	this->mPos.vx = *walker++ << 12;
 
-	this->mPos.vy = *params++ << 12;
+	this->mPos.vy = *walker++ << 12;
 
-	this->mPos.vz = *params++ << 12;
+	this->mPos.vz = *walker++ << 12;
 
-	return params;
+	return reinterpret_cast<i16*>(walker);
+}
+
+// @FIXME
+// this should be deleted
+INLINE i16* CBody::SquirtPos(i32 *params)
+{
+	return this->SquirtPos(reinterpret_cast<i16*>(params));
 }
 
 // @Ok
-i16* CBody::SquirtAngles(i16* params)
+i16* CBody::SquirtAngles(i16* p_info)
 {
-	this->mAngles.vx = *params++;
-	this->mAngles.vy = *params++;
-	this->mAngles.vz = *params++;
+	this->mAngles.vx = *p_info++;
+	this->mAngles.vy = *p_info++;
+	this->mAngles.vz = *p_info++;
 
-	return params;
+	return p_info;
 }
 
 static int * const dword_6B4CA0 = (int*)0x6B4CA0;
