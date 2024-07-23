@@ -22,6 +22,7 @@ public:
 	EXPORT void SetHeight(void);
 	EXPORT void DoChopperPhysics(void);
 	EXPORT i32 DoArrivalAction(void);
+	EXPORT i32 DoWaypointAction(void);
 
 	EXPORT virtual void FireMissileAtWaypoint(u32);
 	EXPORT virtual void FireMachineGunAtWaypoint(u32, u32);

@@ -17,6 +17,41 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 
+
+// @Ok
+i32 CChopper::DoWaypointAction(void)
+{
+	i16 *ptr = gTrigNodes[this->field_1F4];
+	if ( ptr[0] == 1002 )
+	{
+		switch (ptr[1])
+		{
+			case 1:
+				this->field_218 |= 8;
+				break;
+			case 2:
+				this->field_218 &= 0xFFFFFFF7;
+				break;
+			case 3:
+				this->field_218 |= 0x10;
+				break;
+			case 4:
+				this->field_348 = 65;
+				break;
+			case 5:
+				this->field_348 = 45;
+				break;
+			case 6:
+				this->field_348 = 20;
+				break;
+			default:
+				break;
+		}
+	}
+
+	return 0;
+}
+
 // @Ok
 i32 CChopper::DoArrivalAction(void)
 {
