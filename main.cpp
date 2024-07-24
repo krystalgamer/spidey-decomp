@@ -71,6 +71,7 @@
 #include <cstring>
 #include "spool.h"
 #include "l1a3bomb.h"
+#include "chunk.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -366,6 +367,7 @@ int main()
 	validate_SFlatBitVelocity();
 	validate_CMachineGunBullet();
 	validate_CChopperMissile();
+	validate_CChunkControl();
 
 	puts("[*] Validation done!");
 
