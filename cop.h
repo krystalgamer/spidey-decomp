@@ -7,6 +7,7 @@
 #include "baddy.h"
 #include "mem.h"
 #include "m3dutils.h"
+#include "weapons.h"
 
 
 class CCop : public CBaddy {
@@ -15,8 +16,10 @@ public:
 	EXPORT CCop(int*, int);
 	EXPORT void Victorious(void);
 	EXPORT void ClearAttackFlags(void);
+	EXPORT void LookForPlayer(void);
 
-	unsigned char copStartPad[0x1C];
+	i32 field_324;
+	u8 padAfter324[0x340-0x324-4];
 
 	int field_340;
 	unsigned char padAfter340[0x20 - 4];
@@ -48,8 +51,26 @@ class CCopPing : public CSimpleAnim
 		SHook field_78;
 };
 
+class CCopBulletTracer : public CNonRenderedBit
+{
+	public:
+		EXPORT CCopBulletTracer(CVector*, CVector*, CSuper*, SLineInfo*, u8, u8, u8);
+		EXPORT virtual ~CCopBulletTracer(void);
+
+		EXPORT void SetWidth(void);
+
+		EXPORT virtual void Move(void);
+
+		CGouradRibbon *field_3C;
+		CGouradRibbon *field_40;
+
+		u8 padBottom[0x48-0x40-4];
+};
+
+
 void validate_CCop(void);
 void validate_CCopPing(void);
+void validate_CCopBulletTracer(void);
 
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
 

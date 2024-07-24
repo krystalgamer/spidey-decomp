@@ -13,6 +13,12 @@ EXPORT CBaddy* BaddyList;
 
 extern i16** gTrigNodes;
 
+// @SMALLTODO
+void CBaddy::GetWaypointNearTarget(CVector*, i32, i32, CVector*)
+{
+	printf("void CBaddy::GetWaypointNearTarget(CVector*, i32, i32, CVector*)");
+}
+
 // @NotOk
 // check when pathcheck is done <3
 i32 CBaddy::AddPointToPath(

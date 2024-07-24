@@ -48,6 +48,7 @@ public:
 	EXPORT void RunAppropriateAnim(void);
 	EXPORT i32 GetNextWaypoint(void);
 	EXPORT i32 AddPointToPath(CVector*, i32);
+	EXPORT void GetWaypointNearTarget(CVector*, i32, i32, CVector*);
 
 	EXPORT virtual int PlayerIsVisible(int);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);

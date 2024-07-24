@@ -72,6 +72,7 @@
 #include "spool.h"
 #include "l1a3bomb.h"
 #include "chunk.h"
+#include "weapons.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -369,6 +370,8 @@ int main()
 	validate_CChopperMissile();
 	validate_CChunkControl();
 	validate_SChunkEntry();
+	validate_CGouradRibbon();
+	validate_CCopBulletTracer();
 
 	puts("[*] Validation done!");
 
