@@ -7,6 +7,28 @@
 
 extern CVector gGlobalNormal;
 extern CPlayer *MechList;
+extern CBaddy *BaddyList;
+
+EXPORT CCop* gCopList;
+
+// @NotOk
+// figure type of 380
+CCop::~CCop(void)
+{
+	if (this->field_380)
+		delete reinterpret_cast<CItem*>(this->field_380);
+	this->field_380 = 0;
+
+	if (this->field_384)
+		Mem_Delete(static_cast<void*>(this->field_384));
+	this->field_384 = 0;
+
+	if (gCopList == this)
+		gCopList = 0;
+
+	this->ClearAttackFlags();
+	this->DeleteFrom(reinterpret_cast<CBody**>(BaddyList));
+}
 
 // @SMALLTODO
 i32 CCop::GetLaunched(CVector*, i32, i32, i32)
@@ -272,6 +294,7 @@ void validate_CCop(void){
 
 	VALIDATE(CCop, field_37C, 0x37C);
 
+	VALIDATE(CCop, field_380, 0x380);
 	VALIDATE(CCop, field_384, 0x384);
 
 	VALIDATE(CCop, field_390, 0x390);

@@ -14,6 +14,7 @@ class CCop : public CBaddy {
 
 public:
 	EXPORT CCop(int*, int);
+	EXPORT virtual ~CCop(void);
 
 	EXPORT void ClearAttackFlags(void);
 	EXPORT void LookForPlayer(void);
@@ -36,8 +37,9 @@ public:
 	i32 field_374;
 	u8 padAfter374[0x37C - 0x374 - 4];
 	i32 field_37C;
-	u8 padAfter37C[0x384 - 0x37C - 4];
 
+	// @FIXME - find type
+	i32 field_380;
 	CVector* field_384;
 	u8 padAfter384[0x390 - 0x384 - 4];
 
