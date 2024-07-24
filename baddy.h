@@ -128,7 +128,7 @@ public:
 
 	int field_2A0;
 	int field_2A4;
-	int field_2A8;
+	i32 field_2A8;
 	int field_2AC;
 	int field_2B0;
 

@@ -14,9 +14,12 @@ class CCop : public CBaddy {
 
 public:
 	EXPORT CCop(int*, int);
+
 	EXPORT void ClearAttackFlags(void);
 	EXPORT void LookForPlayer(void);
+	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
 
+	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
 
 	i32 field_324;
@@ -25,19 +28,22 @@ public:
 	int field_340;
 	unsigned char padAfter340[0x20 - 4];
 
-	int field_360;
-	int field_364;
-	int field_368;
-	int field_36C;
-	int field_370;
-	int field_374;
-	unsigned char padAfter374[0x37C - 0x374 - 4];
-	int field_37C;
-	unsigned char padAfter37C[0x390 - 0x37C - 4];
+	i32 field_360;
+	i32 field_364;
+	i32 field_368;
+	i32 field_36C;
+	i32 field_370;
+	i32 field_374;
+	u8 padAfter374[0x37C - 0x374 - 4];
+	i32 field_37C;
+	u8 padAfter37C[0x384 - 0x37C - 4];
 
-	unsigned char field_390;
-	unsigned char field_391;
-	unsigned char endPad[0x394 - 0x391 - 1];
+	CVector* field_384;
+	u8 padAfter384[0x390 - 0x384 - 4];
+
+	u8 field_390;
+	u8 field_391;
+	u8 endPad[0x394 - 0x391 - 1];
 };
 
 class CCopPing : public CSimpleAnim

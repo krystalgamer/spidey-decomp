@@ -8,6 +8,53 @@
 extern CVector gGlobalNormal;
 extern CPlayer *MechList;
 
+// @SMALLTODO
+i32 CCop::GetLaunched(CVector*, i32, i32, i32)
+{
+	printf("i32 CCop::GetLaunched(CVector*, i32, i32, i32)");
+	return 0x24072024;
+}
+
+// @Ok
+u8 CCop::TugImpulse(
+		CVector* a2,
+		CVector* a3,
+		CVector* a4)
+{
+	this->field_2A8 &= ~8;
+
+	if (a4)
+	{
+			this->field_31C.bothFlags = 16;
+			this->dumbAssPad = 0;
+
+			if ( this->field_384 )
+				Mem_Delete(this->field_384);
+
+			this->field_384 = a4;
+			return 1;
+	}
+
+	i32 Launched = this->GetLaunched(a3, 0, 80, 0);
+	if (!Launched)
+	{
+		return 0;
+	}
+
+	if ( this->field_E2 <= 50 )
+	{
+		if ( Launched == 1 )
+			this->field_2A8 |= 0x10;
+		else
+			this->field_2A8 &= 0xFFFFFFEF;
+	}
+
+	this->field_31C.bothFlags = 14;
+	this->field_218 |= 0x4000;
+	this->dumbAssPad = 0;
+	return 1;
+}
+
 // @Ok
 void CCop::LookForPlayer(void)
 {
@@ -224,6 +271,8 @@ void validate_CCop(void){
 	VALIDATE(CCop, field_374, 0x374);
 
 	VALIDATE(CCop, field_37C, 0x37C);
+
+	VALIDATE(CCop, field_384, 0x384);
 
 	VALIDATE(CCop, field_390, 0x390);
 	VALIDATE(CCop, field_391, 0x391);
