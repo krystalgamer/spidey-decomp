@@ -24,6 +24,9 @@ class CChunkControl : public CBody
 	public:
 		EXPORT CChunkControl(CVector*, u16);
 		EXPORT virtual ~CChunkControl(void);
+
+		EXPORT void AddChunk(CItem*);	
+
 		EXPORT virtual void AI(void);
 
 		u8 padTop[4];

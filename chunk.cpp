@@ -1,10 +1,38 @@
 #include "chunk.h"
 #include "baddy.h"
 #include "mem.h"
+#include "bit.h"
+#include "utils.h"
 
 #include "validate.h"
 
+
+extern SFlatBitVelocity FlatBitVelocities[];
+
 extern CBaddy* ControlBaddyList;
+
+// @Ok
+// @Test
+void CChunkControl::AddChunk(CItem* pItem)
+{
+	if ( this->field_FA < this->field_F8 )
+	{
+		SChunkEntry *entry = &this->field_FC[this->field_FA];
+		this->field_FA++;
+		entry->pItem = pItem;
+
+		i32 v4 = Rnd(4096) & 0xFFF;
+		i32 v5 = Rnd(32) + 32;
+
+		entry->field_4.vx = v5 * FlatBitVelocities[v4].vxVel;
+		entry->field_4.vy = (-48 - Rnd(32)) << 12;
+		entry->field_4.vz = v5 * FlatBitVelocities[v4].vzVel;
+		entry->field_14.vx = Rnd(512) - 256;
+		entry->field_14.vy = Rnd(512) - 256;
+		entry->field_14.vz = Rnd(512) - 256;
+		entry->field_1C = Rnd(120) + 120;
+	}
+}
 
 // @Ok
 void CChunkControl::AI(void)
