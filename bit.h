@@ -220,6 +220,7 @@ class CTexturedRibbon : public CSpecialDisplay
 class CSimpleAnim : public CFlatBit
 {
 	public:
+		EXPORT CSimpleAnim(CVector*, i32, u16, i32, i32, i32);
 };
 
 class CMotionBlur : public CFlatBit

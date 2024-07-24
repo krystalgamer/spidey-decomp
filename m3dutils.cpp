@@ -49,7 +49,9 @@ void M3dUtils_GetHookPosition(VECTOR*, CSuper*, i32)
 
 // @BIGTODO
 void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)
-{}
+{
+	printf("void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)");
+}
 
 // @SMALLTODO
 void M3dUtils_ReadHooksPacket(CSuper*, void*)

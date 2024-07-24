@@ -1,6 +1,35 @@
 #include "cop.h"
 #include "validate.h"
 #include "ps2lowsfx.h"
+#include "mem.h"
+#include "utils.h"
+
+extern CVector gGlobalNormal;
+
+// @Ok
+CCopPing::CCopPing(CSuper* pHost, SHook* pHook)
+	: CSimpleAnim(&gGlobalNormal, 10, 0, 1, 0, -1)
+{
+	this->field_78.Part.vx = 0;
+	this->field_78.Part.vy = 0;
+	this->field_78.Part.vz = 0;
+
+	print_if_false(pHost != 0, "NULL pHost");
+	print_if_false(pHook != 0, "NULL pHook");
+
+	this->field_78 = *pHook;
+	this->field_70 = Mem_MakeHandle(pHost);
+
+	this->SetFrame(1);
+	this->SetTint(128, 128, 128);
+	this->field_58 = Rnd(1024);
+
+	if (Rnd(2))
+		this->field_58 *= -1;
+
+	this->mScale = 400;
+	this->SetPosition();
+}
 
 // @NotOk
 // globals

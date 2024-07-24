@@ -16,6 +16,12 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
+CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)
+{
+	printf("CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)");
+}
+
+// @SMALLTODO
 void CRibbon::SetScale(i32)
 {
 	printf("void CRibbon:SetScale(i32)");
