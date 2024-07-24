@@ -1,6 +1,15 @@
 #include "ps2lowsfx.h"
 
 
+// @Ok
+void SFX_StopAll(void)
+{
+	for (i32 i = 0; i < 24; i++)
+	{
+		SFX_Stop(1 << i);
+	}
+}
+
 // @BIGTODO
 i32 SFX_PlayPos(u32, CVector*, i32)
 {
@@ -28,8 +37,10 @@ void SFX_ReverbOff(void)
 }
 
 // @BIGTODO
-void SFX_Stop(unsigned int)
-{}
+void SFX_Stop(u32)
+{
+	printf("void SFX_Stop(unsigned int)");
+}
 
 // @BIGTODO
 void SFX_Play(u32, i16, i32)

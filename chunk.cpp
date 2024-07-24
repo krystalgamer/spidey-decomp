@@ -11,6 +11,12 @@ extern SFlatBitVelocity FlatBitVelocities[];
 
 extern CBaddy* ControlBaddyList;
 
+// @MEDIUMTODO
+void Chunk_ChunkItemByChecksum(u32 Checksum)
+{
+	printf("void Chunk_ChunkItemByChecksum(u32 Checksum)");
+}
+
 // @Ok
 // @Test
 void CChunkControl::AddChunk(CItem* pItem)

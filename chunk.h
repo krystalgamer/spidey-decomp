@@ -38,6 +38,7 @@ class CChunkControl : public CBody
 };
 
 EXPORT void Chunk_MakeItemDisappear(CItem* item);
+EXPORT void Chunk_ChunkItemByChecksum(u32);
 
 void validate_CChunkControl(void);
 void validate_SChunkEntry(void);
