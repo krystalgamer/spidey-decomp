@@ -11,6 +11,8 @@ class CChunkControl : public CBody
 {
 	public:
 		EXPORT CChunkControl(CVector*, u16);
+		EXPORT virtual ~CChunkControl(void);
+
 		u8 padTop[4];
 
 		u16 field_F8;

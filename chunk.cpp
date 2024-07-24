@@ -7,6 +7,15 @@
 extern CBaddy* ControlBaddyList;
 
 // @Ok
+CChunkControl::~CChunkControl(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&ControlBaddyList));
+
+	if (this->field_FC)
+		Mem_Delete(this->field_FC);
+}
+
+// @Ok
 CChunkControl::CChunkControl(CVector* a2, u16 a3)
 {
 	this->mPos = *a2;
