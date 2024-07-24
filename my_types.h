@@ -36,7 +36,11 @@ typedef char i8;
 typedef __int16 i16;
 typedef int i32;
 
+#ifdef _WIN32
 #define INLINE __inline
+#else
+#define INLINE
+#endif
 
 #endif
 

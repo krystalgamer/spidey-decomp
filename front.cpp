@@ -6,7 +6,7 @@
 // @NotOk
 // Globals
 static int gFrontGauge;
-void __inline Front_GaugeOff(void)
+INLINE void Front_GaugeOff(void)
 {
 	gFrontGauge = 0;
 }
