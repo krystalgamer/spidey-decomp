@@ -14,9 +14,10 @@ class CCop : public CBaddy {
 
 public:
 	EXPORT CCop(int*, int);
-	EXPORT void Victorious(void);
 	EXPORT void ClearAttackFlags(void);
 	EXPORT void LookForPlayer(void);
+
+	EXPORT virtual void Victorious(void);
 
 	i32 field_324;
 	u8 padAfter324[0x340-0x324-4];

@@ -791,9 +791,8 @@ u8 CBaddy::TugImpulse(CVector*, CVector*, CVector* a4)
 	return 0;
 }
 
-// @NotOk
-// Figure out name
-void CBaddy::UnknownCBaddyFunctionTwo()
+// @Ok
+void CBaddy::Victorious()
 {
 }
 
@@ -1030,6 +1029,7 @@ void validate_CBaddy(void){
 	VALIDATE_VTABLE(CBaddy, Hit, 3);
 	VALIDATE_VTABLE(CBaddy, PlayerIsVisible, 5);
 	VALIDATE_VTABLE(CBaddy, TugImpulse, 7);
+	VALIDATE_VTABLE(CBaddy, Victorious, 8);
 	VALIDATE_VTABLE(CBaddy, GetClosest, 13);
 }
 
