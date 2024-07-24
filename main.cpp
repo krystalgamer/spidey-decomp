@@ -368,6 +368,7 @@ int main()
 	validate_CMachineGunBullet();
 	validate_CChopperMissile();
 	validate_CChunkControl();
+	validate_SChunkEntry();
 
 	puts("[*] Validation done!");
 

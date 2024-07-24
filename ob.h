@@ -93,6 +93,8 @@ public:
 
 
 	int field_7C;
+
+	// @FIXME is this really signed?
 	int field_80;
 	int field_84;
 
