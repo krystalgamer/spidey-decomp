@@ -11,6 +11,15 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+
+// @Ok
+INLINE i32 CCop::SpideyAnimUppercut(void)
+{
+	return MechList->field_12A == 106
+		|| MechList->field_12A == 113
+		|| MechList->field_12A == 284;
+}
+
 // @NotOk
 // figure type of 380
 CCop::~CCop(void)

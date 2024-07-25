@@ -19,6 +19,7 @@ public:
 	EXPORT void ClearAttackFlags(void);
 	EXPORT void LookForPlayer(void);
 	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
+	EXPORT i32 SpideyAnimUppercut(void);
 
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
