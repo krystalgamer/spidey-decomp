@@ -34,6 +34,7 @@ public:
 	EXPORT void GetAttackPosition(CVector*);
 	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
 	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
+	EXPORT void CheckToShoot(i32, i32);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);

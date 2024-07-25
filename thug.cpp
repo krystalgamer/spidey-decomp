@@ -192,6 +192,8 @@ void CThug::Guard(void)
 	}
 }
 
+// @NotOk
+// stateflags
 INLINE i32 CThug::CanAck(
 		i32 a2,
 		i32 a3,

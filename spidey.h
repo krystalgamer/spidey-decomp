@@ -30,7 +30,10 @@ class CPlayer : public CSuper
 
 		i32 field_568;
 		i32 field_56C;
-		unsigned char padAfter56C[0x580-0x56C-4];
+		u8 padAfter56C[0x57C-0x56C-4];
+
+		i8 field_57C;
+		u8 padAfter57C[0x580-0x57C-1];
 
 		i32 field_580;
 		CSmokeTrail* field_584;
@@ -104,8 +107,11 @@ class CPlayer : public CSuper
 
 		char field_E2D;
 		char field_E2E;
+		u8 padAfterE2E[(0xE48-0xE2E)-0x1];
 
-		unsigned char padBottomPlayer[(0xEFC-0xE2E)-0x1];
+		i32 field_E48;
+
+		u8 padBottomPlayer[(0xEFC-0xE48)-0x4];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);

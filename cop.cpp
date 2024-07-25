@@ -16,6 +16,23 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @Ok
+INLINE void CCop::CheckToShoot(i32 a2, i32 a3)
+{
+	if ( MechList->field_57C && !gCopList && !MechList->field_E48)
+	{
+		if ( ((this->field_218 & 0x800) && a2 < this->field_37C)
+				||
+			 (this->field_324 && a2 < 1500 && (a3 != -1 || this->PathCheck(&this->mPos, &MechList->mPos, 0, 55))))
+		{
+			this->Neutralize();
+			gCopList = this;
+			this->field_31C.bothFlags = 9;
+			this->dumbAssPad = 0;
+		}
+	}
+}
+
 // @SMALLTODO
 i32 CCop::SetUpLaser(CGPolyLine**, CVector*, CVector*)
 {

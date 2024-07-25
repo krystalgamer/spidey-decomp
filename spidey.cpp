@@ -873,6 +873,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_568, 0x568);
 	VALIDATE(CPlayer, field_56C, 0x56C);
 
+	VALIDATE(CPlayer, field_57C, 0x57C);
+
 	VALIDATE(CPlayer, field_580, 0x580);
 
 	VALIDATE(CPlayer, field_584, 0x584);
@@ -926,5 +928,7 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_E2D, 0xE2D);
 	VALIDATE(CPlayer, field_E2E, 0xE2E);
+
+	VALIDATE(CPlayer, field_E48, 0xE48);
 
 }
