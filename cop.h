@@ -25,6 +25,7 @@ public:
 	EXPORT void RunToWhereTheActionIs(CVector*);
 	EXPORT void SetAttacker(void);
 	EXPORT void PlayHitWallSound(void);
+	EXPORT void StandStill(void);
 
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);

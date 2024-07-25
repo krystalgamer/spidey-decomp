@@ -16,6 +16,23 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+INLINE void CCop::StandStill(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->CycleAnim(17, 1);
+			this->dumbAssPad++;
+
+			break;
+		default:
+			print_if_false(0, "Unknown substate.");
+			break;
+	}
+}
+
+// @Ok
 void CCop::PlayHitWallSound(void)
 {
 	if ( !this->field_1F8 )

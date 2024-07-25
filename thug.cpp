@@ -780,7 +780,7 @@ void __inline CThug::PlayHitWallSound(void)
 }
 
 // @Ok
-void __inline CThug::StandStill(void)
+INLINE void CThug::StandStill(void)
 {
 	switch (this->dumbAssPad)
 	{
