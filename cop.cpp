@@ -15,12 +15,27 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @Ok
+INLINE i32 CCop::TryAddingCollidePointToPath(CVector *a2)
+{
+	if (Utils_CrapDist(*a2, this->mPos) < 0x64)
+		return 0;
+
+	CVector v6 = *a2 - this->mPos;
+	v6 >>= 12;
+	v6 *= 3700;
+	v6 += this->mPos;
+
+	return this->AddPointToPath(&v6, 0);
+}
+
 // @NotOk
 // does baddy not have 324???
 void CCop::WarnOtherCops(void)
 {
 	CCop *nearest = reinterpret_cast<CCop*>(this->GetClosest(306, 0));
-	if ( (nearest || ((nearest = reinterpret_cast<CCop*>(this->GetClosest(320, 0))) != 0)) && !nearest->field_324)
+	if ( (nearest || ((nearest = reinterpret_cast<CCop*>(this->GetClosest(320, 0))) != 0))
+			&& !nearest->field_324)
 	{
 		new CMessage(this, nearest, 7, 0);
 	}

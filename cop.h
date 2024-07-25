@@ -29,6 +29,7 @@ public:
 	EXPORT void DieAfterFlyingAcrossRoom(void);
 	EXPORT void StopShooting(void);
 	EXPORT void WarnOtherCops(void);
+	EXPORT i32 TryAddingCollidePointToPath(CVector *);
 
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
