@@ -5,11 +5,31 @@
 #include "utils.h"
 #include "spidey.h"
 
+
+EXPORT CCop* gCopGlobal;
+static unsigned char gAttackFlagsRelated;
+
 extern CVector gGlobalNormal;
 extern CPlayer *MechList;
 extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
+
+// @Ok
+INLINE void CCop::SetAttacker(void)
+{
+	if (gCopGlobal != this)
+	{
+		this->ClearAttackFlags();
+		if (gCopGlobal)
+		{
+			gCopGlobal->ClearAttackFlags();
+		}
+
+		gCopGlobal = this;
+		this->field_390 = 1;
+	}
+}
 
 // @BIGTODO
 void CCop::RunToWhereTheActionIs(CVector*)
@@ -282,9 +302,6 @@ void CCopPing::Move(void)
 	if ((this->mCodeBGR & 0xFFFFFF) == 0)
 		this->Die();
 }
-
-static CCop* gCopGlobal;
-static unsigned char gAttackFlagsRelated;
 
 // @NotOk
 // globals
