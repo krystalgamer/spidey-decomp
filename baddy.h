@@ -55,7 +55,7 @@ public:
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
 	EXPORT virtual void UnknownCBaddyFunctionThree(int, int);
-	EXPORT virtual char UnknownCBaddyFunctionFour(int);
+	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT virtual void UnknownCBaddyFunctionFive(int);
 	EXPORT virtual CBaddy* GetClosest(int, int);

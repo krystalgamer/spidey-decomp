@@ -803,7 +803,7 @@ void CBaddy::UnknownCBaddyFunctionThree(int, int)
 }
 
 // @Ok
-char CBaddy::UnknownCBaddyFunctionFour(int)
+u8 CBaddy::Grab(CVector*)
 {
 	return 0;
 }
@@ -1031,6 +1031,10 @@ void validate_CBaddy(void){
 	VALIDATE_VTABLE(CBaddy, CreateCombatImpactEffect, 6);
 	VALIDATE_VTABLE(CBaddy, TugImpulse, 7);
 	VALIDATE_VTABLE(CBaddy, Victorious, 8);
+
+	VALIDATE_VTABLE(CBaddy, Grab, 10);
+
+	VALIDATE_VTABLE(CBaddy, Shouldnt_DoPhysics_Be_Virtual, 11);
 	VALIDATE_VTABLE(CBaddy, GetClosest, 13);
 }
 

@@ -31,6 +31,7 @@ public:
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
+	EXPORT virtual u8 Grab(CVector*);
 
 	i32 field_324;
 	u8 padAfter324[0x340-0x324-4];

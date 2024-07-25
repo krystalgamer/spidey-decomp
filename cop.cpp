@@ -15,6 +15,24 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @NotOk
+// globals flags :(
+u8 CCop::Grab(CVector* a2)
+{
+	if ( (this->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x549220), 17) & 2)
+		|| !this->AddPointToPath(a2, 0) )
+	{
+		return 0;
+	}
+
+	this->field_31C.bothFlags = 20;
+
+
+	this->dumbAssPad = 0;
+	this->field_2A8 |= 0x40;
+	return 1;
+}
+
 // @Ok
 void CCop::CreateCombatImpactEffect(CVector *a2, i32)
 {
