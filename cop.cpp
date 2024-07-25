@@ -16,6 +16,18 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+void CCop::PlayHitWallSound(void)
+{
+	if ( !this->field_1F8 )
+	{
+		if ( (this->field_218 & 0x400) != 0 )
+			SFX_PlayPos(0x802Fu, &this->mPos, 0);
+		else
+			SFX_PlayPos(0x802Eu, &this->mPos, 0);
+	}
+}
+
+// @Ok
 INLINE void CCop::SetAttacker(void)
 {
 	if (gCopGlobal != this)
