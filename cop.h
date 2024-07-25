@@ -30,6 +30,7 @@ public:
 	EXPORT void StopShooting(void);
 	EXPORT void WarnOtherCops(void);
 	EXPORT i32 TryAddingCollidePointToPath(CVector *);
+	EXPORT void GetAttackPosition(CVector*);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);

@@ -16,6 +16,25 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+// @Test
+void CCop::GetAttackPosition(CVector* pAttackerPos)
+{
+	*pAttackerPos = MechList->mPos;
+	if (!(this->field_390 & 1) && (this->field_390 & 2))
+	{
+		if (this->field_391 & 0xEE)
+		{
+			pAttackerPos->vx += (this->field_391 & 0xAA ? 0x12C000 : 0x190000) * (this->field_391 > 8 ? 0xFFFFFFFF : 1);
+		}
+
+		if (this->field_391 & 0xBB)
+		{
+			pAttackerPos->vz += (this->field_391 & 0x83 ? 1 : -1) * (this->field_391 & 0xAA ? 0x12C000 : 0x190000);
+		}
+	}
+}
+
+// @Ok
 void CCop::SetParamByIndex(i32 Index, i32 Param)
 {
 	switch ( Index )
