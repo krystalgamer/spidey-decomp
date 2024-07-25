@@ -51,7 +51,7 @@ public:
 	EXPORT void GetWaypointNearTarget(CVector*, i32, i32, CVector*);
 
 	EXPORT virtual int PlayerIsVisible(int);
-	EXPORT virtual void CreateCombatImpactEffect(CVector*, int);
+	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
 	EXPORT virtual void UnknownCBaddyFunctionThree(int, int);

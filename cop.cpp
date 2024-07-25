@@ -16,6 +16,13 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+void CCop::CreateCombatImpactEffect(CVector *a2, i32)
+{
+	new CCombatImpactRing(a2, 0x6Cu, 108, 18, 384, 1792, 144);
+	new CCombatImpactRing(a2, 0x90u, 144, 72, 192, 896, 72);
+}
+
+// @Ok
 void CCop::DieAfterFlyingAcrossRoom(void)
 {
 	if (this->ShouldFall(200, 0x5F000))

@@ -234,6 +234,8 @@ class CCombatImpactRing : public CFlatBit
 {
 	public:
 		EXPORT CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32);
+
+		u8 padBottom[0xC];
 };
 
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);

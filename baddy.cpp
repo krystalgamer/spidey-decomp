@@ -1028,6 +1028,7 @@ void validate_CBaddy(void){
 	VALIDATE_VTABLE(CBaddy, AI, 2);
 	VALIDATE_VTABLE(CBaddy, Hit, 3);
 	VALIDATE_VTABLE(CBaddy, PlayerIsVisible, 5);
+	VALIDATE_VTABLE(CBaddy, CreateCombatImpactEffect, 6);
 	VALIDATE_VTABLE(CBaddy, TugImpulse, 7);
 	VALIDATE_VTABLE(CBaddy, Victorious, 8);
 	VALIDATE_VTABLE(CBaddy, GetClosest, 13);
