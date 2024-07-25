@@ -26,12 +26,7 @@ class CMessage : public CClass
 		u8 padAfter18[0x44-0x18-8];
 
 
-		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)
-		{
-			*pad = a4;
-		}
-
-
+		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*);
 };
 
 void validate_CMessage(void);

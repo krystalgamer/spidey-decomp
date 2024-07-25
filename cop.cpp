@@ -15,6 +15,17 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @NotOk
+// does baddy not have 324???
+void CCop::WarnOtherCops(void)
+{
+	CCop *nearest = reinterpret_cast<CCop*>(this->GetClosest(306, 0));
+	if ( (nearest || ((nearest = reinterpret_cast<CCop*>(this->GetClosest(320, 0))) != 0)) && !nearest->field_324)
+	{
+		new CMessage(this, nearest, 7, 0);
+	}
+}
+
 // @Ok
 INLINE void CCop::StopShooting(void)
 {

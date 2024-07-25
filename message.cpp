@@ -1,6 +1,11 @@
 #include "message.h"
 #include "validate.h"
 
+// @MEDIUMTODO
+CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)
+{
+	printf("CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)");
+}
 
 
 void validate_CMessage(void)
