@@ -54,7 +54,7 @@ public:
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
-	EXPORT virtual void UnknownCBaddyFunctionThree(int, int);
+	EXPORT virtual void SetParamByIndex(i32, i32);
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT virtual void UnknownCBaddyFunctionFive(int);

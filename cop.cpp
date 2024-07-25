@@ -16,6 +16,47 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+void CCop::SetParamByIndex(i32 Index, i32 Param)
+{
+	switch ( Index )
+	{
+		case 1:
+			this->field_364 = Param;
+			break;
+		case 2:
+			this->field_360 = Param;
+			break;
+		case 3:
+			this->field_368 = Param;
+			break;
+		case 4:
+			this->field_36C = Param;
+			break;
+		case 5:
+			this->field_370 = Param;
+			break;
+		case 8:
+			this->field_374 = Param;
+			break;
+		case 9:
+			this->field_1FC = Param;
+			break;
+		case 10:
+			this->field_37C = Param;
+			break;
+		case 11:
+			if ( Param )
+				this->field_218 |= 0x800;
+			else
+				this->field_218 &= 0xFFFFF7FF;
+			break;
+		default:
+			print_if_false(0, "Unknown index in C_SET_PARAMETER_BY_INDEX");
+			break;
+	}
+}
+
+// @Ok
 INLINE i32 CCop::TryAddingCollidePointToPath(CVector *a2)
 {
 	if (Utils_CrapDist(*a2, this->mPos) < 0x64)

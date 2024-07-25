@@ -31,9 +31,10 @@ public:
 	EXPORT void WarnOtherCops(void);
 	EXPORT i32 TryAddingCollidePointToPath(CVector *);
 
+	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
-	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
+	EXPORT virtual void SetParamByIndex(i32, i32);
 	EXPORT virtual u8 Grab(CVector*);
 
 	i32 field_324;

@@ -796,9 +796,8 @@ void CBaddy::Victorious()
 {
 }
 
-// @NotOk
-// Figure out name
-void CBaddy::UnknownCBaddyFunctionThree(int, int)
+// @Ok
+void CBaddy::SetParamByIndex(i32, i32)
 {
 }
 
@@ -1032,6 +1031,7 @@ void validate_CBaddy(void){
 	VALIDATE_VTABLE(CBaddy, TugImpulse, 7);
 	VALIDATE_VTABLE(CBaddy, Victorious, 8);
 
+	VALIDATE_VTABLE(CBaddy, SetParamByIndex, 9);
 	VALIDATE_VTABLE(CBaddy, Grab, 10);
 
 	VALIDATE_VTABLE(CBaddy, Shouldnt_DoPhysics_Be_Virtual, 11);
