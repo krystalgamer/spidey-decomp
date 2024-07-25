@@ -27,6 +27,7 @@ public:
 	EXPORT void PlayHitWallSound(void);
 	EXPORT void StandStill(void);
 	EXPORT void DieAfterFlyingAcrossRoom(void);
+	EXPORT void StopShooting(void);
 
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);

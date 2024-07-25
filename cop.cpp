@@ -15,6 +15,28 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @Ok
+INLINE void CCop::StopShooting(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->RunAnim(12, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 // @NotOk
 // globals flags :(
 u8 CCop::Grab(CVector* a2)

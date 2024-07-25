@@ -835,7 +835,7 @@ void __inline CThug::RunAppropriateHitAnim(void)
 }
 
 // @Ok
-void __inline CThug::StopShooting(void)
+INLINE void CThug::StopShooting(void)
 {
 	switch (this->dumbAssPad)
 	{
