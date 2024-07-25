@@ -11,6 +11,21 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @BIGTODO
+void CCop::RunToWhereTheActionIs(CVector*)
+{}
+
+// @Ok
+void CCop::HelpOutBuddy(CMessage *pMessage)
+{
+	if (this->field_31C.bothFlags == 2 || this->field_31C.bothFlags == 1)
+	{
+		CItem *pItem = reinterpret_cast<CItem*>(Mem_RecoverPointer(&pMessage->mHandle));
+
+		if (pItem)
+			this->RunToWhereTheActionIs(&pItem->mPos);
+	}
+}
 
 // @Ok
 INLINE i32 CCop::SpideyAnimUppercut(void)
