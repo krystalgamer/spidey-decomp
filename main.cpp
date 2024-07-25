@@ -372,6 +372,7 @@ int main()
 	validate_SChunkEntry();
 	validate_CGouradRibbon();
 	validate_CCopBulletTracer();
+	validate_CCombatImpactRing();
 
 	puts("[*] Validation done!");
 

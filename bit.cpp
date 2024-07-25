@@ -16,6 +16,12 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
+CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
+{
+	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");
+}
+
+// @SMALLTODO
 CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)
 {
 	printf("CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)");
@@ -808,4 +814,9 @@ void validate_SFlatBitVelocity(void)
 
 	VALIDATE(SFlatBitVelocity, vxVel, 0x0);
 	VALIDATE(SFlatBitVelocity, vzVel, 0x2);
+}
+
+void validate_CCombatImpactRing(void)
+{
+	VALIDATE_SIZE(CCombatImpactRing, 0x74);
 }

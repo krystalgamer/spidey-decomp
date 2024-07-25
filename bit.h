@@ -230,6 +230,12 @@ class CMotionBlur : public CFlatBit
 		EXPORT virtual void Move(void);
 };
 
+class CCombatImpactRing : public CFlatBit
+{
+	public:
+		EXPORT CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -255,5 +261,6 @@ void validate_CMotionBlur(void);
 void validate_CSpecialDisplay(void);
 void validate_SFlatBitVelocity(void);
 void validate_CRibbon(void);
+void validate_CCombatImpactRing(void);
 
 #endif

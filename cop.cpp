@@ -16,6 +16,24 @@ extern CBaddy *BaddyList;
 EXPORT CCop* gCopList;
 
 // @Ok
+void CCop::DieAfterFlyingAcrossRoom(void)
+{
+	if (this->ShouldFall(200, 0x5F000))
+	{
+		this->field_218 &= 0xFFFFFFFD;
+		this->field_31C.bothFlags = 22;
+	}
+	else
+	{
+		this->PlayHitWallSound();
+		this->SetHeight(1, 100, 600);
+		this->field_31C.bothFlags = 26;
+	}
+
+	this->dumbAssPad = 0;
+}
+
+// @Ok
 INLINE void CCop::StandStill(void)
 {
 	switch (this->dumbAssPad)
