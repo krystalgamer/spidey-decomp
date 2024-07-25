@@ -9,6 +9,7 @@
 #include "m3dutils.h"
 #include "weapons.h"
 #include "message.h"
+#include "bit2.h"
 
 
 class CCop : public CBaddy {
@@ -31,6 +32,8 @@ public:
 	EXPORT void WarnOtherCops(void);
 	EXPORT i32 TryAddingCollidePointToPath(CVector *);
 	EXPORT void GetAttackPosition(CVector*);
+	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
+	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
@@ -54,7 +57,7 @@ public:
 	i32 field_37C;
 
 	// @FIXME - find type
-	i32 field_380;
+	CGPolyLine* field_380;
 	CVector* field_384;
 	u8 padAfter384[0x390 - 0x384 - 4];
 

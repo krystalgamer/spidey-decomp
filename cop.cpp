@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "utils.h"
 #include "spidey.h"
+#include "exp.h"
 
 
 EXPORT CCop* gCopGlobal;
@@ -14,6 +15,26 @@ extern CPlayer *MechList;
 extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
+
+// @SMALLTODO
+i32 CCop::SetUpLaser(CGPolyLine**, CVector*, CVector*)
+{
+	printf("i32 CCop::SetUpLaser(CGPolyLine**, CVector*, CVector*)");
+	return 0x25042024;
+}
+
+// @Ok
+INLINE i32 CCop::DrawBarrelFlash(
+		CVector *a2,
+		CVector *a3,
+		SLineInfo *a4,
+		u8 a5,
+		u8 a6,
+		u8 a7)
+{
+	new CGlowFlash(a2, 5, a5, a6, a7, 32, 0, 0, 0, 0, 50, 20, 1, 20, 10, 40, 20, 10, 1);
+	return CCop::SetUpLaser(&this->field_380, a2, a3);
+}
 
 // @Ok
 // @Test
@@ -240,7 +261,7 @@ INLINE i32 CCop::SpideyAnimUppercut(void)
 CCop::~CCop(void)
 {
 	if (this->field_380)
-		delete reinterpret_cast<CItem*>(this->field_380);
+		delete this->field_380;
 	this->field_380 = 0;
 
 	if (this->field_384)
