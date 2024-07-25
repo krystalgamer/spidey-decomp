@@ -35,6 +35,7 @@ public:
 	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
 	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
 	EXPORT void CheckToShoot(i32, i32);
+	EXPORT void Acknowledge(void);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
@@ -45,8 +46,11 @@ public:
 	i32 field_324;
 	u8 padAfter324[0x340-0x324-4];
 
-	int field_340;
-	unsigned char padAfter340[0x20 - 4];
+	i32 field_340;
+	u8 padAfter340[0xC-4];
+
+	SHandle field_34C;
+	u8 padAfter34C[0x360-0x34C-sizeof(SHandle)];
 
 	i32 field_360;
 	i32 field_364;

@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "spidey.h"
 #include "exp.h"
+#include "ai.h"
 
 
 EXPORT CCop* gCopGlobal;
@@ -15,6 +16,43 @@ extern CPlayer *MechList;
 extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
+
+// @Ok
+void CCop::Acknowledge(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mCBodyFlags |= 0x10u;
+			CBaddy::Neutralize();
+			CSuper::RunAnim(2, 0, -1);
+
+			if ( Mem_RecoverPointer(&this->field_34C) )
+			{
+				new CAIProc_LookAt(
+						this,
+						reinterpret_cast<CBody*>(this->field_34C.field_0),
+						0,
+						2,
+						70,
+						200);
+			}
+
+			SFX_PlayPos(0x800Eu, &this->mPos, 0);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if ( this->field_142 )
+			{
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 INLINE void CCop::CheckToShoot(i32 a2, i32 a3)
@@ -544,6 +582,9 @@ void validate_CCop(void){
 	VALIDATE(CCop, field_324, 0x324);
 
 	VALIDATE(CCop, field_340, 0x340);
+
+	VALIDATE(CCop, field_34C, 0x34C);
+
 	VALIDATE(CCop, field_360, 0x360);
 	VALIDATE(CCop, field_364, 0x364);
 	VALIDATE(CCop, field_368, 0x368);
