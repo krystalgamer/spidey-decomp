@@ -7,6 +7,17 @@
 #include "utils.h"
 #include "ai.h"
 #include "ps2redbook.h"
+#include "spidey.h"
+
+extern CPlayer* MechList;
+
+// @Ok
+INLINE i32 CThug::SpideyAnimUppercut(void)
+{
+	return MechList->field_12A == 106
+		|| MechList->field_12A == 113
+		|| MechList->field_12A == 284;
+}
 
 // @NotOk
 // validate

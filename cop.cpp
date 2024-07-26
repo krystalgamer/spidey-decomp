@@ -24,8 +24,8 @@ void CCop::Acknowledge(void)
 	{
 		case 0:
 			this->mCBodyFlags |= 0x10u;
-			CBaddy::Neutralize();
-			CSuper::RunAnim(2, 0, -1);
+			this->Neutralize();
+			this->RunAnim(2, 0, -1);
 
 			if ( Mem_RecoverPointer(&this->field_34C) )
 			{
