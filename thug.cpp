@@ -17,6 +17,62 @@ EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
 // @Ok
+// @Test
+void CThug::TakeHit(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mCBodyFlags &= 0xFFEFu;
+			this->field_310 = 0;
+			this->ClearAttackFlags();
+
+			if (this->field_318 == 1)
+			{
+				this->field_DC = 0;
+				this->RunAnim(this->field_38 != 304 ? 19 : 14, 0, -1);
+				this->dumbAssPad = 2;
+			}
+			else
+			{
+				new CAIProc_LookAt(this, MechList, 0, 0, 80, 200);
+				this->RunAppropriateHitAnim();
+				this->dumbAssPad = 3;
+			}
+
+			break;
+		case 1:
+			if ( this->field_142 )
+			{
+				this->field_318 = 0;
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			break;
+		case 2:
+			if ( this->field_142 )
+			{
+				this->field_DC = this->field_38 == 304 ? 96 : 150;
+				this->RunAnim(this->field_38 == 304 ? 15 : 20, 0, -1);
+				this->dumbAssPad = 1;
+			}
+
+			break;
+		case 3:
+			if ( this->field_142 )
+			{
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+// @Ok
 void CThug::BackpedalPlease(void)
 {
 	CVector v10;
