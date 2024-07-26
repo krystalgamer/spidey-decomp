@@ -861,8 +861,9 @@ unsigned __int16 CBaddy::GetVariable(unsigned __int16)
 }
 
 // @BIGTODO
-void CBaddy::DoPhysics(int)
+void CBaddy::DoPhysics(i32)
 {
+	printf("void CBaddy::DoPhysics(int)");
 }
 
 // @Ok

@@ -17,6 +17,52 @@ EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
 // @Ok
+void CThug::BackpedalPlease(void)
+{
+	CVector v10;
+	v10.vx = 0;
+	v10.vy = 0;
+	v10.vz = 0;
+
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->field_1F8 = 0;
+			v10 = this->mPos;
+
+			v10.vx += 6 * ((this->mPos.vx - MechList->mPos.vx) >> 2);
+			v10.vx += 6 * ((this->mPos.vz - MechList->mPos.vz) >> 2);
+
+			if (this->AddPointToPath(&this->mPos, 0) && this->AddPointToPath(&v10, 0))
+			{
+
+				this->mAccellorVel = (this->mPos - MechList->mPos) >> 2;
+				this->mAccellorVel.vy = 0;
+			}
+
+			this->RunAppropriateHitAnim();
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			this->DoPhysics(1);
+			if (this->field_1F8 <= 0)
+				this->Neutralize();
+			if (this->field_142)
+			{
+				this->Neutralize();
+				this->field_31C.bothFlags = 28;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
+// @Ok
 void CThug::LookForPlayer(void)
 {
 	CVector v5;

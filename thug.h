@@ -49,6 +49,7 @@ public:
 	EXPORT void Caution(void);
 	EXPORT i32 DetermineFightState(void);
 	EXPORT void LookForPlayer(void);
+	EXPORT void BackpedalPlease(void);
 
 
 	EXPORT virtual u8 Grab(CVector*);
