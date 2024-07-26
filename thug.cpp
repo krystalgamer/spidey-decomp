@@ -8,10 +8,31 @@
 #include "ai.h"
 #include "ps2redbook.h"
 #include "spidey.h"
+#include "exp.h"
 
 extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
+
+// @SMALLTODO
+i32 CThug::SetUpLaser(CGPolyLine**, CVector*, CVector*)
+{
+	printf("i32 CThug::SetUpLaser(CGPolyLine**, CVector*, CVector*)");
+	return 0x26042024;
+}
+
+// @Ok
+INLINE i32 CThug::DrawBarrelFlash(
+		CVector *a2,
+		CVector *a3,
+		SLineInfo *a4,
+		u8 a5,
+		u8 a6,
+		u8 a7)
+{
+	new CGlowFlash(a2, 5, a5, a6, a7, 32, 0, 0, 0, 0, 50, 20, 1, 20, 10, 40, 20, 10, 1);
+	return this->SetUpLaser(&this->field_3A0, a2, a3);
+}
 
 // @NotOk
 // Validate when used
@@ -987,6 +1008,7 @@ void validate_CThug(void){
 	VALIDATE(CThug, field_398, 0x398);
 	VALIDATE(CThug, field_39C, 0x39C);
 
+	VALIDATE(CThug, field_3A0, 0x3A0);
 	VALIDATE(CThug, field_3A4, 0x3A4);
 
 	VALIDATE(CThug, field_3B0, 0x3B0);

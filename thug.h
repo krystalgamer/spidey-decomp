@@ -7,6 +7,7 @@
 #include "baddy.h"
 #include "mem.h"
 #include "m3dutils.h"
+#include "bit2.h"
 
 class CThug : public CBaddy {
 public:
@@ -40,6 +41,8 @@ public:
 	EXPORT i32 AdjustPosPlaySound(i32);
 	EXPORT void WarnOtherThugs(void);
 	EXPORT void CheckToShoot(i32, i32);
+	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
+	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
 
 
 	EXPORT virtual u8 Grab(CVector*);
@@ -71,8 +74,8 @@ public:
 	i32 field_394;
 	i32 field_398;
 	i32 field_39C;
-	u8 padAfter39C[0x3A4-0x39C-4];
 
+	CGPolyLine *field_3A0;
 	CVector* field_3A4;
 	u8 padAfter3A4[0x3B0-0x3A4-4];
 
