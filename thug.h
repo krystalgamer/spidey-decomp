@@ -46,6 +46,8 @@ public:
 	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
 	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
 	EXPORT i32 ShouldIShootPlayer(void);
+	EXPORT void Caution(void);
+	EXPORT i32 DetermineFightState(void);
 
 
 	EXPORT virtual u8 Grab(CVector*);

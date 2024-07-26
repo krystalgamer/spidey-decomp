@@ -16,6 +16,45 @@ extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
+// @BIGTODO
+i32 CThug::DetermineFightState(void)
+{
+	printf("i32 CThug::DetermineFightState(void)");
+	return 0x26042024;
+}
+
+// @Ok
+void CThug::Caution(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_310 = 0;
+			this->Neutralize();
+
+			SFX_PlayPos( (Rnd(3) + 14) | 0x8000, &this->mPos, 0);
+
+			if ((abs(MechList->mPos.vy - this->field_29C - 0x4000) < 409600)
+				&& this->PlayerIsVisible())
+			{
+				if (!this->ShouldIShootPlayer())
+				{
+					this->field_31C.bothFlags = MechList->field_57C != 0 ? 1 : 4;
+					this->dumbAssPad = 0;
+				}
+			}
+			else if (!this->DetermineFightState())
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 // @Ok
 void CThug::CreateCombatImpactEffect(CVector* a2, i32 a3)
 {

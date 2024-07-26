@@ -623,7 +623,7 @@ int CBaddy::BumpedIntoSpidey(int a2)
 
 
 // @Ok
-int CBaddy::PlayerIsVisible(int a2)
+int CBaddy::PlayerIsVisible()
 {
 	if (!globalSuper->IsDead() &&
 			Utils_LineOfSight(&this->mPos, &globalSuper->mPos, 0, 0)

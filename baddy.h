@@ -50,7 +50,7 @@ public:
 	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT void GetWaypointNearTarget(CVector*, i32, i32, CVector*);
 
-	EXPORT virtual int PlayerIsVisible(int);
+	EXPORT virtual int PlayerIsVisible();
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 	EXPORT virtual void Victorious(void);
