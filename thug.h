@@ -50,6 +50,7 @@ public:
 
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void SetParamByIndex(i32, i32);
+	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual void SetThugType(int);
 
 

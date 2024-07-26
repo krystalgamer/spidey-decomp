@@ -17,6 +17,21 @@ EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
 // @Ok
+void CThug::CreateCombatImpactEffect(CVector* a2, i32 a3)
+{
+	if ( this->field_38 == 304 )
+	{
+		new CCombatImpactRing(a2, 0x12u, 18, 108, 384, 1792, 144);
+		new CCombatImpactRing(a2, 0x48u, 72, 144, 192, 896, 72);
+	}
+	else
+	{
+		new CCombatImpactRing(a2, 0x6Cu, 108, 18, 384, 1792, 144);
+		new CCombatImpactRing(a2, 0x90u, 144, 72, 192, 896, 72);
+	}
+}
+
+// @Ok
 // @Test
 // two's complement a lil diff
 INLINE i32 CThug::ShouldIShootPlayer(void)
