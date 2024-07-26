@@ -16,6 +16,57 @@ extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
+// @Ok
+void CThug::LookForPlayer(void)
+{
+	CVector v5;
+	v5.vx = 0;
+	v5.vy = 0;
+	v5.vz = 0;
+
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->CycleAnim(this->field_298.Bytes[0], 1);
+			this->dumbAssPad++;
+			this->field_21D = Rnd(64);
+			this->field_1F8 = 0;
+			break;
+		case 1:
+			CVector *mPos;
+
+			if (this->field_1F8 < 64)
+				mPos = &MechList->mPos;
+			else
+				mPos = &this->mPos;
+
+			this->GetWaypointNearTarget(mPos, 409600, this->field_21D, &v5);
+			this->field_21D++;
+			if ( !this->PathCheck(&this->mPos, &v5, 0, 55)
+				&& (this->AddPointToPath(&v5, 0)
+				|| this->AddPointToPath(&this->mPos, 0)
+				&& this->AddPointToPath(&v5, 0)) )
+			{
+				this->field_31C.bothFlags = 24;
+				this->dumbAssPad = 0;
+			}
+			else
+			{
+				if ( this->field_1F8++ > 128 )
+				{
+					this->field_330 = 0;
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
+
 // @BIGTODO
 i32 CThug::DetermineFightState(void)
 {

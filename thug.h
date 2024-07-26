@@ -48,6 +48,7 @@ public:
 	EXPORT i32 ShouldIShootPlayer(void);
 	EXPORT void Caution(void);
 	EXPORT i32 DetermineFightState(void);
+	EXPORT void LookForPlayer(void);
 
 
 	EXPORT virtual u8 Grab(CVector*);
