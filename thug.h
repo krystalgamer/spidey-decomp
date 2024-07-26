@@ -39,6 +39,7 @@ public:
 	EXPORT void SetAttacker(void);
 	EXPORT i32 AdjustPosPlaySound(i32);
 	EXPORT void WarnOtherThugs(void);
+	EXPORT void CheckToShoot(i32, i32);
 
 
 	EXPORT virtual u8 Grab(CVector*);
