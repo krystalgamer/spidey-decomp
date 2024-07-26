@@ -10,9 +10,28 @@
 #include "spidey.h"
 #include "exp.h"
 
+extern CBaddy *BaddyList;
 extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
+
+// @Ok
+CThug::~CThug(void)
+{
+	if (this->field_3A0)
+		delete this->field_3A0;
+	this->field_3A0 = 0;
+
+	if (this->field_3A4)
+		Mem_Delete(this->field_3A4);
+	this->field_3A4 = 0;
+
+	if (gThugList == this)
+		gThugList = 0;
+
+	this->ClearAttackFlags();
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+}
 
 // @SMALLTODO
 i32 CThug::SetUpLaser(CGPolyLine**, CVector*, CVector*)
@@ -740,7 +759,7 @@ CThug::CThug(int *a2, int a3)
 	this->ShadowOn();
 	this->field_D0 = 50;
 	this->field_3B0 = *dword_5FCCF4;
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	int v6 = this->field_2A8;
 	this->field_1F4 = a3;
