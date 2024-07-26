@@ -13,6 +13,18 @@ extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 
 // @NotOk
+// Better type
+void CThug::WarnOtherThugs(void)
+{
+	CThug *nearest = reinterpret_cast<CThug*>(this->GetClosest(304, 0));
+	if ( (nearest || ((nearest = reinterpret_cast<CThug*>(this->GetClosest(312, 0))) != 0))
+			&& !nearest->field_330)
+	{
+		new CMessage(this, nearest, 7, 0);
+	}
+}
+
+// @NotOk
 // validate when used
 INLINE i32 CThug::AdjustPosPlaySound(i32 a2)
 {

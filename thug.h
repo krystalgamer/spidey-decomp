@@ -38,6 +38,7 @@ public:
 	EXPORT i32 SpideyAnimUppercut(void);
 	EXPORT void SetAttacker(void);
 	EXPORT i32 AdjustPosPlaySound(i32);
+	EXPORT void WarnOtherThugs(void);
 
 
 	EXPORT virtual u8 Grab(CVector*);
