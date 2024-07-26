@@ -10,6 +10,23 @@
 #include "spidey.h"
 
 extern CPlayer* MechList;
+EXPORT CThug* gGlobalThug;
+
+// @Ok
+INLINE void CThug::SetAttacker(void)
+{
+	if (gGlobalThug != this)
+	{
+		this->ClearAttackFlags();
+		if (gGlobalThug)
+		{
+			gGlobalThug->ClearAttackFlags();
+		}
+
+		gGlobalThug = this;
+		this->field_3BC = 1;
+	}
+}
 
 // @Ok
 INLINE i32 CThug::SpideyAnimUppercut(void)
@@ -700,13 +717,11 @@ void CThugPing::Move(void)
 		this->Die();
 }
 
-static CThug* gGlobalThug;
 static unsigned char gAttackFlagRelated;
 
 // @Ok
 void CThug::ClearAttackFlags(void)
 {
-
 	if ( gGlobalThug == this )
 	{
 		gGlobalThug = 0;
