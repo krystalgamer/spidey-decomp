@@ -13,6 +13,22 @@ extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 
 // @NotOk
+// validate when used
+INLINE i32 CThug::AdjustPosPlaySound(i32 a2)
+{
+	CVector v4;
+	v4.vx = 0;
+	v4.vy = 0;
+	v4.vz = 0;
+
+	v4.vx = ((2400 * MechList->mPos.vx) >> 12) + ((1600 * this->mPos.vx) >> 12);
+	v4.vy = ((2400 * MechList->mPos.vy) >> 12) + ((1600 * this->mPos.vy) >> 12);
+	v4.vz = ((2400 * MechList->mPos.vz) >> 12) + ((1600 * this->mPos.vz) >> 12);
+
+	return SFX_PlayPos(a2, &v4, 0);
+}
+
+// @NotOk
 // globals flags :(
 u8 CThug::Grab(CVector* a2)
 {
@@ -861,7 +877,7 @@ void CThug::DieAfterFlyingAcrossRoom(void)
 }
 
 // @Ok
-void __inline CThug::RunAppropriateHitAnim(void)
+INLINE void CThug::RunAppropriateHitAnim(void)
 {
 	i32 anim;
 	if (this->field_218 & 0x10000)
