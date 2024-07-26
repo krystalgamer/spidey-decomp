@@ -39,6 +39,7 @@ public:
 	EXPORT void SetAttacker(void);
 
 
+	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void SetThugType(int);
 
 

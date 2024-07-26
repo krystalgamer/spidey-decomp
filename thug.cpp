@@ -12,6 +12,24 @@
 extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 
+// @NotOk
+// globals flags :(
+u8 CThug::Grab(CVector* a2)
+{
+	if ( (this->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 2)
+		|| !this->AddPointToPath(a2, 0) )
+	{
+		return 0;
+	}
+
+	this->field_31C.bothFlags = 20;
+
+
+	this->dumbAssPad = 0;
+	this->field_2A8 |= 0x40;
+	return 1;
+}
+
 // @Ok
 INLINE void CThug::SetAttacker(void)
 {
@@ -792,7 +810,7 @@ void CThug::HelpOutBuddy(CMessage *pMessage)
 }
 
 // @Ok
-void __inline CThug::PlayHitWallSound(void)
+INLINE void CThug::PlayHitWallSound(void)
 {
 	if (!this->field_1F8)
 	{
