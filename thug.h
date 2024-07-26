@@ -25,7 +25,6 @@ public:
 	EXPORT void StopShooting(void);
 	EXPORT i32 TryAddingCollidePointToPath(CVector*);
 	EXPORT void SetHitDirectionFlag(CVector*);
-	EXPORT void SetParamByIndex(i32, i32);
 	EXPORT void GetReadyToShootHostage(CMessage*);
 	EXPORT void CheckFallBack(void);
 	EXPORT i32 GetLaunched(CVector*, i32, i32, i32);
@@ -46,9 +45,11 @@ public:
 	EXPORT void CheckToShoot(i32, i32);
 	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
 	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
+	EXPORT i32 ShouldIShootPlayer(void);
 
 
 	EXPORT virtual u8 Grab(CVector*);
+	EXPORT virtual void SetParamByIndex(i32, i32);
 	EXPORT virtual void SetThugType(int);
 
 

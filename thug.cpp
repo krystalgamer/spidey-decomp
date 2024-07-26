@@ -9,11 +9,34 @@
 #include "ps2redbook.h"
 #include "spidey.h"
 #include "exp.h"
+#include <cmath>
 
 extern CBaddy *BaddyList;
 extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
+
+// @Ok
+// @Test
+// two's complement a lil diff
+INLINE i32 CThug::ShouldIShootPlayer(void)
+{
+	if ( MechList->field_57C
+		|| gThugList
+		|| this->DistanceToPlayer(2) >= 2000
+		|| MechList->field_E48
+		|| this->DistanceToPlayer(2) <= 650
+		&& (abs(MechList->mPos.vy - this->field_29C - 0x4000) <= 409600) )
+	{
+		return 0;
+	}
+
+	this->Neutralize();
+	gThugList = this;
+	this->field_31C.bothFlags = 9;
+	this->dumbAssPad = 0;
+	return 1;
+}
 
 // @Ok
 CThug::~CThug(void)
