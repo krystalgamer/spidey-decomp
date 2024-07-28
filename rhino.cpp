@@ -4,6 +4,7 @@
 #include "panel.h"
 #include "ps2pad.h"
 #include "spidey.h"
+#include "ps2lowsfx.h"
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
 EXPORT u32 gRhinoSound;
@@ -13,6 +14,39 @@ extern u8 gActuatorRelated;
 extern CBody* EnvironmentalObjectList;
 extern CPlayer* MechList;
 extern i32 gAttackRelated;
+
+// @Ok
+void CRhino::Laugh(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_230 = 100;
+			this->PlaySingleAnim(20, 0, -1);
+			SFX_PlayPos(((gAttackRelated & 1) == 0 ? 1 : 0) | 0x8046, &this->mPos, 0);
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			this->RunTimer(&this->field_230);
+			if (this->field_142)
+			{
+				if (!this->field_230)
+				{
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					this->PlaySingleAnim(0, 0, -1);
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate.");
+			break;
+	}
+}
 
 // @Ok
 void CRhino::RhinoInit(void)

@@ -18,6 +18,7 @@ public:
 	EXPORT void StandStill(void);
 	EXPORT void FuckUpSomeBarrels(void);
 	EXPORT void RhinoInit(void);
+	EXPORT void Laugh(void);
 
 	unsigned char padTop[0x344 - 0x324];
 	i32 field_344;
