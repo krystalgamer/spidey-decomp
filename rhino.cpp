@@ -10,6 +10,25 @@ extern i32 DifficultyLevel;
 
 extern u8 gActuatorRelated;
 
+// @Ok
+void CRhino::StandStill(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->dumbAssPad++;
+		case 1:
+			if (this->field_12A)
+				this->PlaySingleAnim(0, 0, -1);
+			break;
+		default:
+			print_if_false(0, "Unknown substate.");
+			break;
+	}
+}
+
+// @Ok
 void CRhino::ShakePad(void)
 {
 	if ( gActuatorRelated )
@@ -52,7 +71,7 @@ u32 CRhino::GetNextFootstepSFX(void)
 }
 
 // @Ok
-void CRhino::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
+INLINE void CRhino::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
 {
 	this->field_388 = 0;
 	this->RunAnim(a2, a3, a4);
