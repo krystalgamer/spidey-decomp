@@ -26,7 +26,9 @@ u16 Pad_GetActuatorTime(u8, u8)
 
 // @SMALLTODO
 void Pad_ActuatorOn(u8, u16, u8, u8)
-{}
+{
+	printf("void Pad_ActuatorOn(u8, u16, u8, u8)");
+}
 
 void validate_SControl(void)
 {

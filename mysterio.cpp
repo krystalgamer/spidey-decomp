@@ -209,7 +209,7 @@ i32 INLINE CMysterio::PlayAndAttachXAPlease(
 	return 0;
 }
 
-u8 gActuatorRelated;
+EXPORT u8 gActuatorRelated;
 
 // @NotOk
 // globals

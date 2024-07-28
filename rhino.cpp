@@ -2,12 +2,24 @@
 #include "validate.h"
 #include "utils.h"
 #include "panel.h"
+#include "ps2pad.h"
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
-
 EXPORT u32 gRhinoSound;
-
 extern i32 DifficultyLevel;
+
+extern u8 gActuatorRelated;
+
+void CRhino::ShakePad(void)
+{
+	if ( gActuatorRelated )
+	{
+		if ( Pad_GetActuatorTime(0, 0) <= 2u )
+			Pad_ActuatorOn(0, 6u, 0, 1u);
+		if ( Pad_GetActuatorTime(0, 1u) <= 2u )
+			Pad_ActuatorOn(0, 0xAu, 1, 0xC8u);
+	}
+}
 
 // @NotOk
 // validate when get shocked

@@ -11,9 +11,10 @@ public:
 	EXPORT CRhino(int*, int);
 	EXPORT CRhino(void);
 
-	void PlaySingleAnim(u32, i32, i32);
-	u32 GetNextFootstepSFX(void);
-	i32 GetShockDamage(void);
+	EXPORT void PlaySingleAnim(u32, i32, i32);
+	EXPORT u32 GetNextFootstepSFX(void);
+	EXPORT i32 GetShockDamage(void);
+	EXPORT void ShakePad(void);
 
 	unsigned char padTop[0x344 - 0x324];
 	i32 field_344;
