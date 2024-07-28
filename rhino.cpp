@@ -5,6 +5,47 @@
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
 
+EXPORT u32 gRhinoSound;
+
+extern i32 DifficultyLevel;
+
+// @NotOk
+// validate when get shocked
+i32 CRhino::GetShockDamage(void)
+{
+	switch ( DifficultyLevel )
+	{
+		case 0:
+		case 1:
+			return 175;
+		case 2:
+			return 125;
+		case 3:
+			return 75;
+		default:
+			print_if_false(0, "Unknown difficulty level!");
+			return 0;
+	}
+}
+
+// @NotOk
+// validate when playsounds is done
+u32 CRhino::GetNextFootstepSFX(void)
+{
+	u32 res;
+	for (res = (Rnd(3) + 76) | 0x8000; res == gRhinoSound; res = (Rnd(3) + 76) | 0x8000)
+		;
+
+	return res;
+}
+
+// @Ok
+void CRhino::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
+{
+	this->field_388 = 0;
+	this->RunAnim(a2, a3, a4);
+}
+
 // @NotOk
 // globals
 CRhino::CRhino(int* a2, int a3)
@@ -156,6 +197,7 @@ void validate_CRhino(void){
 	VALIDATE_SIZE(CRhino, 0x424);
 
 	VALIDATE(CRhino, field_344, 0x344);
+	VALIDATE(CRhino, field_388, 0x388);
 }
 
 void validate_CRhinoNasalSteam(void)

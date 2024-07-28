@@ -11,9 +11,16 @@ public:
 	EXPORT CRhino(int*, int);
 	EXPORT CRhino(void);
 
+	void PlaySingleAnim(u32, i32, i32);
+	u32 GetNextFootstepSFX(void);
+	i32 GetShockDamage(void);
+
 	unsigned char padTop[0x344 - 0x324];
-	int field_344;
-	unsigned char padAfter344[0x424-0x344-4];
+	i32 field_344;
+	u8 padAfter344[0x388-0x344-4];
+
+	i32 field_388;
+	u8 padBootm[0x424-0x388-4];
 };
 
 class CRhinoNasalSteam : public CFlatBit
