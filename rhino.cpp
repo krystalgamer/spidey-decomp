@@ -14,6 +14,36 @@ extern u8 gActuatorRelated;
 extern CBody* EnvironmentalObjectList;
 extern CPlayer* MechList;
 extern i32 gAttackRelated;
+extern CBaddy *BaddyList;
+extern i32 gBossRelated;
+
+// @NotOk
+// figure out types of fields that call destructors
+CRhino::~CRhino(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	Panel_DestroyHealthbar();
+
+	if (this->field_3E0)
+		delete reinterpret_cast<CItem*>(this->field_3E0);
+
+	for (i32 i = 0; i < 5; i++)
+	{
+		if (this->field_3E4[i])
+			delete reinterpret_cast<CItem*>(this->field_3E4[i]);
+		this->field_3E4[i] = 0;
+
+		if (this->field_3F8[i])
+			delete reinterpret_cast<CItem*>(this->field_3F8[i]);
+		this->field_3F8[i] = 0;
+
+		if (this->field_40C[i])
+			delete reinterpret_cast<CItem*>(this->field_40C[i]);
+		this->field_40C[i] = 0;
+	}
+
+	gBossRelated = 0;
+}
 
 // @Ok
 void CRhino::Laugh(void)
@@ -320,6 +350,11 @@ void validate_CRhino(void){
 
 	VALIDATE(CRhino, field_358, 0x358);
 	VALIDATE(CRhino, field_388, 0x388);
+
+	VALIDATE(CRhino, field_3E0, 0x3E0);
+	VALIDATE(CRhino, field_3E4, 0x3E4);
+	VALIDATE(CRhino, field_3F8, 0x3F8);
+	VALIDATE(CRhino, field_40C, 0x40C);
 }
 
 void validate_CRhinoNasalSteam(void)

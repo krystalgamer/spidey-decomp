@@ -10,6 +10,7 @@ class CRhino : public CBaddy {
 public:
 	EXPORT CRhino(int*, int);
 	EXPORT CRhino(void);
+	EXPORT virtual ~CRhino(void);
 
 	EXPORT void PlaySingleAnim(u32, i32, i32);
 	EXPORT u32 GetNextFootstepSFX(void);
@@ -28,7 +29,14 @@ public:
 	u8 padAfter358[0x388-0x358-4];
 
 	i32 field_388;
-	u8 padBootm[0x424-0x388-4];
+	u8 padAfter88[0x3E0-0x388-4];
+
+	u32 field_3E0;
+	u32 field_3E4[5];
+	u32 field_3F8[5];
+	u32 field_40C[5];
+
+	u8 padBottom[0x424-0x420];
 };
 
 class CRhinoNasalSteam : public CFlatBit

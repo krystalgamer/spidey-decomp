@@ -13,6 +13,7 @@
 
 EXPORT i32 gAttackRelated;
 EXPORT u8 gActuatorRelated;
+EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
 // @Ok
@@ -74,7 +75,6 @@ i32 CMysterio::MonitorAttack(
 	return res;
 }
 
-i32 gBossRelated;
 extern CBaddy* BaddyList;
 
 // @Ok
