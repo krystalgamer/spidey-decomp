@@ -11,7 +11,8 @@
 #include "m3dcolij.h"
 #include "spidey.h"
 
-i32 gAttackRelated;
+EXPORT i32 gAttackRelated;
+EXPORT u8 gActuatorRelated;
 extern CPlayer* MechList;
 
 // @Ok
@@ -209,7 +210,6 @@ i32 INLINE CMysterio::PlayAndAttachXAPlease(
 	return 0;
 }
 
-EXPORT u8 gActuatorRelated;
 
 // @NotOk
 // globals

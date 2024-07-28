@@ -12,6 +12,36 @@ extern i32 DifficultyLevel;
 extern u8 gActuatorRelated;
 extern CBody* EnvironmentalObjectList;
 extern CPlayer* MechList;
+extern i32 gAttackRelated;
+
+// @Ok
+void CRhino::RhinoInit(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_358 = gAttackRelated - 155;
+			i32 GroundHeight;
+			GroundHeight = Utils_GetGroundHeight(&this->mPos, 300, 300, 0);
+			if ( GroundHeight != -1 )
+			{
+				this->mPos.vy = GroundHeight - (this->field_21E << 12);
+				this->field_29C = this->mPos.vy;
+				this->field_2A0 = GroundHeight;
+				this->dumbAssPad++;
+
+				this->PlaySingleAnim(0, 0, -1);
+			}
+			break;
+		case 1:
+			this->field_31C.bothFlags = 8;
+			this->dumbAssPad = 0;
+			break;
+		default:
+			print_if_false(0, "Unknown sub-state!");
+			break;
+	}
+}
 
 // @NotOk
 // understand if that's really PlayerIsVisible call
@@ -253,6 +283,8 @@ void validate_CRhino(void){
 	VALIDATE_SIZE(CRhino, 0x424);
 
 	VALIDATE(CRhino, field_344, 0x344);
+
+	VALIDATE(CRhino, field_358, 0x358);
 	VALIDATE(CRhino, field_388, 0x388);
 }
 
