@@ -5,6 +5,7 @@
 #include "ps2pad.h"
 #include "spidey.h"
 #include "ps2lowsfx.h"
+#include "camera.h"
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
 EXPORT u32 gRhinoSound;
@@ -16,6 +17,59 @@ extern CPlayer* MechList;
 extern i32 gAttackRelated;
 extern CBaddy *BaddyList;
 extern i32 gBossRelated;
+extern CCamera *CameraList;
+
+// @Ok
+void CRhino::HitWall(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->ShakePad();
+			CameraList->Shake(&this->mPos, EShake_0x0);
+			this->Neutralize();
+			this->mCBodyFlags &= ~0x10;
+			this->PlaySingleAnim(17, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				if ( this->field_E2 <= 0 )
+				{
+					this->field_31C.bothFlags = 21;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					this->PlaySingleAnim(0x12u, 0, -1);
+				}
+			}
+			break;
+		case 2:
+
+			if ( this->field_142 )
+			{
+				if ( this->field_12A == 18 )
+				{
+					this->mAngles.vy = (this->mAngles.vy - 2048) & 0xFFF;
+					this->PlaySingleAnim(0x15u, 0, -1);
+				}
+				else
+				{
+					this->mCBodyFlags |= 0x10u;
+					this->PlaySingleAnim(0, 0, -1);
+	
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @NotOk
 // figure out types of fields that call destructors
@@ -148,7 +202,7 @@ void CRhino::StandStill(void)
 }
 
 // @Ok
-void CRhino::ShakePad(void)
+INLINE void CRhino::ShakePad(void)
 {
 	if ( gActuatorRelated )
 	{

@@ -289,7 +289,9 @@ void CCamera::GetPosition(CVector * dst)
 
 // @MEDIUMTODO
 void CCamera::Shake(CVector*, EShakeType)
-{}
+{
+	printf("void CCamera::Shake(CVector*, EShakeType)");
+}
 
 void validate_CCamera(void){
 	VALIDATE_SIZE(CCamera, 0x2F4);
