@@ -21,6 +21,8 @@ public:
 	EXPORT void RhinoInit(void);
 	EXPORT void Laugh(void);
 	EXPORT void HitWall(void);
+	EXPORT void TakeHit(void);
+	EXPORT i32 DetermineFightState(i32);
 
 	unsigned char padTop[0x344 - 0x324];
 	i32 field_344;

@@ -6,6 +6,7 @@
 #include "spidey.h"
 #include "ps2lowsfx.h"
 #include "camera.h"
+#include "ai.h"
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
 EXPORT u32 gRhinoSound;
@@ -18,6 +19,59 @@ extern i32 gAttackRelated;
 extern CBaddy *BaddyList;
 extern i32 gBossRelated;
 extern CCamera *CameraList;
+
+// @MEDIUMTODO
+i32 CRhino::DetermineFightState(i32)
+{
+	printf("i32 CRhino::DetermineFightState(i32)");
+	return 0x28072024;
+}
+
+// @Ok
+void CRhino::TakeHit(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_310 = 0;
+			new CAIProc_LookAt(this, MechList, 0, 0, 80, 200);
+			this->PlaySingleAnim(0xFu, 0, -1);
+			this->field_230 = Utils_GetValueFromDifficultyLevel(40, 30, 21, 21);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			this->RunTimer(&this->field_230);
+			if (this->field_230)
+			{
+				if (this->DetermineFightState(1))
+				{
+					if (this->DistanceToPlayer(0) > 500)
+					{
+						if (this->field_31C.bothFlags == 5 || this->field_31C.bothFlags == 4)
+						{
+							this->field_31C.bothFlags = 8;
+							this->dumbAssPad = 0;
+						}
+					}
+					else if (this->field_31C.bothFlags == 8)
+					{
+						this->field_31C.bothFlags = 5;
+						this->dumbAssPad = 0;
+					}
+				}
+				else
+				{
+					this->PlaySingleAnim(0, 0, -1);
+					this->field_31C.bothFlags = 22;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
+}
 
 // @Ok
 void CRhino::HitWall(void)
