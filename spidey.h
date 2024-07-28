@@ -109,7 +109,7 @@ class CPlayer : public CSuper
 		char field_E2E;
 		u8 padAfterE2E[(0xE48-0xE2E)-0x1];
 
-		i32 field_E48;
+		CBody* field_E48;
 
 		u8 padBottomPlayer[(0xEFC-0xE48)-0x4];
 

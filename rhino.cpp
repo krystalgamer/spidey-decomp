@@ -3,12 +3,37 @@
 #include "utils.h"
 #include "panel.h"
 #include "ps2pad.h"
+#include "spidey.h"
 
 static __int16 * const word_682B64 = (__int16*)0x682B64;
 EXPORT u32 gRhinoSound;
 extern i32 DifficultyLevel;
 
 extern u8 gActuatorRelated;
+extern CBody* EnvironmentalObjectList;
+extern CPlayer* MechList;
+
+// @NotOk
+// understand if that's really PlayerIsVisible call
+void CRhino::FuckUpSomeBarrels(void)
+{
+	i32 barrels = 0;
+
+	for (
+			CBody* cur = EnvironmentalObjectList;
+			cur && barrels < 2;
+			cur = reinterpret_cast<CBody*>(cur->field_20))
+	{
+		if (cur->field_38 == 401)
+		{
+			if (Utils_CrapDist(this->mPos, cur->mPos) < 0x2BC && cur != MechList->field_E48)
+			{
+				reinterpret_cast<CBaddy*>(cur)->PlayerIsVisible();
+				barrels++;
+			}
+		}
+	}
+}
 
 // @Ok
 void CRhino::StandStill(void)

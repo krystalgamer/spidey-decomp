@@ -16,6 +16,7 @@ public:
 	EXPORT i32 GetShockDamage(void);
 	EXPORT void ShakePad(void);
 	EXPORT void StandStill(void);
+	EXPORT void FuckUpSomeBarrels(void);
 
 	unsigned char padTop[0x344 - 0x324];
 	i32 field_344;
