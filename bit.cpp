@@ -16,6 +16,18 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
+void CGlow::SetFringeWidth(u32, u32)
+{
+	printf("CGlow::SetFringeWidth(u32, u32)");
+}
+
+// @SMALLTODO
+void CGlow::SetFringeRGB(u32, u8, u8, u8)
+{
+	printf("void CGlow::SetFringeRGB(u32, u8, u8, u8)");
+}
+
+// @SMALLTODO
 CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
 {
 	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");

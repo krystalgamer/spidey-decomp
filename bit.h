@@ -208,6 +208,9 @@ class CGlow : public CBit
 		EXPORT void SetRadius(i32);
 		EXPORT void SetRGB(u8, u8, u8);
 
+		EXPORT void SetFringeWidth(u32, u32);
+		EXPORT void SetFringeRGB(u32, u8, u8, u8);
+
 		int* field_3C;
 		unsigned char padAfter3C[0x44-0x3C-4];
 

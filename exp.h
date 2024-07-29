@@ -18,7 +18,17 @@ class CGlowFlash : public CGlow
 		EXPORT void ChooseRadii(void);
 		EXPORT virtual void Move(void);
 
-		u8 padBottom[0x14];
+		i16 field_5C;
+		i16 field_5E;
+		i16 field_60;
+		i16 field_62;
+		i16 field_64;
+		i16 field_66;
+		i16 field_68;
+		i16 field_6A;
+		u8 field_6C;
+
+		u8 padBottom[0x70-0x6C-1];
 };
 
 EXPORT void Exp_HitEnvItem(CItem*, u32*, i32);
