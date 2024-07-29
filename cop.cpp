@@ -17,6 +17,13 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @MEDIUMTODO
+i32 CCop::WallHitCheck(CVector*, CVector*, i32)
+{
+	printf("i32 CCop::WallHitCheck(CVector*, CVector*, i32)");
+	return 0x29072024;
+}
+
 // @Ok
 void CCop::Acknowledge(void)
 {
@@ -330,11 +337,31 @@ CCop::~CCop(void)
 	this->DeleteFrom(reinterpret_cast<CBody**>(BaddyList));
 }
 
-// @SMALLTODO
-i32 CCop::GetLaunched(CVector*, i32, i32, i32)
+// @Ok
+i32 CCop::GetLaunched(CVector* a2, i32 a3, i32 a4, i32 a5)
 {
-	printf("i32 CCop::GetLaunched(CVector*, i32, i32, i32)");
-	return 0x24072024;
+	CVector v13;
+	v13.vx = 0;
+	v13.vy = 0;
+	v13.vz = 0;
+
+	v13 = this->mPos;
+	v13.vx += a2->vx * (a4 + 1);
+	v13.vz += a2->vz * (a4 + 1);
+
+	i32 v10 = this->WallHitCheck(&v13, a2, a4);
+	if (v10 == 3)
+		return 0;
+
+	this->Neutralize();
+	this->mAccellorVel = *a2;
+	this->mAccellorVel.vy = 0;
+	if (!a3 || v10 == 2)
+	{
+		new CAIProc_LookAt(this, 0, &v13, 0, 80, 200);
+	}
+
+	return 10;
 }
 
 // @Ok

@@ -246,7 +246,7 @@ CChopper::~CChopper(void)
 		SFX_Stop(this->field_324);
 }
 
-// @SMALLTODO
+// @MEDIUMTODO
 void CChopperMissile::AI(void)
 {
 	printf("void CChopperMissile::AI(void)");

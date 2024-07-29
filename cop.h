@@ -36,6 +36,7 @@ public:
 	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
 	EXPORT void CheckToShoot(i32, i32);
 	EXPORT void Acknowledge(void);
+	EXPORT i32 WallHitCheck(CVector*, CVector*, i32);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
