@@ -374,6 +374,7 @@ int main()
 	validate_CCopBulletTracer();
 	validate_CCombatImpactRing();
 	validate_SCamera();
+	validate_SRibbonPoint();
 
 	puts("[*] Validation done!");
 

@@ -819,3 +819,21 @@ void validate_CCombatImpactRing(void)
 {
 	VALIDATE_SIZE(CCombatImpactRing, 0x74);
 }
+
+void validate_SRibbonPoint(void)
+{
+	VALIDATE_SIZE(SRibbonPoint, 0x24);
+
+	VALIDATE(SRibbonPoint, Pos, 0x0);
+	VALIDATE(SRibbonPoint, r, 0xC);
+	VALIDATE(SRibbonPoint, g, 0xD);
+	VALIDATE(SRibbonPoint, b, 0xE);
+	VALIDATE(SRibbonPoint, Width, 0x10);
+	VALIDATE(SRibbonPoint, WidthB, 0x12);
+	VALIDATE(SRibbonPoint, rB, 0x14);
+	VALIDATE(SRibbonPoint, gB, 0x15);
+	VALIDATE(SRibbonPoint, bB, 0x16);
+	VALIDATE(SRibbonPoint, Last1Scr, 0x18);
+	VALIDATE(SRibbonPoint, Last2Scr, 0x1C);
+	VALIDATE(SRibbonPoint, Last3Scr, 0x20);
+}

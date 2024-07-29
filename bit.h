@@ -10,6 +10,33 @@
 #define FLATBIT_VELOCITIES_SIZE (4096)
 #define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
 
+struct SRibbonPoint {
+	// offset: 0000 (12 bytes)
+	CVector Pos;
+	// offset: 000C
+	u8 r;
+	// offset: 000D
+	u8 g;
+	// offset: 000E
+	u8 b;
+	// offset: 0010
+	u16 Width;
+	// offset: 0012
+	u16 WidthB;
+	// offset: 0014
+	u8 rB;
+	// offset: 0015
+	u8 gB;
+	// offset: 0016
+	u8 bB;
+	// offset: 0018
+	i32 Last1Scr;
+	// offset: 001C
+	i32 Last2Scr;
+	// offset: 0020
+	i32 Last3Scr;
+};
+
 struct SFlatBitVelocity
 {
 	i16 vxVel;
@@ -264,5 +291,6 @@ void validate_CSpecialDisplay(void);
 void validate_SFlatBitVelocity(void);
 void validate_CRibbon(void);
 void validate_CCombatImpactRing(void);
+void validate_SRibbonPoint(void);
 
 #endif
