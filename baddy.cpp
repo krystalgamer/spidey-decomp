@@ -13,10 +13,33 @@ EXPORT CBaddy* BaddyList;
 
 extern i16** gTrigNodes;
 
-// @SMALLTODO
-void CBaddy::GetWaypointNearTarget(CVector*, i32, i32, CVector*)
+// @Ok
+void CBaddy::GetWaypointNearTarget(
+		CVector* a2,
+		i32 a3,
+		i32 a4,
+		CVector* a5)
 {
-	printf("void CBaddy::GetWaypointNearTarget(CVector*, i32, i32, CVector*)");
+	i32 unk;
+	i32 v5; // eax
+	i32 v6; // edi
+	i32 v7; // ecx
+
+	unk = a4 & 0x3F;
+	v5 = 1 << (unk & 7);
+	*a5 = *a2;
+	v6 = unk & 8 ? 2 : 1;
+	v7 = unk & 0x10 ? 2 : 1;
+
+	if ( unk > 0x1F )
+	{
+		v6 += 2;
+		v7 += 2;
+	}
+	if ( (v5 & 0xEE) != 0 )
+		a5->vx += a3 * v6 * (v5 > 8 ? -1 : 1);
+	if ( (v5 & 0xBB) != 0 )
+		a5->vz += a3 * v7 * ((v5 & 0x83) != 0 ? 1 : -1);
 }
 
 // @NotOk
