@@ -2,6 +2,12 @@
 #include "validate.h"
 #include "ps2funcs.h"
 
+// @MEDIUMTODO
+void MToQ(MATRIX const & a1, CQuat& a2)
+{
+	printf("void MToQ(MATRIX const & a1, CQuat& a2)");
+}
+
 
 // @SMALLTODO
 void QToM(CQuat*, MATRIX*)

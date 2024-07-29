@@ -1,11 +1,68 @@
 #include "camera.h"
 #include "validate.h"
 #include "ps2funcs.h"
+#include "utils.h"
 
 EXPORT CCamera *CameraList;
 EXPORT i32 NumCameras;
 
 EXPORT SCamera gMikeCamera[2];
+
+// @Ok
+// @Test
+void CCamera::CM_TripodFocus(void)
+{
+	SVECTOR v2;
+	CVector a1;
+	CVector v4;
+	CVector v5;
+	MATRIX a2;
+
+	v2.vx = 0;
+	v2.vy = 0;
+	v2.vz = 0;
+	Utils_CalcAim(
+		reinterpret_cast<CSVector *>(&v2),
+		&this->field_104,
+		&this->field_144);
+
+	M3dMaths_RotMatrixYXZ(&v2, &a2);
+	gte_SetRotMatrix(&a2);
+	a1.vx = 0;
+	a1.vy = 4096;
+	a1.vz = 0;
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&a1));
+	gte_rtir();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&a1));
+	v4.vx = 0;
+	v4.vy = 0;
+	v4.vz = -4096;
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&v4));
+	gte_rtir();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&v4));
+
+	v5.vx = 0;
+	v5.vy = 0;
+	v5.vz = 0;
+	gte_ldopv1(reinterpret_cast<VECTOR*>(&a1));
+	gte_ldopv2(reinterpret_cast<VECTOR*>(&v4));
+	gte_op12();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&v5));
+
+	a2.m[0][0] = v5.vx;
+	a2.m[1][0] = v5.vy;
+	a2.m[2][0] = v5.vz;
+
+	a2.m[0][1] = a1.vx;
+	a2.m[1][1] = a1.vy;
+	a2.m[2][1] = a1.vz;
+
+	a2.m[0][2] = v4.vx;
+	a2.m[1][2] = v4.vy;
+	a2.m[2][2] = v4.vz;
+
+	MToQ(a2, this->field_1F4);
+}
 
 // @Ok
 CCamera::CCamera(CBody* tripod)

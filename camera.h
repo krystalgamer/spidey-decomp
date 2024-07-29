@@ -58,6 +58,7 @@ public:
 	EXPORT void SetTripodInterpolation(i32, i32, i32);
 	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
 	EXPORT void LoadIntoMikeCamera(void);
+	EXPORT void CM_TripodFocus(void);
 
 
 	int padTop;

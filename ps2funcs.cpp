@@ -400,10 +400,6 @@ void m3d_ZeroTransVector(void)
 }
 
 // @NotOk
-void MToQ(MATRIX const & a1, CQuat& a2){
-}
-
-// @NotOk
 void VectorNormal(VECTOR* a1, VECTOR* a2){
 }
 

@@ -62,7 +62,6 @@ EXPORT void M3dMaths_SetIdentityRotation(MATRIX *a1);
 EXPORT void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3);
 EXPORT void MulMatrix(MATRIX *a1, MATRIX *a2);
 EXPORT void m3d_ZeroTransVector(void);
-EXPORT void MToQ(MATRIX const &, CQuat&);
 EXPORT void VectorNormal(VECTOR*, VECTOR*);
 
 EXPORT int M3dMaths_SquareRoot0(int i);
