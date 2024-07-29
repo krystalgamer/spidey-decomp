@@ -7,6 +7,142 @@ EXPORT i32 NumCameras;
 
 EXPORT SCamera gMikeCamera[2];
 
+// @Ok
+CCamera::CCamera(CBody* tripod)
+{
+	this->field_104.vx = 0;
+	this->field_104.vy = 0;
+	this->field_104.vz = 0;
+	this->field_110 = 0;
+	this->field_114 = 0;
+	this->field_118 = 0;
+	this->field_11C = 0;
+	this->field_120 = 0;
+	this->field_124 = 0;
+	this->field_144.vx = 0;
+	this->field_144.vy = 0;
+	this->field_144.vz = 0;
+	this->field_150 = 0;
+	this->field_154 = 0;
+	this->field_158 = 0;
+	this->field_15C = 0;
+	this->field_130 = 4;
+	this->field_160 = 0;
+	this->field_164 = 0;
+	this->field_1A8 = 0;
+	this->field_1AC = 0;
+	this->field_1B0 = 0;
+	this->field_1B8 = 0;
+	this->field_1BC = 0;
+	this->field_1C0 = 0;
+	this->field_1D8 = 0;
+	this->field_1B4 = 4096;
+	this->field_1DC = 0;
+	this->field_1E0 = 0;
+	this->field_1E4.x = 0;
+	this->field_1E4.y = 0;
+	this->field_1E4.z = 0;
+	this->field_1E4.w = 4096;
+	this->field_1F4.x = 0;
+	this->field_134 = 8;
+	this->field_1F4.y = 0;
+	this->field_1F4.z = 0;
+	this->field_1F4.w = 4096;
+	this->field_204.x = 0;
+	this->field_204.y = 0;
+	this->field_204.z = 0;
+	this->field_204.w = 4096;
+	this->field_214.x = 0;
+	this->field_214.y = 0;
+	this->field_214.z = 0;
+	this->field_214.w = 4096;
+	this->field_224 = 0;
+	this->field_F8 = 1;
+	this->field_F9 = 0;
+	this->field_FC = tripod;
+	this->field_100 = 1;
+	this->field_128 = 0;
+	this->field_12C = -1;
+	this->field_138 = 4;
+	this->field_13C = tripod;
+	this->field_140 = 1;
+	this->field_168 = 0;
+	this->field_16C = 0;
+	this->mZoom = 2365;
+	this->field_1CC = 0;
+	this->field_1CE = 0;
+	this->field_228 = 0;
+	this->field_22C = 0;
+	this->field_230 = 4096;
+	this->field_234 = 0;
+	this->field_240 = 0;
+	this->field_238 = 0;
+	this->field_24C.vx = 0;
+	this->field_244 = 0;
+	this->field_258.vx = 0;
+	this->field_24C.vy = 0;
+
+	this->field_270 = 0;
+	this->field_272 = 0;
+	this->field_248 = 0;
+	this->field_258.vy = 0;
+	this->field_276 = 0;
+	this->field_277 = 0;
+	this->field_278 = 0;
+	this->field_24C.vz = 0;
+	this->field_274 = 0;
+	this->field_27A = 0;
+	this->field_27C = 0;
+	this->field_258.vz = 0;
+	this->field_27E = 0;
+	this->field_284.vx = 0;
+	this->field_284.vy = 0;
+	this->field_284.vz = 0;
+	this->field_290.x = 0;
+	this->field_290.y = 0;
+	this->field_290.z = 0;
+	this->field_2B0.vx = 0;
+	this->field_2B0.vy = 0;
+	this->field_2B0.vz = 0;
+	this->field_2C4.x = 0;
+	this->field_290.w = 4096;
+	this->field_2C4.y = 0;
+	this->field_2C4.z = 0;
+	this->field_2D4.x = 0;
+	this->field_2C4.w = 4096;
+	this->field_2D4.y = 0;
+	this->field_2D4.z = 0;
+	this->field_2E8.vx = 0;
+	this->field_23C = 1;
+	this->field_264 = -1;
+	this->field_268 = -1;
+	this->field_26C = 256;
+	this->field_26E = 784;
+	this->field_2A4 = 31;
+	this->field_2A8 = 512;
+	this->field_2D4.w = 4096;
+	this->field_2E8.vy = 0;
+	this->field_2E8.vz = 0;
+
+
+	this->field_7C = *gTimerRelated;
+	print_if_false(tripod != 0, "Bad tripod");
+	this->field_38 = 99;
+	this->mFlags = 1;
+
+	this->field_104 = this->mPos;
+	this->field_144 = tripod->mPos;
+
+	this->LoadIntoMikeCamera();
+	this->AttachTo(reinterpret_cast<CBody**>(&CameraList));
+
+	this->mCBodyFlags &= ~2;
+	NumCameras++;
+	this->field_DC = 0;
+	this->mMode = 3;
+}
+
+// @Ok
 void CCamera::LoadIntoMikeCamera(void)
 {
 	gMikeCamera[0].Position.vx = this->mPos.vx >> 12;
@@ -47,7 +183,7 @@ void CCamera::SetFixedPosAnglesMode(
 }
 
 // @Ok
-void CCamera::SetTripodInterpolationMode(i32 a2, i32 a3, i32 a4)
+void CCamera::SetTripodInterpolation(i32 a2, i32 a3, i32 a4)
 {
 	print_if_false(a2 <= 16, "Bad tripod interpolation value");
 	print_if_false(a3 <= 16, "Bad tripod interpolation value");
@@ -438,6 +574,10 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_268, 0x268);
 	VALIDATE(CCamera, field_26C, 0x26C);
 	VALIDATE(CCamera, field_26E, 0x26E);
+
+	VALIDATE(CCamera, field_270, 0x270);
+	VALIDATE(CCamera, field_272, 0x272);
+
 	VALIDATE(CCamera, field_274, 0x274);
 	VALIDATE(CCamera, field_276, 0x276);
 	VALIDATE(CCamera, field_277, 0x277);

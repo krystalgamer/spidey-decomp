@@ -33,6 +33,7 @@ enum EShakeType
 
 class CCamera : public CBody {
 public:
+	EXPORT CCamera(CBody*);
 	EXPORT virtual ~CCamera(void);
 
 	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
@@ -54,7 +55,7 @@ public:
 	EXPORT void SetCamAngle(__int16, unsigned __int16);
 	EXPORT void GetPosition(CVector *);
 	EXPORT void Shake(CVector*, EShakeType);
-	EXPORT void SetTripodInterpolationMode(i32, i32, i32);
+	EXPORT void SetTripodInterpolation(i32, i32, i32);
 	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
 	EXPORT void LoadIntoMikeCamera(void);
 
@@ -79,7 +80,7 @@ public:
 	int field_130;
 	int field_134;
 	int field_138;
-	int field_13C;
+	CBody* field_13C;
 	unsigned char field_140;
 	CVector field_144;
 
@@ -132,6 +133,8 @@ public:
 
 	CQuat field_214;
 
+	
+
 	int field_224;
 	int field_228;
 	int field_22C;
@@ -150,10 +153,11 @@ public:
 
 	int field_264;
 	int field_268;
-	__int16 field_26C;
-	__int16 field_26E;
+	i16 field_26C;
+	i16 field_26E;
 
-	int padAfter26E;
+	i16 field_270;
+	i16 field_272;
 
 	__int16 field_274;
 	unsigned char field_276;
