@@ -9,19 +9,27 @@
 class CCarnage : public CBaddy {
 public:
 	EXPORT CCarnage(int*, int);
+	EXPORT ~CCarnage(void);
+
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 
-	unsigned char carnageStartPad[0x10];
+	u8 carnageStartPad[0x8];
 
-	int field_334;
-	int field_338;
-	int field_33C;
-	unsigned char padAfter33c[0x18 - 4];
+	void* field_32C;
+	u8 padAfter32C[0x334-0x32C-4];
 
-	int field_354;
-	int field_358;
-	int field_35C;
+	i32 field_334;
+	i32 field_338;
+	i32 field_33C;
+	u8 padAfter33c[0x344-0x33C-4];
+
+	void* field_344;
+	u8 padAfter344[0x354-0x344-4];
+
+	i32 field_354;
+	i32 field_358;
+	i32 field_35C;
 	unsigned char padAfter35C[0x10-4];
 
 	int field_36C;

@@ -5,7 +5,21 @@
 #include "spool.h"
 
 extern const char *gObjFile;
+extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
+
+// @Ok
+CCarnage::~CCarnage(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	Panel_DestroyHealthbar();
+
+	if (this->field_32C)
+		delete reinterpret_cast<CItem*>(this->field_32C);
+
+	if (this->field_344)
+		Mem_Delete(this->field_344);
+}
 
 // @NotOk
 // globals
@@ -110,9 +124,15 @@ void CCarnage::DoPhysics(void)
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 
+	VALIDATE(CCarnage, field_32C, 0x32C);
+
 	VALIDATE(CCarnage, field_334, 0x334);
 	VALIDATE(CCarnage, field_338, 0x338);
+
 	VALIDATE(CCarnage, field_33C, 0x33C);
+
+	VALIDATE(CCarnage, field_344, 0x344);
+
 	VALIDATE(CCarnage, field_354, 0x354);
 	VALIDATE(CCarnage, field_358, 0x358);
 	VALIDATE(CCarnage, field_35C, 0x35C);
