@@ -10,6 +10,10 @@ class CGouradRibbon : public CSpecialDisplay
 {
 	public:
 		EXPORT CGouradRibbon(i32, i32);
+
+		i32 mTrail;
+		i32 NumPoints;
+		SRibbonPoint* mpPoints;
 };
 
 void validate_CGouradRibbon(void);
