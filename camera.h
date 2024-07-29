@@ -21,6 +21,8 @@ enum EShakeType
 
 class CCamera : public CBody {
 public:
+	EXPORT virtual ~CCamera(void);
+
 	EXPORT void SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4);
 	EXPORT int SetMode(ECameraMode mode);
 	EXPORT void SetCollisionRayLR(int a2);
@@ -46,7 +48,7 @@ public:
 
 	unsigned char field_F8;
 	unsigned char field_F9;
-	int field_FC;
+	CBody* field_FC;
 	unsigned char field_100;
 
 	CVector field_104;

@@ -2,8 +2,17 @@
 #include "validate.h"
 #include "ps2funcs.h"
 
-CCamera *CameraList;
+EXPORT CCamera *CameraList;
+EXPORT i32 NumCameras;
 
+// @Ok
+CCamera::~CCamera(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&CameraList));
+	--NumCameras;
+}
+
+// @NotOk
 // Not matching, not important
 void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4){
 
@@ -14,9 +23,10 @@ void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int
 	this->field_2BC = a4;
 }
 
-int CCamera::SetMode(ECameraMode mode){
+// @Ok
+i32 CCamera::SetMode(ECameraMode mode){
 
-	int oldMode = this->mMode;
+	i32 oldMode = this->mMode;
 	this->mMode = mode;
 	if (mode == ECam_mode_0x10 || mode == ECam_mode_0x11){
 		*gCameraRelated = 0;
@@ -101,7 +111,7 @@ void CCamera::SetStartPosition(void){
 
 	if ( this->mMode == 3 )
 	{
-		this->field_104 = *(CVector *)(this->field_FC + 8);
+		this->field_104 = this->field_FC->mPos;
 		this->CM_Normal();
 		this->mPos = this->field_24C;
 		this->field_1E4 = this->field_1F4;
@@ -268,7 +278,7 @@ void CCamera::SetCamAngle(__int16, unsigned __int16)
 
 // @NotOk
 // Revisit when used (return type seems wrong)
-__int16 __inline CalcTheta(__int16 a1, __int16 a2)
+INLINE i16 CalcTheta(i16 a1, i16 a2)
 {
 	__int16 v2 = (a2 & 0xFFF) - (a1 & 0xFFF);
 	if (v2 > 2048)
