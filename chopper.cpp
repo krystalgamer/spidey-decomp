@@ -8,6 +8,7 @@
 #include "m3dutils.h"
 #include "exp.h"
 #include "spidey.h"
+#include "camera.h"
 
 extern CBaddy* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -19,6 +20,8 @@ extern i16 **gTrigNodes;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;
 extern CPlayer* MechList;
+
+extern CCamera* CameraList;
 
 // @SMALLTODO
 void CChopper::TrackSpidey(void)
@@ -42,10 +45,15 @@ INLINE i32 CChopper::GetToDesiredPos(void)
 	return this->GetToPos(&v13);
 }
 
-// @SMALLTODO
+// @Ok
 void CChopper::GetOutOfCameraPath(void)
 {
-	printf("void CChopper::GetOutOfCameraPath(void)");
+	if (this->InCameraPath())
+	{
+		i32 newY = CameraList->mPos.vy - 409600;
+		if (this->field_34C > newY)
+			this->field_34C = newY;
+	}
 }
 
 
