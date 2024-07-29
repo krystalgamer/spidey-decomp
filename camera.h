@@ -9,6 +9,17 @@
 
 static int * const gCameraRelated = (int*)0x56F254;
 
+struct SCamera
+{
+	u32 Style;
+	VECTOR Position;
+	VECTOR Focus;
+	i32 Distance;
+	i32 Height;
+	SVECTOR Angles;
+	MATRIX Transform;
+};
+
 enum ECameraMode {
 	ECam_mode_0x10 = 0x10,
 	ECam_mode_0x11 = 0x11,
@@ -185,5 +196,6 @@ public:
 EXPORT __int16 CalcTheta(__int16, __int16);
 
 void validate_CCamera(void);
+void validate_SCamera(void);
 
 #endif

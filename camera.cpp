@@ -453,3 +453,16 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_2E8, 0x2E8);
 
 }
+
+void validate_SCamera(void)
+{
+	VALIDATE_SIZE(SCamera, 0x54);
+
+	VALIDATE(SCamera, Style, 0x0);
+	VALIDATE(SCamera, Position, 0x4);
+	VALIDATE(SCamera, Focus, 0x14);
+	VALIDATE(SCamera, Distance, 0x24);
+	VALIDATE(SCamera, Height, 0x28);
+	VALIDATE(SCamera, Angles, 0x2C);
+	VALIDATE(SCamera, Transform, 0x34);
+}

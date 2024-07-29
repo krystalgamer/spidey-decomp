@@ -373,6 +373,7 @@ int main()
 	validate_CGouradRibbon();
 	validate_CCopBulletTracer();
 	validate_CCombatImpactRing();
+	validate_SCamera();
 
 	puts("[*] Validation done!");
 
