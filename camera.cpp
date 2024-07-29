@@ -5,6 +5,25 @@
 EXPORT CCamera *CameraList;
 EXPORT i32 NumCameras;
 
+EXPORT SCamera gMikeCamera[2];
+
+void CCamera::LoadIntoMikeCamera(void)
+{
+	gMikeCamera[0].Position.vx = this->mPos.vx >> 12;
+	gMikeCamera[0].Position.vy = this->mPos.vy >> 12;
+	gMikeCamera[0].Position.vz = this->mPos.vz >> 12;
+
+	QToM(&this->field_214, &gMikeCamera[0].Transform);
+	TransMatrix(&gMikeCamera[0].Transform, &gMikeCamera[0].Position);
+
+	i32 two = gMikeCamera[0].Transform.m[0][2];
+	i32 eight = gMikeCamera[0].Transform.m[2][2];
+	if (two || eight)
+	{
+		this->field_23A = (-1024 - ratan2(eight, two)) & 0xFFF;
+	}
+}
+
 // @Ok
 // @Test
 void CCamera::SetFixedPosAnglesMode(
@@ -398,15 +417,15 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_204, 0x204);
 
 	VALIDATE(CCamera, field_214, 0x214);
-	VALIDATE(CCamera, field_218, 0x218);
-	VALIDATE(CCamera, field_21C, 0x21C);
-	VALIDATE(CCamera, field_220, 0x220);
 	VALIDATE(CCamera, field_224, 0x224);
 	VALIDATE(CCamera, field_228, 0x228);
 	VALIDATE(CCamera, field_22C, 0x22C);
 	VALIDATE(CCamera, field_230, 0x230);
 	VALIDATE(CCamera, field_234, 0x234);
 	VALIDATE(CCamera, field_238, 0x238);
+
+	VALIDATE(CCamera, field_23A, 0x23A);
+
 	VALIDATE(CCamera, field_23C, 0x23C);
 	VALIDATE(CCamera, field_240, 0x240);
 	VALIDATE(CCamera, field_244, 0x244);

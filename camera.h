@@ -3,6 +3,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "ps2funcs.h"
 #include "ob.h"
 #include "vector.h"
 #include "quat.h"
@@ -54,7 +55,8 @@ public:
 	EXPORT void GetPosition(CVector *);
 	EXPORT void Shake(CVector*, EShakeType);
 	EXPORT void SetTripodInterpolationMode(i32, i32, i32);
-	EXPORT void CCamera::SetFixedPosAnglesMode(CVector *, CQuat *, u16);
+	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
+	EXPORT void LoadIntoMikeCamera(void);
 
 
 	int padTop;
@@ -128,18 +130,15 @@ public:
 
 	CQuat field_204;
 
-	int field_214;
-	int field_218;
-	int field_21C;
-	int field_220;
+	CQuat field_214;
+
 	int field_224;
 	int field_228;
 	int field_22C;
 	int field_230;
 	int field_234;
-	__int16 field_238;
-
-	unsigned char padAfter238[2];
+	i16 field_238;
+	i16 field_23A;
 
 	unsigned char field_23C;
 	int field_240;

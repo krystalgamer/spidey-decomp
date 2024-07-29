@@ -10,8 +10,8 @@
 struct SLineInfo;
 
 struct MATRIX{
-	__int16 m[3][3];
-	int t[3];
+	i16 m[3][3];
+	i32 t[3];
 };
 
 typedef struct {		/* long word type 3D vector */
@@ -87,5 +87,7 @@ EXPORT int ratan2(int, int);
 EXPORT int GetClut(int, int);
 
 EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
+
+EXPORT void TransMatrix(MATRIX*, VECTOR*);
 
 #endif

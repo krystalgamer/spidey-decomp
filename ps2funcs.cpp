@@ -18,6 +18,12 @@ EXPORT int gRtpsRelatedNoClue3;
 
 static unsigned char stubGte = 1;
 
+// @MEDIUMTODO
+void TransMatrix(MATRIX*, VECTOR*)
+{
+	printf("void TransMatrix(MATRIX*, VECTOR*)");
+}
+
 void validate_MATRIX(void){
 	VALIDATE_SIZE(MATRIX, 0x20);
 	VALIDATE(MATRIX, m, 0x0);

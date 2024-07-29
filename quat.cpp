@@ -1,7 +1,15 @@
 #include "quat.h"
 #include "validate.h"
+#include "ps2funcs.h"
 
 
+// @SMALLTODO
+void QToM(CQuat*, MATRIX*)
+{
+	printf("void QToM(CQuat*, MATRIX*)");
+}
+
+// @MEDIUMTODO
 void Quat_Slerp (CQuat& a1, CQuat const & a2, int a3, CQuat& a4) {
 
 }
