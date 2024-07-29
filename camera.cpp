@@ -6,6 +6,28 @@ EXPORT CCamera *CameraList;
 EXPORT i32 NumCameras;
 
 // @Ok
+// @Test
+void CCamera::SetFixedPosAnglesMode(
+		CVector *a2,
+		CQuat *a3,
+		u16 a4)
+{
+	this->mMode = 5;
+	this->field_24C = *a2;
+	this->field_2D4 = *a3;
+	this->field_2AC = 1;
+	this->field_2BC = a4;
+
+	if (a4)
+	{
+		this->field_2C0 = a4;
+		this->field_2C4 = this->field_1E4;
+
+		this->field_2B0 = (*a2 - this->mPos) / a4;
+	}
+}
+
+// @Ok
 void CCamera::SetTripodInterpolationMode(i32 a2, i32 a3, i32 a4)
 {
 	print_if_false(a2 <= 16, "Bad tripod interpolation value");
@@ -132,7 +154,7 @@ void CCamera::SetStartPosition(void){
 
 // @NotOk
 // Revisit
-void CCamera::SetFixedPosMode(CVector *a2, unsigned __int16 a3){
+void CCamera::SetFixedPosMode(CVector *a2, u16 a3){
 
 	this->mMode = 4;
 	this->field_24C = *a2;
