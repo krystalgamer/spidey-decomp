@@ -6,6 +6,17 @@ EXPORT CCamera *CameraList;
 EXPORT i32 NumCameras;
 
 // @Ok
+void CCamera::SetTripodInterpolationMode(i32 a2, i32 a3, i32 a4)
+{
+	print_if_false(a2 <= 16, "Bad tripod interpolation value");
+	print_if_false(a3 <= 16, "Bad tripod interpolation value");
+	print_if_false(a4 <= 16, "Bad tripod interpolation value");
+	this->field_130 = a2;
+	this->field_134 = a3;
+	this->field_138 = a4;
+}
+
+// @Ok
 CCamera::~CCamera(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&CameraList));

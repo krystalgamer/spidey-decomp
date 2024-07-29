@@ -42,6 +42,7 @@ public:
 	EXPORT void SetCamAngle(__int16, unsigned __int16);
 	EXPORT void GetPosition(CVector *);
 	EXPORT void Shake(CVector*, EShakeType);
+	EXPORT void SetTripodInterpolationMode(i32, i32, i32);
 
 
 	int padTop;
