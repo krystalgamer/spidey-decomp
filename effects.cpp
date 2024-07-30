@@ -8,6 +8,11 @@ extern i32 CurrentSuit;
 extern SFlatBitVelocity FlatBitVelocities[];
 
 // @Ok
+CChunkSmoke::~CChunkSmoke(void)
+{
+}
+
+// @Ok
 // @Test
 CChunkSmoke::CChunkSmoke(
 		CVector* a2,

@@ -12,6 +12,7 @@ class CChunkSmoke : public CFlatBit
 {
 	public:
 		EXPORT CChunkSmoke(CVector*, CVector*, i32);
+		EXPORT virtual ~CChunkSmoke(void);
 
 		CVector field_68;
 		i32 field_74;
