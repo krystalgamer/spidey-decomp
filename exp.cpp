@@ -6,6 +6,16 @@
 static i32 gMemInitRelatedTop;
 
 // @Ok
+void Exp_SmallExplosion(CVector* a1)
+{
+	if ( !gMemInitRelatedTop )
+	{
+		Exp_Frag(a1, Rnd(20), 6u, 750, 80);
+		Exp_GlowFlash(a1, 70, 0xF0u, 0xC8u, 0, 5, 0, 100);
+	}
+}
+
+// @Ok
 void Exp_Frag(CVector* a1, i32 a2, i32 a3, i32 a4, i32 a5)
 {
 	if (!gMemInitRelatedTop)

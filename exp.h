@@ -53,6 +53,7 @@ EXPORT void Exp_GlowFlash(CVector*, i32, u8, u8, u8, i32, i32, i32);
 
 EXPORT void Exp_BigExplosion(CVector*);
 EXPORT void Exp_Frag(CVector*, i32, i32, i32, i32);
+EXPORT void Exp_SmallExplosion(CVector*);
 
 void validate_CItemFrag(void);
 void validate_CGlowFlash(void);
