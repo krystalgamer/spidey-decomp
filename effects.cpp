@@ -8,6 +8,40 @@ extern SFlatBitVelocity FlatBitVelocities[];
 
 
 // @Ok
+void CFootprint::Move(void)
+{
+	if (this->field_84)
+	{
+		this->field_84--;
+		return;
+	}
+
+	u8 low = this->mTint;
+	u8 mid = this->mTint >> 8;
+	u8 high = this->mTint >> 16;
+
+	if (low < 1)
+		low = 0;
+	else
+		low--;
+
+	if (mid < 1)
+		mid = 0;
+	else
+		mid--;
+
+	if (high < 1)
+		high = 0;
+	else
+		high--;
+
+
+	this->mTint = (((high << 8) | mid) << 8) | low;
+	if (!this->mTint)
+		this->Die();
+}
+
+// @Ok
 CFootprint::~CFootprint(void)
 {
 }
