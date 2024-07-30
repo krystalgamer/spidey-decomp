@@ -12,6 +12,7 @@ class CBouncingRock : public CFlatBit
 {
 	public:
 		EXPORT CBouncingRock(CVector*, i32, u32);
+		EXPORT virtual ~CBouncingRock(void);
 
 		i32 field_68;
 		u8 padBottom[4];

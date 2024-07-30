@@ -9,6 +9,11 @@ extern SFlatBitVelocity FlatBitVelocities[];
 
 EXPORT i32 gTextureRelated;
 
+// @Ok
+CBouncingRock::~CBouncingRock(void)
+{
+}
+
 // @NotOk
 // globals
 CBouncingRock::CBouncingRock(
