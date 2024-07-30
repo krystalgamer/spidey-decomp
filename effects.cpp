@@ -6,6 +6,11 @@
 extern i32 CurrentSuit;
 
 // @Ok
+CRhinoWallImpact::~CRhinoWallImpact(void)
+{
+}
+
+// @Ok
 CRhinoWallImpact::CRhinoWallImpact(SLineInfo* pLineInfo)
 {
 	print_if_false(pLineInfo != 0, "NULL pLineInfo");
