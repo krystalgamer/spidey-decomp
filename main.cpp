@@ -380,6 +380,7 @@ int main()
 	validate_CChunkSmoke();
 	validate_CBouncingRock();
 	validate_CFlameExplosion();
+	validate_CFrag();
 
 	puts("[*] Validation done!");
 

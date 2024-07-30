@@ -5,10 +5,16 @@
 
 static i32 gMemInitRelatedTop;
 
-// @SMALLTODO
-void Exp_Frag(CVector*, i32, i32, i32, i32)
+// @Ok
+void Exp_Frag(CVector* a1, i32 a2, i32 a3, i32 a4, i32 a5)
 {
-	printf("void Exp_Frag(CVector*, i32, i32, i32, i32)");
+	if (!gMemInitRelatedTop)
+	{
+		for (i32 i = 0; i < a2; i++)
+		{
+			new CFrag(a1, 0x80u, 0x80u, 0x80u, a3, a4, 1, a5, 12288, 30);
+		}
+	}
 }
 
 // @Ok

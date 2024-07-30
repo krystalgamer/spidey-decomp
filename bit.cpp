@@ -16,6 +16,12 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 // @SMALLTODO
+CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32)
+{
+	printf("CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);");
+}
+
+// @SMALLTODO
 void CGlow::SetFringeWidth(u32, u32)
 {
 	printf("CGlow::SetFringeWidth(u32, u32)");
@@ -848,4 +854,9 @@ void validate_SRibbonPoint(void)
 	VALIDATE(SRibbonPoint, Last1Scr, 0x18);
 	VALIDATE(SRibbonPoint, Last2Scr, 0x1C);
 	VALIDATE(SRibbonPoint, Last3Scr, 0x20);
+}
+
+void validate_CFrag(void)
+{
+	VALIDATE_SIZE(CFrag, 0x68);
 }

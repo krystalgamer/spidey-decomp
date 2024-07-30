@@ -266,6 +266,12 @@ class CCombatImpactRing : public CFlatBit
 		u8 padBottom[0xC];
 };
 
+class CFrag : public CFlatBit
+{
+	public:
+		EXPORT CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -293,5 +299,6 @@ void validate_SFlatBitVelocity(void);
 void validate_CRibbon(void);
 void validate_CCombatImpactRing(void);
 void validate_SRibbonPoint(void);
+void validate_CFrag(void);
 
 #endif
