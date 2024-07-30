@@ -50,7 +50,7 @@ class CBit
 		CBit* mNext;
 
 		__int16 field_C;
-		__int16 field_E;
+		u16 field_E;
 
 		CVector mPos;
 		CVector mVel;

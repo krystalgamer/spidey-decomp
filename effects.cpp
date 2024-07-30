@@ -10,6 +10,42 @@ extern SFlatBitVelocity FlatBitVelocities[];
 EXPORT i32 gTextureRelated;
 
 // @Ok
+void CBouncingRock::Move(void)
+{
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	if (this->mPos.vy > this->field_68)
+	{
+		this->mPos.vy = this->field_68;
+
+		this->mVel.vx <<= 7;
+		this->mVel.vx >>= 8;
+
+		this->mVel.vy <<= 7;
+		this->mVel.vy >>= 8;
+
+		this->mVel.vz <<= 7;
+		this->mVel.vz >>= 8;
+
+		this->mVel.vy = -this->mVel.vy;
+
+		this->field_6C++;
+	}
+
+	this->mVel.vy += 29584;
+	this->field_58 += this->field_5A;
+
+	if (this->field_6C >= 5)
+		this->Die();
+
+	if (this->field_E > 0x3C)
+		this->Die();
+
+}
+
+// @Ok
 CBouncingRock::~CBouncingRock(void)
 {
 }
@@ -332,4 +368,5 @@ void validate_CBouncingRock(void)
 	VALIDATE_SIZE(CBouncingRock, 0x70);
 
 	VALIDATE(CBouncingRock, field_68, 0x68);
+	VALIDATE(CBouncingRock, field_6C, 0x6C);
 }

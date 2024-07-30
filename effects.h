@@ -14,8 +14,10 @@ class CBouncingRock : public CFlatBit
 		EXPORT CBouncingRock(CVector*, i32, u32);
 		EXPORT virtual ~CBouncingRock(void);
 
+		EXPORT virtual void Move(void);
+
 		i32 field_68;
-		u8 padBottom[4];
+		i32 field_6C;
 };
 
 class CChunkSmoke : public CFlatBit
