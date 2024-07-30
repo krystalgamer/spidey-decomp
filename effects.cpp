@@ -8,6 +8,27 @@ extern i32 CurrentSuit;
 extern SFlatBitVelocity FlatBitVelocities[];
 
 // @Ok
+void CChunkSmoke::Move(void)
+{
+	this->field_58 += this->field_5A;
+	this->field_5A -= this->field_5A >> 3;
+	this->mScale += (this->field_7C - this->mScale) >> 1;
+
+	if (++this->field_C > this->field_74)
+	{
+		this->mPos.vy -= this->mVel.vy;
+
+		Bit_ReduceRGB(&this->mCodeBGR, this->field_78);
+		if (!(0xFFFFFF & this->mCodeBGR))
+			this->Die();
+	}
+	else
+	{
+		this->mPos += (this->field_68 - this->mPos) >> 2;
+	}
+}
+
+// @Ok
 CChunkSmoke::~CChunkSmoke(void)
 {
 }
