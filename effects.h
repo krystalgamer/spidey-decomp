@@ -13,6 +13,8 @@ class CRhinoWallImpact : public CQuadBit
 	public:
 		EXPORT CRhinoWallImpact(SLineInfo*);
 		EXPORT virtual ~CRhinoWallImpact(void);
+
+		EXPORT virtual void Move(void);
 		u8 padBottom[4];
 };
 

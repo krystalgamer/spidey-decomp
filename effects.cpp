@@ -6,6 +6,17 @@
 extern i32 CurrentSuit;
 
 // @Ok
+void CRhinoWallImpact::Move(void)
+{
+	if (++this->field_C >= 200)
+	{
+		Bit_ReduceRGB(&this->mTint, 1);
+		if (!(0xFFFFFF & this->mTint))
+			this->Die();
+	}
+}
+
+// @Ok
 CRhinoWallImpact::~CRhinoWallImpact(void)
 {
 }
