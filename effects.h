@@ -8,6 +8,17 @@
 #include "m3dcolij.h"
 #include "export.h"
 
+class CChunkSmoke : public CFlatBit
+{
+	public:
+		EXPORT CChunkSmoke(CVector*, CVector*, i32);
+
+		CVector field_68;
+		i32 field_74;
+		i32 field_78;
+		i32 field_7C;
+};
+
 class CFootprint : public CQuadBit
 {
 	public:
@@ -65,6 +76,7 @@ void validate_SSkinGooSource2(void);
 void validate_SSkinGooParams(void);
 void validate_CRhinoWallImpact(void);
 void validate_CFootprint(void);
+void validate_CChunkSmoke(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);

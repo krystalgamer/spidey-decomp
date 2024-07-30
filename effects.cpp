@@ -1,11 +1,47 @@
 #include "effects.h"
 #include "spool.h"
-#include "vector.h"
+#include "utils.h"
+
 #include "validate.h"
 
 extern i32 CurrentSuit;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+// @Ok
+// @Test
+CChunkSmoke::CChunkSmoke(
+		CVector* a2,
+		CVector* a3,
+		i32 a4)
+{
+	this->field_68.vx = 0;
+	this->field_68.vy = 0;
+	this->field_68.vz = 0;
+
+	this->SetSemiTransparent();
+	this->mCodeBGR = 0x2E202020;
+	this->mScale = 0;
+
+	this->field_7C = Rnd(1000) + 1000;
+	this->field_58 = Rnd(4096);
+	this->field_5A = 150;
+
+	if ( a4 < 0 )
+		this->field_5A = -150;
+
+	this->mPos = *a2;
+	this->field_68 = *a3;
+	this->field_78 = Rnd(0) + 4;
+	this->field_74 = Rnd(40);
+
+	this->SetAnim(0xEu);
+
+	this->field_52 = 0;
+	print_if_false(this->field_51 != 0, "Woops");
+
+	this->field_4C = &this->mPSXAnim[this->field_52];
+	this->mVel.vy = Rnd(5) << 12;
+}
 
 // @Ok
 void CFootprint::Move(void)
@@ -210,4 +246,14 @@ void validate_CFootprint(void)
 	VALIDATE_SIZE(CFootprint, 0x88);
 
 	VALIDATE(CFootprint, field_84, 0x84);
+}
+
+void validate_CChunkSmoke(void)
+{
+	VALIDATE_SIZE(CChunkSmoke, 0x80);
+
+	VALIDATE(CChunkSmoke, field_68, 0x68);
+	VALIDATE(CChunkSmoke, field_74, 0x74);
+	VALIDATE(CChunkSmoke, field_78, 0x78);
+	VALIDATE(CChunkSmoke, field_7C, 0x7C);
 }

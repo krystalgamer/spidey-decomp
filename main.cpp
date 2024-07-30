@@ -377,6 +377,7 @@ int main()
 	validate_SRibbonPoint();
 	validate_CRhinoWallImpact();
 	validate_CFootprint();
+	validate_CChunkSmoke();
 
 	puts("[*] Validation done!");
 
