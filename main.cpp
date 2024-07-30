@@ -375,6 +375,7 @@ int main()
 	validate_CCombatImpactRing();
 	validate_SCamera();
 	validate_SRibbonPoint();
+	validate_CRhinoWallImpact();
 
 	puts("[*] Validation done!");
 

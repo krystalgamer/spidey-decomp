@@ -5,7 +5,15 @@
 #define EFFECTS_H
 
 #include "ob.h"
+#include "m3dcolij.h"
 #include "export.h"
+
+class CRhinoWallImpact : public CQuadBit
+{
+	public:
+		EXPORT CRhinoWallImpact(SLineInfo*);
+		u8 padBottom[4];
+};
 
 class CElectrify : public CSimpleTexturedRibbon
 {
@@ -41,6 +49,7 @@ void validate_CSkinGoo(void);
 void validate_SSkinGooSource(void);
 void validate_SSkinGooSource2(void);
 void validate_SSkinGooParams(void);
+void validate_CRhinoWallImpact(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);

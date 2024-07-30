@@ -1,8 +1,28 @@
 #include "effects.h"
+#include "spool.h"
+#include "vector.h"
 #include "validate.h"
 
-extern int CurrentSuit;
+extern i32 CurrentSuit;
 
+// @Ok
+CRhinoWallImpact::CRhinoWallImpact(SLineInfo* pLineInfo)
+{
+	print_if_false(pLineInfo != 0, "NULL pLineInfo");
+
+	this->SetTexture(Spool_FindTextureChecksum("RhinoWallImpact"));
+	this->SetTint(0x12u, 0x12u, 0x12u);
+	this->SetSubtractiveTransparency();
+
+	this->mCodeBGR &= ~0x200;
+
+	CVector v2;
+	v2.vx = pLineInfo->field_6C;
+	v2.vy = pLineInfo->field_70 - 204800;
+	v2.vz = pLineInfo->field_74;
+	this->OrientUsing(&v2, reinterpret_cast<SVECTOR*>(&pLineInfo->field_78), 100, 100);
+	this->mType = 26;
+}
 
 // @MEDIUMTODO
 CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource*, i32, SSkinGooParams*)
@@ -17,8 +37,9 @@ CSkinGoo::CSkinGoo(CSuper*, SSkinGooSource2*, i32, SSkinGooParams*)
 }
 
 // @MEDIUMTODO
-CElectrify::CElectrify(CSuper*, int)
+CElectrify::CElectrify(CSuper*, i32)
 {
+	printf("CElectrify::CElectrify(CSuper*, int)");
 }
 
 // @Ok
@@ -71,4 +92,9 @@ void validate_SSkinGooSource2(void)
 
 void validate_SSkinGooParams(void)
 {
+}
+
+void validate_CRhinoWallImpact(void)
+{
+	VALIDATE_SIZE(CRhinoWallImpact, 0x88);
 }

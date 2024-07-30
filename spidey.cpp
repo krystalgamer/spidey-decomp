@@ -689,9 +689,9 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 	v21.field_6C = 0;
 	v21.field_70 = 0;
 	v21.field_74 = 0;
-	v21.field_78 = 0;
-	v21.field_7A = 0;
-	v21.field_7C = 0;
+	v21.field_78.vx = 0;
+	v21.field_78.vy = 0;
+	v21.field_78.vz = 0;
 
 	int i = 0;
 	do
@@ -725,9 +725,9 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 		M3dZone_LineToItem(&v21, 1);
 		if ( v21.field_68 )
 		{
-			int v18 = a2 * v21.field_7C;
-			int v19 = v17 + a2 * v21.field_7A;
-			this->mPos.vx += a2 * v21.field_78;
+			int v18 = a2 * v21.field_78.vz;
+			int v19 = v17 + a2 * v21.field_78.vy;
+			this->mPos.vx += a2 * v21.field_78.vx;
 			this->mPos.vy = v19;
 			this->mPos.vz = z + v18;
 		}

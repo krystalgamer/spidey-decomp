@@ -172,7 +172,7 @@ void CBody::UpdateShadow(void){
 		vec.vz = 0;
 
 		unsigned __int16 lastParam = this->field_D0;
-		this->bodyQuadBit->OrientUsing(&this->bodyVector, &vec, lastParam, lastParam);
+		this->bodyQuadBit->OrientUsing(&this->bodyVector, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
 
 
 		__int8 trans = ((this->field_D4 - this->field_D2) << 7) / this->field_D4;

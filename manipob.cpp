@@ -161,9 +161,9 @@ void CManipOb::Smash(void)
 	v4.field_6C = 0;
 	v4.field_70 = 0;
 	v4.field_74 = 0;
-	v4.field_78 = 0;
-	v4.field_7A = (__int16)0xF000;
-	v4.field_7C = 0;
+	v4.field_78.vx = 0;
+	v4.field_78.vy = (i16)0xF000;
+	v4.field_78.vz = 0;
 
 	this->mAccellorVel.vx = 0;
 	this->mAccellorVel.vy = 0x20000;

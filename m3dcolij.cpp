@@ -73,8 +73,6 @@ void validate_SLineInfo(void)
 	VALIDATE(SLineInfo, field_70, 0x70);
 	VALIDATE(SLineInfo, field_74, 0x74);
 	VALIDATE(SLineInfo, field_78, 0x78);
-	VALIDATE(SLineInfo, field_7A, 0x7A);
-	VALIDATE(SLineInfo, field_7C, 0x7C);
 
 	VALIDATE(SLineInfo, field_80, 0x80);
 	VALIDATE(SLineInfo, field_84, 0x84);

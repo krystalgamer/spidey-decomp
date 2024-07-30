@@ -337,7 +337,7 @@ void CQuadBit::SetTransparency(unsigned char a2){
 }
 
 // @MEDIUMTODO
-void CQuadBit::OrientUsing(CVector *a2, SVector *a3, int a4, int a5)
+void CQuadBit::OrientUsing(CVector *a2, SVECTOR *a3, int a4, int a5)
 {
 }
 

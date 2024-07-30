@@ -30,9 +30,7 @@ struct SLineInfo
 	int field_6C;
 	int field_70;
 	int field_74;
-	__int16 field_78;
-	__int16 field_7A;
-	__int16 field_7C;
+	CSVector field_78;
 
 	int field_80;
 	int field_84;
