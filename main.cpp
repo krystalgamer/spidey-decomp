@@ -379,6 +379,7 @@ int main()
 	validate_CFootprint();
 	validate_CChunkSmoke();
 	validate_CBouncingRock();
+	validate_CFlameExplosion();
 
 	puts("[*] Validation done!");
 

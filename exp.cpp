@@ -3,6 +3,30 @@
 
 static i32 gMemInitRelatedTop;
 
+// @NotOk
+// @FIXME guess type of field_40
+CFlameExplosion::~CFlameExplosion(void)
+{
+	for (i32 i = 0; i < 20; i++)
+	{
+		delete reinterpret_cast<CItem*>(field_40[i]);
+	}
+}
+
+// @Ok
+CFlameExplosion::CFlameExplosion(
+		CVector* a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
+{
+	this->mPos = *a2;
+	this->field_E = a3;
+
+	this->field_3E = a5;
+	this->field_3F = a4;
+}
+
 // @Ok
 CGlowFlash::CGlowFlash(
 		CVector* a2,
@@ -125,4 +149,14 @@ void validate_CGlowFlash(void)
 	VALIDATE(CGlowFlash, field_68, 0x68);
 	VALIDATE(CGlowFlash, field_6A, 0x6A);
 	VALIDATE(CGlowFlash, field_6C, 0x6C);
+}
+
+void validate_CFlameExplosion(void)
+{
+	VALIDATE_SIZE(CFlameExplosion, 0x90);
+
+	VALIDATE(CFlameExplosion, field_3E, 0x3E);
+	VALIDATE(CFlameExplosion, field_3F, 0x3F);
+
+	VALIDATE(CFlameExplosion, field_40, 0x40);
 }

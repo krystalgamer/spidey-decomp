@@ -5,6 +5,23 @@
 
 #include "ob.h"
 
+class CFlameExplosion : public CNonRenderedBit
+{
+	public:
+		EXPORT CFlameExplosion(CVector*, i32, i32, i32);
+		EXPORT virtual ~CFlameExplosion(void);
+
+		u8 padTop[2];
+
+		u8 field_3E;
+		u8 field_3F;
+
+		// @FIXME guess type
+		void* field_40[20];
+
+		// @FIXME missing vmethod
+};
+
 class CItemFrag : public CBit
 {
 	public:
@@ -36,5 +53,6 @@ EXPORT void Exp_GlowFlash(CVector*, i32, u8, u8, u8, i32, i32, i32);
 
 void validate_CItemFrag(void);
 void validate_CGlowFlash(void);
+void validate_CFlameExplosion(void);
 
 #endif
