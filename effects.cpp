@@ -4,6 +4,56 @@
 #include "validate.h"
 
 extern i32 CurrentSuit;
+extern SFlatBitVelocity FlatBitVelocities[];
+
+// @NotOk
+// @Test
+// diff assembly
+CFootprint::CFootprint(CVector* pVector, i32 a3)
+{
+	this->SetTexture(Spool_FindTextureChecksum("RhinoStomp"));
+	this->SetSubtractiveTransparency();
+	this->SetTint(0x12u, 0x12u, 0x12u);
+	this->field_84 = 2000;
+
+	this->mPos.vy = pVector->vy;
+	this->mPosB.vy = pVector->vy;
+	this->mPosC.vy = pVector->vy;
+	this->mPosD.vy = pVector->vy;
+
+	i32 vxVel = FlatBitVelocities[a3 & 0xFFF].vxVel;
+	i32 vzVel = FlatBitVelocities[a3 & 0xFFF].vzVel;
+
+	this->mPos.vx = vxVel - vzVel;
+	i32 v12 = vxVel + vzVel;
+	i32 v13 = vzVel - vxVel;
+
+	this->mPos.vz = v12;
+	this->mPosB.vx = v12;
+	this->mPosB.vz = v13;
+	this->mPosC.vx = -v12;
+	this->mPosC.vz = this->mPos.vx;
+	this->mPosD.vx = v13;
+	this->mPosD.vz = -v12;
+	this->mPos.vx *= 70;
+	this->mPos.vz *= 70;
+	this->mPosB.vx *= 70;
+	this->mPosB.vz *= 70;
+	this->mPosC.vx *= 70;
+	this->mPosC.vz *= 70;
+	this->mPosD.vx *= 70;
+	this->mPosD.vz *= 70;
+	this->mPos.vx += pVector->vx;
+	this->mPos.vz += pVector->vz;
+	this->mPosB.vx += pVector->vx;
+	this->mPosB.vz += pVector->vz;
+	this->mPosC.vx += pVector->vx;
+	this->mPosC.vz += pVector->vz;
+	this->mPosD.vx += pVector->vx;
+	this->mPosD.vz += pVector->vz;
+
+	this->mType = 25;
+}
 
 // @Ok
 void CRhinoWallImpact::Move(void)
@@ -113,4 +163,11 @@ void validate_SSkinGooParams(void)
 void validate_CRhinoWallImpact(void)
 {
 	VALIDATE_SIZE(CRhinoWallImpact, 0x88);
+}
+
+void validate_CFootprint(void)
+{
+	VALIDATE_SIZE(CFootprint, 0x88);
+
+	VALIDATE(CFootprint, field_84, 0x84);
 }

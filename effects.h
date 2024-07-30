@@ -8,6 +8,13 @@
 #include "m3dcolij.h"
 #include "export.h"
 
+class CFootprint : public CQuadBit
+{
+	public:
+		EXPORT CFootprint(CVector*, i32);
+		i32 field_84;
+};
+
 class CRhinoWallImpact : public CQuadBit
 {
 	public:
@@ -53,6 +60,7 @@ void validate_SSkinGooSource(void);
 void validate_SSkinGooSource2(void);
 void validate_SSkinGooParams(void);
 void validate_CRhinoWallImpact(void);
+void validate_CFootprint(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);
