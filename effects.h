@@ -12,6 +12,8 @@ class CFootprint : public CQuadBit
 {
 	public:
 		EXPORT CFootprint(CVector*, i32);
+		EXPORT virtual ~CFootprint(void);
+
 		i32 field_84;
 };
 

@@ -6,6 +6,12 @@
 extern i32 CurrentSuit;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+
+// @Ok
+CFootprint::~CFootprint(void)
+{
+}
+
 // @NotOk
 // @Test
 // diff assembly
