@@ -378,6 +378,7 @@ int main()
 	validate_CRhinoWallImpact();
 	validate_CFootprint();
 	validate_CChunkSmoke();
+	validate_CBouncingRock();
 
 	puts("[*] Validation done!");
 

@@ -159,9 +159,7 @@ public:
 	unsigned short field_5E;
 	unsigned int mPostScale;
 	unsigned char pad1;
-	unsigned char field_65;
-
-
+	unsigned char mAngFric;
 };
 
 class CNonRenderedBit : public CBit {

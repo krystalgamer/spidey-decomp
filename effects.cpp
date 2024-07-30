@@ -7,6 +7,44 @@
 extern i32 CurrentSuit;
 extern SFlatBitVelocity FlatBitVelocities[];
 
+EXPORT i32 gTextureRelated;
+
+// @NotOk
+// globals
+CBouncingRock::CBouncingRock(
+		CVector* a2,
+		i32 a3,
+		u32 a4)
+{
+	this->mPos = *a2;
+	this->field_68 = a3;
+	if ( a4 != 0x28001F00 )
+	{
+		if ( a4 == 0x3288E271 )
+		{
+			this->SetTexture(*reinterpret_cast<Texture **>(gTextureRelated + 20));
+			this->mAngFric = 0;
+		}
+	}
+	else
+	{
+		this->SetTexture(*reinterpret_cast<Texture **>(gTextureRelated + 44));
+	}
+
+	this->mScale = Rnd(200) + 350;
+	i32 v6 = Rnd(4096);
+	i32 v7 = Rnd(10) + 10;
+	i32 v8 = v6 & 0xFFF;
+	this->mVel.vx = v7 * FlatBitVelocities[v8].vxVel;
+	this->mVel.vz = v7 * FlatBitVelocities[v8].vzVel;
+
+	this->mVel.vy = -81920 - (Rnd(20) << 12);
+	this->field_5A = 500;
+	if ( Rnd(2) )
+		this->field_5A *= -1;
+	this->mPostScale = 0xC001000;
+}
+
 // @Ok
 void CChunkSmoke::Move(void)
 {
@@ -282,4 +320,11 @@ void validate_CChunkSmoke(void)
 	VALIDATE(CChunkSmoke, field_74, 0x74);
 	VALIDATE(CChunkSmoke, field_78, 0x78);
 	VALIDATE(CChunkSmoke, field_7C, 0x7C);
+}
+
+void validate_CBouncingRock(void)
+{
+	VALIDATE_SIZE(CBouncingRock, 0x70);
+
+	VALIDATE(CBouncingRock, field_68, 0x68);
 }

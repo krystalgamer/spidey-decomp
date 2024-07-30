@@ -8,6 +8,15 @@
 #include "m3dcolij.h"
 #include "export.h"
 
+class CBouncingRock : public CFlatBit
+{
+	public:
+		EXPORT CBouncingRock(CVector*, i32, u32);
+
+		i32 field_68;
+		u8 padBottom[4];
+};
+
 class CChunkSmoke : public CFlatBit
 {
 	public:
@@ -80,6 +89,7 @@ void validate_SSkinGooParams(void);
 void validate_CRhinoWallImpact(void);
 void validate_CFootprint(void);
 void validate_CChunkSmoke(void);
+void validate_CBouncingRock(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);
