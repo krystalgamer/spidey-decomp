@@ -51,6 +51,9 @@ class CGlowFlash : public CGlow
 EXPORT void Exp_HitEnvItem(CItem*, u32*, i32);
 EXPORT void Exp_GlowFlash(CVector*, i32, u8, u8, u8, i32, i32, i32);
 
+EXPORT void Exp_BigExplosion(CVector*);
+EXPORT void Exp_Frag(CVector*, i32, i32, i32, i32);
+
 void validate_CItemFrag(void);
 void validate_CGlowFlash(void);
 void validate_CFlameExplosion(void);

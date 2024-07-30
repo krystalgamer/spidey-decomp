@@ -1,7 +1,25 @@
 #include "exp.h"
+#include "utils.h"
+
 #include "validate.h"
 
 static i32 gMemInitRelatedTop;
+
+// @SMALLTODO
+void Exp_Frag(CVector*, i32, i32, i32, i32)
+{
+	printf("void Exp_Frag(CVector*, i32, i32, i32, i32)");
+}
+
+// @Ok
+void Exp_BigExplosion(CVector *a1)
+{
+	if ( !gMemInitRelatedTop )
+	{
+		Exp_Frag(a1, Rnd(20), 6u, 750, 80);
+		Exp_GlowFlash(a1, 200, 0xF0u, 0xC8u, 0, 5, 0, 100);
+	}
+}
 
 // @NotOk
 // @FIXME guess type of field_40
@@ -87,7 +105,7 @@ void Exp_HitEnvItem(CItem* pItem, u32* pFace, i32 Damage)
 	printf("Exp_HitEnvItem");
 }
 
-// @SMALLTODO
+// @Ok
 void Exp_GlowFlash(
 		CVector* a1,
 		i32 a2,
