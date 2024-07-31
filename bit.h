@@ -276,6 +276,7 @@ class CPixel : public CBit
 {
 	public:
 		EXPORT CPixel(void);
+		EXPORT virtual ~CPixel(void);
 };
 
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);

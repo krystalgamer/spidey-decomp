@@ -18,6 +18,12 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 EXPORT CPixel* PixelList;
 
 // @Ok
+CPixel::~CPixel(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&PixelList));
+}
+
+// @Ok
 CPixel::CPixel(void)
 {
 	this->AttachTo(reinterpret_cast<CBit**>(&PixelList));
