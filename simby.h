@@ -199,8 +199,9 @@ void validate_CSimbyDroplet(void);
 void validate_CSymBurn(void);
 
 EXPORT void MakeVertexWibbler(void);
-EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);
-EXPORT void Simby_CreateEmber(const unsigned int*, unsigned int*);
+EXPORT void Simby_CreateSimby(const u32 *stack, u32 *result);
+EXPORT void Simby_CreateEmber(const u32*, u32*);
+EXPORT void Simby_CreateSimbyDroplet(const u32 *, u32 *);
 
 EXPORT void Simby_SplattyExplosion(CVector*, CVector*, i32);
 
