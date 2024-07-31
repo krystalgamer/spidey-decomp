@@ -17,6 +17,28 @@ extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 
+// @NotOk
+// @Test
+// globals
+CSimbyDroplet::CSimbyDroplet(i16* a2, i32 NodeIndex)
+{
+	print_if_false(NodeIndex != 0xFFFF, "Bad NodeIndex sent to CSimbyDroplet");
+	this->field_68 = NodeIndex;
+
+	CVector *pPos = reinterpret_cast<CVector*>(a2);
+	this->mPos.vx = pPos->vx << 12;
+	this->mPos.vy = pPos->vy << 12;
+	this->mPos.vz = pPos->vz << 12;
+
+	this->SetTexture(*(Texture **)(*reinterpret_cast<i32*>(0x56EAC4) + 12));
+
+	this->field_6A = a2[12];
+	this->SetScale(800);
+	this->SetSemiTransparent();
+	this->field_6C = Web_GetGroundY(&this->mPos);
+	this->mType = 14;
+}
+
 // @Ok
 void CFireySpark::Move(void)
 {
@@ -781,4 +803,13 @@ void validate_CFireySpark(void)
 	VALIDATE(CFireySpark, field_48, 0x48);
 
 	VALIDATE(CFireySpark, field_4C, 0x4C);
+}
+
+void validate_CSimbyDroplet(void)
+{
+	VALIDATE_SIZE(CSimbyDroplet, 0x70);
+
+	VALIDATE(CSimbyDroplet, field_68, 0x68);
+	VALIDATE(CSimbyDroplet, field_6A, 0x6A);
+	VALIDATE(CSimbyDroplet, field_6C, 0x6C);
 }

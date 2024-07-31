@@ -160,6 +160,17 @@ class CFireySpark : public CPixel
 		i32 field_4C;
 };
 
+
+class CSimbyDroplet : public CFlatBit
+{
+	public:
+		EXPORT CSimbyDroplet(i16*, i32);
+
+		u16 field_68;
+		u16 field_6A;
+		i32 field_6C;
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
@@ -168,6 +179,7 @@ void validate_CEmber(void);
 void validate_CSimbyShot(void);
 void validate_CSkidMark(void);
 void validate_CFireySpark(void);
+void validate_CSimbyDroplet(void);
 
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);

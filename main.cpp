@@ -383,6 +383,7 @@ int main()
 	validate_CFrag();
 	validate_CPixel();
 	validate_CFireySpark();
+	validate_CSimbyDroplet();
 
 	puts("[*] Validation done!");
 
