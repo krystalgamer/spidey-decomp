@@ -140,7 +140,8 @@ public:
 	int field_228;
 	int field_22C;
 	int field_230;
-	int field_234;
+	i16 field_234;
+	i16 field_236;
 	i16 field_238;
 	i16 field_23A;
 

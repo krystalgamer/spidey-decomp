@@ -180,7 +180,11 @@ class CSymBurn : public CSuper
 		EXPORT CSymBurn(CVector*);
 		EXPORT virtual ~CSymBurn(void);
 
-		u8 padBottom[0x14];
+		EXPORT virtual void AI(void);
+
+		u8 padTop[0x10];
+		i32 field_1A4;
+
 };
 
 void validate_CPunchOb(void);

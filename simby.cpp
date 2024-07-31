@@ -11,6 +11,7 @@
 #include "spidey.h"
 #include "ps2m3d.h"
 #include "web.h"
+#include "camera.h"
 
 static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
@@ -19,6 +20,47 @@ extern i32 gAttackRelated;
 extern i16 **gTrigNodes;
 
 extern CBody *MiscList;
+extern CCamera* CameraList;
+
+// @Ok
+void CSymBurn::AI(void)
+{
+	if ( CameraList )
+		this->mAngles.vy = CameraList->field_236 + 2048;
+	this->field_28 = 3000;
+	this->field_2C = 3000;
+
+	if ( ++this->field_1A4 > 60 )
+	{
+		i32 v4 = (this->field_24 & 0xFF) - 4;
+		if ( v4 < 0 )
+			v4 = 0;
+		this->field_24 = v4 | ((v4 | (v4 << 8)) << 8);
+
+		this->field_2A -= 75;
+		if ( this->field_2A < 0 )
+			this->field_2A = 0;
+
+		if ( !v4 || !this->field_2A )
+		{
+			this->Die();
+		}
+	}
+	else
+	{
+		i32 v7 = (this->field_24 & 0xFF) - 129;
+		if ( v7 < 128 )
+			v7 = 128;
+
+		this->field_24 = v7 | ((v7 | (v7 << 8)) << 8);
+
+		this->field_2A += 800;
+		if ( this->field_2A > 4096 )
+			this->field_2A = 4096;
+	}
+
+	M3d_BuildTransform(this);
+}
 
 // @NotOk
 // globals
@@ -862,4 +904,9 @@ void validate_CSimbyDroplet(void)
 void validate_CSymBurn(void)
 {
 	VALIDATE_SIZE(CSymBurn, 0x1A8);
+
+	VALIDATE(CSymBurn, field_1A4, 0x1A4);
+
+	VALIDATE_VTABLE(CSymBurn, Die, 1);
+	VALIDATE_VTABLE(CSymBurn, AI, 2);
 }

@@ -45,7 +45,7 @@ public:
 
 	u32 field_24;
 	__int16 field_28;
-	__int16 field_2A;
+	i16 field_2A;
 	__int16 field_2C;
 
 	int field_30;

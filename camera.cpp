@@ -132,6 +132,7 @@ CCamera::CCamera(CBody* tripod)
 	this->field_22C = 0;
 	this->field_230 = 4096;
 	this->field_234 = 0;
+	this->field_236 = 0;
 	this->field_240 = 0;
 	this->field_238 = 0;
 	this->field_24C.vx = 0;
@@ -615,6 +616,7 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_22C, 0x22C);
 	VALIDATE(CCamera, field_230, 0x230);
 	VALIDATE(CCamera, field_234, 0x234);
+	VALIDATE(CCamera, field_236, 0x236);
 	VALIDATE(CCamera, field_238, 0x238);
 
 	VALIDATE(CCamera, field_23A, 0x23A);
