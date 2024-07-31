@@ -169,6 +169,10 @@ class CSimbyDroplet : public CFlatBit
 
 		EXPORT virtual void Move(void);
 
+#ifndef _WIN32
+		// @FIXME
+		u8 padTop[2];
+#endif
 		u16 field_68;
 		u16 field_6A;
 		i32 field_6C;
