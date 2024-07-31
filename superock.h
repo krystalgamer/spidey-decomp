@@ -19,6 +19,8 @@ public:
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT int* KillCommandBlock(int*);
 
+	EXPORT void PlaySingleAnim(u32, i32, i32);
+
 	unsigned char padTop[0x32C-0x324];
 
 	int field_32C;
@@ -31,7 +33,8 @@ public:
 	u8 padAfter348[0x360-0x348-4];
 
 	void* field_360;
-	u8 padAfter360[0x36C-0x360-4];
+	i32 field_364;
+	u8 padAfter364[0x36C-0x364-4];
 
 	i32 field_36C;
 	i32 field_370;

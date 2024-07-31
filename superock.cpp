@@ -5,6 +5,13 @@
 extern CBaddy* BaddyList;
 
 // @Ok
+void CSuperDocOck::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
+{
+	this->field_364 = 0;
+	this->RunAnim(a2, a3, a4);
+}
+
+// @Ok
 CSuperDocOck::~CSuperDocOck(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
@@ -112,6 +119,7 @@ void validate_CSuperDocOck(void){
 	VALIDATE(CSuperDocOck, field_348, 0x348);
 
 	VALIDATE(CSuperDocOck, field_360, 0x360);
+	VALIDATE(CSuperDocOck, field_364, 0x364);
 
 	VALIDATE(CSuperDocOck, field_36C, 0x36C);
 	VALIDATE(CSuperDocOck, field_370, 0x370);
