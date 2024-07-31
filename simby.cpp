@@ -22,6 +22,15 @@ extern CBody *MiscList;
 
 // @NotOk
 // globals
+CSymBurn::~CSymBurn(void)
+{
+	this->DeleteFrom(&MiscList);
+	(*reinterpret_cast<i32*>(0x60CF94)) -= 1;
+}
+
+
+// @NotOk
+// globals
 CSymBurn::CSymBurn(CVector *a2)
 {
 	this->mPos = *a2;

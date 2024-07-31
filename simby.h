@@ -178,6 +178,7 @@ class CSymBurn : public CSuper
 {
 	public:
 		EXPORT CSymBurn(CVector*);
+		EXPORT virtual ~CSymBurn(void);
 
 		u8 padBottom[0x14];
 };
