@@ -20,6 +20,7 @@ public:
 	EXPORT int* KillCommandBlock(int*);
 
 	EXPORT void PlaySingleAnim(u32, i32, i32);
+	EXPORT void Initialise(void);
 
 	unsigned char padTop[0x32C-0x324];
 
@@ -34,12 +35,15 @@ public:
 
 	void* field_360;
 	i32 field_364;
-	u8 padAfter364[0x36C-0x364-4];
+	i32 field_368;
 
 	i32 field_36C;
 	i32 field_370;
 	i32 field_374;
-	u8 padAfter374[0x3B4-0x374-4];
+	u8 padAfter374[0x39C-0x374-4];
+
+	i32 field_39C;
+	u8 padAfter39C[0x3B4-0x39C-4];
 
 	void* field_3B4[4];
 	u8 padAfter3B4[0x11];

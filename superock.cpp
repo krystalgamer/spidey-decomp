@@ -5,7 +5,16 @@
 extern CBaddy* BaddyList;
 
 // @Ok
-void CSuperDocOck::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
+INLINE void CSuperDocOck::Initialise(void)
+{
+	this->field_39C = 455;
+	this->field_368 = this->field_DE;
+	this->field_31C.bothFlags = 0x10000;
+	this->dumbAssPad = 0;
+}
+
+// @Ok
+INLINE void CSuperDocOck::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
 {
 	this->field_364 = 0;
 	this->RunAnim(a2, a3, a4);
@@ -120,6 +129,7 @@ void validate_CSuperDocOck(void){
 
 	VALIDATE(CSuperDocOck, field_360, 0x360);
 	VALIDATE(CSuperDocOck, field_364, 0x364);
+	VALIDATE(CSuperDocOck, field_368, 0x368);
 
 	VALIDATE(CSuperDocOck, field_36C, 0x36C);
 	VALIDATE(CSuperDocOck, field_370, 0x370);
