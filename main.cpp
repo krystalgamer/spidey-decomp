@@ -381,6 +381,7 @@ int main()
 	validate_CBouncingRock();
 	validate_CFlameExplosion();
 	validate_CFrag();
+	validate_CPixel();
 
 	puts("[*] Validation done!");
 

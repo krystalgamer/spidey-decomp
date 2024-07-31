@@ -15,6 +15,14 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
+EXPORT CPixel* PixelList;
+
+// @Ok
+CPixel::CPixel(void)
+{
+	this->AttachTo(reinterpret_cast<CBit**>(&PixelList));
+}
+
 // @SMALLTODO
 CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32)
 {
@@ -859,4 +867,9 @@ void validate_SRibbonPoint(void)
 void validate_CFrag(void)
 {
 	VALIDATE_SIZE(CFrag, 0x68);
+}
+
+void validate_CPixel(void)
+{
+	VALIDATE_SIZE(CPixel, 0x3C);
 }
