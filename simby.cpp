@@ -16,6 +16,21 @@ static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
+extern i16 **gTrigNodes;
+
+// @Ok
+void CSimbyDroplet::Move(void)
+{
+	this->mPos.vy += this->mVel.vy;
+	this->mVel.vy += this->field_6A;
+	this->field_C++;
+
+	if (this->mPos.vy > this->field_6C || this->field_C > 60)
+	{
+		Trig_SendPulse(reinterpret_cast<u16*>(&gTrigNodes[this->field_68][3]));
+		this->Die();
+	}
+}
 
 // @Ok
 CSimbyDroplet::~CSimbyDroplet(void)
