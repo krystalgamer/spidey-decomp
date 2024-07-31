@@ -202,6 +202,7 @@ EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const u32 *stack, u32 *result);
 EXPORT void Simby_CreateEmber(const u32*, u32*);
 EXPORT void Simby_CreateSimbyDroplet(const u32 *, u32 *);
+EXPORT void Simby_CreateSimbyPunchOb(const u32 *, u32 *);
 
 EXPORT void Simby_SplattyExplosion(CVector*, CVector*, i32);
 
