@@ -18,6 +18,41 @@ extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 
 // @Ok
+void CFireySpark::Move(void)
+{
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	if ( this->mPos.vy > this->field_4C )
+	{
+		this->mPos.vy = this->field_4C;
+		this->mVel.vx >>= 1;
+		this->mVel.vz >>= 1;
+	}
+
+	this->mVel.vy += 29584;
+
+	if ( this->field_40 >= this->field_48 )
+		this->field_40 -= this->field_48;
+	else
+		this->field_40 = 0;
+
+	if ( this->field_41 >= this->field_48 )
+		this->field_41 -= this->field_48;
+	else
+		this->field_41 = 0;
+
+	if ( this->field_42 >= this->field_48 )
+		this->field_42 -= this->field_48;
+	else
+		this->field_42 = 0;
+
+	if ( !(this->field_40 | (this->field_42 | this->field_41)) )
+		this->Die();
+}
+
+// @Ok
 CFireySpark::~CFireySpark(void)
 {
 }
