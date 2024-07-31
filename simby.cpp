@@ -18,6 +18,11 @@ extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 
 // @Ok
+CFireySpark::~CFireySpark(void)
+{
+}
+
+// @Ok
 CFireySpark::CFireySpark(CVector* a2, CVector* a3, i32 a4)
 {
 	this->mPos = *a2;

@@ -144,6 +144,7 @@ class CFireySpark : public CPixel
 {
 	public:
 		EXPORT CFireySpark(CVector*, CVector*, i32);
+		EXPORT virtual ~CFireySpark(void);
 
 		i32 field_3C;
 
