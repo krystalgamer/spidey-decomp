@@ -11,6 +11,8 @@ class CSuperDocOck : public CBaddy {
 
 public:
 	EXPORT CSuperDocOck(int*, int);
+	EXPORT virtual ~CSuperDocOck(void);
+
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 	EXPORT void RenderClaws(void);
@@ -26,18 +28,24 @@ public:
 
 	int field_344;
 	int* field_348;
-	unsigned char padAfter348[0x36C-0x348-4];
+	u8 padAfter348[0x360-0x348-4];
 
-	int field_36C;
-	int field_370;
-	int field_374;
-	unsigned char padAfter374[0x3D8-0x374-4];
+	void* field_360;
+	u8 padAfter360[0x36C-0x360-4];
 
-	int field_3D8;
-	unsigned char padAfter3D8[0x3F4-0x3D8-4];
+	i32 field_36C;
+	i32 field_370;
+	i32 field_374;
+	u8 padAfter374[0x3B4-0x374-4];
 
-	void *field_3F4;
-	unsigned char padBottom[0x414-0x3F4-4];
+	void* field_3B4[4];
+	u8 padAfter3B4[0x11];
+
+	i32 field_3D8;
+	u8 padAfter3D8[0x3F4-0x3D8-4];
+
+	void* field_3F4[4];
+	void* field_404[4];
 };
 
 

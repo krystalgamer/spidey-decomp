@@ -2,6 +2,26 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+extern CBaddy* BaddyList;
+
+// @Ok
+CSuperDocOck::~CSuperDocOck(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	this->KillAllCommandBlocks();
+
+	delete reinterpret_cast<CItem*>(this->field_360);
+
+	for (i32 i = 0; i< 4; i++)
+	{
+		if (this->field_3B4[i])
+			Mem_Delete(this->field_3B4[i]);
+
+		delete reinterpret_cast<CItem*>(this->field_404[i]);
+		delete reinterpret_cast<CItem*>(this->field_3F4[i]);
+	}
+}
+
 // @NotOk
 // globals
 CSuperDocOck::CSuperDocOck(int *a2, int a3)
@@ -64,7 +84,7 @@ void CSuperDocOck::DoPhysics(void)
 // @Ok
 void CSuperDocOck::RenderClaws(void)
 {
-	M3d_Render(this->field_3F4);
+	M3d_Render(this->field_3F4[0]);
 }
 
 // @BIGTODO
@@ -90,10 +110,17 @@ void validate_CSuperDocOck(void){
 
 	VALIDATE(CSuperDocOck, field_344, 0x344);
 	VALIDATE(CSuperDocOck, field_348, 0x348);
+
+	VALIDATE(CSuperDocOck, field_360, 0x360);
+
 	VALIDATE(CSuperDocOck, field_36C, 0x36C);
 	VALIDATE(CSuperDocOck, field_370, 0x370);
 	VALIDATE(CSuperDocOck, field_374, 0x374);
+
+	VALIDATE(CSuperDocOck, field_3B4, 0x3B4);
+
 	VALIDATE(CSuperDocOck, field_3D8, 0x3D8);
 
 	VALIDATE(CSuperDocOck, field_3F4, 0x3F4);
+	VALIDATE(CSuperDocOck, field_404, 0x404);
 }
