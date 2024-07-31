@@ -1,13 +1,39 @@
 #include "superock.h"
-#include "validate.h"
 #include "ps2m3d.h"
+#include "spidey.h"
+
+#include "validate.h"
 
 extern CBaddy* BaddyList;
+extern CPlayer* MechList;
 
-// @SMALLTODO
+// @Ok
 void CSuperDocOck::PlayIdleOrGloatAnim(void)
 {
-	printf("void CSuperDocOck::PlayIdleOrGloatAnim(void)");
+	if ( !(this->field_218 & 0x10))
+	{
+		if ( !this->field_3D8 )
+		{
+			this->PlaySingleAnim(22, 0, -1);
+			return;
+		}
+
+		if ( this->field_3E0 > 600 || MechList->field_E2 <= 0 )
+		{
+			if ( this->field_3D4 == 1 )
+				this->PlaySingleAnim(35, 0, -1);
+			else
+				this->PlaySingleAnim(1, 0, -1);
+
+			this->field_3E0 = 0;
+			this->field_31C.bothFlags = 0x8000;
+			this->dumbAssPad = 0;
+		}
+		else
+		{
+			this->PlaySingleAnim(1, 0, -1);
+		}
+	}
 }
 
 // @Ok
@@ -153,7 +179,10 @@ void validate_CSuperDocOck(void){
 
 	VALIDATE(CSuperDocOck, field_3B4, 0x3B4);
 
+	VALIDATE(CSuperDocOck, field_3D4, 0x3D4);
 	VALIDATE(CSuperDocOck, field_3D8, 0x3D8);
+
+	VALIDATE(CSuperDocOck, field_3E0, 0x3E0);
 
 	VALIDATE(CSuperDocOck, field_3F4, 0x3F4);
 	VALIDATE(CSuperDocOck, field_404, 0x404);

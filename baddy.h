@@ -93,7 +93,7 @@ public:
 	unsigned char padAfter213[1];
 
 	__int16 field_216;
-	int field_218;
+	i32 field_218;
 	unsigned char padAFter218[0x1];
 	u8 field_21D;
 

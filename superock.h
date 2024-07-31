@@ -48,10 +48,14 @@ public:
 	u8 padAfter39C[0x3B4-0x39C-4];
 
 	void* field_3B4[4];
-	u8 padAfter3B4[0x11];
+	u8 padAfter3B4[0x11-4];
 
+	i32 field_3D4;
 	i32 field_3D8;
-	u8 padAfter3D8[0x3F4-0x3D8-4];
+	u8 padAfter3D8[0x3E0-0x3D8-4];
+
+	i32 field_3E0;
+	u8 padAfter3E0[0x3F4-0x3E0-4];
 
 	void* field_3F4[4];
 	void* field_404[4];
