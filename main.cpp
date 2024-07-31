@@ -382,6 +382,7 @@ int main()
 	validate_CFlameExplosion();
 	validate_CFrag();
 	validate_CPixel();
+	validate_CFireySpark();
 
 	puts("[*] Validation done!");
 

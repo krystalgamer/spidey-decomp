@@ -140,6 +140,23 @@ class CSkidMark : public CQuadBit
 		EXPORT virtual void Move(void);
 };
 
+class CFireySpark : public CPixel
+{
+	public:
+		EXPORT CFireySpark(CVector*, CVector*, i32);
+
+		i32 field_3C;
+
+		u8 field_40;
+		u8 field_41;
+		u8 field_42;
+		u8 field_43;
+
+		i32 field_44;
+		i32 field_48;
+		i32 field_4C;
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
@@ -147,6 +164,7 @@ void validate_CSimbySlimeBase(void);
 void validate_CEmber(void);
 void validate_CSimbyShot(void);
 void validate_CSkidMark(void);
+void validate_CFireySpark(void);
 
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const unsigned int *stack, unsigned int *result);

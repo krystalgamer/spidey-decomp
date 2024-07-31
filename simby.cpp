@@ -18,6 +18,35 @@ extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 
 // @Ok
+CFireySpark::CFireySpark(CVector* a2, CVector* a3, i32 a4)
+{
+	this->mPos = *a2;
+	this->mVel = *a3;
+
+	this->field_4C = a4;
+
+	if (Rnd(2))
+	{
+		this->field_43 = 106;
+		this->field_3C = 0x2000000;
+		this->field_44 = 1;
+	}
+	else
+	{
+		this->field_43 = 98;
+		this->field_3C = 50331648;
+		i32 v6 = Rnd(2) + 2;
+		this->field_44 = (v6 << 16) | (v6 + 1);
+	}
+
+	this->field_40 = -1;
+	this->field_41 = 0x80;
+	this->field_42 = 0;
+	this->field_48 = Rnd(10) + 10;
+	this->mType = 16;
+}
+
+// @Ok
 void CPunchOb::AI(void)
 {
 	if (this->pMessage)
@@ -696,4 +725,20 @@ void validate_CSimbyShot(void)
 void validate_CSkidMark(void)
 {
 	VALIDATE_SIZE(CSkidMark, 0x84);
+}
+
+void validate_CFireySpark(void)
+{
+	VALIDATE_SIZE(CFireySpark, 0x50);
+
+	VALIDATE(CFireySpark, field_3C, 0x3C);
+	VALIDATE(CFireySpark, field_40, 0x40);
+	VALIDATE(CFireySpark, field_41, 0x41);
+	VALIDATE(CFireySpark, field_42, 0x42);
+	VALIDATE(CFireySpark, field_43, 0x43);
+
+	VALIDATE(CFireySpark, field_44, 0x44);
+	VALIDATE(CFireySpark, field_48, 0x48);
+
+	VALIDATE(CFireySpark, field_4C, 0x4C);
 }
