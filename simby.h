@@ -165,6 +165,7 @@ class CSimbyDroplet : public CFlatBit
 {
 	public:
 		EXPORT CSimbyDroplet(i16*, i32);
+		EXPORT virtual ~CSimbyDroplet(void);
 
 		u16 field_68;
 		u16 field_6A;

@@ -17,6 +17,11 @@ extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 
+// @Ok
+CSimbyDroplet::~CSimbyDroplet(void)
+{
+}
+
 // @NotOk
 // @Test
 // globals
