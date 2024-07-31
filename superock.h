@@ -21,6 +21,8 @@ public:
 
 	EXPORT void PlaySingleAnim(u32, i32, i32);
 	EXPORT void Initialise(void);
+	EXPORT void Gloat(void);
+	EXPORT void PlayIdleOrGloatAnim(void);
 
 	unsigned char padTop[0x32C-0x324];
 

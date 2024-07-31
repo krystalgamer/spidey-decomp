@@ -4,6 +4,22 @@
 
 extern CBaddy* BaddyList;
 
+// @SMALLTODO
+void CSuperDocOck::PlayIdleOrGloatAnim(void)
+{
+	printf("void CSuperDocOck::PlayIdleOrGloatAnim(void)");
+}
+
+// @Ok
+void CSuperDocOck::Gloat(void)
+{
+	if ( this->field_142 )
+	{
+		this->csuperend = 0x10000;
+		this->PlayIdleOrGloatAnim();
+	}
+}
+
 // @Ok
 INLINE void CSuperDocOck::Initialise(void)
 {
