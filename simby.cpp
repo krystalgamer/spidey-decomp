@@ -18,6 +18,22 @@ extern CBaddy* BaddyList;
 extern i32 gAttackRelated;
 extern i16 **gTrigNodes;
 
+extern CBody *MiscList;
+
+// @NotOk
+// globals
+CSymBurn::CSymBurn(CVector *a2)
+{
+	this->mPos = *a2;
+	this->InitItem("fire");
+	this->mFlags |= 0x602u;
+	this->field_2A = 0;
+	this->field_24= 0xFFFFFF;
+
+	this->AttachTo(&MiscList);
+	(*reinterpret_cast<i32*>(0x60CF94)) += 1;
+}
+
 // @Ok
 void CSimbyDroplet::Move(void)
 {
@@ -832,4 +848,9 @@ void validate_CSimbyDroplet(void)
 	VALIDATE(CSimbyDroplet, field_68, 0x68);
 	VALIDATE(CSimbyDroplet, field_6A, 0x6A);
 	VALIDATE(CSimbyDroplet, field_6C, 0x6C);
+}
+
+void validate_CSymBurn(void)
+{
+	VALIDATE_SIZE(CSymBurn, 0x1A8);
 }

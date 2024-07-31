@@ -384,6 +384,7 @@ int main()
 	validate_CPixel();
 	validate_CFireySpark();
 	validate_CSimbyDroplet();
+	validate_CSymBurn();
 
 	puts("[*] Validation done!");
 
