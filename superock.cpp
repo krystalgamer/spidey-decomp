@@ -14,6 +14,54 @@ extern CPlayer* MechList;
 
 // @Ok
 // @Test
+// Not sure what they did in the register array asignment when v2 > v3
+// sub i16 but then move i32 and assign i16
+void CSuperDocOck::HangAndGetBeaten(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			i16 v5;
+			v5 = Rnd(120) + 120;
+			print_if_false(1u, "Bad register index");
+
+			this->registerArr[1] = v5;
+
+			this->mCBodyFlags |= 0x10;
+			this->field_DC = 100;
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			print_if_false(1u, "Bad register index");
+			i32 v2 = this->registerArr[1];
+			i32 v3 = this->field_80;
+
+			if ( v2 > v3 )
+			{
+				i32 v4;
+				v4 = v2 - v3;
+
+				print_if_false(1u, "Bad register index");
+				this->registerArr[1] = v4;
+			}
+			else
+			{
+				print_if_false(1u, "Bad register index");
+				this->registerArr[1] = 0;
+				this->mCBodyFlags &= ~0x10u;
+				this->field_DC = 0;
+				this->field_364 = 0;
+				this->RunAnim(0x18u, 0, -1);
+				this->dumbAssPad = 0;
+				this->field_31C.bothFlags = 2048;
+			}
+			break;
+	}
+}
+
+// @Ok
+// @Test
 void CSuperDocOck::CreateExplosion(i32 a2, i32)
 {
 	CVector a3;
