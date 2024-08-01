@@ -2,7 +2,21 @@
 #include "validate.h"
 
 
-static int * const dword_56EFE8 = (int*)0x56EFE8;
+EXPORT i32 gBullets;
+
+// @Ok
+CBullet::~CBullet(void)
+{
+	--gBullets;
+
+	delete reinterpret_cast<CItem*>(this->field_10C);
+
+	if (this->field_120)
+	{
+		reinterpret_cast<u8*>(this->field_120)[58] = 0;
+		reinterpret_cast<u32*>(this->field_120)[21] = 1;
+	}
+}
 
 // @NotOk
 // Global
@@ -17,7 +31,7 @@ CBullet::CBullet(void)
 	this->field_138 = 0;
 
 	this->InitItem("items");
-	++*dword_56EFE8;
+	gBullets++;
 
 	this->field_28 = 2048;
 	this->field_2A = 2048;
@@ -31,9 +45,12 @@ void validate_CBullet(void)
 {
 	VALIDATE_SIZE(CBullet, 0x13C);
 
+	VALIDATE(CBullet, field_10C, 0x10C);
+
 	VALIDATE(CBullet, field_114, 0x114);
 	VALIDATE(CBullet, field_118, 0x118);
 	VALIDATE(CBullet, field_11C, 0x11C);
+	VALIDATE(CBullet, field_120, 0x120);
 
 	VALIDATE(CBullet, field_130, 0x130);
 	VALIDATE(CBullet, field_134, 0x134);
