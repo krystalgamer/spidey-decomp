@@ -12,36 +12,66 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+// @Ok
+// @Test
 void CSuperDocOck::DoPhysics(void)
 {
 	if (!this->field_338)
 	{
-		printf("LOOOOL");
+			if (this->field_218 & 0x100)
+			{
+				CSVector v8;
+				v8.vx = 0;
+				v8.vy = 0;
+				v8.vz = 0;
+
+				Utils_CalcAim(&v8, &this->mPos, &this->field_240);
+
+				i16 vx = v8.vx;
+				v8.vx = 0;
+				Utils_TurnTowards(
+					this->mAngles,
+					&this->csVector1,
+					&this->field_8E,
+					v8,
+					10);
+				v8.vx = vx;
+
+				i32 v5 = abs(this->csVector1.vy);
+				i32 v6;
+				if ( v5 >= 64 )
+					v6 = 0;
+				else
+					v6 = (64 - v5) << 6;
+				Utils_GetVecFromMagDir(&this->mAccellorVel, (v6 * (this->field_374 >> 12)) >> 12, &v8);
+			}
+			else
+			{
+				this->csVector1.vz = 0;
+				this->csVector1.vy = 0;
+				this->csVector1.vx = 0;
+				this->field_8E.vz = 0;
+				this->field_8E.vy = 0;
+				this->field_8E.vx = 0;
+			}
 	}
 
 
-	/*
-	v7 = this->cbaddy.csuper.cbody.csVector1.vy + this->cbaddy.csuper.cbody.field_8E.vy;
-	this->cbaddy.csuper.cbody.csVector1.vx = this->cbaddy.csuper.cbody.csVector1.vx
-	+ this->cbaddy.csuper.cbody.field_8E.vx
-	- ((__int16)(this->cbaddy.csuper.cbody.csVector1.vx
-	+ this->cbaddy.csuper.cbody.field_8E.vx) >> 2);
+	i16 v7 = this->csVector1.vy + this->field_8E.vy;
 
-	this->cbaddy.csuper.cbody.csVector1.vy = v7 - (v7 >> 2);
-	CSVector_KillSmall(&this->cbaddy.csuper.cbody.csVector1);
-	if ( this->cbaddy.csuper.cbody.field_80 > 0 )
+	this->csVector1.vx += this->field_8E.vx;
+	this->csVector1.vx -= this->csVector1.vx >> 2;
+
+	this->csVector1.vy = v7 - (v7 >> 2);
+	this->csVector1.KillSmall();
+
+	for (i32 i = 0; i < this->field_80; i++)
 	{
-	do
-	{
-	CVector::operator+=(&this->cbaddy.csuper.cbody.citem.mPos, &this->cbaddy.csuper.cbody.mAccellorVel);
-	CSVector::operator+=(&this->cbaddy.csuper.cbody.citem.mAngles, &this->cbaddy.csuper.cbody.csVector1);
-	++v2;
+		this->mPos += this->mAccellorVel;
+		this->mAngles += this->csVector1;
 	}
-	while ( v2 < this->cbaddy.csuper.cbody.field_80 );
-	}
-	CSVector::Mask(&this->cbaddy.csuper.cbody.citem.mAngles);
-	*/
 
+	this->mAngles.KillSmall();
 }
 
 // @Ok

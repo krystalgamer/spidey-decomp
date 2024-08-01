@@ -10,6 +10,11 @@ extern i32 gGetGroundRelated;
 
 EXPORT i32 DifficultyLevel;
 
+void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)
+{
+	printf("void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)");
+}
+
 // @NotOk
 // @Test
 u32 Utils_CrapDist(const CVector& a,const CVector& b){
@@ -406,7 +411,9 @@ int Utils_LinearFilter(
 
 // @MEDIUMTODO
 void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
-{}
+{
+	printf("void Utils_GetVecFromMagDir(CVector*, int, CSVector*)");
+}
 
 int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
 {

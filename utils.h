@@ -19,6 +19,7 @@ EXPORT int Utils_LineOfSight(CVector*, CVector*, CVector*, int);
 EXPORT int Utils_CalcAim(CSVector*, CVector*, CVector*);
 EXPORT int Utils_GetValueFromDifficultyLevel(int, int, int, int);
 EXPORT void Utils_RotateY(CVector*, CVector*, int);
+EXPORT void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32);
 
 EXPORT int Rnd(int);
 EXPORT void Utils_InitialRand(int);
