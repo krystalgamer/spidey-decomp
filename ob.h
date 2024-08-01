@@ -148,7 +148,7 @@ public:
 	EXPORT int IsDead(void) const;
 	EXPORT virtual void Die(void);
 	EXPORT virtual void AI(void);
-	EXPORT virtual int Hit(SHitInfo*);
+	EXPORT virtual i32 Hit(SHitInfo*);
 	EXPORT virtual void DeleteStuff(void);
 
 	EXPORT void ShadowOn(void);

@@ -28,6 +28,7 @@ public:
 	EXPORT void PlaySounds(void);
 
 	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
+	EXPORT virtual i32 Hit(SHitInfo*);
 
 	unsigned char padTop[0x32C-0x324];
 

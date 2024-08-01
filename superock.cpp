@@ -12,6 +12,35 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+i32 CSuperDocOck::Hit(SHitInfo* a2)
+{
+	if ( this->field_E2 < 0 )
+		return 0;
+	if ( !this->field_DC )
+		return 0;
+	if ( this->field_31C.bothFlags != 1024 )
+		return 0;
+
+	this->field_218 &= 0xFFFFFF1F;
+	this->field_E2 -= a2->field_8;
+
+	if ( this->field_E2 <= 0 )
+	{
+		this->PlaySingleAnim(0x1Fu, 0, -1);
+		this->field_31C.bothFlags = 0x4000;
+		this->dumbAssPad = 0;
+		return 1;
+	}
+
+	if  (a2->field_0 & 8)
+	{
+	}
+
+	this->field_31C.bothFlags = 0x2000;
+	this->dumbAssPad = 0;
+	return 1;
+}
+
 // @Ok
 // @Test
 void CSuperDocOck::DoPhysics(void)

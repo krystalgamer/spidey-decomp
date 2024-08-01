@@ -8,6 +8,18 @@
 #include "ps2funcs.h"
 
 // @Ok
+CVector operator<<(const CVector& lhs, const i32& other){
+
+	CVector res;
+
+	res.vx = lhs.vx << other;
+	res.vy = lhs.vy << other;
+	res.vz = lhs.vz << other;
+
+	return res;
+}
+
+// @Ok
 void CSVector::KillSmall(void){
 
     if (this->vx >= -1 && this->vx <= 1)
