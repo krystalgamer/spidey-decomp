@@ -13,6 +13,40 @@ extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
 // @Ok
+void CSuperDocOck::PlaySounds(void)
+{
+	switch (this->field_12A)
+	{
+		case 1:
+			if (!(this->field_364 & 1) && this->field_128 >= 0)
+			{
+				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
+				this->field_364 |= 1u;
+			}
+			else if (!(this->field_364 & 2) && this->field_128 >= 20)
+			{
+				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
+				this->field_364 |= 2u;
+			}
+			break;
+		case 4:
+			if (!(this->field_364 & 1) && this->field_128 >= 0)
+			{
+				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
+				this->field_364 |= 1u;
+			}
+			break;
+		case 6:
+			if (!(this->field_364 & 1) && this->field_128 >= 20)
+			{
+				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
+				this->field_364 |= 1u;
+			}
+			break;
+	}
+}
+
+// @Ok
 // @Test
 // Not sure what they did in the register array asignment when v2 > v3
 // sub i16 but then move i32 and assign i16

@@ -26,6 +26,7 @@ public:
 
 	EXPORT void CreateExplosion(i32, i32);
 	EXPORT void HangAndGetBeaten(void);
+	EXPORT void PlaySounds(void);
 
 	unsigned char padTop[0x32C-0x324];
 
