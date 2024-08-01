@@ -1,11 +1,65 @@
 #include "superock.h"
 #include "ps2m3d.h"
 #include "spidey.h"
+#include "trig.h"
+#include "ps2lowsfx.h"
+#include "utils.h"
+
+#include <cmath>
 
 #include "validate.h"
 
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
+
+// @Ok
+// @Test
+void CSuperDocOck::CreateExplosion(i32 a2, i32)
+{
+	CVector a3;
+	a3.vx = 0;
+	a3.vy = 0;
+	a3.vz = 0;
+
+	Trig_GetPosition(&a3, a2);
+	SFX_PlayPos(0x23u, &a3, 0);
+
+	CSVector v7;
+	v7.vx = 0;
+	v7.vy = 0;
+	v7.vz = 0;
+	Utils_CalcAim(&v7, &this->mPos, &a3);
+
+	i32 v4 = v7.vy - this->mAngles.vy;
+	if (v4 < -2048)
+	{
+		v4 += 4096;
+	}
+	else if (v4 > 2048)
+	{
+		v4 -= 4096;
+	}
+
+	if (abs(v4) >= 0x600)
+	{
+		this->field_218 |= 0x80;
+	}
+	else if  (v4 < -256)
+	{
+		this->field_218 |= 0x20;
+	}
+	else if  (v4 > 256)
+	{
+		this->field_218 |= 0x40;
+	}
+
+	this->mAccellorVel.vz = 0;
+	this->mAccellorVel.vy = 0;
+	this->mAccellorVel.vx = 0;
+	this->field_218 &= ~0x100;
+	this->field_31C.bothFlags = 0x2000;
+	this->dumbAssPad = 0;
+}
 
 // @Ok
 void CSuperDocOck::PlayIdleOrGloatAnim(void)

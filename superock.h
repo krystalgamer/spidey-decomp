@@ -24,6 +24,8 @@ public:
 	EXPORT void Gloat(void);
 	EXPORT void PlayIdleOrGloatAnim(void);
 
+	EXPORT void CreateExplosion(i32, i32);
+
 	unsigned char padTop[0x32C-0x324];
 
 	int field_32C;
