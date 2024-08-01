@@ -16,7 +16,32 @@ void CSuperDocOck::DoPhysics(void)
 {
 	if (!this->field_338)
 	{
+		printf("LOOOOL");
 	}
+
+
+	/*
+	v7 = this->cbaddy.csuper.cbody.csVector1.vy + this->cbaddy.csuper.cbody.field_8E.vy;
+	this->cbaddy.csuper.cbody.csVector1.vx = this->cbaddy.csuper.cbody.csVector1.vx
+	+ this->cbaddy.csuper.cbody.field_8E.vx
+	- ((__int16)(this->cbaddy.csuper.cbody.csVector1.vx
+	+ this->cbaddy.csuper.cbody.field_8E.vx) >> 2);
+
+	this->cbaddy.csuper.cbody.csVector1.vy = v7 - (v7 >> 2);
+	CSVector_KillSmall(&this->cbaddy.csuper.cbody.csVector1);
+	if ( this->cbaddy.csuper.cbody.field_80 > 0 )
+	{
+	do
+	{
+	CVector::operator+=(&this->cbaddy.csuper.cbody.citem.mPos, &this->cbaddy.csuper.cbody.mAccellorVel);
+	CSVector::operator+=(&this->cbaddy.csuper.cbody.citem.mAngles, &this->cbaddy.csuper.cbody.csVector1);
+	++v2;
+	}
+	while ( v2 < this->cbaddy.csuper.cbody.field_80 );
+	}
+	CSVector::Mask(&this->cbaddy.csuper.cbody.citem.mAngles);
+	*/
+
 }
 
 // @Ok

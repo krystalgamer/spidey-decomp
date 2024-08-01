@@ -8,6 +8,25 @@
 #include "ps2funcs.h"
 
 // @Ok
+void CSVector::KillSmall(void){
+
+    if (this->vx >= -1 && this->vx <= 1)
+    {
+        this->vx = 0;
+    }
+
+    if (this->vy >= -1 && this->vy <= 1)
+    {
+        this->vy = 0;
+    }
+
+    if (this->vz >= -1 && this->vz <= 1)
+    {
+        this->vz = 0;
+    }
+}
+
+// @Ok
 void CSVector::Mask(void)
 {
 	this->vx &= 0xFFF;

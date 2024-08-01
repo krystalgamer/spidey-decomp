@@ -59,6 +59,7 @@ public:
 
 	EXPORT CSVector* operator+=(const CSVector& other);
 	EXPORT void Mask(void);
+	EXPORT void KillSmall(void);
 };
 
 struct SVector {
