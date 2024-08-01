@@ -7,10 +7,16 @@
 #include "validate.h"
 #include "ps2funcs.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+// @Ok
+CSVector* CSVector::operator+=(const CSVector& other){
+	this->vx += other.vx;
+	this->vy += other.vy;
+	this->vz += other.vz;
+	return this;
+}
 
+
+// @Ok
 void CVector::KillSmall(){
 
     if (this->vx >= -2048 && this->vx <= 2048)
@@ -29,6 +35,7 @@ void CVector::KillSmall(){
     }
 }
 
+// @Ok
 CVector* CVector::operator-=(const CVector& other){
 	this->vx -= other.vx;
 	this->vy -= other.vy;
@@ -36,6 +43,7 @@ CVector* CVector::operator-=(const CVector& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator>>=(const int& other){
 	this->vx >>= other;
 	this->vy >>= other;
@@ -43,6 +51,7 @@ CVector* CVector::operator>>=(const int& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator<<=(const int& other){
 	this->vx <<= other;
 	this->vy <<= other;
@@ -50,6 +59,7 @@ CVector* CVector::operator<<=(const int& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator*=(const int& other){
 	this->vx *= other;
 	this->vy *= other;
@@ -57,6 +67,7 @@ CVector* CVector::operator*=(const int& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator/=(const int& other){
 	this->vx /= other;
 	this->vy /= other;
@@ -64,6 +75,7 @@ CVector* CVector::operator/=(const int& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator+=(const CVector& other){
 	this->vx += other.vx;
 	this->vy += other.vy;
@@ -71,6 +83,7 @@ CVector* CVector::operator+=(const CVector& other){
 	return this;
 }
 
+// @Ok
 CVector* CVector::operator%=(const CFriction& other){
 	this->vx -= this->vx >> other.vx;
 	this->vy -= this->vy >> other.vy;
@@ -78,6 +91,7 @@ CVector* CVector::operator%=(const CFriction& other){
 	return this;
 }
 
+// @Ok
 CVector operator-(const CVector& lhs, const CVector& other)
 {
 	CVector res;

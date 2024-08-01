@@ -12,6 +12,13 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+void CSuperDocOck::DoPhysics(void)
+{
+	if (!this->field_338)
+	{
+	}
+}
+
 // @Ok
 void CSuperDocOck::PlaySounds(void)
 {
@@ -271,10 +278,6 @@ void CSuperDocOck::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
-// @BIGTODO
-void CSuperDocOck::DoPhysics(void)
-{}
-
 // @Ok
 void CSuperDocOck::RenderClaws(void)
 {
@@ -301,6 +304,8 @@ void validate_CSuperDocOck(void){
 	VALIDATE(CSuperDocOck, field_32C, 0x32C);
 	VALIDATE(CSuperDocOck, field_330, 0x330);
 	VALIDATE(CSuperDocOck, field_334, 0x334);
+
+	VALIDATE(CSuperDocOck, field_338, 0x338);
 
 	VALIDATE(CSuperDocOck, field_344, 0x344);
 	VALIDATE(CSuperDocOck, field_348, 0x348);

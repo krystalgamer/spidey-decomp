@@ -13,7 +13,6 @@ public:
 	EXPORT CSuperDocOck(int*, int);
 	EXPORT virtual ~CSuperDocOck(void);
 
-	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 	EXPORT void RenderClaws(void);
 	EXPORT void KillAllCommandBlocks(void);
@@ -28,12 +27,15 @@ public:
 	EXPORT void HangAndGetBeaten(void);
 	EXPORT void PlaySounds(void);
 
+	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
+
 	unsigned char padTop[0x32C-0x324];
 
-	int field_32C;
-	int field_330;
-	int field_334;
-	unsigned char padAfter334[0x344-0x334-4];
+	i32 field_32C;
+	i32 field_330;
+	i32 field_334;
+	u8 field_338;
+	unsigned char padAfter338[0x344-0x338-4];
 
 	int field_344;
 	int* field_348;
