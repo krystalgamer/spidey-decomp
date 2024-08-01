@@ -8,6 +8,14 @@
 #include "ps2funcs.h"
 
 // @Ok
+void CSVector::Mask(void)
+{
+	this->vx &= 0xFFF;
+	this->vy &= 0xFFF;
+	this->vz &= 0xFFF;
+}
+
+// @Ok
 CSVector* CSVector::operator+=(const CSVector& other){
 	this->vx += other.vx;
 	this->vy += other.vy;
