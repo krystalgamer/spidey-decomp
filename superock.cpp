@@ -12,6 +12,7 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+// @Ok
 i32 CSuperDocOck::Hit(SHitInfo* a2)
 {
 	if ( this->field_E2 < 0 )
@@ -34,6 +35,35 @@ i32 CSuperDocOck::Hit(SHitInfo* a2)
 
 	if  (a2->field_0 & 8)
 	{
+		CSVector v9;
+		v9.vx = 0;
+		v9.vy = 0;
+		v9.vz = 0;
+
+		Utils_CalcAim(&v9, &this->mPos, &(this->mPos + (a2->field_C << 12)));
+
+		i32 v7 = v9.vy - this->mAngles.vy;
+		if (v7 < -2048)
+		{
+			v7 += 4096;
+		}
+		else if (v7 > 2048)
+		{
+			v7 -= 4096;
+		}
+
+		if (abs(v7) >= 0x600)
+		{
+			this->field_218 |= 0x80;
+		}
+		else if  (v7 < -256)
+		{
+			this->field_218 |= 0x20;
+		}
+		else if  (v7 > 256)
+		{
+			this->field_218 |= 0x40;
+		}
 	}
 
 	this->field_31C.bothFlags = 0x2000;
