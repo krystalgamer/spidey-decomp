@@ -638,12 +638,14 @@ void CBody::EveryFrame(void)
 
 }
 
+// @Ok
 INLINE CBody::~CBody(void)
 {
 	if (this->bodyQuadBit)
 		delete this->bodyQuadBit;
 }
 
+// @Ok
 CSuper::~CSuper(void)
 {
 	if (this->field_184)

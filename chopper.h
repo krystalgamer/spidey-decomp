@@ -99,6 +99,7 @@ public:
 class CBulletFrag : public CFlatBit {
 public:
 	EXPORT CBulletFrag(CVector*);
+	EXPORT ~CBulletFrag(void);
 	EXPORT virtual void Move(void);
 };
 

@@ -23,6 +23,11 @@ extern CPlayer* MechList;
 
 extern CCamera* CameraList;
 
+// @Ok
+CBulletFrag::~CBulletFrag(void)
+{
+}
+
 // @SMALLTODO
 void CChopper::TrackSpidey(void)
 {
