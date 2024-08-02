@@ -5,6 +5,11 @@
 #include "message.h"
 
 // @Ok
+CAIProc_LookAt::~CAIProc_LookAt(void)
+{
+}
+
+// @Ok
 CAIProc_RotY::~CAIProc_RotY(void)
 {
 }

@@ -60,7 +60,10 @@ class CAIProc_LookAt : public CAIProc
 	public:
 		EXPORT CAIProc_LookAt(CBaddy*, CBody*, CVector *, int, int, int);
 		EXPORT CAIProc_LookAt(CBaddy*, int, int, int, int);
+
 		EXPORT void SetUpVariables(int, int);
+
+		EXPORT virtual ~CAIProc_LookAt(void);
 		EXPORT virtual void Execute(void);
 
 		int field_20;
