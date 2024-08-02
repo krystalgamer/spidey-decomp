@@ -16,6 +16,17 @@ EXPORT u8 gActuatorRelated;
 EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
+// @MEDIUMTODO
+CAngrySpark::CAngrySpark(CVector*)
+{
+	printf("CAngrySpark::CAngrySpark(CVector*)");
+}
+
+// @Ok
+CAngrySpark::~CAngrySpark(void)
+{
+}
+
 // @Ok
 // not matching but good enough
 i32 CMysterio::MonitorAttack(
@@ -466,4 +477,9 @@ void validate_CMysterioHeadCircle(void)
 void validate_CFadePalettes(void)
 {
 	VALIDATE_SIZE(CFadePalettes, 0x460);
+}
+
+void validate_CAngrySpark(void)
+{
+	VALIDATE_SIZE(CAngrySpark, 0x84);
 }

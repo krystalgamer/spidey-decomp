@@ -117,6 +117,13 @@ class CFadePalettes : public CNonRenderedBit
 		unsigned char fullPad[0x424];
 };
 
+class CAngrySpark : public CQuadBit
+{
+	public:
+		EXPORT CAngrySpark(CVector*);
+		EXPORT virtual ~CAngrySpark(void);
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
@@ -124,6 +131,7 @@ void validate_CMysterioLaser(void);
 void validate_CGoldFish(void);
 void validate_CMysterioHeadCircle(void);
 void validate_CFadePalettes(void);
+void validate_CAngrySpark(void);
 
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
 

@@ -387,6 +387,7 @@ int main()
 	validate_CSimbyDroplet();
 	validate_CSymBurn();
 	validate_CBackground();
+	validate_CAngrySpark();
 
 	puts("[*] Validation done!");
 
