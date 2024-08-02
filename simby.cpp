@@ -23,6 +23,11 @@ extern CBody *MiscList;
 extern CCamera* CameraList;
 
 // @Ok
+CEmber::~CEmber(void)
+{
+}
+
+// @Ok
 void Simby_CreatePunchOb(const u32 *stack, u32 *result)
 {
 	i16* v2 = reinterpret_cast<i16*>(stack[0]);

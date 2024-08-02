@@ -116,6 +116,7 @@ class CEmber : public CFlatBit
 {
 	public:
 		EXPORT CEmber(const CVector*, int);
+		EXPORT virtual ~CEmber(void);
 
 		CVector field_68;
 		i32 field_74;
