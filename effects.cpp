@@ -10,6 +10,17 @@ extern SFlatBitVelocity FlatBitVelocities[];
 EXPORT i32 gTextureRelated;
 
 // @SMALLTODO
+CElectroLine::CElectroLine(u16, u16, u16, u8, u8 ,u8, i32, i32, i32, i32, i32, u32*)
+{
+	printf("CElectroLine::CElectroLine(u16, u16, u16, u8, u8 ,u8, i32, i32, i32, i32, i32, u32*)");
+}
+
+// @Ok
+CElectroLine::~CElectroLine(void)
+{
+}
+
+// @SMALLTODO
 CElectro::CElectro(void)
 {
 }
@@ -393,4 +404,9 @@ void validate_CElectro(void)
 
 	VALIDATE(CElectro, field_50, 0x50);
 	VALIDATE(CElectro, field_54, 0x54);
+}
+
+void validate_CElectroLine(void)
+{
+	VALIDATE_SIZE(CElectroLine, 0x6C);
 }

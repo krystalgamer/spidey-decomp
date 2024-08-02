@@ -97,6 +97,15 @@ class CElectro : public CSimpleTexturedRibbon
 		void *field_54;
 };
 
+class CElectroLine : public CElectro
+{
+	public:
+		EXPORT CElectroLine(u16, u16, u16, u8, u8 ,u8, i32, i32, i32, i32, i32, u32*);
+		EXPORT virtual ~CElectroLine(void);
+
+		u8 padBottom[0x14];
+};
+
 void validate_CElectrify(void);
 void validate_CSkinGoo(void);
 void validate_SSkinGooSource(void);
@@ -107,6 +116,7 @@ void validate_CFootprint(void);
 void validate_CChunkSmoke(void);
 void validate_CBouncingRock(void);
 void validate_CElectro(void);
+void validate_CElectroLine(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);

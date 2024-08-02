@@ -395,6 +395,7 @@ int main()
 	validate_CCopLaserPing();
 	validate_CDamagedSoftSpotEffect();
 	validate_CElectro();
+	validate_CElectroLine();
 
 	puts("[*] Validation done!");
 
