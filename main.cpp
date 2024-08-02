@@ -393,6 +393,7 @@ int main()
 	validate_CChunkBit();
 	validate_CTextBox();
 	validate_CCopLaserPing();
+	validate_CDamagedSoftSpotEffect();
 
 	puts("[*] Validation done!");
 

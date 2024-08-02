@@ -16,6 +16,19 @@ EXPORT u8 gActuatorRelated;
 EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
+// @SMALLTODO
+CDamagedSoftSpotEffect::CDamagedSoftSpotEffect(CBody*, i32)
+{
+	printf("CDamagedSoftSpotEffect::CDamagedSoftSpotEffect(CBody*, i32)");
+}
+
+// @NotOk
+// @FIXME field_48 type
+CDamagedSoftSpotEffect::~CDamagedSoftSpotEffect(void)
+{
+	delete reinterpret_cast<CClass*>(this->field_48);
+}
+
 // @MEDIUMTODO
 CAngrySpark::CAngrySpark(CVector*)
 {
@@ -482,4 +495,11 @@ void validate_CFadePalettes(void)
 void validate_CAngrySpark(void)
 {
 	VALIDATE_SIZE(CAngrySpark, 0x84);
+}
+
+void validate_CDamagedSoftSpotEffect(void)
+{
+	VALIDATE_SIZE(CDamagedSoftSpotEffect, 0x4C);
+
+	VALIDATE(CDamagedSoftSpotEffect, field_48, 0x48);
 }

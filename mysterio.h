@@ -124,6 +124,18 @@ class CAngrySpark : public CQuadBit
 		EXPORT virtual ~CAngrySpark(void);
 };
 
+class CDamagedSoftSpotEffect : public CNonRenderedBit
+{
+	public:
+		EXPORT CDamagedSoftSpotEffect(CBody*, i32);
+		EXPORT virtual ~CDamagedSoftSpotEffect(void);
+
+		u8 padTop[0xC];
+
+		// @FIXME  type
+		void *field_48;
+};
+
 void validate_CMystFoot(void);
 void validate_CMysterio(void);
 void validate_CSoftSpot(void);
@@ -132,6 +144,7 @@ void validate_CGoldFish(void);
 void validate_CMysterioHeadCircle(void);
 void validate_CFadePalettes(void);
 void validate_CAngrySpark(void);
+void validate_CDamagedSoftSpotEffect(void);
 
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
 
