@@ -2,6 +2,18 @@
 #include "validate.h"
 #include "trig.h"
 
+extern CBaddy* BaddyList;
+
+// @NotOk
+// guess type of 33C
+CBlackCat::~CBlackCat(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	delete reinterpret_cast<CClass*>(this->field_33C);
+
+	this->KillAllCommandBlocks();
+}
+
 // @NotOk
 // globals
 CBlackCat::CBlackCat(int* a2, int a3)
@@ -75,6 +87,8 @@ void validate_CBlackCat(void){
 	VALIDATE(CBlackCat, field_324, 0x324);
 	VALIDATE(CBlackCat, field_328, 0x328);
 	VALIDATE(CBlackCat, field_32C, 0x32C);
+
+	VALIDATE(CBlackCat, field_33C, 0x33C);
 
 
 	VALIDATE(CBlackCat, field_340, 0x340);
