@@ -391,6 +391,7 @@ int main()
 	validate_CBitServer();
 	validate_CCarnageHitSpark();
 	validate_CChunkBit();
+	validate_CTextBox();
 
 	puts("[*] Validation done!");
 

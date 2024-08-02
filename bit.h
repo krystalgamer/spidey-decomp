@@ -299,6 +299,15 @@ class CChunkBit : public CBit
 		EXPORT virtual ~CChunkBit(void);
 };
 
+class CTextBox : public CBit
+{
+	public:
+		EXPORT CTextBox(i32, i32, i32, i32, u32, CVECTOR*);
+		EXPORT virtual ~CTextBox(void);
+
+		u8 padBottom[8];
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -330,5 +339,6 @@ void validate_CFrag(void);
 void validate_CPixel(void);
 void validate_CBitServer(void);
 void validate_CChunkBit(void);
+void validate_CTextBox(void);
 
 #endif

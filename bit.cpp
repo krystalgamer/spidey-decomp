@@ -9,6 +9,7 @@
 
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
+EXPORT CTextBox* TextBoxList;
 
 volatile static i32 BitCount = 0;
 EXPORT i32 TotalBitUsage = 0;
@@ -19,6 +20,17 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
+
+// @SMALLTODO
+CTextBox::CTextBox(i32, i32, i32, i32, u32, CVECTOR*)
+{
+	printf("CTextBox::CTextBox(i32, i32, i32, i32, u32, CVECTOR*)");
+}
+
+CTextBox::~CTextBox(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&TextBoxList));
+}
 
 // @SMALLTODO
 CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)
@@ -924,4 +936,9 @@ void validate_CBitServer(void)
 
 void validate_CChunkBit(void)
 {
+}
+
+void validate_CTextBox(void)
+{
+	VALIDATE_SIZE(CTextBox, 0x44);
 }
