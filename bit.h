@@ -266,6 +266,7 @@ class CCombatImpactRing : public CFlatBit
 {
 	public:
 		EXPORT CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32);
+		EXPORT virtual ~CCombatImpactRing(void);
 
 		u8 padBottom[0xC];
 };

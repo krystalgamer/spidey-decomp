@@ -21,6 +21,11 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
+// @Ok
+CCombatImpactRing::~CCombatImpactRing(void)
+{
+}
+
 // @SMALLTODO
 CTextBox::CTextBox(i32, i32, i32, i32, u32, CVECTOR*)
 {
