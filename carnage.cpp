@@ -8,6 +8,17 @@ extern const char *gObjFile;
 extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
 
+// @SMALLTODO
+CCarnageHitSpark::CCarnageHitSpark(CVector*)
+{
+	printf("CCarnageHitSpark::CCarnageHitSpark(CVector*);");
+}
+
+// @Ok
+CCarnageHitSpark::~CCarnageHitSpark(void)
+{
+}
+
 // @Ok
 CCarnage::~CCarnage(void)
 {
@@ -161,4 +172,9 @@ void validate_CCarnageElectrified(void)
 
 	VALIDATE(CCarnageElectrified, field_3C, 0x3C);
 	VALIDATE(CCarnageElectrified, field_44, 0x44);
+}
+
+void validate_CCarnageHitSpark(void)
+{
+	VALIDATE_SIZE(CCarnageHitSpark, 0x84);
 }

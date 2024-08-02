@@ -58,10 +58,18 @@ class CCarnageElectrified : public CNonRenderedBit
 		i32 field_44;
 };
 
+class CCarnageHitSpark : public CQuadBit
+{
+	public:
+		EXPORT CCarnageHitSpark(CVector*);
+		EXPORT virtual ~CCarnageHitSpark(void);
+};
+
 
 void validate_CCarnage(void);
 void validate_CSonicBubble(void);
 void validate_CCarnageElectrified(void);
+void validate_CCarnageHitSpark(void);
 EXPORT void CreateSonicBubbleVertexWobbler(void);
 EXPORT void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result);
 

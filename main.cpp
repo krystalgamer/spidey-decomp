@@ -389,6 +389,7 @@ int main()
 	validate_CBackground();
 	validate_CAngrySpark();
 	validate_CBitServer();
+	validate_CCarnageHitSpark();
 
 	puts("[*] Validation done!");
 
