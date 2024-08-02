@@ -203,6 +203,9 @@ class CGlow : public CBit
 	public:
 		EXPORT CGlow(u32, u32);
 		EXPORT CGlow(CVector*, i32, i32, u8, u8, u8, u8, u8, u8);
+
+		EXPORT virtual ~CGlow(void);
+
 		EXPORT void SetCentreRGB(u8, u8, u8);
 		EXPORT void SetRadius(i32);
 		EXPORT void SetRGB(u8, u8, u8);

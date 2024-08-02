@@ -8,6 +8,7 @@
 
 
 EXPORT CChunkBit* ChunkBitList;
+EXPORT CGlow* GlowList;
 
 volatile static i32 BitCount = 0;
 EXPORT i32 TotalBitUsage = 0;
@@ -109,6 +110,13 @@ CSmokeTrail::CSmokeTrail(
 // @SMALLTODO
 CGlow::CGlow(u32 a1, u32 a2)
 {
+}
+
+// @Ok
+CGlow::~CGlow(void)
+{
+	Mem_Delete(static_cast<void*>(this->field_3C));
+	this->DeleteFrom(reinterpret_cast<CBit**>(&GlowList));
 }
 
 // @MEDIUMTODO
@@ -295,7 +303,8 @@ void CBit::operator delete(void* ptr)
 
 // @NotOk
 // revisit, there's a weird mem_delete
-CBit::~CBit(){
+CBit::~CBit()
+{
 }
 
 // @Ok
