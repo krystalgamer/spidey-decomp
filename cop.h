@@ -100,10 +100,20 @@ class CCopBulletTracer : public CNonRenderedBit
 		u8 padBottom[0x48-0x40-4];
 };
 
+class CCopLaserPing : public CQuadBit
+{
+	public:
+		EXPORT CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8);
+		EXPORT virtual ~CCopLaserPing(void);
+		
+		u8 padBottom[0x28];
+};
+
 
 void validate_CCop(void);
 void validate_CCopPing(void);
 void validate_CCopBulletTracer(void);
+void validate_CCopLaserPing(void);
 
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
 

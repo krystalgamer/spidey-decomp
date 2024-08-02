@@ -17,6 +17,17 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @SMALLTODO
+CCopLaserPing::CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8)
+{
+	printf("CCopLaserPing::CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8)");
+}
+
+// @Ok
+CCopLaserPing::~CCopLaserPing(void)
+{
+}
+
 // @MEDIUMTODO
 i32 CCop::WallHitCheck(CVector*, CVector*, i32)
 {
@@ -642,4 +653,9 @@ void validate_CCopBulletTracer(void)
 
 	VALIDATE(CCopBulletTracer, field_3C, 0x3C);
 	VALIDATE(CCopBulletTracer, field_40, 0x40);
+}
+
+void validate_CCopLaserPing(void)
+{
+	VALIDATE_SIZE(CCopLaserPing, 0xAC);
 }

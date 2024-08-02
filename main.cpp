@@ -392,6 +392,7 @@ int main()
 	validate_CCarnageHitSpark();
 	validate_CChunkBit();
 	validate_CTextBox();
+	validate_CCopLaserPing();
 
 	puts("[*] Validation done!");
 
