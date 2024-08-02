@@ -5,6 +5,11 @@
 #include "message.h"
 
 // @Ok
+CAIProc_MoveTo::~CAIProc_MoveTo(void)
+{
+}
+
+// @Ok
 CAIProc_StateSwitchSendMessage::~CAIProc_StateSwitchSendMessage(void)
 {
 }

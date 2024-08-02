@@ -133,6 +133,8 @@ class CAIProc_MoveTo : public CAIProc
 {
 	public:
 		EXPORT CAIProc_MoveTo(CBaddy*, SMoveToInfo*, int);
+
+		EXPORT virtual ~CAIProc_MoveTo(void);
 		EXPORT virtual void Execute(void);
 
 		CVector field_20;
