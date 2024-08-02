@@ -4,10 +4,21 @@
 #include "ps2funcs.h"
 #include "message.h"
 
+// @Ok
+CAIProc_MonitorAttack::~CAIProc_MonitorAttack(void)
+{
+	Mem_Delete(this->field_30);
+}
+
+// @SMALLTODO
+CAIProc::~CAIProc(void)
+{
+	printf("CAIProc::~CAIProc(void)");
+}
 
 // @NotOk
 // validate
-int __inline CAIProc::Wait(void)
+INLINE i32 CAIProc::Wait(void)
 {
 	if (this->field_10 & 3)
 		return 1;

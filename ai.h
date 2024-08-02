@@ -39,6 +39,8 @@ enum AIProcType
 class CAIProc : public CClass
 {
 	public:
+		EXPORT virtual ~CAIProc(void);
+
 		EXPORT int Wait(void);
 		EXPORT void AttachProc(AIProcType, CBaddy*, int);
 		EXPORT virtual void Execute(void) = 0;
@@ -105,6 +107,7 @@ class CAIProc_MonitorAttack : public CAIProc
 {
 	public:
 		EXPORT CAIProc_MonitorAttack(CBaddy*, int, int, int, int);
+		EXPORT virtual ~CAIProc_MonitorAttack(void);
 		EXPORT void Execute(void);
 
 		int field_20;
