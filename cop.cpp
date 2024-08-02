@@ -522,6 +522,11 @@ CCopPing::CCopPing(CSuper* pHost, SHook* pHook)
 	this->SetPosition();
 }
 
+// @Ok
+CCopPing::~CCopPing(void)
+{
+}
+
 // @NotOk
 // globals
 CCop::CCop(int* a2, int a3)

@@ -76,6 +76,8 @@ class CCopPing : public CSimpleAnim
 {
 	public:
 		EXPORT CCopPing(CSuper*, SHook*);
+		EXPORT virtual ~CCopPing(void);
+
 		EXPORT void Move(void);
 		EXPORT void SetPosition(void);
 
