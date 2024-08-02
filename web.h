@@ -16,6 +16,9 @@ public:
 
 class CDomePiece : public CBody {
 public:
+	EXPORT CDomePiece(CVector*, i32, i32, i32);
+	EXPORT virtual ~CDomePiece(void);
+
 	int padTop;
 
 	int field_F8;

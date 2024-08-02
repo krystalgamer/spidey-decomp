@@ -15,6 +15,17 @@ EXPORT i32 gDomeRelatedTwo;
 extern CBody* MiscList;
 
 // @SMALLTODO
+CDomePiece::CDomePiece(CVector*, i32, i32, i32)
+{
+	printf("CDomePiece::CDomePiece(CVector*, i32, i32, i32)");
+}
+
+CDomePiece::~CDomePiece(void)
+{
+	this->DeleteFrom(&MiscList);
+}
+
+// @SMALLTODO
 CDome::CDome(CPlayer*, i32)
 {
 	printf("CDome::CDome(CPlayer*, i32)");
