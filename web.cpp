@@ -5,10 +5,37 @@
 #include "m3dzone.h"
 
 
-SLineInfo gLineInfo;
-i32 gGetGroundRelated;
-int gGetGroundDefaultValue;
+EXPORT SLineInfo gLineInfo;
+EXPORT i32 gGetGroundRelated;
+EXPORT i32 gGetGroundDefaultValue;
 
+EXPORT i32 gDomeRelated;
+EXPORT i32 gDomeRelatedTwo;
+
+extern CBody* MiscList;
+
+// @SMALLTODO
+CDome::CDome(CPlayer*, i32)
+{
+	printf("CDome::CDome(CPlayer*, i32)");
+}
+
+// @NotOk
+// @FIXME types
+CDome::~CDome(void)
+{
+	this->DeleteFrom(&MiscList);
+
+	delete reinterpret_cast<CClass*>(this->field_108);
+	delete reinterpret_cast<CClass*>(this->field_10C);
+	delete reinterpret_cast<CClass*>(this->field_110);
+	delete reinterpret_cast<CClass*>(this->field_114);
+	delete reinterpret_cast<CClass*>(this->field_118);
+
+	if (this->field_104)
+		gDomeRelated--;
+	gDomeRelatedTwo--;
+}
 
 // @NotOk
 // Order assignemnt slightly different and make sure globals are properly set
@@ -68,8 +95,16 @@ void validate_CDomePiece(void){
 	VALIDATE(CDomePiece, field_F8, 0xF8);
 	VALIDATE(CDomePiece, field_FC, 0xFC);
 }
+
 void validate_CDome(void){
 	VALIDATE_SIZE(CDome, 0x11C);
+
+	VALIDATE(CDome, field_104, 0x104);
+	VALIDATE(CDome, field_108, 0x108);
+	VALIDATE(CDome, field_10C, 0x10C);
+	VALIDATE(CDome, field_110, 0x110);
+	VALIDATE(CDome, field_114, 0x114);
+	VALIDATE(CDome, field_118, 0x118);
 }
 
 void validate_CDomeRing(void){

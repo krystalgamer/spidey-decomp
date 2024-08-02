@@ -5,7 +5,7 @@
 
 #include "bit.h"
 #include "export.h"
-#include "ob.h"
+#include "spidey.h"
 
 
 class CImpactWeb : public CFlatBit{
@@ -22,9 +22,22 @@ public:
 	int field_FC;
 };
 
-class CDome : public CBody {
-public:
-	unsigned char padFull[0x25];
+class CDome : public CBody
+{
+	public:
+		EXPORT CDome(CPlayer*, i32);
+		EXPORT virtual ~CDome(void);
+
+		u8 padTop[0x10];
+
+		i32 field_104;
+
+		// @FIXME types
+		void *field_108;
+		void *field_10C;
+		void *field_110;
+		void *field_114;
+		void *field_118;
 };
 
 class CDomeRing : public CBody {
