@@ -17,6 +17,16 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
+// @SMALLTODO
+CBitServer::CBitServer(void)
+{
+}
+
+// @Ok
+CBitServer::~CBitServer(void)
+{
+}
+
 // @Ok
 CPixel::~CPixel(void)
 {
@@ -211,6 +221,7 @@ CMotionBlur::CMotionBlur(
 	this->mTransDecay = a7;
 }
 
+// @Ok
 CBit::CBit() {
 
 	this->mPos.vx = 0;
@@ -267,6 +278,8 @@ void CBit::operator delete(void* ptr)
 	Mem_Delete(ptr);
 }
 
+// @NotOk
+// revisit, there's a weird mem_delete
 CBit::~CBit(){
 }
 
@@ -878,4 +891,9 @@ void validate_CFrag(void)
 void validate_CPixel(void)
 {
 	VALIDATE_SIZE(CPixel, 0x3C);
+}
+
+void validate_CBitServer(void)
+{
+	VALIDATE_SIZE(CBitServer, 0x108);
 }

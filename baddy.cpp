@@ -947,6 +947,7 @@ void CBaddy::MarkAIProcList(int a2, int a3, int a4)
 	}
 }
 
+// @Ok
 CBaddy::~CBaddy(void)
 {
 	print_if_false(NumBaddies > 0, "Negative NumBaddies");

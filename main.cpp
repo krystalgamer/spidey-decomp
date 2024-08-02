@@ -388,6 +388,7 @@ int main()
 	validate_CSymBurn();
 	validate_CBackground();
 	validate_CAngrySpark();
+	validate_CBitServer();
 
 	puts("[*] Validation done!");
 

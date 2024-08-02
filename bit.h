@@ -3,6 +3,7 @@
 #ifndef BIT_H
 #define BIT_H
 
+#include "main.h"
 #include "vector.h"
 #include "texture.h"
 #include "ps2funcs.h"
@@ -279,6 +280,15 @@ class CPixel : public CBit
 		EXPORT virtual ~CPixel(void);
 };
 
+class CBitServer : public CClass
+{
+	public:
+		EXPORT CBitServer(void);
+		EXPORT virtual ~CBitServer(void);
+
+		u8 padBottom[0x104];
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -308,5 +318,6 @@ void validate_CCombatImpactRing(void);
 void validate_SRibbonPoint(void);
 void validate_CFrag(void);
 void validate_CPixel(void);
+void validate_CBitServer(void);
 
 #endif
