@@ -1,7 +1,23 @@
 #include "backgrnd.h"
-#include "ob.h"
 
-static CSuper* BackgroundList;
+#include "validate.h"
+
+EXPORT CSuper* BackgroundList;
+EXPORT i16 gBackgroundIndex = 0;
+
+// @SMALLTODO
+CBackground::CBackground(u32, CSVector*)
+{
+	printf("CBackground::CBackground(u32, CSVector*)");
+}
+
+// @Ok
+CBackground::~CBackground(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BackgroundList));
+	print_if_false(gBackgroundIndex != 0, "Background index error");
+	--gBackgroundIndex;
+}
 
 // @NotOk
 // global
@@ -47,4 +63,9 @@ void Backgrnd_Off(unsigned __int16 a1)
 			}
 		}
 	}
+}
+
+void validate_CBackground(void)
+{
+	VALIDATE_SIZE(CBackground, 0xFC);
 }

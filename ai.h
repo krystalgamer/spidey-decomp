@@ -94,7 +94,7 @@ class CAIProc_Fall : public CAIProc
 {
 	public:
 		EXPORT CAIProc_Fall(CBaddy *, int);
-		EXPORT virtual CAIProc_Fall(void);
+		EXPORT virtual ~CAIProc_Fall(void);
 		EXPORT virtual void Execute(void);
 };
 

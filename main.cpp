@@ -73,6 +73,7 @@
 #include "l1a3bomb.h"
 #include "chunk.h"
 #include "weapons.h"
+#include "backgrnd.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -385,6 +386,7 @@ int main()
 	validate_CFireySpark();
 	validate_CSimbyDroplet();
 	validate_CSymBurn();
+	validate_CBackground();
 
 	puts("[*] Validation done!");
 
