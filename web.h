@@ -116,6 +116,9 @@ class CTrapWebEffect : public CNonRenderedBit
 class CDomeShockWave : public CNonRenderedBit
 {
 	public:
+		EXPORT CDomeShockWave(i32);
+		EXPORT virtual ~CDomeShockWave(void);
+
 		EXPORT void ResetHitFlags(CBody*);
 		unsigned char fullPad[0x5C];
 };

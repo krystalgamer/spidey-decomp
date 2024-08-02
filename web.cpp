@@ -15,6 +15,17 @@ EXPORT i32 gDomeRelatedTwo;
 extern CBody* MiscList;
 
 // @SMALLTODO
+CDomeShockWave::CDomeShockWave(i32)
+{
+	printf("CDomeShockWave::CDomeShockWave(i32)");
+}
+
+// @Ok
+CDomeShockWave::~CDomeShockWave(void)
+{
+}
+
+// @SMALLTODO
 CDomePiece::CDomePiece(CVector*, i32, i32, i32)
 {
 	printf("CDomePiece::CDomePiece(CVector*, i32, i32, i32)");
