@@ -4,6 +4,11 @@
 
 EXPORT i32 JoelJewCheatCode;
 
+// @Ok
+CExpandingBox::~CExpandingBox(void)
+{
+}
+
 
 EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
 	return 69;

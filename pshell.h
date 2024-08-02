@@ -10,7 +10,7 @@
 class CExpandingBox : public CClass
 {
 
-public:
+public: 
 
 	i32 field_4;
 	i32 field_8;
@@ -27,6 +27,8 @@ public:
 	u8 padBottom[0x34-0x2C-4];
 
 	EXPORT CExpandingBox(int a2,int a3,int a4,int a5,int a6,int a7,int a8,int a9,int a10);
+	EXPORT virtual ~CExpandingBox(void);
+
 	EXPORT int Display();
 	EXPORT int ScrollBarHitTest(int a2, int a3);
 };
