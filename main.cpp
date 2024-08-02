@@ -390,6 +390,7 @@ int main()
 	validate_CAngrySpark();
 	validate_CBitServer();
 	validate_CCarnageHitSpark();
+	validate_CChunkBit();
 
 	puts("[*] Validation done!");
 

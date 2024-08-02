@@ -289,6 +289,13 @@ class CBitServer : public CClass
 		u8 padBottom[0x104];
 };
 
+class CChunkBit : public CBit
+{
+	public:
+		EXPORT CChunkBit(CSVector*, CSVector*, CSVector*);
+		EXPORT virtual ~CChunkBit(void);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -319,5 +326,6 @@ void validate_SRibbonPoint(void);
 void validate_CFrag(void);
 void validate_CPixel(void);
 void validate_CBitServer(void);
+void validate_CChunkBit(void);
 
 #endif

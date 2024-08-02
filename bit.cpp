@@ -7,6 +7,8 @@
 #include "spool.h"
 
 
+EXPORT CChunkBit* ChunkBitList;
+
 volatile static i32 BitCount = 0;
 EXPORT i32 TotalBitUsage = 0;
 
@@ -16,6 +18,19 @@ EXPORT CSpecialDisplay *SpecialDisplayList;
 EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
+
+// @SMALLTODO
+CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)
+{
+	printf("CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)");
+}
+
+// @Ok
+CChunkBit::~CChunkBit(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&ChunkBitList));
+}
+
 
 // @SMALLTODO
 CBitServer::CBitServer(void)
@@ -896,4 +911,8 @@ void validate_CPixel(void)
 void validate_CBitServer(void)
 {
 	VALIDATE_SIZE(CBitServer, 0x108);
+}
+
+void validate_CChunkBit(void)
+{
 }
