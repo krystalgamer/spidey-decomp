@@ -75,6 +75,7 @@ class CAIProc_RotY : public CAIProc
 {
 	public:
 		EXPORT CAIProc_RotY(CBaddy*, int, int ,int);
+		EXPORT virtual ~CAIProc_RotY(void);
 
 		// @TODO
 		// this doesn't exist, i'm confused
