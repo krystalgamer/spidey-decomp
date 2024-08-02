@@ -5,6 +5,11 @@
 #include "message.h"
 
 // @Ok
+CAIProc_AccZ::~CAIProc_AccZ(void)
+{
+}
+
+// @Ok
 CAIProc_MoveTo::~CAIProc_MoveTo(void)
 {
 }
@@ -469,6 +474,8 @@ void validate_CAIProc(void)
 	VALIDATE(CAIProc, field_18, 0x18);
 
 	VALIDATE(CAIProc, mNext, 0x1C);
+
+	VALIDATE_VTABLE(CAIProc, Execute, 1);
 }
 
 void validate_CAIProc_LookAt(void)
