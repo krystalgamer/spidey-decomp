@@ -10,6 +10,8 @@ class CDocOc : public CBaddy {
 
 public:
 	EXPORT CDocOc(int*, int);
+	EXPORT virtual ~CDocOc(void);
+
 	EXPORT void RenderClaws(void);
 	EXPORT void PlaySingleAnim(unsigned int , int, int);
 	EXPORT void Gloat(void);
@@ -49,7 +51,11 @@ public:
 
 	CVector field_50C;
 	i32 field_518;
-	unsigned char padAfter518[0x550-0x518-4];
+	unsigned char padAfter518[0x530-0x518-4];
+
+	// @FIXME
+	void* field_530[4];
+	u8 padAfter530[0x10];
 
 	i32 field_550;
 	i32 field_554;
@@ -58,9 +64,8 @@ public:
 	i32 field_55C;
 	u8 padAfter55C[0x570-0x55C-4];
 
-	void* field_570;
-
-	unsigned char padBottom[0x590-0x570-4];
+	void* field_570[4];
+	void* field_580[4];
 };
 
 

@@ -7,8 +7,29 @@
 #include "mem.h"
 #include "utils.h"
 #include "spidey.h"
+#include "panel.h"
 
 extern CPlayer* MechList;
+extern CBaddy* BaddyList;
+extern i32 gBossRelated;
+
+// @Ok
+CDocOc::~CDocOc(void)
+{
+	gBossRelated = 0;
+	Panel_DestroyHealthbar();
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	this->KillAllCommandBlocks();
+
+	for (i32 i = 0; i<4; i++)
+	{
+		if (this->field_530[i])
+			Mem_Delete(this->field_530[i]);
+
+		delete reinterpret_cast<CClass*>(this->field_580[i]);
+		delete reinterpret_cast<CClass*>(this->field_570[i]);
+	}
+}
 
 // @NotOk
 // globals
@@ -82,7 +103,7 @@ void DocOck_CreateDocOck(const unsigned int *stack, unsigned int *result)
 // @Ok
 void CDocOc::RenderClaws(void)
 {
-	M3d_Render(this->field_570);
+	M3d_Render(this->field_570[0]);
 }
 
 // @Ok
@@ -332,9 +353,12 @@ void validate_CDocOc(void){
 	VALIDATE(CDocOc, field_50C, 0x50C);
 	VALIDATE(CDocOc, field_518, 0x518);
 
+	VALIDATE(CDocOc, field_530, 0x530);
+
 	VALIDATE(CDocOc, field_550, 0x550);
 
 	VALIDATE(CDocOc, field_554, 0x554);
 	VALIDATE(CDocOc, field_55C, 0x55C);
 	VALIDATE(CDocOc, field_570, 0x570);
+	VALIDATE(CDocOc, field_580, 0x580);
 }
