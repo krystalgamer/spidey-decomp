@@ -5,6 +5,11 @@
 #include "message.h"
 
 // @Ok
+CAIProc_StateSwitchSendMessage::~CAIProc_StateSwitchSendMessage(void)
+{
+}
+
+// @Ok
 CAIProc_MonitorAttack::~CAIProc_MonitorAttack(void)
 {
 	Mem_Delete(this->field_30);

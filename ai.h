@@ -97,6 +97,7 @@ class CAIProc_StateSwitchSendMessage : public CAIProc
 {
 	public:
 		EXPORT CAIProc_StateSwitchSendMessage(CBaddy *, int);
+		EXPORT virtual ~CAIProc_StateSwitchSendMessage(void);
 		EXPORT void Execute(void);
 
 		SStateFlags mFlags;
