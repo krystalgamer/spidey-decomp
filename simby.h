@@ -192,6 +192,15 @@ class CSymBurn : public CSuper
 
 };
 
+class CFlamingImpactWeb : public CFlatBit
+{
+	public:
+		EXPORT CFlamingImpactWeb(CVector*, CSVector*, i32);
+		EXPORT virtual ~CFlamingImpactWeb(void);
+
+		u8 padBottom[0x28];
+};
+
 void validate_CPunchOb(void);
 void validate_CSimby(void);
 void validate_CSimbyBase(void);
@@ -202,6 +211,7 @@ void validate_CSkidMark(void);
 void validate_CFireySpark(void);
 void validate_CSimbyDroplet(void);
 void validate_CSymBurn(void);
+void validate_CFlamingImpactWeb(void);
 
 EXPORT void MakeVertexWibbler(void);
 EXPORT void Simby_CreateSimby(const u32 *stack, u32 *result);

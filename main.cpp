@@ -397,6 +397,7 @@ int main()
 	validate_CElectro();
 	validate_CElectroLine();
 	validate_CFireyExplosion();
+	validate_CFlamingImpactWeb();
 
 	puts("[*] Validation done!");
 

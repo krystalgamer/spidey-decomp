@@ -22,6 +22,17 @@ extern i16 **gTrigNodes;
 extern CBody *MiscList;
 extern CCamera* CameraList;
 
+// @SMALLTODO
+CFlamingImpactWeb::CFlamingImpactWeb(CVector*, CSVector*, i32)
+{
+	printf("CFlamingImpactWeb::CFlamingImpactWeb(CVector*, CSVector*, i32);");
+}
+
+// @Ok
+CFlamingImpactWeb::~CFlamingImpactWeb(void)
+{
+}
+
 // @Ok
 CEmber::~CEmber(void)
 {
@@ -932,4 +943,9 @@ void validate_CSymBurn(void)
 
 	VALIDATE_VTABLE(CSymBurn, Die, 1);
 	VALIDATE_VTABLE(CSymBurn, AI, 2);
+}
+
+void validate_CFlamingImpactWeb(void)
+{
+	VALIDATE_SIZE(CFlamingImpactWeb, 0x90);
 }
