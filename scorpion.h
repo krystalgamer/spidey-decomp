@@ -55,13 +55,17 @@ class CConstantLaser : public CNonRenderedBit
 	public:
 
 		EXPORT CConstantLaser(i32);
+		EXPORT virtual ~CConstantLaser(void);
 		EXPORT void SetRGB(u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
 
-		u8 topPad[0x10];
+		void* field_3C;
+		void* field_40;
+		u8 padAfter40[0x4C-0x40-4];
+
 		u8 field_4C[12];
-		u8 padAfter4C[0x60-0x4C-0xC];
+		u8 padAfter4C[4];
 
-
+		void* field_5C;
 		i32 field_60;
 };
 

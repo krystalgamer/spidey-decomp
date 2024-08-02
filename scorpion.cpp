@@ -434,6 +434,13 @@ void CScorpion::TakeHit(void)
 	}
 }
 
+CConstantLaser::~CConstantLaser(void)
+{
+	delete reinterpret_cast<CClass*>(this->field_3C);
+	delete reinterpret_cast<CClass*>(this->field_40);
+	delete reinterpret_cast<CClass*>(this->field_5C);
+}
+
 // @Ok
 CConstantLaser::CConstantLaser(i32 a2)
 {
@@ -495,6 +502,11 @@ void validate_CConstantLaser(void)
 {
 	VALIDATE_SIZE(CConstantLaser, 0x64);
 
+	VALIDATE(CConstantLaser, field_3C, 0x3C);
+	VALIDATE(CConstantLaser, field_40, 0x40);
+
 	VALIDATE(CConstantLaser, field_4C, 0x4C);
+
+	VALIDATE(CConstantLaser, field_5C, 0x5C);
 	VALIDATE(CConstantLaser, field_60, 0x60);
 }
