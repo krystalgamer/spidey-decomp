@@ -90,7 +90,8 @@ class CAIProc_Fall : public CAIProc
 {
 	public:
 		EXPORT CAIProc_Fall(CBaddy *, int);
-		EXPORT void Execute(void);
+		EXPORT virtual CAIProc_Fall(void);
+		EXPORT virtual void Execute(void);
 };
 
 class CAIProc_StateSwitchSendMessage : public CAIProc

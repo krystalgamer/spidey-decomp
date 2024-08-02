@@ -5,6 +5,11 @@
 #include "message.h"
 
 // @Ok
+CAIProc_Fall::~CAIProc_Fall(void)
+{
+}
+
+// @Ok
 CAIProc_AccZ::~CAIProc_AccZ(void)
 {
 }
