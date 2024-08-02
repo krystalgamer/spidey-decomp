@@ -109,12 +109,18 @@ void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
 	this->DoPhysics();
 }
 
+// @Ok
 INLINE CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
 	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CCarnageElectrified");
 
 	this->field_3C = Mem_MakeHandle(pSuper);
+}
+
+// @Ok
+CCarnageElectrified::~CCarnageElectrified(void)
+{
 }
 
 // @BIGTODO

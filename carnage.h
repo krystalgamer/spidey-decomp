@@ -52,6 +52,8 @@ class CCarnageElectrified : public CNonRenderedBit
 {
 	public:
 		EXPORT CCarnageElectrified(CSuper*);
+		EXPORT virtual ~CCarnageElectrified(void);
+
 		SHandle field_3C;
 		i32 field_44;
 };
