@@ -9,6 +9,22 @@ extern SFlatBitVelocity FlatBitVelocities[];
 
 EXPORT i32 gTextureRelated;
 
+// @SMALLTODO
+CElectro::CElectro(void)
+{
+}
+
+// @NotOk
+// @FIXME guess type
+CElectro::~CElectro(void)
+{
+	if (this->field_54)
+		Mem_Delete(this->field_54);
+
+	if (this->field_50)
+		Mem_Delete(this->field_50);
+}
+
 // @Ok
 void CBouncingRock::Move(void)
 {
@@ -369,4 +385,12 @@ void validate_CBouncingRock(void)
 
 	VALIDATE(CBouncingRock, field_68, 0x68);
 	VALIDATE(CBouncingRock, field_6C, 0x6C);
+}
+
+void validate_CElectro(void)
+{
+	VALIDATE_SIZE(CElectro, 0x58);
+
+	VALIDATE(CElectro, field_50, 0x50);
+	VALIDATE(CElectro, field_54, 0x54);
 }

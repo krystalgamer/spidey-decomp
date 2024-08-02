@@ -84,6 +84,19 @@ class CSkinGoo : public CQuadBit
 		u8 fullPad[0x54];
 };
 
+class CElectro : public CSimpleTexturedRibbon
+{
+	public:
+		EXPORT CElectro(void);
+		EXPORT virtual ~CElectro(void);
+
+		u8 padTop[4];
+
+		// @FIXME
+		void *field_50;
+		void *field_54;
+};
+
 void validate_CElectrify(void);
 void validate_CSkinGoo(void);
 void validate_SSkinGooSource(void);
@@ -93,6 +106,7 @@ void validate_CRhinoWallImpact(void);
 void validate_CFootprint(void);
 void validate_CChunkSmoke(void);
 void validate_CBouncingRock(void);
+void validate_CElectro(void);
 
 EXPORT void Effects_Electrify(CSuper*);
 EXPORT void Effects_UnElectrify(CSuper*);

@@ -394,6 +394,7 @@ int main()
 	validate_CTextBox();
 	validate_CCopLaserPing();
 	validate_CDamagedSoftSpotEffect();
+	validate_CElectro();
 
 	puts("[*] Validation done!");
 
