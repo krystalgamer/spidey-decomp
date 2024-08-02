@@ -396,6 +396,7 @@ int main()
 	validate_CDamagedSoftSpotEffect();
 	validate_CElectro();
 	validate_CElectroLine();
+	validate_CFireyExplosion();
 
 	puts("[*] Validation done!");
 

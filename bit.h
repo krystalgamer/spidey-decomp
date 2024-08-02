@@ -309,6 +309,13 @@ class CTextBox : public CBit
 		u8 padBottom[8];
 };
 
+class CFireyExplosion : public CNonRenderedBit
+{
+	public:
+		EXPORT CFireyExplosion(CVector*);
+		EXPORT virtual ~CFireyExplosion(void);
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -341,5 +348,6 @@ void validate_CPixel(void);
 void validate_CBitServer(void);
 void validate_CChunkBit(void);
 void validate_CTextBox(void);
+void validate_CFireyExplosion(void);
 
 #endif

@@ -21,6 +21,17 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
+// @SMALLTODO
+CFireyExplosion::CFireyExplosion(CVector*)
+{
+	printf("CFireyExplosion::CFireyExplosion(CVector*);");
+}
+
+// @Ok
+CFireyExplosion::~CFireyExplosion(void)
+{
+}
+
 // @Ok
 CCombatImpactRing::~CCombatImpactRing(void)
 {
@@ -946,4 +957,9 @@ void validate_CChunkBit(void)
 void validate_CTextBox(void)
 {
 	VALIDATE_SIZE(CTextBox, 0x44);
+}
+
+void validate_CFireyExplosion(void)
+{
+	VALIDATE_SIZE(CFireyExplosion, 0x3C);
 }
