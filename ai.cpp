@@ -40,10 +40,16 @@ CAIProc_MonitorAttack::~CAIProc_MonitorAttack(void)
 	Mem_Delete(this->field_30);
 }
 
-// @SMALLTODO
+// @Ok
 CAIProc::~CAIProc(void)
 {
-	printf("CAIProc::~CAIProc(void)");
+	if ( this->field_18 )
+		this->field_18->mNext = this->mNext;
+	else
+		this->pBaddy->mAIProcList = this->mNext;
+
+	if ( this->mNext )
+		this->mNext->field_18 = this->field_18;
 }
 
 // @NotOk
