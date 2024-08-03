@@ -97,7 +97,7 @@ class CSwinger : public CBody
 };
 
 class CSplat : public CQuadBit {
-public:
+	public:
 };
 
 class CTrapWebEffect : public CNonRenderedBit
