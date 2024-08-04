@@ -21,6 +21,139 @@ extern i32 gBossRelated;
 extern CCamera *CameraList;
 
 // @MEDIUMTODO
+void CRhino::AI(void)
+{
+    printf("CRhino::AI(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::AttackPlayer(void)
+{
+    printf("CRhino::AttackPlayer(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::ChargePlayer(void)
+{
+    printf("CRhino::ChargePlayer(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::ChasePlayer(i32)
+{
+    printf("CRhino::ChasePlayer(i32)");
+}
+
+// @SMALLTODO
+void CRhino::CheckIfPlayerHit(void)
+{
+    printf("CRhino::CheckIfPlayerHit(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::DieRhino(void)
+{
+    printf("CRhino::DieRhino(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::DoDazedEffect(void)
+{
+    printf("CRhino::DoDazedEffect(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::DoMGSShadow(void)
+{
+    printf("CRhino::DoMGSShadow(void)");
+}
+
+// @SMALLTODO
+void CRhino::FollowWaypoints(void)
+{
+    printf("CRhino::FollowWaypoints(void)");
+}
+
+// @SMALLTODO
+void CRhino::GetLaunched(void)
+{
+    printf("CRhino::GetLaunched(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::GetShocked(void)
+{
+    printf("CRhino::GetShocked(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::GetTrapped(void)
+{
+    printf("CRhino::GetTrapped(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::GonnaHitWall(i32)
+{
+    printf("CRhino::GonnaHitWall(i32)");
+}
+
+// @MEDIUMTODO
+void CRhino::LineOfSightCheck(CVector const *,i32)
+{
+    printf("CRhino::LineOfSightCheck(CVector const *,i32)");
+}
+
+// @MEDIUMTODO
+void CRhino::PlaySounds(void)
+{
+    printf("CRhino::PlaySounds(void)");
+}
+
+// @SMALLTODO
+void CRhino::PlayXAPlease(i32,i32,i32)
+{
+    printf("CRhino::PlayXAPlease(i32,i32,i32)");
+}
+
+// @MEDIUMTODO
+void CRhino::SetUpStuckHorn(SLineInfo *,i32)
+{
+    printf("CRhino::SetUpStuckHorn(SLineInfo *,i32)");
+}
+
+// @MEDIUMTODO
+void CRhino::SlideFromHit(i32,i32,CVector *)
+{
+    printf("CRhino::SlideFromHit(i32,i32,CVector *)");
+}
+
+// @MEDIUMTODO
+void CRhino::StompGround(void)
+{
+    printf("CRhino::StompGround(void)");
+}
+
+// @MEDIUMTODO
+void CRhino::StuckInWall(void)
+{
+    printf("CRhino::StuckInWall(void)");
+}
+
+// @SMALLTODO
+CRhinoNasalSteam::~CRhinoNasalSteam(void)
+{
+    printf("CRhinoNasalSteam::~CRhinoNasalSteam(void)");
+}
+
+// @SMALLTODO
+void Rhino_RelocatableModuleClear(void)
+{
+    printf("Rhino_RelocatableModuleClear(void)");
+}
+
+
+// @MEDIUMTODO
 i32 CRhino::DetermineFightState(i32)
 {
 	printf("i32 CRhino::DetermineFightState(i32)");
