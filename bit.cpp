@@ -694,11 +694,13 @@ void CFT4Bit::IncFrameWithWrap(void)
 {
 }
 
+/*
 // @Ok
 void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4, unsigned char a5)
 {
 	this->field_60[index+1] = (a3 | (((a5 << 8) | a4) << 8));
 }
+*/
 
 // @NotOk
 // understand what 3C is
@@ -860,10 +862,12 @@ void validate_CRibbonBit(void)
 	VALIDATE_SIZE(CRibbonBit, 0x70);
 }
 
+/*
 void validate_CTexturedRibbon(void)
 {
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }
+*/
 
 void validate_CSimpleTexturedRibbon(void)
 {

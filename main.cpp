@@ -371,7 +371,7 @@ int main()
 	validate_CChopperMissile();
 	validate_CChunkControl();
 	validate_SChunkEntry();
-	validate_CGouradRibbon();
+	validate_CGouraudRibbon();
 	validate_CCopBulletTracer();
 	validate_CCombatImpactRing();
 	validate_SCamera();
@@ -399,6 +399,8 @@ int main()
 	validate_CFireyExplosion();
 	validate_CFlamingImpactWeb();
 	validate_CTripWire();
+	validate_CSmokeRing();
+	validate_CTexturedRibbon();
 
 	puts("[*] Validation done!");
 

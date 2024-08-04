@@ -4,7 +4,7 @@
 #define SMOKE_H
 
 #include "export.h"
-#include "bit.h"
+#include "weapons.h"
 
 class CSmokeJet : public CTexturedRibbon
 {

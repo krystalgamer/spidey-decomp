@@ -241,6 +241,7 @@ class CRibbonBit : public CLinked2EndedBit
 		EXPORT virtual void Move(void);
 };
 
+/*
 class CTexturedRibbon : public CSpecialDisplay
 {
 	public:
@@ -248,6 +249,7 @@ class CTexturedRibbon : public CSpecialDisplay
 		u8 topPad[0x60-0x3C];
 		i32* field_60;
 };
+*/
 
 class CSimpleAnim : public CFlatBit
 {
@@ -333,7 +335,7 @@ void validate_CSmokeTrail(void);
 void validate_CGlow(void);
 void validate_CLinked2EndedBit(void);
 void validate_CRibbonBit(void);
-void validate_CTexturedRibbon(void);
+//void validate_CTexturedRibbon(void);
 void validate_CSimpleTexturedRibbon(void);
 void validate_CSimpleAnim(void);
 void validate_SCFT4BitTexture(void);

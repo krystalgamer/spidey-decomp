@@ -96,8 +96,8 @@ class CCopBulletTracer : public CNonRenderedBit
 
 		EXPORT virtual void Move(void);
 
-		CGouradRibbon *field_3C;
-		CGouradRibbon *field_40;
+		CGouraudRibbon *field_3C;
+		CGouraudRibbon *field_40;
 
 		u8 padBottom[0x48-0x40-4];
 };
