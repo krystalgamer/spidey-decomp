@@ -9,6 +9,18 @@ extern CPlayer* MechList;
 extern i32 NumNodes;
 extern i16 **gTrigNodes;
 
+// @MEDIUMTODO
+CSwitch::CSwitch(i16 *,i32)
+{
+    printf("CSwitch::CSwitch(i16 *,i32)");
+}
+
+// @SMALLTODO
+void Switch_SetSwitchFaceFlags(CItem *)
+{
+    printf("Switch_SetSwitchFaceFlags(CItem *)");
+}
+
 // @Ok
 // @Test
 void CSwitch::AI(void)

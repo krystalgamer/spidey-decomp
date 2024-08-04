@@ -83,6 +83,4 @@ void validate_CTorch(void){
 
 	VALIDATE(CTorch, field_34C, 0x34C);
 	VALIDATE(CTorch, field_350, 0x350);
-
-
 }

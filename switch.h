@@ -9,6 +9,7 @@
 class CSwitch : public CBody
 {
 	public:
+		EXPORT CSwitch(i16 *,i32);
 		EXPORT void SwitchInactive(void);
 		EXPORT CVector* GetAutoAimTargetPointer(void);
 		EXPORT void SwitchOff(void);
@@ -40,4 +41,5 @@ class CSwitch : public CBody
 void validate_CSwitch(void);
 EXPORT CSwitch* Switch_GetCSwitchObjectFromItem(CItem *);
 EXPORT void Switch_SetVisible(bool, CItem*);
+EXPORT void Switch_SetSwitchFaceFlags(CItem *);
 #endif
