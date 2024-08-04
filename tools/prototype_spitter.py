@@ -48,10 +48,10 @@ def set_widthed_type(entry):
     entry = entry.replace('(uchar)', '(u8)').replace(',uchar)', ',u8)').replace('(uchar,', '(u8,').replace(',uchar,',',u8,')
     entry = entry.replace('(ulong)', '(u32)').replace(',ulong)', ',u32)').replace('(ulong,', '(u32,').replace(',ulong,',',u32,')
     '''
-    entry = replace_type('int', 'i32', entry)
-    entry = replace_type('uchar', 'u8', entry)
     entry = replace_type('ulong', 'u32', entry)
     entry = replace_type('uint', 'u32', entry)
+    entry = replace_type('int', 'i32', entry)
+    entry = replace_type('uchar', 'u8', entry)
 
 
     entry = entry.replace('&', '*')
