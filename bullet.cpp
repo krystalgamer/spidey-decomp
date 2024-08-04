@@ -4,6 +4,39 @@
 
 EXPORT i32 gBullets;
 
+
+// @MEDIUMTODO
+void CBullet::BlowUp(void)
+{
+    printf("CBullet::BlowUp(void)");
+}
+
+// @SMALLTODO
+void CBullet::GiveScaledDamageToEnviro(i32)
+{
+    printf("CBullet::GiveScaledDamageToEnviro(i32)");
+}
+
+// @SMALLTODO
+void CBullet::GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId)
+{
+    printf("CBullet::GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId)");
+}
+
+/*
+// @SMALLTODO
+void CSmokePuff::Move(void)
+{
+    printf("CSmokePuff::Move(void)");
+}
+
+// @SMALLTODO
+CSmokePuff::~CSmokePuff(void)
+{
+    printf("CSmokePuff::~CSmokePuff(void)");
+}
+*/
+
 // @Ok
 CBullet::~CBullet(void)
 {

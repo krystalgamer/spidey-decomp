@@ -7,11 +7,20 @@
 #include "export.h"
 #include "ob.h"
 
+enum HitId
+{
+	ALWAYS_TWENTY_NINE = 29,
+};
+
 class CBullet : public CBody
 {
 	public:
 		EXPORT CBullet(void);
 		EXPORT virtual ~CBullet(void);
+
+		EXPORT void BlowUp(void);
+		EXPORT void GiveScaledDamageToEnviro(i32);
+		EXPORT void GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId);
 
 		u8 padTop[0x10C-0xF4];
 
