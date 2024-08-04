@@ -8,6 +8,8 @@
 #include "texture.h"
 #include "ob.h"
 
+struct SAnimFrame;
+
 struct SPSXRegion {
 	// offset: 0000 (9 bytes)
 	char Filename[9];
@@ -80,6 +82,37 @@ EXPORT Texture* Spool_FindTextureEntry(u32);
 EXPORT Texture* Spool_FindTextureEntry(char *);
 EXPORT u32 Spool_FindTextureChecksum(char *);
 EXPORT u32 Spool_GetModelChecksum(CItem *);
+
+EXPORT void DecrementTextureUsage(i32);
+EXPORT void GetNextLine(char *);
+EXPORT void GotoStartOfTextureList(void);
+EXPORT void NewTextureEntry(u32);
+EXPORT void NextTexture(void);
+EXPORT void PreProcessAnimPacket(u32 *,u32 *);
+EXPORT void ProcessNewPSX(i32);
+EXPORT void RemoveAnimPacket(u32 *);
+EXPORT void RemoveTextureEntry(Texture *);
+EXPORT void Spool_AddEnvModelsToHashTable(void);
+EXPORT void Spool_AnimAccess(char *,SAnimFrame **);
+EXPORT void Spool_ClearEnvironmentRegions(void);
+EXPORT void Spool_FindAnim(char *,i32);
+EXPORT void Spool_GetEnvIndex(i32);
+EXPORT void Spool_GetPalette(u32,i32);
+EXPORT void Spool_Init(void);
+EXPORT void Spool_InitialiseEnvModelHashTable(void);
+EXPORT void Spool_MaskFaceFlags(i32,u32,u32);
+EXPORT void Spool_ReloadAll(void);
+EXPORT void Spool_RemoveAccess(void **,i32);
+EXPORT void Spool_Sync(void);
+EXPORT void Spool_TextureAccess(u32,Texture **);
+EXPORT void SwapPSXFile(u32 *);
+EXPORT void SwapPSXPacketData(u32 *);
+EXPORT void SwapPSXTextureData(u32 *,Texture **,u32 *);
+EXPORT void accessLog(char *,...);
+EXPORT void addAccess(void **,u32,u32,i32);
+EXPORT void restoreRegionAccess(i32);
+EXPORT void texClearChecksums(char *);
+EXPORT void texLoadChecksums(char *);
 
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);

@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "validate.h"
 #include "utils.h"
+#include "panel.h"
 #include <cstring>
 
 const int MAXPSX = 40;
@@ -21,6 +22,187 @@ static const char SuitNames[5][32];
 #else
 static const char SuitNames[5][32] = { 0 };
 #endif
+
+// @SMALLTODO
+void DecrementTextureUsage(i32)
+{
+    printf("DecrementTextureUsage(i32)");
+}
+
+// @SMALLTODO
+void GetNextLine(char *)
+{
+    printf("GetNextLine(char *)");
+}
+
+// @SMALLTODO
+void GotoStartOfTextureList(void)
+{
+    printf("GotoStartOfTextureList(void)");
+}
+
+// @SMALLTODO
+void NewTextureEntry(u32)
+{
+    printf("NewTextureEntry(u32)");
+}
+
+// @SMALLTODO
+void NextTexture(void)
+{
+    printf("NextTexture(void)");
+}
+
+// @SMALLTODO
+void PreProcessAnimPacket(u32 *,u32 *)
+{
+    printf("PreProcessAnimPacket(u32 *,u32 *)");
+}
+
+// @MEDIUMTODO
+void ProcessNewPSX(i32)
+{
+    printf("ProcessNewPSX(i32)");
+}
+
+// @SMALLTODO
+void RemoveAnimPacket(u32 *)
+{
+    printf("RemoveAnimPacket(u32 *)");
+}
+
+// @SMALLTODO
+void RemoveTextureEntry(Texture *)
+{
+    printf("RemoveTextureEntry(Texture *)");
+}
+
+// @SMALLTODO
+void Spool_AddEnvModelsToHashTable(void)
+{
+    printf("Spool_AddEnvModelsToHashTable(void)");
+}
+
+// @MEDIUMTODO
+void Spool_AnimAccess(char *,SAnimFrame **)
+{
+    printf("Spool_AnimAccess(char *,SAnimFrame **)");
+}
+
+// @SMALLTODO
+void Spool_ClearEnvironmentRegions(void)
+{
+    printf("Spool_ClearEnvironmentRegions(void)");
+}
+
+// @SMALLTODO
+void Spool_FindAnim(char *,i32)
+{
+    printf("Spool_FindAnim(char *,i32)");
+}
+
+// @SMALLTODO
+void Spool_GetEnvIndex(i32)
+{
+    printf("Spool_GetEnvIndex(i32)");
+}
+
+// @SMALLTODO
+void Spool_GetPalette(u32,i32)
+{
+    printf("Spool_GetPalette(u32,i32)");
+}
+
+// @SMALLTODO
+void Spool_Init(void)
+{
+    printf("Spool_Init(void)");
+}
+
+// @SMALLTODO
+void Spool_InitialiseEnvModelHashTable(void)
+{
+    printf("Spool_InitialiseEnvModelHashTable(void)");
+}
+
+// @SMALLTODO
+void Spool_MaskFaceFlags(i32,u32,u32)
+{
+    printf("Spool_MaskFaceFlags(i32,u32,u32)");
+}
+
+// @SMALLTODO
+void Spool_ReloadAll(void)
+{
+    printf("Spool_ReloadAll(void)");
+}
+
+// @SMALLTODO
+void Spool_RemoveAccess(void **,i32)
+{
+    printf("Spool_RemoveAccess(void **,i32)");
+}
+
+// @SMALLTODO
+void Spool_Sync(void)
+{
+    printf("Spool_Sync(void)");
+}
+
+// @SMALLTODO
+void Spool_TextureAccess(u32,Texture **)
+{
+    printf("Spool_TextureAccess(u32,Texture **)");
+}
+
+// @MEDIUMTODO
+void SwapPSXFile(u32 *)
+{
+    printf("SwapPSXFile(u32 *)");
+}
+
+// @MEDIUMTODO
+void SwapPSXPacketData(u32 *)
+{
+    printf("SwapPSXPacketData(u32 *)");
+}
+
+// @SMALLTODO
+void SwapPSXTextureData(u32 *,Texture **,u32 *)
+{
+    printf("SwapPSXTextureData(u32 *,Texture **,u32 *)");
+}
+
+// @SMALLTODO
+void accessLog(char *,...)
+{
+    printf("accessLog(char *,...)");
+}
+
+// @SMALLTODO
+void addAccess(void **,u32,u32,i32)
+{
+    printf("addAccess(void **,u32,u32,i32)");
+}
+
+// @SMALLTODO
+void restoreRegionAccess(i32)
+{
+    printf("restoreRegionAccess(i32)");
+}
+
+// @SMALLTODO
+void texClearChecksums(char *)
+{
+    printf("texClearChecksums(char *)");
+}
+
+// @SMALLTODO
+void texLoadChecksums(char *)
+{
+    printf("texLoadChecksums(char *)");
+}
+
 
 // @Ok
 u32 Spool_GetModelChecksum(CItem *pItem)
