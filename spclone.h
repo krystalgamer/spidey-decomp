@@ -8,25 +8,34 @@
 
 
 class CSpClone : public CBaddy {
-public:
-	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
-	EXPORT void DoPhysics(void);
-	EXPORT void KillAllCommandBlocks(void);
-	EXPORT int* KillCommandBlock(int*);
+	public:
+		EXPORT void AI(void);
+		EXPORT CSpClone(i16 *,i32);
+		EXPORT void DoMGSShadow(void);
+		EXPORT void GetNewCommandBlock(u32);
+		EXPORT void KillCommandBlockByID(i32);
+		EXPORT void SynthesizeAnalogueInput(void);
+		EXPORT ~CSpClone(void);
+		EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
+		EXPORT void DoPhysics(void);
+		EXPORT void KillAllCommandBlocks(void);
+		EXPORT int* KillCommandBlock(int*);
 
-	int padTop;
+		int padTop;
 
-	int field_328;
-	int field_32C;
-	int field_330;
-	int field_334;
-	CQuadBit *field_338;
+		int field_328;
+		int field_32C;
+		int field_330;
+		int field_334;
+		CQuadBit *field_338;
 
-	unsigned char padAfter338[0x34C-0x338-4];
+		unsigned char padAfter338[0x34C-0x338-4];
 
-	int* field_34C;
+		int* field_34C;
 };
 
 void validate_CSpClone(void);
+EXPORT void SpClone_CreateSpClone(u32 const *,u32 *);
+EXPORT void SpClone_RelocatableModuleClear(void);
 
 #endif

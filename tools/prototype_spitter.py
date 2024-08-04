@@ -40,7 +40,7 @@ def generate_body(name, size):
 }}''')
 
 def replace_type(orig, width, string):
-    return string.replace(f'({orig})', f'({width})').replace(f',{orig})', f',{width})').replace(f'({orig},', f'({width},').replace(f',{orig},',f',{width},').replace(f'{orig} *', f'{width} *')
+    return string.replace(f'({orig})', f'({width})').replace(f',{orig})', f',{width})').replace(f'({orig},', f'({width},').replace(f',{orig},',f',{width},').replace(f'{orig} *', f'{width} *').replace(f'{orig} ', f'{width} ')
 
 def set_widthed_type(entry):
     '''
