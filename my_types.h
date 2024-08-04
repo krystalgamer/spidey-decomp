@@ -42,5 +42,11 @@ typedef int i32;
 #define INLINE
 #endif
 
+#ifndef _OLD_WINDOWS
+#define OVERRIDE override
+#else
+#define OVERRIDE
+#endif
+
 #endif
 

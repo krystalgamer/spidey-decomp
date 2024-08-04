@@ -1,6 +1,61 @@
 #include "platform.h"
 #include "validate.h"
 
+// @MEDIUMTODO
+void CPlatform::AI(void)
+{
+    printf("CPlatform::AI(void)");
+}
+
+// @SMALLTODO
+void CPlatform::AdjustBruceHealth(void)
+{
+    printf("CPlatform::AdjustBruceHealth(void)");
+}
+
+// @SMALLTODO
+CPlatform::CPlatform(i16 *,i32)
+{
+    printf("CPlatform::CPlatform(i16 *,i32)");
+}
+
+// @MEDIUMTODO
+i32 CPlatform::ExecuteCommand(u16)
+{
+    printf("CPlatform::ExecuteCommand(u16)");
+    return 0x04082024;
+}
+
+// @SMALLTODO
+i32 CPlatform::Hit(SHitInfo *)
+{
+    printf("CPlatform::Hit(SHitInfo *)");
+    return 0x04082024;
+}
+
+// @SMALLTODO
+void CPlatform::MoveTo(CVector *)
+{
+    printf("CPlatform::MoveTo(CVector *)");
+}
+
+// @SMALLTODO
+void CPlatform::NotifyTrodUpon(CBody *,CVector const *,CSVector const *)
+{
+    printf("CPlatform::NotifyTrodUpon(CBody *,CVector const *,CSVector const *)");
+}
+
+// @MEDIUMTODO
+void CPlatform::SetVariable(u16)
+{
+    printf("CPlatform::SetVariable(u16)");
+}
+
+// @SMALLTODO
+CPlatform::~CPlatform(void)
+{
+    printf("CPlatform::~CPlatform(void)");
+}
 // @Ok
 void CPlatform::Shouldnt_DoPhysics_Be_Virtual(void)
 {
@@ -9,10 +64,12 @@ void CPlatform::Shouldnt_DoPhysics_Be_Virtual(void)
 
 // @BIGTODO
 void CPlatform::DoPhysics(void)
-{}
+{
+	printf("void CPlatform::DoPhysics(void)");
+}
 
 // @Ok
-unsigned __int16 CPlatform::GetVariable(unsigned __int16 a2)
+u16 CPlatform::GetVariable(u16 a2)
 {
 	if (a2 != (unsigned __int16)0x2200)
 	{
