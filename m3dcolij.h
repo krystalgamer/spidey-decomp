@@ -47,5 +47,9 @@ EXPORT i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i
 
 EXPORT void M3dColij_LineToItem(CItem*, SLineInfo*);
 EXPORT void M3dColij_LineToThisItem(CItem*, SLineInfo*);
+EXPORT void M3dColij_GetLineInfo(SLineInfo *);
+EXPORT void M3dColij_LineInfoFixup(SLineInfo *);
+EXPORT void M3dColij_LineToItemZoned(CItem **,SLineInfo *);
+EXPORT void NextInquiry(void);
 
 #endif

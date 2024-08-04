@@ -3,16 +3,43 @@
 #include "validate.h"
 #include "ob.h"
 
-u32 gLineToItemRelated;
+EXPORT u32 gLineToItemRelated;
+
+// @SMALLTODO
+void M3dColij_GetLineInfo(SLineInfo *)
+{
+    printf("M3dColij_GetLineInfo(SLineInfo *)");
+}
+
+// @SMALLTODO
+void M3dColij_LineInfoFixup(SLineInfo *)
+{
+    printf("M3dColij_LineInfoFixup(SLineInfo *)");
+}
+
+// @SMALLTODO
+void M3dColij_LineToItemZoned(CItem **,SLineInfo *)
+{
+    printf("M3dColij_LineToItemZoned(CItem **,SLineInfo *)");
+}
+
+// @SMALLTODO
+void NextInquiry(void)
+{
+    printf("NextInquiry(void)");
+}
+
 
 // @MEDIUMTODO
 void M3dColij_InitLineInfo(SLineInfo *)
 {
+	printf("void M3dColij_InitLineInfo(SLineInfo *)");
 }
 
 // @BIGTODO
 i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
 {
+	printf("i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)");
 	return 0x03072024;
 }
 
@@ -22,7 +49,8 @@ void M3dColij_LineToThisItem(CItem*, SLineInfo*)
 	printf("M3dColij_LineToThisItem");
 }
 
-// @SMALLTODO
+// @NotOk
+// was marked as todo but had body, so need to recheck
 void M3dColij_LineToItem(
 		CItem* pItem,
 		SLineInfo* pLine)
