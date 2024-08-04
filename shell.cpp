@@ -5,6 +5,7 @@
 #include "ps2lowsfx.h"
 #include "effects.h"
 #include "spool.h"
+#include "front.h"
 
 EXPORT CBody *MiscList;
 
@@ -19,6 +20,228 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 EXPORT i32 gShellMysterioRelated;
 extern SPSXRegion PSXRegion[];
+
+// @SMALLTODO
+void Shell_AddGameSlots(CMenu *)
+{
+    printf("Shell_AddGameSlots(CMenu *)");
+}
+
+// @SMALLTODO
+void Shell_CalculateGameChecksum(SSaveGame *)
+{
+    printf("Shell_CalculateGameChecksum(SSaveGame *)");
+}
+
+// @MEDIUMTODO
+void Shell_CharacterViewer(void)
+{
+    printf("Shell_CharacterViewer(void)");
+}
+
+// @SMALLTODO
+void Shell_Cheats(void)
+{
+    printf("Shell_Cheats(void)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseEnemy(i32,u8,signed char)
+{
+    printf("Shell_ChooseEnemy(i32,u8,signed char)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseItemCollection(i32)
+{
+    printf("Shell_ChooseItemCollection(i32)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseSpeedTraining(i32)
+{
+    printf("Shell_ChooseSpeedTraining(i32)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseSurvivalArena(i32)
+{
+    printf("Shell_ChooseSurvivalArena(i32)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseTime(i32,i32)
+{
+    printf("Shell_ChooseTime(i32,i32)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseTrainingControlType(void)
+{
+    printf("Shell_ChooseTrainingControlType(void)");
+}
+
+// @MEDIUMTODO
+void Shell_ChooseTrainingMission(i32)
+{
+    printf("Shell_ChooseTrainingMission(i32)");
+}
+
+// @MEDIUMTODO
+void Shell_ComicCollection(void)
+{
+    printf("Shell_ComicCollection(void)");
+}
+
+// @MEDIUMTODO
+void Shell_CostumeViewer(void)
+{
+    printf("Shell_CostumeViewer(void)");
+}
+
+// @MEDIUMTODO
+void Shell_Difficulty(i32)
+{
+    printf("Shell_Difficulty(i32)");
+}
+
+// @SMALLTODO
+void Shell_DisplayGameInfo(i32,i32,SSaveGame *)
+{
+    printf("Shell_DisplayGameInfo(i32,i32,SSaveGame *)");
+}
+
+// @MEDIUMTODO
+void Shell_DoShell(u32 const *,u32 *)
+{
+    printf("Shell_DoShell(u32 const *,u32 *)");
+}
+
+// @SMALLTODO
+void Shell_DrawBackground(void)
+{
+    printf("Shell_DrawBackground(void)");
+}
+
+// @SMALLTODO
+void Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32)
+{
+    printf("Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32)");
+}
+
+// @MEDIUMTODO
+void Shell_Gallery(EShellResult)
+{
+    printf("Shell_Gallery(EShellResult)");
+}
+
+// @MEDIUMTODO
+void Shell_GameCovers(void)
+{
+    printf("Shell_GameCovers(void)");
+}
+
+// @MEDIUMTODO
+void Shell_InputName(char *,i32,i32,char *)
+{
+    printf("Shell_InputName(char *,i32,i32,char *)");
+}
+
+// @SMALLTODO
+void Shell_LegalScreen(void)
+{
+    printf("Shell_LegalScreen(void)");
+}
+
+// @MEDIUMTODO
+void Shell_LevelSelect(void)
+{
+    printf("Shell_LevelSelect(void)");
+}
+
+// @MEDIUMTODO
+void Shell_LoadGame(void)
+{
+    printf("Shell_LoadGame(void)");
+}
+
+// @MEDIUMTODO
+void Shell_MainMenu(EShellResult)
+{
+    printf("Shell_MainMenu(EShellResult)");
+}
+
+// @MEDIUMTODO
+void Shell_MemoryCard(EShellResult)
+{
+    printf("Shell_MemoryCard(EShellResult)");
+}
+
+// @MEDIUMTODO
+void Shell_MovieViewer(void)
+{
+    printf("Shell_MovieViewer(void)");
+}
+
+// @MEDIUMTODO
+void Shell_Options(EShellResult)
+{
+    printf("Shell_Options(EShellResult)");
+}
+
+// @MEDIUMTODO
+void Shell_RollCredits(void)
+{
+    printf("Shell_RollCredits(void)");
+}
+
+// @MEDIUMTODO
+void Shell_SFXMusic(void)
+{
+    printf("Shell_SFXMusic(void)");
+}
+
+// @MEDIUMTODO
+void Shell_SaveGame(u32 const *,u32 *)
+{
+    printf("Shell_SaveGame(u32 const *,u32 *)");
+}
+
+// @MEDIUMTODO
+void Shell_ScreenAdjust(void)
+{
+    printf("Shell_ScreenAdjust(void)");
+}
+
+// @MEDIUMTODO
+void Shell_ShowRecord(char const *,char const *,STrainingMission *)
+{
+    printf("Shell_ShowRecord(char const *,char const *,STrainingMission *)");
+}
+
+// @MEDIUMTODO
+void Shell_Special(EShellResult)
+{
+    printf("Shell_Special(EShellResult)");
+}
+
+// @MEDIUMTODO
+void Shell_StoryBoards(void)
+{
+    printf("Shell_StoryBoards(void)");
+}
+
+// @MEDIUMTODO
+void Shell_TitleScreen(void)
+{
+    printf("Shell_TitleScreen(void)");
+}
+
+// @SMALLTODO
+void Shell_VerySmallFont(void)
+{
+    printf("Shell_VerySmallFont(void)");
+}
 
 
 // @BIGTODO

@@ -227,12 +227,64 @@ struct SpideyIconRelated
 	u8 padBottom[0x28-0x18-4];
 };
 
+struct SSaveGame
+{
+};
+
+struct STrainingMission
+{
+};
+
+enum EShellResult
+{
+};
+
+class CMenu;
+
 static const i32 INPUT_MAX_SIZE = 9;
 
 EXPORT i32 Shell_DeRudify(char[INPUT_MAX_SIZE]);
 EXPORT i32 Shell_ContainsSubString(const char*, const char*);
 EXPORT void CallAI(CBody *);
 EXPORT i32 CalcIndexOfContinueLevel(void);
+
+EXPORT void Shell_AddGameSlots(CMenu *);
+EXPORT void Shell_CalculateGameChecksum(SSaveGame *);
+EXPORT void Shell_CharacterViewer(void);
+EXPORT void Shell_Cheats(void);
+EXPORT void Shell_ChooseEnemy(i32,u8,signed char);
+EXPORT void Shell_ChooseItemCollection(i32);
+EXPORT void Shell_ChooseSpeedTraining(i32);
+EXPORT void Shell_ChooseSurvivalArena(i32);
+EXPORT void Shell_ChooseTime(i32,i32);
+EXPORT void Shell_ChooseTrainingControlType(void);
+EXPORT void Shell_ChooseTrainingMission(i32);
+EXPORT void Shell_ComicCollection(void);
+EXPORT void Shell_CostumeViewer(void);
+EXPORT void Shell_Difficulty(i32);
+EXPORT void Shell_DisplayGameInfo(i32,i32,SSaveGame *);
+EXPORT void Shell_DoShell(u32 const *,u32 *);
+EXPORT void Shell_DrawBackground(void);
+EXPORT void Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32);
+EXPORT void Shell_Gallery(EShellResult);
+EXPORT void Shell_GameCovers(void);
+EXPORT void Shell_InputName(char *,i32,i32,char *);
+EXPORT void Shell_LegalScreen(void);
+EXPORT void Shell_LevelSelect(void);
+EXPORT void Shell_LoadGame(void);
+EXPORT void Shell_MainMenu(EShellResult);
+EXPORT void Shell_MemoryCard(EShellResult);
+EXPORT void Shell_MovieViewer(void);
+EXPORT void Shell_Options(EShellResult);
+EXPORT void Shell_RollCredits(void);
+EXPORT void Shell_SFXMusic(void);
+EXPORT void Shell_SaveGame(u32 const *,u32 *);
+EXPORT void Shell_ScreenAdjust(void);
+EXPORT void Shell_ShowRecord(char const *,char const *,STrainingMission *);
+EXPORT void Shell_Special(EShellResult);
+EXPORT void Shell_StoryBoards(void);
+EXPORT void Shell_TitleScreen(void);
+EXPORT void Shell_VerySmallFont(void);
 
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
