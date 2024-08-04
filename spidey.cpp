@@ -23,6 +23,541 @@ extern i32 CurrentSuit;
 EXPORT void *gSpideyHeadModel;
 extern SPSXRegion PSXRegion[];
 
+// @SMALLTODO
+void Bruce_Sync(void)
+{
+    printf("Bruce_Sync(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::AI(void)
+{
+    printf("CPlayer::AI(void)");
+}
+
+// @SMALLTODO
+void CPlayer::AdjustBrightness(u16)
+{
+    printf("CPlayer::AdjustBrightness(u16)");
+}
+
+// @MEDIUMTODO
+void CPlayer::BuildOffscreenSpideySenseIndicatorList(void)
+{
+    printf("CPlayer::BuildOffscreenSpideySenseIndicatorList(void)");
+}
+
+// @MEDIUMTODO
+CPlayer::CPlayer(void)
+{
+    printf("CPlayer::CPlayer(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *)
+{
+    printf("CPlayer::CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *)");
+}
+
+// @SMALLTODO
+void CPlayer::CalculateSwingWebParameters(CVector *)
+{
+    printf("CPlayer::CalculateSwingWebParameters(CVector *)");
+}
+
+// @SMALLTODO
+void CPlayer::CalculateTugWebPathPoints(void)
+{
+    printf("CPlayer::CalculateTugWebPathPoints(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckCeilingJumpingSmashPunch(void)
+{
+    printf("CPlayer::CheckCeilingJumpingSmashPunch(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckExteriorSurfaceTransition(void)
+{
+    printf("CPlayer::CheckExteriorSurfaceTransition(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckFenceSurfaceTransition(void)
+{
+    printf("CPlayer::CheckFenceSurfaceTransition(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckForwards(bool)
+{
+    printf("CPlayer::CheckForwards(bool)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckGroundGone(void)
+{
+    printf("CPlayer::CheckGroundGone(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckInteriorSurfaceTransition(void)
+{
+    printf("CPlayer::CheckInteriorSurfaceTransition(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckJump(void)
+{
+    printf("CPlayer::CheckJump(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckJumpingR1ZipWeb(void)
+{
+    printf("CPlayer::CheckJumpingR1ZipWeb(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckJumpingR2ZipWeb(void)
+{
+    printf("CPlayer::CheckJumpingR2ZipWeb(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckJumpingSmashKick(void)
+{
+    printf("CPlayer::CheckJumpingSmashKick(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckJumpingSwingWeb(void)
+{
+    printf("CPlayer::CheckJumpingSwingWeb(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckKick(void)
+{
+    printf("CPlayer::CheckKick(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckLanded(void)
+{
+    printf("CPlayer::CheckLanded(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckRunIntoWall(void)
+{
+    printf("CPlayer::CheckRunIntoWall(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckStickToCeiling(void)
+{
+    printf("CPlayer::CheckStickToCeiling(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckStickToWall(void)
+{
+    printf("CPlayer::CheckStickToWall(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckSwingWebAvailability(SLineInfo *)
+{
+    printf("CPlayer::CheckSwingWebAvailability(SLineInfo *)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckSwitchToGrabbedMode(CVector const *,CVector *)
+{
+    printf("CPlayer::CheckSwitchToGrabbedMode(CVector const *,CVector *)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CheckWebShot(void)
+{
+    printf("CPlayer::CheckWebShot(void)");
+}
+
+// @SMALLTODO
+void CPlayer::CheckZipWebAvailability(SLineInfo *,i32)
+{
+    printf("CPlayer::CheckZipWebAvailability(SLineInfo *,i32)");
+}
+
+// @SMALLTODO
+void CPlayer::CollideWithObject(CBody *)
+{
+    printf("CPlayer::CollideWithObject(CBody *)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CreateCombatImpactEffect(CVector *,i32)
+{
+    printf("CPlayer::CreateCombatImpactEffect(CVector *,i32)");
+}
+
+// @MEDIUMTODO
+void CPlayer::CreateWebDrips(bool,bool)
+{
+    printf("CPlayer::CreateWebDrips(bool,bool)");
+}
+
+// @MEDIUMTODO
+void CPlayer::DoMGSShadow(void)
+{
+    printf("CPlayer::DoMGSShadow(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::DoShadowCheck(void)
+{
+    printf("CPlayer::DoShadowCheck(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::DrawOffscreenSpideySenseIndicatorList(void)
+{
+    printf("CPlayer::DrawOffscreenSpideySenseIndicatorList(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::DrawReticle(u16,u16,u32)
+{
+    printf("CPlayer::DrawReticle(u16,u16,u32)");
+}
+
+// @MEDIUMTODO
+void CPlayer::EnterLookaroundMode(void)
+{
+    printf("CPlayer::EnterLookaroundMode(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::FireWeb(bool,i32,CVector *,bool,CSVector *)
+{
+    printf("CPlayer::FireWeb(bool,i32,CVector *,bool,CSVector *)");
+}
+
+// @SMALLTODO
+void CPlayer::GetComboFrameInfoPointer(u16)
+{
+    printf("CPlayer::GetComboFrameInfoPointer(u16)");
+}
+
+// @SMALLTODO
+void CPlayer::GetComboPartsInfoPointer(u16)
+{
+    printf("CPlayer::GetComboPartsInfoPointer(u16)");
+}
+
+// @SMALLTODO
+void CPlayer::GetDamageInflictedFromDifficulty(i32)
+{
+    printf("CPlayer::GetDamageInflictedFromDifficulty(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::GetEnterExitFrameInfoPointer(u16)
+{
+    printf("CPlayer::GetEnterExitFrameInfoPointer(u16)");
+}
+
+// @SMALLTODO
+void CPlayer::GetFreeIndicatorListEntry(void)
+{
+    printf("CPlayer::GetFreeIndicatorListEntry(void)");
+}
+
+// @SMALLTODO
+void CPlayer::GetNewCommandBlock(u32)
+{
+    printf("CPlayer::GetNewCommandBlock(u32)");
+}
+
+// @SMALLTODO
+void CPlayer::GetPerpendicularisationRadius(void)
+{
+    printf("CPlayer::GetPerpendicularisationRadius(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::GrabUpdate(CVector *,i16 *)
+{
+    printf("CPlayer::GrabUpdate(CVector *,i16 *)");
+}
+
+// @SMALLTODO
+void CPlayer::HandleControlsForSurfaceTransition(bool)
+{
+    printf("CPlayer::HandleControlsForSurfaceTransition(bool)");
+}
+
+// @MEDIUMTODO
+i32 CPlayer::Hit(SHitInfo *)
+{
+    printf("CPlayer::Hit(SHitInfo *)");
+    return 0x04082024;
+}
+
+// @SMALLTODO
+void CPlayer::IfPlayerCeilingCheck(i32,i32)
+{
+    printf("CPlayer::IfPlayerCeilingCheck(i32,i32)");
+}
+
+// @SMALLTODO
+void CPlayer::IncHealth(i32)
+{
+    printf("CPlayer::IncHealth(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::InitialiseOffscreenSpideySenseIndicatorList(void)
+{
+    printf("CPlayer::InitialiseOffscreenSpideySenseIndicatorList(void)");
+}
+
+// @SMALLTODO
+void CPlayer::InitialiseSFXArray(void)
+{
+    printf("CPlayer::InitialiseSFXArray(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::InitiateCombo(u16,i32)
+{
+    printf("CPlayer::InitiateCombo(u16,i32)");
+}
+
+// @SMALLTODO
+void CPlayer::IsInIndicatorList(SHandle *)
+{
+    printf("CPlayer::IsInIndicatorList(SHandle *)");
+}
+
+// @SMALLTODO
+void CPlayer::KnockSpideyFromCrawlPosition(void)
+{
+    printf("CPlayer::KnockSpideyFromCrawlPosition(void)");
+}
+
+// @SMALLTODO
+void CPlayer::LockTargetTorsoAngle(void)
+{
+    printf("CPlayer::LockTargetTorsoAngle(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::NotifyKill(u16)
+{
+    printf("CPlayer::NotifyKill(u16)");
+}
+
+// @MEDIUMTODO
+void CPlayer::ParseFightData(void)
+{
+    printf("CPlayer::ParseFightData(void)");
+}
+
+// @SMALLTODO
+void CPlayer::ProcessSFXArray(void)
+{
+    printf("CPlayer::ProcessSFXArray(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::ReadAnalogueInput(void)
+{
+    printf("CPlayer::ReadAnalogueInput(void)");
+}
+
+// @SMALLTODO
+void CPlayer::SelectAutoAimTarget(void)
+{
+    printf("CPlayer::SelectAutoAimTarget(void)");
+}
+
+// @SMALLTODO
+void CPlayer::SelectTargetBaddy(i32,i32,i32,i32)
+{
+    printf("CPlayer::SelectTargetBaddy(i32,i32,i32,i32)");
+}
+
+// @MEDIUMTODO
+void CPlayer::SelectTargetSwitch(i32,i32,SHandle *,i32,i32)
+{
+    printf("CPlayer::SelectTargetSwitch(i32,i32,SHandle *,i32,i32)");
+}
+
+// @SMALLTODO
+void CPlayer::SetArmor(bool)
+{
+    printf("CPlayer::SetArmor(bool)");
+}
+
+// @SMALLTODO
+void CPlayer::SetCeilingCamera(i32)
+{
+    printf("CPlayer::SetCeilingCamera(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::SetFallingCamera(i32)
+{
+    printf("CPlayer::SetFallingCamera(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::SetFirstContactDetails(void)
+{
+    printf("CPlayer::SetFirstContactDetails(void)");
+}
+
+// @SMALLTODO
+void CPlayer::SetFloorCamera(i32)
+{
+    printf("CPlayer::SetFloorCamera(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::SetFocusLockTarget(CBody const *)
+{
+    printf("CPlayer::SetFocusLockTarget(CBody const *)");
+}
+
+// @MEDIUMTODO
+void CPlayer::SetSpideyCamValue(u16,u16,i16,u16,u16)
+{
+    printf("CPlayer::SetSpideyCamValue(u16,u16,i16,u16,u16)");
+}
+
+// @SMALLTODO
+void CPlayer::SetSwingCamera(i32)
+{
+    printf("CPlayer::SetSwingCamera(i32)");
+}
+
+// @SMALLTODO
+void CPlayer::SetWallCamera(i32)
+{
+    printf("CPlayer::SetWallCamera(i32)");
+}
+
+// @MEDIUMTODO
+void CPlayer::SetupLookaroundCamera(void)
+{
+    printf("CPlayer::SetupLookaroundCamera(void)");
+}
+
+// @SMALLTODO
+void CPlayer::ShouldPlayerDropFlail(void)
+{
+    printf("CPlayer::ShouldPlayerDropFlail(void)");
+}
+
+// @SMALLTODO
+void CPlayer::SortAnimationFollowOnData(void)
+{
+    printf("CPlayer::SortAnimationFollowOnData(void)");
+}
+
+// @SMALLTODO
+void CPlayer::SortFistsData(void)
+{
+    printf("CPlayer::SortFistsData(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::SwitchToDeathMode(bool)
+{
+    printf("CPlayer::SwitchToDeathMode(bool)");
+}
+
+// @SMALLTODO
+void CPlayer::SwitchToSynthesizedInput(i16 *)
+{
+    printf("CPlayer::SwitchToSynthesizedInput(i16 *)");
+}
+
+// @MEDIUMTODO
+void CPlayer::SynthesizeAnalogueInput(void)
+{
+    printf("CPlayer::SynthesizeAnalogueInput(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::UpdateAndTrackCombo(void)
+{
+    printf("CPlayer::UpdateAndTrackCombo(void)");
+}
+
+// @SMALLTODO
+void CPlayer::UpdateOffscreenSpideySenseIndicatorList(void)
+{
+    printf("CPlayer::UpdateOffscreenSpideySenseIndicatorList(void)");
+}
+
+// @MEDIUMTODO
+void CPlayer::UpdateTrails(void)
+{
+    printf("CPlayer::UpdateTrails(void)");
+}
+
+// @MEDIUMTODO
+CPlayer::~CPlayer(void)
+{
+    printf("CPlayer::~CPlayer(void)");
+}
+
+// @SMALLTODO
+void Spidey_BagHead(i32,i32)
+{
+    printf("Spidey_BagHead(i32,i32)");
+}
+
+// @SMALLTODO
+void Spidey_DoArmorVRAMProcessing(bool)
+{
+    printf("Spidey_DoArmorVRAMProcessing(bool)");
+}
+
+// @SMALLTODO
+void Spidey_LoadAlternativeHealthIcon(i32)
+{
+    printf("Spidey_LoadAlternativeHealthIcon(i32)");
+}
+
+// @MEDIUMTODO
+void Spidey_LoadAlternativeTextureSet(u32 const *,i32)
+{
+    printf("Spidey_LoadAlternativeTextureSet(u32 const *,i32)");
+}
+
+// @SMALLTODO
+void Spidey_StoreTextureEntry(Texture const *,i16,i16)
+{
+    printf("Spidey_StoreTextureEntry(Texture const *,i16,i16)");
+}
+
+// @SMALLTODO
+void Spidey_SwapSuitTextures(i32,i32)
+{
+    printf("Spidey_SwapSuitTextures(i32,i32)");
+}
+
+// @SMALLTODO
+void spideyLog(char *,...)
+{
+    printf("spideyLog(char *,...)");
+}
+
 // @MEDIUMTODO
 // understand ppModels
 void Spidey_CopyHeadModel(i32 Region)
