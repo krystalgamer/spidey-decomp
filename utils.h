@@ -32,4 +32,23 @@ EXPORT void Utils_GetVecFromMagDir(CVector*, int, CSVector*);
 
 EXPORT int Utils_XZDist(const CVector*, const CVector *);
 
+EXPORT void MyVSync(void);
+EXPORT void Pause(i32);
+EXPORT void Utils_CalcPerps(CVector const *,CVector *,CVector *);
+EXPORT void Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *);
+EXPORT void Utils_CalcWallPerps(CVector const *,CVector *,CVector *);
+EXPORT void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32);
+EXPORT void Utils_CanSee(CItem *,CItem *,i32,i32,i32);
+EXPORT void Utils_Dist(CVector const *,CVector const *);
+EXPORT void Utils_InitLoadIcons(void);
+EXPORT void Utils_Jumble(i32 *,i32);
+EXPORT void Utils_KillEverythingInBox(CVector const *,CVector const *);
+EXPORT void Utils_KillObjectsInBox(CVector const *,CVector const *,CBody *,bool);
+EXPORT void Utils_RotateWorldToObject(CBody *,CVector *,CVector *);
+EXPORT void Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *);
+EXPORT void Utils_SetVisibilityByName(char const *,i32,i32,bool);
+EXPORT void Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool);
+EXPORT void Utils_ShiftFilter(i32,i32,i32,i32);
+EXPORT void Utils_VblankProcessing(void);
+
 #endif

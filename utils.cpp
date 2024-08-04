@@ -10,6 +10,114 @@ extern i32 gGetGroundRelated;
 
 EXPORT i32 DifficultyLevel;
 
+// @SMALLTODO
+void MyVSync(void)
+{
+    printf("MyVSync(void)");
+}
+
+// @SMALLTODO
+void Pause(i32)
+{
+    printf("Pause(i32)");
+}
+
+// @SMALLTODO
+void Utils_CalcPerps(CVector const *,CVector *,CVector *)
+{
+    printf("Utils_CalcPerps(CVector const *,CVector *,CVector *)");
+}
+
+// @MEDIUMTODO
+void Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *)
+{
+    printf("Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *)");
+}
+
+// @SMALLTODO
+void Utils_CalcWallPerps(CVector const *,CVector *,CVector *)
+{
+    printf("Utils_CalcWallPerps(CVector const *,CVector *,CVector *)");
+}
+
+// @SMALLTODO
+void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)
+{
+    printf("Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)");
+}
+
+// @SMALLTODO
+void Utils_CanSee(CItem *,CItem *,i32,i32,i32)
+{
+    printf("Utils_CanSee(CItem *,CItem *,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void Utils_Dist(CVector const *,CVector const *)
+{
+    printf("Utils_Dist(CVector const *,CVector const *)");
+}
+
+// @SMALLTODO
+void Utils_InitLoadIcons(void)
+{
+    printf("Utils_InitLoadIcons(void)");
+}
+
+// @SMALLTODO
+void Utils_Jumble(i32 *,i32)
+{
+    printf("Utils_Jumble(i32 *,i32)");
+}
+
+// @SMALLTODO
+void Utils_KillEverythingInBox(CVector const *,CVector const *)
+{
+    printf("Utils_KillEverythingInBox(CVector const *,CVector const *)");
+}
+
+// @SMALLTODO
+void Utils_KillObjectsInBox(CVector const *,CVector const *,CBody *,bool)
+{
+    printf("Utils_KillObjectsInBox(CVector const *,CVector const *,CBody *,bool)");
+}
+
+// @SMALLTODO
+void Utils_RotateWorldToObject(CBody *,CVector *,CVector *)
+{
+    printf("Utils_RotateWorldToObject(CBody *,CVector *,CVector *)");
+}
+
+// @SMALLTODO
+void Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *)
+{
+    printf("Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *)");
+}
+
+// @MEDIUMTODO
+void Utils_SetVisibilityByName(char const *,i32,i32,bool)
+{
+    printf("Utils_SetVisibilityByName(char const *,i32,i32,bool)");
+}
+
+// @SMALLTODO
+void Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool)
+{
+    printf("Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool)");
+}
+
+// @SMALLTODO
+void Utils_ShiftFilter(i32,i32,i32,i32)
+{
+    printf("Utils_ShiftFilter(i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void Utils_VblankProcessing(void)
+{
+    printf("Utils_VblankProcessing(void)");
+}
+
 void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)
 {
 	printf("void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)");
