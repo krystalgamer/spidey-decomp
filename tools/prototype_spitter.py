@@ -64,6 +64,9 @@ def does_func_exist(entry, base):
     if entry.startswith('nullsub'):
         return True
 
+    if entry.startswith('.'):
+        return True
+
     name = entry[:entry.index('(')].strip()
     res = name in base
 
