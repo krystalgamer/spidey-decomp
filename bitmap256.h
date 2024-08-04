@@ -8,6 +8,8 @@
 class Bitmap256
 {
 	public:
+		EXPORT Bitmap256(char *,u16 *,i32,i32,i32);
+		EXPORT ~Bitmap256(void);
 };
 
 void validate_Bitmap256(void);
