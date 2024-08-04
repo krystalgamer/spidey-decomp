@@ -3,11 +3,11 @@
 #include "trig.h"
 #include "spidey.h"
 
-u32 gBombRelated;
-u8 gBombDieRelatedOne;
-u8 gBombDieRelatedTwo;
-u32 gBombDieTimerRelated;
-u32 gBombAIRelated;
+EXPORT u32 gBombRelated;
+EXPORT u8 gBombDieRelatedOne;
+EXPORT u8 gBombDieRelatedTwo;
+EXPORT u32 gBombDieTimerRelated;
+EXPORT u32 gBombAIRelated;
 
 extern CPlayer* MechList;
 extern i32 DifficultyLevel;
