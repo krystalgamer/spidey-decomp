@@ -14,6 +14,12 @@ public:
 	EXPORT void KillAllCommandBlocks(void);
 	EXPORT int* KillCommandBlock(int*);
 
+	EXPORT void AI(void) OVERRIDE;
+	EXPORT void DoMGSShadow(void);
+	EXPORT void GetNewCommandBlock(u32);
+	EXPORT void KillCommandBlockByID(i32);
+	EXPORT void SynthesizeAnalogueInput(void);
+
 	i32 field_324;
 	i32 field_328;
 	i32 field_32C;

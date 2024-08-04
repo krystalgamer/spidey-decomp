@@ -4,6 +4,42 @@
 
 extern CBaddy* BaddyList;
 
+// @SMALLTODO
+void BlackCat_RelocatableModuleClear(void)
+{
+    printf("BlackCat_RelocatableModuleClear(void)");
+}
+
+// @MEDIUMTODO
+void CBlackCat::AI(void)
+{
+    printf("CBlackCat::AI(void)");
+}
+
+// @MEDIUMTODO
+void CBlackCat::DoMGSShadow(void)
+{
+    printf("CBlackCat::DoMGSShadow(void)");
+}
+
+// @SMALLTODO
+void CBlackCat::GetNewCommandBlock(u32)
+{
+    printf("CBlackCat::GetNewCommandBlock(u32)");
+}
+
+// @SMALLTODO
+void CBlackCat::KillCommandBlockByID(i32)
+{
+    printf("CBlackCat::KillCommandBlockByID(i32)");
+}
+
+// @MEDIUMTODO
+void CBlackCat::SynthesizeAnalogueInput(void)
+{
+    printf("CBlackCat::SynthesizeAnalogueInput(void)");
+}
+
 // @NotOk
 // guess type of 33C
 CBlackCat::~CBlackCat(void)
