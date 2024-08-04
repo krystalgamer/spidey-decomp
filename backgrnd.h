@@ -15,6 +15,8 @@ class CBackground : public CBody
 		EXPORT CBackground(u32, CSVector*);
 		EXPORT virtual ~CBackground(void);
 
+		EXPORT void AI(void) OVERRIDE;
+
 		u8 padBottom[8];
 
 };

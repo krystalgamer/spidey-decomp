@@ -6,6 +6,12 @@ EXPORT CSuper* BackgroundList;
 EXPORT i16 gBackgroundIndex = 0;
 
 // @SMALLTODO
+void CBackground::AI(void)
+{
+    printf("CBackground::AI(void)");
+}
+
+// @SMALLTODO
 CBackground::CBackground(u32, CSVector*)
 {
 	printf("CBackground::CBackground(u32, CSVector*)");
