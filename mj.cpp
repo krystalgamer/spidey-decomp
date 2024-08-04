@@ -2,6 +2,17 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+// @SMALLTODO
+CMJ::~CMJ(void)
+{
+    printf("CMJ::~CMJ(void)");
+}
+
+// @SMALLTODO
+void MJ_RelocatableModuleClear(void)
+{
+    printf("MJ_RelocatableModuleClear(void)");
+}
 
 // @Ok
 void CMJ::AI(void) 
