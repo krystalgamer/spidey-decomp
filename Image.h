@@ -24,6 +24,7 @@ class Image : public CClass
 class SlicedImage2 : public Image
 {
 	public:
+		EXPORT SlicedImage2(void);
 		EXPORT int screenHeight(void);
 
 		unsigned char padTop[0x6];
@@ -34,6 +35,9 @@ class SlicedImage2 : public Image
 };
 
 EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);
+EXPORT void GetBMPBitDepth(char *);
+EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
+EXPORT void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *);
 
 void validate_Image(void);
 void validate_SlicedImage(void);

@@ -2,6 +2,30 @@
 #include "validate.h"
 #include "dcshellutils.h"
 
+// @SMALLTODO
+void GetBMPBitDepth(char *)
+{
+    printf("GetBMPBitDepth(char *)");
+}
+
+// @MEDIUMTODO
+void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *)
+{
+    printf("Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *)");
+}
+
+// @SMALLTODO
+void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)
+{
+    printf("LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)");
+}
+
+// @SMALLTODO
+SlicedImage2::SlicedImage2(void)
+{
+    printf("SlicedImage2::SlicedImage2(void)");
+}
+
 // @Ok
 Image::Image(void)
 {
