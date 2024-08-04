@@ -37,6 +37,13 @@ struct STexWibItemInfo
 
 
 EXPORT void M3dInit_FlagZeroWibbles(STexWibItemInfo *pTexWibItemInfo);
+EXPORT void DCClearRegion(i32);
+EXPORT void M3dInit_InitAtStart(void);
+EXPORT void M3dInit_ParsePSX(i32);
+EXPORT void M3dInit_SetFoggingParams(long,long,u32);
+EXPORT void M3dInit_SetResolution(u32,u32);
+EXPORT void alloc_dc_models(i32,i32);
+EXPORT void setup_pulsing_colors(i32);
 
 void validate_STexWibItemInfo();
 

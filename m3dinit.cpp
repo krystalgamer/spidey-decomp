@@ -1,6 +1,47 @@
 #include "m3dinit.h"
 #include "validate.h"
 
+// @SMALLTODO
+void DCClearRegion(i32)
+{
+    printf("DCClearRegion(i32)");
+}
+
+// @SMALLTODO
+void M3dInit_InitAtStart(void)
+{
+    printf("M3dInit_InitAtStart(void)");
+}
+
+// @MEDIUMTODO
+void M3dInit_ParsePSX(i32)
+{
+    printf("M3dInit_ParsePSX(i32)");
+}
+
+// @MEDIUMTODO
+void M3dInit_SetFoggingParams(long,long,u32)
+{
+    printf("M3dInit_SetFoggingParams(long,long,u32)");
+}
+
+// @SMALLTODO
+void M3dInit_SetResolution(u32,u32)
+{
+    printf("M3dInit_SetResolution(u32,u32)");
+}
+
+// @SMALLTODO
+void alloc_dc_models(i32,i32)
+{
+    printf("alloc_dc_models(i32,i32)");
+}
+
+// @SMALLTODO
+void setup_pulsing_colors(i32)
+{
+    printf("setup_pulsing_colors(i32)");
+}
 
 // @Ok
 // Hated this piece of shit, memoery accesses are fucked up on the original for some reason
