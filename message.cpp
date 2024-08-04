@@ -7,6 +7,12 @@ CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)
 	printf("CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)");
 }
 
+// @SMALLTODO
+CMessage::~CMessage(void)
+{
+    printf("CMessage::~CMessage(void)");
+}
+
 
 void validate_CMessage(void)
 {

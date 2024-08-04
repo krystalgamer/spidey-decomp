@@ -27,6 +27,7 @@ class CMessage : public CClass
 
 
 		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*);
+		EXPORT ~CMessage(void) OVERRIDE;
 };
 
 void validate_CMessage(void);
