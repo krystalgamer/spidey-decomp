@@ -2,6 +2,17 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+// @SMALLTODO
+CLizard::~CLizard(void)
+{
+    printf("CLizard::~CLizard(void)");
+}
+
+// @SMALLTODO
+void Lizard_RelocatableModuleClear(void)
+{
+    printf("Lizard_RelocatableModuleClear(void)");
+}
 
 // @Ok
 void CLizard::AI(void)
