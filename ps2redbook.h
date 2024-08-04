@@ -14,5 +14,10 @@ EXPORT void Redbook_XAAllow(bool);
 EXPORT void Redbook_XAInitAtStart(void);
 EXPORT void Redbook_XAReset(void);
 EXPORT void Redbook_XAInit(void);
+EXPORT void RedBook_MwErrFunc(void *,char *);
+EXPORT void Redbook_XAExit(void);
+EXPORT void Redbook_XAPause(bool);
+EXPORT void Redbook_XASetVol(i32);
+EXPORT void Redbook_XAStat(void);
 
 #endif

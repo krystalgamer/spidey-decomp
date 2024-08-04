@@ -1,6 +1,38 @@
 #include "ps2redbook.h"
 
 
+static bool gXAAllowed;
+
+// @SMALLTODO
+void RedBook_MwErrFunc(void *,char *)
+{
+    printf("RedBook_MwErrFunc(void *,char *)");
+}
+
+// @SMALLTODO
+void Redbook_XAExit(void)
+{
+    printf("Redbook_XAExit(void)");
+}
+
+// @SMALLTODO
+void Redbook_XAPause(bool)
+{
+    printf("Redbook_XAPause(bool)");
+}
+
+// @SMALLTODO
+void Redbook_XASetVol(i32)
+{
+    printf("Redbook_XASetVol(i32)");
+}
+
+// @SMALLTODO
+void Redbook_XAStat(void)
+{
+    printf("Redbook_XAStat(void)");
+}
+
 // @SMALLTODO
 u8 Redbook_XAPlayPos(int, int, CVector*, int)
 {
@@ -18,8 +50,6 @@ u8 Redbook_XAPlay(int, int, int)
 	return 0x1235959;
 }
 
-static bool gXAAllowed;
-
 // @NotOk
 // Globals
 void Redbook_XAAllow(bool allowed)
@@ -30,11 +60,14 @@ void Redbook_XAAllow(bool allowed)
 // @MEDIUMTODO
 void Redbook_XAReset(void)
 {
+	printf("void Redbook_XAReset(void)");
 }
 
 // @BIGTODO
 void Redbook_XAInit(void)
-{}
+{
+	printf("void Redbook_XAInit(void)");
+}
 
 // @Ok
 void Redbook_XAInitAtStart(void)
