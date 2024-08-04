@@ -20,6 +20,12 @@ public:
 	EXPORT void BegMotherfucker(void);
 	EXPORT void TellSomebodyToShootMe(void);
 
+	EXPORT void AI(void) OVERRIDE;
+	EXPORT void DieHostage(void);
+	EXPORT void FollowWaypoints(void);
+	EXPORT void SetHostageType(i32);
+	EXPORT ~CHostage(void);
+
 
 	i32 field_324;
 	i32 field_328;

@@ -10,6 +10,42 @@
 extern i32 DifficultyLevel; 
 extern CPlayer* MechList;
 
+// @MEDIUMTODO
+void CHostage::AI(void)
+{
+    printf("CHostage::AI(void)");
+}
+
+// @SMALLTODO
+void CHostage::DieHostage(void)
+{
+    printf("CHostage::DieHostage(void)");
+}
+
+// @MEDIUMTODO
+void CHostage::FollowWaypoints(void)
+{
+    printf("CHostage::FollowWaypoints(void)");
+}
+
+// @SMALLTODO
+void CHostage::SetHostageType(i32)
+{
+    printf("CHostage::SetHostageType(i32)");
+}
+
+// @SMALLTODO
+CHostage::~CHostage(void)
+{
+    printf("CHostage::~CHostage(void)");
+}
+
+// @SMALLTODO
+void Hostage_RelocatableModuleClear(void)
+{
+    printf("Hostage_RelocatableModuleClear(void)");
+}
+
 // @Ok
 void CHostage::BegMotherfucker(void)
 {
