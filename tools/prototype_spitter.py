@@ -64,8 +64,11 @@ def main():
     base_file = None
     with open(sys.argv[1], 'r') as fp:
         prototype_def = json.load(fp)
-    with open(sys.argv[3], 'r') as fp:
-        base_file = fp.read()
+    try:
+        with open(sys.argv[3], 'r') as fp:
+            base_file = fp.read()
+    except IndexError:
+        base_file = ''
 
     if entry not in prototype_def:
         print(f'{entry} not part of prototypes')
@@ -95,10 +98,8 @@ def main():
 
         generate_header(name)
 
-    '''
     for name, size in functions:
         generate_body(name, size)
-        '''
 
 
     return 0
