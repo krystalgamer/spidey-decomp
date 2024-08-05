@@ -3,16 +3,68 @@
 #include "spidey.h"
 #include "utils.h"
 #include "ps2lowsfx.h"
+#include "m3dcolij.h"
 #include "validate.h"
 
 extern CBody* ControlBaddyList;
 extern i16 **gTrigNodes;
 extern CPlayer* MechList;
+extern CSVector gTrajectoryVector;
+extern i32 TotalBitUsage;
 
-// @SMALLTODO
+// @Ok
 void CLaserFence::AI(void)
 {
-    printf("CLaserFence::AI(void)");
+	if (MechList)
+	{
+		if (MechList->mPos.vx > this->mVxMin && MechList->mPos.vx < this->mVxMax)
+		{
+			if (MechList->mPos.vz > this->mVzMin && MechList->mPos.vz < this->mVzMax)
+			{
+				CVector v5;
+				v5.vx = 0;
+				v5.vy = 0;
+				v5.vz = 0;
+
+				if (M3dColij_LineToSphere(
+							&this->mPos,
+							&this->field_F8,
+							&v5,
+							MechList,
+							0,
+							4096) == reinterpret_cast<i32>(MechList))
+				{
+					SHitInfo v6;
+
+					v6.field_C.vx = 0;
+					v6.field_C.vy = 0;
+					v6.field_C.vz = 0;
+
+					v6.field_0 = 4;
+					v6.field_8 = 10;
+
+					MechList->Hit(&v6);
+
+					if (this->field_114)
+					{
+						// @FIXME remove this shit
+						MechList->nullsub_one(reinterpret_cast<i32>(this));
+						Bit_SetSparkTrajectory(&gTrajectoryVector);
+
+						CSVector v4;
+						v4.vx = 512;
+						v4.vy = 4096;
+						v4.vz = 0;
+						Bit_SetSparkTrajectoryCone(&v4);
+						Bit_SetSparkSize(2u);
+						Bit_SetSparkRGB(32, 32, 128);
+						Bit_SetSparkFadeRGB(1, 1, 4);
+						TotalBitUsage = 1;
+					}
+				}
+			}
+		}
+	}
 }
 
 // @Ok

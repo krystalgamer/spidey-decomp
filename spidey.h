@@ -229,6 +229,7 @@ class CPlayer : public CSuper
 		EXPORT void UpdateOffscreenSpideySenseIndicatorList(void);
 		EXPORT void UpdateTrails(void);
 		EXPORT ~CPlayer(void);
+		EXPORT void nullsub_one(i32);
 };
 
 EXPORT void Bruce_Sync(void);

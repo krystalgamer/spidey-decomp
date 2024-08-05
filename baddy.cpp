@@ -10,6 +10,7 @@
 
 EXPORT CBody* ControlBaddyList;
 EXPORT CBaddy* BaddyList;
+EXPORT CSVector gTrajectoryVector;
 
 extern i16** gTrigNodes;
 

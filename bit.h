@@ -352,6 +352,7 @@ EXPORT void Bit_SetSparkFadeRGB(unsigned char, unsigned char, unsigned char);
 EXPORT void Bit_SetSparkTrajectory(const CSVector *);
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
 EXPORT void Bit_ReduceRGB(unsigned int*, int);
+EXPORT void Bit_SetSparkSize(u32);
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);

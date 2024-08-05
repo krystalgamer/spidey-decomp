@@ -23,6 +23,12 @@ extern i32 CurrentSuit;
 EXPORT void *gSpideyHeadModel;
 extern SPSXRegion PSXRegion[];
 
+// @IGNOREME
+void CPlayer::nullsub_one(i32)
+{
+	printf("void CPlayer::nullsub_one(i32)");
+}
+
 // @SMALLTODO
 void Bruce_Sync(void)
 {

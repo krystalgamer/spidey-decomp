@@ -21,6 +21,12 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
+// @SMALLTODO
+void Bit_SetSparkSize(u32)
+{
+	printf("void Bit_SetSparkSize(u32)");
+}
+
 // @MEDIUMTODO
 CWibbly::CWibbly(u8,u8,u8,i32,i32 a6,i32,i32,i32,i32,i32,i32,i32,i32)
 	: CGouraudRibbon(a6 + 1, 0)
