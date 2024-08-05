@@ -31,7 +31,21 @@ class CTripWire : public CBody
 		EXPORT virtual void AI(void);
 
 		EXPORT void BuildTripWire(void);
-		u8 padTop[0x1C];
+		u8 padTop[0x4];
+
+		u8 field_F8;
+		u8 field_F9;
+		u8 field_FA;
+		u8 field_FB;
+		u8 field_FC;
+
+		u8 padAfterFC;
+
+		u16 field_FE;
+		u16 field_100;
+		u8 padAfter100[2];
+
+		CVector field_104;
 
 		// @FIXME
 		void *field_110;
