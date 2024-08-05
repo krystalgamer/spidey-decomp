@@ -1,9 +1,13 @@
 #include "wire.h"
 #include "trig.h"
+#include "spidey.h"
+#include "utils.h"
+#include "ps2lowsfx.h"
 #include "validate.h"
 
 extern CBody* ControlBaddyList;
 extern i16 **gTrigNodes;
+extern CPlayer* MechList;
 
 // @SMALLTODO
 void CLaserFence::AI(void)
@@ -29,10 +33,77 @@ CLaserFence::~CLaserFence(void)
     printf("CLaserFence::~CLaserFence(void)");
 }
 
-// @MEDIUMTODO
+// @Ok
+// matching
 void CTripWire::AI(void)
 {
-    printf("CTripWire::AI(void)");
+	u8 v2 = 0;
+	SLineSeg* mSegs = this->field_110->mSegs;
+	if ( MechList && Utils_CheckObjectCollision(&this->mPos, &this->field_104, MechList, 0) )
+	{
+		v2 = 1;
+		if ( !this->field_FB )
+		{
+			SFX_Play(0x29u, 0x2000, 0);
+			Trig_SendPulseToNode(this->field_100);
+			this->field_FB = 1;
+		}
+
+		mSegs->r = -(this->field_F8 != 0);
+		mSegs->g = -(this->field_F9 != 0);
+		mSegs->b = -(this->field_FA != 0);
+		this->field_FE = 0;
+	}
+
+	if (this->field_44 & 1)
+	{
+		this->field_FB = 1;
+		this->field_44 &= ~1;
+	}
+
+	if (!v2)
+	{
+		if (this->field_FB)
+		{
+			if (++this->field_FE > 0x3C)
+			{
+				this->Die();
+				return;
+			}
+
+			if (Rnd(2))
+			{
+				//v5 = this->field_F8;
+				mSegs->r = this->field_F8 - (this->field_F8 >> 2) + Rnd(this->field_F8 >> 1);
+
+				//v6 = this->field_F9;
+				mSegs->g = this->field_F9 - (this->field_F9 >> 2) + Rnd(this->field_F9 >> 1);
+
+				//v7 = this->field_FA;
+				mSegs->b = this->field_FA - (this->field_FA >> 2) + Rnd(this->field_FA >> 1);
+			}
+			else
+			{
+				mSegs->r = this->field_F8 >> 2;
+				mSegs->g = this->field_F9 >> 2;
+				mSegs->b = this->field_FA >> 2;
+				return;
+			}
+		}
+		else
+		{
+			//v5 = this->field_F8;
+			mSegs->r = this->field_F8 - (this->field_F8 >> 2) + Rnd(this->field_F8 >> 1);
+
+			//v6 = this->field_F9;
+			mSegs->g = this->field_F9 - (this->field_F9 >> 2) + Rnd(this->field_F9 >> 1);
+
+			//v7 = this->field_FA;
+			mSegs->b = this->field_FA - (this->field_FA >> 2) + Rnd(this->field_FA >> 1);
+		}
+
+	}
+
 }
 
 // @Ok

@@ -29,7 +29,7 @@ class CTripWire : public CBody
 	public:
 		EXPORT CTripWire(i16 *,u16);
 		EXPORT virtual ~CTripWire(void);
-		EXPORT virtual void AI(void);
+		EXPORT void AI(void) OVERRIDE;
 
 		EXPORT void BuildTripWire(void);
 		u8 padTop[0x4];
