@@ -3,6 +3,8 @@
 #include "validate.h"
 #include "trig.h"
 
+extern u8 submarinerDieRelated;
+
 // @NotOk
 // Globals
 CTorch::CTorch(int* a2, int a3)
@@ -27,7 +29,7 @@ CTorch::CTorch(int* a2, int a3)
 	this->field_DC = 0;
 	this->field_34C = reinterpret_cast<int>(v5);
 
-	if (*submarinerDieRelated && Trig_GetLevelId() != 2051)
+	if (submarinerDieRelated && Trig_GetLevelId() != 2051)
 		this->Die(0);
 }
 

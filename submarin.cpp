@@ -2,12 +2,28 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+EXPORT u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
-// @SMALLTODO
-CSubmariner::CSubmariner(i16 *,i32)
+// @NotOk
+// fix the address for 3C
+CSubmariner::CSubmariner(i16 * a2, i32 a3)
 {
-    printf("CSubmariner::CSubmariner(i16 *,i32)");
+	this->InitItem("mariner");
+	this->SquirtAngles(this->SquirtPos(a2));
+	this->CycleAnim(0, 1);
+	this->mFlags |= 0x480u;
+
+	// @FIXME actual address
+	this->field_3C = 0x5573D0;
+
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
+	this->field_38 = 326;
+	this->field_DE = a3;
+	this->field_DC = 0;
+
+	if ( submarinerDieRelated )
+		this->Die(0);
 }
 
 // @Ok
@@ -33,7 +49,7 @@ void Submariner_RelocatableModuleClear(void)
 
 // @Ok
 void CSubmariner::AI(void){
-	if (*submarinerDieRelated){
+	if (submarinerDieRelated){
 		this->Die(0);
 	}
 	else{

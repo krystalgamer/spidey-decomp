@@ -2,6 +2,8 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+extern u8 submarinerDieRelated;
+
 // @SMALLTODO
 CMJ::~CMJ(void)
 {
@@ -47,7 +49,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 	this->field_DE = a3;
 	this->field_DC = 0;
 
-	if (*submarinerDieRelated)
+	if (submarinerDieRelated)
 		this->Die(0);
 }
 

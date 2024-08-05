@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "trig.h"
 
+extern u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
 // @SMALLTODO
@@ -78,7 +79,7 @@ CBlackCat::CBlackCat(int* a2, int a3)
 	this->field_DC = 0;
 	this->field_34C = reinterpret_cast<int>(v5);
 
-	if (*submarinerDieRelated && Trig_GetLevelId() != 2051)
+	if (submarinerDieRelated && Trig_GetLevelId() != 2051)
 		this->Die(0);
 }
 
