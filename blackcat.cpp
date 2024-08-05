@@ -5,10 +5,19 @@
 extern u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
-// @SMALLTODO
+// @Ok
 void BlackCat_RelocatableModuleClear(void)
 {
-    printf("BlackCat_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 319)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @MEDIUMTODO
