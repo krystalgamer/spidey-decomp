@@ -28,8 +28,9 @@ class CLaserFence : public CBody
 		i32 mVzMax;
 
 		bool field_114;
+		u8 padAfter114[0x118-0x114-sizeof(bool)];
 
-		unsigned char bottomPad[0x11C-0x114-1];
+		CWibbly* field_118;
 };
 
 class CTripWire : public CBody

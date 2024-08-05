@@ -15,7 +15,7 @@ void CLaserFence::AI(void)
     printf("CLaserFence::AI(void)");
 }
 
-// @SMALLTODO
+// @Ok
 CLaserFence::CLaserFence(i16* a2, i32 a3, bool a4)
 {
 	this->field_F8.vx = 0;
@@ -41,30 +41,31 @@ CLaserFence::CLaserFence(i16* a2, i32 a3, bool a4)
 	this->CommonInitialisation(a4);
 }
 
-// @SMALLTODO
-void CLaserFence::CommonInitialisation(bool)
+// @Ok
+// matching
+void CLaserFence::CommonInitialisation(bool a2)
 {
 	this->AttachTo(&ControlBaddyList);
-	if ( this->mPos.vx >= this->field_F8.vx )
-	{
-		this->mVxMin = this->field_F8.vx;
-		this->mVxMax = this->mPos.vx;
-	}
-	else
+	if ( this->mPos.vx < this->field_F8.vx )
 	{
 		this->mVxMin = this->mPos.vx;
 		this->mVxMax = this->field_F8.vx;
 	}
-
-	if ( this->mPos.vz >= this->field_F8.vz )
-	{
-		this->mVzMin = this->field_F8.vz;
-		this->mVzMax = this->mPos.vz;
-	}
 	else
+	{
+		this->mVxMin = this->field_F8.vx;
+		this->mVxMax = this->mPos.vx;
+	}
+
+	if ( this->mPos.vz < this->field_F8.vz )
 	{
 		this->mVzMin = this->mPos.vz;
 		this->mVzMax = this->field_F8.vz;
+	}
+	else
+	{
+		this->mVzMin = this->field_F8.vz;
+		this->mVzMax = this->mPos.vz;
 	}
 
 	this->mVxMin -= 0x100000;
@@ -72,13 +73,31 @@ void CLaserFence::CommonInitialisation(bool)
 	this->mVzMin -= 0x100000;
 	this->mVzMax += 0x100000;
 
-	CVector v9 = this->field_F8 - this->mPos;
-
-	i32 v10 = v9.Length() / 512;
+	i32 v10 = (this->field_F8 - this->mPos).Length() / 512;
 	if ( v10 < 4 )
 		v10 = 4;
 
+	u8 v14, v15;
+	if ( a2 )
+	{
+		v15 = 32;
+		v14 = 0x80;
+	}
+	else
+	{
+		v15 = 0x80;
+		v14 = 32;
+	}
 
+	this->field_118 = new CWibbly(0x20u, v15, v14, 1, v10, 0, 700, 32, 48, 440, 110, 800, 147);
+	print_if_false(this->field_118 != 0, "No wibbly");
+
+	this->field_118->SetEndPoints(&this->mPos, &this->field_F8);
+
+	this->field_118->mProtected = 1;
+	this->field_38 = 404;
+
+	this->SetPushback(a2);
 }
 
 // @SMALLTODO
@@ -246,6 +265,7 @@ void validate_CLaserFence(void)
 	VALIDATE(CLaserFence, mVzMax, 0x110);
 
 	VALIDATE(CLaserFence, field_114, 0x114);
+	VALIDATE(CLaserFence, field_118, 0x118);
 }
 
 void validate_CTripWire(void)
