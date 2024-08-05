@@ -10,7 +10,7 @@
 #include "spidey.h"
 #include "camera.h"
 
-extern CBaddy* ControlBaddyList;
+extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
 extern SFlatBitVelocity FlatBitVelocities[];
 

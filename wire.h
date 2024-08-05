@@ -31,7 +31,10 @@ class CTripWire : public CBody
 		EXPORT virtual void AI(void);
 
 		EXPORT void BuildTripWire(void);
-		u8 padBottom[0x20];
+		u8 padTop[0x1C];
+
+		// @FIXME
+		void *field_110;
 };
 
 void validate_CLaserFence(void);

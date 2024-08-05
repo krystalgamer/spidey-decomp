@@ -4,7 +4,7 @@
 #include "spidey.h"
 #include "validate.h"
 
-extern CBaddy* ControlBaddyList;
+extern CBody* ControlBaddyList;
 extern CPlayer* MechList;
 extern i32 NumNodes;
 extern i16 **gTrigNodes;

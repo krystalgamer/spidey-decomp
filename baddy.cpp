@@ -8,7 +8,7 @@
 #include "trig.h"
 #include "ai.h"
 
-EXPORT CBaddy* ControlBaddyList;
+EXPORT CBody* ControlBaddyList;
 EXPORT CBaddy* BaddyList;
 
 extern i16** gTrigNodes;

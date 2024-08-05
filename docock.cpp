@@ -12,6 +12,7 @@
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern i32 gBossRelated;
+extern CBody* ControlBaddyList;
 
 // @Ok
 CDocOc::~CDocOc(void)
@@ -285,13 +286,12 @@ void CDocOc::HangAndGetBeaten(void)
 	}
 }
 
-extern CBaddy* ControlBaddyList;
 // @NotOk
 // missing tag
 INLINE void CDocOc::ResolveSwitches(void)
 {
 	i32 index = 0;
-	for (CBaddy* pBaddy = ControlBaddyList;
+	for (CBaddy* pBaddy = reinterpret_cast<CBaddy*>(ControlBaddyList);
 			pBaddy;
 			pBaddy = reinterpret_cast<CBaddy*>(pBaddy->field_20))
 	{

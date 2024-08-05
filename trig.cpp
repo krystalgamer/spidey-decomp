@@ -26,7 +26,7 @@ extern CSpecialDisplay *SpecialDisplayList;
 extern i32 JoelJewCheatCode;
 
 extern CPlayer* MechList;
-extern CBaddy* ControlBaddyList;
+extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
 extern CBody* EnvironmentalObjectList;
 extern CBody* PowerUpList;

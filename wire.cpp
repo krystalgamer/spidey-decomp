@@ -1,6 +1,7 @@
 #include "wire.h"
-
 #include "validate.h"
+
+extern CBody* ControlBaddyList;
 
 // @SMALLTODO
 void CLaserFence::AI(void)
@@ -44,10 +45,13 @@ CTripWire::CTripWire(i16 *,u16)
     printf("CTripWire::CTripWire(short *,ushort)");
 }
 
-// @SMALLTODO
+// @NotOk
 CTripWire::~CTripWire(void)
 {
-    printf("CTripWire::~CTripWire(void)");
+	this->DeleteFrom(&ControlBaddyList);
+
+	// @FIXME type
+	delete reinterpret_cast<CClass*>(this->field_110);
 }
 
 // @Ok
@@ -66,4 +70,6 @@ void validate_CLaserFence(void)
 void validate_CTripWire(void)
 {
 	VALIDATE_SIZE(CTripWire, 0x114);
+
+	VALIDATE(CTripWire, field_110, 0x110);
 }

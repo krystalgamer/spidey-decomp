@@ -9,7 +9,7 @@
 
 extern SFlatBitVelocity FlatBitVelocities[];
 
-extern CBaddy* ControlBaddyList;
+extern CBody* ControlBaddyList;
 
 // @MEDIUMTODO
 void Chunk_ChunkItemByChecksum(u32 Checksum)
