@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+extern CBaddy* BaddyList;
 
 // @SMALLTODO
 CSubmariner::CSubmariner(i16 *,i32)
@@ -9,10 +10,10 @@ CSubmariner::CSubmariner(i16 *,i32)
     printf("CSubmariner::CSubmariner(i16 *,i32)");
 }
 
-// @SMALLTODO
+// @Ok
 CSubmariner::~CSubmariner(void)
 {
-    printf("CSubmariner::~CSubmariner(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
 // @SMALLTODO
