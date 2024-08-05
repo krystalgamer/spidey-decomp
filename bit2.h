@@ -6,6 +6,15 @@
 
 #include "bit.h"
 
+struct SLineSeg
+{
+	CVector End;
+
+	u8 r;
+	u8 g;
+	u8 b;
+};
+
 class CGPolyLine : public CBit {
 public:
 
@@ -44,15 +53,18 @@ class CGLine : public CBit
 class CPolyLine : public CBit
 {
 	public:
+		EXPORT CPolyLine(i32);
 		EXPORT void SetSemiTransparent(void);
 		unsigned char topPad[4];
 
-		int field_40;
-		int field_44;
+		i32 mNumSegs;
+		SLineSeg* mSegs;
+		CVector mStart;
 };
 
 void validate_CGPolyLine(void);
 void validate_CPolyLine(void);
 void validate_CGLine(void);
+void validate_SLineSeg(void);
 
 #endif

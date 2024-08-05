@@ -35,10 +35,22 @@ void CTripWire::AI(void)
     printf("CTripWire::AI(void)");
 }
 
-// @SMALLTODO
-void CTripWire::BuildTripWire(void)
+// @Ok
+// @Test
+INLINE void CTripWire::BuildTripWire(void)
 {
-    printf("CTripWire::BuildTripWire(void)");
+	this->field_110 = new CPolyLine(1);
+
+	this->field_110->mStart = this->mPos;
+
+	this->field_110->mProtected = 1;
+
+	this->field_110->SetSemiTransparent();
+
+	this->field_110->mSegs->End = this->field_104;
+	this->field_110->mSegs->r = this->field_F8;
+	this->field_110->mSegs->g = this->field_F9;
+	this->field_110->mSegs->b = this->field_FA;
 }
 
 // @Ok
@@ -83,13 +95,12 @@ CTripWire::CTripWire(i16 *, u16 a3)
 	this->BuildTripWire();
 }
 
-// @NotOk
+// @Ok
 CTripWire::~CTripWire(void)
 {
 	this->DeleteFrom(&ControlBaddyList);
 
-	// @FIXME type
-	delete reinterpret_cast<CClass*>(this->field_110);
+	delete this->field_110;
 }
 
 // @Ok

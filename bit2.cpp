@@ -1,6 +1,11 @@
 #include "bit2.h"
 #include "validate.h"
 
+// @SMALLTODO
+CPolyLine::CPolyLine(i32)
+{
+	printf("CPolyLine::CPolyLine(i32)");
+}
 
 // @NotOk
 // globals
@@ -28,9 +33,9 @@ void CGLine::SetRGB1(unsigned char a2, unsigned char a3, unsigned char a4)
 // figure out what the ptr is
 void CPolyLine::SetSemiTransparent(void)
 {
-	for (int i = 0; i < this->field_40; i++)
+	for (int i = 0; i < this->mNumSegs; i++)
 	{
-		unsigned char * ptr = reinterpret_cast<unsigned char*>(this->field_44);
+		unsigned char * ptr = reinterpret_cast<unsigned char*>(this->mSegs);
 		ptr[0x10*i] |= 2;
 	}
 }
@@ -65,8 +70,18 @@ void validate_CGLine(void)
 
 void validate_CPolyLine(void)
 {
-	VALIDATE_SIZE(CPolyLine, 0x48);
+	VALIDATE_SIZE(CPolyLine, 0x54);
 
-	VALIDATE(CPolyLine, field_40, 0x40);
-	VALIDATE(CPolyLine, field_44, 0x44);
+	VALIDATE(CPolyLine, mNumSegs, 0x40);
+	VALIDATE(CPolyLine, mSegs, 0x44);
+	VALIDATE(CPolyLine, mStart, 0x48);
+}
+
+void validate_SLineSeg(void)
+{
+	VALIDATE_SIZE(SLineSeg, 0x10);
+
+	VALIDATE(SLineSeg, r, 0xC);
+	VALIDATE(SLineSeg, g, 0xD);
+	VALIDATE(SLineSeg, b, 0xE);
 }

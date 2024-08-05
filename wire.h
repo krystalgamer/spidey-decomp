@@ -5,6 +5,7 @@
 
 #include "ob.h"
 #include "export.h"
+#include "bit2.h"
 
 class CLaserFence : public CBody
 {
@@ -47,8 +48,7 @@ class CTripWire : public CBody
 
 		CVector field_104;
 
-		// @FIXME
-		void *field_110;
+		CPolyLine* field_110;
 };
 
 void validate_CLaserFence(void);
