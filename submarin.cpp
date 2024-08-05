@@ -16,10 +16,13 @@ CSubmariner::~CSubmariner(void)
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
-// @SMALLTODO
-void Submariner_CreateSubmariner(u32 const *,u32 *)
+// @Ok
+void Submariner_CreateSubmariner(u32 * a2,u32 * a3)
 {
-    printf("Submariner_CreateSubmariner(ulong const *,u32 *)");
+	i16* v2 = reinterpret_cast<i16*>(a2[0]);
+	i32 v3 = static_cast<i32>(a2[1]);
+
+	*a3 = reinterpret_cast<u32>(new CSubmariner(v2, v3));
 }
 
 // @SMALLTODO
