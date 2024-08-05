@@ -402,6 +402,7 @@ int main()
 	validate_CSmokeRing();
 	validate_CTexturedRibbon();
 	validate_SLineSeg();
+	validate_CWibbly();
 
 	puts("[*] Validation done!");
 

@@ -16,15 +16,69 @@ void CLaserFence::AI(void)
 }
 
 // @SMALLTODO
-CLaserFence::CLaserFence(short *,i32,bool)
+CLaserFence::CLaserFence(i16* a2, i32 a3, bool a4)
 {
-    printf("CLaserFence::CLaserFence(short *,i32,bool)");
+	this->field_F8.vx = 0;
+	this->field_F8.vy = 0;
+	this->field_F8.vz = 0;
+
+	print_if_false((reinterpret_cast<i32>(a2) & 3) == 0, "Bad alignment");
+
+	CVector* pPos = reinterpret_cast<CVector*>(a2);
+
+	this->mPos.vx = pPos->vx << 12;
+	this->mPos.vy = pPos->vy << 12;
+	this->mPos.vz = pPos->vz << 12;
+	this->field_DE = a3;
+
+	u16* LinksPointer = Trig_GetLinksPointer(a3);
+	print_if_false(*LinksPointer == 1, "LaserFence trigger has bad links");
+	LinksPointer++;
+	print_if_false(*LinksPointer != a3, "LaserFence trigger linked to itself");
+
+	Trig_GetPosition(&this->field_F8, *LinksPointer);
+
+	this->CommonInitialisation(a4);
 }
 
 // @SMALLTODO
 void CLaserFence::CommonInitialisation(bool)
 {
-    printf("CLaserFence::CommonInitialisation(bool)");
+	this->AttachTo(&ControlBaddyList);
+	if ( this->mPos.vx >= this->field_F8.vx )
+	{
+		this->mVxMin = this->field_F8.vx;
+		this->mVxMax = this->mPos.vx;
+	}
+	else
+	{
+		this->mVxMin = this->mPos.vx;
+		this->mVxMax = this->field_F8.vx;
+	}
+
+	if ( this->mPos.vz >= this->field_F8.vz )
+	{
+		this->mVzMin = this->field_F8.vz;
+		this->mVzMax = this->mPos.vz;
+	}
+	else
+	{
+		this->mVzMin = this->mPos.vz;
+		this->mVzMax = this->field_F8.vz;
+	}
+
+	this->mVxMin -= 0x100000;
+	this->mVxMax += 0x100000;
+	this->mVzMin -= 0x100000;
+	this->mVzMax += 0x100000;
+
+	CVector v9 = this->field_F8 - this->mPos;
+
+	i32 v10 = v9.Length() / 512;
+	if ( v10 < 4 )
+		v10 = 4;
+
+
 }
 
 // @SMALLTODO
@@ -175,7 +229,7 @@ CTripWire::~CTripWire(void)
 }
 
 // @Ok
-void CLaserFence::SetPushback(bool pushback)
+INLINE void CLaserFence::SetPushback(bool pushback)
 {
 	this->field_114 = pushback;
 }
@@ -183,6 +237,13 @@ void CLaserFence::SetPushback(bool pushback)
 void validate_CLaserFence(void)
 {
 	VALIDATE_SIZE(CLaserFence, 0x11C);
+
+	VALIDATE(CLaserFence, field_F8, 0xF8);
+
+	VALIDATE(CLaserFence, mVxMin, 0x104);
+	VALIDATE(CLaserFence, mVxMax, 0x108);
+	VALIDATE(CLaserFence, mVzMin, 0x10C);
+	VALIDATE(CLaserFence, mVzMax, 0x110);
 
 	VALIDATE(CLaserFence, field_114, 0x114);
 }

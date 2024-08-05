@@ -9,20 +9,6 @@
 // @FIXME
 #define SCalcBuffer i32
 
-class CGouraudRibbon : public CSpecialDisplay
-{
-	public:
-		EXPORT CGouraudRibbon(i32, i32);
-		EXPORT void Display(void);
-		EXPORT void SetRGB(u8,u8,u8);
-		EXPORT void SetWidth(u16);
-		EXPORT ~CGouraudRibbon(void);
-
-		i32 mTrail;
-		i32 NumPoints;
-		SRibbonPoint* mpPoints;
-};
-
 class CSmokeRing : public CSpecialDisplay
 {
 	public:

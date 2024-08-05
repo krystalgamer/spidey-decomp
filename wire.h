@@ -10,14 +10,22 @@
 class CLaserFence : public CBody
 {
 	public:
-		EXPORT CLaserFence(short *,i32,bool);
+		EXPORT CLaserFence(i16 *,i32,bool);
 		EXPORT virtual ~CLaserFence(void);
 		EXPORT virtual void AI(void);
 
 		EXPORT void CommonInitialisation(bool);
 
 		EXPORT void SetPushback(bool);
-		unsigned char topPad[0x114-0xF4];
+
+		u8 topPad[0xF8-0xF4];
+
+		CVector field_F8;
+
+		i32 mVxMin;
+		i32 mVxMax;
+		i32 mVzMin;
+		i32 mVzMax;
 
 		bool field_114;
 

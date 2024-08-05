@@ -215,6 +215,7 @@ CVector operator+(const CVector& lhs, const CVector& other){
 
 
 // @Ok
+// @Test
 int CVector::Length(void)
 {
 	CVector v4;

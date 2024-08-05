@@ -21,6 +21,37 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
+// @MEDIUMTODO
+CWibbly::CWibbly(u8,u8,u8,i32,i32 a6,i32,i32,i32,i32,i32,i32,i32,i32)
+	: CGouraudRibbon(a6 + 1, 0)
+{
+    printf("CWibbly::CWibbly(u8,u8,u8,i32,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+}
+
+// @MEDIUMTODO
+void CWibbly::Move(void)
+{
+    printf("CWibbly::Move(void)");
+}
+
+// @SMALLTODO
+void CWibbly::SetCore(u8,u8,u8,i32)
+{
+    printf("CWibbly::SetCore(u8,u8,u8,i32)");
+}
+
+// @SMALLTODO
+void CWibbly::SetEndPoints(CVector const *,CVector const *)
+{
+    printf("CWibbly::SetEndPoints(CVector const *,CVector const *)");
+}
+
+// @SMALLTODO
+CWibbly::~CWibbly(void)
+{
+    printf("CWibbly::~CWibbly(void)");
+}
+
 // @SMALLTODO
 CFireyExplosion::CFireyExplosion(CVector*)
 {
@@ -966,4 +997,9 @@ void validate_CTextBox(void)
 void validate_CFireyExplosion(void)
 {
 	VALIDATE_SIZE(CFireyExplosion, 0x3C);
+}
+
+void validate_CWibbly(void)
+{
+	VALIDATE_SIZE(CWibbly, 0x98);
 }

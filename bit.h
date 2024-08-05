@@ -318,6 +318,33 @@ class CFireyExplosion : public CNonRenderedBit
 		EXPORT virtual ~CFireyExplosion(void);
 };
 
+class CGouraudRibbon : public CSpecialDisplay
+{
+	public:
+		EXPORT CGouraudRibbon(i32, i32);
+		EXPORT void Display(void);
+		EXPORT void SetRGB(u8,u8,u8);
+		EXPORT void SetWidth(u16);
+		EXPORT ~CGouraudRibbon(void);
+
+		i32 mTrail;
+		i32 NumPoints;
+		SRibbonPoint* mpPoints;
+};
+
+class CWibbly : public CGouraudRibbon
+{
+	public:
+		EXPORT CWibbly(u8,u8,u8,i32,i32,i32,i32,i32,i32,i32,i32,i32,i32);
+		EXPORT void Move(void) OVERRIDE;
+		EXPORT void SetCore(u8,u8,u8,i32);
+		EXPORT void SetEndPoints(CVector const *,CVector const *);
+		EXPORT virtual ~CWibbly(void);
+
+		u8 padBottom[0x50];
+
+};
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
@@ -351,5 +378,6 @@ void validate_CBitServer(void);
 void validate_CChunkBit(void);
 void validate_CTextBox(void);
 void validate_CFireyExplosion(void);
+void validate_CWibbly(void);
 
 #endif
