@@ -100,10 +100,12 @@ void CLaserFence::CommonInitialisation(bool a2)
 	this->SetPushback(a2);
 }
 
-// @SMALLTODO
+// @Ok
 CLaserFence::~CLaserFence(void)
 {
-    printf("CLaserFence::~CLaserFence(void)");
+	this->DeleteFrom(&ControlBaddyList);
+
+	delete this->field_118;
 }
 
 // @Ok
