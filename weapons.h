@@ -9,6 +9,30 @@
 // @FIXME
 #define SCalcBuffer i32
 
+struct SSmokeRingRelated
+{
+	u8 padTop[0x7];
+
+	u8 field_7;
+	u8 padAfter7[0xE-0x7-1];
+
+
+	u16 field_E;
+	u8 padAfterE[0x1A-0xE-2];
+
+	u16 field_1A;
+	u8 padAfter1A[0x3B-0x1A-2];
+
+	u8 field_3B;
+	u8 padAfter3B[0x42-0x3B-1];
+
+	u16 field_42;
+	u8 padAfter42[0x4E-0x42-2];
+
+	u16 field_4E;
+	u8 padBottom[0x8C-0x4E-2];
+};
+
 class CSmokeRing : public CSpecialDisplay
 {
 	public:
@@ -19,10 +43,15 @@ class CSmokeRing : public CSpecialDisplay
 		EXPORT void SetUV(i32,i32,i32);
 		EXPORT ~CSmokeRing(void);
 
-		u8 padTop[0x8];
-		void* field_44;
+		Texture* field_3C;
+		i32 mNumSectors;
+		SSmokeRingRelated* mpSectors;
+		CSVector field_48;
+		u8 padAfter48[0x60-0x48-sizeof(CSVector)];
 
-		u8 padBottom[0x6C-0x44-4];
+		i32 field_60;
+
+		u8 padBottom[0x6C-0x60-4];
 };
 
 class CTexturedRibbon : public CSpecialDisplay
@@ -48,6 +77,8 @@ class CTexturedRibbon : public CSpecialDisplay
 void validate_CGouraudRibbon(void);
 void validate_CSmokeRing(void);
 void validate_CTexturedRibbon(void);
+void validate_SSmokeRingRelated(void);
+
 EXPORT void CalcScreenNormal(SCalcBuffer *,i32 *,i32 *,i32);
 EXPORT i32 Transform(CVector *,i32 *);
 

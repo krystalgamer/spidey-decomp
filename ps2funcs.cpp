@@ -18,6 +18,15 @@ EXPORT int gRtpsRelatedNoClue3;
 
 static unsigned char stubGte = 1;
 
+EXPORT u8 gPrintStubbed = 1;
+
+// @IGNOREME
+INLINE void setPolyGT4(void)
+{
+	if (!gPrintStubbed)
+		stubbed_printf("stubbed out: setPolyGT4");
+}
+
 // @MEDIUMTODO
 void TransMatrix(MATRIX*, VECTOR*)
 {

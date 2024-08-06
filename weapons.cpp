@@ -33,7 +33,6 @@ CGouraudRibbon::~CGouraudRibbon(void)
 // @SMALLTODO
 CSmokeRing::CSmokeRing(i32,u32)
 {
-    printf("CSmokeRing::CSmokeRing(i32,u32)");
 }
 
 // @MEDIUMTODO
@@ -63,7 +62,7 @@ void CSmokeRing::SetUV(i32,i32,i32)
 // @Ok
 CSmokeRing::~CSmokeRing(void)
 {
-	Mem_Delete(this->field_44);
+	Mem_Delete(this->mpSectors);
 }
 
 // @Ok
@@ -185,7 +184,13 @@ void validate_CSmokeRing(void)
 {
 	VALIDATE_SIZE(CSmokeRing, 0x6C);
 
-	VALIDATE(CSmokeRing, field_44, 0x44);
+	VALIDATE(CSmokeRing, field_3C, 0x3C);
+	VALIDATE(CSmokeRing, mNumSectors, 0x40);
+	VALIDATE(CSmokeRing, mpSectors, 0x44);
+
+	VALIDATE(CSmokeRing, field_48, 0x48);
+
+	VALIDATE(CSmokeRing, field_60, 0x60);
 }
 
 void validate_CTexturedRibbon(void)
@@ -197,4 +202,17 @@ void validate_CTexturedRibbon(void)
 	VALIDATE(CTexturedRibbon, mNumPoints, 0x58);
 	VALIDATE(CTexturedRibbon, mpPoints, 0x5C);
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
+}
+
+void validate_SSmokeRingRelated(void)
+{
+	VALIDATE_SIZE(SSmokeRingRelated, 0x8C);
+
+	VALIDATE(SSmokeRingRelated, field_7, 0x7);
+	VALIDATE(SSmokeRingRelated, field_E, 0xE);
+	VALIDATE(SSmokeRingRelated, field_1A, 0x1A);
+
+	VALIDATE(SSmokeRingRelated, field_3B, 0x3B);
+	VALIDATE(SSmokeRingRelated, field_42, 0x42);
+	VALIDATE(SSmokeRingRelated, field_4E, 0x4E);
 }

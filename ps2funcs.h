@@ -89,4 +89,6 @@ EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
 
 EXPORT void TransMatrix(MATRIX*, VECTOR*);
 
+EXPORT void setPolyGT4(void);
+
 #endif

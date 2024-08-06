@@ -403,6 +403,7 @@ int main()
 	validate_CTexturedRibbon();
 	validate_SLineSeg();
 	validate_CWibbly();
+	validate_SSmokeRingRelated();
 
 	puts("[*] Validation done!");
 
