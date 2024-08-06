@@ -11,26 +11,61 @@
 
 struct SSmokeRingRelated
 {
-	u8 padTop[0x7];
+	u8 padTop[0x4];
+
+	u8 field_4;
+	u8 field_5;
+	u8 field_6;
 
 	u8 field_7;
 	u8 padAfter7[0xE-0x7-1];
 
 
 	u16 field_E;
-	u8 padAfterE[0x1A-0xE-2];
+
+	u8 field_10;
+	u8 field_11;
+	u8 field_12;
+	u8 padAfter12[0x1A-0x12-1];
 
 	u16 field_1A;
-	u8 padAfter1A[0x3B-0x1A-2];
+
+	u8 field_1C;
+	u8 field_1D;
+	u8 field_1E;
+	u8 padAfter1E[0x28-0x1E-1];
+
+	u8 field_28;
+	u8 field_29;
+	u8 field_2A;
+	u8 padAfter2A[0x38-0x2A-1];
+
+	u8 field_38;
+	u8 field_39;
+	u8 field_3A;
 
 	u8 field_3B;
 	u8 padAfter3B[0x42-0x3B-1];
 
 	u16 field_42;
-	u8 padAfter42[0x4E-0x42-2];
+
+	u8 field_44;
+	u8 field_45;
+	u8 field_46;
+	u8 padAfter46[0x4E-0x46-1];
 
 	u16 field_4E;
-	u8 padBottom[0x8C-0x4E-2];
+
+	u8 field_50;
+	u8 field_51;
+	u8 field_52;
+	u8 padAfter52[0x5C-0x52-1];
+
+	u8 field_5C;
+	u8 field_5D;
+	u8 field_5E;
+
+	u8 padBottom[0x8C-0x5E-1];
 };
 
 class CSmokeRing : public CSpecialDisplay

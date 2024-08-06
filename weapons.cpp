@@ -77,10 +77,52 @@ void CSmokeRing::SetParams(CVector const *,i32,i32)
     printf("CSmokeRing::SetParams(CVector const *,i32,i32)");
 }
 
-// @SMALLTODO
-void CSmokeRing::SetRGB(i32,i32,i32)
+// @Ok
+// @Test
+void CSmokeRing::SetRGB(i32 a2, i32 a3, i32 a4)
 {
-    printf("CSmokeRing::SetRGB(i32,i32,i32)");
+	if (a2 < 0)
+		a2 = 0;
+
+	if (a3 < 0)
+		a3 = 0;
+
+	if (a4 < 0)
+		a4 = 0;
+
+	for (i32 i = 0; i < this->mNumSectors; i++)
+	{
+			this->mpSectors[i].field_4 = 0;
+			this->mpSectors[i].field_5 = 0;
+			this->mpSectors[i].field_6 = 0;
+
+			this->mpSectors[i].field_10 = 0;
+			this->mpSectors[i].field_11 = 0;
+			this->mpSectors[i].field_12 = 0;
+			this->mpSectors[i].field_1C = a2;
+			this->mpSectors[i].field_1D = a3;
+			this->mpSectors[i].field_1E = a4;
+
+			this->mpSectors[i].field_28 = a2;
+			this->mpSectors[i].field_29 = a3;
+			this->mpSectors[i].field_2A = a4;
+
+			this->mpSectors[i].field_38 = a2;
+			this->mpSectors[i].field_39 = a3;
+			this->mpSectors[i].field_3A = a4;
+
+			this->mpSectors[i].field_44 = a2;
+			this->mpSectors[i].field_45 = a3;
+			this->mpSectors[i].field_46 = a4;
+
+			this->mpSectors[i].field_50 = 0;
+			this->mpSectors[i].field_51 = 0;
+			this->mpSectors[i].field_52 = 0;
+
+			this->mpSectors[i].field_5C = 0;
+			this->mpSectors[i].field_5D = 0;
+			this->mpSectors[i].field_5E = 0;
+	}
 }
 
 // @SMALLTODO
@@ -238,11 +280,41 @@ void validate_SSmokeRingRelated(void)
 {
 	VALIDATE_SIZE(SSmokeRingRelated, 0x8C);
 
+	VALIDATE(SSmokeRingRelated, field_4, 0x4);
+	VALIDATE(SSmokeRingRelated, field_5, 0x5);
+	VALIDATE(SSmokeRingRelated, field_6, 0x6);
+
 	VALIDATE(SSmokeRingRelated, field_7, 0x7);
 	VALIDATE(SSmokeRingRelated, field_E, 0xE);
 	VALIDATE(SSmokeRingRelated, field_1A, 0x1A);
 
+	VALIDATE(SSmokeRingRelated, field_1C, 0x1C);
+	VALIDATE(SSmokeRingRelated, field_1D, 0x1D);
+	VALIDATE(SSmokeRingRelated, field_1E, 0x1E);
+
+	VALIDATE(SSmokeRingRelated, field_28, 0x28);
+	VALIDATE(SSmokeRingRelated, field_29, 0x29);
+	VALIDATE(SSmokeRingRelated, field_2A, 0x2A);
+
+	VALIDATE(SSmokeRingRelated, field_38, 0x38);
+	VALIDATE(SSmokeRingRelated, field_39, 0x39);
+	VALIDATE(SSmokeRingRelated, field_3A, 0x3A);
+
 	VALIDATE(SSmokeRingRelated, field_3B, 0x3B);
+
 	VALIDATE(SSmokeRingRelated, field_42, 0x42);
+
+	VALIDATE(SSmokeRingRelated, field_44, 0x44);
+	VALIDATE(SSmokeRingRelated, field_45, 0x45);
+	VALIDATE(SSmokeRingRelated, field_46, 0x46);
+
 	VALIDATE(SSmokeRingRelated, field_4E, 0x4E);
+
+	VALIDATE(SSmokeRingRelated, field_50, 0x50);
+	VALIDATE(SSmokeRingRelated, field_51, 0x51);
+	VALIDATE(SSmokeRingRelated, field_52, 0x52);
+
+	VALIDATE(SSmokeRingRelated, field_5C, 0x5C);
+	VALIDATE(SSmokeRingRelated, field_5D, 0x5D);
+	VALIDATE(SSmokeRingRelated, field_5E, 0x5E);
 }
