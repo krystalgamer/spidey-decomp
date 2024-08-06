@@ -72,10 +72,15 @@ CTexturedRibbon::CTexturedRibbon(i32,i32)
     printf("CTexturedRibbon::CTexturedRibbon(i32,i32)");
 }
 
-// @SMALLTODO
-void CTexturedRibbon::SetCoreRGBi(i32,u8,u8,u8)
+// @Ok
+// matching
+void CTexturedRibbon::SetCoreRGBi(
+		i32 a2,
+		u8 a3,
+		u8 a4,
+		u8 a5)
 {
-    printf("CTexturedRibbon::SetCoreRGBi(i32,u8,u8,u8)");
+	this->field_60[a2 + 1 + this->field_58] = (((a5 << 8) | a4) << 8) | a3;
 }
 
 // @Ok
@@ -165,6 +170,7 @@ void validate_CSmokeRing(void)
 
 void validate_CTexturedRibbon(void)
 {
+	VALIDATE(CTexturedRibbon, field_58, 0x58);
 	VALIDATE(CTexturedRibbon, field_5C, 0x5C);
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }

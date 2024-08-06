@@ -30,7 +30,8 @@ class CTexturedRibbon : public CSpecialDisplay
 		EXPORT void SetTexture(Texture *);
 		EXPORT ~CTexturedRibbon(void);
 
-		u8 topPad[0x5C-0x3C];
+		u8 topPad[0x58-0x3C];
+		i32 field_58;
 		void* field_5C;
 		i32* field_60;
 };
