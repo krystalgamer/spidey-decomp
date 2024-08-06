@@ -13,13 +13,20 @@ void CGouraudRibbon::Display(void)
     printf("CGouraudRibbon::Display(void)");
 }
 
-// @SMALLTODO
-void CGouraudRibbon::SetRGB(u8,u8,u8)
+// @Ok
+// @Matching
+void CGouraudRibbon::SetRGB(u8 a2,u8 a3,u8 a4)
 {
-    printf("CGouraudRibbon::SetRGB(u8,u8,u8)");
+	for (i32 i = 0; i < this->mNumPoints; i++)
+	{
+		this->mpPoints[i].r = a2;
+		this->mpPoints[i].g = a3;
+		this->mpPoints[i].b = a4;
+	}
 }
 
 // @Ok
+// @Matching
 void CGouraudRibbon::SetWidth(u16 Width)
 {
 	for (i32 i = 0; i < this->mNumPoints; i++)
