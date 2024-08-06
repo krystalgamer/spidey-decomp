@@ -66,10 +66,28 @@ CSmokeRing::~CSmokeRing(void)
     printf("CSmokeRing::~CSmokeRing(void)");
 }
 
-// @SMALLTODO
-CTexturedRibbon::CTexturedRibbon(i32,i32)
+// @Ok
+// @Matching
+CTexturedRibbon::CTexturedRibbon(i32 NumPoints,i32 LeaveTrail)
 {
-    printf("CTexturedRibbon::CTexturedRibbon(i32,i32)");
+	print_if_false(NumPoints > 1, "NumPoints must be at least 2");
+	print_if_false((u32)NumPoints <= 0x20, "NumPoints too big for buffer.");
+	this->mNumPoints = NumPoints;
+
+	this->mpPoints = static_cast<SRibbonPoint *>(DCMem_New(sizeof(SRibbonPoint) * NumPoints, 0, 1, 0, 1));
+
+	for (i32 i = 0; i < this->mNumPoints; i++)
+	{
+		this->mpPoints[i].WidthB = 0;
+		this->mpPoints[i].Width = 0;
+	}
+
+	print_if_false(!LeaveTrail || LeaveTrail == 1, "LeaveTrail must be 0 or 1");
+	this->mTrail = LeaveTrail;
+	this->field_50 = 8;
+
+	this->field_60 = static_cast<int *>(DCMem_New(8 * NumPoints + 4, 0, 1, 0, 1));
+	this->field_60[0] = 0;
 }
 
 // @Ok
@@ -80,7 +98,7 @@ void CTexturedRibbon::SetCoreRGBi(
 		u8 a4,
 		u8 a5)
 {
-	this->field_60[a2 + 1 + this->field_58] = (((a5 << 8) | a4) << 8) | a3;
+	this->field_60[a2 + 1 + this->mNumPoints] = (((a5 << 8) | a4) << 8) | a3;
 }
 
 // @Ok
@@ -98,7 +116,7 @@ void CTexturedRibbon::SetTexture(Texture *)
 // @Ok
 CTexturedRibbon::~CTexturedRibbon(void)
 {
-	Mem_Delete(this->field_5C);
+	Mem_Delete(this->mpPoints);
 	Mem_Delete(this->field_60);
 }
 
@@ -170,7 +188,11 @@ void validate_CSmokeRing(void)
 
 void validate_CTexturedRibbon(void)
 {
-	VALIDATE(CTexturedRibbon, field_58, 0x58);
-	VALIDATE(CTexturedRibbon, field_5C, 0x5C);
+	VALIDATE(CTexturedRibbon, mTrail, 0x3C);
+
+	VALIDATE(CTexturedRibbon, field_50, 0x50);
+
+	VALIDATE(CTexturedRibbon, mNumPoints, 0x58);
+	VALIDATE(CTexturedRibbon, mpPoints, 0x5C);
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }
