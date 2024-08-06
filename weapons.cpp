@@ -25,10 +25,10 @@ void CGouraudRibbon::SetWidth(u16)
     printf("CGouraudRibbon::SetWidth(u16)");
 }
 
-// @SMALLTODO
+// @Ok
 CGouraudRibbon::~CGouraudRibbon(void)
 {
-    printf("CGouraudRibbon::~CGouraudRibbon(void)");
+	Mem_Delete(this->mpPoints);
 }
 
 // @Ok
