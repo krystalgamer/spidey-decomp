@@ -90,10 +90,11 @@ void CTexturedRibbon::SetTexture(Texture *)
     printf("CTexturedRibbon::SetTexture(Texture *)");
 }
 
-// @SMALLTODO
+// @Ok
 CTexturedRibbon::~CTexturedRibbon(void)
 {
-    printf("CTexturedRibbon::~CTexturedRibbon(void)");
+	Mem_Delete(this->field_5C);
+	Mem_Delete(this->field_60);
 }
 
 // @SMALLTODO
@@ -164,5 +165,6 @@ void validate_CSmokeRing(void)
 
 void validate_CTexturedRibbon(void)
 {
+	VALIDATE(CTexturedRibbon, field_5C, 0x5C);
 	VALIDATE(CTexturedRibbon, field_60, 0x60);
 }

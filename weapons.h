@@ -30,7 +30,8 @@ class CTexturedRibbon : public CSpecialDisplay
 		EXPORT void SetTexture(Texture *);
 		EXPORT ~CTexturedRibbon(void);
 
-		u8 topPad[0x60-0x3C];
+		u8 topPad[0x5C-0x3C];
+		void* field_5C;
 		i32* field_60;
 };
 
@@ -38,6 +39,6 @@ void validate_CGouraudRibbon(void);
 void validate_CSmokeRing(void);
 void validate_CTexturedRibbon(void);
 EXPORT void CalcScreenNormal(SCalcBuffer *,i32 *,i32 *,i32);
-EXPORT void Transform(CVector const *,long *);
+EXPORT i32 Transform(CVector *,i32 *);
 
 #endif
