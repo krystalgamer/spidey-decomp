@@ -3,6 +3,7 @@
 #include "mem.h"
 #include "ps2funcs.h"
 #include "camera.h"
+#include "spool.h"
 
 extern SCamera gMikeCamera[2];
 
@@ -30,9 +31,38 @@ CGouraudRibbon::~CGouraudRibbon(void)
     printf("CGouraudRibbon::~CGouraudRibbon(void)");
 }
 
-// @SMALLTODO
-CSmokeRing::CSmokeRing(i32,u32)
+// @Ok
+// @Test
+CSmokeRing::CSmokeRing(i32 NumSectors, u32 a3)
 {
+	this->field_48.vx = 0;
+	this->field_48.vy = 0;
+	this->field_48.vz = 0;
+
+	print_if_false(NumSectors != 0, "Zero sectors sent to smoke ring");
+	this->mpSectors = static_cast<SSmokeRingRelated *>(DCMem_New(sizeof(SSmokeRingRelated) * NumSectors, 0, 1, 0, 1));
+	this->mNumSectors = NumSectors;
+	this->field_3C = Spool_FindTextureEntry(a3);
+	print_if_false(this->field_3C != 0, "Could not find smoke ring texture");
+
+	for (i32 i = 0; i < this->mNumSectors; i++)
+	{
+		setPolyGT4();
+
+		this->mpSectors[i].field_3B |= 2;
+		this->mpSectors[i].field_42 = this->field_3C->field_2;
+		this->mpSectors[i].field_4E = this->field_3C->field_6;
+
+		setPolyGT4();
+
+		this->mpSectors[i].field_7 |= 2;
+		this->mpSectors[i].field_E = this->field_3C->field_2;
+		this->mpSectors[i].field_1A = this->field_3C->field_6;
+	}
+
+	this->SetRGB(128, 128, 128);
+	this->SetUV(0, 0, 2);
+	this->field_60 = -1;
 }
 
 // @MEDIUMTODO

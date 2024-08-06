@@ -8,10 +8,13 @@ struct Texture
 {
 	u8 field_0;
 	u8 field_1;
-	u8 padAfter1[0x4-0x1-1];
+	u16 field_2;
 
-	i32 field_4;
-	u8 padAfter4[0x9-0x4-4];
+	u8 field_4;
+	u8 padAfter4;
+
+	u16 field_6;
+	u8 padAfter6[0x9-0x6-2];
 
 	u8 field_9;
 	u8 padAfter9[0xC-0x9-1];
