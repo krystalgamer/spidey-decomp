@@ -18,54 +18,79 @@ struct SSmokeRingRelated
 	u8 field_6;
 
 	u8 field_7;
-	u8 padAfter7[0xE-0x7-1];
+	u8 padAfter7[0xC-0x7-1];
 
 
+	u8 field_C;
+	u8 field_D;
 	u16 field_E;
 
 	u8 field_10;
 	u8 field_11;
 	u8 field_12;
-	u8 padAfter12[0x1A-0x12-1];
+	u8 padAfter12[0x18-0x12-1];
+
+	u8 field_18;
+	u8 field_19;
 
 	u16 field_1A;
 
 	u8 field_1C;
 	u8 field_1D;
 	u8 field_1E;
-	u8 padAfter1E[0x28-0x1E-1];
+	u8 padAfter1E[0x24-0x1E-1];
+
+	u8 field_24;
+	u8 field_25;
+	u8 padAfter25[2];
 
 	u8 field_28;
 	u8 field_29;
 	u8 field_2A;
-	u8 padAfter2A[0x38-0x2A-1];
+	u8 padAfter2A[0x30-0x2A-1];
+
+	u8 field_30;
+	u8 field_31;
+	u8 padAfter31[0x38-0x31-1];
 
 	u8 field_38;
 	u8 field_39;
 	u8 field_3A;
 
 	u8 field_3B;
-	u8 padAfter3B[0x42-0x3B-1];
+	u8 padAfter3B[0x40-0x3B-1];
 
+	u8 field_40;
+	u8 field_41;
 	u16 field_42;
 
 	u8 field_44;
 	u8 field_45;
 	u8 field_46;
-	u8 padAfter46[0x4E-0x46-1];
+	u8 padAfter46[0x4C-0x46-1];
 
+	u8 field_4C;
+	u8 field_4D;
 	u16 field_4E;
 
 	u8 field_50;
 	u8 field_51;
 	u8 field_52;
-	u8 padAfter52[0x5C-0x52-1];
+	u8 padAfter52[0x58-0x52-1];
+
+	u8 field_58;
+	u8 field_59;
+	u8 padAfter59[2];
 
 	u8 field_5C;
 	u8 field_5D;
 	u8 field_5E;
+	u8 padAfter5E[0x64-0x5E-1];
 
-	u8 padBottom[0x8C-0x5E-1];
+	u8 field_64;
+	u8 field_65;
+
+	u8 padBottom[0x8C-0x65-1];
 };
 
 class CSmokeRing : public CSpecialDisplay
@@ -82,8 +107,10 @@ class CSmokeRing : public CSpecialDisplay
 		i32 mNumSectors;
 		SSmokeRingRelated* mpSectors;
 		CSVector field_48;
-		u8 padAfter48[0x60-0x48-sizeof(CSVector)];
+		u8 padAfter48[0x58-0x48-sizeof(CSVector)];
 
+		i32 field_58;
+		i32 field_5C;
 		i32 field_60;
 
 		u8 padBottom[0x6C-0x60-4];
