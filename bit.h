@@ -328,7 +328,7 @@ class CGouraudRibbon : public CSpecialDisplay
 		EXPORT ~CGouraudRibbon(void);
 
 		i32 mTrail;
-		i32 NumPoints;
+		i32 mNumPoints;
 		SRibbonPoint* mpPoints;
 };
 

@@ -19,10 +19,13 @@ void CGouraudRibbon::SetRGB(u8,u8,u8)
     printf("CGouraudRibbon::SetRGB(u8,u8,u8)");
 }
 
-// @SMALLTODO
-void CGouraudRibbon::SetWidth(u16)
+// @Ok
+void CGouraudRibbon::SetWidth(u16 Width)
 {
-    printf("CGouraudRibbon::SetWidth(u16)");
+	for (i32 i = 0; i < this->mNumPoints; i++)
+	{
+		this->mpPoints[i].Width = Width;
+	}
 }
 
 // @Ok
@@ -268,7 +271,7 @@ CGouraudRibbon::CGouraudRibbon(i32 NumPoints, i32 LeaveTrail)
 	print_if_false(NumPoints > 1, "NumPoints must be at least 2");
 	print_if_false((u32)NumPoints <= 0x20, "NumPoints too big for buffer.");
 
-	this->NumPoints = NumPoints;
+	this->mNumPoints = NumPoints;
 
 	this->mpPoints = static_cast<SRibbonPoint *>(
 			DCMem_New(
@@ -288,7 +291,7 @@ void validate_CGouraudRibbon(void)
 	VALIDATE_SIZE(CGouraudRibbon, 0x48);
 
 	VALIDATE(CGouraudRibbon, mTrail, 0x3C);
-	VALIDATE(CGouraudRibbon, NumPoints, 0x40);
+	VALIDATE(CGouraudRibbon, mNumPoints, 0x40);
 	VALIDATE(CGouraudRibbon, mpPoints, 0x44);
 }
 
