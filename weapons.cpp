@@ -60,10 +60,10 @@ void CSmokeRing::SetUV(i32,i32,i32)
     printf("CSmokeRing::SetUV(i32,i32,i32)");
 }
 
-// @SMALLTODO
+// @Ok
 CSmokeRing::~CSmokeRing(void)
 {
-    printf("CSmokeRing::~CSmokeRing(void)");
+	Mem_Delete(this->field_44);
 }
 
 // @Ok
@@ -184,6 +184,8 @@ void validate_CGouraudRibbon(void)
 void validate_CSmokeRing(void)
 {
 	VALIDATE_SIZE(CSmokeRing, 0x6C);
+
+	VALIDATE(CSmokeRing, field_44, 0x44);
 }
 
 void validate_CTexturedRibbon(void)

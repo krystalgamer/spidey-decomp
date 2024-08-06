@@ -18,7 +18,11 @@ class CSmokeRing : public CSpecialDisplay
 		EXPORT void SetRGB(i32,i32,i32);
 		EXPORT void SetUV(i32,i32,i32);
 		EXPORT ~CSmokeRing(void);
-		u8 padBottom[0x30];
+
+		u8 padTop[0x8];
+		void* field_44;
+
+		u8 padBottom[0x6C-0x44-4];
 };
 
 class CTexturedRibbon : public CSpecialDisplay
