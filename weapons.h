@@ -38,7 +38,7 @@ struct SSmokeRingRelated
 	u8 field_1C;
 	u8 field_1D;
 	u8 field_1E;
-	u8 padAfter1E[0x24-0x1E-1];
+	u8 padAfter1E[0x24-(0x1E)-1];
 
 	u8 field_24;
 	u8 field_25;
@@ -85,7 +85,7 @@ struct SSmokeRingRelated
 	u8 field_5C;
 	u8 field_5D;
 	u8 field_5E;
-	u8 padAfter5E[0x64-0x5E-1];
+	u8 padAfter5E[0x64-(0x5E)-1];
 
 	u8 field_64;
 	u8 field_65;
