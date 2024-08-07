@@ -67,3 +67,6 @@ if (x == -1){
 worse code
 
 - classes/structures with other inner structures/arrays will have weird indexing (i.e SEntry in CMenu)
+
+
+using structures/classes can change code gen - check Utils_turnsTowards, it was using eax,cx on the += and -= statements with i16 but when replace with CSVector it fixed it.

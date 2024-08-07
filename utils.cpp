@@ -460,10 +460,40 @@ void Utils_VblankProcessing(void)
     printf("Utils_VblankProcessing(void)");
 }
 
-// @SMALLTODO
-void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)
+// @Ok
+// @Matching
+void Utils_TurnTowards(
+		CSVector Current,
+		CSVector *AngVel,
+		CSVector *AngAcc,
+		CSVector Ideal,
+		i32 accfactor)
 {
-	printf("void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)");
+
+	CSVector angDiff;
+	angDiff.vx = Ideal.vx - Current.vx;
+	angDiff.vy = Ideal.vy - Current.vy;
+
+	if ( angDiff.vx < -2048 )
+		angDiff.vx += 4096;
+	if ( angDiff.vx > 2048 )
+		angDiff.vx -= 4096;
+
+	if ( angDiff.vy < -2048 )
+		angDiff.vy += 4096;
+	if ( angDiff.vy > 2048 )
+		angDiff.vy -= 4096;
+
+	if ( angDiff.vx || angDiff.vy )
+	{
+		AngAcc->vx = (accfactor * angDiff.vx) >> 8;
+		AngAcc->vy = (accfactor * angDiff.vy) >> 8;
+	}
+	else
+	{
+		AngVel->vx = 0;
+		AngVel->vy = 0;
+	}
 }
 
 // @NotOk
