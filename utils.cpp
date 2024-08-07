@@ -119,10 +119,47 @@ void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)
     printf("Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)");
 }
 
-// @SMALLTODO
-void Utils_CanSee(CItem *,CItem *,i32,i32,i32)
+// @Ok
+// @Matching
+i32 Utils_CanSee(
+		CItem * a1,
+		CItem * a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
 {
-    printf("Utils_CanSee(CItem *,CItem *,i32,i32,i32)");
+	CSVector v8;
+
+	v8.vx = 0;
+	v8.vy = 0;
+	v8.vz = 0;
+
+	i32 result = Utils_CalcAim(&v8, &a1->mPos, &a2->mPos);
+	if ( result > a5 )
+		return 0;
+
+	i32 v6 = v8.vy - a1->mAngles.vy;
+	if ( v6 < -2048 )
+		v6 += 4096;
+	if ( v6 > 2048 )
+		v6 -= 4096;
+	if ( v6 < 0 )
+		v6 = -v6;
+	if ( v6 > a3 )
+		return 0;
+
+	i32 v7 = v8.vx - a1->mAngles.vx;
+	if ( v7 < -2048 )
+		v7 += 4096;
+	if ( v7 > 2048 )
+		v7 -= 4096;
+	if ( v7 < 0 )
+		v7 = -v7;
+	if ( v7 > a4 )
+		return 0;
+	if ( !result )
+		return 1;
+	return result;
 }
 
 // @SMALLTODO
