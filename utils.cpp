@@ -299,10 +299,67 @@ void Utils_RotateWorldToObject(CBody * a1,CVector * a2,CVector * a3)
 	a3->vz = sVec.vz << 12;
 }
 
-// @SMALLTODO
-void Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *)
+// @Ok
+void Utils_SetBaddyVisibilityInBox(CVector const * min,CVector const * max,bool visible,bool in,CBody * a5)
 {
-    printf("Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *)");
+	i32 minvx = min->vx;
+	i32 minvy = min->vy;
+	i32 minvz = min->vz;
+
+	i32 maxvx = max->vx;
+	i32 maxvy = max->vy;
+	i32 maxvz = max->vz;
+
+	for(CItem *pItem = a5; pItem; pItem = pItem->field_20)
+	{
+		if (PSXRegion[pItem->mRegion].Usable)
+		{
+			i32 vx = pItem->mPos.vx;
+
+			if (in)
+			{
+				if (vx >= minvx && vx <= maxvx &&
+						pItem->mPos.vy >= minvy && pItem->mPos.vy <= maxvy &&
+						pItem->mPos.vz >= minvz && pItem->mPos.vz <= maxvz)
+				{
+					if (visible)
+					{
+						pItem->mFlags &= ~1;
+					}
+					else
+					{
+						pItem->mFlags |= 1;
+					}
+				}
+			}
+			else
+			{
+				if (vx >= minvx && vx <= maxvx)
+				{
+					continue;
+				}
+
+				if (pItem->mPos.vz >= minvz && pItem->mPos.vz <= maxvz)
+				{
+					continue;
+				}
+
+				if (pItem->mPos.vy >= minvy && pItem->mPos.vy <= maxvy)
+				{
+					continue;
+				}
+
+				if (visible)
+				{
+					pItem->mFlags &= ~1;
+				}
+				else
+				{
+					pItem->mFlags |= 1;
+				}
+			}
+		}
+	}
 }
 
 // @MEDIUMTODO
