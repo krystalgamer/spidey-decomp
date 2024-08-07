@@ -3,9 +3,15 @@
 #include <cstdlib>
 #include <cmath>
 #include "ps2funcs.h"
+#include "baddy.h"
+
+extern CBody *EnvironmentalObjectList;
+extern CBody *ControlBaddyList;
+extern CBody *PowerUpList;
+extern CBody *SuspendedList;
+extern CBaddy *BaddyList;
 
 extern u32 gLineToItemRelated;
-extern CBody *EnvironmentalObjectList;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 
@@ -207,15 +213,52 @@ void Utils_Jumble(i32 * a1,i32 a2)
 }
 
 // @SMALLTODO
-void Utils_KillEverythingInBox(CVector const *,CVector const *)
+i32 Utils_KillEverythingInBox(CVector const * min,CVector const * max)
 {
-    printf("Utils_KillEverythingInBox(CVector const *,CVector const *)");
+		return Utils_KillObjectsInBox(min, max, SuspendedList, false) +
+		Utils_KillObjectsInBox(min, max, PowerUpList, true) +
+		Utils_KillObjectsInBox(min, max, EnvironmentalObjectList, true) +
+		Utils_KillObjectsInBox(min, max, ControlBaddyList, true) +
+		Utils_KillObjectsInBox(min, max, BaddyList, true);
 }
 
-// @SMALLTODO
-void Utils_KillObjectsInBox(CVector const *,CVector const *,CBody *,bool)
+// @Ok
+i32 Utils_KillObjectsInBox(CVector const * min,CVector const * max,CBody * a3, bool visible)
 {
-    printf("Utils_KillObjectsInBox(CVector const *,CVector const *,CBody *,bool)");
+	i32 killed = 0;
+	for (CBody *cur = a3; cur; )
+	{
+		CBody *next = reinterpret_cast<CBody*>(cur->field_20);
+
+		if (!cur->IsDead())
+		{
+			i32 vx = cur->mPos.vx;
+			i32 vy = cur->mPos.vy;
+			i32 vz = cur->mPos.vz;
+
+			if (vx >= min->vx && vx <= max->vx &&
+				vy >= min->vy && vy <= max->vy &&
+				vz >= min->vz && vz <= max->vz)
+			{
+				if (visible)
+				{
+					cur->Die();
+				}
+				else
+				{
+					delete cur;
+				}
+
+				killed++;
+			}
+		}
+
+
+
+		cur = next;
+	}
+
+	return killed;
 }
 
 // @SMALLTODO

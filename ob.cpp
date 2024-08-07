@@ -9,6 +9,7 @@
 
 EXPORT const char *gObjFile;
 EXPORT CBody* EnvironmentalObjectList;
+EXPORT CBody* SuspendedList;
 
 void CBody::DeleteStuff(void)
 {
