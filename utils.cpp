@@ -179,10 +179,31 @@ void Utils_InitLoadIcons(void)
     printf("Utils_InitLoadIcons(void)");
 }
 
-// @SMALLTODO
-void Utils_Jumble(i32 *,i32)
+// @Ok
+// @Test
+void Utils_Jumble(i32 * a1,i32 a2)
 {
-    printf("Utils_Jumble(i32 *,i32)");
+	i32 v6 = a1[a2 - 1];
+
+	for (i32 i = 0; i < 4 * a2; i++)
+	{
+		i32 v7 = Rnd(a2);
+		i32 v8 = Rnd(a2);
+		i32 v9 = a1[v7];
+
+		a1[v7] = a1[v8];
+		a1[v8] = v9;
+	}
+
+	if ( a2 > 1 && v6 == *a1 )
+	{
+		i32 v10 = Rnd(a2 - 1);
+		i32 v11 = *a1;
+		i32 v12 = v10 + 1;
+
+		*a1 = a1[v12];
+		a1[v12] = v11;
+	}
 }
 
 // @SMALLTODO
@@ -491,7 +512,7 @@ void Utils_InitialRand(int a)
 }
 
 // @Ok
-int Rnd(int n)
+INLINE int Rnd(int n)
 {
 	int result; // eax
 	gRndRelatedOne = gRndRelatedThree + gRndRelatedOne * gRndRelatedTwo;
