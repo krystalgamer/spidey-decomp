@@ -7,6 +7,6 @@
 #include "m3dcolij.h"
 
 
-EXPORT void M3dZone_LineToItem(SLineInfo *, int);
+EXPORT void M3dZone_LineToItem(SLineInfo *, i32);
 
 #endif

@@ -25,7 +25,7 @@ struct SLineInfo
 	int field_40;
 	int field_44;
 	MATRIX field_48;
-	int field_68;
+	CItem* field_68;
 
 	int field_6C;
 	int field_70;
@@ -38,6 +38,8 @@ struct SLineInfo
 	unsigned char field_89;
 	u16 field_8A;
 	int field_8C;
+
+	u8 padBottom[0xA4-0x8C-4];
 };
 
 

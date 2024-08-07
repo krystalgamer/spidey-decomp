@@ -5,6 +5,7 @@
 #include "ps2funcs.h"
 #include "baddy.h"
 #include "spool.h"
+#include "m3dzone.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -217,7 +218,7 @@ void Utils_Jumble(i32 * a1,i32 a2)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 i32 Utils_KillEverythingInBox(CVector const * min,CVector const * max)
 {
 		return Utils_KillObjectsInBox(min, max, SuspendedList, false) +
@@ -665,10 +666,60 @@ CBody* Utils_CheckObjectCollision(
 	return result;
 }
 
-// @SMALLTODO
-int Utils_GetGroundHeight(CVector*, int, int, CBody**)
+// @NotOk
+// @Test
+int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 {
-	return 0x14052024;
+	SLineInfo v7; // [esp+Ch] [ebp-A4h] BYREF
+
+	v7.vec_0.vx = 0;
+	v7.vec_0.vy = 0;
+	v7.vec_0.vz = 0;
+	v7.vec_C.vx = 0;
+	v7.vec_C.vy = 0;
+	v7.vec_C.vz = 0;
+
+	v7.field_18 = 0;
+	v7.field_1C = 0;
+	v7.field_20 = 0;
+	v7.field_24 = 0;
+	v7.field_28 = 0;
+	v7.field_2C = 0;
+
+	v7.field_70 = 0;
+	v7.field_74 = 0;
+	v7.field_78.vx = 0;
+	v7.field_78.vy = 0;
+	v7.field_78.vz = 0;
+
+
+	v7.vec_0.vx = pos->vx;
+	v7.vec_0.vy = pos->vy - (above << 12);
+	v7.vec_0.vz = pos->vz;
+
+	v7.vec_C.vx = v7.vec_0.vx;
+	v7.vec_C.vy = pos->vy + (below << 12);
+	v7.vec_C.vz = pos->vz;
+	
+
+
+
+	M3dColij_InitLineInfo(&v7);
+	v7.field_88 = 0;
+	M3dZone_LineToItem(&v7, 1);
+
+	if ( v7.field_68 )
+	{
+		if ( ppBody )
+			*ppBody = (v7.field_68->mFlags & 0x10) != 0 ? (CBody *)v7.field_68 : 0;
+		return v7.field_70;
+	}
+	else
+	{
+		if ( ppBody )
+			*ppBody = 0;
+		return -1;
+	}
 }
 
 // @SMALLTODO

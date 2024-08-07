@@ -78,7 +78,7 @@ void M3dColij_LineToItem(
 
 void validate_SLineInfo(void)
 {
-	VALIDATE_SIZE(SLineInfo, 0x90);
+	VALIDATE_SIZE(SLineInfo, 0xA4);
 
 	VALIDATE(SLineInfo, vec_0, 0x0);
 	VALIDATE(SLineInfo, vec_C, 0xC);
