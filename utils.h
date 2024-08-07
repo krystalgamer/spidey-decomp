@@ -48,7 +48,7 @@ EXPORT void Utils_RotateWorldToObject(CBody *,CVector *,CVector *);
 EXPORT void Utils_SetBaddyVisibilityInBox(CVector const *,CVector const *,bool,bool,CBody *);
 EXPORT void Utils_SetVisibilityByName(char const *,i32,i32,bool);
 EXPORT void Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool);
-EXPORT void Utils_ShiftFilter(i32,i32,i32,i32);
+EXPORT i32 Utils_ShiftFilter(i32,i32,i32,i32);
 EXPORT void Utils_VblankProcessing(void);
 
 #endif

@@ -434,10 +434,24 @@ void Utils_SetVisibilityInBox(CVector const * min,CVector const * max, bool visi
 	Utils_SetBaddyVisibilityInBox(min, max, visible, in, BaddyList);
 }
 
-// @SMALLTODO
-void Utils_ShiftFilter(i32,i32,i32,i32)
+// @Ok
+// @Test
+i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 {
-    printf("Utils_ShiftFilter(i32,i32,i32,i32)");
+	print_if_false(delta > 0, "delta must be greater than zero");
+
+	if (a1 > a2)
+	{
+		if (a1 - a2 <= a4)
+			return a2;
+
+		return a1 - ((a1 - a2) >> delta);
+	}
+
+	if ( a2 - a1 <= a4 )
+		return a2;
+	
+	return ((a2 - a1) >> delta) + a1;
 }
 
 // @SMALLTODO
