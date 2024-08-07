@@ -68,10 +68,49 @@ void Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *)
     printf("Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *)");
 }
 
-// @SMALLTODO
-void Utils_CalcWallPerps(CVector const *,CVector *,CVector *)
+// @Ok
+// @Matching
+void Utils_CalcWallPerps(CVector * a1,CVector * a2,CVector * a3)
 {
-    printf("Utils_CalcWallPerps(CVector const *,CVector *,CVector *)");
+	CVector v8;
+	v8.vx = 0;
+	v8.vy = 4096;
+	v8.vz = 0;
+
+	gte_ldopv1(reinterpret_cast<VECTOR*>(a1));
+	gte_ldopv2(reinterpret_cast<VECTOR*>(&v8));
+	gte_op12();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(a2));
+	a2->vx <<= 8;
+	a2->vy <<= 8;
+	a2->vz <<= 8;
+
+	CVector v7;
+	v7.vx = 0;
+	v7.vy = 0;
+	v7.vz = 0;
+	v7.vx = a2->vx >> 12;
+	v7.vy = a2->vy >> 12;
+	v7.vz = a2->vz >> 12;
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&v7));
+	gte_sqr0();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&v7));
+
+	i32 v6 = M3dMaths_SquareRoot0(v7.vx + v7.vy + v7.vz);
+	if ( !v6 )
+	{
+		Utils_CalcPerps(a1, a2, a3);
+	}
+	else
+	{
+		a2->vx /= v6;
+		a2->vy /= v6;
+		a2->vz /= v6;
+		gte_ldopv1(reinterpret_cast<VECTOR*>(a2));
+		gte_ldopv2(reinterpret_cast<VECTOR*>(a1));
+		gte_op12();
+		gte_stlvnl(reinterpret_cast<VECTOR*>(a3));
+	}
 }
 
 // @SMALLTODO
