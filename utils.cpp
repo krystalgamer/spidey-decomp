@@ -14,6 +14,7 @@ extern CBaddy *BaddyList;
 extern u32 gLineToItemRelated;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
+extern i16 gRotMatrix[3][3];
 
 EXPORT i32 DifficultyLevel;
 EXPORT volatile u32 Vblanks;
@@ -261,10 +262,37 @@ i32 Utils_KillObjectsInBox(CVector const * min,CVector const * max,CBody * a3, b
 	return killed;
 }
 
-// @SMALLTODO
-void Utils_RotateWorldToObject(CBody *,CVector *,CVector *)
+// @NotOk
+// @Test
+void Utils_RotateWorldToObject(CBody * a1,CVector * a2,CVector * a3)
 {
-    printf("Utils_RotateWorldToObject(CBody *,CVector *,CVector *)");
+	MATRIX mOne;
+	MATRIX mtwo;
+
+	M3dMaths_RotMatrixYXZ(reinterpret_cast<SVECTOR *>(&a1->mAngles), &mtwo);
+	M3dMaths_TransposeMatrix1(&mtwo, &mOne);
+
+	SVECTOR sVec;
+	sVec.vz = a2->vz >> 12;
+	sVec.vx = a2->vx >> 12;
+	sVec.vy = a2->vy >> 12;
+
+	gRotMatrix[1][1] = mOne.m[1][1];
+	gRotMatrix[0][0] = mOne.m[0][0];
+
+	gRotMatrix[0][2] = mOne.m[0][2];
+	gRotMatrix[2][0] = mOne.m[2][0];
+	gRotMatrix[2][2] = mOne.m[2][2];
+
+	MTC2(reinterpret_cast<i32*>(&sVec.vx), GT_ZERO);
+	MTC2(reinterpret_cast<i32*>(&sVec.vz), GT_ONE);
+
+	gte_mvmva(1, 0, 0, 3, 0);
+	gte_stsv(&sVec);
+
+	a3->vx = sVec.vx << 12;
+	a3->vy = sVec.vy << 12;
+	a3->vz = sVec.vz << 12;
 }
 
 // @SMALLTODO
@@ -297,6 +325,7 @@ void Utils_VblankProcessing(void)
     printf("Utils_VblankProcessing(void)");
 }
 
+// @SMALLTODO
 void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)
 {
 	printf("void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32)");

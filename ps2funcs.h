@@ -7,6 +7,12 @@
 #include "quat.h"
 
 
+enum GTREGType
+{
+	GT_ZERO = 0,
+	GT_ONE = 1,
+};
+
 struct SLineInfo;
 
 struct MATRIX{
@@ -90,5 +96,6 @@ EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
 EXPORT void TransMatrix(MATRIX*, VECTOR*);
 
 EXPORT void setPolyGT4(void);
+EXPORT void MTC2(i32*, GTREGType);
 
 #endif

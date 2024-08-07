@@ -5,7 +5,7 @@
 #include "ob.h"
 #include "m3dcolij.h"
 
-EXPORT __int16 gRotMatrix[3][3];
+EXPORT i16 gRotMatrix[3][3];
 
 EXPORT int vertexRegister[4];
 
@@ -19,6 +19,12 @@ EXPORT int gRtpsRelatedNoClue3;
 static unsigned char stubGte = 1;
 
 EXPORT u8 gPrintStubbed = 1;
+
+// @SMALLTODO
+void MTC2(i32*, GTREGType)
+{
+	printf("void MTC2(i32*, GTREGType)");
+}
 
 // @IGNOREME
 INLINE void setPolyGT4(void)
