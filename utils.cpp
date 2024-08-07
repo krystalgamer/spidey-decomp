@@ -4,6 +4,7 @@
 #include <cmath>
 #include "ps2funcs.h"
 #include "baddy.h"
+#include "spool.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -11,10 +12,13 @@ extern CBody *PowerUpList;
 extern CBody *SuspendedList;
 extern CBaddy *BaddyList;
 
+extern CItem* EnviroList;
+
 extern u32 gLineToItemRelated;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
+extern SPSXRegion PSXRegion[];
 
 EXPORT i32 DifficultyLevel;
 EXPORT volatile u32 Vblanks;
@@ -307,10 +311,70 @@ void Utils_SetVisibilityByName(char const *,i32,i32,bool)
     printf("Utils_SetVisibilityByName(char const *,i32,i32,bool)");
 }
 
-// @SMALLTODO
-void Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool)
+// @Ok
+// @Matching
+void Utils_SetVisibilityInBox(CVector const * min,CVector const * max, bool visible, bool in)
 {
-    printf("Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool)");
+	i32 minvx = min->vx;
+	i32 minvy = min->vy;
+	i32 minvz = min->vz;
+
+	i32 maxvx = max->vx;
+	i32 maxvy = max->vy;
+	i32 maxvz = max->vz;
+
+	for(CItem *pItem = EnviroList; pItem; pItem = pItem->field_20)
+	{
+		if (PSXRegion[pItem->mRegion].Usable)
+		{
+			i32 vx = pItem->mPos.vx;
+
+			if (in)
+			{
+				if (vx >= minvx && vx <= maxvx &&
+						pItem->mPos.vy >= minvy && pItem->mPos.vy <= maxvy &&
+						pItem->mPos.vz >= minvz && pItem->mPos.vz <= maxvz)
+				{
+					if (visible)
+					{
+						pItem->mFlags &= ~1;
+					}
+					else
+					{
+						pItem->mFlags |= 1;
+					}
+				}
+			}
+			else
+			{
+				if (vx >= minvx && vx <= maxvx)
+				{
+					continue;
+				}
+
+				if (pItem->mPos.vz >= minvz && pItem->mPos.vz <= maxvz)
+				{
+					continue;
+				}
+
+				if (pItem->mPos.vy >= minvy && pItem->mPos.vy <= maxvy)
+				{
+					continue;
+				}
+
+				if (visible)
+				{
+					pItem->mFlags &= ~1;
+				}
+				else
+				{
+					pItem->mFlags |= 1;
+				}
+			}
+		}
+	}
+
+	Utils_SetBaddyVisibilityInBox(min, max, visible, in, BaddyList);
 }
 
 // @SMALLTODO
