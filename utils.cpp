@@ -9,17 +9,20 @@ extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 
 EXPORT i32 DifficultyLevel;
+EXPORT volatile u32 Vblanks;
 
-// @SMALLTODO
+// @UNKTODO
+// different in windows version
 void MyVSync(void)
 {
     printf("MyVSync(void)");
 }
 
-// @SMALLTODO
-void Pause(i32)
+// @Ok
+void Pause(i32 Time)
 {
-    printf("Pause(i32)");
+	i32 Until = Vblanks + Time;
+	while (Vblanks < Until);
 }
 
 // @SMALLTODO
