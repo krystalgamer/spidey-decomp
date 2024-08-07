@@ -2,6 +2,7 @@
 #include "m3dcolij.h"
 #include <cstdlib>
 #include <cmath>
+#include "ps2funcs.h"
 
 extern u32 gLineToItemRelated;
 extern CBody *EnvironmentalObjectList;
@@ -19,16 +20,46 @@ void MyVSync(void)
 }
 
 // @Ok
+// @Matching
 void Pause(i32 Time)
 {
 	i32 Until = Vblanks + Time;
 	while (Vblanks < Until);
 }
 
-// @SMALLTODO
-void Utils_CalcPerps(CVector const *,CVector *,CVector *)
+// @Ok
+// @Test
+void Utils_CalcPerps(CVector * a1,CVector * a2,CVector * a3)
 {
-    printf("Utils_CalcPerps(CVector const *,CVector *,CVector *)");
+	u32 v6 = abs(a1->vx);
+	u32 v7 = abs(a1->vy);
+	u32 v8 = abs(a1->vz);
+	gte_ldopv1(reinterpret_cast<VECTOR*>(a1));
+	if ( v6 > v7 || v6 > v8 )
+	{
+		if ( v7 > v6 || v7 > v8 )
+		{
+			a2->vx = -a1->vy;
+			a2->vy = a1->vx;
+			a2->vz = 0;
+		}
+		else
+		{
+			a2->vx = a1->vz;
+			a2->vy = 0;
+			a2->vz = -a1->vx;
+		}
+	}
+	else
+	{
+		a2->vx = 0;
+		a2->vy = -a1->vz;
+		a2->vz = a1->vy;
+	}
+
+	gte_ldopv2(reinterpret_cast<VECTOR*>(a2));
+	gte_op12();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(a3));
 }
 
 // @MEDIUMTODO

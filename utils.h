@@ -34,7 +34,7 @@ EXPORT int Utils_XZDist(const CVector*, const CVector *);
 
 EXPORT void MyVSync(void);
 EXPORT void Pause(i32);
-EXPORT void Utils_CalcPerps(CVector const *,CVector *,CVector *);
+EXPORT void Utils_CalcPerps(CVector *,CVector *,CVector *);
 EXPORT void Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *);
 EXPORT void Utils_CalcWallPerps(CVector const *,CVector *,CVector *);
 EXPORT void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32);
