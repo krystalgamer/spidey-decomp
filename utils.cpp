@@ -162,10 +162,15 @@ i32 Utils_CanSee(
 	return result;
 }
 
-// @SMALLTODO
-void Utils_Dist(CVector const *,CVector const *)
+// @Ok
+// @Test
+i32 Utils_Dist(CVector const * a1,CVector const * a2)
 {
-    printf("Utils_Dist(CVector const *,CVector const *)");
+	i32 x = ((a1->vx - a2->vx) >> 12) * ((a1->vx - a2->vx) >> 12);
+	i32 y = ((a1->vy - a2->vy) >> 12) * ((a1->vy - a2->vy) >> 12);
+	i32 z = ((a1->vz - a2->vz) >> 12) * ((a1->vz - a2->vz) >> 12);
+
+	return M3dMaths_SquareRoot0(x + y + z);
 }
 
 // @SMALLTODO
