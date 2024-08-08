@@ -10,7 +10,7 @@ void CSpClone::AI(void)
     printf("CSpClone::AI(void)");
 }
 
-// @Ok
+// @NotOk
 // @Matching
 CSpClone::CSpClone(i16 * a2,i32 a3)
 {
@@ -70,10 +70,14 @@ void CSpClone::SynthesizeAnalogueInput(void)
     printf("CSpClone::SynthesizeAnalogueInput(void)");
 }
 
-// @SMALLTODO
+// @Ok
 CSpClone::~CSpClone(void)
 {
-    printf("CSpClone::~CSpClone(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+
+	delete this->field_338;
+
+	this->KillAllCommandBlocks();
 }
 
 // @Ok
@@ -103,7 +107,7 @@ void CSpClone::DoPhysics(void)
 {}
 
 // @BIGTODO
-__inline int* CSpClone::KillCommandBlock(int*)
+INLINE int* CSpClone::KillCommandBlock(int*)
 {
 	return (int*)0x02062024;
 }
