@@ -30,7 +30,10 @@ class CPlayer : public CSuper
 		unsigned char padAfter52C[0x538-0x52C-4];
 
 		u32 field_538;
-		u8 padAfter538[0x568-0x538-4];
+		u8 padAfter538[0x54C-0x538-4];
+
+		u8 field_54C;
+		u8 padAfter54C[0x568-0x54C-4];
 
 		i32 field_568;
 		i32 field_56C;
@@ -65,7 +68,9 @@ class CPlayer : public CSuper
 		unsigned char padAFter8Ea;
 
 		unsigned char gCamAngleLock; //8EC
-		unsigned char padAfterLock[0xAD4-0x8EC-1];
+		u8 padAfterLock[0xAC8-0x8EC-1];
+
+		CVector field_AC8;
 
 		u8 field_AD4;
 		u8 padAfterAD4[0xAD7-0xAD4-1];
@@ -85,7 +90,17 @@ class CPlayer : public CSuper
 
 		// @FIXME guess the type
 		i32* field_B8C;
-		u8 padAfterB8C[0xC6C-0xB8C-4];
+		u8 padAfterB8C[0xC18-0xB8C-4];
+
+		i32 field_C18;
+		CVector field_C1C;
+		CSVector field_C28;
+		u8 padAfterC28[2];
+
+
+		// @FIXME
+		i32* field_C30;
+		u8 padAfterC30[0xC6C-0xC30-4];
 
 		CVector field_C6C;
 		i32 field_C78;
@@ -150,14 +165,20 @@ class CPlayer : public CSuper
 		u8 padAfterE38[(0xE48-0xE38)-0x4];
 
 		CManipOb* mHeldObject;
-		u8 padAfterE48[0xE8C-0xE48-4];
+		u8 padAfterE48[0xE84-0xE48-4];
+
+		i32 field_E84;
+		i32 field_E88;
 
 		u8 field_E8C;
 		u8 padAfterE8C[0xEA4-0xE8C-1];
 
 
 		u8 field_EA4;
-		u8 padBottomPlayer[(0xEFC-0xEA4)-0x1];
+		u8 padAFterEA4[(0xEA8-0xEA4)-0x1];
+
+		i16 field_EA8;
+		u8 padBottomPlayer[(0xEFC-0xEA8)-0x2];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);
@@ -215,7 +236,7 @@ class CPlayer : public CSuper
 		EXPORT void CheckKick(void);
 		EXPORT void CheckLanded(void);
 		EXPORT i32 CheckRunIntoWall(void);
-		EXPORT void CheckStickToCeiling(void);
+		EXPORT i32 CheckStickToCeiling(void);
 		EXPORT void CheckStickToWall(void);
 		EXPORT void CheckSwingWebAvailability(SLineInfo *);
 		EXPORT void CheckSwitchToGrabbedMode(CVector const *,CVector *);

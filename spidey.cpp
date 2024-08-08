@@ -24,6 +24,8 @@ EXPORT i32* gPlayerAnimRelated[1];
 EXPORT void *gSpideyHeadModel;
 extern SPSXRegion PSXRegion[];
 
+extern CCamera* CameraList;
+
 // @IGNOREME
 void CPlayer::nullsub_one(i32)
 {
@@ -297,10 +299,46 @@ i32 CPlayer::CheckRunIntoWall(void)
 	return 0;
 }
 
-// @SMALLTODO
-void CPlayer::CheckStickToCeiling(void)
+// @Ok
+i32 CPlayer::CheckStickToCeiling(void)
 {
-    printf("CPlayer::CheckStickToCeiling(void)");
+	if ( this->mAccellorVel.vy > 0
+		|| !(this->field_E0 & 0x100)
+		|| !this->field_C18
+		|| !(reinterpret_cast<u8*>(this->field_E0C)[256])
+		|| this->field_C28.vy <= 3400
+		|| this->field_C30[3] & 0x40000)
+	{
+		return 0;
+	}
+
+	this->field_AD4 = 1;
+	this->field_A8 = this->field_C28;
+	this->field_AC8 = this->field_C6C;
+	this->OrientToNormal(true, &this->field_AC8);
+
+	this->field_E88 = 0;
+	this->field_E84 = 0;
+
+	this->mPos = this->field_C1C;
+	this->mPos.vx += this->field_A8.vx * this->field_EA8;
+	this->mPos.vy += this->field_A8.vy * this->field_EA8;
+	this->mPos.vz += this->field_A8.vz * this->field_EA8;
+
+	if ( this->field_12A == 232 )
+		this->PlaySingleAnim(234, 0, -1);
+	else
+		this->PlaySingleAnim(227, 0, -1);
+
+	if (this->field_E1C & 0x300)
+		CameraList->field_12C = -1;
+
+	this->field_E1C = 1;
+	SFX_Play(9u, 0x2000, 0);
+	this->field_AE5 = 0;
+	this->field_54C = 0;
+
+	return 1;
 }
 
 // @MEDIUMTODO
@@ -1561,6 +1599,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_52C, 0x52C);
 	VALIDATE(CPlayer, field_538, 0x538);
 
+	VALIDATE(CPlayer, field_54C, 0x54C);
+
 	VALIDATE(CPlayer, field_568, 0x568);
 	VALIDATE(CPlayer, field_56C, 0x56C);
 
@@ -1589,6 +1629,8 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, gCamAngleLock, 0x8EC);
 
+	VALIDATE(CPlayer, field_AC8, 0xAC8);
+
 	VALIDATE(CPlayer, field_AD4, 0xAD4);
 
 	VALIDATE(CPlayer, field_AD7, 0xAD7);
@@ -1600,6 +1642,13 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_B74, 0xB74);
 	VALIDATE(CPlayer, field_B84, 0xB84);
 	VALIDATE(CPlayer, field_B8C, 0xB8C);
+
+	VALIDATE(CPlayer, field_C18, 0xC18);
+	VALIDATE(CPlayer, field_C1C, 0xC1C);
+	VALIDATE(CPlayer, field_C28, 0xC28);
+
+
+	VALIDATE(CPlayer, field_C30, 0xC30);
 
 
 	VALIDATE(CPlayer, field_C6C, 0xC6C);
@@ -1646,10 +1695,13 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_E38, 0xE38);
 
+	VALIDATE(CPlayer, field_E84, 0xE84);
+	VALIDATE(CPlayer, field_E88, 0xE88);
 	VALIDATE(CPlayer, field_E8C, 0xE8C);
 
 	VALIDATE(CPlayer, mHeldObject, 0xE48);
 
 	VALIDATE(CPlayer, field_EA4, 0xEA4);
 
+	VALIDATE(CPlayer, field_EA8, 0xEA8);
 }

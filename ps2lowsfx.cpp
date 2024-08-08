@@ -44,4 +44,6 @@ void SFX_Stop(u32)
 
 // @BIGTODO
 void SFX_Play(u32, i16, i32)
-{}
+{
+	printf("void SFX_Play(u32, i16, i32)");
+}
