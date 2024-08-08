@@ -1,5 +1,8 @@
 #include "platform.h"
+#include "ps2lowsfx.h"
 #include "validate.h"
+
+extern CBody* EnvironmentalObjectList;
 
 // @MEDIUMTODO
 void CPlatform::AI(void)
@@ -51,10 +54,15 @@ void CPlatform::SetVariable(u16)
     printf("CPlatform::SetVariable(u16)");
 }
 
-// @SMALLTODO
+// @Ok
 CPlatform::~CPlatform(void)
 {
-    printf("CPlatform::~CPlatform(void)");
+	this->DeleteFrom(&EnvironmentalObjectList);
+	if (this->field_33C)
+	{
+		SFX_Stop(this->field_33C);
+		this->field_33C = 0;
+	}
 }
 // @Ok
 void CPlatform::Shouldnt_DoPhysics_Be_Virtual(void)
@@ -83,5 +91,6 @@ void validate_CPlatform(void){
 	VALIDATE_SIZE(CPlatform, 0x35C);
 
 	VALIDATE(CPlatform, field_338, 0x338);
+	VALIDATE(CPlatform, field_33C, 0x33C);
 }
 

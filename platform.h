@@ -22,9 +22,12 @@ public:
 
 	unsigned char padTop[0x338-0x324];
 
-	unsigned __int16 field_338;
+	u16 field_338;
+	u8 padAfter338[0x33C-0x338-2];
 
-	unsigned char padBottom[0x35C-0x338-2];
+	u32 field_33C;
+
+	unsigned char padBottom[0x35C-0x33C-2];
 };
 
 void validate_CPlatform(void);
