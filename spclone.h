@@ -35,7 +35,7 @@ class CSpClone : public CBaddy {
 };
 
 void validate_CSpClone(void);
-EXPORT void SpClone_CreateSpClone(u32 const *,u32 *);
+EXPORT void SpClone_CreateSpClone(u32 *,u32 *);
 EXPORT void SpClone_RelocatableModuleClear(void);
 
 #endif
