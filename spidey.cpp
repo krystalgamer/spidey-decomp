@@ -161,10 +161,50 @@ void CPlayer::CheckForwards(bool)
     printf("CPlayer::CheckForwards(bool)");
 }
 
-// @SMALLTODO
-void CPlayer::CheckGroundGone(void)
+// @Ok
+i32 CPlayer::CheckGroundGone(void)
 {
-    printf("CPlayer::CheckGroundGone(void)");
+	if (!(this->field_E0 & 2))
+	{
+		if ( this->field_EA4 )
+			this->field_EA4--;
+
+		if (this->field_EA4)
+			return 0;
+
+		if ( this->mHeldObject )
+		{
+			CVector v11 = (4 * this->field_C84);
+			this->mHeldObject->Drop(&v11);
+			this->mHeldObject = 0;
+		}
+
+		this->field_E38 = this->mPos.vy;
+		this->PlaySingleAnim(212, 0, -1);
+
+		this->field_E8C = 0;
+		this->field_AE5 = 0;
+		this->field_AE6 = 0;
+		if ( this->field_AD4 )
+		{
+			this->field_AD4 = 0;
+			this->field_A8.vx = 0;
+			this->field_A8.vy = -4096;
+			this->field_A8.vz = 0;
+
+			CVector v11;
+			v11.vx = 0;
+			v11.vy = 0;
+			v11.vz = 4096;
+			this->OrientToNormal(true, &v11);
+		}
+
+		this->field_E1C = 4;
+
+		return 1;
+	}
+
+	return 0;
 }
 
 // @MEDIUMTODO
@@ -1196,7 +1236,7 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 
 // @Ok
 // @Matching
-void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
+INLINE void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
 {
 
 	i32* v4 = gPlayerAnimRelated[a2];
@@ -1211,7 +1251,7 @@ void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
 		}
 	}
 
-	this->RunAnim(a2, a3, a4);
+	CSuper::RunAnim(a2, a3, a4);
 }
 
 // @BIGTODO
@@ -1261,9 +1301,9 @@ void CPlayer::CutSceneSkipCleanup(void)
 					reinterpret_cast<VECTOR*>(&v14),
 					reinterpret_cast<VECTOR*>(&v14));
 
-			this->field_A8 = 0;
-			this->field_AA = -4096;
-			this->field_AC = 0;
+			this->field_A8.vx = 0;
+			this->field_A8.vy = -4096;
+			this->field_A8.vz = 0;
 		}
 		else
 		{
@@ -1513,6 +1553,9 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, gCamAngleLock, 0x8EC);
 
+	VALIDATE(CPlayer, field_AE5, 0xAE5);
+	VALIDATE(CPlayer, field_AE6, 0xAE6);
+
 	VALIDATE(CPlayer, field_AD4, 0xAD4);
 
 	VALIDATE(CPlayer, field_C78, 0xC78);
@@ -1555,6 +1598,12 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_E2D, 0xE2D);
 	VALIDATE(CPlayer, field_E2E, 0xE2E);
 
-	VALIDATE(CPlayer, field_E48, 0xE48);
+	VALIDATE(CPlayer, field_E38, 0xE38);
+
+	VALIDATE(CPlayer, field_E8C, 0xE8C);
+
+	VALIDATE(CPlayer, mHeldObject, 0xE48);
+
+	VALIDATE(CPlayer, field_EA4, 0xEA4);
 
 }

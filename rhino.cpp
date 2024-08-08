@@ -361,7 +361,7 @@ void CRhino::FuckUpSomeBarrels(void)
 	{
 		if (cur->field_38 == 401)
 		{
-			if (Utils_CrapDist(this->mPos, cur->mPos) < 0x2BC && cur != MechList->field_E48)
+			if (Utils_CrapDist(this->mPos, cur->mPos) < 0x2BC && cur != MechList->mHeldObject)
 			{
 				reinterpret_cast<CBaddy*>(cur)->PlayerIsVisible();
 				barrels++;

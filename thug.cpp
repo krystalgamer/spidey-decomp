@@ -231,7 +231,7 @@ INLINE i32 CThug::ShouldIShootPlayer(void)
 	if ( MechList->field_57C
 		|| gThugList
 		|| this->DistanceToPlayer(2) >= 2000
-		|| MechList->field_E48
+		|| MechList->mHeldObject
 		|| this->DistanceToPlayer(2) <= 650
 		&& (abs(MechList->mPos.vy - this->field_29C - 0x4000) <= 409600) )
 	{
@@ -287,7 +287,7 @@ INLINE i32 CThug::DrawBarrelFlash(
 // Validate when used
 INLINE void CThug::CheckToShoot(i32 a2, i32 a3)
 {
-	if ( MechList->field_57C && !gThugList && !MechList->field_E48)
+	if ( MechList->field_57C && !gThugList && !MechList->mHeldObject)
 	{
 		if ( ((this->field_218 & 0x800) && a2 < this->field_37C)
 				||

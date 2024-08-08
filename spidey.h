@@ -6,6 +6,7 @@
 
 #include "export.h"
 #include "ob.h"
+#include "manipob.h"
 
 class CPlayer : public CSuper 
 {
@@ -66,8 +67,12 @@ class CPlayer : public CSuper
 		unsigned char gCamAngleLock; //8EC
 		unsigned char padAfterLock[0xAD4-0x8EC-1];
 
-		char field_AD4;
-		unsigned char padAfterAD4[0xC6C-0xAD4-1];
+		u8 field_AD4;
+		u8 padAfterAD4[0xAE5-0xAD4-1];
+
+		u8 field_AE5;
+		u8 field_AE6;
+		u8 padAfterAE6[0xC6C-0xAE6-1];
 
 
 		CVector field_C6C;
@@ -122,16 +127,25 @@ class CPlayer : public CSuper
 		unsigned char padAfterE12[4];
 
 		int field_E18;
-		int field_E1C;
+		i32 field_E1C;
 		unsigned char padAfterE1C[0xE2D-0xE1C-4];
 
 		char field_E2D;
 		char field_E2E;
-		u8 padAfterE2E[(0xE48-0xE2E)-0x1];
+		u8 padAfterE2E[(0xE38-0xE2E)-0x1];
 
-		CBody* field_E48;
+		i32 field_E38;
+		u8 padAfterE38[(0xE48-0xE38)-0x4];
 
-		u8 padBottomPlayer[(0xEFC-0xE48)-0x4];
+		CManipOb* mHeldObject;
+		u8 padAfterE48[0xE8C-0xE48-4];
+
+		u8 field_E8C;
+		u8 padAfterE8C[0xEA4-0xE8C-1];
+
+
+		u8 field_EA4;
+		u8 padBottomPlayer[(0xEFC-0xEA4)-0x1];
 
 
 		EXPORT void SetCamAngleLock(unsigned __int16);
@@ -179,7 +193,7 @@ class CPlayer : public CSuper
 		EXPORT void CheckExteriorSurfaceTransition(void);
 		EXPORT void CheckFenceSurfaceTransition(void);
 		EXPORT void CheckForwards(bool);
-		EXPORT void CheckGroundGone(void);
+		EXPORT i32 CheckGroundGone(void);
 		EXPORT void CheckInteriorSurfaceTransition(void);
 		EXPORT void CheckJump(void);
 		EXPORT void CheckJumpingR1ZipWeb(void);

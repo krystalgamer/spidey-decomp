@@ -11,6 +11,12 @@ extern const char *gObjFile;
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList;
 
+// @SMALLTODO
+void CManipOb::Drop(CVector*)
+{
+	printf("void CManipOb::Drop(CVector*)");
+}
+
 // @Ok
 CManipOb::~CManipOb(void)
 {

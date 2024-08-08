@@ -377,9 +377,10 @@ CBody::CBody()
 	this->field_95 = 0;
 	this->field_96 = 0;
 
-	this->field_A8 = 0;
-	this->field_AA = 0;
-	this->field_AC = 0;
+	this->field_A8.vx = 0;
+	this->field_A8.vy = 0;
+	this->field_A8.vz = 0;
+
 	this->bodyVector.vx = 0;
 	this->bodyVector.vy = 0;
 	this->bodyVector.vz = 0;
@@ -751,8 +752,6 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, field_A4, 0xA4);
 	VALIDATE(CBody, field_A8, 0xA8);
-	VALIDATE(CBody, field_AA, 0xAA);
-	VALIDATE(CBody, field_AC, 0xAC);
 
 	VALIDATE(CBody, bodyVector, 0xB8);
 
@@ -772,6 +771,7 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, field_DE, 0xDE);
 
+	VALIDATE(CBody, field_E0, 0xE0);
 	VALIDATE(CBody, field_E2, 0xE2);
 
 	VALIDATE(CBody, field_E4, 0xE4);

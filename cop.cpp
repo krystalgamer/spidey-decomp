@@ -75,7 +75,7 @@ void CCop::Acknowledge(void)
 // @Ok
 INLINE void CCop::CheckToShoot(i32 a2, i32 a3)
 {
-	if ( MechList->field_57C && !gCopList && !MechList->field_E48)
+	if ( MechList->field_57C && !gCopList && !MechList->mHeldObject)
 	{
 		if ( ((this->field_218 & 0x800) && a2 < this->field_37C)
 				||

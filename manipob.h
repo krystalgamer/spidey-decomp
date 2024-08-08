@@ -18,6 +18,7 @@ class CManipOb : public CBody
 		EXPORT void TurnOffShadow(void);
 		EXPORT void SendPulse(void);
 		EXPORT void Pickup(void);
+		EXPORT void Drop(CVector*);
 
 		EXPORT CManipOb(u16*, i32);
 		EXPORT virtual ~CManipOb(void);

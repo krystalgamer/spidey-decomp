@@ -109,9 +109,7 @@ public:
 	int field_9C;
 	int field_A0;
 	int field_A4;
-	__int16 field_A8;
-	__int16 field_AA;
-	__int16 field_AC;
+	CSVector field_A8;
 
 	unsigned char padAfterAC[0xB8-0xAC-2];
 
@@ -133,8 +131,8 @@ public:
 
 	unsigned __int16 field_DE;
 
-	unsigned char stopPPPad[0x2];
 
+	i16 field_E0;
 	__int16 field_E2;
 
 	u16 field_E4;
