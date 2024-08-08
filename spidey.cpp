@@ -29,10 +29,12 @@ void CPlayer::nullsub_one(i32)
 	printf("void CPlayer::nullsub_one(i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void Bruce_Sync(void)
 {
-    printf("Bruce_Sync(void)");
+	print_if_false(MechList != 0, "NULL pointer");
+	MechList->field_D3C = MechList->mPos;
+	MechList->field_D4E = MechList->mAngles;
 }
 
 // @MEDIUMTODO
@@ -1449,6 +1451,9 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_C90, 0xC90);
 	VALIDATE(CPlayer, field_CB4, 0xCB4);
 	VALIDATE(CPlayer, field_CE4, 0xCE4);
+
+	VALIDATE(CPlayer, field_D3C, 0xD3C);
+	VALIDATE(CPlayer, field_D4E, 0xD4E);
 
 	VALIDATE(CPlayer, field_DC0, 0xDC0);
 	VALIDATE(CPlayer, field_DE4, 0xDE4);
