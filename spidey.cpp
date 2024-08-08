@@ -97,10 +97,37 @@ i32 CPlayer::CalculateIntermediateTrailSteps(CVector *a2,CVector * a3,CVector * 
 	}
 }
 
-// @SMALLTODO
-void CPlayer::CalculateSwingWebParameters(CVector *)
+// @Ok
+// @Test
+void CPlayer::CalculateSwingWebParameters(CVector * a2)
 {
-    printf("CPlayer::CalculateSwingWebParameters(CVector *)");
+	VECTOR v3;
+	VECTOR v4;
+	VECTOR v5;
+	v5.vx = (this->mPos.vx - a2->vx) >> 12;
+	v5.vy = (this->mPos.vy - a2->vy) >> 12;
+	v5.vz = (this->mPos.vz - a2->vz) >> 12;
+	VectorNormal(&v5, &v5);
+	gte_ldopv1(&v5);
+	gte_ldopv2(reinterpret_cast<VECTOR*>(&this->field_DA0));
+	gte_op12();
+	gte_stlvnl(&v4);
+	VectorNormal(&v4, &v4);
+	gte_ldopv1(&v5);
+	gte_ldopv2(&v4);
+	gte_op12();
+	gte_stlvnl(&v3);
+
+	this->field_D80.vx = v4.vx;
+	this->field_D86.vx = v4.vy;
+	this->field_D8C.vx = v4.vz;
+	this->field_D80.vy = v5.vx;
+	this->field_D86.vy = v5.vy;
+	this->field_D8C.vy = v5.vz;
+	this->field_D80.vz = v3.vx;
+	this->field_D86.vz = v3.vy;
+	this->field_D8C.vz = v3.vz;
+	this->field_DB8 = abs(v5.vy);
 }
 
 // @SMALLTODO
@@ -1484,6 +1511,14 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_D3C, 0xD3C);
 	VALIDATE(CPlayer, field_D4E, 0xD4E);
+
+	VALIDATE(CPlayer, field_D80, 0xD80);
+	VALIDATE(CPlayer, field_D86, 0xD86);
+	VALIDATE(CPlayer, field_D8C, 0xD8C);
+
+	VALIDATE(CPlayer, field_DA0, 0xDA0);
+
+	VALIDATE(CPlayer, field_DB8, 0xDB8);
 
 	VALIDATE(CPlayer, field_DC0, 0xDC0);
 	VALIDATE(CPlayer, field_DE4, 0xDE4);

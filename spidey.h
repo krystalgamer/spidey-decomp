@@ -85,7 +85,18 @@ class CPlayer : public CSuper
 		u8 padAfterD3C[0xD4E-0xD3C-sizeof(CVector)];
 
 		CSVector field_D4E;
-		u8 padAfterD4E[0xDC0-0xD4E-sizeof(CSVector)];
+		u8 padAfterD4E[0xD80-0xD4E-sizeof(CSVector)];
+
+		CSVector field_D80;
+		CSVector field_D86;
+		CSVector field_D8C;
+		u8 padAfterD8C[0xDA0-0xD8C-sizeof(CSVector)];
+
+		CVector field_DA0;
+		u8 padAfterDA0[0xDB8-0xDA0-sizeof(CVector)];
+
+		i32 field_DB8;
+		u8 padAfterDB8[0xDC0-0xDB8-4];
 
 		CVector field_DC0;
 		unsigned char padAfterDC0[0xDE4-0xDC0-sizeof(CVector)];
