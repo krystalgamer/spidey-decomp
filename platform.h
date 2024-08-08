@@ -26,8 +26,10 @@ public:
 	u8 padAfter338[0x33C-0x338-2];
 
 	u32 field_33C;
+	i32 field_340;
 
-	unsigned char padBottom[0x35C-0x33C-2];
+	CVector field_344;
+	CVector field_350;
 };
 
 void validate_CPlatform(void);

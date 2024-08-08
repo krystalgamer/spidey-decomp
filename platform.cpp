@@ -3,6 +3,7 @@
 #include "validate.h"
 
 extern CBody* EnvironmentalObjectList;
+extern const char* gObjFile;
 
 // @MEDIUMTODO
 void CPlatform::AI(void)
@@ -16,10 +17,29 @@ void CPlatform::AdjustBruceHealth(void)
     printf("CPlatform::AdjustBruceHealth(void)");
 }
 
-// @SMALLTODO
-CPlatform::CPlatform(i16 *,i32)
+// @Ok
+CPlatform::CPlatform(i16 * a2,i32 a3)
 {
-    printf("CPlatform::CPlatform(i16 *,i32)");
+	this->field_344.vx = 0;
+	this->field_344.vy = 0;
+	this->field_344.vz = 0;
+	this->field_350.vx = 0;
+	this->field_350.vy = 0;
+	this->field_350.vz = 0;
+
+	this->InitItem(gObjFile);
+	this->AttachTo(&EnvironmentalObjectList);
+
+	this->mFlags |= 0x111;
+	this->mFlags &= 0xFFFD;
+	this->field_38 = 402;
+
+	this->field_24C = reinterpret_cast<i32>(this->SquirtAngles(this->SquirtPos(a2)));
+
+	this->field_340 = -1;
+	this->field_DE = a3;
+	this->attributeArr[0] = 32;
+	this->field_20C = 1;
 }
 
 // @MEDIUMTODO
@@ -92,5 +112,10 @@ void validate_CPlatform(void){
 
 	VALIDATE(CPlatform, field_338, 0x338);
 	VALIDATE(CPlatform, field_33C, 0x33C);
+
+	VALIDATE(CPlatform, field_340, 0x340);
+
+	VALIDATE(CPlatform, field_344, 0x344);
+	VALIDATE(CPlatform, field_350, 0x350);
 }
 
