@@ -19,7 +19,10 @@ class CPlayer : public CSuper
 		unsigned char padAfter1AC[0x1BC-0x1AC-1];
 
 		int* field_1BC;
-		unsigned char padAfter1BC[0x528-0x1BC-4];
+		unsigned char padAfter1BC[0x350-0x1BC-4];
+
+		i32 field_350;
+		u8 padAfter350[0x528-0x350-4];
 
 		int field_528;
 		int field_52C;

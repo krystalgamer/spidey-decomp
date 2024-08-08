@@ -20,6 +20,7 @@ EXPORT CPlayer* MechList;
 EXPORT CVector gGlobalNormal;
 extern i32 CurrentSuit;
 
+EXPORT i32* gPlayerAnimRelated[1];
 EXPORT void *gSpideyHeadModel;
 extern SPSXRegion PSXRegion[];
 
@@ -1193,11 +1194,23 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 }
 
 
-// @NotOk
-// missing destructor call
+// @Ok
+// @Matching
 void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
 {
-	// smoehting missing here
+
+	i32* v4 = gPlayerAnimRelated[a2];
+
+	this->field_350 = reinterpret_cast<i32>(v4);
+
+	if (this->field_350)
+	{
+		for (i32 i = *v4; i != -1; v4++, i = *v4)
+		{
+			*v4 = i & 0xFFFFF;
+		}
+	}
+
 	this->RunAnim(a2, a3, a4);
 }
 
@@ -1465,6 +1478,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_1AC, 0x1AC);
 
 	VALIDATE(CPlayer, field_1BC, 0x1BC);
+
+	VALIDATE(CPlayer, field_350, 0x350);
 
 	VALIDATE(CPlayer, field_528, 0x528);
 	VALIDATE(CPlayer, field_52C, 0x52C);
