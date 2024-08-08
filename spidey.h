@@ -117,10 +117,10 @@ class CPlayer : public CSuper
 		u8 padAfterCE4[0xD3C-0xCE4-4];
 
 		CVector field_D3C;
-		u8 padAfterD3C[0xD4E-0xD3C-sizeof(CVector)];
+		u8 padAfterD3C[((0xD4E)-0xD3C)-sizeof(CVector)];
 
 		CSVector field_D4E;
-		u8 padAfterD4E[0xD80-0xD4E-sizeof(CSVector)];
+		u8 padAfterD4E[(0xD80-(0xD4E))-sizeof(CSVector)];
 
 		CSVector field_D80;
 		CSVector field_D86;
