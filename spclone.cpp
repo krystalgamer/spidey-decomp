@@ -1,16 +1,49 @@
 #include "spclone.h"
 #include "validate.h"
 
+extern CBaddy* BaddyList;
+extern u8 submarinerDieRelated;
+
 // @MEDIUMTODO
 void CSpClone::AI(void)
 {
     printf("CSpClone::AI(void)");
 }
 
-// @SMALLTODO
-CSpClone::CSpClone(i16 *,i32)
+// @Ok
+// @Matching
+CSpClone::CSpClone(i16 * a2,i32 a3)
 {
-    printf("CSpClone::CSpClone(i16 *,i32)");
+	this->InitItem("spidey");
+	this->field_194 &= 0xFFFFFFDF;
+	this->field_194 |= 0x40u;
+	this->field_194 &= 0xFFFFFBFF;
+	this->field_194 |= 0x800u;
+
+	i16 *v5 = this->SquirtAngles(this->SquirtPos(a2));
+
+	this->ShadowOn();
+	this->field_D0 = 48;
+	this->field_21E = 100;
+	this->field_32C = 2;
+	this->field_330 = 2;
+
+	this->RunAnim(0xCAu, 0, -1);
+	this->mFlags |= 0x480u;
+
+	// @FIXME figure this shit
+	this->field_3C = 0x555920;
+
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
+
+	this->field_38 = 327;
+	this->field_31C.bothFlags = 1;
+	this->field_DE = a3;
+	this->field_DC = 0;
+	this->field_348 = reinterpret_cast<i32>(v5);
+
+	if ( submarinerDieRelated )
+		this->Die(0);
 }
 
 // @MEDIUMTODO
@@ -91,5 +124,8 @@ void validate_CSpClone(void){
 	VALIDATE(CSpClone, field_330, 0x330);
 	VALIDATE(CSpClone, field_334, 0x334);
 	VALIDATE(CSpClone, field_338, 0x338);
+
+	VALIDATE(CSpClone, field_348, 0x348);
+
 	VALIDATE(CSpClone, field_34C, 0x34C);
 }

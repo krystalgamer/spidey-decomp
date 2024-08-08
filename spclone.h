@@ -29,8 +29,9 @@ class CSpClone : public CBaddy {
 		int field_334;
 		CQuadBit *field_338;
 
-		unsigned char padAfter338[0x34C-0x338-4];
+		unsigned char padAfter338[0x348-0x338-4];
 
+		i32 field_348;
 		int* field_34C;
 };
 
