@@ -137,10 +137,7 @@ public:
 
 	u16 field_E4;
 
-	i32 field_E8;
-	i32 field_EC;
-	i32 cbodyend;
-
+	CVector field_E8;
 
 
 	EXPORT int IsDead(void) const;

@@ -371,10 +371,23 @@ void CPlayer::CheckZipWebAvailability(SLineInfo *,i32)
     printf("CPlayer::CheckZipWebAvailability(SLineInfo *,i32)");
 }
 
-// @SMALLTODO
-void CPlayer::CollideWithObject(CBody *)
+// @Ok
+void CPlayer::CollideWithObject(CBody* a2)
 {
-    printf("CPlayer::CollideWithObject(CBody *)");
+	CVector v8;
+
+	v8 = (this->mPos - a2->mPos) >> 6;
+	VectorNormal(
+			reinterpret_cast<VECTOR*>(&v8),
+			reinterpret_cast<VECTOR*>(&v8));
+
+	i32 v5 = v8.vz * (this->mAccellorVel.vz >> 6) + v8.vx * (this->mAccellorVel.vx >> 6);
+	if (v5 <= 0)
+	{
+		v5 >>= 12;
+		this->mAccellorVel.vx -= (v5 * v8.vx) >> 6;
+		this->mAccellorVel.vz -= (v5 * v8.vz) >> 6;
+	}
 }
 
 // @MEDIUMTODO

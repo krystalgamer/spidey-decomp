@@ -388,10 +388,10 @@ CBody::CBody()
 	this->field_C4 = 0;
 	this->field_C6 = 0;
 	this->field_C8 = 0;
-	this->field_E8 = 0;
-	this->field_EC = 0;
 
-	this->cbodyend = 0;
+	this->field_E8.vx = 0;
+	this->field_E8.vy = 0;
+	this->field_E8.vz = 0;
 
 	this->field_78 = 1;
 	this->field_79 = 1;
@@ -777,8 +777,6 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_E4, 0xE4);
 
 	VALIDATE(CBody, field_E8, 0xE8);
-	VALIDATE(CBody, field_EC, 0xEC);
-	VALIDATE(CBody, cbodyend, 0xF0);
 
 	VALIDATE_VTABLE(CBody, Die, 1);
 	VALIDATE_VTABLE(CBody, AI, 2);
