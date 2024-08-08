@@ -255,10 +255,46 @@ void CPlayer::CheckLanded(void)
     printf("CPlayer::CheckLanded(void)");
 }
 
-// @SMALLTODO
-void CPlayer::CheckRunIntoWall(void)
+// @NotOk
+// fix type
+i32 CPlayer::CheckRunIntoWall(void)
 {
-    printf("CPlayer::CheckRunIntoWall(void)");
+	if ( this->mHeldObject )
+		return 0;
+
+	u8 v3 = 1;
+
+	if (this->field_E0 & 1)
+	{
+		if ( this->field_B84.vy <= 3400
+				&& this->field_B74
+				&& this->field_B84.vy >= -2600
+				// @FIXME
+				&& !(this->field_B8C[3] & 0x40000))
+		{
+
+			if (((this->field_C6C.vx - this->field_B84.vx) >> 12) +
+					((this->field_C6C.vy - this->field_B84.vy) >> 12) +
+					((this->field_C6C.vz - this->field_B84.vz) >> 12) > 3800)
+			{
+				v3 = 0;
+				this->field_AD7 += this->field_80;
+			}
+
+			if (this->field_AD7 > 0x14)
+			{
+				this->field_AD7 = 0;
+				this->PlaySingleAnim(14, 0, -1);
+				this->field_E1C = 0x80000;
+				return 1;
+			}
+		}
+
+	}
+
+	if (v3)
+		this->field_AD7 = 0;
+	return 0;
 }
 
 // @SMALLTODO
@@ -1553,10 +1589,20 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, gCamAngleLock, 0x8EC);
 
+	VALIDATE(CPlayer, field_AD4, 0xAD4);
+
+	VALIDATE(CPlayer, field_AD7, 0xAD7);
+
 	VALIDATE(CPlayer, field_AE5, 0xAE5);
 	VALIDATE(CPlayer, field_AE6, 0xAE6);
 
-	VALIDATE(CPlayer, field_AD4, 0xAD4);
+
+	VALIDATE(CPlayer, field_B74, 0xB74);
+	VALIDATE(CPlayer, field_B84, 0xB84);
+	VALIDATE(CPlayer, field_B8C, 0xB8C);
+
+
+	VALIDATE(CPlayer, field_C6C, 0xC6C);
 
 	VALIDATE(CPlayer, field_C78, 0xC78);
 	VALIDATE(CPlayer, field_C7C, 0xC7C);

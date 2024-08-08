@@ -68,12 +68,24 @@ class CPlayer : public CSuper
 		unsigned char padAfterLock[0xAD4-0x8EC-1];
 
 		u8 field_AD4;
-		u8 padAfterAD4[0xAE5-0xAD4-1];
+		u8 padAfterAD4[0xAD7-0xAD4-1];
+
+		u8 field_AD7;
+		u8 padAfterAD7[0xAE5-0xAD7-1];
 
 		u8 field_AE5;
 		u8 field_AE6;
-		u8 padAfterAE6[0xC6C-0xAE6-1];
+		u8 padAfterAE6[0xB74-0xAE6-1];
 
+		i32 field_B74;
+		u8 padAfterB74[0xB84-0xB74-4];
+
+		CSVector field_B84;
+		u8 padAfterB84[0xB8C-0xB84-sizeof(CSVector)];
+
+		// @FIXME guess the type
+		i32* field_B8C;
+		u8 padAfterB8C[0xC6C-0xB8C-4];
 
 		CVector field_C6C;
 		i32 field_C78;
@@ -202,7 +214,7 @@ class CPlayer : public CSuper
 		EXPORT void CheckJumpingSwingWeb(void);
 		EXPORT void CheckKick(void);
 		EXPORT void CheckLanded(void);
-		EXPORT void CheckRunIntoWall(void);
+		EXPORT i32 CheckRunIntoWall(void);
 		EXPORT void CheckStickToCeiling(void);
 		EXPORT void CheckStickToWall(void);
 		EXPORT void CheckSwingWebAvailability(SLineInfo *);
