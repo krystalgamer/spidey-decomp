@@ -176,7 +176,7 @@ i32 Utils_CanSee(
 
 // @Ok
 // @Test
-i32 Utils_Dist(CVector const * a1,CVector const * a2)
+u32 Utils_Dist(CVector const * a1,CVector const * a2)
 {
 	i32 x = ((a1->vx - a2->vx) >> 12) * ((a1->vx - a2->vx) >> 12);
 	i32 y = ((a1->vy - a2->vy) >> 12) * ((a1->vy - a2->vy) >> 12);

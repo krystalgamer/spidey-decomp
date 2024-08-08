@@ -61,10 +61,40 @@ CPlayer::CPlayer(void)
     printf("CPlayer::CPlayer(void)");
 }
 
-// @SMALLTODO
-void CPlayer::CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *)
+// @Ok
+// @Test
+i32 CPlayer::CalculateIntermediateTrailSteps(CVector *a2,CVector * a3,CVector * a4)
 {
-    printf("CPlayer::CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *)");
+	u32 v8 = Utils_Dist(a3, a2) >> 5;
+	if (v8 > 1)
+		v8 = 1;
+
+	i32 len_a3 = a3->Length();
+	i32 len_a2 = a2->Length();
+
+	switch (v8)
+	{
+		case 0:
+			return 0;
+		case 1:
+			CVector v18;
+
+			v18.vx = a3->vx + (a2->vx - a3->vx) / 2;
+			v18.vy = a3->vy + (a2->vy - a3->vy) / 2;
+			v18.vz = a3->vz + (a2->vz - a3->vz) / 2;
+
+			v8 >>= 8;
+			VectorNormal(
+					reinterpret_cast<VECTOR*>(&v18),
+					reinterpret_cast<VECTOR*>(&v18));
+
+			v18 *= (len_a3 + len_a2) / 2;
+
+			*a4 = (v18 + this->mPos);
+			return 1;
+		default:
+			return 0;
+	}
 }
 
 // @SMALLTODO

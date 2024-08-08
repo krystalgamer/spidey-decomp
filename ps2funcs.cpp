@@ -414,8 +414,10 @@ void m3d_ZeroTransVector(void)
   translationVector.vz = 0;
 }
 
-// @NotOk
-void VectorNormal(VECTOR* a1, VECTOR* a2){
+// @SMALLTODO
+void VectorNormal(VECTOR* a1, VECTOR* a2)
+{
+	printf("void VectorNormal(VECTOR* a1, VECTOR* a2)");
 }
 
 

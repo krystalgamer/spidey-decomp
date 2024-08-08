@@ -158,7 +158,7 @@ class CPlayer : public CSuper
 		EXPORT void AdjustBrightness(u16);
 		EXPORT void BuildOffscreenSpideySenseIndicatorList(void);
 		EXPORT CPlayer(void);
-		EXPORT void CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *);
+		EXPORT i32 CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *);
 		EXPORT void CalculateSwingWebParameters(CVector *);
 		EXPORT void CalculateTugWebPathPoints(void);
 		EXPORT void CheckCeilingJumpingSmashPunch(void);
