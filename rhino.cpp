@@ -74,10 +74,63 @@ void CRhino::FollowWaypoints(void)
     printf("CRhino::FollowWaypoints(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void CRhino::GetLaunched(void)
 {
-    printf("CRhino::GetLaunched(void)");
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->dumbAssPad = 1;
+			this->PlaySingleAnim(15, 0, -1);
+
+			new CAIProc_LookAt(this, MechList, 0, 2, 80, 0);
+			this->field_230 = Utils_GetValueFromDifficultyLevel(40, 30, 21, 21);
+
+		case 1:
+			this->DoPhysics(1);
+			this->RunTimer(&this->field_230);
+			if (!this->field_1F8)
+			{
+				this->dumbAssPad++;
+				this->mAccellorVel.vx = 0;
+				this->mAccellorVel.vy = 0;
+				this->mAccellorVel.vz = 0;
+			}
+
+			break;
+		case 2:
+			this->RunTimer(&this->field_230);
+			if (!this->field_230)
+			{
+				if (this->DetermineFightState(1))
+				{
+					if (this->DistanceToPlayer(0) > 500)
+					{
+						if (this->field_31C.bothFlags == 5 || this->field_31C.bothFlags == 4)
+						{
+								this->field_31C.bothFlags = 8;
+								this->dumbAssPad = 0;
+						}
+					}
+					else if (this->field_31C.bothFlags == 8)
+					{
+						this->field_31C.bothFlags = 5;
+						this->dumbAssPad = 0;
+					}
+				}
+				else
+				{
+					this->PlaySingleAnim(0, 0, -1);
+					this->field_31C.bothFlags = 22;
+					this->dumbAssPad = 0;
+				}
+			}
+
+			break;
+		default:
+			print_if_false(0, "Unknown substate");
+			break;
+	}
 }
 
 // @MEDIUMTODO
@@ -174,7 +227,7 @@ void CRhino::TakeHit(void)
 			break;
 		case 1:
 			this->RunTimer(&this->field_230);
-			if (this->field_230)
+			if (!this->field_230)
 			{
 				if (this->DetermineFightState(1))
 				{
