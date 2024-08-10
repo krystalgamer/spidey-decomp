@@ -8,6 +8,14 @@ EXPORT CVector gTargetRelated;
 EXPORT u16 gTargetOne;
 EXPORT u16 gTargetTwo;
 
+EXPORT i32 gCircularFadeRelated;
+EXPORT i32 gCircularFadeRelatedOne;
+EXPORT i32 gCircularFadeRelatedTwo;
+
+EXPORT u8 gCircularFadeRelatedThree;
+EXPORT u8 gCircularFadeRelatedFour;
+
+
 // @SMALLTODO
 void Screen_DrawArrow(void)
 {
@@ -37,10 +45,15 @@ void Screen_SetTarget(
 	gTargetTwo = a3;
 }
 
-// @SMALLTODO
-void Screen_StartCircularFadeIn(i32,i32)
+// @Ok
+void Screen_StartCircularFadeIn(i32,i32 a2)
 {
-    printf("Screen_StartCircularFadeIn(i32,i32)");
+	gCircularFadeRelated = 32;
+	gCircularFadeRelatedOne = 0;
+	gCircularFadeRelatedTwo = a2 << 12;
+
+	gCircularFadeRelatedThree = 1;
+	gCircularFadeRelatedFour = 0;
 }
 
 // @SMALLTODO
