@@ -38,7 +38,7 @@ i32 CScorpion::PathLooksGood(CVector *pVector)
 		return 0;
 
 	pVector->vy = this->mPos.vy;
-	this->field_1B4[0] = *pVector;
+	this->field_1A8[1] = *pVector;
 	this->field_1F0 = 1;
 	this->field_31C.bothFlags = 1;
 	this->dumbAssPad = 0;

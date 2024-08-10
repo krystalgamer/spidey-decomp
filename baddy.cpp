@@ -66,7 +66,7 @@ i32 CBaddy::AddPointToPath(
 		if ((!a3 || Utils_CrapDist(v21, v20) < a3) && this->PathCheck(&v21, &v20, 0, 55))
 		{
 			this->field_1F0 = 1;
-			this->field_1B4[0] = v20;
+			this->field_1A8[1] = v20;
 			this->field_2A8 |= 0x20000000;
 			return 1;
 		}
@@ -74,17 +74,17 @@ i32 CBaddy::AddPointToPath(
 	else if (!this->field_1F0)
 	{
 		this->field_1F0 = 1;
-		this->field_1B4[0] = v20;
+		this->field_1A8[1] = v20;
 		return 1;
 	}
 
 	for (i32 i = 0; i<4 && i < this->field_1F0; i++)
 	{
-		if ( (!a3 || Utils_CrapDist(this->field_1B4[i], v20) < a3)
-				&& this->PathCheck(&this->field_1B4[i], &v20, 0, 55))
+		if ( (!a3 || Utils_CrapDist(this->field_1A8[1+i], v20) < a3)
+				&& this->PathCheck(&this->field_1A8[1+i], &v20, 0, 55))
 		{
 			this->field_1F0 = i + 2;
-			this->field_1B4[i+1] = v20;
+			this->field_1A8[i+2] = v20;
 			this->field_2A8 |= 0x20000000;
 			return 1;
 		}
@@ -655,7 +655,7 @@ int CBaddy::PlayerIsVisible()
 	{
 		if (!this->PathCheck( &this->mPos, &globalSuper->mPos, 0, 55))
 		{
-			this->field_1A8 = globalSuper->mPos;
+			this->field_1A8[0] = globalSuper->mPos;
 			this->field_2A8 |= 0x800;
 		}
 		return 1;
@@ -753,15 +753,15 @@ i32 NumBaddies;
 // Globals
 CBaddy::CBaddy(void)
 {
-	this->field_1A8.vx = 0;
-	this->field_1A8.vy = 0;
-	this->field_1A8.vz = 0;
+	this->field_1A8[0].vx = 0;
+	this->field_1A8[0].vy = 0;
+	this->field_1A8[0].vz = 0;
 
 	for(int i=0; i<5; i++)
 	{
-		this->field_1B4[i].vx = 0;
-		this->field_1B4[i].vy = 0;
-		this->field_1B4[i].vz = 0;
+		this->field_1A8[1+i].vx = 0;
+		this->field_1A8[1+i].vy = 0;
+		this->field_1A8[1+i].vz = 0;
 	}
 
 	this->field_240.vx = 0;
@@ -965,7 +965,6 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_198, 0x198);
 
 	VALIDATE(CBaddy, field_1A8, 0x1A8);
-	VALIDATE(CBaddy, field_1B4, 0x1B4);
 
 	VALIDATE(CBaddy, field_1F0, 0x1F0);
 	VALIDATE(CBaddy, field_1F4, 0x1F4);

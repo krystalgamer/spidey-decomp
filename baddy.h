@@ -67,8 +67,7 @@ public:
 	int field_198;
 	unsigned char padAfter198[0x1A8-0x198-4];
 
-	CVector field_1A8;
-	CVector field_1B4[5];
+	CVector field_1A8[6];
 
 	int field_1F0;
 	int field_1F4;
