@@ -84,7 +84,7 @@ EXPORT u32 Spool_FindTextureChecksum(char *);
 EXPORT u32 Spool_GetModelChecksum(CItem *);
 
 EXPORT void DecrementTextureUsage(i32);
-EXPORT void GetNextLine(char *);
+EXPORT char* GetNextLine(char *);
 EXPORT void GotoStartOfTextureList(void);
 EXPORT void NewTextureEntry(u32);
 EXPORT void NextTexture(void);

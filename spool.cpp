@@ -29,10 +29,18 @@ void DecrementTextureUsage(i32)
     printf("DecrementTextureUsage(i32)");
 }
 
-// @SMALLTODO
-void GetNextLine(char *)
+// @Ok
+char* GetNextLine(char * a1)
 {
-    printf("GetNextLine(char *)");
+	char * res = strchr(a1, '\r');
+	if (res)
+	{
+		res++;
+		if (*res == '\n')
+			res++;
+	}
+
+	return res;
 }
 
 // @SMALLTODO
