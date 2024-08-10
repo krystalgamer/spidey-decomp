@@ -87,7 +87,7 @@ EXPORT void DecrementTextureUsage(i32);
 EXPORT char* GetNextLine(char *);
 EXPORT void GotoStartOfTextureList(void);
 EXPORT void NewTextureEntry(u32);
-EXPORT void NextTexture(void);
+EXPORT Texture* NextTexture(void);
 EXPORT void PreProcessAnimPacket(u32 *,u32 *);
 EXPORT void ProcessNewPSX(i32);
 EXPORT void RemoveAnimPacket(u32 *);

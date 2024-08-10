@@ -7,7 +7,9 @@
 
 const int MAXPSX = 40;
 EXPORT SPSXRegion PSXRegion[MAXPSX];
-EXPORT Texture* TextureChecksumHashTable[512];
+
+#define TEXTURE_CHECKSUM_TABLE_SIZE (512)
+EXPORT Texture* TextureChecksumHashTable[TEXTURE_CHECKSUM_TABLE_SIZE];
 
 EXPORT i32 lowGraphics;
 EXPORT i32 CurrentSuit;
@@ -18,7 +20,7 @@ EXPORT i32** gUnknownRelatedToFind;
 EXPORT TextureEntry gTextureEntries[256];
 
 EXPORT i32 HashIndex;
-EXPORT Texture* pCurrenTex;
+EXPORT Texture* pCurrentTex;
 
 #if _WIN32
 static const char SuitNames[5][32];
@@ -50,7 +52,7 @@ char* GetNextLine(char * a1)
 void GotoStartOfTextureList(void)
 {
 	HashIndex = 0;
-	pCurrenTex = TextureChecksumHashTable[0];
+	pCurrentTex = TextureChecksumHashTable[0];
 }
 
 // @SMALLTODO
@@ -59,10 +61,29 @@ void NewTextureEntry(u32)
     printf("NewTextureEntry(u32)");
 }
 
-// @SMALLTODO
-void NextTexture(void)
+// @NotOk
+// review when removed unused textures is done
+INLINE Texture* NextTexture(void)
 {
-    printf("NextTexture(void)");
+	Texture* res = 0;
+
+	if (HashIndex < TEXTURE_CHECKSUM_TABLE_SIZE)
+	{
+		while (pCurrentTex == 0)
+		{
+			HashIndex++;
+			pCurrentTex = TextureChecksumHashTable[HashIndex];
+
+			if (TEXTURE_CHECKSUM_TABLE_SIZE <= HashIndex)
+				return 0;
+		}
+
+		res = pCurrentTex;
+		pCurrentTex = pCurrentTex->pNext;
+	}
+
+
+	return res;
 }
 
 // @SMALLTODO
