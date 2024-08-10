@@ -17,6 +17,9 @@ EXPORT i32** gUnknownRelatedToFind;
 
 EXPORT TextureEntry gTextureEntries[256];
 
+EXPORT i32 HashIndex;
+EXPORT Texture* pCurrenTex;
+
 #if _WIN32
 static const char SuitNames[5][32];
 #else
@@ -43,10 +46,11 @@ char* GetNextLine(char * a1)
 	return res;
 }
 
-// @SMALLTODO
+// @Ok
 void GotoStartOfTextureList(void)
 {
-    printf("GotoStartOfTextureList(void)");
+	HashIndex = 0;
+	pCurrenTex = TextureChecksumHashTable[0];
 }
 
 // @SMALLTODO
