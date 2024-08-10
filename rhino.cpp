@@ -68,10 +68,82 @@ void CRhino::DoMGSShadow(void)
     printf("CRhino::DoMGSShadow(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// would love to remove the goto
 void CRhino::FollowWaypoints(void)
 {
-    printf("CRhino::FollowWaypoints(void)");
+	i32 v6;
+	SMoveToInfo v8;
+	v8.field_0.vx = 0;
+	v8.field_0.vy = 0;
+	v8.field_0.vz = 0;
+
+	this->RunAppropriateAnim();
+
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->Neutralize();
+			this->field_310 = 0;
+
+			if (this->field_1F0)
+			{
+				this->field_2A8 &= ~0x10000000;
+				v8.field_0 = this->field_1A8[this->field_1F0];
+
+				v8.field_C = 40;
+				v8.field_10 = 40;
+				v8.field_14 = 500;
+
+				new CAIProc_MoveTo(this, &v8, 1);
+				this->dumbAssPad++;
+			}
+			else
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		case 1:
+
+			if (this->field_288 & 1)
+			{
+				this->field_288 &= ~1;
+				v6 = 1;
+			}
+			else
+			{
+				v6 = 0;
+			}
+
+			if (v6)
+			{
+				if (this->field_1F0)
+				{
+					this->field_1F0--;
+					// @FIXME this makes it match but i don't like it
+					goto force_match;
+				}
+				else if (this->GetNextWaypoint())
+				{
+force_match:
+					if ((this->field_2F0 & 2) == 0)
+					{
+						this->dumbAssPad = 0;
+					}
+				}
+				else
+				{
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
 }
 
 // @Ok
