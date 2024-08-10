@@ -1,7 +1,12 @@
 #include "screen.h"
 
 
-static bool gScreenTarget;
+EXPORT bool gScreenTarget;
+
+
+EXPORT CVector gTargetRelated;
+EXPORT u16 gTargetOne;
+EXPORT u16 gTargetTwo;
 
 // @SMALLTODO
 void Screen_DrawArrow(void)
@@ -21,10 +26,15 @@ void Screen_SepiaFade(void)
     printf("Screen_SepiaFade(void)");
 }
 
-// @SMALLTODO
-void Screen_SetTarget(CVector *,u16,i16)
+// @Ok
+void Screen_SetTarget(
+		CVector *a1,
+		u16 a2,
+		i16 a3)
 {
-    printf("Screen_SetTarget(CVector *,u16,i16)");
+	gTargetRelated = *a1;
+	gTargetOne = a2;
+	gTargetTwo = a3;
 }
 
 // @SMALLTODO
