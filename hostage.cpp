@@ -117,10 +117,19 @@ CHostage::~CHostage(void)
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
-// @SMALLTODO
+// @Ok
 void Hostage_RelocatableModuleClear(void)
 {
-    printf("Hostage_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 305)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @Ok
