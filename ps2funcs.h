@@ -6,6 +6,7 @@
 #include "export.h"
 #include "quat.h"
 
+EXPORT extern u8 gPrintStubbed;
 
 enum GTREGType
 {
@@ -97,5 +98,14 @@ EXPORT void TransMatrix(MATRIX*, VECTOR*);
 
 EXPORT void setPolyGT4(void);
 EXPORT void MTC2(i32*, GTREGType);
+
+// @Ok
+INLINE void DrawSync(void)
+{
+	if (!gPrintStubbed)
+	{
+		stubbed_printf("stubbed out: DrawSync");
+	}
+}
 
 #endif

@@ -18,7 +18,7 @@ EXPORT int gRtpsRelatedNoClue3;
 
 static unsigned char stubGte = 1;
 
-EXPORT u8 gPrintStubbed = 1;
+u8 gPrintStubbed = 1;
 
 // @SMALLTODO
 void MTC2(i32*, GTREGType)

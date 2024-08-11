@@ -2,6 +2,7 @@
 #include "dcshellutils.h"
 #include "utils.h"
 #include "front.h"
+#include "ps2funcs.h"
 
 EXPORT Sprite2* gLoadedBmp = 0;
 
@@ -21,13 +22,15 @@ INLINE void DeleteBMP(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 INLINE void DrawBMP(void)
 {
 	if (gLoadedBmp)
 	{
 		Front_ClearScreen();
 		gLoadedBmp->screenHeight();
+		gLoadedBmp->draw(0, 0, 0, 0);
+		DrawSync();
 	}
 }
 
