@@ -24,10 +24,11 @@ Bitmap256::Bitmap256(
 	this->field_204[5] = a6;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 Bitmap256::~Bitmap256(void)
 {
-    printf("Bitmap256::~Bitmap256(void)");
+	delete[] this->field_0;
 }
 
 void validate_Bitmap256(void)
