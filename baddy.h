@@ -179,6 +179,7 @@ public:
 };
 
 EXPORT CBaddy* FindBaddyOfType(int);
+EXPORT extern CBaddy* BaddyList;
 
 void validate_CBaddy(void);
 void validate_CScriptOnlyBaddy(void);

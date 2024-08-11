@@ -2,10 +2,10 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
-// @SMALLTODO
+// @Ok
 CLizard::~CLizard(void)
 {
-    printf("CLizard::~CLizard(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
 // @SMALLTODO
@@ -32,9 +32,7 @@ void CLizard::AI(void)
 	M3d_BuildTransform(this);
 }
 
-// @NotOk
-// globals
-// also args to SquirtAngles wtf??
+// @Ok
 CLizard::CLizard(int* a2, __int16 a3)
 {
 	this->InitItem("lizard");
@@ -45,7 +43,7 @@ CLizard::CLizard(int* a2, __int16 a3)
 	this->mFlags |= 0x480;
 	this->field_3C = 0x0054B530;
 
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 326;
 
 	this->field_DE = a3;

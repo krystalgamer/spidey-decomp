@@ -9,7 +9,7 @@
 #include "ai.h"
 
 EXPORT CBody* ControlBaddyList;
-EXPORT CBaddy* BaddyList;
+CBaddy* BaddyList;
 EXPORT CSVector gTrajectoryVector;
 
 extern i16** gTrigNodes;
