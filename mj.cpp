@@ -4,10 +4,10 @@
 
 extern u8 submarinerDieRelated;
 
-// @SMALLTODO
+// @Ok
 CMJ::~CMJ(void)
 {
-    printf("CMJ::~CMJ(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
 // @Ok
@@ -50,9 +50,10 @@ CMJ::CMJ(int* a2, __int16 a3)
 
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
+	// @FIXME
 	this->field_3C = 0x0054D830;
 
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 303;
 
 	this->field_DE = a3;
