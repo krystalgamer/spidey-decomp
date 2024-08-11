@@ -79,10 +79,36 @@ void CHostage::FollowWaypoints(void)
     printf("CHostage::FollowWaypoints(void)");
 }
 
-// @SMALLTODO
-void CHostage::SetHostageType(i32)
+EXPORT i32 gMaleHostageOne = 0x3030404;
+EXPORT i32 gMaleHostageTwo = 4;
+
+EXPORT i32 gFemaleHostageOne = 0x4040504;
+EXPORT i32 gFemaleHostageTwo = 3;
+
+// @Ok
+void CHostage::SetHostageType(i32 a2)
 {
-    printf("CHostage::SetHostageType(i32)");
+	this->field_38 = a2;
+
+	switch (this->field_38)
+	{
+		case 305:
+			this->InitItem("hostage");
+			this->field_21E = 100;
+			this->field_294.Int = gMaleHostageOne;
+			this->field_298.Int = gMaleHostageTwo;
+			break;
+		case 315:
+			this->InitItem("hostagef");
+			this->field_21E = 100;
+			this->field_294.Int = gFemaleHostageOne;
+			this->field_298.Int = gFemaleHostageTwo;
+			break;
+			break;
+		default:
+			print_if_false(0, "Unknown hostage type!");
+			break;
+	}
 }
 
 // @SMALLTODO
