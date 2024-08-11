@@ -10,10 +10,19 @@ CMJ::~CMJ(void)
     printf("CMJ::~CMJ(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void MJ_RelocatableModuleClear(void)
 {
-    printf("MJ_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 319)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @Ok
