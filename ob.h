@@ -43,7 +43,7 @@ public:
 
 	CItem *field_20;
 
-	u32 field_24;
+	i32 field_24;
 	__int16 field_28;
 	i16 field_2A;
 	__int16 field_2C;

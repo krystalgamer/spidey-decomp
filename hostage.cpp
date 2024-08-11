@@ -16,10 +16,61 @@ void CHostage::AI(void)
     printf("CHostage::AI(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CHostage::DieHostage(void)
 {
-    printf("CHostage::DieHostage(void)");
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mCBodyFlags &= ~0x10u;
+			this->MarkAIProcList(1, 0, 0);
+			this->gVec.vz = 0;
+			this->gVec.vy = 0;
+			this->gVec.vx = 0;
+			this->Neutralize();
+			this->mFlags |= 0x800;
+			this->field_30 = 128;
+			this->KillShadow();
+
+			this->mFlags |= 0x400;
+			this->field_328 = 0;
+
+			this->RunAnim(this->field_38 == 315 ? 10 : 3, 0, -1);
+			this->StopMyXA();
+			this->dumbAssPad++;
+		case 1:
+			this->field_328++;
+			this->field_24 = ((this->field_328 & 1) ? 0xC03030 : 0) + 0x3F0F0F;
+
+			if (this->field_328 > 7)
+			{
+				this->dumbAssPad++;
+				this->field_328 = 0;
+			}
+			break;
+		case 2:
+			if (this->field_328++ >= 20)
+			{
+				this->dumbAssPad = 3;
+				this->Die(0);
+			}
+
+			i32 diff;
+			diff = (20 - this->field_328);
+			diff += (diff << 4);
+			diff *= 3;
+			diff = (diff << 10) >> 12;
+
+			this->field_24 = (((diff << 10) | (diff & 0xFFFFFFFC)) << 6) | (diff >> 2);
+
+			break;
+		case 3:
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
 }
 
 // @MEDIUMTODO
