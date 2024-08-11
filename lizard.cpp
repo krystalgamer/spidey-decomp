@@ -8,10 +8,19 @@ CLizard::~CLizard(void)
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
-// @SMALLTODO
+// @Ok
 void Lizard_RelocatableModuleClear(void)
 {
-    printf("Lizard_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 319)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @Ok
@@ -32,7 +41,8 @@ void CLizard::AI(void)
 	M3d_BuildTransform(this);
 }
 
-// @Ok
+// @NotOk
+// gloabal in 3C
 CLizard::CLizard(int* a2, __int16 a3)
 {
 	this->InitItem("lizard");
@@ -41,6 +51,7 @@ CLizard::CLizard(int* a2, __int16 a3)
 
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
+	// @FIXME
 	this->field_3C = 0x0054B530;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
