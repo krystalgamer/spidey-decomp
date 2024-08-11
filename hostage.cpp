@@ -111,10 +111,10 @@ void CHostage::SetHostageType(i32 a2)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 CHostage::~CHostage(void)
 {
-    printf("CHostage::~CHostage(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
 // @SMALLTODO
@@ -302,11 +302,13 @@ void __inline CHostage::GetUp(void)
 	}
 }
 
+// @NotOk
+// globals
 CHostage::CHostage(int* a2, int a3)
 {
 	i16 *afterAngles = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
 
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->ShadowOn();
 
 	int v6 = this->field_2A8 | 1;
@@ -323,16 +325,8 @@ CHostage::CHostage(int* a2, int a3)
 
 	this->field_2A8 = v6;
 
-	unsigned char * ptr = reinterpret_cast<unsigned char*>(0x551FF0);
-	this->field_294.Bytes[0] = ptr[0];
-	this->field_294.Bytes[1] = ptr[1];
-	this->field_294.Bytes[2] = ptr[2];
-	this->field_294.Bytes[3] = ptr[3];
-
-	this->field_298.Bytes[0] = ptr[4];
-	this->field_298.Bytes[1] = ptr[5];
-	this->field_298.Bytes[2] = ptr[6];
-	this->field_298.Bytes[3] = ptr[7];
+	this->field_294.Int = gMaleHostageOne;
+	this->field_298.Int = gMaleHostageTwo;
 
 	this->mCBodyFlags &= 0xFFEF;
 	this->ParseScript(reinterpret_cast<unsigned __int16*>(afterAngles));
