@@ -3,6 +3,24 @@
 #include "dcshellutils.h"
 
 // @SMALLTODO
+void SlicedImage2::UnknownSlicedImageVirtualFunc(void)
+{
+	printf("void SlicedImage2::UnknownSlicedImageVirtualFunc(void)");
+}
+
+// @SMALLTODO
+void SlicedImage2::setData(void*)
+{
+	printf("void SlicedImage2::setData(void*)");
+}
+
+// @SMALLTODO
+void SlicedImage2::draw(i32, i32, i32, float)
+{
+	printf("void SlicedImage2::draw(i32, i32, i32, float)");
+}
+
+// @SMALLTODO
 void GetBMPBitDepth(char *)
 {
     printf("GetBMPBitDepth(char *)");
@@ -57,6 +75,10 @@ void validate_SlicedImage2(void)
 {
 	VALIDATE_SIZE(SlicedImage2, 0x20);
 	VALIDATE(SlicedImage2, field_16, 0x16);
+
+	VALIDATE_VTABLE(SlicedImage2, UnknownSlicedImageVirtualFunc, 1);
+	VALIDATE_VTABLE(SlicedImage2, setData, 2);
+	VALIDATE_VTABLE(SlicedImage2, draw, 3);
 }
 
 void validate_Image(void)

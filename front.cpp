@@ -2,6 +2,77 @@
 #include "validate.h"
 #include "utils.h"
 
+// @SMALLTODO
+void Front_ClearScreen(void)
+{
+    printf("Front_ClearScreen(void)");
+}
+
+// @MEDIUMTODO
+void Front_Display(void)
+{
+    printf("Front_Display(void)");
+}
+
+// @SMALLTODO
+void Front_FindLevel(char *)
+{
+    printf("Front_FindLevel(char *)");
+}
+
+// @SMALLTODO
+void Front_GetButtons(i32 *,i32 *,i32 *,i32 *)
+{
+    printf("Front_GetButtons(i32 *,i32 *,i32 *,i32 *)");
+}
+
+// @SMALLTODO
+void Front_GetLevelIndex(char *)
+{
+    printf("Front_GetLevelIndex(char *)");
+}
+
+// @MEDIUMTODO
+void Front_Init(void)
+{
+    printf("Front_Init(void)");
+}
+
+// @MEDIUMTODO
+void Front_LoadGame(SSaveGame *,i32,bool)
+{
+    printf("Front_LoadGame(SSaveGame *,i32,bool)");
+}
+
+// @SMALLTODO
+void Front_MiniUpdate(void)
+{
+    printf("Front_MiniUpdate(void)");
+}
+
+// @SMALLTODO
+void Front_RGBRed(void)
+{
+    printf("Front_RGBRed(void)");
+}
+
+// @SMALLTODO
+void Front_SaveGameState(void)
+{
+    printf("Front_SaveGameState(void)");
+}
+
+// @MEDIUMTODO
+void Front_Update(void)
+{
+    printf("Front_Update(void)");
+}
+
+// @SMALLTODO
+void PrintPaused(void)
+{
+    printf("PrintPaused(void)");
+}
 
 // @NotOk
 // Globals

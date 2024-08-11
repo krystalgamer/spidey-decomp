@@ -2,6 +2,12 @@
 #include "validate.h"
 
 // @SMALLTODO
+void Sprite2::setData(void*)
+{
+	printf("Sprite2::setData(void*)");
+}
+
+// @SMALLTODO
 Sprite2::Sprite2(const char*, i32, i32, i32, u32)
 {
 	printf("Sprite2::Sprite2(const char*, i32, i32, i32, u32)");

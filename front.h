@@ -92,6 +92,21 @@ public:
 void validate_SEntry(void);
 void validate_CMenu(void);
 
+// @FIXME
+struct SSaveGame;
+
 EXPORT void Front_GaugeOff(void);
+EXPORT void Front_ClearScreen(void);
+EXPORT void Front_Display(void);
+EXPORT void Front_FindLevel(char *);
+EXPORT void Front_GetButtons(i32 *,i32 *,i32 *,i32 *);
+EXPORT void Front_GetLevelIndex(char *);
+EXPORT void Front_Init(void);
+EXPORT void Front_LoadGame(SSaveGame *,i32,bool);
+EXPORT void Front_MiniUpdate(void);
+EXPORT void Front_RGBRed(void);
+EXPORT void Front_SaveGameState(void);
+EXPORT void Front_Update(void);
+EXPORT void PrintPaused(void);
 
 #endif

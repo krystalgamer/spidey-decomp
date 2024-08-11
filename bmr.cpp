@@ -1,6 +1,7 @@
 #include "bmr.h"
 #include "dcshellutils.h"
 #include "utils.h"
+#include "front.h"
 
 EXPORT Sprite2* gLoadedBmp = 0;
 
@@ -11,7 +12,7 @@ void BMP_Draw(char const *)
 }
 
 // @Ok
-void DeleteBMP(void)
+INLINE void DeleteBMP(void)
 {
 	if (gLoadedBmp)
 	{
@@ -21,9 +22,13 @@ void DeleteBMP(void)
 }
 
 // @SMALLTODO
-void DrawBMP(void)
+INLINE void DrawBMP(void)
 {
-    printf("DrawBMP(void)");
+	if (gLoadedBmp)
+	{
+		Front_ClearScreen();
+		gLoadedBmp->screenHeight();
+	}
 }
 
 // @Ok

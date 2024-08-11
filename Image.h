@@ -25,7 +25,11 @@ class SlicedImage2 : public Image
 {
 	public:
 		EXPORT SlicedImage2(void);
-		EXPORT int screenHeight(void);
+		EXPORT i32 screenHeight(void);
+
+		EXPORT virtual void UnknownSlicedImageVirtualFunc(void);
+		EXPORT virtual void setData(void*);
+		EXPORT virtual void draw(i32, i32, i32, float);
 
 		unsigned char padTop[0x6];
 
