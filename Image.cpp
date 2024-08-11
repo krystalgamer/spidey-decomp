@@ -53,7 +53,7 @@ int Load8BitBMP_2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5)
 	return 1;
 }
 
-void validate_SlicedImage(void)
+void validate_SlicedImage2(void)
 {
 	VALIDATE_SIZE(SlicedImage2, 0x20);
 	VALIDATE(SlicedImage2, field_16, 0x16);

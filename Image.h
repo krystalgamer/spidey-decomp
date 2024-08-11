@@ -10,15 +10,15 @@ class Image : public CClass
 {
 	public:
 		EXPORT Image(void);
-		unsigned char field_4;
-		unsigned char field_5;
-		unsigned char field_6;
-		unsigned char field_7;
-		unsigned char field_8;
-		unsigned char field_9;
-		unsigned char field_A;
-		unsigned char field_B;
-		int field_C;
+		u8 field_4;
+		u8 field_5;
+		u8 field_6;
+		u8 field_7;
+		u8 field_8;
+		u8 field_9;
+		u8 field_A;
+		u8 field_B;
+		u32 field_C;
 };
 
 class SlicedImage2 : public Image
@@ -40,5 +40,5 @@ EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
 EXPORT void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *);
 
 void validate_Image(void);
-void validate_SlicedImage(void);
+void validate_SlicedImage2(void);
 #endif

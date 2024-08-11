@@ -8,6 +8,6 @@
 EXPORT void BMP_Draw(char const *);
 EXPORT void DeleteBMP(void);
 EXPORT void DrawBMP(void);
-EXPORT void LoadBMP(char const *);
+EXPORT void LoadBMP(const char *);
 
 #endif

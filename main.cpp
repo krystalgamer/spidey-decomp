@@ -74,6 +74,7 @@
 #include "chunk.h"
 #include "weapons.h"
 #include "backgrnd.h"
+#include "dcshellutils.h"
 
 // @Ok
 void* CClass::operator new(size_t size)
@@ -292,7 +293,7 @@ int main()
 	validate_CSwitch();
 	validate_CChain();
 	validate_CGLine();
-	validate_SlicedImage();
+	validate_SlicedImage2();
 	validate_Image();
 	validate_SControl();
 	validate_Bitmap256();
@@ -404,6 +405,7 @@ int main()
 	validate_SLineSeg();
 	validate_CWibbly();
 	validate_SSmokeRingRelated();
+	validate_Sprite2();
 
 	puts("[*] Validation done!");
 
