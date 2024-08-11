@@ -10,10 +10,14 @@ void BMP_Draw(char const *)
     printf("BMP_Draw(char const *)");
 }
 
-// @SMALLTODO
+// @Ok
 void DeleteBMP(void)
 {
-    printf("DeleteBMP(void)");
+	if (gLoadedBmp)
+	{
+		delete gLoadedBmp;
+		gLoadedBmp = 0;
+	}
 }
 
 // @SMALLTODO
