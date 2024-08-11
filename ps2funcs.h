@@ -100,7 +100,7 @@ EXPORT void setPolyGT4(void);
 EXPORT void MTC2(i32*, GTREGType);
 
 // @Ok
-INLINE void DrawSync(void)
+INLINE static void DrawSync(void)
 {
 	if (!gPrintStubbed)
 	{
