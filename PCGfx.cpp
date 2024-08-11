@@ -1,5 +1,7 @@
 #include "PCGfx.h"
 
+u8 gSceneRelated;
+
 // @SMALLTODO
 void PCGfx_BeginScene(u32,i32)
 {

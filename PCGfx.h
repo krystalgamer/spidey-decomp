@@ -49,4 +49,6 @@ EXPORT void createSuperItem(CItem *);
 EXPORT void setupFog(void);
 EXPORT void submitPoly(_DXVERT **,i32);
 
+EXPORT extern u8 gSceneRelated;
+
 #endif

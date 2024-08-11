@@ -3,13 +3,29 @@
 #include "utils.h"
 #include "front.h"
 #include "ps2funcs.h"
+#include "PCGfx.h"
 
 EXPORT Sprite2* gLoadedBmp = 0;
 
-// @SMALLTODO
-void BMP_Draw(char const *)
+// @Ok
+// @Matching
+void BMP_Draw(const char * pName)
 {
-    printf("BMP_Draw(char const *)");
+	if (!gSceneRelated)
+	{
+		PCGfx_BeginScene(1, -1);
+	}
+
+	DeleteBMP();
+	LoadBMP(pName);
+	DrawBMP();
+
+	if (gSceneRelated)
+	{
+		PCGfx_EndScene(1);
+	}
+
+	DeleteBMP();
 }
 
 // @Ok
