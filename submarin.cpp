@@ -41,10 +41,19 @@ void Submariner_CreateSubmariner(u32 * a2,u32 * a3)
 	*a3 = reinterpret_cast<u32>(new CSubmariner(v2, v3));
 }
 
-// @SMALLTODO
+// @Ok
 void Submariner_RelocatableModuleClear(void)
 {
-    printf("Submariner_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 319)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @Ok
