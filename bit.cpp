@@ -44,10 +44,20 @@ void CWibbly::Move(void)
     printf("CWibbly::Move(void)");
 }
 
-// @SMALLTODO
-void CWibbly::SetCore(u8,u8,u8,i32)
+// @Ok
+void CWibbly::SetCore(
+		u8 a2,
+		u8 a3,
+		u8 a4,
+		i32 a5)
 {
-    printf("CWibbly::SetCore(u8,u8,u8,i32)");
+	delete this->field_48;
+
+	this->field_48 = new CGouraudRibbon(this->mNumPoints, 0);
+
+	this->field_48->mProtected = 1;
+	this->field_48->SetRGB(a2, a3, a4);
+	this->field_48->SetWidth(a5);
 }
 
 // @SMALLTODO
@@ -1012,4 +1022,6 @@ void validate_CFireyExplosion(void)
 void validate_CWibbly(void)
 {
 	VALIDATE_SIZE(CWibbly, 0x98);
+
+	VALIDATE(CWibbly, field_48, 0x48);
 }

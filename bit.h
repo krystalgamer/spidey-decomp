@@ -343,7 +343,9 @@ class CWibbly : public CGouraudRibbon
 		EXPORT void SetEndPoints(CVector const *,CVector const *);
 		EXPORT virtual ~CWibbly(void);
 
-		u8 padBottom[0x50];
+		CGouraudRibbon* field_48;
+		u8 padBottom[0x4C];
+
 
 };
 
