@@ -292,7 +292,7 @@ class CPixel : public CBit
 struct SBitServerEntry
 {
 	void* field_0;
-	void* field_4;
+	void (*field_4)(void**);
 };
 
 class CBitServer : public CClass
