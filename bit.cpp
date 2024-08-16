@@ -85,10 +85,10 @@ void CWibbly::SetEndPoints(
 	Utils_GetVecFromMagDir(&this->field_70, this->field_88, &v12);
 }
 
-// @SMALLTODO
+// @Ok
 CWibbly::~CWibbly(void)
 {
-    printf("CWibbly::~CWibbly(void)");
+	delete this->field_48;
 }
 
 // @SMALLTODO
