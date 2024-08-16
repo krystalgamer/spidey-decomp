@@ -406,6 +406,7 @@ int main()
 	validate_CWibbly();
 	validate_SSmokeRingRelated();
 	validate_Sprite2();
+	validate_SBitServerEntry();
 
 	puts("[*] Validation done!");
 

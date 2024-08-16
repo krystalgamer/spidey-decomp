@@ -158,14 +158,44 @@ CChunkBit::~CChunkBit(void)
 }
 
 
-// @SMALLTODO
+// @Ok
 CBitServer::CBitServer(void)
 {
+	this->mNumEntries = 0;
 }
 
 // @Ok
 CBitServer::~CBitServer(void)
 {
+}
+
+// @Ok
+// so close but that while loop is hard to match, prob because they didn't create a type
+INLINE u32 CBitServer::RegisterSlot(void** bitList, void (*drawFunc)(void**))
+{
+	u32 usedSlot = this->mNumEntries;
+	if (usedSlot < 0x20)
+	{
+		this->mEntry[usedSlot].field_0 = bitList;
+		this->mEntry[usedSlot].field_4 = drawFunc;
+
+		usedSlot = this->mNumEntries;
+		this->mNumEntries = usedSlot + 1;
+
+
+		u32 curSlot = this->mNumEntries;
+		while (curSlot < 0x20)
+		{
+			if (this->mEntry[curSlot++].field_0 == 0)
+				return usedSlot;
+
+			this->mNumEntries = curSlot;
+		}
+
+		this->mNumEntries = 666;
+	}
+
+	return this->mNumEntries;
 }
 
 // @Ok
@@ -1079,4 +1109,12 @@ void validate_CWibbly(void)
 	VALIDATE(CWibbly, field_7C, 0x7C);
 
 	VALIDATE(CWibbly, field_88, 0x88);
+}
+
+void validate_SBitServerEntry(void)
+{
+	VALIDATE_SIZE(SBitServerEntry, 0x8);
+
+	VALIDATE(SBitServerEntry, field_0, 0x0);
+	VALIDATE(SBitServerEntry, field_4, 0x4);
 }

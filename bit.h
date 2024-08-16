@@ -289,13 +289,21 @@ class CPixel : public CBit
 		EXPORT virtual ~CPixel(void);
 };
 
+struct SBitServerEntry
+{
+	void* field_0;
+	void* field_4;
+};
+
 class CBitServer : public CClass
 {
 	public:
 		EXPORT CBitServer(void);
 		EXPORT virtual ~CBitServer(void);
+		EXPORT u32 RegisterSlot(void**, void (*)(void**));
 
-		u8 padBottom[0x104];
+		u32 mNumEntries;
+		SBitServerEntry mEntry[0x20];
 };
 
 class CChunkBit : public CBit
@@ -396,6 +404,7 @@ void validate_CChunkBit(void);
 void validate_CTextBox(void);
 void validate_CFireyExplosion(void);
 void validate_CWibbly(void);
+void validate_SBitServerEntry(void);
 
 
 #endif
