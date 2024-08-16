@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "validate.h"
 #include "spool.h"
+#include "utils.h"
 
 
 EXPORT CChunkBit* ChunkBitList;
@@ -60,10 +61,28 @@ void CWibbly::SetCore(
 	this->field_48->SetWidth(a5);
 }
 
-// @SMALLTODO
-void CWibbly::SetEndPoints(CVector const *,CVector const *)
+// @Ok
+void CWibbly::SetEndPoints(
+		CVector* a2,
+		CVector* a3)
 {
-    printf("CWibbly::SetEndPoints(CVector const *,CVector const *)");
+	this->field_4C = *a2;
+
+	this->field_58 = (*a3 - *a2) / (this->mNumPoints - 1);
+
+	CSVector v12;
+	v12.vx = 0;
+	v12.vy = 0;
+	v12.vz = 0;
+
+	Utils_CalcAim(&v12, a2, a3);
+	v12.vy = (v12.vy + 1024) & 0xFFF;
+
+	Utils_GetVecFromMagDir(&this->field_64, this->field_7C, &v12);
+	v12.vy = (v12.vy - 1024) & 0xFFF;
+	v12.vx = (v12.vx + 1024) & 0xFFF;
+
+	Utils_GetVecFromMagDir(&this->field_70, this->field_88, &v12);
 }
 
 // @SMALLTODO
@@ -1024,4 +1043,11 @@ void validate_CWibbly(void)
 	VALIDATE_SIZE(CWibbly, 0x98);
 
 	VALIDATE(CWibbly, field_48, 0x48);
+	VALIDATE(CWibbly, field_4C, 0x4C);
+	VALIDATE(CWibbly, field_58, 0x58);
+	VALIDATE(CWibbly, field_64, 0x64);
+	VALIDATE(CWibbly, field_70, 0x70);
+	VALIDATE(CWibbly, field_7C, 0x7C);
+
+	VALIDATE(CWibbly, field_88, 0x88);
 }
