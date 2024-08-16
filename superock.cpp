@@ -371,7 +371,7 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	*reinterpret_cast<int*>(0x54E8D4) = 4096;
 	*reinterpret_cast<int*>(0x60F774) = 0xFFFFFF;
 	*reinterpret_cast<unsigned char*>(0x60F772) = 1;
-	*reinterpret_cast<int*>(0x60F778) = *gTimerRelated;
+	*reinterpret_cast<int*>(0x60F778) = gTimerRelated;
 
 	this->field_194 = 0xFFFE0000;
 	this->field_198 = 0x1FFF;

@@ -11,7 +11,7 @@
 
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
-EXPORT CTextBox* TextBoxList;
+CTextBox* TextBoxList = 0;
 
 volatile static i32 BitCount = 0;
 EXPORT i32 TotalBitUsage = 0;
@@ -24,6 +24,8 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 EXPORT CPixel* PixelList;
 
 u32 SparkSize = 1;
+
+i32 gTimerRelated;
 
 // @Ok
 void Bit_SetSparkSize(u32 size)
@@ -110,12 +112,34 @@ CCombatImpactRing::~CCombatImpactRing(void)
 {
 }
 
-// @SMALLTODO
-CTextBox::CTextBox(i32, i32, i32, i32, u32, CVECTOR*)
+// @Ok
+CTextBox::CTextBox(
+		i32 a2,
+		i32 a3,
+		i32 a4,
+		i32 a5,
+		u32 a6,
+		CFriction* pFric)
 {
-	printf("CTextBox::CTextBox(i32, i32, i32, i32, u32, CVECTOR*)");
+	this->AttachTo(reinterpret_cast<CBit**>(&TextBoxList));
+
+	this->mPos.vx = a2;
+	this->mPos.vy = a3;
+
+	this->mVel.vx = a4;
+	this->mVel.vy = a5;
+
+	this->mFric.vx = pFric->vx;
+	this->mFric.vy = pFric->vy;
+	this->mFric.vz = pFric->vz;
+
+	this->field_E = a6;
+
+	this->field_3C = gTimerRelated;
+
 }
 
+// @Ok
 CTextBox::~CTextBox(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBit**>(&TextBoxList));
@@ -1034,6 +1058,8 @@ void validate_CChunkBit(void)
 void validate_CTextBox(void)
 {
 	VALIDATE_SIZE(CTextBox, 0x44);
+
+	VALIDATE(CTextBox, field_3C, 0x3C);
 }
 
 void validate_CFireyExplosion(void)

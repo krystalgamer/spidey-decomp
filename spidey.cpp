@@ -805,7 +805,7 @@ u8 CPlayer::IncreaseWebbing(i32 amount)
 		{
 			this->field_5D8++;
 			this->mWebbing -= 4096;
-			this->field_5DC = *gTimerRelated;
+			this->field_5DC = gTimerRelated;
 			this->field_5D0++;
 			return 1;
 		}

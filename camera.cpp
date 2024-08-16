@@ -183,7 +183,7 @@ CCamera::CCamera(CBody* tripod)
 	this->field_2E8.vz = 0;
 
 
-	this->field_7C = *gTimerRelated;
+	this->field_7C = gTimerRelated;
 	print_if_false(tripod != 0, "Bad tripod");
 	this->field_38 = 99;
 	this->mFlags = 1;

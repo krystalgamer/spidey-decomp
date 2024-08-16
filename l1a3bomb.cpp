@@ -17,7 +17,7 @@ CL1A3Bomb::~CL1A3Bomb(void)
 {
 	gBombDieRelatedOne = 0;
 	gBombDieRelatedTwo = 0;
-	gBombDieTimerRelated = *gTimerRelated;
+	gBombDieTimerRelated = gTimerRelated;
 }
 
 // @BIGTODO
@@ -49,7 +49,7 @@ void CL1A3Bomb::AI(void)
 			gBombDieRelatedOne = 1;
 			gBombDieRelatedTwo = 1;
 			gBombAIRelated = DifficultyLevel != 3 ? 7260 : 4260;
-			gBombDieTimerRelated = *gTimerRelated;
+			gBombDieTimerRelated = gTimerRelated;
 		}
 	}
 
@@ -75,7 +75,7 @@ void CL1A3Bomb::Die(void)
 	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
 	gBombDieRelatedOne = 0;
 	gBombDieRelatedTwo = 0;
-	gBombDieTimerRelated = *gTimerRelated;
+	gBombDieTimerRelated = gTimerRelated;
 }
 
 // @Ok

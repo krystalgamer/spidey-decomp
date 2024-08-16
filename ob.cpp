@@ -610,17 +610,17 @@ void CBody::EveryFrame(void)
 	{
 		this->field_80 = 2;
 		this->mCBodyFlags &= 0xFFFB;
-		this->field_7C = *gTimerRelated;
+		this->field_7C = gTimerRelated;
 		this->field_84 = 0;
 	}
 	else
 	{
 		v3 = this->field_7C;
-		v9 = *gTimerRelated - v3 >= 0;
-		this->field_80 = *gTimerRelated - v3;
+		v9 = gTimerRelated - v3 >= 0;
+		this->field_80 = gTimerRelated - v3;
 		print_if_false(v9, "Timing error");
 		v4 = this->field_80;
-		this->field_7C = *gTimerRelated;
+		this->field_7C = gTimerRelated;
 		if ( v4 > 6 )
 		this->field_80 = 6;
 	}

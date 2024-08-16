@@ -12,6 +12,7 @@
 #define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
 
 EXPORT extern u32 SparkSize;
+EXPORT extern i32 gTimerRelated;
 
 struct SRibbonPoint {
 	// offset: 0000 (12 bytes)
@@ -307,10 +308,11 @@ class CChunkBit : public CBit
 class CTextBox : public CBit
 {
 	public:
-		EXPORT CTextBox(i32, i32, i32, i32, u32, CVECTOR*);
+		EXPORT CTextBox(i32, i32, i32, i32, u32, CFriction*);
 		EXPORT virtual ~CTextBox(void);
 
-		u8 padBottom[8];
+		i32 field_3C;
+		u8 padBottom[4];
 };
 
 class CFireyExplosion : public CNonRenderedBit
@@ -366,6 +368,8 @@ EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
 EXPORT void Bit_ReduceRGB(unsigned int*, int);
 EXPORT void Bit_SetSparkSize(u32);
 
+EXPORT extern CTextBox* TextBoxList;
+
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
 void validate_CQuadBit(void);
@@ -392,5 +396,6 @@ void validate_CChunkBit(void);
 void validate_CTextBox(void);
 void validate_CFireyExplosion(void);
 void validate_CWibbly(void);
+
 
 #endif

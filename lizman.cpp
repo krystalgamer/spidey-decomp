@@ -32,7 +32,7 @@ void CLizMan::Guard(void)
 			this->field_1F8 = 0;
 			this->Neutralize();
 
-			if (*gTimerRelated - this->field_374 < 0x12C)
+			if (gTimerRelated - this->field_374 < 0x12C)
 			{
 				new CAIProc_LookAt(
 						this,
