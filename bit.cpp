@@ -6,6 +6,7 @@
 #include "validate.h"
 #include "spool.h"
 #include "utils.h"
+#include "ps2lowsfx.h"
 
 
 EXPORT CChunkBit* ChunkBitList;
@@ -91,10 +92,12 @@ CWibbly::~CWibbly(void)
 	delete this->field_48;
 }
 
-// @SMALLTODO
-CFireyExplosion::CFireyExplosion(CVector*)
+// @Ok
+CFireyExplosion::CFireyExplosion(CVector* pPos)
 {
-	printf("CFireyExplosion::CFireyExplosion(CVector*);");
+	this->mPos = *pPos;
+	this->field_E = 50;
+	SFX_PlayPos(1, &this->mPos, 0);
 }
 
 // @Ok
