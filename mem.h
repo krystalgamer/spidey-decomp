@@ -30,5 +30,7 @@ EXPORT SHandle Mem_MakeHandle(void*);
 
 EXPORT void *Mem_RecoverPointer(SHandle*);
 
+EXPORT extern i32 gMemInitRelatedTop;
+
 void validate_SBlockHeader(void);
 void validate_SHandle(void);

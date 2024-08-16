@@ -6,11 +6,12 @@
 #include "ps2redbook.h"
 #include "ps2m3d.h"
 #include "m3dutils.h"
+#include "spool.h"
 
 EXPORT const char *gObjFile;
 EXPORT CBody* EnvironmentalObjectList;
 EXPORT CBody* SuspendedList;
-EXPORT CItem* EnviroList;
+CItem* EnviroList;
 
 void CBody::DeleteStuff(void)
 {
@@ -90,8 +91,6 @@ int CBody::Hit(SHitInfo*)
 {
 	return 1;
 }
-
-extern SPSXRegion PSXRegion[];
 
 // @Ok
 void CItem::InitItem(const char * a1)

@@ -1,9 +1,8 @@
 #include "exp.h"
 #include "utils.h"
+#include "mem.h"
 
 #include "validate.h"
-
-static i32 gMemInitRelatedTop;
 
 // @Ok
 void Exp_SmallExplosion(CVector* a1)

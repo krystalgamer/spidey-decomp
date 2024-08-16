@@ -13,9 +13,9 @@ EXPORT i32 gCrateRecursion = 0;
 // @FIXME find real size and shit
 EXPORT u32* gCommandPointRelated[1];
 
-// @SMALLTODO
-// @FIXME
-// there's a recusive call that trips ghidra and IDA something really weird
+// @Ok
+// the shr 0x18 happening here is optimized in most cases, not sure what the devs did to
+// not trip the compiler
 void Crate_Destroy(CItem* pItem)
 {
 	print_if_false(gCrateRecursion++ < 10, "Woops, loads of crate_destroy recursions");
@@ -48,7 +48,28 @@ void Crate_Destroy(CItem* pItem)
 		}
 
 		for (CItem* i = EnviroList; i; i = i->field_20)
-			;
+		{
+			if (i != pItem)
+			{
+				u16 v7 = *reinterpret_cast<u16*>(PSXRegion[i->mRegion].ppModels[i->mModel]);
+				if (v7 & 2)
+				{
+					if ((v7 >> 0x18) != 0)
+					{
+						if ( Utils_CrapDist(pItem->mPos, i->mPos) < 0x200)
+						{
+							i32 yDiff = pItem->mPos.vy - i->mPos.vy;
+							if (yDiff > 409600 && yDiff < 1638400)
+							{
+								Crate_Destroy(i);
+							}
+						}
+					}
+				}
+			}
+
+		}
+
 		gCrateRecursion--;
 	}
 

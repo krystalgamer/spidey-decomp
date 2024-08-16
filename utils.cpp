@@ -13,13 +13,10 @@ extern CBody *PowerUpList;
 extern CBody *SuspendedList;
 extern CBaddy *BaddyList;
 
-extern CItem* EnviroList;
-
 extern u32 gLineToItemRelated;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
-extern SPSXRegion PSXRegion[];
 
 EXPORT i32 DifficultyLevel;
 EXPORT volatile u32 Vblanks;

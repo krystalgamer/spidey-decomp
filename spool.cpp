@@ -5,8 +5,7 @@
 #include "panel.h"
 #include <cstring>
 
-const int MAXPSX = 40;
-EXPORT SPSXRegion PSXRegion[MAXPSX];
+SPSXRegion PSXRegion[MAXPSX];
 
 #define TEXTURE_CHECKSUM_TABLE_SIZE (512)
 EXPORT Texture* TextureChecksumHashTable[TEXTURE_CHECKSUM_TABLE_SIZE];
@@ -135,9 +134,10 @@ void Spool_FindAnim(char *,i32)
 }
 
 // @SMALLTODO
-void Spool_GetEnvIndex(i32)
+i32 Spool_GetEnvIndex(i32)
 {
     printf("Spool_GetEnvIndex(i32)");
+	return 0x12082024;
 }
 
 // @SMALLTODO

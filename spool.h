@@ -96,7 +96,7 @@ EXPORT void Spool_AddEnvModelsToHashTable(void);
 EXPORT void Spool_AnimAccess(char *,SAnimFrame **);
 EXPORT void Spool_ClearEnvironmentRegions(void);
 EXPORT void Spool_FindAnim(char *,i32);
-EXPORT void Spool_GetEnvIndex(i32);
+EXPORT i32 Spool_GetEnvIndex(i32);
 EXPORT void Spool_GetPalette(u32,i32);
 EXPORT void Spool_Init(void);
 EXPORT void Spool_InitialiseEnvModelHashTable(void);
@@ -116,5 +116,8 @@ EXPORT void texLoadChecksums(char *);
 
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);
+
+static const int MAXPSX = 40;
+EXPORT extern SPSXRegion PSXRegion[MAXPSX];
 
 #endif

@@ -5,7 +5,6 @@
 #include "mem.h"
 #include "spool.h"
 
-extern SPSXRegion PSXRegion[];
 static i16 * const word_610C48 = (i16*)0x610C48;
 extern const char *gObjFile;
 extern u8 gObjFileRegion;

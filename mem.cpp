@@ -5,6 +5,7 @@
 
 
 static SBlockHeader ** const Heaps = (SBlockHeader**)0x0060D118;
+i32 gMemInitRelatedTop;
 
 int dword_54D55C = 1;
 
@@ -103,7 +104,6 @@ struct MemRelated {
 int gMemInitRelatedOne[32];
 
 static MemRelated * const gMemInitRelatedBottom =  (MemRelated*)0x0060D214;
-static int * const gMemInitRelatedTop =  (int*)0x0060D224;
 
 unsigned int dword_60D228;
 unsigned int dword_60D220;
@@ -174,7 +174,7 @@ void Mem_Delete(void* a1)
 		gMemInitRelatedOne[Heap] += -32 - (v3 >> 4);
 		AddToFreeList(v4, Heap);
 		if ( Heap == 1 )
-			*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+			gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
 	}
 }
 
@@ -202,7 +202,7 @@ void Mem_ShrinkX(void* a1, unsigned int newSize)
 		*((unsigned int *)a1 - 8) = (16 * newSize) | *((unsigned int *)a1 - 8) & 0xF;
 		AddToFreeList((SBlockHeader *)((char *)a1 + newSize), v3);
 		if ( v3 == 1 )
-			*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+			gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
 	}
 }
 
@@ -304,7 +304,7 @@ void *Mem_NewTop(unsigned int a1)
 		*v8 = v9;
 		v10 = v8 + 8;
 		dword_60D208 += (v9 >> 4) + 32;
-		*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
 		if ( v1 >> 2 )
 		{
 			memset(v10, 0x33u, 4 * (v1 >> 2));
@@ -326,7 +326,7 @@ void *Mem_NewTop(unsigned int a1)
 		*v5 = v11;
 		v10 = v5 + 8;
 		dword_60D208 += (v11 >> 4) + 32;
-		*gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
 		if ( v1 >> 2 )
 			memset(v10, 0x33u, 4 * (v1 >> 2));
 	}

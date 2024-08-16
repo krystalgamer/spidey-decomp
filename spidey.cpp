@@ -22,7 +22,6 @@ extern i32 CurrentSuit;
 
 EXPORT i32* gPlayerAnimRelated[1];
 EXPORT void *gSpideyHeadModel;
-extern SPSXRegion PSXRegion[];
 
 extern CCamera* CameraList;
 
