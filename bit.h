@@ -11,6 +11,8 @@
 #define FLATBIT_VELOCITIES_SIZE (4096)
 #define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
 
+EXPORT extern u32 SparkSize;
+
 struct SRibbonPoint {
 	// offset: 0000 (12 bytes)
 	CVector Pos;

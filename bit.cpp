@@ -21,10 +21,14 @@ EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
-// @SMALLTODO
-void Bit_SetSparkSize(u32)
+u32 SparkSize = 1;
+
+// @Ok
+void Bit_SetSparkSize(u32 size)
 {
-	printf("void Bit_SetSparkSize(u32)");
+	print_if_false(size < 0x10, "Daft spark size");
+
+	SparkSize = size | (size << 16);
 }
 
 // @MEDIUMTODO
