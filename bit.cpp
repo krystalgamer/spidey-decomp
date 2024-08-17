@@ -199,6 +199,16 @@ INLINE u32 CBitServer::RegisterSlot(void** bitList, void (*drawFunc)(void**))
 }
 
 // @Ok
+void CBitServer::DisplayRegisteredSlots(void)
+{
+	for (i32 i = 0; i < 0x20; i++)
+	{
+		if (this->mEntry[i].field_0)
+			this->mEntry[i].field_4(this->mEntry[i].field_0);
+	}
+}
+
+// @Ok
 CPixel::~CPixel(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBit**>(&PixelList));

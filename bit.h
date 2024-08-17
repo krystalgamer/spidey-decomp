@@ -291,7 +291,7 @@ class CPixel : public CBit
 
 struct SBitServerEntry
 {
-	void* field_0;
+	void** field_0;
 	void (*field_4)(void**);
 };
 
@@ -301,6 +301,7 @@ class CBitServer : public CClass
 		EXPORT CBitServer(void);
 		EXPORT virtual ~CBitServer(void);
 		EXPORT u32 RegisterSlot(void**, void (*)(void**));
+		EXPORT void DisplayRegisteredSlots(void);
 
 		u32 mNumEntries;
 		SBitServerEntry mEntry[0x20];
