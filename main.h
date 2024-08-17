@@ -13,4 +13,5 @@ class CClass
 	EXPORT virtual ~CClass();
 };
 
+EXPORT void SpideyMain(void);
 #endif

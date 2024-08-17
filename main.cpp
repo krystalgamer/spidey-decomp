@@ -76,24 +76,12 @@
 #include "backgrnd.h"
 #include "dcshellutils.h"
 
-// @Ok
-EXPORT u8 isMMX(void)
+extern int FAIL_VALIDATION;
+
+// @MEDIUMTODO
+void SpideyMain(void)
 {
-#ifdef _OLD_WINDOWS
-	u32 flags;
-
-	__asm
-	{
-		mov eax, 1
-		cpuid
-		mov [flags], edx
-	};
-
-	return (flags >> 23) & 1;
-#else
-	// @FIXME most processors have MMX so it shouldn't be a problem
-	return 1;
-#endif
+	printf("void SpideyMain(void)");
 }
 
 // @Ok
@@ -162,18 +150,8 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(i8)==1>::assert();
 }
 
-extern int FAIL_VALIDATION;
-
-#ifdef _OLD_WINDOWS
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-    PSTR lpCmdLine, int nCmdShow)
-#else
-int main()
-#endif
+i32 validate(void)
 {
-	compile_time_assertions();
-
-
 #ifdef _OLD_WINDOWS
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
@@ -441,7 +419,23 @@ int main()
 	while(1){}
 #endif
 
-
-
     return FAIL_VALIDATION;
+}
+
+
+
+#ifdef _OLD_WINDOWS
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+    PSTR lpCmdLine, int nCmdShow)
+#else
+int main()
+#endif
+{
+	compile_time_assertions();
+
+#ifdef BOOT_GAME
+	return RealWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+#else
+	return validate();
+#endif
 }

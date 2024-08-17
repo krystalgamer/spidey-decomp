@@ -9,11 +9,13 @@ void AUDIOGROUPS_GetGroup(char *)
     printf("AUDIOGROUPS_GetGroup(char *)");
 }
 
+#ifdef _WIN32
 // @SMALLTODO
-void DXINIT_DirectX8(HWND__ *,HINSTANCE__ *,u32)
+void DXINIT_DirectX8(HWND ,HINSTANCE,u32)
 {
     printf("DXINIT_DirectX8(HWND__ *,HINSTANCE__ *,u32)");
 }
+#endif
 
 // @SMALLTODO
 void DXINIT_GetCurrentResolution(u32 *,u32 *)
