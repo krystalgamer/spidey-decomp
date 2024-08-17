@@ -77,6 +77,26 @@
 #include "dcshellutils.h"
 
 // @Ok
+EXPORT u8 isMMX(void)
+{
+#ifdef _OLD_WINDOWS
+	u32 flags;
+
+	__asm
+	{
+		mov eax, 1
+		cpuid
+		mov [flags], edx
+	};
+
+	return (flags >> 23) & 1;
+#else
+	// @FIXME most processors have MMX so it shouldn't be a problem
+	return 1;
+#endif
+}
+
+// @Ok
 void* CClass::operator new(size_t size)
 {
 	void *result = DCMem_New(size, 0, 1, 0, 1);
