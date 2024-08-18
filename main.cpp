@@ -407,6 +407,7 @@ i32 validate(void)
 	validate_Sprite2();
 	validate_SBitServerEntry();
 	validate_PKR_FILEINFO();
+	validate_PKR_FOOTER();
 
 	puts("[*] Validation done!");
 

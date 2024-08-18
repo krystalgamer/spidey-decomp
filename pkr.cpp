@@ -105,3 +105,12 @@ void validate_PKR_FILEINFO(void)
 	VALIDATE(PKR_FILEINFO, uncompressedSize, 0x2C);
 	VALIDATE(PKR_FILEINFO, compressedSize, 0x30);
 }
+
+void validate_PKR_FOOTER(void)
+{
+	VALIDATE_SIZE(PKR_FOOTER, 0xC);
+
+	VALIDATE(PKR_FOOTER, field_0, 0x0);
+	VALIDATE(PKR_FOOTER, numDirs, 0x4);
+	VALIDATE(PKR_FOOTER, numFiles, 0x8);
+}
