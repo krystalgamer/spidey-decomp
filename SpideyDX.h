@@ -32,9 +32,9 @@ EXPORT void DXERR_printf(const char*, ...);
 
 #ifdef _WIN32
 EXPORT LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM);
+EXPORT i32 WinYield(void);
 #endif
 
-EXPORT void WinYield(void);
 EXPORT void debugSettings(void);
 EXPORT void mipmapOffset(u32,u32,float);
 EXPORT void parseCommandLine(char *);

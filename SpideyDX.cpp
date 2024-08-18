@@ -14,6 +14,10 @@ i32 gDxResolutionY;
 u8 gMMXSupport;
 u8 g3DAccelator = 1;
 
+#ifdef _WIN32
+EXPORT HWND gHwnd;
+#endif
+
 // @Ok
 EXPORT u8 isMMX(void)
 {
@@ -86,10 +90,29 @@ LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM)
 }
 #endif
 
-// @SMALLTODO
-void WinYield(void)
+// @Ok
+// @Matching
+INLINE i32 WinYield(void)
 {
-    printf("WinYield(void)");
+#ifdef _WIN32
+	MSG msg;
+	while (PeekMessageA(&msg, gHwnd, 0, 0, 0))
+	{
+		i32 bRet = GetMessageA(&msg, gHwnd, 0, 0);
+		if (!bRet || bRet == -1)
+		{
+			return -1;
+		}
+
+		if (msg.message != 260 && msg.message != 261)
+		{
+			TranslateMessage(&msg);
+			DispatchMessageA(&msg);
+		}
+	}
+#endif
+
+	return 117;
 }
 
 // @SMALLTODO
@@ -232,6 +255,8 @@ i32 WINAPI RealWinMain(
 		DXERR_printf("Unable to create application window!\r\n");
 		return -1;
 	}
+
+	gHwnd = hwnd;
 
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
