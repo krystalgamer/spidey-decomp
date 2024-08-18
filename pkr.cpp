@@ -114,3 +114,12 @@ void validate_PKR_FOOTER(void)
 	VALIDATE(PKR_FOOTER, numDirs, 0x4);
 	VALIDATE(PKR_FOOTER, numFiles, 0x8);
 }
+
+void validate_PKR_DIRINFO(void)
+{
+	VALIDATE_SIZE(PKR_DIRINFO, 0x28);
+
+	VALIDATE(PKR_DIRINFO, name, 0x0);
+	VALIDATE(PKR_DIRINFO, field_20, 0x20);
+	VALIDATE(PKR_DIRINFO, numFiles, 0x24);
+}

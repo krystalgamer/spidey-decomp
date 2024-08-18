@@ -408,6 +408,7 @@ i32 validate(void)
 	validate_SBitServerEntry();
 	validate_PKR_FILEINFO();
 	validate_PKR_FOOTER();
+	validate_PKR_DIRINFO();
 
 	puts("[*] Validation done!");
 
