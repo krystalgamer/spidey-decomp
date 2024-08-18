@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib zlib.lib /nologo /subsystem:windows /machine:I386
 
 !ELSEIF  "$(CFG)" == "spider - Win32 Debug"
 
@@ -401,6 +401,10 @@ SOURCE=.\PCTimer.cpp
 # Begin Source File
 
 SOURCE=.\physics.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\pkr.cpp
 # End Source File
 # Begin Source File
 
@@ -917,6 +921,10 @@ SOURCE=.\PCTimer.h
 # Begin Source File
 
 SOURCE=.\physics.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pkr.h
 # End Source File
 # Begin Source File
 
