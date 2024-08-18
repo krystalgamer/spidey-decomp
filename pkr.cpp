@@ -9,11 +9,42 @@
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
-// @SMALLTODO
-u8* decompressZLIB(u8*, u32, u32)
+// @Ok
+u8* decompressZLIB(u8* src, u32 srcLen, u32 dstLen)
 {
-	printf("u8* decompressZLIB(u8*, u32, u32)");
-	return (u8*)0x18082024;
+	u8* dst = new u8[dstLen];
+
+	if (dst)
+	{
+		i32 rcode = uncompress(
+				dst,
+				reinterpret_cast<unsigned long*>(&dstLen),
+				src,
+				srcLen);
+		if (rcode)
+		{
+			delete[] dst;
+
+			switch (rcode)
+			{
+				case Z_BUF_ERROR:
+					printf("decompressZLIB(): Decompressed data buffer is too small!\n");
+					break;
+				case Z_MEM_ERROR:
+					printf("decompressZLIB(): Out of memory in ZLIB uncompress() routine!\n");
+					break;
+				case Z_DATA_ERROR:
+					printf("decompressZLIB(): ZLIB uncompress() routine says data is invalid!\n");
+					break;
+				default:
+					printf("decompressZLIB(): Unexpected rcode = %i\n", rcode);
+					break;
+			}
+
+		}
+	}
+
+	return dst;
 }
 
 // @BIGTODO
