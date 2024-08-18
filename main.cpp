@@ -409,6 +409,7 @@ i32 validate(void)
 	validate_PKR_FILEINFO();
 	validate_PKR_FOOTER();
 	validate_PKR_DIRINFO();
+	validate_LIBPKR_HANDLE();
 
 	puts("[*] Validation done!");
 
