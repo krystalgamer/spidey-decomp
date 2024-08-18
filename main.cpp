@@ -410,6 +410,7 @@ i32 validate(void)
 	validate_PKR_FOOTER();
 	validate_PKR_DIRINFO();
 	validate_LIBPKR_HANDLE();
+	validate_NODE_DIRINFO();
 
 	puts("[*] Validation done!");
 

@@ -2,6 +2,8 @@
 #include "zlib.h"
 
 #include "validate.h"
+#include <cstring>
+#include <cstdlib>
 
 #define PKRFILE_UNCOMPRESSED -2
 #define PKRFILE_COMPRESSED_ZLIB 2
@@ -10,6 +12,54 @@ LIBPKR_HANDLE* gGlobalPkr;
 
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
+
+// @Ok
+u8 dirAddToPkr(LIBPKR_HANDLE* pHandle, PKR_DIRINFO dirInfo)
+{
+	NODE_DIRINFO* newNode = new NODE_DIRINFO;
+	if (!newNode)
+	{
+		PKR_ReportError("dirAddToPKR: Cannot allocate new dir node.");
+		return 0;
+	}
+
+	memset(newNode, 0, sizeof(NODE_DIRINFO));
+	memcpy(newNode, &dirInfo, sizeof(PKR_DIRINFO));
+
+	if (!pHandle->pDirInfo)
+	{
+		pHandle->pDirInfo = newNode;
+	}
+	else
+	{
+		NODE_DIRINFO* pNode;
+		for (pNode = pHandle->pDirInfo;
+				pNode->mNext;
+				pNode = pNode->mNext)
+		{
+			if (!strcmp(pNode->dirInfo.name, newNode->dirInfo.name))
+			{
+				PKR_ReportError("dirAddToPKR: Dir already added.");
+				delete newNode;
+				return 0;
+			}
+		}
+
+		if (!strcmp(pNode->dirInfo.name, newNode->dirInfo.name))
+		{
+			PKR_ReportError("dirAddToPKR: Dir already added.");
+			delete newNode;
+			return 0;
+		}
+
+		pNode->mNext = newNode;
+		newNode->mPrev = pNode;
+		newNode->mNext = 0;
+	}
+
+	pHandle->footer.numDirs++;
+	return 1;
+}
 
 // @BIGTODO
 u8 PKR_GetLastError(char*)
@@ -153,4 +203,13 @@ void validate_LIBPKR_HANDLE(void)
 
 	VALIDATE(LIBPKR_HANDLE, footer, 0x114);
 	VALIDATE(LIBPKR_HANDLE, pDirInfo, 0x120);
+}
+
+void validate_NODE_DIRINFO(void)
+{
+	VALIDATE_SIZE(NODE_DIRINFO, 0x30);
+
+	VALIDATE(NODE_DIRINFO, dirInfo, 0x0);
+	VALIDATE(NODE_DIRINFO, mNext, 0x28);
+	VALIDATE(NODE_DIRINFO, mPrev, 0x2C);
 }
