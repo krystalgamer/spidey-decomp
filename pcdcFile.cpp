@@ -1,4 +1,27 @@
 #include "pcdcFile.h"
+#include "PCMovie.h"
+
+#ifdef _WIN32
+EXPORT TCHAR gCurrentDir[260];
+#endif
+
+EXPORT char gFsBase[260];
+
+// @Ok
+EXPORT i32 gdFsInit(void)
+{
+#ifdef _WIN32
+	GetCurrentDirectoryA(260, gCurrentDir);
+#endif
+
+	strcpy(gFsBase, "data\\");
+	openPKR();
+
+	PCMOVIE_InitOnce();
+	PCMOVIE_OpenPKR();
+
+	return 0;
+}
 
 // @SMALLTODO
 void closeFilePKR(i32)

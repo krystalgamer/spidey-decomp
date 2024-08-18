@@ -9,6 +9,18 @@
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
+u8 PKR_UnlockFile(FILE** fp)
+{
+	if (*fp)
+	{
+		fclose(*fp);
+		*fp = 0;
+		return 1;
+	}
+
+	return 0;
+}
+
 // @Ok
 u8* decompressZLIB(u8* src, u32 srcLen, u32 dstLen)
 {
@@ -68,7 +80,7 @@ u8 fileCRCCheck(u8* buf, i32 size, u32 expected)
 }
 
 // @Ok
-u8* PKRComp_DecompressFile(PKRFile* pFile, u8* buf, i32 deleteBuf)
+u8* PKRComp_DecompressFile(PKR_FILEINFO* pFile, u8* buf, i32 deleteBuf)
 {
 	if (pFile->compressed == PKRFILE_UNCOMPRESSED)
 		return buf;
@@ -82,14 +94,14 @@ u8* PKRComp_DecompressFile(PKRFile* pFile, u8* buf, i32 deleteBuf)
 	return res;
 }
 
-void validate_PKRFile(void)
+void validate_PKR_FILEINFO(void)
 {
-	VALIDATE_SIZE(PKRFile, 0x34);
+	VALIDATE_SIZE(PKR_FILEINFO, 0x34);
 
-	VALIDATE(PKRFile, name, 0x0);
-	VALIDATE(PKRFile, crc, 0x20);
-	VALIDATE(PKRFile, compressed, 0x24);
-	VALIDATE(PKRFile, fileOffset, 0x28);
-	VALIDATE(PKRFile, uncompressedSize, 0x2C);
-	VALIDATE(PKRFile, compressedSize, 0x30);
+	VALIDATE(PKR_FILEINFO, name, 0x0);
+	VALIDATE(PKR_FILEINFO, crc, 0x20);
+	VALIDATE(PKR_FILEINFO, compressed, 0x24);
+	VALIDATE(PKR_FILEINFO, fileOffset, 0x28);
+	VALIDATE(PKR_FILEINFO, uncompressedSize, 0x2C);
+	VALIDATE(PKR_FILEINFO, compressedSize, 0x30);
 }

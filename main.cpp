@@ -406,7 +406,7 @@ i32 validate(void)
 	validate_SSmokeRingRelated();
 	validate_Sprite2();
 	validate_SBitServerEntry();
-	validate_PKRFile();
+	validate_PKR_FILEINFO();
 
 	puts("[*] Validation done!");
 
