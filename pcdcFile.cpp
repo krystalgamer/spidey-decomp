@@ -3,6 +3,8 @@
 #include "pkr.h"
 #include "SpideyDX.h"
 
+#include <cstring>
+
 #ifdef _WIN32
 EXPORT TCHAR gCurrentDir[260];
 #endif

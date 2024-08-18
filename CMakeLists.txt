@@ -24,3 +24,9 @@ endif()
 file(GLOB SRC_FILES *.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+if (UNIX)
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libz.a)
+elseif(WIN32)
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/safesehzlib.lib)
+endif ()
