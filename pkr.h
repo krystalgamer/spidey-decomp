@@ -6,7 +6,8 @@
 #include "export.h"
 
 
-EXPORT i32 fileCRCCheck(u8*, i32, u32);
+EXPORT u8 fileCRCCheck(u8*, i32, u32);
+EXPORT void PKR_ReportError(const char*, ...);
 
 
 #endif
