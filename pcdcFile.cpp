@@ -1,5 +1,7 @@
 #include "pcdcFile.h"
 #include "PCMovie.h"
+#include "pkr.h"
+#include "SpideyDX.h"
 
 #ifdef _WIN32
 EXPORT TCHAR gCurrentDir[260];
@@ -53,10 +55,31 @@ void openFilePKR(char *,char const *)
     printf("openFilePKR(char *,char const *)");
 }
 
-// @SMALLTODO
-void openPKR(void)
+// @Ok
+INLINE void openPKR(void)
 {
-    printf("openPKR(void)");
+	char error[512];
+
+	if (!gGlobalPkr)
+	{
+		if (!PKR_Open(&gGlobalPkr, "data.pkr", 1))
+		{
+			if (PKR_GetLastError(error))
+			{
+				DXERR_printf("PKR\t: %s\r\n", error);
+			}
+		}
+		else
+		{
+			DXERR_printf("PKR\t: Name       : %s\r\n", gGlobalPkr->name);
+			DXERR_printf("PKR\t: N.O. Dir   : %i\r\n", gGlobalPkr->footer.numDirs);
+			DXERR_printf("PKR\t: N.O. Files : %i\r\n", gGlobalPkr->footer.numFiles);
+		}
+	}
+	else
+	{
+		DXERR_printf("PKR\t: PKR %s already open\r\n", gGlobalPkr->name);
+	}
 }
 
 // @SMALLTODO

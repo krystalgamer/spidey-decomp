@@ -6,8 +6,24 @@
 #define PKRFILE_UNCOMPRESSED -2
 #define PKRFILE_COMPRESSED_ZLIB 2
 
+LIBPKR_HANDLE* gGlobalPkr;
+
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
+
+// @BIGTODO
+u8 PKR_GetLastError(char*)
+{
+	printf("u8 PKR_GetLastError(char*)");
+	return (u8)0x18082024;
+}
+
+// @MEDIUMTODO
+u8 PKR_Open(LIBPKR_HANDLE**, const char*, i32)
+{
+	printf("u8 PKR_Open(LIBPKR_HANDLE*, const char*, i32)");
+	return (u8)0x18082024;
+}
 
 u8 PKR_UnlockFile(FILE** fp)
 {
