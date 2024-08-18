@@ -75,6 +75,7 @@
 #include "weapons.h"
 #include "backgrnd.h"
 #include "dcshellutils.h"
+#include "pkr.h"
 
 extern int FAIL_VALIDATION;
 
@@ -405,6 +406,7 @@ i32 validate(void)
 	validate_SSmokeRingRelated();
 	validate_Sprite2();
 	validate_SBitServerEntry();
+	validate_PKRFile();
 
 	puts("[*] Validation done!");
 
