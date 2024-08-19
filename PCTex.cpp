@@ -68,6 +68,7 @@ void* PCTex_BufferPVR(const char * a1, char * a2)
 }
 
 // @Ok
+// @Matching
 i32 PCTex_CountActiveTextures(void)
 {
 	i32 count = 0;
@@ -220,10 +221,16 @@ void PCTex_ReleaseSysTexture(i32,bool)
     printf("PCTex_ReleaseSysTexture(i32,bool)");
 }
 
-// @SMALLTODO
-void PCTex_ReleaseTexture(i32,bool)
+// @Ok
+// @Matching
+void PCTex_ReleaseTexture(i32 index, bool a2)
 {
-    printf("PCTex_ReleaseTexture(i32,bool)");
+	if (index >= 8)
+	{
+		delete gGlobalTextures[index].mTexture;
+		gGlobalTextures[index].mTexture = 0;
+		PCTex_ReleaseSysTexture(index, a2);
+	}
 }
 
 // @MEDIUMTODO
