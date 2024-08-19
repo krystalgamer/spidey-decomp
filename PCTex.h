@@ -38,8 +38,9 @@ struct SPCTexture
 
 	IDirectDrawSurface7* mD3DTex;
 	i32 mFlags;
-	u8 padAfterC[0x58-0x20-4];
+	u8 padAfterC[0x54-0x20-4];
 
+	i32 mSplitCount;
 	i32 *mSplit;
 	unsigned char pad[0x68-0x58-4];
 };
@@ -67,7 +68,7 @@ EXPORT void PCTex_FreePcIcons(void);
 EXPORT IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32);
 EXPORT void PCTex_GetInvTextureSize(i32,float *,float *);
 EXPORT void PCTex_GetTextureSize(i32,i32 *,i32 *);
-EXPORT void PCTex_GetTextureSplitCount(i32);
+EXPORT i32 PCTex_GetTextureSplitCount(i32);
 EXPORT void PCTex_InitSystemTextures(void);
 EXPORT void PCTex_LoadLtiTexture(char const *,u32,i32,u32);
 EXPORT void PCTex_LoadPcIcons(void);

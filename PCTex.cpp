@@ -139,9 +139,9 @@ void PCTex_GetTextureSize(
 }
 
 // @SMALLTODO
-void PCTex_GetTextureSplitCount(i32)
+i32 PCTex_GetTextureSplitCount(i32 index)
 {
-    printf("PCTex_GetTextureSplitCount(i32)");
+	return gGlobalTextures[index].mSplitCount;
 }
 
 // @SMALLTODO
@@ -354,6 +354,7 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, mTexture, 0x14);
 	VALIDATE(SPCTexture, mD3DTex, 0x1C);
 	VALIDATE(SPCTexture, mFlags, 0x20);
+	VALIDATE(SPCTexture, mSplitCount, 0x54);
 	VALIDATE(SPCTexture, mSplit, 0x58);
 }
 
