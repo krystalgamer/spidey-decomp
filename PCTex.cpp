@@ -239,10 +239,11 @@ void PCTex_ReloadTextures(void)
     printf("PCTex_ReloadTextures(void)");
 }
 
-// @SMALLTODO
-void PCTex_TextureHasAlpha(i32)
+// @Ok
+// @Matching
+i32 PCTex_TextureHasAlpha(i32 index)
 {
-    printf("PCTex_TextureHasAlpha(i32)");
+	return gGlobalTextures[index].mAlpha & 1;
 }
 
 // @Ok
@@ -384,6 +385,7 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, wScale, 0x4);
 	VALIDATE(SPCTexture, hScale, 0x8);
 	VALIDATE(SPCTexture, mTexture, 0x14);
+	VALIDATE(SPCTexture, mAlpha, 0x18);
 	VALIDATE(SPCTexture, mD3DTex, 0x1C);
 	VALIDATE(SPCTexture, mFlags, 0x20);
 	VALIDATE(SPCTexture, mSplitCount, 0x54);

@@ -34,8 +34,7 @@ struct SPCTexture
 	u8 padAfter8[0x14-0x8-4];
 
 	Bitmap256* mTexture;
-	u8 padAfter14[4];
-
+	i32 mAlpha;
 	IDirectDrawSurface7* mD3DTex;
 	i32 mFlags;
 	u8 padAfterC[0x54-0x20-4];
@@ -77,7 +76,7 @@ EXPORT void PCTex_ReleaseAllTextures(void);
 EXPORT void PCTex_ReleaseSysTexture(i32,bool);
 EXPORT void PCTex_ReleaseTexture(i32,bool);
 EXPORT void PCTex_ReloadTextures(void);
-EXPORT void PCTex_TextureHasAlpha(i32);
+EXPORT i32 PCTex_TextureHasAlpha(i32);
 EXPORT void PCTex_UnbufferPVR(PVRHeader *);
 EXPORT void PCTex_UnloadTextures(void);
 EXPORT void PCTex_UpdateForSoftwareRenderer(void);
