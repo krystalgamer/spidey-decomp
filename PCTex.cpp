@@ -121,10 +121,14 @@ void PCTex_GetInvTextureSize(i32,float *,float *)
     printf("PCTex_GetInvTextureSize(i32,float *,float *)");
 }
 
-// @SMALLTODO
-void PCTex_GetTextureSize(i32,i32 *,i32 *)
+// @Ok
+void PCTex_GetTextureSize(
+		i32 index,
+		i32* pOne,
+		i32* pTwo)
 {
-    printf("PCTex_GetTextureSize(i32,i32 *,i32 *)");
+	*pOne = gGlobalTextures[index].mSizeOne;
+	*pTwo = gGlobalTextures[index].mSizeTwo;
 }
 
 // @SMALLTODO
