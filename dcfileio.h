@@ -10,6 +10,6 @@ EXPORT void DebugPrintfX(char *,...);
 EXPORT void FileIO_FileExists(char const *);
 EXPORT void FileIO_Init(void);
 EXPORT void FileIO_Load(void *);
-EXPORT void FileIO_Open(char const *);
+EXPORT i32 FileIO_Open(const char *);
 
 #endif

@@ -27,9 +27,10 @@ void FileIO_Load(void *)
 }
 
 // @SMALLTODO
-void FileIO_Open(char const *)
+i32 FileIO_Open(const char*)
 {
     printf("FileIO_Open(char const *)");
+	return 0x19082024;
 }
 
 // @NotOk

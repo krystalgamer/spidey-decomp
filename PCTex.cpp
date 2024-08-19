@@ -1,5 +1,9 @@
 #include "PCTex.h"
 #include "validate.h"
+#include "mem.h"
+#include "dcfileio.h"
+
+#include <cstring>
 
 EXPORT WeirdTextureHolder gGlobalTextures[2];
 
@@ -21,10 +25,39 @@ void PCTEX_Init(void)
     printf("PCTEX_Init(void)");
 }
 
-// @SMALLTODO
-void PCTex_BufferPVR(char const *,char *)
+// @Ok
+// @Matching
+void* PCTex_BufferPVR(const char * a1, char * a2)
 {
-    printf("PCTex_BufferPVR(char const *,char *)");
+	char nameBuf[128];
+
+	const char* fileName = a1;
+	if (!strchr(a1, '.'))
+	{
+		strcpy(nameBuf, a1);
+		strcat(nameBuf, ".pvr");
+		fileName = nameBuf;
+	}
+
+	i32* buf = reinterpret_cast<i32*>(a2);
+	if (!buf)
+	{
+		i32 size = FileIO_Open(fileName);
+		if (size <= 0)
+		{
+			print_if_false(0, "Can't find texture file!");
+			return 0;
+		}
+
+		buf = static_cast<i32*>(DCMem_New(size, 0, 1, 0, 1));
+		print_if_false(buf != 0, "out of memory");
+
+		FileIO_Load(buf);
+		FileIO_Sync();
+	}
+
+	print_if_false(buf[4] == 0x54525650, "corrupted PVR file");
+	return buf;
 }
 
 // @SMALLTODO
