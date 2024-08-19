@@ -22,14 +22,22 @@ struct PVRHeader
 	u8 pTextureData;
 };
 
-struct WeirdTextureHolder
+struct SPCTexture
 {
-	Bitmap256* texture;
+	u16 mSizeOne;
+	u16 mSizeTwo;
 	float wScale;
 	float hScale;
-	int flags;
-	int *split;
-	unsigned char pad[0x68-6-0x10];
+	u8 padAfter8[0x14-0x8-4];
+
+	Bitmap256* mTexture;
+	u8 padAfter14[0x20-0x14-4];
+
+	i32 mFlags;
+	u8 padAfterC[0x58-0x20-4];
+
+	i32 *mSplit;
+	unsigned char pad[0x68-0x58-4];
 };
 
 EXPORT void PCTex_SetTextureUserData(int, Bitmap256*);
@@ -77,7 +85,7 @@ EXPORT void enumPixelFormatsCB(_DDPIXELFORMAT *,void *);
 EXPORT void releaseClutPc(_ClutPC *);
 EXPORT void shouldForceBlend(u16 *,i32,i32,i32);
 
-void validate_WeirdTextureHolder(void);
+void validate_SPCTexture(void);
 void validate_PVRHeader(void);
 
 #endif

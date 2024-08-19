@@ -296,7 +296,7 @@ i32 validate(void)
 	validate_Image();
 	validate_SControl();
 	validate_Bitmap256();
-	validate_WeirdTextureHolder();
+	validate_SPCTexture();
 	validate_CPolyLine();
 	validate_CSonicBubble();
 	validate_CGlow();

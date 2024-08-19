@@ -5,7 +5,7 @@
 
 #include <cstring>
 
-EXPORT WeirdTextureHolder gGlobalTextures[2];
+EXPORT SPCTexture gGlobalTextures[1024];
 
 // @SMALLTODO
 void CheckValidTexture(i32)
@@ -272,28 +272,25 @@ void shouldForceBlend(u16 *,i32,i32,i32)
 // globals
 void PCTex_SetTextureUserData(int index, Bitmap256* texture)
 {
-	gGlobalTextures[index].texture = texture;
+	gGlobalTextures[index].mTexture = texture;
 }
 
-// @NotOk
-// globals
+// @Ok
 float PCTex_GetTextureWScale(int index)
 {
 	return gGlobalTextures[index].wScale;
 }
 
-// @NotOk
-// globals
+// @Ok
 float PCTex_GetTextureHScale(int index)
 {
 	return gGlobalTextures[index].hScale;
 }
 
-// @NotOk
-// globals
+// @Ok
 int PCTex_GetTextureFlags(int index)
 {
-	return gGlobalTextures[index].flags;
+	return gGlobalTextures[index].mFlags;
 }
 
 // @Ok
@@ -327,22 +324,25 @@ int __inline countLeadingBits(unsigned int value)
 	return bits;
 }
 
-// @NotOk
-// Globals
+// @Ok
+// @Matching
 int PCTex_GetTextureSplitID(int index, int id)
 {
-	return gGlobalTextures[index].split[id];
+	return gGlobalTextures[index].mSplit[id];
 }
 
-void validate_WeirdTextureHolder(void)
+void validate_SPCTexture(void)
 {
-	VALIDATE_SIZE(WeirdTextureHolder, 0x68);
+	VALIDATE_SIZE(SPCTexture, 0x68);
 
-	VALIDATE(WeirdTextureHolder, texture, 0x0);
-	VALIDATE(WeirdTextureHolder, wScale, 0x4);
-	VALIDATE(WeirdTextureHolder, hScale, 0x8);
-	VALIDATE(WeirdTextureHolder, flags, 0xC);
-	VALIDATE(WeirdTextureHolder, split, 0x10);
+	VALIDATE(SPCTexture, mSizeOne, 0x0);
+	VALIDATE(SPCTexture, mSizeTwo, 0x2);
+
+	VALIDATE(SPCTexture, wScale, 0x4);
+	VALIDATE(SPCTexture, hScale, 0x8);
+	VALIDATE(SPCTexture, mTexture, 0x14);
+	VALIDATE(SPCTexture, mFlags, 0x20);
+	VALIDATE(SPCTexture, mSplit, 0x58);
 }
 
 void validate_PVRHeader(void)
