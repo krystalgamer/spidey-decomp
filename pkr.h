@@ -59,7 +59,7 @@ EXPORT void PKR_ReportError(const char*, ...);
 
 EXPORT u8* decompressZLIB(u8*, u32, u32);
 EXPORT u8* PKRComp_DecompressFile(PKR_FILEINFO*, u8*, i32);
-EXPORT u8 PKR_UnlockFile(FILE** fp);
+EXPORT u8 PKR_UnlockFile(LIBPKR_HANDLE* fp);
 EXPORT u8 PKR_Open(LIBPKR_HANDLE**, const char*, i32);
 EXPORT u8 PKR_GetLastError(char*);
 

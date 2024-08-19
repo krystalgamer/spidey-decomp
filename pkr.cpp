@@ -75,12 +75,13 @@ u8 PKR_Open(LIBPKR_HANDLE**, const char*, i32)
 	return (u8)0x18082024;
 }
 
-u8 PKR_UnlockFile(FILE** fp)
+// @Ok
+u8 PKR_UnlockFile(LIBPKR_HANDLE* hPkr)
 {
-	if (*fp)
+	if (hPkr->fp)
 	{
-		fclose(*fp);
-		*fp = 0;
+		fclose(hPkr->fp);
+		hPkr->fp = 0;
 		return 1;
 	}
 
