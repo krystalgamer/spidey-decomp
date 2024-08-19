@@ -135,9 +135,10 @@ void parseCommandLine(char *)
 
 // @BIGTODO
 // DRM stuff can ignore for now
-EXPORT void gDrmShit(i32)
+EXPORT u8 gDrmShit(i32)
 {
 	printf("void gDrmShit(i32)");
+	return 0;
 }
 
 // @Ok
@@ -181,7 +182,16 @@ i32 WINAPI RealWinMain(
 		LPSTR lpCmdLine,
 		i32 nCmdShow)
 {
-	gDrmShit(0);
+	if (gDrmShit(0))
+	{
+		MessageBoxA(
+				0,
+				"Please insert the Spider-Man CD-ROM, select OK, and restart the game",
+				"Spider-Man Error",
+				MB_TASKMODAL | MB_ICONEXCLAMATION);
+		exit(1);
+	}
+
 	SPIDEYDX_LoadSettings();
 
 	gRenderTest = 0;
