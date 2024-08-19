@@ -57,7 +57,7 @@ EXPORT u8 CheckValidTexture(u32);
 EXPORT void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32);
 EXPORT void PCTEX_Init(void);
 EXPORT void* PCTex_BufferPVR(const char *,char *);
-EXPORT void PCTex_CountActiveTextures(void);
+EXPORT i32 PCTex_CountActiveTextures(void);
 EXPORT void PCTex_CreateClut(i32);
 EXPORT void PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32);
 EXPORT void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32);

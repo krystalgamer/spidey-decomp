@@ -67,10 +67,21 @@ void* PCTex_BufferPVR(const char * a1, char * a2)
 	return buf;
 }
 
-// @SMALLTODO
-void PCTex_CountActiveTextures(void)
+// @Ok
+i32 PCTex_CountActiveTextures(void)
 {
-    printf("PCTex_CountActiveTextures(void)");
+	i32 count = 0;
+	for (i32 id = 8;
+			id < GLOBAL_TEXTURE_COUNT;
+			id++)
+	{
+		if (gGlobalTextures[id].mD3DTex || gGlobalTextures[id].mSplit)
+		{
+			count++;
+		}
+	}
+
+	return count;
 }
 
 // @SMALLTODO
@@ -294,8 +305,7 @@ void shouldForceBlend(u16 *,i32,i32,i32)
     printf("shouldForceBlend(u16 *,i32,i32,i32)");
 }
 
-// @NotOk
-// globals
+// @Ok
 void PCTex_SetTextureUserData(int index, Bitmap256* texture)
 {
 	gGlobalTextures[index].mTexture = texture;
