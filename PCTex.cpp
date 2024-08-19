@@ -186,10 +186,11 @@ void PCTex_TextureHasAlpha(i32)
     printf("PCTex_TextureHasAlpha(i32)");
 }
 
-// @SMALLTODO
-void PCTex_UnbufferPVR(PVRHeader *)
+// @Ok
+// @Matching
+void PCTex_UnbufferPVR(PVRHeader* pPvrHeader)
 {
-    printf("PCTex_UnbufferPVR(PVRHeader *)");
+	Mem_Delete(pPvrHeader);
 }
 
 // @SMALLTODO
@@ -327,4 +328,8 @@ void validate_WeirdTextureHolder(void)
 	VALIDATE(WeirdTextureHolder, hScale, 0x8);
 	VALIDATE(WeirdTextureHolder, flags, 0xC);
 	VALIDATE(WeirdTextureHolder, split, 0x10);
+}
+
+void validate_PVRHeader(void)
+{
 }

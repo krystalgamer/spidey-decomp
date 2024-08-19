@@ -9,11 +9,13 @@
 // @FIXME
 #define _ClutPC i32
 // @FIXME
-#define PVRHeader i32
-// @FIXME
 #define PCTexture i32
 // @FIXME
 #define _DDPIXELFORMAT i32
+
+struct PVRHeader
+{
+};
 
 struct WeirdTextureHolder
 {
@@ -71,5 +73,6 @@ EXPORT void releaseClutPc(_ClutPC *);
 EXPORT void shouldForceBlend(u16 *,i32,i32,i32);
 
 void validate_WeirdTextureHolder(void);
+void validate_PVRHeader(void);
 
 #endif

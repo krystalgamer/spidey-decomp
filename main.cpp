@@ -411,6 +411,7 @@ i32 validate(void)
 	validate_PKR_DIRINFO();
 	validate_LIBPKR_HANDLE();
 	validate_NODE_DIRINFO();
+	validate_PVRHeader();
 
 	puts("[*] Validation done!");
 
