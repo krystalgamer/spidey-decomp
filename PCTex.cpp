@@ -253,10 +253,29 @@ void PCTex_UnbufferPVR(PVRHeader* pPvrHeader)
 	Mem_Delete(pPvrHeader);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCTex_UnloadTextures(void)
 {
-    printf("PCTex_UnloadTextures(void)");
+	PCTex_FreePcIcons();
+
+	for (i32 index = 8;
+			index < GLOBAL_TEXTURE_COUNT;
+			index++)
+	{
+		if (gGlobalTextures[index].mD3DTex || gGlobalTextures[index].mSplit)
+		{
+			if (gGlobalTextures[index].mFlags & 0x2000)
+			{
+				PCTex_ReleaseSysTexture(index, true);
+			}
+			else
+			{
+				PCTex_ReleaseSysTexture(index, false);
+				gGlobalTextures[index].mFlags |= 0x8000;
+			}
+		}
+	}
 }
 
 // @SMALLTODO
