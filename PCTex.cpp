@@ -85,9 +85,10 @@ void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i3
 }
 
 // @SMALLTODO
-void PCTex_CreateTexturePVR(i32,i32,u32,void const *,u32,char const *,u32)
+i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32, const char *,u32)
 {
     printf("PCTex_CreateTexturePVR(i32,i32,u32,void const *,u32,char const *,u32)");
+	return 0x19082024;
 }
 
 // @MEDIUMTODO
@@ -150,10 +151,24 @@ void PCTex_LoadPcIcons(void)
     printf("PCTex_LoadPcIcons(void)");
 }
 
-// @SMALLTODO
-void PCTex_LoadTexturePVR(char const *,char *)
+// @Ok
+void* PCTex_LoadTexturePVR(const char* a1, char* a2)
 {
-    printf("PCTex_LoadTexturePVR(char const *,char *)");
+	PVRHeader* pHeader = static_cast<PVRHeader*>(PCTex_BufferPVR(a1, a2));
+	i32 texRes = PCTex_CreateTexturePVR(
+			pHeader->field_1C,
+			pHeader->field_1E,
+			pHeader->field_18,
+			&pHeader->pTextureData,
+			0,
+			a1,
+			0);
+
+	print_if_false(texRes != -1, "texture cannot be smallvq: %s", a1);
+	if (!a2)
+		PCTex_UnbufferPVR(pHeader);
+
+	return reinterpret_cast<void*>(texRes);
 }
 
 // @SMALLTODO
@@ -332,4 +347,10 @@ void validate_WeirdTextureHolder(void)
 
 void validate_PVRHeader(void)
 {
+	VALIDATE_SIZE(PVRHeader, 0x24);
+
+	VALIDATE(PVRHeader, field_18, 0x18);
+	VALIDATE(PVRHeader, field_1C, 0x1C);
+	VALIDATE(PVRHeader, field_1E, 0x1E);
+	VALIDATE(PVRHeader, pTextureData, 0x20);
 }
