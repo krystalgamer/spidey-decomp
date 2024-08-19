@@ -22,6 +22,9 @@ struct PVRHeader
 	u8 pTextureData;
 };
 
+// @FIXME
+typedef void IDirectDrawSurface7;
+
 struct SPCTexture
 {
 	u16 mSizeOne;
@@ -31,8 +34,9 @@ struct SPCTexture
 	u8 padAfter8[0x14-0x8-4];
 
 	Bitmap256* mTexture;
-	u8 padAfter14[0x20-0x14-4];
+	u8 padAfter14[4];
 
+	IDirectDrawSurface7* mD3DTex;
 	i32 mFlags;
 	u8 padAfterC[0x58-0x20-4];
 
@@ -60,7 +64,7 @@ EXPORT i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32,const char *,u32);
 EXPORT void PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32);
 EXPORT void PCTex_FindUnusedTextureId(void);
 EXPORT void PCTex_FreePcIcons(void);
-EXPORT void PCTex_GetDirect3DTexture(i32);
+EXPORT IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32);
 EXPORT void PCTex_GetInvTextureSize(i32,float *,float *);
 EXPORT void PCTex_GetTextureSize(i32,i32 *,i32 *);
 EXPORT void PCTex_GetTextureSplitCount(i32);
