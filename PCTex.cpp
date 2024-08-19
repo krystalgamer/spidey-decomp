@@ -5,12 +5,19 @@
 
 #include <cstring>
 
-EXPORT SPCTexture gGlobalTextures[1024];
+const u32 GLOBAL_TEXTURE_COUNT = 1024;
+EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
 
-// @SMALLTODO
-void CheckValidTexture(i32)
+// @Ok
+u8 CheckValidTexture(i32 index)
 {
-    printf("CheckValidTexture(i32)");
+	if (index < GLOBAL_TEXTURE_COUNT)
+	{
+		if (gGlobalTextures[index].mD3DTex || gGlobalTextures[index].mSplit)
+			return 1;
+	}
+
+	return 0;
 }
 
 // @MEDIUMTODO

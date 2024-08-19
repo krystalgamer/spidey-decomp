@@ -52,7 +52,7 @@ EXPORT int countBits(unsigned int);
 EXPORT int countLeadingBits(unsigned int);
 EXPORT int PCTex_GetTextureSplitID(int, int);
 
-EXPORT void CheckValidTexture(i32);
+EXPORT u8 CheckValidTexture(i32);
 EXPORT void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32);
 EXPORT void PCTEX_Init(void);
 EXPORT void* PCTex_BufferPVR(const char *,char *);
