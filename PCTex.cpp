@@ -5,11 +5,11 @@
 
 #include <cstring>
 
-const u32 GLOBAL_TEXTURE_COUNT = 1024;
+const i32 GLOBAL_TEXTURE_COUNT = 1024;
 EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
 
 // @Ok
-u8 CheckValidTexture(i32 index)
+u8 CheckValidTexture(u32 index)
 {
 	if (index < GLOBAL_TEXTURE_COUNT)
 	{
@@ -104,10 +104,25 @@ void PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u3
     printf("PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32)");
 }
 
-// @SMALLTODO
-void PCTex_FindUnusedTextureId(void)
+// @Ok
+i32 PCTex_FindUnusedTextureId(void)
 {
-    printf("PCTex_FindUnusedTextureId(void)");
+	i32 id = 8;
+	for (;
+			id < GLOBAL_TEXTURE_COUNT;
+			id++)
+	{
+		if (!gGlobalTextures[id].mD3DTex && !gGlobalTextures[id].mSplit)
+			break;
+	}
+
+	if (id >= GLOBAL_TEXTURE_COUNT)
+	{
+		error("out of texture handles.");
+	}
+
+	print_if_false(1u, "id must fit into 10 bits!");
+	return id;
 }
 
 // @SMALLTODO
@@ -138,7 +153,7 @@ void PCTex_GetTextureSize(
 	*pTwo = gGlobalTextures[index].mSizeTwo;
 }
 
-// @SMALLTODO
+// @Ok
 i32 PCTex_GetTextureSplitCount(i32 index)
 {
 	return gGlobalTextures[index].mSplitCount;

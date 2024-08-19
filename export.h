@@ -15,7 +15,7 @@ static unsigned __int16 * const word_6B2478 = (unsigned __int16*)0x6B2478;
 //static int * const gTimerRelated = (int*)0x006B4CA8;
 
 static void print_if_false(unsigned char cry, char * message, ...) {
-	if (cry) {
+	if (!cry) {
 		printf(message);
 	}
 }
@@ -26,6 +26,10 @@ static void printf_fancy(const char *message, ...) {
 
 static void stubbed_printf(char *message){
 	puts(message);
+}
+
+static void error(const char *message, ...) {
+	printf("static void error(const char *message, ...)");
 }
 
 #endif
