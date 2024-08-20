@@ -69,7 +69,7 @@ EXPORT void PCTex_GetInvTextureSize(i32,float *,float *);
 EXPORT void PCTex_GetTextureSize(i32,i32 *,i32 *);
 EXPORT i32 PCTex_GetTextureSplitCount(i32);
 EXPORT void PCTex_InitSystemTextures(void);
-EXPORT void PCTex_LoadLtiTexture(char const *,u32,i32,u32);
+EXPORT i32 PCTex_LoadLtiTexture(const char*,u32,i32,u32);
 EXPORT void PCTex_LoadPcIcons(void);
 EXPORT void* PCTex_LoadTexturePVR(const char*,char *);
 EXPORT void PCTex_ReleaseAllTextures(void);

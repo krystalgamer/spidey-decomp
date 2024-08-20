@@ -10,6 +10,14 @@ EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
 
 const i32 PC_ICON_COUNT = 5;
 EXPORT i32 gPcIcons[PC_ICON_COUNT];
+EXPORT const char *gPcIconNames[PC_ICON_COUNT] =
+{
+	"lti\\butlarrow.bmp",
+	"lti\\butrarrow.bmp",
+	"lti\\butesc.bmp",
+	"lti\\butplus.bmp",
+	"lti\\butminus.bmp",
+};
 
 // @Ok
 u8 CheckValidTexture(u32 index)
@@ -189,15 +197,26 @@ void PCTex_InitSystemTextures(void)
 }
 
 // @MEDIUMTODO
-void PCTex_LoadLtiTexture(char const *,u32,i32,u32)
+i32 PCTex_LoadLtiTexture(const char*,u32,i32,u32)
 {
     printf("PCTex_LoadLtiTexture(char const *,u32,i32,u32)");
+	return 0x20082024;
 }
 
-// @SMALLTODO
+// @Ok
 void PCTex_LoadPcIcons(void)
 {
-    printf("PCTex_LoadPcIcons(void)");
+	for (i32 i = 0;
+			i < PC_ICON_COUNT;
+			i++)
+	{
+		if (gPcIcons[i] == -1)
+		{
+			i32 tex = PCTex_LoadLtiTexture(gPcIconNames[i], 0, i+3, 1);
+			gPcIcons[i] = tex;
+			print_if_false(tex != -1, "Error loading icon tex: %s\r\n", gPcIconNames[i]);
+		}
+	}
 }
 
 // @Ok
