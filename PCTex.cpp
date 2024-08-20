@@ -329,10 +329,20 @@ void PCTex_UpdateForSoftwareRenderer(void)
     printf("PCTex_UpdateForSoftwareRenderer(void)");
 }
 
-// @SMALLTODO
-void clutToClutPc(u16 const *)
+// @Ok
+// @Matching
+ClutPC* clutToClutPc(const u16* pClut)
 {
-    printf("clutToClutPc(u16 const *)");
+	ClutPC* res = gClutPcRelated;
+	for (;
+			res;
+			res = res->mNext)
+	{
+		if (res->mClut == pClut)
+			break;
+	}
+
+	return res;
 }
 
 // @SMALLTODO
@@ -468,4 +478,8 @@ void validate_PVRHeader(void)
 
 void validate_ClutPC(void)
 {
+	VALIDATE_SIZE(ClutPC, 0xC);
+
+	VALIDATE(ClutPC, mNext, 0x0);
+	VALIDATE(ClutPC, mClut, 0x8);
 }

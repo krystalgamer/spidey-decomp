@@ -13,6 +13,10 @@
 
 struct ClutPC
 {
+	ClutPC* mNext;
+	u8 padAfter4[4];
+
+	u16* mClut;
 };
 
 struct PVRHeader
@@ -82,7 +86,7 @@ EXPORT i32 PCTex_TextureHasAlpha(i32);
 EXPORT void PCTex_UnbufferPVR(PVRHeader *);
 EXPORT void PCTex_UnloadTextures(void);
 EXPORT void PCTex_UpdateForSoftwareRenderer(void);
-EXPORT void clutToClutPc(u16 const *);
+EXPORT ClutPC* clutToClutPc(const u16*);
 EXPORT void copyBitmap(void const *,i32,void *,i32,i32,i32,i32);
 EXPORT void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool);
 EXPORT void countLeadingZeroBits(u32);
