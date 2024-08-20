@@ -14,9 +14,33 @@ LIBPKR_HANDLE* gDataPkr;
 // too much hassle for little gain
 
 // @SMALLTODO
-u8 PKR_Close(LIBPKR_HANDLE*)
+void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)
 {
-	printf("u8 PKR_Close(LIBPKR_HANDLE*)");
+	printf("void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)");
+}
+
+// @SMALLTODO
+void dirRemoveFromPKR(LIBPKR_HANDLE*, NODE_DIRINFO*)
+{
+	printf("void dirRemovePKR(LIBPKR_HANDLE*, NODE_DIRINFO*)");
+}
+
+// @BIGTODO
+void flushPKR(LIBPKR_HANDLE*)
+{
+	printf("void flushPKR(LIBPKR_HANDLE*)");
+}
+
+// @Ok
+u8 PKR_Close(LIBPKR_HANDLE* pHandle)
+{
+	flushPKR(pHandle);
+	fclose(pHandle->fp);
+	while (pHandle->pFileInfo)
+		fileRemoveFromPKR(pHandle, pHandle->pFileInfo);
+	while (pHandle->pDirInfo)
+		dirRemoveFromPKR(pHandle, pHandle->pDirInfo);
+	delete pHandle;
 	return 1;
 }
 
@@ -331,6 +355,7 @@ void validate_LIBPKR_HANDLE(void)
 
 	VALIDATE(LIBPKR_HANDLE, mFooter, 0x114);
 	VALIDATE(LIBPKR_HANDLE, pDirInfo, 0x120);
+	VALIDATE(LIBPKR_HANDLE, pFileInfo, 0x124);
 }
 
 void validate_NODE_DIRINFO(void)
@@ -346,4 +371,8 @@ void validate_PKR_HEADER(void)
 {
 	VALIDATE(PKR_HEADER, pkrMagic, 0x0);
 	VALIDATE(PKR_HEADER, dirOffset, 0x4);
+}
+
+void validate_NODE_FILEINFO(void)
+{
 }

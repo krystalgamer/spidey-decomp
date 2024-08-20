@@ -37,6 +37,10 @@ struct NODE_DIRINFO
 	struct NODE_DIRINFO* mPrev;
 };
 
+struct NODE_FILEINFO
+{
+};
+
 struct PKR_HEADER
 {
 	i32 pkrMagic;
@@ -55,8 +59,9 @@ struct LIBPKR_HANDLE
 	PKR_FOOTER mFooter;
 
 	NODE_DIRINFO* pDirInfo;
+	NODE_FILEINFO* pFileInfo;
 
-	u8 padBottom[0x12C-0x120-4];
+	u8 padBottom[0x12C-0x124-4];
 };
 
 EXPORT u8 fileCRCCheck(u8*, i32, u32);
@@ -72,6 +77,9 @@ EXPORT u8 PKR_Close(LIBPKR_HANDLE*);
 
 EXPORT u8 dirAddToPKR(LIBPKR_HANDLE*, PKR_DIRINFO);
 EXPORT u8 fileAddToPKR(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*);
+EXPORT void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*);
+EXPORT void dirRemoveFromPKR(LIBPKR_HANDLE*, NODE_DIRINFO*);
+EXPORT void flushPKR(LIBPKR_HANDLE*);
 
 EXPORT extern LIBPKR_HANDLE* gDataPkr;
 
@@ -81,5 +89,6 @@ void validate_PKR_DIRINFO(void);
 void validate_LIBPKR_HANDLE(void);
 void validate_NODE_DIRINFO(void);
 void validate_PKR_HEADER(void);
+void validate_NODE_FILEINFO(void);
 
 #endif

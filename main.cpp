@@ -416,6 +416,7 @@ i32 validate(void)
 	validate_ClutPC();
 	validate_PKR_HEADER();
 	validate_SGDOpenFile();
+	validate_NODE_FILEINFO();
 
 	puts("[*] Validation done!");
 
