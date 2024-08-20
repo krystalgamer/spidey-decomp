@@ -4,6 +4,7 @@
 #include "dcfileio.h"
 
 #include <cstring>
+#include <cstdlib>
 
 const i32 GLOBAL_TEXTURE_COUNT = 1024;
 EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
@@ -20,6 +21,7 @@ EXPORT const char *gPcIconNames[PC_ICON_COUNT] =
 };
 
 EXPORT ClutPC* gClutPcRelated;
+EXPORT i32 gClutCount;
 
 // @Ok
 u8 CheckValidTexture(u32 index)
@@ -358,13 +360,13 @@ void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool)
 }
 
 // @Ok
-i32 countLeadingZeroBits(u32 num)
+INLINE i32 countLeadingZeroBits(u32 num)
 {
 	if (!num)
 		return 0;
 
 	i32 count = 0;
-	while (num & 1)
+	while (!(num & 1))
 	{
 		num >>= 1;
 		count++;
@@ -385,10 +387,36 @@ void enumPixelFormatsCB(_DDPIXELFORMAT *,void *)
     printf("enumPixelFormatsCB(_DDPIXELFORMAT *,void *)");
 }
 
-// @SMALLTODO
-void releaseClutPc(ClutPC *)
+// @Ok
+// @Matching
+void releaseClutPc(ClutPC* pClut)
 {
-    printf("releaseClutPc(_ClutPC *)");
+	print_if_false(pClut->mRefs == 0, "Releasing a clut with pending references!");
+	print_if_false(gClutCount > 0, "Uh oh, clut count is off!");
+
+	if (pClut->mClut)
+		free(pClut->mClut);
+
+	if (pClut == gClutPcRelated)
+	{
+		gClutPcRelated = gClutPcRelated->mNext;
+	}
+	else
+	{
+		for (ClutPC* iter = gClutPcRelated;
+				iter;
+				iter = iter->mNext)
+		{
+			if (iter->mNext == pClut)
+			{
+				iter->mNext = pClut->mNext;
+				break;
+			}
+		}
+	}
+
+	free(pClut);
+	gClutCount--;
 }
 
 // @SMALLTODO
@@ -436,23 +464,6 @@ int __inline countBits(unsigned int value)
 }
 
 // @Ok
-int __inline countLeadingBits(unsigned int value)
-{
-	int bits = 0;
-
-	if (!value)
-		return 0;
-
-	while(!(value & 1))
-	{
-		value >>= 1;
-		bits++;
-	}
-
-	return bits;
-}
-
-// @Ok
 // @Matching
 int PCTex_GetTextureSplitID(int index, int id)
 {
@@ -491,5 +502,6 @@ void validate_ClutPC(void)
 	VALIDATE_SIZE(ClutPC, 0xC);
 
 	VALIDATE(ClutPC, mNext, 0x0);
+	VALIDATE(ClutPC, mRefs, 0x4);
 	VALIDATE(ClutPC, mClut, 0x8);
 }

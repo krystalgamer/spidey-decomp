@@ -14,7 +14,8 @@
 struct ClutPC
 {
 	ClutPC* mNext;
-	u8 padAfter4[4];
+	i16 mRefs;
+	u8 padAfter6[2];
 
 	u16* mClut;
 };
@@ -55,7 +56,6 @@ EXPORT float PCTex_GetTextureWScale(int);
 EXPORT float PCTex_GetTextureHScale(int);
 EXPORT int PCTex_GetTextureFlags(int);
 EXPORT int countBits(unsigned int);
-EXPORT int countLeadingBits(unsigned int);
 EXPORT int PCTex_GetTextureSplitID(int, int);
 
 EXPORT u8 CheckValidTexture(u32);
