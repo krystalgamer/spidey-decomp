@@ -100,10 +100,36 @@ i32 PCTex_CountActiveTextures(void)
 	return count;
 }
 
-// @SMALLTODO
-void PCTex_CreateClut(i32)
+// @Ok
+// @Matching
+u16* PCTex_CreateClut(i32 colorCount)
 {
-    printf("PCTex_CreateClut(i32)");
+	ClutPC* clut = static_cast<ClutPC*>(malloc(sizeof(ClutPC)));
+
+	print_if_false(colorCount == 16 || colorCount == 256, "Weird color count in CreateClut: %i", colorCount);
+
+	if (!clut)
+	{
+		error("Out of memory allocating ClutPC!");
+		return 0;
+	}
+
+	clut->mRefs = 0;
+	clut->mColorCount = colorCount;
+	clut->mClut = static_cast<u16*>(malloc(2 * colorCount));
+
+	if (!clut->mClut)
+	{
+		error("Out of memory allocating ClutPC colors!");
+		free(clut);
+		return 0;
+	}
+
+	clut->mNext = gClutPcRelated;
+	gClutPcRelated = clut;
+	gClutCount++;
+	
+	return clut->mClut;
 }
 
 // @MEDIUMTODO
@@ -200,10 +226,11 @@ IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32 index)
 	return gGlobalTextures[index].mD3DTex;
 }
 
-// @SMALLTODO
-void PCTex_GetInvTextureSize(i32,float *,float *)
+// @Ok
+void PCTex_GetInvTextureSize(i32 index, float* pF1 ,float * pF2)
 {
-    printf("PCTex_GetInvTextureSize(i32,float *,float *)");
+	*pF1 = gGlobalTextures[index].field_C;
+	*pF2 = gGlobalTextures[index].field_10;
 }
 
 // @Ok
@@ -507,6 +534,10 @@ void validate_SPCTexture(void)
 
 	VALIDATE(SPCTexture, wScale, 0x4);
 	VALIDATE(SPCTexture, hScale, 0x8);
+
+	VALIDATE(SPCTexture, field_C, 0xC);
+	VALIDATE(SPCTexture, field_10, 0x10);
+
 	VALIDATE(SPCTexture, mTexture, 0x14);
 	VALIDATE(SPCTexture, mAlpha, 0x18);
 	VALIDATE(SPCTexture, mD3DTex, 0x1C);
@@ -535,5 +566,6 @@ void validate_ClutPC(void)
 
 	VALIDATE(ClutPC, mNext, 0x0);
 	VALIDATE(ClutPC, mRefs, 0x4);
+	VALIDATE(ClutPC, mColorCount, 0x6);
 	VALIDATE(ClutPC, mClut, 0x8);
 }

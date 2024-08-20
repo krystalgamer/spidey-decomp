@@ -15,8 +15,7 @@ struct ClutPC
 {
 	ClutPC* mNext;
 	i16 mRefs;
-	u8 padAfter6[2];
-
+	i16 mColorCount;
 	u16* mClut;
 };
 
@@ -38,7 +37,9 @@ struct SPCTexture
 	u16 mSizeTwo;
 	float wScale;
 	float hScale;
-	u8 padAfter8[0x14-0x8-4];
+
+	float field_C;
+	float field_10;
 
 	Bitmap256* mTexture;
 	i32 mAlpha;
@@ -66,7 +67,7 @@ EXPORT void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32);
 EXPORT void PCTEX_Init(void);
 EXPORT void* PCTex_BufferPVR(const char *,char *);
 EXPORT i32 PCTex_CountActiveTextures(void);
-EXPORT void PCTex_CreateClut(i32);
+EXPORT u16* PCTex_CreateClut(i32);
 EXPORT void PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32);
 EXPORT void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32);
 EXPORT i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32,const char *,u32);
