@@ -89,7 +89,7 @@ EXPORT void PCTex_UpdateForSoftwareRenderer(void);
 EXPORT ClutPC* clutToClutPc(const u16*);
 EXPORT void copyBitmap(void const *,i32,void *,i32,i32,i32,i32);
 EXPORT void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool);
-EXPORT void countLeadingZeroBits(u32);
+EXPORT i32 countLeadingZeroBits(u32);
 EXPORT void downloadTexture(PCTexture *,u16 *,i32,i32);
 EXPORT void enumPixelFormatsCB(_DDPIXELFORMAT *,void *);
 EXPORT void releaseClutPc(ClutPC *);

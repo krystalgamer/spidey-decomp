@@ -357,10 +357,20 @@ void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool)
     printf("copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool)");
 }
 
-// @SMALLTODO
-void countLeadingZeroBits(u32)
+// @Ok
+i32 countLeadingZeroBits(u32 num)
 {
-    printf("countLeadingZeroBits(u32)");
+	if (!num)
+		return 0;
+
+	i32 count = 0;
+	while (num & 1)
+	{
+		num >>= 1;
+		count++;
+	}
+
+	return count;
 }
 
 // @MEDIUMTODO
