@@ -13,6 +13,13 @@ LIBPKR_HANDLE* gDataPkr;
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
+// @SMALLTODO
+u8 PKR_Close(LIBPKR_HANDLE*)
+{
+	printf("u8 PKR_Close(LIBPKR_HANDLE*)");
+	return 1;
+}
+
 // @Ok
 u8 PKR_LockFile(LIBPKR_HANDLE* pHandle)
 {

@@ -63,10 +63,27 @@ INLINE void closeFilePKR(i32 id)
 	}
 }
 
-// @SMALLTODO
+// @Ok
 void closePKR(void)
 {
-    printf("closePKR(void)");
+	char v0[512]; // [esp+0h] [ebp-200h] BYREF
+
+	if (gDataPkr)
+	{
+		if (!PKR_Close(gDataPkr))
+		{
+			if (PKR_GetLastError(v0))
+				error("PKR\t: %s\r\n", v0);
+		}
+
+		gDataPkr = 0;
+	}
+	else
+	{
+		error("PKR\t: No PKR currently open.\r\n");
+	}
+
+	PCMOVIE_ClosePKR();
 }
 
 // @SMALLTODO
