@@ -8,7 +8,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
-//typedef void* HANDLE;
+typedef void* HANDLE;
 #endif
 
 

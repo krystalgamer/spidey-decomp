@@ -28,7 +28,9 @@ void gdFsClose(HANDLE handle)
 		return;
 	}
 
+#ifdef _WIN32
 	CloseHandle(gOpenFile);
+#endif
 	PKR_LockFile(gDataPkr);
 }
 
