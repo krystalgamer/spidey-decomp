@@ -8,6 +8,9 @@
 const i32 GLOBAL_TEXTURE_COUNT = 1024;
 EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
 
+const i32 PC_ICON_COUNT = 5;
+EXPORT i32 gPcIcons[PC_ICON_COUNT];
+
 // @Ok
 u8 CheckValidTexture(u32 index)
 {
@@ -137,10 +140,18 @@ i32 PCTex_FindUnusedTextureId(void)
 	return id;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCTex_FreePcIcons(void)
 {
-    printf("PCTex_FreePcIcons(void)");
+	for (i32 i = 0; i < PC_ICON_COUNT; i++)
+	{
+		if (gPcIcons[i] != -1)
+		{
+			PCTex_ReleaseSysTexture(gPcIcons[i], true);
+			gPcIcons[i] = -1;
+		}
+	}
 }
 
 // @Ok
