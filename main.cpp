@@ -76,6 +76,7 @@
 #include "backgrnd.h"
 #include "dcshellutils.h"
 #include "pkr.h"
+#include "pcdcFile.h"
 
 extern int FAIL_VALIDATION;
 
@@ -414,6 +415,7 @@ i32 validate(void)
 	validate_PVRHeader();
 	validate_ClutPC();
 	validate_PKR_HEADER();
+	validate_SGDOpenFile();
 
 	puts("[*] Validation done!");
 

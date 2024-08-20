@@ -2,6 +2,7 @@
 #include "PCMovie.h"
 #include "pkr.h"
 #include "SpideyDX.h"
+#include "validate.h"
 
 #include <cstring>
 
@@ -10,6 +11,26 @@ EXPORT TCHAR gCurrentDir[260];
 #endif
 
 EXPORT char gFsBase[260];
+
+// @FIXME: real size
+EXPORT SGDOpenFile gOpenFiles[0xFF];
+
+EXPORT HANDLE gOpenFile;
+
+// @Ok
+// @Matching
+void gdFsClose(HANDLE handle)
+{
+	if (handle != gOpenFile)
+	{
+		// @FIXME: portability issues
+		closeFilePKR(reinterpret_cast<i32>(handle));
+		return;
+	}
+
+	CloseHandle(gOpenFile);
+	PKR_LockFile(gDataPkr);
+}
 
 // @Ok
 EXPORT i32 gdFsInit(void)
@@ -27,10 +48,19 @@ EXPORT i32 gdFsInit(void)
 	return 0;
 }
 
-// @SMALLTODO
-void closeFilePKR(i32)
+// @Ok
+// @Matching
+INLINE void closeFilePKR(i32 id)
 {
-    printf("closeFilePKR(i32)");
+	i32 i = (id ^ 0xFF);
+	i--;
+	if (gOpenFiles[i].field_0)
+	{
+		delete gOpenFiles[i].field_0;
+		gOpenFiles[i].field_0 = 0;
+		gOpenFiles[i].field_4 = 0;
+		gOpenFiles[i].field_8 = 0;
+	}
 }
 
 // @SMALLTODO
@@ -100,4 +130,12 @@ void seekFilePKR(i32,i32,i32)
 void tellFilePKR(i32)
 {
     printf("tellFilePKR(i32)");
+}
+
+void validate_SGDOpenFile(void)
+{
+	VALIDATE_SIZE(SGDOpenFile, 0xC);
+	VALIDATE(SGDOpenFile, field_0, 0x0);
+	VALIDATE(SGDOpenFile, field_4, 0x4);
+	VALIDATE(SGDOpenFile, field_8, 0x8);
 }
