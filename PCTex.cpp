@@ -118,21 +118,49 @@ void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i3
     printf("PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)");
 }
 
-// @SMALLTODO
-i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32, const char *,u32)
+// @Ok
+i32 PCTex_CreateTexturePVR(
+		i32 a1,
+		i32 a2,
+		u32 a3,
+		void* pData,
+		u32 a5,
+		const char* a6,
+		u32 a7)
 {
-    printf("PCTex_CreateTexturePVR(i32,i32,u32,void const *,u32,char const *,u32)");
-	return 0x19082024;
+	 print_if_false(
+			 (reinterpret_cast<i32>(pData) & 3) == 0,
+			 "texture data pointer must be aligned to 4 byte boundary");
+	 
+	 i32 unusedId = PCTex_FindUnusedTextureId();
+	 i32 res = PCTex_CreateTexturePVRInId(
+			 unusedId,
+			 a1,
+			 a2,
+			 a3,
+			 pData,
+			 a5,
+			 a6,
+			 a7);
+	 if (!res)
+		 return -1;
+
+	gGlobalTextures[unusedId].pTextureData = pData;
+	gGlobalTextures[unusedId].field_60 = a3;
+	gGlobalTextures[unusedId].field_64 = 0x10000;
+	 
+	 return unusedId;
 }
 
 // @MEDIUMTODO
-void PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32)
+i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32,const void* ,u32,char const *,u32)
 {
     printf("PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32)");
+	return 0x20082024;
 }
 
 // @Ok
-i32 PCTex_FindUnusedTextureId(void)
+INLINE i32 PCTex_FindUnusedTextureId(void)
 {
 	i32 id = 8;
 	for (;
@@ -485,6 +513,10 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, mFlags, 0x20);
 	VALIDATE(SPCTexture, mSplitCount, 0x54);
 	VALIDATE(SPCTexture, mSplit, 0x58);
+
+	VALIDATE(SPCTexture, pTextureData, 0x5C);
+	VALIDATE(SPCTexture, field_60, 0x60);
+	VALIDATE(SPCTexture, field_64, 0x64);
 }
 
 void validate_PVRHeader(void)

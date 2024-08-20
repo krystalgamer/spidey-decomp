@@ -48,7 +48,10 @@ struct SPCTexture
 
 	i32 mSplitCount;
 	i32 *mSplit;
-	unsigned char pad[0x68-0x58-4];
+
+	void* pTextureData;
+	i32 field_60;
+	i32 field_64;
 };
 
 EXPORT void PCTex_SetTextureUserData(int, Bitmap256*);
@@ -67,7 +70,7 @@ EXPORT void PCTex_CreateClut(i32);
 EXPORT void PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32);
 EXPORT void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32);
 EXPORT i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32,const char *,u32);
-EXPORT void PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32);
+EXPORT i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32, const void *,u32, const char*,u32);
 EXPORT i32 PCTex_FindUnusedTextureId(void);
 EXPORT void PCTex_FreePcIcons(void);
 EXPORT IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32);
