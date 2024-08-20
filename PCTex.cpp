@@ -19,6 +19,8 @@ EXPORT const char *gPcIconNames[PC_ICON_COUNT] =
 	"lti\\butminus.bmp",
 };
 
+EXPORT ClutPC* gClutPcRelated;
+
 // @Ok
 u8 CheckValidTexture(u32 index)
 {
@@ -239,10 +241,23 @@ void* PCTex_LoadTexturePVR(const char* a1, char* a2)
 	return reinterpret_cast<void*>(texRes);
 }
 
-// @SMALLTODO
+// @Ok
 void PCTex_ReleaseAllTextures(void)
 {
-    printf("PCTex_ReleaseAllTextures(void)");
+	for (i32 i = 8;
+			i < GLOBAL_TEXTURE_COUNT;
+			i++)
+	{
+		if (gGlobalTextures[i].mD3DTex || gGlobalTextures[i].mSplit)
+		{
+			PCTex_ReleaseTexture(i, true);
+		}
+	}
+
+	while (gClutPcRelated)
+	{
+		releaseClutPc(gClutPcRelated);
+	}
 }
 
 // @SMALLTODO
@@ -351,7 +366,7 @@ void enumPixelFormatsCB(_DDPIXELFORMAT *,void *)
 }
 
 // @SMALLTODO
-void releaseClutPc(_ClutPC *)
+void releaseClutPc(ClutPC *)
 {
     printf("releaseClutPc(_ClutPC *)");
 }
@@ -449,4 +464,8 @@ void validate_PVRHeader(void)
 	VALIDATE(PVRHeader, field_1C, 0x1C);
 	VALIDATE(PVRHeader, field_1E, 0x1E);
 	VALIDATE(PVRHeader, pTextureData, 0x20);
+}
+
+void validate_ClutPC(void)
+{
 }

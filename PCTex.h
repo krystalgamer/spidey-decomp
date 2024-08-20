@@ -7,11 +7,13 @@
 #include "bitmap256.h"
 
 // @FIXME
-#define _ClutPC i32
-// @FIXME
 #define PCTexture i32
 // @FIXME
 #define _DDPIXELFORMAT i32
+
+struct ClutPC
+{
+};
 
 struct PVRHeader
 {
@@ -86,10 +88,11 @@ EXPORT void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool);
 EXPORT void countLeadingZeroBits(u32);
 EXPORT void downloadTexture(PCTexture *,u16 *,i32,i32);
 EXPORT void enumPixelFormatsCB(_DDPIXELFORMAT *,void *);
-EXPORT void releaseClutPc(_ClutPC *);
+EXPORT void releaseClutPc(ClutPC *);
 EXPORT void shouldForceBlend(u16 *,i32,i32,i32);
 
 void validate_SPCTexture(void);
 void validate_PVRHeader(void);
+void validate_ClutPC(void);
 
 #endif
