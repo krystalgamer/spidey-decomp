@@ -413,6 +413,7 @@ i32 validate(void)
 	validate_NODE_DIRINFO();
 	validate_PVRHeader();
 	validate_ClutPC();
+	validate_PKR_HEADER();
 
 	puts("[*] Validation done!");
 

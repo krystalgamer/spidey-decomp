@@ -18,7 +18,7 @@ struct PKR_FILEINFO
 struct PKR_FOOTER
 {
 	i32 field_0;
-	i32 numDirs;
+	u32 numDirs;
 	i32 numFiles;
 };
 
@@ -37,6 +37,12 @@ struct NODE_DIRINFO
 	struct NODE_DIRINFO* mPrev;
 };
 
+struct PKR_HEADER
+{
+	i32 pkrMagic;
+	i32 dirOffset;
+};
+
 struct LIBPKR_HANDLE
 {
 	FILE* fp;
@@ -45,9 +51,8 @@ struct LIBPKR_HANDLE
 
 
 	i32 field_108;
-	i32 pkrMagic;
-	i32 dirOffset;
-	PKR_FOOTER footer;
+	PKR_HEADER mHeader;
+	PKR_FOOTER mFooter;
 
 	NODE_DIRINFO* pDirInfo;
 
@@ -63,14 +68,16 @@ EXPORT u8 PKR_UnlockFile(LIBPKR_HANDLE* fp);
 EXPORT u8 PKR_Open(LIBPKR_HANDLE**, const char*, i32);
 EXPORT u8 PKR_GetLastError(char*);
 
-EXPORT u8 dirAddToPkr(LIBPKR_HANDLE*, PKR_DIRINFO);
+EXPORT u8 dirAddToPKR(LIBPKR_HANDLE*, PKR_DIRINFO);
+EXPORT u8 fileAddToPKR(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*);
 
-EXPORT extern LIBPKR_HANDLE* gGlobalPkr;
+EXPORT extern LIBPKR_HANDLE* gDataPkr;
 
 void validate_PKR_FILEINFO(void);
 void validate_PKR_FOOTER(void);
 void validate_PKR_DIRINFO(void);
 void validate_LIBPKR_HANDLE(void);
 void validate_NODE_DIRINFO(void);
+void validate_PKR_HEADER(void);
 
 #endif

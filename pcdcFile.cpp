@@ -62,9 +62,9 @@ INLINE void openPKR(void)
 {
 	char error[512];
 
-	if (!gGlobalPkr)
+	if (!gDataPkr)
 	{
-		if (!PKR_Open(&gGlobalPkr, "data.pkr", 1))
+		if (!PKR_Open(&gDataPkr, "data.pkr", 1))
 		{
 			if (PKR_GetLastError(error))
 			{
@@ -73,14 +73,14 @@ INLINE void openPKR(void)
 		}
 		else
 		{
-			DXERR_printf("PKR\t: Name       : %s\r\n", gGlobalPkr->name);
-			DXERR_printf("PKR\t: N.O. Dir   : %i\r\n", gGlobalPkr->footer.numDirs);
-			DXERR_printf("PKR\t: N.O. Files : %i\r\n", gGlobalPkr->footer.numFiles);
+			DXERR_printf("PKR\t: Name       : %s\r\n", gDataPkr->name);
+			DXERR_printf("PKR\t: N.O. Dir   : %i\r\n", gDataPkr->mFooter.numDirs);
+			DXERR_printf("PKR\t: N.O. Files : %i\r\n", gDataPkr->mFooter.numFiles);
 		}
 	}
 	else
 	{
-		DXERR_printf("PKR\t: PKR %s already open\r\n", gGlobalPkr->name);
+		DXERR_printf("PKR\t: PKR %s already open\r\n", gDataPkr->name);
 	}
 }
 

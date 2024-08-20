@@ -8,13 +8,20 @@
 #define PKRFILE_UNCOMPRESSED -2
 #define PKRFILE_COMPRESSED_ZLIB 2
 
-LIBPKR_HANDLE* gGlobalPkr;
+LIBPKR_HANDLE* gDataPkr;
 
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
+// @SMALLTODO
+u8 fileAddToPKR(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*)
+{
+	printf("u8 fileAddToPkr(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*)");
+	return (u8)0x20082024;
+}
+
 // @Ok
-u8 dirAddToPkr(LIBPKR_HANDLE* pHandle, PKR_DIRINFO dirInfo)
+u8 dirAddToPKR(LIBPKR_HANDLE* pHandle, PKR_DIRINFO dirInfo)
 {
 	NODE_DIRINFO* newNode = new NODE_DIRINFO;
 	if (!newNode)
@@ -57,7 +64,7 @@ u8 dirAddToPkr(LIBPKR_HANDLE* pHandle, PKR_DIRINFO dirInfo)
 		newNode->mNext = 0;
 	}
 
-	pHandle->footer.numDirs++;
+	pHandle->mFooter.numDirs++;
 	return 1;
 }
 
@@ -68,11 +75,111 @@ u8 PKR_GetLastError(char*)
 	return (u8)0x18082024;
 }
 
-// @MEDIUMTODO
-u8 PKR_Open(LIBPKR_HANDLE**, const char*, i32)
+// @Ok
+u8 PKR_Open(
+		LIBPKR_HANDLE** ppHandle,
+		const char* name,
+		i32 readOnly)
 {
-	printf("u8 PKR_Open(LIBPKR_HANDLE*, const char*, i32)");
-	return (u8)0x18082024;
+	LIBPKR_HANDLE* pHandle = new LIBPKR_HANDLE;
+	if (!pHandle)
+	{
+		*ppHandle = 0;
+		PKR_ReportError("PKR_Open: Cannot allocate handle");
+		return 0;
+	}
+
+	memset(pHandle, 0, sizeof(LIBPKR_HANDLE));
+	strcpy(pHandle->name, name);
+
+	FILE* fp = fopen(name, "rb");
+	if (!fp)
+	{
+		*ppHandle = 0;
+		PKR_ReportError("PKR_Open: PKR file is not found at %s", name);
+		return 0;
+	}
+
+	fclose(fp);
+	if (readOnly)
+		pHandle->fp = fopen(name, "rb");
+	else
+		pHandle->fp = fopen(name, "rb+");
+
+	if (fread(&pHandle->mHeader, sizeof(PKR_HEADER), 1, pHandle->fp) != 1)
+	{
+		fclose(pHandle->fp);
+		*ppHandle = 0;
+		PKR_ReportError("PKR_Open: Error reading PKR_HEADER from %s", name);
+		return 0;
+	}
+
+	if (pHandle->mHeader.pkrMagic != 0x33524B50)
+	{
+		fclose(pHandle->fp);
+		*ppHandle = 0;
+		PKR_ReportError(
+			"PKR_Open: %s is not a valid PKR. Magic code %08X isn't correct, should be %08X",
+			name,
+			pHandle->mHeader.pkrMagic,
+			0x33524B50);
+		return 0;
+	}
+
+	fseek(pHandle->fp, pHandle->mHeader.dirOffset, SEEK_SET);
+
+	if (fread(&pHandle->mFooter, sizeof(PKR_FOOTER), 1u, pHandle->fp) != 1)
+	{
+		fclose(pHandle->fp);
+		*ppHandle = 0;
+		PKR_ReportError("PKR_Open: Error reading PKR_FOOTER from %s", name);
+		return 0;
+	}
+
+	u32 numDirs = pHandle->mFooter.numDirs;
+	pHandle->mFooter.numDirs = 0;
+	pHandle->mFooter.numFiles = 0;
+	for (u32 i = 0; i < numDirs; i++)
+	{
+		PKR_DIRINFO dirInfo;
+		if (fread(&dirInfo, sizeof(PKR_DIRINFO), 1, pHandle->fp) != 1)
+		{
+			fclose(pHandle->fp);
+			*ppHandle = 0;
+			PKR_ReportError("PKR_Open: Error reading PKR_DIRINFO %i from %s", i, name);
+			return 0;
+		}
+
+		if (!dirAddToPKR(pHandle, dirInfo))
+			return 0;
+	}
+	
+	NODE_DIRINFO* pDirInfo = pHandle->pDirInfo;
+	for (u32 dirNum = 0; dirNum < pHandle->mFooter.numDirs; dirNum++)
+	{
+		u32 numFiles = pDirInfo->dirInfo.numFiles;
+		pDirInfo->dirInfo.numFiles = 0;
+		for (u32 j = 0; j < numFiles; j++ )
+		{
+			PKR_FILEINFO fileInfo;
+			if ( fread(&fileInfo, sizeof(PKR_FILEINFO), 1u, pHandle->fp) != 1 )
+			{
+				fclose(pHandle->fp);
+				*ppHandle = 0;
+				PKR_ReportError("PKR_Open: Error reading PKR_FILEINFO %i from %s", dirNum, name);
+				return 0;
+			}
+			if (!fileAddToPKR(pHandle, fileInfo, &pDirInfo->dirInfo, 0))
+				return 0;
+		}
+
+		pDirInfo = pDirInfo->mNext;
+	}
+
+
+	pHandle->field_108 = -2;
+	*ppHandle = pHandle;
+	return 1;
 }
 
 // @Ok
@@ -199,10 +306,9 @@ void validate_LIBPKR_HANDLE(void)
 	VALIDATE(LIBPKR_HANDLE, name, 0x4);
 
 	VALIDATE(LIBPKR_HANDLE, field_108, 0x108);
-	VALIDATE(LIBPKR_HANDLE, pkrMagic, 0x10C);
-	VALIDATE(LIBPKR_HANDLE, dirOffset, 0x110);
+	VALIDATE(LIBPKR_HANDLE, mHeader, 0x10C);
 
-	VALIDATE(LIBPKR_HANDLE, footer, 0x114);
+	VALIDATE(LIBPKR_HANDLE, mFooter, 0x114);
 	VALIDATE(LIBPKR_HANDLE, pDirInfo, 0x120);
 }
 
@@ -213,4 +319,10 @@ void validate_NODE_DIRINFO(void)
 	VALIDATE(NODE_DIRINFO, dirInfo, 0x0);
 	VALIDATE(NODE_DIRINFO, mNext, 0x28);
 	VALIDATE(NODE_DIRINFO, mPrev, 0x2C);
+}
+
+void validate_PKR_HEADER(void)
+{
+	VALIDATE(PKR_HEADER, pkrMagic, 0x0);
+	VALIDATE(PKR_HEADER, dirOffset, 0x4);
 }
