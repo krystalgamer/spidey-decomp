@@ -13,6 +13,20 @@ LIBPKR_HANDLE* gDataPkr;
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
+// @Ok
+u8 PKR_LockFile(LIBPKR_HANDLE* pHandle)
+{
+	if (pHandle->fp)
+		return 1;
+
+	pHandle->fp = fopen(pHandle->name, "rb+");
+	if (pHandle->fp)
+		return 1;
+
+	PKR_ReportError("PKR_UnlockFile: Error cannot open %s", &pHandle->name);
+	return 0;
+}
+
 // @SMALLTODO
 u8 fileAddToPKR(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*)
 {
