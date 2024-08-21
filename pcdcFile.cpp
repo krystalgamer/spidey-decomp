@@ -197,10 +197,10 @@ void seekFilePKR(i32,i32,i32)
     printf("seekFilePKR(i32,i32,i32)");
 }
 
-// @SMALLTODO
-void tellFilePKR(i32)
+// @Ok
+i32 tellFilePKR(i32 a1)
 {
-    printf("tellFilePKR(i32)");
+	return gOpenFiles[(a1 ^ 0xFF) -1].field_4;
 }
 
 void validate_SGDOpenFile(void)

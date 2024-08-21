@@ -40,8 +40,7 @@ i32 FileIO_Open(const char*)
 	return 0x19082024;
 }
 
-// @NotOk
-// globals
+// @Ok
 void FileIO_Sync(void)
 {
 	while (gFileIOStatus);
