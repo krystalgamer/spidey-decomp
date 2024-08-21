@@ -74,12 +74,12 @@ INLINE void closeFilePKR(i32 id)
 {
 	i32 i = (id ^ 0xFF);
 	i--;
-	if (gOpenFiles[i].field_0)
+	if (gOpenFiles[i].mBuf)
 	{
-		delete gOpenFiles[i].field_0;
-		gOpenFiles[i].field_0 = 0;
-		gOpenFiles[i].field_4 = 0;
-		gOpenFiles[i].field_8 = 0;
+		delete gOpenFiles[i].mBuf;
+		gOpenFiles[i].mBuf = 0;
+		gOpenFiles[i].mOffset = 0;
+		gOpenFiles[i].mEnd = 0;
 	}
 }
 
@@ -125,7 +125,7 @@ i32 findFilePKR(
 		return 0;
 	}
 
-	gOpenFiles[nFile].field_4 = fileInfo.fileOffset;
+	gOpenFiles[nFile].mOffset = fileInfo.fileOffset;
 	return (nFile + 1) ^ 0xFF;
 }
 
@@ -136,7 +136,7 @@ INLINE i32 nextFile(void)
 			i < MAX_OPEN_FILE_COUNT;
 			i++)
 	{
-		if (gOpenFiles[i].field_0)
+		if (gOpenFiles[i].mBuf)
 			return i;
 	}
 
@@ -155,8 +155,8 @@ i32 openFilePKR(char * a1,const char* a2)
 				gDataPkr,
 				a1,
 				a2,
-				&gOpenFiles[nFile].field_0,
-				&gOpenFiles[nFile].field_8))
+				&gOpenFiles[nFile].mBuf,
+				&gOpenFiles[nFile].mEnd))
 	{
 		char buf[512];
 		if (PKR_GetLastError(buf))
@@ -165,7 +165,7 @@ i32 openFilePKR(char * a1,const char* a2)
 		return 0;
 	}
 
-	gOpenFiles[nFile].field_4 = 0;
+	gOpenFiles[nFile].mOffset = 0;
 	return (nFile + 1) ^ 0xFF;
 }
 
@@ -210,35 +210,35 @@ INLINE i32 seekFilePKR(
 {
 	i32 index = (a1 ^ 0xFF) - 1;
 
-	if (!gOpenFiles[index].field_0)
+	if (!gOpenFiles[index].mBuf)
 		return 0;
 
 	switch (seekType)
 	{
 		case 0:
-			gOpenFiles[index].field_4 = seekOffset;
+			gOpenFiles[index].mOffset = seekOffset;
 			break;
 		case 1:
-			gOpenFiles[index].field_4 += seekOffset;
+			gOpenFiles[index].mOffset += seekOffset;
 			break;
 		case 2:
-			gOpenFiles[index].field_4 = gOpenFiles[index].field_8 - seekOffset;
+			gOpenFiles[index].mOffset = gOpenFiles[index].mEnd - seekOffset;
 			break;
 	}
 
-	return gOpenFiles[index].field_4;
+	return gOpenFiles[index].mOffset;
 }
 
 // @Ok
 INLINE i32 tellFilePKR(i32 a1)
 {
-	return gOpenFiles[(a1 ^ 0xFF) -1].field_4;
+	return gOpenFiles[(a1 ^ 0xFF) -1].mOffset;
 }
 
 void validate_SGDOpenFile(void)
 {
 	VALIDATE_SIZE(SGDOpenFile, 0xC);
-	VALIDATE(SGDOpenFile, field_0, 0x0);
-	VALIDATE(SGDOpenFile, field_4, 0x4);
-	VALIDATE(SGDOpenFile, field_8, 0x8);
+	VALIDATE(SGDOpenFile, mBuf, 0x0);
+	VALIDATE(SGDOpenFile, mOffset, 0x4);
+	VALIDATE(SGDOpenFile, mEnd, 0x8);
 }

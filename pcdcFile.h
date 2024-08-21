@@ -14,9 +14,9 @@ typedef void* HANDLE;
 
 struct SGDOpenFile
 {
-	void* field_0;
-	i32 field_4;
-	i32 field_8;
+	void* mBuf;
+	i32 mOffset;
+	i32 mEnd;
 };
 
 EXPORT void closeFilePKR(i32);
