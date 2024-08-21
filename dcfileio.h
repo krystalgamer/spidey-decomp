@@ -7,7 +7,7 @@
 
 EXPORT void FileIO_Sync(void);
 EXPORT void DebugPrintfX(char *,...);
-EXPORT void FileIO_FileExists(char const *);
+EXPORT u8 FileIO_FileExists(const char *);
 EXPORT void FileIO_Init(void);
 EXPORT void FileIO_Load(void *);
 EXPORT i32 FileIO_Open(const char *);

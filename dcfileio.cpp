@@ -1,6 +1,7 @@
 #include "dcfileio.h"
+#include "pcdcFile.h"
 
-EXPORT volatile int gFileIOStatus;
+EXPORT volatile i32 gFileIOStatus;
 
 // @SMALLTODO
 void DebugPrintfX(char *,...)
@@ -8,10 +9,16 @@ void DebugPrintfX(char *,...)
     printf("DebugPrintfX(char *,...)");
 }
 
-// @SMALLTODO
-void FileIO_FileExists(char const *)
+// @Ok
+// @Matching
+u8 FileIO_FileExists(const char* pFileName)
 {
-    printf("FileIO_FileExists(char const *)");
+	print_if_false(gFileIOStatus == 0, "Previous file not finished loading");
+	HANDLE handle = gdFsOpen(pFileName, 0);
+	if (!handle)
+		return 0;
+	gdFsClose(handle);
+	return 1;
 }
 
 // @SMALLTODO

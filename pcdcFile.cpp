@@ -17,6 +17,13 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
+// @SMALLTODO
+HANDLE gdFsOpen(const char*, i32)
+{
+	printf("HANDLE gdFsOpen(const char*)");
+	return reinterpret_cast<HANDLE>(0x21082024);
+}
+
 // @Ok
 // @Matching
 void gdFsClose(HANDLE handle)
@@ -126,7 +133,7 @@ INLINE i32 nextFile(void)
 	return -1;
 }
 
-// @SMALLTODO
+// @Ok
 i32 openFilePKR(char * a1,const char* a2)
 {
 	i32 nFile = nextFile();
