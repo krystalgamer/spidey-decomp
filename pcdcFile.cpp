@@ -103,6 +103,8 @@ i32 findFilePKR(
 		char buf[512];
 		if(PKR_GetLastError(buf))
 			error("PKR\t: %s%s - %s\r\n", a1, a2, buf);
+
+		return 0;
 	}
 
 	gOpenFiles[nFile].field_4 = fileInfo.fileOffset;
@@ -125,9 +127,28 @@ INLINE i32 nextFile(void)
 }
 
 // @SMALLTODO
-void openFilePKR(char * a1,const char* a2)
+i32 openFilePKR(char * a1,const char* a2)
 {
-    printf("openFilePKR(char *,char const *)");
+	i32 nFile = nextFile();
+	if (nFile == -1)
+		return 0;
+
+	if (!PKR_ReadFile(
+				gDataPkr,
+				a1,
+				a2,
+				&gOpenFiles[nFile].field_0,
+				&gOpenFiles[nFile].field_8))
+	{
+		char buf[512];
+		if (PKR_GetLastError(buf))
+			error("PKR\t: %s%s - %s\r\n", a1, a2, buf);
+
+		return 0;
+	}
+
+	gOpenFiles[nFile].field_4 = 0;
+	return (nFile + 1) ^ 0xFF;
 }
 
 // @Ok

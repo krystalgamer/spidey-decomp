@@ -14,6 +14,13 @@ LIBPKR_HANDLE* gDataPkr;
 // too much hassle for little gain
 
 // @MEDIUMTODO
+u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, void**, i32*)
+{
+	printf("u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, i32*, i32*)");
+	return (u8)0x21082024;
+}
+
+// @MEDIUMTODO
 u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)
 {
 	printf("u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)");

@@ -75,6 +75,7 @@ EXPORT u8 PKR_GetLastError(char*);
 EXPORT u8 PKR_LockFile(LIBPKR_HANDLE*);
 EXPORT u8 PKR_Close(LIBPKR_HANDLE*);
 EXPORT u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*);
+EXPORT u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, void**, i32*);
 
 
 EXPORT u8 dirAddToPKR(LIBPKR_HANDLE*, PKR_DIRINFO);
