@@ -84,11 +84,68 @@ u8 PKR_LockFile(LIBPKR_HANDLE* pHandle)
 	return 0;
 }
 
-// @SMALLTODO
-u8 fileAddToPKR(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*)
+// @Ok
+u8 fileAddToPKR(
+		LIBPKR_HANDLE* pHandle,
+		PKR_FILEINFO fileInfo,
+		PKR_DIRINFO* pDirInfo,
+		char* pName)
 {
-	printf("u8 fileAddToPkr(LIBPKR_HANDLE*, PKR_FILEINFO, PKR_DIRINFO*, char*)");
-	return (u8)0x20082024;
+	NODE_FILEINFO* pRes = new NODE_FILEINFO;
+
+	if (!pRes)
+	{
+		PKR_ReportError("fileAddToPKR: Cannot allocate new file node.");
+		return 0;
+	}
+
+	memset(pRes, 0, sizeof(NODE_FILEINFO));
+	memcpy(&pRes->fileInfo, &fileInfo, sizeof(fileInfo));
+
+	if (pName && strlen(pName))
+	{
+		strcpy(pRes->name, pName);
+		pRes->field_13C |= 1u;
+	}
+
+	if (!pHandle->pFileInfo)
+	{
+		pHandle->pFileInfo = pRes;
+		pRes->mNext = 0;
+		pRes->mPrev = 0;
+	}
+	else
+	{
+		PKR_DIRINFO dirInfo;
+		memcpy(&dirInfo, pDirInfo, sizeof(dirInfo));
+		NODE_FILEINFO* pFileInfo = pHandle->pFileInfo;
+
+		for (u32 i = 0; i < dirInfo.field_20; i++)
+			pFileInfo = pFileInfo->mNext;
+		for (u32 j = 0; j < dirInfo.numFiles; j++)
+		{
+			if ( !strcmp(pFileInfo->fileInfo.name, pRes->fileInfo.name) )
+			{
+				PKR_ReportError("fileAddToPKR: File Already added.");
+				delete pRes;
+				return 0;
+			}
+			pFileInfo = pFileInfo->mNext;
+		}
+		NODE_FILEINFO* k;
+		for (
+				k = pHandle->pFileInfo;
+				k->mNext;
+				k = k->mNext );
+
+		k->mNext = pRes;
+		pRes->mPrev = k;
+		pRes->mNext = 0;
+	}
+
+	pHandle->mFooter.numFiles++;
+	pDirInfo->numFiles++;
+	return 1;
 }
 
 // @Ok
@@ -401,4 +458,13 @@ void validate_PKR_HEADER(void)
 
 void validate_NODE_FILEINFO(void)
 {
+	VALIDATE_SIZE(NODE_FILEINFO, 0x14C);
+
+	VALIDATE(NODE_FILEINFO, fileInfo, 0x0);
+	VALIDATE(NODE_FILEINFO, pDirInfo, 0x34);
+	VALIDATE(NODE_FILEINFO, name, 0x38);
+
+	VALIDATE(NODE_FILEINFO, field_13C, 0x13C);
+	VALIDATE(NODE_FILEINFO, mNext, 0x144);
+	VALIDATE(NODE_FILEINFO, mPrev, 0x148);
 }

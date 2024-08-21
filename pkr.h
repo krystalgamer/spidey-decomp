@@ -26,8 +26,8 @@ struct PKR_DIRINFO
 {
 	char name[0x20];
 
-	i32 field_20;
-	i32 numFiles;
+	u32 field_20;
+	u32 numFiles;
 };
 
 struct NODE_DIRINFO
@@ -39,6 +39,17 @@ struct NODE_DIRINFO
 
 struct NODE_FILEINFO
 {
+	PKR_FILEINFO fileInfo;
+	PKR_DIRINFO* pDirInfo;
+	char name[1];
+
+	u8 padAfter38[0x13C-0x38-1];
+	i32 field_13C;
+	u8 padAfter13C[4];
+
+
+	NODE_FILEINFO* mNext;
+	NODE_FILEINFO* mPrev;
 };
 
 struct PKR_HEADER
