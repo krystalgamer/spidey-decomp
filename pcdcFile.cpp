@@ -17,6 +17,20 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
+INLINE void readFilePKR(i32, u8*, i32)
+{
+}
+
+// @Ok
+i32 gdFsRead(
+		i32 a1,
+		i32 a2,
+		u8* a3)
+{
+	readFilePKR(a1, a3, a2 << 11);
+	return 0;
+}
+
 // @Ok
 i32 gdFsGetFileSize(i32 a1, i32* pSize)
 {
