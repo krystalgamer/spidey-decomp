@@ -33,10 +33,22 @@ void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)
 	printf("void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)");
 }
 
-// @SMALLTODO
-void dirRemoveFromPKR(LIBPKR_HANDLE*, NODE_DIRINFO*)
+// @Ok
+void dirRemoveFromPKR(
+		LIBPKR_HANDLE* pHandle,
+		NODE_DIRINFO* pDirInfo)
 {
-	printf("void dirRemovePKR(LIBPKR_HANDLE*, NODE_DIRINFO*)");
+	if (pHandle->pDirInfo == pDirInfo)
+		pHandle->pDirInfo = pDirInfo->mNext;
+
+	if (pDirInfo->mPrev)
+		pDirInfo->mPrev->mNext = pDirInfo->mNext;
+
+	if (pDirInfo->mNext)
+		pDirInfo->mNext->mPrev = pDirInfo->mPrev;
+
+	pHandle->mFooter.numDirs--;
+	delete pDirInfo;
 }
 
 // @BIGTODO

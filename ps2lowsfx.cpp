@@ -60,7 +60,7 @@ void SFX_FreeVoice(i32)
     printf("SFX_FreeVoice(i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void SFX_Init(char* pSfxBankName)
 {
 	char buf[56];
