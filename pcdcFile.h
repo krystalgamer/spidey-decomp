@@ -21,9 +21,9 @@ struct SGDOpenFile
 
 EXPORT void closeFilePKR(i32);
 EXPORT void closePKR(void);
-EXPORT void findFilePKR(char *,char const *);
+EXPORT i32 findFilePKR(char *,const char *);
 EXPORT i32 nextFile(void);
-EXPORT void openFilePKR(char *,char const *);
+EXPORT void openFilePKR(char *,const char*);
 EXPORT void openPKR(void);
 EXPORT void readFilePKR(i32,char *,i32);
 EXPORT void seekFilePKR(i32,i32,i32);

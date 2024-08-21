@@ -13,6 +13,13 @@ LIBPKR_HANDLE* gDataPkr;
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
+// @MEDIUMTODO
+u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)
+{
+	printf("u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)");
+	return (u8)0x21082024;
+}
+
 // @SMALLTODO
 void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)
 {

@@ -88,10 +88,25 @@ void closePKR(void)
 	PCMOVIE_ClosePKR();
 }
 
-// @SMALLTODO
-void findFilePKR(char *,char const *)
+// @Ok
+i32 findFilePKR(
+		char* a1,
+		const char* a2)
 {
-    printf("findFilePKR(char *,char const *)");
+	i32 nFile = nextFile();
+	if (nFile == -1)
+		return 0;
+
+	PKR_FILEINFO fileInfo;
+	if (!PKR_GetFileInfo(gDataPkr, a1, a2, &fileInfo))
+	{
+		char buf[512];
+		if(PKR_GetLastError(buf))
+			error("PKR\t: %s%s - %s\r\n", a1, a2, buf);
+	}
+
+	gOpenFiles[nFile].field_4 = fileInfo.fileOffset;
+	return (nFile + 1) ^ 0xFF;
 }
 
 // @Ok
@@ -110,7 +125,7 @@ INLINE i32 nextFile(void)
 }
 
 // @SMALLTODO
-void openFilePKR(char *,char const *)
+void openFilePKR(char * a1,const char* a2)
 {
     printf("openFilePKR(char *,char const *)");
 }
