@@ -77,6 +77,7 @@
 #include "dcshellutils.h"
 #include "pkr.h"
 #include "pcdcFile.h"
+#include "ps2lowsfx.h"
 
 extern int FAIL_VALIDATION;
 
@@ -417,6 +418,7 @@ i32 validate(void)
 	validate_PKR_HEADER();
 	validate_SGDOpenFile();
 	validate_NODE_FILEINFO();
+	validate_SSFXBank();
 
 	puts("[*] Validation done!");
 
