@@ -1,10 +1,27 @@
 #include "ps2lowsfx.h"
+#include <cstring>
 
 
-// @SMALLTODO
-void CopyFilenameDefaultExtension(char *,i32,const char*,const char *)
+EXPORT SSFXBank gSoundBank;
+// @FIXME: get proper size
+EXPORT u32 gSfxArrayOne[256];
+
+// @FIXME: get proper size
+EXPORT u16 gSfxArraAliasyOne[256];
+
+// @Ok
+INLINE void CopyFilenameDefaultExtension(
+		char* dst,
+		i32 len,
+		const char* pFileName,
+		const char* pExtension)
 {
-    printf("CopyFilenameDefaultExtension(char *,i32,char const *,char const *)");
+	strncpy(dst, pFileName, len);
+
+	char *dot = strrchr(dst, 46);
+	if ( dot )
+		*dot = 0;
+	strcat(dst, pExtension);
 }
 
 // @SMALLTODO
@@ -44,9 +61,16 @@ void SFX_FreeVoice(i32)
 }
 
 // @SMALLTODO
-void SFX_Init(char *)
+void SFX_Init(char* pSfxBankName)
 {
-    printf("SFX_Init(char *)");
+	char buf[56];
+	print_if_false(pSfxBankName && *pSfxBankName, "bad sfx bank filename");
+
+	CopyFilenameDefaultExtension(buf, sizeof(buf), pSfxBankName, ".kat");
+	SFX_LoadBank(buf, &gSoundBank);
+	CopyFilenameDefaultExtension(buf, sizeof(buf), pSfxBankName, ".sfx");
+
+	SFX_ParseSFXFile(buf, gSfxArrayOne, gSfxArraAliasyOne, 64, 0);
 }
 
 // @SMALLTODO
@@ -155,6 +179,7 @@ i32 SFX_PlayPos(u32, CVector*, i32)
 }
 
 static unsigned char gSfxStatus;
+
 // @NotOk
 // Global
 void SFX_LevelStart(void)
