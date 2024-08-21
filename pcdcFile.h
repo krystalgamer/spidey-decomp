@@ -22,7 +22,7 @@ struct SGDOpenFile
 EXPORT void closeFilePKR(i32);
 EXPORT void closePKR(void);
 EXPORT void findFilePKR(char *,char const *);
-EXPORT void nextFile(void);
+EXPORT i32 nextFile(void);
 EXPORT void openFilePKR(char *,char const *);
 EXPORT void openPKR(void);
 EXPORT void readFilePKR(i32,char *,i32);

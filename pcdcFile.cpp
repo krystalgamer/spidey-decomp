@@ -12,8 +12,8 @@ EXPORT TCHAR gCurrentDir[260];
 
 EXPORT char gFsBase[260];
 
-// @FIXME: real size
-EXPORT SGDOpenFile gOpenFiles[0xFF];
+const i32 MAX_OPEN_FILE_COUNT = 5;
+EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
@@ -94,10 +94,19 @@ void findFilePKR(char *,char const *)
     printf("findFilePKR(char *,char const *)");
 }
 
-// @SMALLTODO
-void nextFile(void)
+// @Ok
+INLINE i32 nextFile(void)
 {
-    printf("nextFile(void)");
+	for (i32 i = 0;
+			i < MAX_OPEN_FILE_COUNT;
+			i++)
+	{
+		if (gOpenFiles[i].field_0)
+			return i;
+	}
+
+	error("PKR\t: TOO MANY OPEN FILES\r\n");
+	return -1;
 }
 
 // @SMALLTODO
