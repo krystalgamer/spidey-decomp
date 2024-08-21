@@ -17,6 +17,17 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
+// @Ok
+i32 gdFsGetFileSize(i32 a1, i32* pSize)
+{
+	i32 curPos = tellFilePKR(a1);
+	seekFilePKR(a1, 0, 2);
+
+	*pSize = tellFilePKR(a1);
+	seekFilePKR(a1, curPos, 0);
+	return 1;
+}
+
 // @SMALLTODO
 HANDLE gdFsOpen(const char*, i32)
 {
@@ -191,14 +202,35 @@ void readFilePKR(i32,char *,i32)
     printf("readFilePKR(i32,char *,i32)");
 }
 
-// @SMALLTODO
-void seekFilePKR(i32,i32,i32)
+// @Ok
+INLINE i32 seekFilePKR(
+		i32 a1,
+		i32 seekOffset,
+		i32 seekType)
 {
-    printf("seekFilePKR(i32,i32,i32)");
+	i32 index = (a1 ^ 0xFF) - 1;
+
+	if (!gOpenFiles[index].field_0)
+		return 0;
+
+	switch (seekType)
+	{
+		case 0:
+			gOpenFiles[index].field_4 = seekOffset;
+			break;
+		case 1:
+			gOpenFiles[index].field_4 += seekOffset;
+			break;
+		case 2:
+			gOpenFiles[index].field_4 = gOpenFiles[index].field_8 - seekOffset;
+			break;
+	}
+
+	return gOpenFiles[index].field_4;
 }
 
 // @Ok
-i32 tellFilePKR(i32 a1)
+INLINE i32 tellFilePKR(i32 a1)
 {
 	return gOpenFiles[(a1 ^ 0xFF) -1].field_4;
 }

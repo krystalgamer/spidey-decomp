@@ -26,12 +26,12 @@ EXPORT i32 nextFile(void);
 EXPORT i32 openFilePKR(char *,const char*);
 EXPORT void openPKR(void);
 EXPORT void readFilePKR(i32,char *,i32);
-EXPORT void seekFilePKR(i32,i32,i32);
+EXPORT i32 seekFilePKR(i32,i32,i32);
 EXPORT i32 tellFilePKR(i32);
 
 EXPORT void gdFsClose(HANDLE);
 EXPORT HANDLE gdFsOpen(const char*, i32);
-
+EXPORT i32 gdFsGetFileSize(i32, i32*);
 EXPORT i32 gdFsInit(void);
 
 void validate_SGDOpenFile(void);
