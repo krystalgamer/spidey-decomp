@@ -27,10 +27,20 @@ u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)
 	return (u8)0x21082024;
 }
 
-// @SMALLTODO
-void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)
+// @Ok
+void fileRemoveFromPKR(
+		LIBPKR_HANDLE* pHandle,
+		NODE_FILEINFO* pNodeFile)
 {
-	printf("void fileRemoveFromPKR(LIBPKR_HANDLE*, NODE_FILEINFO*)");
+	if (pHandle->pFileInfo == pNodeFile)
+		pHandle->pFileInfo = pNodeFile->mNext;
+	if (pNodeFile->mPrev)
+		pNodeFile->mPrev->mNext = pNodeFile->mNext;
+	if (pNodeFile->mNext)
+		pNodeFile->mNext->mPrev = pNodeFile->mPrev;
+	pHandle->mFooter.numFiles--;
+	pNodeFile->pDirInfo->numFiles--;
+	delete pNodeFile;
 }
 
 // @Ok
