@@ -17,11 +17,30 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
-INLINE void readFilePKR(i32, u8*, i32)
+// @Ok
+INLINE i32 readFilePKR(
+		i32 id,
+		u8* pBuf,
+		i32 size)
 {
+
+	i32 index = (id ^ 0xFF) - 1;
+	if (!gOpenFiles[index].mBuf)
+		return 0;
+
+	i32 mOffset = gOpenFiles[index].mOffset;
+	i32 mEnd = gOpenFiles[index].mEnd;
+	if (mOffset + size > mEnd)
+		size = mEnd - mOffset;
+
+	memcpy(pBuf, &gOpenFiles[index].mBuf[mOffset], size);
+	gOpenFiles[index].mOffset += size;
+	return size;
+
 }
 
 // @Ok
+// @Matching
 i32 gdFsRead(
 		i32 a1,
 		i32 a2,
@@ -169,7 +188,7 @@ i32 openFilePKR(char * a1,const char* a2)
 				gDataPkr,
 				a1,
 				a2,
-				&gOpenFiles[nFile].mBuf,
+				reinterpret_cast<void**>(&gOpenFiles[nFile].mBuf),
 				&gOpenFiles[nFile].mEnd))
 	{
 		char buf[512];
@@ -208,12 +227,6 @@ INLINE void openPKR(void)
 	{
 		DXERR_printf("PKR\t: PKR %s already open\r\n", gDataPkr->name);
 	}
-}
-
-// @SMALLTODO
-void readFilePKR(i32,char *,i32)
-{
-    printf("readFilePKR(i32,char *,i32)");
 }
 
 // @Ok
