@@ -59,10 +59,11 @@ void PCINPUT_ClearKeyState(u8 a1)
 	DXINPUT_SetKeyState(a1, 0);
 }
 
-// @SMALLTODO
-void PCINPUT_ClearMouseState(u8)
+// @NotOk
+// re-check couldn't find it
+void PCINPUT_ClearMouseState(u8 a1)
 {
-    printf("PCINPUT_ClearMouseState(u8)");
+	DXINPUT_SetMouseButtonState(a1, 0);
 }
 
 // @SMALLTODO
