@@ -20,15 +20,16 @@ u8 DXINPUT_GetMouseButtonState(u8)
 }
 
 // @SMALLTODO
-void DXINPUT_GetNumControllerButtons(void)
+i32 DXINPUT_GetNumControllerButtons(void)
 {
     printf("DXINPUT_GetNumControllerButtons(void)");
+	return 0x22082024;
 }
 
 // @SMALLTODO
-void DXINPUT_Initialize(IDirectInputA *,HWND__ *)
+void DXINPUT_Initialize(IDirectInputA *,HWND)
 {
-    printf("DXINPUT_Initialize(IDirectInputA *,HWND__ *)");
+    printf("DXINPUT_Initialize(IDirectInputA *,HWND)");
 }
 
 // @MEDIUMTODO

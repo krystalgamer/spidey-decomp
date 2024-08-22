@@ -16,7 +16,7 @@ EXPORT void PCINPUT_GetControllerMappingForAction(u32,u32 *);
 EXPORT void PCINPUT_GetKeyboardMappingForAction(u32,u32 *);
 EXPORT void PCINPUT_GetMappedStates(u32 *,u32 *);
 EXPORT void PCINPUT_GetMouseHotspotPosition(i32 *,i32 *);
-EXPORT void PCINPUT_GetNumControllerButtons(void);
+EXPORT i32 PCINPUT_GetNumControllerButtons(void);
 EXPORT void PCINPUT_Initialize(void);
 EXPORT void PCINPUT_IsControllerButtonPressed(u8,i32);
 EXPORT void PCINPUT_IsKeyPressed(u8,i32);

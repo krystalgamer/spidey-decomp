@@ -96,10 +96,10 @@ void PCINPUT_GetMouseHotspotPosition(i32 *,i32 *)
     printf("PCINPUT_GetMouseHotspotPosition(i32 *,i32 *)");
 }
 
-// @SMALLTODO
-void PCINPUT_GetNumControllerButtons(void)
+// @Ok
+i32 PCINPUT_GetNumControllerButtons(void)
 {
-    printf("PCINPUT_GetNumControllerButtons(void)");
+	return DXINPUT_GetNumControllerButtons();
 }
 
 // @SMALLTODO
