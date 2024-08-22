@@ -18,6 +18,7 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 EXPORT HANDLE gOpenFile;
 
 // @Ok
+// @Matching
 void gdFsFinish(void)
 {
 	closePKR();
@@ -68,11 +69,57 @@ i32 gdFsGetFileSize(i32 a1, i32* pSize)
 	return 1;
 }
 
-// @SMALLTODO
-HANDLE gdFsOpen(const char*, i32)
+// @NotOk
+// validate later :P
+HANDLE gdFsOpen(
+		const char* pFileName,
+		i32)
 {
-	printf("HANDLE gdFsOpen(const char*)");
-	return reinterpret_cast<HANDLE>(0x21082024);
+	char buf[512];
+	strcpy(buf, gFsBase);
+	strcat(buf, pFileName);
+
+	if (!strchr(pFileName, '\\'))
+		return reinterpret_cast<HANDLE>(openFilePKR(gFsBase, pFileName));
+
+	char v16[32];
+	strcpy(v16, pFileName);
+
+	char localName[32];
+	strcpy(localName, strchr(pFileName, '\\') + 1);
+	strchr(v16, '\\')[1] = 0;
+
+	char v15[32];
+	strcpy(v15, gFsBase);
+	strcat(v15, v16);
+	if (!strstr(localName, ".bik"))
+		return reinterpret_cast<HANDLE>(openFilePKR(v15, localName));
+
+	char FileName[512];
+	strcpy(FileName, gDataPkr->name);
+
+	i32 id = findFilePKR(v15, localName);
+	if ( !id )
+		return 0;
+
+	PKR_UnlockFile(gDataPkr);
+
+#if _WIN32
+	gOpenFile = CreateFileA(FileName, GENERIC_READ, 1, 0, 3, 1, 0);
+#else
+	gOpenFile = -1;
+#endif
+	if (gOpenFile == INVALID_HANDLE_VALUE)
+	{
+		PKR_LockFile(gDataPkr);
+		gOpenFile = 0;
+		return 0;
+	}
+
+#if _WIN32
+	SetFilePointer(gOpenFile, gOpenFiles[(id ^ 0xFF) - 1].mOffset, 0, 0);
+#endif
+	return gOpenFile;
 }
 
 // @Ok
@@ -145,7 +192,7 @@ INLINE void closePKR(void)
 }
 
 // @Ok
-i32 findFilePKR(
+INLINE i32 findFilePKR(
 		char* a1,
 		const char* a2)
 {
@@ -183,7 +230,7 @@ INLINE i32 nextFile(void)
 }
 
 // @Ok
-i32 openFilePKR(char * a1,const char* a2)
+INLINE i32 openFilePKR(char * a1,const char* a2)
 {
 	i32 nFile = nextFile();
 	if (nFile == -1)
@@ -264,7 +311,7 @@ INLINE i32 seekFilePKR(
 // @Ok
 INLINE i32 tellFilePKR(i32 a1)
 {
-	return gOpenFiles[(a1 ^ 0xFF) -1].mOffset;
+	return gOpenFiles[(a1 ^ 0xFF) - 1].mOffset;
 }
 
 void validate_SGDOpenFile(void)

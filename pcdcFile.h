@@ -9,6 +9,7 @@
 #include <windows.h>
 #else
 typedef void* HANDLE;
+#define INVALID_HANDLE_VALUE (-1)
 #endif
 
 
