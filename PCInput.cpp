@@ -118,10 +118,14 @@ void PCINPUT_IsKeyPressed(u8,i32)
     printf("PCINPUT_IsKeyPressed(u8,i32)");
 }
 
-// @SMALLTODO
-void PCINPUT_IsMouseButtonPressed(u8,i32)
+// @Ok
+// @Matching
+i32 PCINPUT_IsMouseButtonPressed(u8 a1, i32 a2)
 {
-    printf("PCINPUT_IsMouseButtonPressed(u8,i32)");
+	if ( a2 )
+		return DXINPUT_GetMouseButtonState(a1) == -1;
+	else
+		return DXINPUT_GetMouseButtonState(a1) & 0x7F;
 }
 
 // @Ok
