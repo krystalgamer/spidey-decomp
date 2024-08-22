@@ -52,10 +52,11 @@ void PCINPUT_FreezeControllerAxes(void)
 	gControllerAxesRelatedTwo = -1;
 }
 
-// @SMALLTODO
-void PCINPUT_ClearKeyState(u8)
+// @Ok
+// @Matching
+void PCINPUT_ClearKeyState(u8 a1)
 {
-    printf("PCINPUT_ClearKeyState(u8)");
+	DXINPUT_SetKeyState(a1, 0);
 }
 
 // @SMALLTODO
