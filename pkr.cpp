@@ -13,11 +13,103 @@ LIBPKR_HANDLE* gDataPkr;
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
-// @MEDIUMTODO
-u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, void**, i32*)
+// @Ok
+u8 PKR_ReadFile(
+		LIBPKR_HANDLE* pHandle,
+		const char* pDirName,
+		const char* pFileName,
+		void** ppBuf,
+		i32* pSize)
 {
-	printf("u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, i32*, i32*)");
-	return (u8)0x21082024;
+	PKR_FILEINFO fileInfo;
+	memset(&fileInfo, 0, sizeof(fileInfo));
+
+	fileInfo.uncompressedSize = -1;
+	*ppBuf = 0;
+	*pSize = 0;
+
+	if (!pHandle->mFooter.numFiles)
+	{
+		PKR_ReportError("PKR_ReadFile: There are no files");
+		return 0;
+	}
+
+	NODE_DIRINFO* pNodeDir = pHandle->pDirInfo;
+	for (u32 i = 0; i < pHandle->mFooter.numDirs && strcmpi(pNodeDir->dirInfo.name, pDirName); i++)
+		pNodeDir = pNodeDir->mNext;
+
+	if (!pNodeDir)
+	{
+		PKR_ReportError("PKR_ReadFile: The directory %s is not found", pDirName);
+		return 0;
+	}
+
+	PKR_DIRINFO dirInfo = pNodeDir->dirInfo;
+	if (!dirInfo.numFiles)
+	{
+		PKR_ReportError("PKR_ReadFile: There are no files in %s", dirInfo.name);
+		return 0;
+	}
+
+	if (dirInfo.numFiles + dirInfo.field_20 > pHandle->mFooter.numFiles)
+	{
+		PKR_ReportError("PKR_ReadFile: Number of files in dir %s, %i, is too many", pDirName, dirInfo.numFiles);
+		return 0;
+	}
+
+	NODE_FILEINFO* pFileInfo = pHandle->pFileInfo;
+	for (u32 j = 0; j < dirInfo.field_20; j++ )
+		pFileInfo = pFileInfo->mNext;
+
+	for (u32 k = 0; k < dirInfo.numFiles; k++)
+	{
+		if ( !strcmpi(pFileName, pFileInfo->fileInfo.name) )
+		{
+			fileInfo = pFileInfo->fileInfo;
+			break;
+		}
+
+		pFileInfo = pFileInfo->mNext;
+	}
+
+	if (fileInfo.uncompressedSize == -1)
+	{
+		PKR_ReportError("PKR_ReadFile: File %s not found in dir %s", pFileName, pDirName);
+		return 0;
+	}
+
+	if(!fileInfo.compressedSize)
+	{
+		PKR_ReportError("PKR_ReadFile: File has no size, cannot verify");
+		return 0;
+	}
+
+	u8* pBuf = new u8[fileInfo.compressedSize];
+	if(!pBuf)
+	{
+		PKR_ReportError("PKR_ReadFile: Not enough memory");
+		return 0;
+	}
+
+	fseek(pHandle->fp, fileInfo.fileOffset, 0);
+	if (fread(pBuf, fileInfo.compressedSize, 1, pHandle->fp) != 1)
+	{
+		delete[] pBuf;
+		PKR_ReportError("PKR_ReadFile: Error reading file %s\\%s", pDirName, pFileName);
+		return 0;
+	}
+
+	pBuf = PKRComp_DecompressFile(&fileInfo, pBuf, 1);
+	if (!fileCRCCheck(pBuf, fileInfo.uncompressedSize, fileInfo.crc))
+	{
+		delete[] pBuf;
+		return 0;
+	}
+
+	*ppBuf = pBuf;
+	*pSize = fileInfo.uncompressedSize;
+
+	return 1;
 }
 
 // @Ok
