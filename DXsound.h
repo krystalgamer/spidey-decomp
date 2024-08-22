@@ -24,7 +24,7 @@ typedef void* DIDEVICEINSTANCEA;
 
 EXPORT void DXINPUT_GetControllerButtonState(u8);
 EXPORT void DXINPUT_GetKeyState(u8);
-EXPORT void DXINPUT_GetMouseButtonState(u8);
+EXPORT u8 DXINPUT_GetMouseButtonState(u8);
 EXPORT void DXINPUT_GetNumControllerButtons(void);
 EXPORT void DXINPUT_Initialize(IDirectInputA *,HWND);
 EXPORT void DXINPUT_PollController(i32 *,i32 *,i32 *);

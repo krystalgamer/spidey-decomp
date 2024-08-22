@@ -1,5 +1,6 @@
 #include "PCInput.h"
 #include "SpideyDX.h"
+#include "DXsound.h"
 
 static unsigned char gMouseStatus;
 
@@ -123,10 +124,11 @@ void PCINPUT_IsMouseButtonPressed(u8,i32)
     printf("PCINPUT_IsMouseButtonPressed(u8,i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 PCINPUT_IsMouseButtonReleased(u8 button)
 {
-	return DXINPUT_GetMouseButtonState(a1) == 0x80;
+	return DXINPUT_GetMouseButtonState(button) == 0x80;
 }
 
 // @Ok

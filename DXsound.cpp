@@ -13,9 +13,10 @@ void DXINPUT_GetKeyState(u8)
 }
 
 // @SMALLTODO
-void DXINPUT_GetMouseButtonState(u8)
+u8 DXINPUT_GetMouseButtonState(u8)
 {
-    printf("DXINPUT_GetMouseButtonState(u8)");
+	printf("u8 DXINPUT_GetMouseButtonState(u8)");
+	return (u8)0x22082024;
 }
 
 // @SMALLTODO
