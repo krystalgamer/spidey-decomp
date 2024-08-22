@@ -10,6 +10,10 @@
 
 LIBPKR_HANDLE* gDataPkr;
 
+#ifndef _WIN32
+#define strcmpi strcasecmp
+#endif
+
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 

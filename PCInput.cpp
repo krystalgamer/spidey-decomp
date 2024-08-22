@@ -124,9 +124,9 @@ void PCINPUT_IsMouseButtonPressed(u8,i32)
 }
 
 // @SMALLTODO
-void PCINPUT_IsMouseButtonReleased(u8)
+i32 PCINPUT_IsMouseButtonReleased(u8 button)
 {
-    printf("PCINPUT_IsMouseButtonReleased(u8)");
+	return DXINPUT_GetMouseButtonState(a1) == 0x80;
 }
 
 // @Ok
