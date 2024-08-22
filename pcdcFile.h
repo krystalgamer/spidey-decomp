@@ -35,6 +35,7 @@ EXPORT HANDLE gdFsOpen(const char*, i32);
 EXPORT i32 gdFsGetFileSize(i32, i32*);
 EXPORT i32 gdFsInit(void);
 EXPORT i32 gdFsRead(i32, i32, u8*);
+EXPORT void gdFsFinish(void);
 
 void validate_SGDOpenFile(void);
 

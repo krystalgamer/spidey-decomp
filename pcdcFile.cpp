@@ -18,6 +18,13 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 EXPORT HANDLE gOpenFile;
 
 // @Ok
+void gdFsFinish(void)
+{
+	closePKR();
+	PCMOVIE_ClosePKR();
+}
+
+// @Ok
 INLINE i32 readFilePKR(
 		i32 id,
 		u8* pBuf,
@@ -117,7 +124,7 @@ INLINE void closeFilePKR(i32 id)
 }
 
 // @Ok
-void closePKR(void)
+INLINE void closePKR(void)
 {
 	char v0[512]; // [esp+0h] [ebp-200h] BYREF
 
@@ -135,8 +142,6 @@ void closePKR(void)
 	{
 		error("PKR\t: No PKR currently open.\r\n");
 	}
-
-	PCMOVIE_ClosePKR();
 }
 
 // @Ok
