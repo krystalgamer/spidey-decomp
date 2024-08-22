@@ -107,7 +107,7 @@ HANDLE gdFsOpen(
 #if _WIN32
 	gOpenFile = CreateFileA(FileName, GENERIC_READ, 1, 0, 3, 1, 0);
 #else
-	gOpenFile = -1;
+	gOpenFile = INVALID_HANDLE_VALUE;
 #endif
 	if (gOpenFile == INVALID_HANDLE_VALUE)
 	{

@@ -8,8 +8,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
-typedef void* HANDLE;
-#define INVALID_HANDLE_VALUE (-1)
+typedef i32* HANDLE;
+#define INVALID_HANDLE_VALUE ((HANDLE)(-1))
 #endif
 
 
