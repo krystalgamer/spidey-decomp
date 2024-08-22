@@ -1,6 +1,18 @@
 #include "PCInput.h"
+#include "SpideyDX.h"
 
 static unsigned char gMouseStatus;
+
+EXPORT i32 gMouseBoundOne;
+EXPORT i32 gMouseBoundTwo;
+EXPORT i32 gMouseBoundThree;
+EXPORT i32 gMouseBoundFour;
+
+EXPORT i32 gMouseX;
+EXPORT i32 gMouseY;
+
+EXPORT i32 gMouseHotSpotX;
+EXPORT i32 gMouseHotSpotY;
 
 // @NotOk
 // Globals
@@ -8,11 +20,6 @@ int PCINPUT_GetMouseStatus(void)
 {
 	return gMouseStatus;
 }
-
-static int gMouseBoundOne;
-static int gMouseBoundTwo;
-static int gMouseBoundThree;
-static int gMouseBoundFour;
 
 
 // @NotOk
@@ -24,9 +31,6 @@ void PCINPUT_SetMouseBounds(int a1, int a2, int a3, int a4)
 	gMouseBoundThree = a3;
 	gMouseBoundFour = a4;
 }
-
-static int gMouseX;
-static int gMouseY;
 
 // @NotOk
 // Globals
@@ -125,10 +129,18 @@ void PCINPUT_IsMouseButtonReleased(u8)
     printf("PCINPUT_IsMouseButtonReleased(u8)");
 }
 
-// @SMALLTODO
-void PCINPUT_IsMouseOver(i32,i32,i32,i32)
+// @Ok
+// @Matching
+i32 PCINPUT_IsMouseOver(
+		i32 a1,
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("PCINPUT_IsMouseOver(i32,i32,i32,i32)");
+	i32 mouseX = gMouseX + gMouseHotSpotX * gGameResolutionX / 640;
+	i32 mouseY = gMouseY + gMouseHotSpotY * gGameResolutionY / 480;
+
+	return mouseX > a1 && mouseX < a3 && mouseY > a2 && mouseY < a4;
 }
 
 // @SMALLTODO
