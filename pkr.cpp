@@ -20,11 +20,69 @@ u8 PKR_ReadFile(LIBPKR_HANDLE*, const char*, const char*, void**, i32*)
 	return (u8)0x21082024;
 }
 
-// @MEDIUMTODO
-u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)
+// @Ok
+u8 PKR_GetFileInfo(
+		LIBPKR_HANDLE* pHandle,
+		const char* pDirName,
+		const char* pFileName,
+		PKR_FILEINFO* pFileInfo)
 {
-	printf("u8 PKR_GetFileInfo(LIBPKR_HANDLE*, const char*, const char*, PKR_FILEINFO*)");
-	return (u8)0x21082024;
+	memset(pFileInfo, 0, sizeof(PKR_FILEINFO));
+	pFileInfo->uncompressedSize = -1;
+
+	if (!pHandle->mFooter.numFiles)
+	{
+		PKR_ReportError("PKR_GetFileInfo: There are no files");
+		return 0;
+	}
+
+	NODE_DIRINFO* pCurNodeDir = pHandle->pDirInfo;
+	for (u32 i = 0; i < pHandle->mFooter.numDirs && strcmpi(pCurNodeDir->dirInfo.name, pDirName); i++ )
+		pCurNodeDir = pCurNodeDir->mNext;
+
+	if (!pCurNodeDir)
+	{
+		PKR_ReportError("PKR_GetFileInfo: The directory %s is not found", pDirName);
+		return 0;
+	}
+
+	PKR_DIRINFO dirInfo;
+	memcpy(&dirInfo, &pCurNodeDir->dirInfo, sizeof(dirInfo));
+
+	if (!dirInfo.numFiles)
+	{
+		PKR_ReportError("PKR_GetFileInfo: There are no files in %s", dirInfo.name);
+		return 0;
+	}
+
+	 if (dirInfo.numFiles + dirInfo.field_20 > pHandle->mFooter.numFiles)
+	 {
+		PKR_ReportError("PKR_GetFileInfo: Number of files in dir %s, %i, is too many", pDirName, dirInfo.numFiles);
+		return 0;
+	 }
+
+	NODE_FILEINFO* pCurNodeFile = pHandle->pFileInfo;
+	for (u32 j = 0; j < dirInfo.field_20; j++ )
+		pCurNodeFile = pCurNodeFile->mNext;
+
+	for (u32 k = 0; k < dirInfo.numFiles; k++ )
+	{
+		if ( !strcmpi(pFileName, pCurNodeFile->fileInfo.name) )
+		{
+			memcpy(pFileInfo, pCurNodeFile, sizeof(PKR_FILEINFO));
+			break;
+		}
+
+		pCurNodeFile = pCurNodeFile->mNext;
+	}
+
+	if (pFileInfo->uncompressedSize == -1)
+	{
+		PKR_ReportError("PKR_GetFileInfo: File %s not found in dir %s", pFileName, pDirName);
+		return 0;
+	}
+
+	return 1;
 }
 
 // @Ok

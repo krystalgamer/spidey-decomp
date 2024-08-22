@@ -19,7 +19,7 @@ struct PKR_FOOTER
 {
 	i32 field_0;
 	u32 numDirs;
-	i32 numFiles;
+	u32 numFiles;
 };
 
 struct PKR_DIRINFO
