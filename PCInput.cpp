@@ -231,10 +231,21 @@ void PCINPUT_SetControllerMappingForAction(u32,u32)
     printf("PCINPUT_SetControllerMappingForAction(u32,u32)");
 }
 
-// @SMALLTODO
-void PCINPUT_SetKeyboardMappingForAction(u32,u32)
+// @Ok
+void PCINPUT_SetKeyboardMappingForAction(u32 a1, u32 a2)
 {
-    printf("PCINPUT_SetKeyboardMappingForAction(u32,u32)");
+	SKeyboardMapping* mappings = reinterpret_cast<SKeyboardMapping*>(gKeyboardMappings);
+	for(i32 i = 0;; i++)
+	{
+		if (mappings[i].field_0 == 0x8000)
+			break;
+
+		if (a1 == mappings[i].field_0)
+		{
+			mappings[i].field_4 = a2;
+			return;
+		}
+	}
 }
 
 // @Ok
