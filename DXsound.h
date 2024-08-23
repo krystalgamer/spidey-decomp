@@ -26,7 +26,7 @@ typedef void* IDirectDrawSurface7;
 typedef void* DIDEVICEINSTANCEA;
 
 EXPORT void DXINPUT_GetControllerButtonState(u8);
-EXPORT void DXINPUT_GetKeyState(u8);
+EXPORT u8 DXINPUT_GetKeyState(u8);
 EXPORT u8 DXINPUT_GetMouseButtonState(u8);
 EXPORT i32 DXINPUT_GetNumControllerButtons(void);
 EXPORT void DXINPUT_Initialize(IDirectInputA *,HWND);

@@ -7,9 +7,10 @@ void DXINPUT_GetControllerButtonState(u8)
 }
 
 // @SMALLTODO
-void DXINPUT_GetKeyState(u8)
+u8 DXINPUT_GetKeyState(u8)
 {
     printf("DXINPUT_GetKeyState(u8)");
+	return (u8)0x23082024;
 }
 
 // @SMALLTODO

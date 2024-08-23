@@ -165,10 +165,14 @@ void PCINPUT_IsControllerButtonPressed(u8,i32)
     printf("PCINPUT_IsControllerButtonPressed(u8,i32)");
 }
 
-// @SMALLTODO
-void PCINPUT_IsKeyPressed(u8,i32)
+// @Ok
+// @Matching
+i32 PCINPUT_IsKeyPressed(u8 a1, i32 a2)
 {
-    printf("PCINPUT_IsKeyPressed(u8,i32)");
+	if ( a2 )
+		return DXINPUT_GetKeyState(a1) == 255;
+	else
+		return DXINPUT_GetKeyState(a1) & 0x7F;
 }
 
 // @Ok
