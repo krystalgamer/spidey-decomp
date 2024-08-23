@@ -193,10 +193,28 @@ void PCINPUT_SetMouseHotspot(i32,i32)
     printf("PCINPUT_SetMouseHotspot(i32,i32)");
 }
 
-// @SMALLTODO
-void PCINPUT_SetMousePosition(i32,i32)
+// @Ok
+void PCINPUT_SetMousePosition(
+		i32 newMouseX,
+		i32 newMouseY)
 {
-    printf("PCINPUT_SetMousePosition(i32,i32)");
+	i32 adjustedX;
+	i32 adjustedY;
+
+	adjustedX = newMouseX;
+	if ( newMouseX < gMouseBoundOne )
+		adjustedX = gMouseBoundOne;
+	if ( adjustedX > gMouseBoundThree )
+		adjustedX = gMouseBoundThree;
+
+	adjustedY = newMouseY;
+	if ( newMouseY < gMouseBoundTwo )
+		adjustedY = gMouseBoundTwo;
+
+	gMouseX = adjustedX;
+	gMouseY = gMouseBoundFour;
+	if ( adjustedY <= gMouseBoundFour )
+		gMouseY = adjustedY;
 }
 
 // @SMALLTODO
