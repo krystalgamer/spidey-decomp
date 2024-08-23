@@ -187,10 +187,14 @@ void PCINPUT_SetKeyboardMappingForAction(u32,u32)
     printf("PCINPUT_SetKeyboardMappingForAction(u32,u32)");
 }
 
-// @SMALLTODO
-void PCINPUT_SetMouseHotspot(i32,i32)
+// @Ok
+// @Matching
+void PCINPUT_SetMouseHotspot(
+		i32 a1,
+		i32 a2)
 {
-    printf("PCINPUT_SetMouseHotspot(i32,i32)");
+	gMouseHotSpotX = a1;
+	gMouseHotSpotY = a2;
 }
 
 // @Ok
