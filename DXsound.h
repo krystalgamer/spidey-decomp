@@ -30,7 +30,7 @@ EXPORT u8 DXINPUT_GetMouseButtonState(u8);
 EXPORT i32 DXINPUT_GetNumControllerButtons(void);
 EXPORT void DXINPUT_Initialize(IDirectInputA *,HWND);
 EXPORT void DXINPUT_PollController(i32 *,i32 *,i32 *);
-EXPORT void DXINPUT_PollKeyboard(void);
+EXPORT i32 DXINPUT_PollKeyboard(void);
 EXPORT void DXINPUT_PollMouse(i32 *,i32 *);
 EXPORT void DXINPUT_Release(void);
 EXPORT void DXINPUT_SetKeyState(u8,u8);

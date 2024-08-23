@@ -1,6 +1,7 @@
 #include "PCInput.h"
 #include "SpideyDX.h"
 #include "DXsound.h"
+#include "non_win32.h"
 
 #include <cstring>
 
@@ -18,6 +19,8 @@ EXPORT i32 gMouseY;
 
 EXPORT i32 gMouseHotSpotX;
 EXPORT i32 gMouseHotSpotY;
+
+EXPORT u32 gPcInputTickRelated;
 
 EXPORT u8 gDefaultKeyboardMappings[0x70] =
 {
@@ -90,7 +93,7 @@ void PCINPUT_FreezeControllerAxes(void)
 
 // @Ok
 // @Matching
-void PCINPUT_ClearKeyState(u8 a1)
+INLINE void PCINPUT_ClearKeyState(u8 a1)
 {
 	DXINPUT_SetKeyState(a1, 0);
 }
@@ -190,7 +193,7 @@ void PCINPUT_IsControllerButtonPressed(u8,i32)
 
 // @Ok
 // @Matching
-i32 PCINPUT_IsKeyPressed(u8 a1, i32 a2)
+INLINE i32 PCINPUT_IsKeyPressed(u8 a1, i32 a2)
 {
 	if ( a2 )
 		return DXINPUT_GetKeyState(a1) == 255;
@@ -235,10 +238,15 @@ void PCINPUT_PollController(void)
     printf("PCINPUT_PollController(void)");
 }
 
-// @SMALLTODO
-void PCINPUT_PollKeyboard(void)
+// @Ok
+// @Matching
+u8 PCINPUT_PollKeyboard(void)
 {
-    printf("PCINPUT_PollKeyboard(void)");
+	if (DXINPUT_PollKeyboard() < 0)
+		return 0;
+
+	checkDebugKeypress();
+	return 1;
 }
 
 // @SMALLTODO
@@ -341,10 +349,17 @@ void PCINPUT_UpdateMouse(void)
     printf("PCINPUT_UpdateMouse(void)");
 }
 
-// @SMALLTODO
-void checkDebugKeypress(void)
+// @Ok
+// @Matching
+INLINE void checkDebugKeypress(void)
 {
-    printf("checkDebugKeypress(void)");
+	if (GetTickCount() >= gPcInputTickRelated &&
+			PCINPUT_IsKeyPressed(0x43, 0))
+	{
+		DXPOLY_SaveScreen();
+		PCINPUT_ClearKeyState(0x1F);
+		gPcInputTickRelated = GetTickCount() + 500;
+	}
 }
 
 void validate_SKeyboardMapping(void)

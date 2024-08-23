@@ -42,9 +42,10 @@ void DXINPUT_PollController(i32 *,i32 *,i32 *)
 }
 
 // @SMALLTODO
-void DXINPUT_PollKeyboard(void)
+i32 DXINPUT_PollKeyboard(void)
 {
     printf("DXINPUT_PollKeyboard(void)");
+	return 0x23082024;
 }
 
 // @MEDIUMTODO
