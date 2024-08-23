@@ -139,10 +139,12 @@ void PCINPUT_GetMappedStates(u32 *,u32 *)
     printf("PCINPUT_GetMappedStates(u32 *,u32 *)");
 }
 
-// @SMALLTODO
-void PCINPUT_GetMouseHotspotPosition(i32 *,i32 *)
+// @Ok
+// @Matching
+void PCINPUT_GetMouseHotspotPosition(i32* a1, i32* a2)
 {
-    printf("PCINPUT_GetMouseHotspotPosition(i32 *,i32 *)");
+	*a1 = gMouseX + gMouseHotSpotX * gGameResolutionX / 640;
+	*a2 = gMouseY + gMouseHotSpotY * gGameResolutionY / 480;
 }
 
 // @Ok
