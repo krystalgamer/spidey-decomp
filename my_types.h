@@ -48,5 +48,9 @@ typedef int i32;
 #define OVERRIDE
 #endif
 
+#ifndef _WIN32
+typedef i32* HWND;
+#endif
+
 #endif
 

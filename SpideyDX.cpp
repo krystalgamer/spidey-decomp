@@ -14,9 +14,7 @@ i32 gDxResolutionY;
 u8 gMMXSupport;
 u8 g3DAccelator = 1;
 
-#ifdef _WIN32
-EXPORT HWND gHwnd;
-#endif
+HWND gHwnd;
 
 // @Ok
 EXPORT u8 isMMX(void)

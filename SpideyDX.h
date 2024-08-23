@@ -43,4 +43,6 @@ EXPORT void parseCommandLine(char *);
 EXPORT i32 WINAPI RealWinMain(HINSTANCE, HINSTANCE, LPSTR, i32);
 #endif
 
+EXPORT extern HWND gHwnd;
+
 #endif

@@ -2,9 +2,11 @@
 #include "SpideyDX.h"
 #include "DXsound.h"
 
+#include <cstring>
+
 #include "validate.h"
 
-static unsigned char gMouseStatus;
+EXPORT u8 gMouseStatus;
 
 EXPORT i32 gMouseBoundOne;
 EXPORT i32 gMouseBoundTwo;
@@ -154,9 +156,30 @@ i32 PCINPUT_GetNumControllerButtons(void)
 }
 
 // @SMALLTODO
-void PCINPUT_Initialize(void)
+u8 PCINPUT_Initialize(void)
 {
-    printf("PCINPUT_Initialize(void)");
+	DXINPUT_Initialize(gDirectInputRelated, gHwnd);
+	if (!DXINPUT_SetupKeyboard((gRenderTest & 1) == 0, 1))
+	{
+		DXERR_printf("A keyboard device could not be set up.\n");
+		return 0;
+	}
+
+	if ((gRenderTest & 0x10) == 0)
+	{
+		if (!DXINPUT_SetupMouse((gRenderTest & 1) == 0))
+		{
+			DXERR_printf("A mouse device could not be set up.\n");
+			return 0;
+		}
+
+		gMouseStatus = 1;
+	}
+
+	if (!DXINPUT_SetupController())
+		DXERR_printf("A game controller device could not be set up.\n");
+
+	return 1;
 }
 
 // @SMALLTODO
