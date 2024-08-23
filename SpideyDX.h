@@ -4,11 +4,7 @@
 #define SPIDEYDX_H
 
 #include "export.h"
-
-#ifdef _WIN32
-#define WINDOWS_LEAN_AND_MEAN
-#include <windows.h>
-#endif
+#include "non_win32.h"
 
 EXPORT extern i32 gRenderTest;
 
@@ -30,18 +26,14 @@ EXPORT void SPIDEYDX_SaveSettings(void);
 EXPORT void SPIDEYDX_Shutdown(void);
 EXPORT void DXERR_printf(const char*, ...);
 
-#ifdef _WIN32
 EXPORT LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM);
 EXPORT i32 WinYield(void);
-#endif
 
 EXPORT void debugSettings(void);
 EXPORT void mipmapOffset(u32,u32,float);
 EXPORT void parseCommandLine(char *);
 
-#ifdef _WIN32
 EXPORT i32 WINAPI RealWinMain(HINSTANCE, HINSTANCE, LPSTR, i32);
-#endif
 
 EXPORT extern HWND gHwnd;
 

@@ -79,14 +79,12 @@ void SPIDEYDX_Shutdown(void)
     printf("SPIDEYDX_Shutdown(void)");
 }
 
-#ifdef _WIN32
 // @SMALLTODO
 LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM)
 {
     printf("SpideyWndProc(HWND__ *,u32,u32,long)");
 	return 0;
 }
-#endif
 
 // @Ok
 // @Matching

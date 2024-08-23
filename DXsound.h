@@ -5,13 +5,7 @@
 
 #include "export.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-
-//@FIXME
-typedef i32 tWAVEFORMATEX;
-#endif
+#include "non_win32.h"
 
 //@FIXME
 typedef void* IDirectInputA;

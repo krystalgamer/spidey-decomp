@@ -5,16 +5,7 @@
 
 #include "export.h"
 
-#ifdef _WIN32
-#define WINDOWS_LEAN_AND_MEAN
-#include <windows.h>
-#else
-
-// @FIXME
-#define HWND__ i32
-// @FIXME
-#define HINSTANCE__ i32
-#endif
+#include "non_win32.h"
 
 // @FIXME
 #define _D3DDeviceDesc7 i32
@@ -26,10 +17,7 @@
 EXPORT void DXINIT_GetCurrentResolution(int *, int *);
 EXPORT void AUDIOGROUPS_GetGroup(char *);
 
-#ifdef _WIN32
 EXPORT void DXINIT_DirectX8(HWND, HINSTANCE,u32);
-#endif
-
 EXPORT void DXINIT_GetCurrentResolution(u32 *,u32 *);
 EXPORT void DXINIT_GetNextColorDepth(u32);
 EXPORT void DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool);
@@ -49,9 +37,9 @@ EXPORT void enumerateModesCB(_DDSURFACEDESC2 *,void *);
 EXPORT void enumerateZBuffersCB(_DDPIXELFORMAT *,void *);
 EXPORT void getNextNumber(char *,i32 *);
 EXPORT void initDirect3D7(u32);
-EXPORT void initDirectDraw7(HWND__ *);
-EXPORT void initDirectInput8(HINSTANCE__ *);
-EXPORT void initDirectSound8(HWND__ *);
+EXPORT void initDirectDraw7(HWND);
+EXPORT void initDirectInput8(HINSTANCE);
+EXPORT void initDirectSound8(HWND);
 EXPORT void shutdownDirect3D7(i32);
 EXPORT void shutdownDirectInput8(void);
 EXPORT void shutdownDirectSound8(void);

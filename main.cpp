@@ -1,13 +1,4 @@
-#define WINDOWS_LEAN_AND_MEAN
-
-#ifdef _WIN32
-#include <windows.h>
-#else
-#define WINAPI
-#define HINSTANCE int
-#define PSTR char*
-#endif
-
+#include "non_win32.h"
 
 #include "main.h"
 #include "ob.h"

@@ -356,11 +356,6 @@ u8 PCINPUT_UpdateMouse(void)
 	if ( !gMouseStatus || !DXINPUT_PollMouse(&v5, &v6) )
 		return 0;
 
-	/*
-	i32 v2 = v6 * 1.0f + gMouseY;
-	i32 v3 = v5 * 1.0f + gMouseX;
-	*/
-
 	gOldMouseX = gMouseX;
 	gOldMouseY = gMouseY;
 

@@ -5,12 +5,7 @@
 
 #include "export.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-typedef i32* HANDLE;
-#define INVALID_HANDLE_VALUE ((HANDLE)(-1))
-#endif
+#include "non_win32.h"
 
 
 struct SGDOpenFile
