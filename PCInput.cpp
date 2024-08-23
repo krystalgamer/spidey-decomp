@@ -288,10 +288,10 @@ void PCINPUT_SetupForceFeedbackSineEffect(i32,float)
     printf("PCINPUT_SetupForceFeedbackSineEffect(i32,float)");
 }
 
-// @SMALLTODO
+// @Ok
 void PCINPUT_Shutdown(void)
 {
-    printf("PCINPUT_Shutdown(void)");
+	DXINPUT_Release();
 }
 
 // @SMALLTODO
