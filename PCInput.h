@@ -36,7 +36,7 @@ EXPORT void PCINPUT_SetupForceFeedbackSineEffect(i32,float);
 EXPORT void PCINPUT_Shutdown(void);
 EXPORT void PCINPUT_StartForceFeedbackEffect(void);
 EXPORT void PCINPUT_StopForceFeedbackEffect(void);
-EXPORT void PCINPUT_UpdateMouse(void);
+EXPORT u8 PCINPUT_UpdateMouse(void);
 EXPORT void checkDebugKeypress(void);
 
 struct SKeyboardMapping

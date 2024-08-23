@@ -22,6 +22,9 @@ EXPORT i32 gMouseHotSpotY;
 
 EXPORT u32 gPcInputTickRelated;
 
+EXPORT i32 gOldMouseX;
+EXPORT i32 gOldMouseY;
+
 EXPORT u8 gDefaultKeyboardMappings[0x70] =
 {
   0x01, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x02, 0x00, 
@@ -158,7 +161,7 @@ i32 PCINPUT_GetNumControllerButtons(void)
 	return DXINPUT_GetNumControllerButtons();
 }
 
-// @SMALLTODO
+// @Ok
 u8 PCINPUT_Initialize(void)
 {
 	DXINPUT_Initialize(gDirectInputRelated, gHwnd);
@@ -296,7 +299,7 @@ void PCINPUT_SetMouseHotspot(
 }
 
 // @Ok
-void PCINPUT_SetMousePosition(
+INLINE void PCINPUT_SetMousePosition(
 		i32 newMouseX,
 		i32 newMouseY)
 {
@@ -310,13 +313,13 @@ void PCINPUT_SetMousePosition(
 		adjustedX = gMouseBoundThree;
 
 	adjustedY = newMouseY;
-	if ( newMouseY < gMouseBoundTwo )
+	if ( adjustedY < gMouseBoundTwo )
 		adjustedY = gMouseBoundTwo;
+	if ( adjustedY > gMouseBoundFour )
+		adjustedY = gMouseBoundFour;
 
 	gMouseX = adjustedX;
-	gMouseY = gMouseBoundFour;
-	if ( adjustedY <= gMouseBoundFour )
-		gMouseY = adjustedY;
+	gMouseY = adjustedY;
 }
 
 // @SMALLTODO
@@ -343,10 +346,30 @@ void PCINPUT_StopForceFeedbackEffect(void)
     printf("PCINPUT_StopForceFeedbackEffect(void)");
 }
 
-// @SMALLTODO
-void PCINPUT_UpdateMouse(void)
+EXPORT float ONE_FLOAT = 1.0f;
+
+// @Ok
+u8 PCINPUT_UpdateMouse(void)
 {
-    printf("PCINPUT_UpdateMouse(void)");
+	i32 v5 = 0;
+	i32 v6 = 0;
+	if ( !gMouseStatus || !DXINPUT_PollMouse(&v5, &v6) )
+		return 0;
+
+	/*
+	i32 v2 = v6 * 1.0f + gMouseY;
+	i32 v3 = v5 * 1.0f + gMouseX;
+	*/
+
+	gOldMouseX = gMouseX;
+	gOldMouseY = gMouseY;
+
+	gMouseX += (i32)(v6 * ONE_FLOAT);
+	gMouseY += (i32)(v5 * ONE_FLOAT);
+
+	PCINPUT_SetMousePosition(gMouseX, gMouseY);
+
+	return gOldMouseX != gMouseX || gOldMouseY != gMouseY;
 }
 
 // @Ok

@@ -49,9 +49,10 @@ i32 DXINPUT_PollKeyboard(void)
 }
 
 // @MEDIUMTODO
-void DXINPUT_PollMouse(i32 *,i32 *)
+i32 DXINPUT_PollMouse(i32 *,i32 *)
 {
     printf("DXINPUT_PollMouse(i32 *,i32 *)");
+	return 0x23082024;
 }
 
 // @SMALLTODO
