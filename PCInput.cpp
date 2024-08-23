@@ -2,6 +2,8 @@
 #include "SpideyDX.h"
 #include "DXsound.h"
 
+#include "validate.h"
+
 static unsigned char gMouseStatus;
 
 EXPORT i32 gMouseBoundOne;
@@ -110,10 +112,25 @@ void PCINPUT_GetControllerMappingForAction(u32,u32 *)
     printf("PCINPUT_GetControllerMappingForAction(u32,u32 *)");
 }
 
-// @SMALLTODO
-void PCINPUT_GetKeyboardMappingForAction(u32,u32 *)
+// @Ok
+void PCINPUT_GetKeyboardMappingForAction(
+		u32 a1,
+		u32* a2)
 {
-    printf("PCINPUT_GetKeyboardMappingForAction(u32,u32 *)");
+	SKeyboardMapping* mappings = reinterpret_cast<SKeyboardMapping*>(gKeyboardMappings);
+	for(i32 i = 0;; i++)
+	{
+		if (mappings[i].field_0 == 0x8000)
+			break;
+
+		if (a1 == mappings[i].field_0)
+		{
+			*a2 = mappings[i].field_4;
+			return;
+		}
+	}
+
+	*a2 = 0x4000;
 }
 
 // @SMALLTODO
@@ -201,7 +218,8 @@ void PCINPUT_RestoreDefaultControllerSettings(void)
     printf("PCINPUT_RestoreDefaultControllerSettings(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCINPUT_RestoreDefaultKeyboardSettings(void)
 {
 	memcpy(gKeyboardMappings, gDefaultKeyboardMappings, sizeof(gKeyboardMappings));
@@ -287,4 +305,12 @@ void PCINPUT_UpdateMouse(void)
 void checkDebugKeypress(void)
 {
     printf("checkDebugKeypress(void)");
+}
+
+void validate_SKeyboardMapping(void)
+{
+	VALIDATE_SIZE(SKeyboardMapping, 0x8);
+
+	VALIDATE(SKeyboardMapping, field_0, 0x0);
+	VALIDATE(SKeyboardMapping, field_4, 0x4);
 }

@@ -78,6 +78,7 @@
 #include "pkr.h"
 #include "pcdcFile.h"
 #include "ps2lowsfx.h"
+#include "PCInput.h"
 
 extern int FAIL_VALIDATION;
 
@@ -419,6 +420,7 @@ i32 validate(void)
 	validate_SGDOpenFile();
 	validate_NODE_FILEINFO();
 	validate_SSFXBank();
+	validate_SKeyboardMapping();
 
 	puts("[*] Validation done!");
 
