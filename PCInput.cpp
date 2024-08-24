@@ -297,10 +297,21 @@ void PCINPUT_RestoreDefaultKeyboardSettings(void)
 	memcpy(gKeyboardMappings, gDefaultKeyboardMappings, sizeof(gKeyboardMappings));
 }
 
-// @SMALLTODO
-void PCINPUT_SetControllerMappingForAction(u32,u32)
+// @Ok
+void PCINPUT_SetControllerMappingForAction(u32 a1, u32 a2)
 {
-    printf("PCINPUT_SetControllerMappingForAction(u32,u32)");
+	SMapping* mappings = reinterpret_cast<SMapping*>(gControllerMappings);
+	for(i32 i = 0;; i++)
+	{
+		if (mappings[i].field_0 == 0x8000)
+			break;
+
+		if (a1 == mappings[i].field_0)
+		{
+			mappings[i].field_4 = a2;
+			return;
+		}
+	}
 }
 
 // @Ok
