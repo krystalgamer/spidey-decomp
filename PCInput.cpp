@@ -25,6 +25,9 @@ EXPORT u32 gPcInputTickRelated;
 EXPORT i32 gOldMouseX;
 EXPORT i32 gOldMouseY;
 
+EXPORT i32 gControllerX;
+EXPORT i32 gControllerY;
+
 EXPORT u8 gDefaultKeyboardMappings[0x70] =
 {
   0x01, 0x00, 0x00, 0x00, 0xC8, 0x00, 0x00, 0x00, 0x02, 0x00, 
@@ -115,8 +118,8 @@ void PCINPUT_GetMousePosition(int *x, int *y)
 	*y = gMouseY;
 }
 
-static unsigned char gControllerAxesRelatedOne;
-static int gControllerAxesRelatedTwo = -1;
+EXPORT u8 gControllerAxesRelatedOne;
+EXPORT i32 gControllerAxesRelatedTwo = -1;
 
 // @NotOk
 // Globals
@@ -284,10 +287,22 @@ i32 PCINPUT_IsMouseOver(
 	return mouseX > a1 && mouseX < a3 && mouseY > a2 && mouseY < a4;
 }
 
-// @SMALLTODO
-void PCINPUT_PollController(void)
+// @Ok
+INLINE u8 PCINPUT_PollController(void)
 {
-    printf("PCINPUT_PollController(void)");
+	if (!DXINPUT_PollController(&gControllerX, &gControllerY, &gControllerAxesRelatedTwo))
+		return 0;
+
+	if (gControllerAxesRelatedOne &&
+			gControllerX < 250 &&
+			gControllerX > -250 &&
+			gControllerY < 250 &&
+			gControllerY > -250)
+	{
+		gControllerAxesRelatedOne = 0;
+	}
+
+	return 1;
 }
 
 // @Ok

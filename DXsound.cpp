@@ -37,9 +37,10 @@ void DXINPUT_Initialize(IDirectInputA *,HWND)
 }
 
 // @MEDIUMTODO
-void DXINPUT_PollController(i32 *,i32 *,i32 *)
+i32 DXINPUT_PollController(i32 *,i32 *,i32 *)
 {
     printf("DXINPUT_PollController(i32 *,i32 *,i32 *)");
+	return 0x24082024;
 }
 
 // @SMALLTODO

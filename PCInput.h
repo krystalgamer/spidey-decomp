@@ -23,7 +23,7 @@ EXPORT i32 PCINPUT_IsKeyPressed(u8,i32);
 EXPORT i32 PCINPUT_IsMouseButtonPressed(u8,i32);
 EXPORT i32 PCINPUT_IsMouseButtonReleased(u8);
 EXPORT i32 PCINPUT_IsMouseOver(i32,i32,i32,i32);
-EXPORT void PCINPUT_PollController(void);
+EXPORT u8 PCINPUT_PollController(void);
 EXPORT u8 PCINPUT_PollKeyboard(void);
 EXPORT void PCINPUT_RestoreDefaultControllerSettings(void);
 EXPORT void PCINPUT_RestoreDefaultKeyboardSettings(void);
