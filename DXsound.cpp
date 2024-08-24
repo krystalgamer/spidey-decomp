@@ -104,9 +104,10 @@ i32 DXINPUT_SetupMouse(i32)
 }
 
 // @SMALLTODO
-void DXINPUT_StartForceFeedbackEffect(void)
+i32 DXINPUT_StartForceFeedbackEffect(void)
 {
     printf("DXINPUT_StartForceFeedbackEffect(void)");
+	return 0x23082024;
 }
 
 // @SMALLTODO

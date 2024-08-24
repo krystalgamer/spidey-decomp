@@ -34,7 +34,7 @@ EXPORT void PCINPUT_SetMouseHotspot(i32,i32);
 EXPORT void PCINPUT_SetMousePosition(i32,i32);
 EXPORT u8 PCINPUT_SetupForceFeedbackSineEffect(i32,float);
 EXPORT void PCINPUT_Shutdown(void);
-EXPORT void PCINPUT_StartForceFeedbackEffect(void);
+EXPORT u8 PCINPUT_StartForceFeedbackEffect(void);
 EXPORT void PCINPUT_StopForceFeedbackEffect(void);
 EXPORT u8 PCINPUT_UpdateMouse(void);
 EXPORT void checkDebugKeypress(void);

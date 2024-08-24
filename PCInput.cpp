@@ -442,10 +442,14 @@ void PCINPUT_Shutdown(void)
 	DXINPUT_Release();
 }
 
-// @SMALLTODO
-void PCINPUT_StartForceFeedbackEffect(void)
+// @Ok
+// @Matching
+u8 PCINPUT_StartForceFeedbackEffect(void)
 {
-    printf("PCINPUT_StartForceFeedbackEffect(void)");
+	if (gRenderTest & 0x20)
+		return 1;
+
+	return DXINPUT_StartForceFeedbackEffect() != 0;
 }
 
 // @SMALLTODO
