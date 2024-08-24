@@ -143,10 +143,39 @@ void PCINPUT_ClearMouseState(u8 a1)
 	DXINPUT_SetMouseButtonState(a1, 0);
 }
 
-// @SMALLTODO
-void PCINPUT_GetControllerDirections(void)
+// @Ok
+u8 PCINPUT_GetControllerDirections(void)
 {
-    printf("PCINPUT_GetControllerDirections(void)");
+  u8 result = 0;
+
+  if (!gControllerAxesRelatedOne)
+  {
+    if (gControllerX < -250)
+      result = 4;
+    if (gControllerX > 250)
+      result |= 8u;
+    if (gControllerY < -250)
+      result |= 1u;
+    if (gControllerY > 250)
+      result |= 2u;
+  }
+
+  if (gControllerAxesRelatedTwo != -1)
+  {
+    if (gControllerAxesRelatedTwo > 18000)
+      result |= 4u;
+
+    if (gControllerAxesRelatedTwo > 0 && gControllerAxesRelatedTwo < 18000)
+      result |= 8u;
+
+    if (gControllerAxesRelatedTwo < 9000 || gControllerAxesRelatedTwo > 27000)
+      result |= 1u;
+
+    if (gControllerAxesRelatedTwo > 9000 && gControllerAxesRelatedTwo < 27000)
+      result |= 2;
+  }
+
+  return result;
 }
 
 // @Ok

@@ -11,7 +11,7 @@ EXPORT void PCINPUT_FreezeControllerAxes(void);
 
 EXPORT void PCINPUT_ClearKeyState(u8);
 EXPORT void PCINPUT_ClearMouseState(u8);
-EXPORT void PCINPUT_GetControllerDirections(void);
+EXPORT u8 PCINPUT_GetControllerDirections(void);
 EXPORT void PCINPUT_GetControllerMappingForAction(u32,u32 *);
 EXPORT void PCINPUT_GetKeyboardMappingForAction(u32,u32 *);
 EXPORT void PCINPUT_GetMappedStates(u32 *,u32 *);
