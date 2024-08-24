@@ -111,9 +111,10 @@ i32 DXINPUT_StartForceFeedbackEffect(void)
 }
 
 // @SMALLTODO
-void DXINPUT_StopForceFeedbackEffect(void)
+i32 DXINPUT_StopForceFeedbackEffect(void)
 {
     printf("DXINPUT_StopForceFeedbackEffect(void)");
+	return 0x23082024;
 }
 
 // @SMALLTODO

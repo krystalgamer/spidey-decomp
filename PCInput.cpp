@@ -452,10 +452,14 @@ u8 PCINPUT_StartForceFeedbackEffect(void)
 	return DXINPUT_StartForceFeedbackEffect() != 0;
 }
 
-// @SMALLTODO
-void PCINPUT_StopForceFeedbackEffect(void)
+// @Ok
+// @Matching
+u8 PCINPUT_StopForceFeedbackEffect(void)
 {
-    printf("PCINPUT_StopForceFeedbackEffect(void)");
+	if (gRenderTest & 0x20)
+		return 1;
+
+	return DXINPUT_StopForceFeedbackEffect() != 0;
 }
 
 EXPORT float ONE_FLOAT = 1.0f;
