@@ -233,17 +233,21 @@ u8 PCINPUT_Initialize(void)
 	return 1;
 }
 
-// @SMALLTODO
-void PCINPUT_IsControllerButtonPressed(u8,i32)
+// @Ok
+// @Matching
+i32 PCINPUT_IsControllerButtonPressed(u8 a1, i32 a2)
 {
-    printf("PCINPUT_IsControllerButtonPressed(u8,i32)");
+	if (a2)
+		return DXINPUT_GetControllerButtonState(a1) == 255;
+	else
+		return DXINPUT_GetControllerButtonState(a1) & 0x7F;
 }
 
 // @Ok
 // @Matching
 INLINE i32 PCINPUT_IsKeyPressed(u8 a1, i32 a2)
 {
-	if ( a2 )
+	if (a2)
 		return DXINPUT_GetKeyState(a1) == 255;
 	else
 		return DXINPUT_GetKeyState(a1) & 0x7F;

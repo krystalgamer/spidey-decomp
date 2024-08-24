@@ -18,7 +18,7 @@ EXPORT void PCINPUT_GetMappedStates(u32 *,u32 *);
 EXPORT void PCINPUT_GetMouseHotspotPosition(i32 *,i32 *);
 EXPORT i32 PCINPUT_GetNumControllerButtons(void);
 EXPORT u8 PCINPUT_Initialize(void);
-EXPORT void PCINPUT_IsControllerButtonPressed(u8,i32);
+EXPORT i32 PCINPUT_IsControllerButtonPressed(u8,i32);
 EXPORT i32 PCINPUT_IsKeyPressed(u8,i32);
 EXPORT i32 PCINPUT_IsMouseButtonPressed(u8,i32);
 EXPORT i32 PCINPUT_IsMouseButtonReleased(u8);

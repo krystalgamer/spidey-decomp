@@ -3,9 +3,10 @@
 IDirectInputA* gDirectInputRelated;
 
 // @SMALLTODO
-void DXINPUT_GetControllerButtonState(u8)
+u8 DXINPUT_GetControllerButtonState(u8)
 {
     printf("DXINPUT_GetControllerButtonState(u8)");
+	return (u8)0x24082024;
 }
 
 // @SMALLTODO
