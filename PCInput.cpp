@@ -146,10 +146,23 @@ void PCINPUT_GetControllerDirections(void)
     printf("PCINPUT_GetControllerDirections(void)");
 }
 
-// @SMALLTODO
-void PCINPUT_GetControllerMappingForAction(u32,u32 *)
+// @Ok
+void PCINPUT_GetControllerMappingForAction(u32 a1, u32* a2)
 {
-    printf("PCINPUT_GetControllerMappingForAction(u32,u32 *)");
+	SMapping* mappings = reinterpret_cast<SMapping*>(gControllerMappings);
+	for(i32 i = 0;; i++)
+	{
+		if (mappings[i].field_0 == 0x8000)
+			break;
+
+		if (a1 == mappings[i].field_0)
+		{
+			*a2 = mappings[i].field_4;
+			return;
+		}
+	}
+
+	*a2 = 0x4000;
 }
 
 // @Ok
@@ -157,7 +170,7 @@ void PCINPUT_GetKeyboardMappingForAction(
 		u32 a1,
 		u32* a2)
 {
-	SKeyboardMapping* mappings = reinterpret_cast<SKeyboardMapping*>(gKeyboardMappings);
+	SMapping* mappings = reinterpret_cast<SMapping*>(gKeyboardMappings);
 	for(i32 i = 0;; i++)
 	{
 		if (mappings[i].field_0 == 0x8000)
