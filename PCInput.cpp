@@ -218,10 +218,57 @@ void PCINPUT_GetKeyboardMappingForAction(
 	*a2 = 0x4000;
 }
 
-// @SMALLTODO
-void PCINPUT_GetMappedStates(u32 *,u32 *)
+// @NotOk
+// @Test
+// Thw original code uses array of ints and the code is nasty
+// I've simplified with a structure that significantly changes the code gen
+void PCINPUT_GetMappedStates(u32* a1, u32* a2)
 {
-    printf("PCINPUT_GetMappedStates(u32 *,u32 *)");
+	SMapping* kbMappings = reinterpret_cast<SMapping*>(gKeyboardMappings);
+	if (PCINPUT_PollKeyboard())
+	{
+		for (i32 i = 0; ; i++)
+		{
+			if (kbMappings[i].field_0 == 0x8000)
+				break;
+			
+			if (kbMappings[i].field_4 == 0x4000)
+				continue;
+
+			if (PCINPUT_IsKeyPressed(kbMappings[i].field_4, 0))
+			{
+				*a1 = kbMappings[i].field_0;
+			}
+
+			if (PCINPUT_IsKeyPressed(kbMappings[i].field_4, 1))
+			{
+				*a2 = kbMappings[i].field_0;
+			}
+		}
+	}
+
+	SMapping* controllerMappings = reinterpret_cast<SMapping*>(gControllerMappings);
+	if (PCINPUT_PollController())
+	{
+		for (i32 j = 0; ; j++)
+		{
+			if (controllerMappings[j].field_0 == 0x8000)
+				break;
+			
+			if (controllerMappings[j].field_4 == 0x4000)
+				continue;
+
+			if (PCINPUT_IsControllerButtonPressed(controllerMappings[j].field_4, 0))
+			{
+				*a1 = controllerMappings[j].field_0;
+			}
+
+			if (PCINPUT_IsControllerButtonPressed(controllerMappings[j].field_4, 1))
+			{
+				*a2 = controllerMappings[j].field_0;
+			}
+		}
+	}
 }
 
 // @Ok
@@ -336,7 +383,7 @@ INLINE u8 PCINPUT_PollController(void)
 
 // @Ok
 // @Matching
-u8 PCINPUT_PollKeyboard(void)
+INLINE u8 PCINPUT_PollKeyboard(void)
 {
 	if (DXINPUT_PollKeyboard() < 0)
 		return 0;
