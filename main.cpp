@@ -411,7 +411,7 @@ i32 validate(void)
 	validate_SGDOpenFile();
 	validate_NODE_FILEINFO();
 	validate_SSFXBank();
-	validate_SKeyboardMapping();
+	validate_SMapping();
 
 	puts("[*] Validation done!");
 

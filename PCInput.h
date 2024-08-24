@@ -39,12 +39,12 @@ EXPORT void PCINPUT_StopForceFeedbackEffect(void);
 EXPORT u8 PCINPUT_UpdateMouse(void);
 EXPORT void checkDebugKeypress(void);
 
-struct SKeyboardMapping
+struct SMapping
 {
 	u32 field_0;
 	u32 field_4;
 };
 
-void validate_SKeyboardMapping(void);
+void validate_SMapping(void);
 
 #endif
