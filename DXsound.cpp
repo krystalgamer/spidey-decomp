@@ -83,9 +83,10 @@ i32 DXINPUT_SetupController(void)
 }
 
 // @MEDIUMTODO
-void DXINPUT_SetupForceFeedbackSineEffect(i32,float)
+i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float)
 {
     printf("DXINPUT_SetupForceFeedbackSineEffect(i32,float)");
+	return 0x24082024;
 }
 
 // @MEDIUMTODO

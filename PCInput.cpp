@@ -426,10 +426,14 @@ INLINE void PCINPUT_SetMousePosition(
 	gMouseY = adjustedY;
 }
 
-// @SMALLTODO
-void PCINPUT_SetupForceFeedbackSineEffect(i32,float)
+// @Ok
+// @Matching
+u8 PCINPUT_SetupForceFeedbackSineEffect(i32 a1, float a2)
 {
-    printf("PCINPUT_SetupForceFeedbackSineEffect(i32,float)");
+	if (gRenderTest & 0x20)
+		return 1;
+
+	return DXINPUT_SetupForceFeedbackSineEffect(a1, a2) != 0;
 }
 
 // @Ok

@@ -30,7 +30,7 @@ EXPORT void DXINPUT_Release(void);
 EXPORT void DXINPUT_SetKeyState(u8,u8);
 EXPORT void DXINPUT_SetMouseButtonState(u8,u8);
 EXPORT i32 DXINPUT_SetupController(void);
-EXPORT void DXINPUT_SetupForceFeedbackSineEffect(i32,float);
+EXPORT i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float);
 EXPORT i32 DXINPUT_SetupKeyboard(i32,i32);
 EXPORT i32 DXINPUT_SetupMouse(i32);
 EXPORT void DXINPUT_StartForceFeedbackEffect(void);
