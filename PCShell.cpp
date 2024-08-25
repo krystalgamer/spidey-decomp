@@ -4,6 +4,11 @@
 #include "SpideyDX.h"
 #include "front.h"
 #include "DXsound.h"
+#include "pshell.h"
+#include "PCGfx.h"
+#include "shell.h"
+
+#include <cstring>
 
 #include "validate.h"
 
@@ -26,6 +31,11 @@ EXPORT CMenu* gControllerMenu;
 EXPORT CMenu* gControllerMenuTwo;
 
 EXPORT i32 gActionMapRelated;
+
+char* STR_KB_CONFIG = "keyboard configuration";
+char* STR_JOY_CONFIG = "joystick configuration";
+
+EXPORT i32 gShellTitleBarRelated;
 
 // @MEDIUMTODO
 void PCSHELL_CheckTriggers(u32,i32,i32)
@@ -155,10 +165,37 @@ u8 PCSHELL_UpdateMouse(void)
 	return 0;
 }
 
-// @SMALLTODO
+// @IGNORE
+void shell_optimized_func(i32, i32, i32)
+{
+	printf("void shell_optimized_func(i32, i32, i32)");
+}
+
+// @Ok
 void displayControllerScreen(void)
 {
-    printf("displayControllerScreen(void)");
+	if (!gSceneRelated)
+		PCGfx_BeginScene(1, -1);
+
+	PShell_NormalFont();
+
+	gControllerMenu->Display();
+	gControllerMenuTwo->Display();
+
+	shell_optimized_func(384, 222, 0);
+
+
+	char *configName = STR_KB_CONFIG;
+	if (gActionMapRelated)
+		configName = STR_JOY_CONFIG;
+
+	Shell_DrawTitleBar(gShellTitleBarRelated, 25, configName, 1, 0, 150, -21, 29);
+	Shell_DrawBackground();
+
+	PCSHELL_DrawMouseCursor();
+
+	if (gSceneRelated)
+		PCGfx_EndScene(1);
 }
 
 // @NotOk

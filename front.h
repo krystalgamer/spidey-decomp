@@ -4,6 +4,7 @@
 #define FRONT_H
 
 #include "export.h"
+#include "main.h"
 
 struct SEntry
 {
@@ -31,7 +32,8 @@ struct SEntry
 	int what;
 };
 
-class CMenu {
+class CMenu : public CClass
+{
 
 public:
 	EXPORT virtual ~CMenu();
@@ -56,6 +58,7 @@ public:
 	EXPORT void EntryEnable(unsigned int, unsigned int);
 	EXPORT void AddEntry(const char*);
 	EXPORT void Zoom(i32);
+	EXPORT void Display(void);
 
 	int ptr_to;
 	unsigned __int16 menu_width;

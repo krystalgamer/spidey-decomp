@@ -2,6 +2,12 @@
 #include "validate.h"
 #include "utils.h"
 
+// @MEDIUMTODO
+void CMenu::Display(void)
+{
+	printf("void CMenu::Display(void)");
+}
+
 // @SMALLTODO
 void CMenu::Zoom(i32)
 {
