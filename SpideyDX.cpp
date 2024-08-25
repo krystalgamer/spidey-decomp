@@ -8,8 +8,8 @@ i32 gRenderTest;
 i32 gGameResolutionX = 640;
 i32 gGameResolutionY = 480;
 
-i32 gDxResolutionX;
-i32 gDxResolutionY;
+u32 gDxResolutionX;
+u32 gDxResolutionY;
 
 u8 gMMXSupport;
 u8 g3DAccelator = 1;

@@ -11,8 +11,8 @@ EXPORT extern i32 gRenderTest;
 EXPORT extern i32 gGameResolutionX;
 EXPORT extern i32 gGameResolutionY;
 
-EXPORT extern i32 gDxResolutionX;
-EXPORT extern i32 gDxResolutionY;
+EXPORT extern u32 gDxResolutionX;
+EXPORT extern u32 gDxResolutionY;
 
 EXPORT extern u8 gMMXSupport;
 EXPORT extern u8 g3DAccelator;
