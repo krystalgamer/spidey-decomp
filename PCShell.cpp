@@ -93,10 +93,15 @@ void PCSHELL_Relax(void)
     printf("PCSHELL_Relax(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCSHELL_Shutdown(void)
 {
-    printf("PCSHELL_Shutdown(void)");
+	if (gCursorSprite)
+	{
+		delete gCursorSprite;
+		gCursorSprite = 0;
+	}
 }
 
 // @Ok
