@@ -1297,7 +1297,7 @@ void validate_SpideyIconRelated(void)
 
 void validate_SSaveGame(void)
 {
-	VALIDATE_SIZE(SSaveGame, 0xC4);
+	VALIDATE_SIZE(SSaveGame, 0xBC);
 
 	VALIDATE(SSaveGame, mChecksum, 0x0);
 	VALIDATE(SSaveGame, fields, 0x4);
