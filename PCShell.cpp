@@ -38,10 +38,13 @@ void PCSHELL_DoDisplayOptions(void)
     printf("PCSHELL_DoDisplayOptions(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void PCSHELL_DrawMouseCursor(void)
 {
-    printf("PCSHELL_DrawMouseCursor(void)");
+	if (!(gRenderTest & 0x10) && gCursorSprite)
+	{
+		gCursorSprite->draw(gShellMouseX, gShellMouseY, 0, 0);
+	}
 }
 
 // @Ok
