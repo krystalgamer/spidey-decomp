@@ -50,10 +50,12 @@ INLINE void PCSHELL_CoordsDCtoPC(i32* pX, i32* pY)
 	*pY = (double)*pY / 240.0 * (double)gDxResolutionY;
 }
 
-// @SMALLTODO
-void PCSHELL_CoordsPCtoDC(i32 *,i32 *)
+// @Ok
+// @Matching
+INLINE void PCSHELL_CoordsPCtoDC(i32* pX, i32* pY)
 {
-    printf("PCSHELL_CoordsPCtoDC(i32 *,i32 *)");
+	*pX = (float)(*pX * 512) / (float)gDxResolutionX;
+	*pY = (float)(*pY * 240) / (float)gDxResolutionY;
 }
 
 // @SMALLTODO
