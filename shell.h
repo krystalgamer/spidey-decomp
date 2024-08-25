@@ -6,6 +6,11 @@
 #include "ob.h"
 #include "export.h"
 
+struct SSaveGame
+{
+	//i32 mSize;
+	i32 fields[0x2F];
+};
 
 class CWobblyGlow : public CGlow
 {
@@ -227,10 +232,6 @@ struct SpideyIconRelated
 	u8 padBottom[0x28-0x18-4];
 };
 
-struct SSaveGame
-{
-};
-
 struct STrainingMission
 {
 };
@@ -249,7 +250,7 @@ EXPORT void CallAI(CBody *);
 EXPORT i32 CalcIndexOfContinueLevel(void);
 
 EXPORT void Shell_AddGameSlots(CMenu *);
-EXPORT void Shell_CalculateGameChecksum(SSaveGame *);
+EXPORT i32 Shell_CalculateGameChecksum(SSaveGame *);
 EXPORT void Shell_CharacterViewer(void);
 EXPORT void Shell_Cheats(void);
 EXPORT void Shell_ChooseEnemy(i32,u8,signed char);
@@ -302,5 +303,6 @@ void validate_CShellSimbyFireDeath(void);
 void validate_CShellGoldFish(void);
 void validate_CShellMysterioHeadCircle(void);
 void validate_SpideyIconRelated(void);
+void validate_SSaveGame(void);
 
 #endif

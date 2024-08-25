@@ -414,6 +414,7 @@ i32 validate(void)
 	validate_SSFXBank();
 	validate_SMapping();
 	validate_SActionMap();
+	validate_SSaveGame();
 
 	puts("[*] Validation done!");
 

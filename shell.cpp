@@ -27,10 +27,29 @@ void Shell_AddGameSlots(CMenu *)
     printf("Shell_AddGameSlots(CMenu *)");
 }
 
-// @SMALLTODO
-void Shell_CalculateGameChecksum(SSaveGame *)
+// @Ok
+// PowerPC version implies that mSize of SSaveGame is not a field but part of the array
+// i don't like it
+i32 Shell_CalculateGameChecksum(SSaveGame* pSave)
 {
-    printf("Shell_CalculateGameChecksum(SSaveGame *)");
+	i32 checksum = 0;
+	print_if_false(1u, "Size of SSaveGame not a multiple of 4");
+
+	for (i32 i = 0; i<0x2E; i++)
+	{
+		if (checksum < 0)
+		{
+			checksum = checksum * 2 + 1;
+		}
+		else
+		{
+			checksum <<= 1;
+		}
+
+		checksum += pSave->fields[i];
+	}
+
+	return checksum | 1;
 }
 
 // @MEDIUMTODO
@@ -1264,4 +1283,12 @@ void validate_SpideyIconRelated(void)
 	VALIDATE(SpideyIconRelated, field_10, 0x10);
 	VALIDATE(SpideyIconRelated, field_14, 0x14);
 	VALIDATE(SpideyIconRelated, field_18, 0x18);
+}
+
+void validate_SSaveGame(void)
+{
+	VALIDATE_SIZE(SSaveGame, 0xC4);
+
+	VALIDATE(SSaveGame, mSize, 0x0);
+	VALIDATE(SSaveGame, fields, 0x4);
 }
