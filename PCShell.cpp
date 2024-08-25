@@ -43,10 +43,11 @@ void PCSHELL_CheckTriggers(u32,i32,i32)
     printf("PCSHELL_CheckTriggers(uint,i32,i32)");
 }
 
-// @SMALLTODO
-void PCSHELL_CoordsDCtoPC(i32 *,i32 *)
+// @Ok
+INLINE void PCSHELL_CoordsDCtoPC(i32* pX, i32* pY)
 {
-    printf("PCSHELL_CoordsDCtoPC(i32 *,i32 *)");
+	*pX = (double)*pX / 512.0 * (double)gDxResolutionX;
+	*pY = (double)*pY / 240.0 * (double)gDxResolutionY;
 }
 
 // @SMALLTODO
