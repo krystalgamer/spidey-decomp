@@ -8,6 +8,7 @@
 #include "panel.h"
 #include "front.h"
 #include "PCGfx.h"
+#include "mess.h"
 
 EXPORT CBody *MiscList;
 
@@ -264,10 +265,11 @@ void Shell_TitleScreen(void)
     printf("Shell_TitleScreen(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void Shell_VerySmallFont(void)
 {
-    printf("Shell_VerySmallFont(void)");
+	Mess_SetScale(256);
+	Mess_SetCurrentFont("sp_fnt03.fnt");
 }
 
 
