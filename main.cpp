@@ -70,6 +70,7 @@
 #include "pcdcFile.h"
 #include "ps2lowsfx.h"
 #include "PCInput.h"
+#include "PCShell.h"
 
 extern int FAIL_VALIDATION;
 
@@ -412,6 +413,7 @@ i32 validate(void)
 	validate_NODE_FILEINFO();
 	validate_SSFXBank();
 	validate_SMapping();
+	validate_SActionMap();
 
 	puts("[*] Validation done!");
 

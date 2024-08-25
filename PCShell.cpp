@@ -3,6 +3,8 @@
 #include "PCInput.h"
 #include "SpideyDX.h"
 
+#include "validate.h"
+
 EXPORT Sprite2* gCursorSprite;
 
 EXPORT i32 gShellMouseX;
@@ -164,4 +166,13 @@ void processControllerScreen(void)
 void resetActionMaps(bool)
 {
     printf("resetActionMaps(bool)");
+}
+
+void validate_SActionMap(void)
+{
+	VALIDATE_SIZE(SActionMap, 0x1C);
+
+	VALIDATE(SActionMap, field_0, 0x0);
+	VALIDATE(SActionMap, field_4, 0x4);
+	VALIDATE(SActionMap, field_14, 0x14);
 }

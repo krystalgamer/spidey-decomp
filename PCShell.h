@@ -5,6 +5,16 @@
 
 #include "export.h"
 
+struct SActionMap
+{
+	i32 field_0;
+	char field_4[1];
+
+	u8 padAfter4[0x14-0x4-1];
+	i32 field_14;
+	u8 padAfter14[4];
+};
+
 EXPORT void PCSHELL_CheckTriggers(u32,i32,i32);
 EXPORT void PCSHELL_CoordsDCtoPC(i32 *,i32 *);
 EXPORT void PCSHELL_CoordsPCtoDC(i32 *,i32 *);
@@ -22,5 +32,7 @@ EXPORT void displayControllerScreen(void);
 EXPORT void initActionMaps(void);
 EXPORT void processControllerScreen(void);
 EXPORT void resetActionMaps(bool);
+
+void validate_SActionMap(void);
 
 #endif
