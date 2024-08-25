@@ -81,10 +81,11 @@ void PCSHELL_IsMouseOverText(char const *,i32,i32,i32)
     printf("PCSHELL_IsMouseOverText(char const *,i32,i32,i32)");
 }
 
-// @SMALLTODO
-void PCSHELL_MouseMoved(void)
+// @Ok
+// @Matching
+i32 PCSHELL_MouseMoved(void)
 {
-    printf("PCSHELL_MouseMoved(void)");
+	return gShellMouseOffsetX || gShellMouseOffsetY;
 }
 
 // @Ok

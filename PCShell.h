@@ -14,7 +14,7 @@ EXPORT void PCSHELL_DrawMouseCursor(void);
 EXPORT void PCSHELL_Initialize(void);
 EXPORT void PCSHELL_IsMouseOver(i32,i32,i32,i32);
 EXPORT void PCSHELL_IsMouseOverText(char const *,i32,i32,i32);
-EXPORT void PCSHELL_MouseMoved(void);
+EXPORT i32 PCSHELL_MouseMoved(void);
 EXPORT void PCSHELL_Relax(void);
 EXPORT void PCSHELL_Shutdown(void);
 EXPORT u8 PCSHELL_UpdateMouse(void);
