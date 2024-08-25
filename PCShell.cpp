@@ -92,10 +92,25 @@ void PCSHELL_Initialize(void)
 	PCSHELL_CoordsPCtoDC(&gShellMouseX, &gShellMouseY);
 }
 
-// @SMALLTODO
-void PCSHELL_IsMouseOver(i32,i32,i32,i32)
+// @Ok
+u8 PCSHELL_IsMouseOver(
+		i32 a1,
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("PCSHELL_IsMouseOver(i32,i32,i32,i32)");
+	i32 s1 = a1;
+	i32 s2 = a2;
+	i32 s3 = a3;
+	i32 s4 = a4;
+
+	if (gRenderTest & 0x10)
+		return 0;
+
+	PCSHELL_CoordsDCtoPC(&s1, &s2);
+	PCSHELL_CoordsDCtoPC(&s3, &s4);
+
+	return PCINPUT_IsMouseOver(s1, s2, s3, s4);
 }
 
 // @SMALLTODO
