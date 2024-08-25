@@ -3,6 +3,12 @@
 #include "utils.h"
 
 // @SMALLTODO
+void CMenu::Zoom(i32)
+{
+	printf("void CMenu::Zoom(i32)");
+}
+
+// @SMALLTODO
 void CMenu::AddEntry(const char*)
 {
 	printf("void CMenu::AddEntry(const char*)");

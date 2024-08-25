@@ -224,10 +224,26 @@ void processControllerScreen(void)
     printf("processControllerScreen(void)");
 }
 
-// @SMALLTODO
-void resetActionMaps(bool)
+// @Ok
+// @Matching
+void resetActionMaps(bool a1)
 {
-    printf("resetActionMaps(bool)");
+	delete gControllerMenu;
+	delete gControllerMenuTwo;
+
+	gControllerMenu = new CMenu(30, 60, 1u, 256, 256, 15);
+	gControllerMenuTwo = new CMenu(332, 60, 1u, 256, 256, 15);
+
+	initActionMaps();
+
+	gControllerMenuTwo->scrollbar_zero = 0;
+	gControllerMenu->scrollbar_zero = 0;
+
+	gControllerMenu->Zoom(0);
+	gControllerMenuTwo->Zoom(0);
+	
+	gControllerMenuTwo->mLine = a1 != 0 ? 0 : 4;
+	gControllerMenu->mLine = gControllerMenuTwo->mLine;
 }
 
 void validate_SActionMap(void)

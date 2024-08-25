@@ -55,6 +55,7 @@ public:
 	EXPORT void GetEntryXY(const char*, int*, int*);
 	EXPORT void EntryEnable(unsigned int, unsigned int);
 	EXPORT void AddEntry(const char*);
+	EXPORT void Zoom(i32);
 
 	int ptr_to;
 	unsigned __int16 menu_width;
