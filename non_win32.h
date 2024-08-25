@@ -8,6 +8,7 @@
 #include "my_types.h"
 
 u32 GetTickCount();
+void Sleep(u32);
 
 typedef i32* HANDLE;
 #define INVALID_HANDLE_VALUE ((HANDLE)(-1))

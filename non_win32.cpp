@@ -8,4 +8,8 @@ u32 GetTickCount()
 	return 0x69696969;
 }
 
+void Sleep(u32)
+{
+}
+
 #endif

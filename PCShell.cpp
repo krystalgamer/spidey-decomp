@@ -87,10 +87,12 @@ void PCSHELL_MouseMoved(void)
     printf("PCSHELL_MouseMoved(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCSHELL_Relax(void)
 {
-    printf("PCSHELL_Relax(void)");
+	WinYield();
+	Sleep(10);
 }
 
 // @Ok
