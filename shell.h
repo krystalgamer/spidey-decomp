@@ -8,8 +8,8 @@
 
 struct SSaveGame
 {
-	//i32 mSize;
-	i32 fields[0x2F];
+	i32 mChecksum;
+	i32 fields[0x2E];
 };
 
 class CWobblyGlow : public CGlow

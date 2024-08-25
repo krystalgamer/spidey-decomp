@@ -5,7 +5,9 @@
 #include "ps2lowsfx.h"
 #include "effects.h"
 #include "spool.h"
+#include "panel.h"
 #include "front.h"
+#include "PCGfx.h"
 
 EXPORT CBody *MiscList;
 
@@ -20,6 +22,8 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
 EXPORT i32 gShellMysterioRelated;
 extern SPSXRegion PSXRegion[];
+
+EXPORT SAnimFrame* gBackgroundAnimFrame;
 
 // @SMALLTODO
 void Shell_AddGameSlots(CMenu *)
@@ -136,10 +140,14 @@ void Shell_DoShell(u32 const *,u32 *)
     printf("Shell_DoShell(u32 const *,u32 *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Shell_DrawBackground(void)
 {
-    printf("Shell_DrawBackground(void)");
+	if (!gBackgroundAnimFrame)
+		Spool_AnimAccess("menubg", &gBackgroundAnimFrame);
+
+	PCPanel_DrawTexturedPoly(-1.0, gBackgroundAnimFrame->pTexture, 0, 0, 512, 240, 128);
 }
 
 // @SMALLTODO
@@ -1289,6 +1297,6 @@ void validate_SSaveGame(void)
 {
 	VALIDATE_SIZE(SSaveGame, 0xC4);
 
-	VALIDATE(SSaveGame, mSize, 0x0);
+	VALIDATE(SSaveGame, mChecksum, 0x0);
 	VALIDATE(SSaveGame, fields, 0x4);
 }
