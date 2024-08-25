@@ -3,6 +3,12 @@
 #include "utils.h"
 
 // @SMALLTODO
+void CMenu::AddEntry(const char*)
+{
+	printf("void CMenu::AddEntry(const char*)");
+}
+
+// @SMALLTODO
 void Front_ClearScreen(void)
 {
     printf("Front_ClearScreen(void)");

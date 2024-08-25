@@ -54,6 +54,7 @@ public:
 	EXPORT void CentreY(void);
 	EXPORT void GetEntryXY(const char*, int*, int*);
 	EXPORT void EntryEnable(unsigned int, unsigned int);
+	EXPORT void AddEntry(const char*);
 
 	int ptr_to;
 	unsigned __int16 menu_width;
@@ -78,9 +79,7 @@ public:
 	unsigned char padAfter1E[4];
 
 	int mX;
-	int mY;
-	int mLineSep;
-
+	int mY; int mLineSep;
 	__int16 field_30;
 	__int16 field_32;
 	int field_34;

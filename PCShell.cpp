@@ -2,6 +2,8 @@
 #include "dcshellutils.h"
 #include "PCInput.h"
 #include "SpideyDX.h"
+#include "front.h"
+#include "DXsound.h"
 
 #include "validate.h"
 
@@ -15,6 +17,15 @@ EXPORT i32 gShellMouseOffsetY;
 
 const i32 MOUSE_TRIGGER_COUNT = 18;
 EXPORT u8 gMouseTriggerRelated[MOUSE_TRIGGER_COUNT];
+
+const i32 ACTION_MAP_COUNT = 11;
+EXPORT SActionMap gActionMaps[ACTION_MAP_COUNT];
+EXPORT char gKeyNames[ACTION_MAP_COUNT][32];
+
+EXPORT CMenu* gControllerMenu;
+EXPORT CMenu* gControllerMenuTwo;
+
+EXPORT i32 gActionMapRelated;
 
 // @MEDIUMTODO
 void PCSHELL_CheckTriggers(u32,i32,i32)
@@ -150,10 +161,61 @@ void displayControllerScreen(void)
     printf("displayControllerScreen(void)");
 }
 
-// @SMALLTODO
+// @NotOk
+// missing last addentry
 void initActionMaps(void)
 {
-    printf("initActionMaps(void)");
+	for (
+			i32 i = 0;
+			i < ACTION_MAP_COUNT; 
+			i++)
+	{
+		SActionMap *pMap = &gActionMaps[i];
+		PCINPUT_GetKeyboardMappingForAction(pMap->field_0, &pMap->field_14);
+		PCINPUT_GetControllerMappingForAction(pMap->field_0, &pMap->field_18);
+		gControllerMenu->AddEntry(pMap->field_4);
+
+		if (!gActionMapRelated)
+		{
+			if (pMap->field_14 == 0x4000)
+			{
+				gControllerMenuTwo->SetNormalColor(i, 90, 20, 6);
+				strcpy(gKeyNames[i], "none");
+			}
+			else
+			{
+				DXINPUT_GetKeyName(pMap->field_14, gKeyNames[i]);
+			}
+		}
+		else
+		{
+			if (i < 4)
+			{
+				gControllerMenu->EntryEnable(i, 0);
+				gControllerMenuTwo->EntryEnable(i, 0);
+				strcpy(gKeyNames[i], pMap->field_4);
+			}
+			else
+			{
+
+				if (pMap->field_18 == 0x4000)
+				{
+					gControllerMenuTwo->SetNormalColor(i, 90, 20, 6);
+					strcpy(gKeyNames[i], "none");
+				}
+				else
+				{
+					sprintf(gKeyNames[i], "button %i", pMap->field_18);
+				}
+			}
+		}
+
+		gControllerMenuTwo->AddEntry(gKeyNames[i]);
+	}
+
+	gControllerMenu->AddEntry("restore default settings");
+	//@FIXME: figure out the string
+	//gControllerMenuTwo->AddEntry("");
 }
 
 // @MEDIUMTODO
@@ -175,4 +237,5 @@ void validate_SActionMap(void)
 	VALIDATE(SActionMap, field_0, 0x0);
 	VALIDATE(SActionMap, field_4, 0x4);
 	VALIDATE(SActionMap, field_14, 0x14);
+	VALIDATE(SActionMap, field_18, 0x18);
 }

@@ -11,8 +11,8 @@ struct SActionMap
 	char field_4[1];
 
 	u8 padAfter4[0x14-0x4-1];
-	i32 field_14;
-	u8 padAfter14[4];
+	u32 field_14;
+	u32 field_18;
 };
 
 EXPORT void PCSHELL_CheckTriggers(u32,i32,i32);

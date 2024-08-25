@@ -3,6 +3,12 @@
 IDirectInputA* gDirectInputRelated;
 
 // @SMALLTODO
+void DXINPUT_GetKeyName(u32, char*)
+{
+	printf("void DXINPUT_GetKeyName(u32, char*);");
+}
+
+// @SMALLTODO
 u8 DXINPUT_GetControllerButtonState(u8)
 {
     printf("DXINPUT_GetControllerButtonState(u8)");
