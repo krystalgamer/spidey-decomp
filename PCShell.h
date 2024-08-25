@@ -17,7 +17,7 @@ EXPORT void PCSHELL_IsMouseOverText(char const *,i32,i32,i32);
 EXPORT void PCSHELL_MouseMoved(void);
 EXPORT void PCSHELL_Relax(void);
 EXPORT void PCSHELL_Shutdown(void);
-EXPORT void PCSHELL_UpdateMouse(void);
+EXPORT u8 PCSHELL_UpdateMouse(void);
 EXPORT void displayControllerScreen(void);
 EXPORT void initActionMaps(void);
 EXPORT void processControllerScreen(void);

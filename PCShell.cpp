@@ -8,6 +8,12 @@ EXPORT Sprite2* gCursorSprite;
 EXPORT i32 gShellMouseX;
 EXPORT i32 gShellMouseY;
 
+EXPORT i32 gShellMouseOffsetX;
+EXPORT i32 gShellMouseOffsetY;
+
+const i32 MOUSE_TRIGGER_COUNT = 18;
+EXPORT u8 gMouseTriggerRelated[MOUSE_TRIGGER_COUNT];
+
 // @MEDIUMTODO
 void PCSHELL_CheckTriggers(u32,i32,i32)
 {
@@ -93,10 +99,39 @@ void PCSHELL_Shutdown(void)
     printf("PCSHELL_Shutdown(void)");
 }
 
-// @SMALLTODO
-void PCSHELL_UpdateMouse(void)
+// @Ok
+u8 PCSHELL_UpdateMouse(void)
 {
-    printf("PCSHELL_UpdateMouse(void)");
+	for (i32 i = 0;
+			i < MOUSE_TRIGGER_COUNT;
+			i++)
+	{
+		gMouseTriggerRelated[i] = 0;
+	}
+
+	if (!(gRenderTest & 0x10))
+	{
+		if (PCINPUT_UpdateMouse())
+		{
+			i32 oldMouseX = gShellMouseX;
+			i32 oldMouseY = gShellMouseY;
+
+			PCINPUT_GetMousePosition(&gShellMouseX, &gShellMouseY);
+			PCSHELL_CoordsPCtoDC(&gShellMouseX, &gShellMouseY);
+			
+			gShellMouseOffsetX = gShellMouseX - oldMouseX;
+			gShellMouseOffsetY = gShellMouseY - oldMouseY;
+
+			return 1;
+		}
+		else
+		{
+			gShellMouseOffsetX = 0;
+			gShellMouseOffsetY = 0;
+		}
+	}
+	
+	return 0;
 }
 
 // @SMALLTODO
