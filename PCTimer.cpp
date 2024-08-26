@@ -9,7 +9,7 @@ EXPORT i32 gPcTimerPaused;
 EXPORT u32 gTimerInitOne;
 EXPORT u32 gTimerInitTwo;
 
-#ifndef _OLD_WINDOWS
+#ifndef _WIN32
 #define LPTIMECALLBACK void*
 #endif
 EXPORT LPTIMECALLBACK fptc;
@@ -20,7 +20,7 @@ EXPORT STimerInfo gTimerInfo;
 EXPORT double gTimerVblankRelated;
 
 // @FIXME
-#ifndef _OLD_WINDOWS
+#ifndef _WIN32
 
 struct TIMECAPS
 {
@@ -105,7 +105,13 @@ void PCTIMER_Init(void)
 
 	gTimerInfo.field_4 = 16;
 
+	// make clang happy :)
+#ifdef _WIN32
 	fptc = TimerCallback;
+#else
+	fptc = reinterpret_cast<void*>(TimerCallback);
+#endif
+
 	if (gTimerInfo.uPeriod > 0x10)
 	{
 		print_if_false(0, "Timer low resolution error!");
