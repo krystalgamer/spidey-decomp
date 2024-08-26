@@ -110,10 +110,11 @@ void PCGfx_InitAtStart(void)
     printf("PCGfx_InitAtStart(void)");
 }
 
-// @SMALLTODO
-void PCGfx_IsInScene(void)
+// @Ok
+// @Matching
+u8 PCGfx_IsInScene(void)
 {
-    printf("PCGfx_IsInScene(void)");
+	return gSceneRelated;
 }
 
 // @SMALLTODO

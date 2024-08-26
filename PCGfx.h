@@ -34,7 +34,7 @@ EXPORT void PCGfx_GetZLayerNearest(void);
 EXPORT void PCGfx_IncZLayerFurthest(void);
 EXPORT void PCGfx_IncZLayerNearest(void);
 EXPORT void PCGfx_InitAtStart(void);
-EXPORT void PCGfx_IsInScene(void);
+EXPORT u8 PCGfx_IsInScene(void);
 EXPORT void PCGfx_ProcessTexture(_tagKMSTRIPHEAD *,i32,DCGfx_BlendingMode);
 EXPORT void PCGfx_RenderInit(float,float,float,float,float);
 EXPORT void PCGfx_RenderModelPreview(void *,char const *,i32);
