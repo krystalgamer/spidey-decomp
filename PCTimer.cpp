@@ -36,15 +36,18 @@ i32 PCTIMER_Kill(void)
 	return 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCTIMER_Pause(void)
 {
 	gPcTimerPaused = 1;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCTIMER_Resume(void)
 {
+	gPcTimerPaused = 0;
 }
 
 // @SMALLTODO
