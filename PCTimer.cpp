@@ -2,6 +2,7 @@
 #include "non_win32.h"
 
 EXPORT UINT uTimerID;
+EXPORT i32 gPcTimerPaused;
 
 // @FIXME
 #ifndef _OLD_WINDOWS
@@ -38,13 +39,12 @@ i32 PCTIMER_Kill(void)
 // @SMALLTODO
 void PCTIMER_Pause(void)
 {
-    printf("PCTIMER_Pause(void)");
+	gPcTimerPaused = 1;
 }
 
 // @SMALLTODO
 void PCTIMER_Resume(void)
 {
-    printf("PCTIMER_Resume(void)");
 }
 
 // @SMALLTODO
