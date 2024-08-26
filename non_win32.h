@@ -28,6 +28,7 @@ typedef i32 LPARAM;
 typedef u32* WPARAM;
 typedef char* LPSTR;
 typedef char* PSTR;
+typedef u32 DWORD;
 
 #define WINAPI
 #define CALLBACK
