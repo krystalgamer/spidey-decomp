@@ -1,8 +1,8 @@
 #include "PCTimer.h"
 #include "non_win32.h"
 
-EXPORT UINT uTimerID;
-EXPORT UINT uPeriod;
+#include "validate.h"
+
 EXPORT i32 gPcTimerPaused;
 
 EXPORT u32 gTimerInitOne;
@@ -14,6 +14,8 @@ EXPORT u32 gTimerInitTwo;
 EXPORT LPTIMECALLBACK fptc;
 
 EXPORT double gTimerMsInterval;
+
+EXPORT STimerInfo gTimerInfo;
 
 // @FIXME
 #ifndef _OLD_WINDOWS
@@ -51,17 +53,17 @@ TIMECAPS ptc;
 // @SMALLTODO
 void PCTIMER_Init(void)
 {
-	uTimerID = 0;
-	gTimerInitOne = 0;
+	gTimerInfo.uTimerID = 0;
+	gTimerInfo.field_4 = 0;
 	ptc.wPeriodMin = 0;
-	uPeriod = 0;
-	gTimerInitTwo = 0;
+	gTimerInfo.uPeriod = 0;
+	gTimerInfo.field_C = 0;
 	ptc.wPeriodMax = 0;
 	fptc = 0;
 
 	if (timeGetDevCaps(&ptc, sizeof(ptc)))
 	{
-		uTimerID = 0;
+		gTimerInfo.uTimerID = 0;
 		print_if_false(0, "\t\tD3DTimer init error!");
 		return;
 	}
@@ -87,7 +89,7 @@ void PCTIMER_Init(void)
 		wPeriodMax = ptc.wPeriodMax;
 	}
 
-	uPeriod = wPeriodMax;
+	gTimerInfo.uPeriod = wPeriodMax;
 
 	printf(
 		"t\tPCTimer - Min: %i, Max: %i, Ideal: %i, Used:%i\r\n",
@@ -96,42 +98,36 @@ void PCTIMER_Init(void)
 		16,
 		wPeriodMax);
 
-	u32 uResolution = uPeriod;
+	u32 uResolution = gTimerInfo.uPeriod;
     u32 uDelay = 16;
 
-	gTimerInitOne = 16;
+	gTimerInfo.field_4 = 16;
 
 	fptc = TimerCallback;
-	if (uPeriod > 0x10)
+	if (gTimerInfo.uPeriod > 0x10)
 	{
 		print_if_false(0, "Timer low resolution error!");
-		uResolution = uPeriod;
-		uDelay = uPeriod;
-		gTimerInitOne = uPeriod;
+		uResolution = gTimerInfo.uPeriod;
+		uDelay = gTimerInfo.uPeriod;
+		gTimerInfo.field_4 = gTimerInfo.uPeriod;
 	}
 
-	uTimerID = timeSetEvent(uDelay, uResolution, fptc, (DWORD)&uTimerID, 1);
+	gTimerInfo.uTimerID = timeSetEvent(uDelay, uResolution, fptc, (DWORD)&gTimerInfo, 1);
 
-	gTimerMsInterval = (double)gTimerInitOne * 60.0 / 1000.0;
-	timeBeginPeriod(uPeriod);
+	gTimerMsInterval = (double)gTimerInfo.field_4 * 60.0 / 1000.0;
+	timeBeginPeriod(gTimerInfo.uPeriod);
 
 	onexit(PCTIMER_Kill);
-}
-
-// @SMALLTODO
-void PCTIMER_IsActive(void)
-{
-    printf("PCTIMER_IsActive(void)");
 }
 
 // @Ok
 // @Matching
 i32 PCTIMER_Kill(void)
 {
-	if (uTimerID)
+	if (gTimerInfo.uTimerID)
 	{
-		timeKillEvent(uTimerID);
-		uTimerID = 0;
+		timeKillEvent(gTimerInfo.uTimerID);
+		gTimerInfo.uTimerID = 0;
 	}
 
 	return 0;
@@ -160,4 +156,14 @@ void CALLBACK TimerCallback(
 	unsigned long dw2)
 {
     printf("TimerCallback_Mac(void)");
+}
+
+void validate_STimerInfo(void)
+{
+	VALIDATE_SIZE(STimerInfo, 0x10);
+
+	VALIDATE(STimerInfo, uTimerID, 0x0);
+	VALIDATE(STimerInfo, field_4, 0x4);
+	VALIDATE(STimerInfo, uPeriod, 0x8);
+	VALIDATE(STimerInfo, field_C, 0xC);
 }
