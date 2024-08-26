@@ -19,7 +19,7 @@ extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
 
 EXPORT i32 DifficultyLevel;
-EXPORT volatile u32 Vblanks;
+volatile u32 Vblanks;
 
 // @UNKTODO
 // different in windows version

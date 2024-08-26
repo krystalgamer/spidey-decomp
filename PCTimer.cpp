@@ -1,5 +1,6 @@
 #include "PCTimer.h"
 #include "non_win32.h"
+#include "utils.h"
 
 #include "validate.h"
 
@@ -16,6 +17,7 @@ EXPORT LPTIMECALLBACK fptc;
 EXPORT double gTimerMsInterval;
 
 EXPORT STimerInfo gTimerInfo;
+EXPORT double gTimerVblankRelated;
 
 // @FIXME
 #ifndef _OLD_WINDOWS
@@ -50,7 +52,7 @@ bool timeGetDevCaps(...)
 
 TIMECAPS ptc;
 
-// @SMALLTODO
+// @Ok
 void PCTIMER_Init(void)
 {
 	gTimerInfo.uTimerID = 0;
@@ -147,7 +149,8 @@ void PCTIMER_Resume(void)
 	gPcTimerPaused = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CALLBACK TimerCallback(
 	UINT uTimerID,
 	UINT uMsg,
@@ -155,7 +158,19 @@ void CALLBACK TimerCallback(
 	unsigned long dw1,
 	unsigned long dw2)
 {
-    printf("TimerCallback_Mac(void)");
+	STimerInfo* pTimeInfo = reinterpret_cast<STimerInfo*>(dwUser);
+
+	if (!gPcTimerPaused)
+	{
+		gTimerMsInterval = (double)pTimeInfo->field_4 * 60.0 / 1000.0;
+		pTimeInfo->field_C += pTimeInfo->field_4;
+		gTimerVblankRelated += gTimerMsInterval;
+
+		u32 newTime = gTimerVblankRelated;
+		while ( newTime > Vblanks )
+			MyVSync();
+	}
+	
 }
 
 void validate_STimerInfo(void)
