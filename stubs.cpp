@@ -14,6 +14,13 @@ i32 syRtcInit(void)
 
 // @Ok
 // @Matching
+void syMallocInit(void)
+{
+	gSysMemory = 0;
+}
+
+// @Ok
+// @Matching
 void syMallocFinish(void)
 {
 	while (gSysMemory)
@@ -24,6 +31,7 @@ void syMallocFinish(void)
 }
 
 // @Ok
+// @Matching
 INLINE void removeMemoryAlloc(MEMORY_ALLOC* pAlloc)
 {
 	if (gSysMemory == pAlloc)

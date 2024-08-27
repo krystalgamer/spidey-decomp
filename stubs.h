@@ -16,6 +16,7 @@ struct MEMORY_ALLOC
 EXPORT i32 syRtcInit(void);
 EXPORT void removeMemoryAlloc(MEMORY_ALLOC*);
 EXPORT void syMallocFinish(void);
+EXPORT void syMallocInit(void);
 
 void validate_MEMORY_ALLOC(void);
 
