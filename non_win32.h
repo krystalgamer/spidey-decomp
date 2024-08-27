@@ -9,6 +9,8 @@
 
 u32 GetTickCount();
 void Sleep(u32);
+i32 GetDriveTypeA(char*);
+void GetCurrentDirectoryA(u32, char*);
 
 typedef i32* HANDLE;
 #define INVALID_HANDLE_VALUE ((HANDLE)(-1))
@@ -21,6 +23,12 @@ typedef i32 HINSTANCE;
 
 //@FIXME
 typedef i32 tWAVEFORMATEX;
+
+typedef char CHAR;
+
+
+// @FIXME
+#define DRIVE_CDROM 5
 
 typedef i32 LRESULT;
 typedef u32 UINT;

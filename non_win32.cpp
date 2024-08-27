@@ -12,4 +12,13 @@ void Sleep(u32)
 {
 }
 
+i32 GetDriveTypeA(char*)
+{
+	return 69;
+}
+
+void GetCurrentDirectoryA(u32, char*)
+{
+}
+
 #endif

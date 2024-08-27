@@ -2,6 +2,8 @@
 #include "pkr.h"
 #include "non_win32.h"
 
+#include <cstring>
+
 EXPORT LIBPKR_HANDLE* gMediaPkr;
 
 EXPORT char gMovieCurrentDirectory[0x200];
@@ -84,7 +86,7 @@ void PCMOVIE_InitOnce(void)
 	while (1)
 	{
 		RootPathName[0] = v0;
-		if (GetDriveTypeA(RootPathName) == 5)
+		if (GetDriveTypeA(RootPathName) == DRIVE_CDROM)
 		{
 			strcpy(rootCdPath, RootPathName);
 			strcat(rootCdPath, "\\Setup");
@@ -110,7 +112,7 @@ void PCMOVIE_InitOnce(void)
 		break;
 	}
 
-	GetCurrentDirectoryA(0x200u, gMovieCurrentDirectory);
+	GetCurrentDirectoryA(0x200, gMovieCurrentDirectory);
 	strcpy(mediaPkrPath, gMovieCurrentDirectory);
 	strcat(mediaPkrPath, "\\");
 	strcat(mediaPkrPath, "Media.pkr");
