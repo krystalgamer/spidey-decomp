@@ -71,6 +71,7 @@
 #include "ps2lowsfx.h"
 #include "PCInput.h"
 #include "PCShell.h"
+#include "stubs.h"
 
 extern int FAIL_VALIDATION;
 
@@ -415,6 +416,7 @@ i32 validate(void)
 	validate_SMapping();
 	validate_SActionMap();
 	validate_SSaveGame();
+	validate_MEMORY_ALLOC();
 
 	puts("[*] Validation done!");
 
