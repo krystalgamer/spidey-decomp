@@ -107,16 +107,16 @@ float PCGfx_GetZLayerNearest(void)
 	return gZLayerNearest;
 }
 
-// @SMALLTODO
+// @Ok
 void PCGfx_IncZLayerFurthest(void)
 {
-    printf("PCGfx_IncZLayerFurthest(void)");
+	gZLayerFurthest -= 10.0f;
 }
 
-// @SMALLTODO
+// @Ok
 void PCGfx_IncZLayerNearest(void)
 {
-    printf("PCGfx_IncZLayerNearest(void)");
+	gZLayerNearest += 0.001f;
 }
 
 // @SMALLTODO

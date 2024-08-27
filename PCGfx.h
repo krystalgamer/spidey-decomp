@@ -30,7 +30,7 @@ EXPORT void PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float);
 EXPORT void PCGfx_EndScene(i32);
 EXPORT void PCGfx_Exit(void);
 EXPORT float PCGfx_GetZLayerFurthest(void);
-EXPORT void PCGfx_GetZLayerNearest(void);
+EXPORT float PCGfx_GetZLayerNearest(void);
 EXPORT void PCGfx_IncZLayerFurthest(void);
 EXPORT void PCGfx_IncZLayerNearest(void);
 EXPORT void PCGfx_InitAtStart(void);
