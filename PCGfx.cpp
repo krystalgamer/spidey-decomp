@@ -1,4 +1,5 @@
 #include "PCGfx.h"
+#include "PCTex.h"
 
 u8 gSceneRelated;
 
@@ -74,10 +75,13 @@ void PCGfx_EndScene(i32)
     printf("PCGfx_EndScene(i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCGfx_Exit(void)
 {
-    printf("PCGfx_Exit(void)");
+	PCGfx_ProcessTexture(0, -1, 0);
+	PCTex_ReleaseAllTextures();
+	print_if_false(PCTex_CountActiveTextures() == 0, "some textures still allocated!");
 }
 
 // @SMALLTODO
