@@ -6,6 +6,46 @@
 EXPORT MEMORY_ALLOC* gSysMemory;
 
 // @Ok
+void *syMalloc(u32 size)
+{
+	if (!size)
+	{
+		error("MEMORY ALLOC of size 0\n");
+		return 0;
+	}
+
+	MEMORY_ALLOC* newBlock = static_cast<MEMORY_ALLOC*>(malloc(sizeof(MEMORY_ALLOC)));
+	newBlock->mSize = size;
+	newBlock->mAddress = malloc(newBlock->mSize);
+
+	if (!gSysMemory)
+	{
+		gSysMemory = newBlock;
+		newBlock->mPrev = 0;
+		newBlock->mNext = 0;
+		return newBlock->mAddress;
+	}
+	else
+	{
+		MEMORY_ALLOC* openNext = gSysMemory;
+
+		for(
+				MEMORY_ALLOC *pSearch = gSysMemory->mNext;
+				pSearch;
+				pSearch = pSearch->mNext)
+		{
+			openNext = pSearch;
+		}
+
+		openNext->mNext = newBlock;
+		newBlock->mPrev = openNext;
+		newBlock->mNext = 0;
+	}
+
+	return newBlock->mAddress;
+}
+
+// @Ok
 // @Matching
 i32 syRtcInit(void)
 {
