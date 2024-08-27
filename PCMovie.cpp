@@ -1,4 +1,7 @@
 #include "PCMovie.h"
+#include "pkr.h"
+
+EXPORT LIBPKR_HANDLE* gMediaPkr;
 
 // @SMALLTODO
 void CloseMovieFile(void)
@@ -24,10 +27,23 @@ void OpenMovieFile(char *,bool)
     printf("OpenMovieFile(char *,bool)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCMOVIE_ClosePKR(void)
 {
-    printf("PCMOVIE_ClosePKR(void)");
+	if (gMediaPkr)
+	{
+		if (!PKR_Close(gMediaPkr))
+		{
+			char buf[512];
+			if (PKR_GetLastError(buf))
+				error("PKR\t: %s\r\n", buf);
+		}
+		gMediaPkr = 0;
+		return;
+	}
+
+	error("PKR\t: No PKR currently open.\r\n");
 }
 
 // @SMALLTODO
