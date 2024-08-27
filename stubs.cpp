@@ -13,6 +13,17 @@ i32 syRtcInit(void)
 }
 
 // @Ok
+// @Matching
+void syMallocFinish(void)
+{
+	while (gSysMemory)
+	{
+		error("MEMORY NOT FREE: %08X, %i\n", gSysMemory->mAddress, gSysMemory->mSize);
+		removeMemoryAlloc(gSysMemory);
+	}
+}
+
+// @Ok
 INLINE void removeMemoryAlloc(MEMORY_ALLOC* pAlloc)
 {
 	if (gSysMemory == pAlloc)
