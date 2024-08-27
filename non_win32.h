@@ -37,6 +37,7 @@ typedef u32 DWORD;
 #else
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>
+
 #endif
 
 #endif

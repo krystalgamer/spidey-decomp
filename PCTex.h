@@ -5,11 +5,10 @@
 
 #include "export.h"
 #include "bitmap256.h"
+#include "non_win32.h"
 
 // @FIXME
 #define PCTexture i32
-// @FIXME
-#define _DDPIXELFORMAT i32
 
 struct ClutPC
 {
@@ -27,9 +26,6 @@ struct PVRHeader
 	u16 field_1E;
 	u8 pTextureData;
 };
-
-// @FIXME
-typedef void IDirectDrawSurface7;
 
 struct SPCTexture
 {

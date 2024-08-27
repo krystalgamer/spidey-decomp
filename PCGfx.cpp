@@ -1,7 +1,12 @@
 #include "PCGfx.h"
 #include "PCTex.h"
+#include "DXsound.h"
+#include "SpideyDX.h"
 
 u8 gSceneRelated;
+
+EXPORT float gZLayerFurthest;
+EXPORT float gZLayerNearest;
 
 // @SMALLTODO
 void PCGfx_BeginScene(u32,i32)
@@ -84,16 +89,22 @@ void PCGfx_Exit(void)
 	print_if_false(PCTex_CountActiveTextures() == 0, "some textures still allocated!");
 }
 
-// @SMALLTODO
-void PCGfx_GetZLayerFurthest(void)
+// @Ok
+float PCGfx_GetZLayerFurthest(void)
 {
-    printf("PCGfx_GetZLayerFurthest(void)");
+	if ( !gSceneRelated )
+		PCGfx_BeginScene(3, -1);
+
+	return gZLayerFurthest;
 }
 
-// @SMALLTODO
-void PCGfx_GetZLayerNearest(void)
+// @Ok
+float PCGfx_GetZLayerNearest(void)
 {
-    printf("PCGfx_GetZLayerNearest(void)");
+	if ( !gSceneRelated )
+		PCGfx_BeginScene(3, -1);
+
+	return gZLayerFurthest;
 }
 
 // @SMALLTODO
@@ -111,7 +122,10 @@ void PCGfx_IncZLayerNearest(void)
 // @SMALLTODO
 void PCGfx_InitAtStart(void)
 {
-    printf("PCGfx_InitAtStart(void)");
+	DXPOLY_SetOutlineColor(0xFF00FF00);
+	DXPOLY_SetHUDOffset(7);
+	PCGfx_ProcessTexture(0, -1, 0);
+	PCGfx_SetBrightness(gBrightnessRelated);
 }
 
 // @Ok

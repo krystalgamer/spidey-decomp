@@ -16,6 +16,8 @@ u8 g3DAccelator = 1;
 
 HWND gHwnd;
 
+i32 gBrightnessRelated = 4;
+
 // @Ok
 EXPORT u8 isMMX(void)
 {
