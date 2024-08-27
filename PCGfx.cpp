@@ -14,6 +14,8 @@ EXPORT u32 gU32FoggingParamThree;
 
 EXPORT u8 gBFoggingRelated;
 
+EXPORT u32 gPcGfxSkyColor;
+
 // @SMALLTODO
 void PCGfx_BeginScene(u32,i32)
 {
@@ -191,10 +193,11 @@ void PCGfx_SetRenderParameter(DCGfx_RenderParameter,DCGfx_RenderSetting)
     printf("PCGfx_SetRenderParameter(DCGfx_RenderParameter,DCGfx_RenderSetting)");
 }
 
-// @SMALLTODO
-void PCGfx_SetSkyColor(u32)
+// @Ok
+INLINE void PCGfx_SetSkyColor(u32 a1)
 {
-    printf("PCGfx_SetSkyColor(u32)");
+	gPcGfxSkyColor = a1;
+	DXPOLY_SetBackgroundColor(a1 | 0xFF000000);
 }
 
 // @SMALLTODO
