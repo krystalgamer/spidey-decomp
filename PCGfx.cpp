@@ -8,6 +8,12 @@ u8 gSceneRelated;
 EXPORT float gZLayerFurthest;
 EXPORT float gZLayerNearest;
 
+EXPORT float gFlFoggingParamOne = 100000.0f;
+EXPORT float gFlFoggingParamTwo = 100005.0f;
+EXPORT u32 gU32FoggingParamThree;
+
+EXPORT u8 gBFoggingRelated;
+
 // @SMALLTODO
 void PCGfx_BeginScene(u32,i32)
 {
@@ -119,7 +125,7 @@ void PCGfx_IncZLayerNearest(void)
 	gZLayerNearest += 0.001f;
 }
 
-// @SMALLTODO
+// @Ok
 void PCGfx_InitAtStart(void)
 {
 	DXPOLY_SetOutlineColor(0xFF00FF00);
@@ -159,10 +165,24 @@ void PCGfx_SetBrightness(i32)
     printf("PCGfx_SetBrightness(i32)");
 }
 
-// @SMALLTODO
-void PCGfx_SetFogParams(float,float,u32)
+// @Ok
+// @Matching
+void PCGfx_SetFogParams(
+		float a1,
+		float a2,
+		u32 a3)
 {
-    printf("PCGfx_SetFogParams(float,float,u32)");
+	u32 three = a3;
+	if ((a3 & 0xFF000000) == 0x80000000)
+	{
+		three = 0xFFFFFF & a3;
+		a1 = a2 * 0.88999999f;
+	}
+
+	gFlFoggingParamOne = a1;
+	gFlFoggingParamTwo = a2;
+	gU32FoggingParamThree = three;
+	gBFoggingRelated = 1;
 }
 
 // @SMALLTODO
