@@ -17,9 +17,6 @@ EXPORT void PCMOVIE_OpenPKR(void);
 EXPORT void PCMOVIE_Play(char *,i32);
 EXPORT void PCMOVIE_SetVolume(i32);
 EXPORT void PCMOVIE_Stop(void);
-EXPORT void findCD(void);
-EXPORT void findFile(char *);
 EXPORT void findFileOffsetPKR(char *,char const *);
-EXPORT void tryOpenFile(char *,char *);
 
 #endif

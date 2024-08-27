@@ -7,6 +7,10 @@ EXPORT LIBPKR_HANDLE* gMediaPkr;
 EXPORT char gMovieCurrentDirectory[0x200];
 EXPORT u8 gFoundMediaPkr;
 
+EXPORT char gCdPath[0x100];
+EXPORT u8 gPcMovieInited;
+
+
 
 // @SMALLTODO
 void CloseMovieFile(void)
@@ -52,12 +56,18 @@ void PCMOVIE_ClosePKR(void)
 }
 
 // @SMALLTODO
+// wait for DXINIT stuff
 void PCMOVIE_Init(void)
 {
-    printf("PCMOVIE_Init(void)");
+	if (!gPcMovieInited)
+	{
+		/*
+		BinkSetSoundSystem(BinkOpenDirectSound, dword_6B7920);
+		result = BinkSetIOSize(256);
+		*/
+		gPcMovieInited = 1;
+	}
 }
-
-EXPORT char gCdPath[0x100];
 
 // @Ok
 // @Matching
@@ -148,25 +158,7 @@ void PCMOVIE_Stop(void)
 }
 
 // @SMALLTODO
-void findCD(void)
-{
-    printf("findCD(void)");
-}
-
-// @SMALLTODO
-void findFile(char *)
-{
-    printf("findFile(char *)");
-}
-
-// @SMALLTODO
 void findFileOffsetPKR(char *,char const *)
 {
     printf("findFileOffsetPKR(char *,char const *)");
-}
-
-// @SMALLTODO
-void tryOpenFile(char *,char *)
-{
-    printf("tryOpenFile(char *,char *)");
 }
