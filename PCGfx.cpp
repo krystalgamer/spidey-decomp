@@ -104,7 +104,7 @@ float PCGfx_GetZLayerNearest(void)
 	if ( !gSceneRelated )
 		PCGfx_BeginScene(3, -1);
 
-	return gZLayerFurthest;
+	return gZLayerNearest;
 }
 
 // @SMALLTODO
