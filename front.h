@@ -60,7 +60,7 @@ public:
 	EXPORT void Zoom(i32);
 	EXPORT void Display(void);
 
-	int ptr_to;
+	i32 ptr_to;
 	unsigned __int16 menu_width;
 	__int16 text_val_b;
 	int width_val_a;

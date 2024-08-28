@@ -381,8 +381,11 @@ void CMenu::SetLine(char Line)
 	}
 }
 
+// @Ok
 CMenu::~CMenu()
 {
+	delete reinterpret_cast<CClass*>(this->ptr_to);
+	this->ptr_to = 0;
 }
 
 // @Ok
