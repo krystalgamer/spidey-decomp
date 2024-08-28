@@ -141,10 +141,11 @@ void Front_MiniUpdate(void)
     printf("Front_MiniUpdate(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Front_RGBRed(void)
 {
-    printf("Front_RGBRed(void)");
+	Mess_SetRGB(0xFF, 0, 0, 0);
 }
 
 // @Ok
