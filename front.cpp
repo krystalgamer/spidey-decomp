@@ -2,6 +2,14 @@
 #include "validate.h"
 #include "utils.h"
 
+EXPORT i32 gFrontGauge;
+
+INLINE void CMenu::KillBox(void)
+{
+	delete reinterpret_cast<CClass*>(this->ptr_to);
+	this->ptr_to = 0;
+}
+
 // @MEDIUMTODO
 void CMenu::Display(void)
 {
@@ -94,7 +102,6 @@ void PrintPaused(void)
 
 // @NotOk
 // Globals
-static int gFrontGauge;
 INLINE void Front_GaugeOff(void)
 {
 	gFrontGauge = 0;
@@ -384,8 +391,7 @@ void CMenu::SetLine(char Line)
 // @Ok
 CMenu::~CMenu()
 {
-	delete reinterpret_cast<CClass*>(this->ptr_to);
-	this->ptr_to = 0;
+	this->KillBox();
 }
 
 // @Ok

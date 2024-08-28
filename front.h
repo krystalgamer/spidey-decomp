@@ -59,6 +59,7 @@ public:
 	EXPORT void AddEntry(const char*);
 	EXPORT void Zoom(i32);
 	EXPORT void Display(void);
+	EXPORT void KillBox(void);
 
 	i32 ptr_to;
 	unsigned __int16 menu_width;
