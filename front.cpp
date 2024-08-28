@@ -157,10 +157,13 @@ void Front_Update(void)
     printf("Front_Update(void)");
 }
 
-// @SMALLTODO
-void PrintPaused(void)
+// @Ok
+// @Matching
+INLINE void PrintPaused(void)
 {
-    printf("PrintPaused(void)");
+	Mess_SetScale(256);
+	Mess_SetRGB(0x7F, 0x19, 0x21, 0);
+	Mess_DrawText(256, 50, "Paused", 0, 0x1000);
 }
 
 // @NotOk

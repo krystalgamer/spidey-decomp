@@ -178,8 +178,10 @@ void DeleteSimpleMessage(SimpleMessage*)
 
 
 // @SMALLTODO
-void Mess_SetRGB(unsigned char, unsigned char, unsigned char, int)
-{}
+void Mess_SetRGB(u8, u8, u8, i32)
+{
+	printf("void Mess_SetRGB(u8, u8, u8, i32)");
+}
 
 // @MEDIUMTODO
 void Mess_SetCurrentFont(char *)
