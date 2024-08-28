@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "main.h"
+#include "pshell.h"
 
 struct SEntry
 {
@@ -61,34 +62,36 @@ public:
 	EXPORT void Display(void);
 	EXPORT void KillBox(void);
 
-	i32 ptr_to;
-	unsigned __int16 menu_width;
-	__int16 text_val_b;
+	CExpandingBox* ptr_to;
+	u16 menu_width;
+	i16 text_val_b;
 	int width_val_a;
 
 	char scrollbar_one;
 	char scrollbar_zero;
 
-	unsigned char mJustification;
-	unsigned char padAfterJust;
+	u8 mJustification;
+	u8 padAfterJust;
 
-	unsigned char mLine;
-	unsigned char mCursorLine;
-	unsigned char padAfterCursorLine[4];
+	u8 mLine;
+	u8 mCursorLine;
+	u8 padAfterCursorLine[4];
 
-	unsigned char mNumLines;
-	unsigned char field_1B;
-	unsigned char padAfterNumLines[2];
+	u8 mNumLines;
+	u8 field_1B;
+	u8 mZoomBoxType;
+	u8 padAfter1C[1];
 
-	__int16 field_1E;
+	i16 field_1E;
 	unsigned char padAfter1E[4];
 
-	int mX;
-	int mY; int mLineSep;
-	__int16 field_30;
-	__int16 field_32;
-	int field_34;
-	int field_38;
+	i32 mX;
+	i32 mY;
+	i32 mLineSep;
+	i16 field_30;
+	i16 field_32;
+	i32 field_34;
+	i32 field_38;
 
 	SEntry mEntry[40];
 };

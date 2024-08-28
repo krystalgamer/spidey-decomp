@@ -1,12 +1,13 @@
 #include "front.h"
 #include "validate.h"
 #include "utils.h"
+#include "mess.h"
 
 EXPORT i32 gFrontGauge;
 
 INLINE void CMenu::KillBox(void)
 {
-	delete reinterpret_cast<CClass*>(this->ptr_to);
+	delete this->ptr_to;
 	this->ptr_to = 0;
 }
 
@@ -17,9 +18,56 @@ void CMenu::Display(void)
 }
 
 // @SMALLTODO
-void CMenu::Zoom(i32)
+void CMenu::Zoom(i32 zoomboxType)
 {
-	printf("void CMenu::Zoom(i32)");
+	this->mZoomBoxType = zoomboxType;
+	this->KillBox();
+
+	switch (zoomboxType)
+	{
+		case 0:
+			this->ptr_to = new CExpandingBox(
+				0,
+				this->mY - 18,
+				512,
+				this->GetMenuHeight() + 27,
+				0,
+				0,
+				1000,
+				15,
+				0);
+			break;
+		case 1:
+		case 2:
+			i32 v16;
+			i32 v17;
+			if (Utils_CompareStrings(Mess_GetCurrentFont(), "sp_fnt03.fnt"))
+			{
+				v17 = 10;
+				v16 = 14;
+			}
+			else
+			{
+				v17 = 12;
+				v16 = 17;
+			}
+
+			this->ptr_to = new CExpandingBox(
+				this->mX - 5,
+				this->mY - v17,
+				this->menu_width + 12,
+				v16 + this->GetMenuHeight(),
+				0,
+				0,
+				30,
+				15,
+				0);
+
+			break;
+		default:
+			print_if_false(0, "Bad zoombox type");
+			break;
+	}
 }
 
 // @SMALLTODO
@@ -178,7 +226,7 @@ void CMenu::GetEntryXY(const char* entry, int* x, int* y)
 }
 
 // @Ok
-int __inline CMenu::GetMenuHeight(void)
+INLINE i32 CMenu::GetMenuHeight(void)
 {
   int v1 = 0;
   int v2 = 0;
@@ -427,6 +475,7 @@ void validate_CMenu(void)
 	VALIDATE(CMenu, mCursorLine, 0x15);
 	VALIDATE(CMenu, mNumLines,  0x1A);
 	VALIDATE(CMenu, field_1B,  0x1B);
+	VALIDATE(CMenu, mZoomBoxType,  0x1C);
 	VALIDATE(CMenu, field_1E, 0x1E);
 	VALIDATE(CMenu, mX, 0x24);
 	VALIDATE(CMenu, mY, 0x28);
