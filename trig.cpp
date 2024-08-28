@@ -18,7 +18,7 @@ EXPORT SCommandPoint* HashTable[256];
 static int gTrigMenu[40];
 static int gRestartPoints;
 EXPORT i32 Restart;
-EXPORT i32 RestartNode;
+i32 RestartNode;
 EXPORT i32 gReStartDeathRelated;
 EXPORT i32 EndLevelNode;
 extern CSpecialDisplay *SpecialDisplayList;

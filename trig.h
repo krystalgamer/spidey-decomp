@@ -6,6 +6,8 @@
 #include "export.h"
 #include "vector.h"
 
+EXPORT extern i32 RestartNode;
+
 class CBody;
 
 struct SLinkInfo
@@ -42,7 +44,7 @@ struct PendingListEntry
 };
 
 EXPORT int Trig_GetLevelId(void);
-EXPORT u16* Trig_GetPosition(CVector*, int);
+EXPORT u16* Trig_GetPosition(CVector*, i32);
 EXPORT u16* Trig_GetLinksPointer(i32);
 EXPORT void Trig_SendPulse(u16*);
 EXPORT void Trig_SendPulseToNode(int);

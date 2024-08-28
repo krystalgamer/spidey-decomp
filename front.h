@@ -7,6 +7,8 @@
 #include "main.h"
 #include "pshell.h"
 
+EXPORT extern char gRestartPointName[50];
+
 struct SEntry
 {
 	const char* name;

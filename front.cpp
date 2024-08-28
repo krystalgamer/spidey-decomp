@@ -3,8 +3,10 @@
 #include "utils.h"
 #include "mess.h"
 #include "ps2funcs.h"
+#include "trig.h"
 
 EXPORT i32 gFrontGauge;
+char gRestartPointName[50];
 
 INLINE void CMenu::KillBox(void)
 {
@@ -145,10 +147,26 @@ void Front_RGBRed(void)
     printf("Front_RGBRed(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void Front_SaveGameState(void)
 {
-    printf("Front_SaveGameState(void)");
+	CVector v4;
+	v4.vx = 0;
+	v4.vy = 0;
+	v4.vz = 0;
+
+	char *pName = reinterpret_cast<char*>(Trig_GetPosition(&v4, RestartNode));
+	char *pDestBuf = gRestartPointName;
+	i32 i = 0;
+
+	while (*pName)
+	{
+		i++;
+		*pDestBuf++ = *pName++;
+		print_if_false((u8)(i < 50), "Too many chars in restart point name");
+	}
+
+	*pDestBuf = 0;
 }
 
 // @MEDIUMTODO
