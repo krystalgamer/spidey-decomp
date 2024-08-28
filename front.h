@@ -9,7 +9,7 @@
 
 struct SEntry
 {
-	char* name;
+	const char* name;
 	__int16 val_a;
 	__int16 val_b;
 	__int16 field_8;
@@ -89,7 +89,7 @@ public:
 	i32 mY;
 	i32 mLineSep;
 	i16 field_30;
-	i16 field_32;
+	u16 field_32;
 	i32 field_34;
 	i32 field_38;
 

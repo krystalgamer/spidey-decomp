@@ -17,7 +17,8 @@ void CMenu::Display(void)
 	printf("void CMenu::Display(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CMenu::Zoom(i32 zoomboxType)
 {
 	this->mZoomBoxType = zoomboxType;
@@ -70,10 +71,21 @@ void CMenu::Zoom(i32 zoomboxType)
 	}
 }
 
-// @SMALLTODO
-void CMenu::AddEntry(const char*)
+// @Ok
+// @Matching
+void CMenu::AddEntry(const char* pString)
 {
-	printf("void CMenu::AddEntry(const char*)");
+	print_if_false(this->mNumLines < 40, "Too many entries added to menu");
+	this->mEntry[this->mNumLines].name = pString;
+	this->mEntry[this->mNumLines].unk_b = 1;
+	this->mEntry[this->mNumLines].unk_a = 0;
+
+	i32 width = Mess_TextWidth(this->mEntry[this->mNumLines].name);
+	if (width > this->menu_width)
+		this->menu_width = width + this->width_val_a;
+
+	this->mNumLines++;
+	this->field_32++;
 }
 
 // @SMALLTODO

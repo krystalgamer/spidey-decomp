@@ -417,6 +417,7 @@ i32 validate(void)
 	validate_SActionMap();
 	validate_SSaveGame();
 	validate_MEMORY_ALLOC();
+	validate_SMessageProg();
 
 	puts("[*] Validation done!");
 
