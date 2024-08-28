@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "utils.h"
 #include "mess.h"
+#include "ps2funcs.h"
 
 EXPORT i32 gFrontGauge;
 
@@ -88,10 +89,12 @@ void CMenu::AddEntry(const char* pString)
 	this->field_32++;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Front_ClearScreen(void)
 {
-    printf("Front_ClearScreen(void)");
+	ClearImage();
+	ClearImage();
 }
 
 // @MEDIUMTODO

@@ -7,6 +7,7 @@
 #include "quat.h"
 
 EXPORT extern u8 gPrintStubbed;
+EXPORT extern u8 gClearImagePrint;
 
 enum GTREGType
 {
@@ -101,6 +102,15 @@ EXPORT void MTC2(i32*, GTREGType);
 
 // @Ok
 INLINE static void DrawSync(void)
+{
+	if (!gPrintStubbed)
+	{
+		stubbed_printf("stubbed out: DrawSync");
+	}
+}
+
+// @Ok
+INLINE static void ClearImage(void)
 {
 	if (!gPrintStubbed)
 	{
