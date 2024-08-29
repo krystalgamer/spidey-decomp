@@ -117,7 +117,7 @@ EXPORT void Front_ClearScreen(void);
 EXPORT void Front_Display(void);
 EXPORT SLevel* Front_FindLevel(char *);
 EXPORT void Front_GetButtons(i32 *,i32 *,i32 *,i32 *);
-EXPORT void Front_GetLevelIndex(char *);
+EXPORT i32 Front_GetLevelIndex(char *);
 EXPORT void Front_Init(void);
 EXPORT void Front_LoadGame(SSaveGame *,i32,bool);
 EXPORT void Front_MiniUpdate(void);

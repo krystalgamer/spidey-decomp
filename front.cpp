@@ -9,6 +9,7 @@ EXPORT i32 gFrontGauge;
 char gRestartPointName[50];
 
 const i32 NUM_LEVELS = 41;
+// @FIXME add content
 EXPORT SLevel Levels[NUM_LEVELS];
 
 // @Ok
@@ -113,7 +114,7 @@ void Front_Display(void)
 // @Ok
 // it seems the game was using older obj file
 // code looks debug
-SLevel* Front_FindLevel(char* pTRGName)
+INLINE SLevel* Front_FindLevel(char* pTRGName)
 {
 	for (i32 i = 0;
 			i < NUM_LEVELS;
@@ -136,10 +137,18 @@ void Front_GetButtons(i32 *,i32 *,i32 *,i32 *)
     printf("Front_GetButtons(i32 *,i32 *,i32 *,i32 *)");
 }
 
-// @SMALLTODO
-void Front_GetLevelIndex(char *)
+// @Ok
+i32 Front_GetLevelIndex(char* pTRGName)
 {
-    printf("Front_GetLevelIndex(char *)");
+	SLevel* pLevel = Front_FindLevel(pTRGName);
+	if (!pLevel)
+		return -1;
+
+	i32 index =
+		(reinterpret_cast<i32>(pLevel) - reinterpret_cast<i32>(&Levels[0]))/sizeof(SLevel);
+
+	print_if_false(index >= 0 && index < 34, "Bad LevelIndex found by Front_GetLevelIndex");
+	return index;
 }
 
 // @MEDIUMTODO
