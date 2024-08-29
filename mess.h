@@ -15,7 +15,7 @@ struct SMessageProg
 
 struct SMessage
 {
-	char* pText;
+	const char* pText;
 	u16 T;
 	u16 T_total;
 	u8 padAfter6[0x10-0x6-2];
@@ -46,7 +46,7 @@ EXPORT void Mess_DrawText(i32,i32,char const *,i32,u32);
 EXPORT void Mess_GetScale(void);
 EXPORT void Mess_GetSort(void);
 EXPORT void Mess_LoadFont(char *,i32,i32,i32);
-EXPORT void Mess_Message(char const *,SMessageProg *);
+EXPORT SMessage* Mess_Message(const char *,SMessageProg *);
 EXPORT void Mess_SetShadowRGB(u8);
 EXPORT void Mess_SetSort(i32);
 EXPORT void Mess_ShadowsOff(void);

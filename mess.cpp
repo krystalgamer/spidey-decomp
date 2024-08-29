@@ -9,7 +9,8 @@ EXPORT u8 gTextJustify;
 EXPORT SMessage* pMessages;
 
 // @Ok
-SMessage* CreateMessage(void)
+// @Matching
+INLINE SMessage* CreateMessage(void)
 {
 	SMessage* newMessage = static_cast<SMessage*>(DCMem_New(0x1Cu, 0, 1, 0, 1));
 
@@ -72,10 +73,18 @@ void Mess_LoadFont(char *,i32,i32,i32)
     printf("Mess_LoadFont(char *,i32,i32,i32)");
 }
 
-// @SMALLTODO
-void Mess_Message(char const *,SMessageProg *)
+// @Ok
+// @Matching
+SMessage* Mess_Message(const char * pText, SMessageProg* pProg)
 {
-    printf("Mess_Message(char const *,SMessageProg *)");
+	SMessage* newMessage = CreateMessage();
+
+	newMessage->pText = pText;
+	newMessage->pProg = pProg;
+
+	newMessage->T = 0;
+	newMessage->T_total = 0;
+	return newMessage;
 }
 
 // @SMALLTODO
