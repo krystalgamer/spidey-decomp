@@ -133,10 +133,10 @@ void Mess_ShadowsOff(void)
 	FontManager::AllShadowOff();
 }
 
-// @SMALLTODO
+// @Ok
 void Mess_ShadowsOn(void)
 {
-    printf("Mess_ShadowsOn(void)");
+	FontManager::AllShadowOn();
 }
 
 // @SMALLTODO
