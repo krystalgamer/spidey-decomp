@@ -8,6 +8,11 @@
 EXPORT i32 gFrontGauge;
 char gRestartPointName[50];
 
+const i32 NUM_LEVELS = 41;
+EXPORT SLevel Levels[NUM_LEVELS];
+
+// @Ok
+// @Matching
 INLINE void CMenu::KillBox(void)
 {
 	delete this->ptr_to;
@@ -105,10 +110,24 @@ void Front_Display(void)
     printf("Front_Display(void)");
 }
 
-// @SMALLTODO
-void Front_FindLevel(char *)
+// @Ok
+// it seems the game was using older obj file
+// code looks debug
+SLevel* Front_FindLevel(char* pTRGName)
 {
-    printf("Front_FindLevel(char *)");
+	for (i32 i = 0;
+			i < NUM_LEVELS;
+			i++)
+	{
+		char *pName = Levels[i].mName;
+		if (!pName[0])
+			break;
+
+		if (pName[1] == pTRGName[1] && pName[3] == pTRGName[3])
+			return &Levels[i];
+	}
+
+	return 0;
 }
 
 // @SMALLTODO
@@ -552,4 +571,12 @@ void validate_SEntry(void)
 	VALIDATE(SEntry, field_1A, 0x1A);
 	VALIDATE(SEntry, field_1B, 0x1B);
 	VALIDATE(SEntry, what, 0x1C);
+}
+
+void validate_SLevel(void)
+{
+	VALIDATE_SIZE(SLevel, 0x14);
+
+	VALIDATE(SLevel, mDisplayName, 0x0);
+	VALIDATE(SLevel, mName, 0x4);
 }

@@ -9,6 +9,14 @@
 
 EXPORT extern char gRestartPointName[50];
 
+struct SLevel
+{
+	char* mDisplayName;
+	char* mName;
+
+	u8 padBottom[0x14-8];
+};
+
 struct SEntry
 {
 	const char* name;
@@ -107,7 +115,7 @@ struct SSaveGame;
 EXPORT void Front_GaugeOff(void);
 EXPORT void Front_ClearScreen(void);
 EXPORT void Front_Display(void);
-EXPORT void Front_FindLevel(char *);
+EXPORT SLevel* Front_FindLevel(char *);
 EXPORT void Front_GetButtons(i32 *,i32 *,i32 *,i32 *);
 EXPORT void Front_GetLevelIndex(char *);
 EXPORT void Front_Init(void);
@@ -117,5 +125,7 @@ EXPORT void Front_RGBRed(void);
 EXPORT void Front_SaveGameState(void);
 EXPORT void Front_Update(void);
 EXPORT void PrintPaused(void);
+
+void validate_SLevel(void);
 
 #endif
