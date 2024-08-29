@@ -127,10 +127,10 @@ void Mess_SetSort(i32)
     printf("Mess_SetSort(i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void Mess_ShadowsOff(void)
 {
-    printf("Mess_ShadowsOff(void)");
+	FontManager::AllShadowOff();
 }
 
 // @SMALLTODO
