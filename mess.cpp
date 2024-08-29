@@ -187,7 +187,8 @@ int Mess_TextHeight(char *pStr)
 	return FontRelated.height(pStr);
 }
 
-// @NotOk
+// @Ok
+// @Matching
 void Mess_ClearSimpleMessages(void)
 {
 	while (pSimpleMessages)
@@ -196,9 +197,23 @@ void Mess_ClearSimpleMessages(void)
 	}
 }
 
-// @BIGTODO
-void DeleteSimpleMessage(SSimpleMessage*)
-{}
+// @Ok
+// @Matching
+INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
+{
+	print_if_false(pMessage != 0, "Tried to delete a NULL pMessage");
+
+	if (pMessage->pNext)
+		pMessage->pNext->pPrevious = pMessage->pPrevious;
+
+	if (pMessage->pPrevious)
+		pMessage->pPrevious->pNext = pMessage->pNext;
+
+	if (pMessage == pSimpleMessages)
+		pSimpleMessages = pMessage->pNext;
+
+	Mem_Delete(pMessage);
+}
 
 
 // @SMALLTODO
