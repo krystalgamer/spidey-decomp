@@ -5,8 +5,12 @@
 
 #include "export.h"
 
-struct SimpleMessage
+struct SSimpleMessage
 {
+	u8 padTop[0x1C];
+
+	SSimpleMessage* pNext;
+	SSimpleMessage* pPrevious;
 };
 
 struct SMessageProg
@@ -34,11 +38,11 @@ EXPORT void Mess_UnloadFont(void);
 EXPORT int Mess_TextHeight(char *);
 EXPORT void Mess_SetCurrentFont(char *);
 
-EXPORT void Mess_ClearSimpleMessageList(void);
-EXPORT void DeleteSimpleMessage(SimpleMessage*);
+EXPORT void Mess_ClearSimpleMessages(void);
+EXPORT void DeleteSimpleMessage(SSimpleMessage*);
 
 EXPORT SMessage* CreateMessage(void);
-EXPORT void CreateSimpleMessage(void);
+EXPORT SSimpleMessage* CreateSimpleMessage(void);
 EXPORT void Mess_ClearSimpleMessages(void);
 EXPORT void Mess_DeleteAll(void);
 EXPORT void Mess_Display(void);

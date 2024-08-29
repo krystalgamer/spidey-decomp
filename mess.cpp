@@ -7,12 +7,14 @@
 EXPORT u8 gTextJustify;
 
 EXPORT SMessage* pMessages;
+EXPORT SSimpleMessage* pSimpleMessages;
 
 // @Ok
 // @Matching
 INLINE SMessage* CreateMessage(void)
 {
-	SMessage* newMessage = static_cast<SMessage*>(DCMem_New(0x1Cu, 0, 1, 0, 1));
+	SMessage* newMessage = static_cast<SMessage*>(
+			DCMem_New(sizeof(SMessage), 0, 1, 0, 1));
 
 	newMessage->pPrevious = 0;
 	newMessage->pNext = pMessages;
@@ -25,16 +27,21 @@ INLINE SMessage* CreateMessage(void)
 	return newMessage;
 }
 
-// @SMALLTODO
-void CreateSimpleMessage(void)
+// @Ok
+SSimpleMessage* CreateSimpleMessage(void)
 {
-    printf("CreateSimpleMessage(void)");
-}
+	SSimpleMessage* newMessage = static_cast<SSimpleMessage*>(
+			DCMem_New(sizeof(SSimpleMessage), 0, 1, 0, 1));
 
-// @SMALLTODO
-void Mess_ClearSimpleMessages(void)
-{
-    printf("Mess_ClearSimpleMessages(void)");
+	newMessage->pPrevious = 0;
+	newMessage->pNext = pSimpleMessages;
+
+	pSimpleMessages = newMessage;
+
+	if (newMessage->pNext)
+		newMessage->pNext->pPrevious = newMessage;
+
+	return newMessage;
 }
 
 // @SMALLTODO
@@ -180,24 +187,17 @@ int Mess_TextHeight(char *pStr)
 	return FontRelated.height(pStr);
 }
 
-static SimpleMessage** SimpleMessageList;
-
 // @NotOk
-// Revisit  to see if loop is ok
-void Mess_ClearSimpleMessageList(void)
+void Mess_ClearSimpleMessages(void)
 {
-	while (1)
+	while (pSimpleMessages)
 	{
-		SimpleMessage* cur = *SimpleMessageList;
-		if (!cur)
-			break;
-
-		DeleteSimpleMessage(cur);
+		DeleteSimpleMessage(pSimpleMessages);
 	}
 }
 
 // @BIGTODO
-void DeleteSimpleMessage(SimpleMessage*)
+void DeleteSimpleMessage(SSimpleMessage*)
 {}
 
 
@@ -213,6 +213,10 @@ void Mess_SetCurrentFont(char *)
 
 void validate_SimpleMessage(void)
 {
+	VALIDATE_SIZE(SSimpleMessage, 0x24);
+
+	VALIDATE(SSimpleMessage, pNext, 0x1C);
+	VALIDATE(SSimpleMessage, pPrevious, 0x20);
 }
 
 void validate_SMessageProg(void)
