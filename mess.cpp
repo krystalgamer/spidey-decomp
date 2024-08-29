@@ -44,10 +44,31 @@ SSimpleMessage* CreateSimpleMessage(void)
 	return newMessage;
 }
 
-// @SMALLTODO
+// @Ok
+// For the life of me, can't get it to match the assembly is too obtuse
+// I think the developers wrote some macros that when expanded looked weird
 void Mess_DeleteAll(void)
 {
-    printf("Mess_DeleteAll(void)");
+	SMessage *curMessage = pMessages;
+	while (curMessage)
+	{
+		SMessage* nextMessage = curMessage->pNext;
+		Mem_Delete(curMessage);
+
+		curMessage = nextMessage;
+	}
+
+	pMessages = 0;
+
+	SSimpleMessage *curSimpleMessage = pSimpleMessages;
+	while (curSimpleMessage)
+	{
+		SSimpleMessage* nextMessage = curSimpleMessage->pNext;
+		Mem_Delete(curSimpleMessage);
+		curSimpleMessage = nextMessage;
+	}
+
+	pSimpleMessages = 0;
 }
 
 // @SMALLTODO
