@@ -1,12 +1,27 @@
 #include "mess.h"
 #include "FontTools.h"
+#include "mem.h"
+
+#include "validate.h"
 
 EXPORT u8 gTextJustify;
 
-// @SMALLTODO
-void CreateMessage(void)
+EXPORT SMessage* pMessages;
+
+// @Ok
+SMessage* CreateMessage(void)
 {
-    printf("CreateMessage(void)");
+	SMessage* newMessage = static_cast<SMessage*>(DCMem_New(0x1Cu, 0, 1, 0, 1));
+
+	newMessage->pPrevious = 0;
+	newMessage->pNext = pMessages;
+
+	pMessages = newMessage;
+
+	if (newMessage->pNext)
+		newMessage->pNext->pPrevious = newMessage;
+
+	return newMessage;
 }
 
 // @SMALLTODO
@@ -191,7 +206,19 @@ void validate_SimpleMessage(void)
 {
 }
 
-
 void validate_SMessageProg(void)
 {
+}
+
+void validate_SMessage(void)
+{
+	VALIDATE_SIZE(SMessage, 0x1C);
+
+	VALIDATE(SMessage, pText, 0x0);
+	VALIDATE(SMessage, T, 0x4);
+	VALIDATE(SMessage, T_total, 0x6);
+
+	VALIDATE(SMessage, pProg, 0x10);
+	VALIDATE(SMessage, pNext, 0x14);
+	VALIDATE(SMessage, pPrevious, 0x18);
 }

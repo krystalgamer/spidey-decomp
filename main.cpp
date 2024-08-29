@@ -419,6 +419,7 @@ i32 validate(void)
 	validate_MEMORY_ALLOC();
 	validate_SMessageProg();
 	validate_SLevel();
+	validate_SMessage();
 
 	puts("[*] Validation done!");
 

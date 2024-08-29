@@ -13,6 +13,18 @@ struct SMessageProg
 {
 };
 
+struct SMessage
+{
+	char* pText;
+	u16 T;
+	u16 T_total;
+	u8 padAfter6[0x10-0x6-2];
+
+	SMessageProg* pProg;
+	SMessage* pNext;
+	SMessage* pPrevious;
+};
+
 EXPORT void Mess_SetTextJustify(unsigned char);
 EXPORT void Mess_SetScale(int);
 EXPORT void Mess_SetRGB(u8, u8, u8, i32);
@@ -25,7 +37,7 @@ EXPORT void Mess_SetCurrentFont(char *);
 EXPORT void Mess_ClearSimpleMessageList(void);
 EXPORT void DeleteSimpleMessage(SimpleMessage*);
 
-EXPORT void CreateMessage(void);
+EXPORT SMessage* CreateMessage(void);
 EXPORT void CreateSimpleMessage(void);
 EXPORT void Mess_ClearSimpleMessages(void);
 EXPORT void Mess_DeleteAll(void);
@@ -46,6 +58,7 @@ EXPORT void Mess_Update(void);
 
 void validate_SimpleMessage(void);
 void validate_SMessageProg(void);
+void validate_SMessage(void);
 
 #endif
 
