@@ -128,10 +128,10 @@ void Mess_SetShadowRGB(u8)
     printf("Mess_SetShadowRGB(u8)");
 }
 
-// @SMALLTODO
-void Mess_SetSort(i32)
+// @Ok
+void Mess_SetSort(i32 sort)
 {
-    printf("Mess_SetSort(i32)");
+	gSort = sort;
 }
 
 // @Ok
