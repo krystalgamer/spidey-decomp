@@ -127,6 +127,13 @@ void FontManager::UnloadAllFonts(void)
 }
 
 // @SMALLTODO
+Font* FontManager::GetFont(const char*)
+{
+	printf("Font* FontManager::GetFont(const char*)");
+	return reinterpret_cast<Font*>(0x30082024);
+}
+
+// @SMALLTODO
 i32 Font::heightBelowBaseline(char*)
 {
 	return 0x14072024;
@@ -172,11 +179,23 @@ void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x164);
 
+	VALIDATE(Font, field_4, 0x4);
+	VALIDATE(Font, field_8, 0x8);
+	VALIDATE(Font, field_C, 0xC);
+	VALIDATE(Font, field_10, 0x10);
+
 	VALIDATE(Font, mRed, 0x14);
 	VALIDATE(Font, mGreen, 0x18);
 	VALIDATE(Font, mBlue, 0x1C);
 
 	VALIDATE(Font, field_21, 0x21);
+
+	VALIDATE(Font, field_24, 0x24);
+	VALIDATE(Font, field_28, 0x28);
+	VALIDATE(Font, field_2C, 0x2C);
+	VALIDATE(Font, field_30, 0x30);
+	VALIDATE(Font, field_34, 0x34);
+
 	VALIDATE(Font, field_38, 0x38);
 
 	VALIDATE(Font, field_48, 0x48);

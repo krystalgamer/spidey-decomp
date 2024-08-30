@@ -283,9 +283,40 @@ void Mess_SetRGB(u8 r, u8 g, u8 b, i32)
 	gMessFont.mBlue = b;
 }
 
-// @MEDIUMTODO
-void Mess_SetCurrentFont(char *)
-{}
+// @Ok
+void Mess_SetCurrentFont(char* a1)
+{
+	Font* pFont = FontManager::GetFont(a1);
+	/*
+	gMessFont.field_4 = pFont->field_4;
+	gMessFont.field_8 = pFont->field_8;
+	gMessFont.field_C = pFont->field_C;
+	gMessFont.field_10 = pFont->field_10;
+
+	gMessFont.mRed = pFont->mRed;
+	gMessFont.mGreen = pFont->mGreen;
+	gMessFont.mBlue = pFont->mBlue;
+
+	gMessFont.field_20 = pFont->field_20;
+	gMessFont.field_21 = pFont->field_21;
+	gMessFont.field_24 = pFont->field_24;
+	gMessFont.field_28 = pFont->field_28;
+	gMessFont.field_2C = pFont->field_2C;
+	gMessFont.field_30 = pFont->field_30;
+	gMessFont.field_34 = pFont->field_34;
+
+	gMessFont.field_48 = pFont->field_48;
+	gMessFont.field_4C = pFont->field_4C;
+	gMessFont.field_50 = pFont->field_50;
+	gMessFont.field_54 = pFont->field_54;
+	gMessFont.field_58 = pFont->field_58;
+	gMessFont.field_5C = pFont->field_5C;
+	gMessFont.field_5D = pFont->field_5D;
+	gMessFont.field_5E = pFont->field_5E;
+	*/
+
+	gMessFont = *pFont;
+}
 
 void validate_SimpleMessage(void)
 {

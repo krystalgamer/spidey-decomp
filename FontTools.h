@@ -18,26 +18,34 @@ class Font : public CClass
 		EXPORT i32 heightBelowBaseline(char*);
 		EXPORT i32 heightAboveBaseline(char*);
 
-		u8 pad[0x14-4];
+		i32 field_4;
+		i32 field_8;
+		i32 field_C;
+		i32 field_10;
 
 		u32 mRed;
 		u32 mGreen;
 		u32 mBlue;
 
-		unsigned char field_21;
-		unsigned char padAfter21[0x38-0x21-1];
+		u8 field_20;
+		u8 field_21;
 
-		char field_38[1]; //name don't know how big
-		unsigned char padAfter38[0x48-0x38-1];
+		i32 field_24;
+		i32 field_28;
+		i32 field_2C;
+		i32 field_30;
+		i32 field_34;
+
+		char field_38[16];
 
 		i32** field_48;
 		i32 field_4C;
 		i32 field_50;
-		u8 padAfter50[0x4];
-
-		int field_58;
-		unsigned char padAfter58[0x5F-0x58-4];
-
+		i32 field_54;
+		i32 field_58;
+		u8 field_5C;
+		u8 field_5D;
+		u8 field_5E;
 		unsigned char field_5F[256];
 
 		i32 field_160;
@@ -52,6 +60,7 @@ class FontManager
 		EXPORT static void AllShadowOn(void);
 		EXPORT static void UnloadFont(Font*);
 		EXPORT static void UnloadAllFonts(void);
+		EXPORT static Font* GetFont(const char*);
 };
 
 
