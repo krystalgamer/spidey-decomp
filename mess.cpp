@@ -23,6 +23,9 @@ EXPORT u8 gShadowRGB = 0x80;
 EXPORT char gMessFontName[32];
 EXPORT u8 gMessFontLoaded;
 
+EXPORT u32 gSimpleMessageRelated;
+EXPORT i32 gSimpleMessageTextWidth;
+
 
 // @Ok
 // @Matching
@@ -43,7 +46,7 @@ INLINE SMessage* CreateMessage(void)
 }
 
 // @Ok
-SSimpleMessage* CreateSimpleMessage(void)
+INLINE SSimpleMessage* CreateSimpleMessage(void)
 {
 	SSimpleMessage* newMessage = static_cast<SSimpleMessage*>(
 			DCMem_New(sizeof(SSimpleMessage), 0, 1, 0, 1));
@@ -175,15 +178,34 @@ void Mess_ShadowsOn(void)
 	FontManager::AllShadowOn();
 }
 
-// @SMALLTODO
-void Mess_SimpleMessage(char const *,u32,u32,u32)
+// @Ok
+SSimpleMessage* Mess_SimpleMessage(
+		const char * a1,
+		u32 a2,
+		u32 a3,
+		u32 a4)
 {
-    printf("Mess_SimpleMessage(char const *,u32,u32,u32)");
+	SSimpleMessage* pMessage = CreateSimpleMessage();
+
+	pMessage->field_0 = a1;
+	pMessage->field_4 = 0;
+	pMessage->field_8 = a4;
+	pMessage->field_C = a2;
+	pMessage->field_10 = a3;
+	pMessage->field_14 = 200;
+
+	gSimpleMessageRelated = a2;
+
+	Mess_SetScale(200);
+
+	gSimpleMessageTextWidth = Mess_TextWidth(a1);
+
+	return pMessage;
 }
 
 // @Ok
 // @Matching
-i32 Mess_TextWidth(const char* pMessage)
+INLINE i32 Mess_TextWidth(const char* pMessage)
 {
 	gMessFont.field_34 = 8 * gScale;
 	return gMessFont.width(pMessage);
@@ -244,7 +266,7 @@ void Mess_SetTextJustify(unsigned char value)
 
 // @NotOk
 // Global
-void Mess_SetScale(int value)
+INLINE void Mess_SetScale(int value)
 {
 	gScale = value;
 }
@@ -352,10 +374,15 @@ void validate_SimpleMessage(void)
 {
 	VALIDATE_SIZE(SSimpleMessage, 0x24);
 
+	VALIDATE(SSimpleMessage, field_0, 0x0);
 	VALIDATE(SSimpleMessage, field_4, 0x4);
 	VALIDATE(SSimpleMessage, field_8, 0x8);
+	VALIDATE(SSimpleMessage, field_C, 0xC);
 
+	VALIDATE(SSimpleMessage, field_10, 0x10);
+	VALIDATE(SSimpleMessage, field_14, 0x14);
 	VALIDATE(SSimpleMessage, field_18, 0x18);
+
 	VALIDATE(SSimpleMessage, pNext, 0x1C);
 	VALIDATE(SSimpleMessage, pPrevious, 0x20);
 }

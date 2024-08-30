@@ -7,10 +7,13 @@
 
 struct SSimpleMessage
 {
-	u8 padTop[0x4];
+	const char* field_0;
+
 	u32 field_4;
 	u32 field_8;
-	u8 paAfter8[0x18-0x8-4];
+	u32 field_C;
+	u32 field_10;
+	u32 field_14;
 
 	u32 field_18;
 	SSimpleMessage* pNext;
@@ -59,7 +62,7 @@ EXPORT void Mess_SetShadowRGB(u8);
 EXPORT void Mess_SetSort(i32);
 EXPORT void Mess_ShadowsOff(void);
 EXPORT void Mess_ShadowsOn(void);
-EXPORT void Mess_SimpleMessage(char const *,u32,u32,u32);
+EXPORT SSimpleMessage* Mess_SimpleMessage(const char *,u32,u32,u32);
 EXPORT i32 Mess_TextWidth(const char *);
 EXPORT void Mess_UnloadAllFonts(void);
 EXPORT void Mess_Update(void);
