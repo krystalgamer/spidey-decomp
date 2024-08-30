@@ -274,10 +274,13 @@ INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
 }
 
 
-// @SMALLTODO
-void Mess_SetRGB(u8, u8, u8, i32)
+// @Ok
+// @Matching
+void Mess_SetRGB(u8 r, u8 g, u8 b, i32)
 {
-	printf("void Mess_SetRGB(u8, u8, u8, i32)");
+	gMessFont.mRed = r;
+	gMessFont.mGreen = g;
+	gMessFont.mBlue = b;
 }
 
 // @MEDIUMTODO

@@ -18,7 +18,11 @@ class Font : public CClass
 		EXPORT i32 heightBelowBaseline(char*);
 		EXPORT i32 heightAboveBaseline(char*);
 
-		unsigned char pad[0x21-4];
+		u8 pad[0x14-4];
+
+		u32 mRed;
+		u32 mGreen;
+		u32 mBlue;
 
 		unsigned char field_21;
 		unsigned char padAfter21[0x38-0x21-1];

@@ -172,6 +172,10 @@ void validate_Font(void)
 {
 	VALIDATE_SIZE(Font, 0x164);
 
+	VALIDATE(Font, mRed, 0x14);
+	VALIDATE(Font, mGreen, 0x18);
+	VALIDATE(Font, mBlue, 0x1C);
+
 	VALIDATE(Font, field_21, 0x21);
 	VALIDATE(Font, field_38, 0x38);
 
