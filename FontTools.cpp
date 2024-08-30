@@ -134,6 +134,13 @@ Font* FontManager::GetFont(const char*)
 }
 
 // @SMALLTODO
+Font* FontManager::LoadFont(const char*)
+{
+	printf("Font* FontManager::LoadFont(const char*)");
+	return reinterpret_cast<Font*>(0x30082024);
+}
+
+// @SMALLTODO
 i32 Font::heightBelowBaseline(char*)
 {
 	return 0x14072024;

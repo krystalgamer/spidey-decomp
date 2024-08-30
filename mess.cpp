@@ -3,6 +3,8 @@
 #include "mem.h"
 #include "bit.h"
 
+#include <cstring>
+
 #include "validate.h"
 
 EXPORT u8 gTextJustify;
@@ -17,6 +19,9 @@ EXPORT i32 gMessRelated;
 EXPORT i32 gRGBBottom = 0x808080;
 
 EXPORT u8 gShadowRGB = 0x80;
+
+EXPORT char gMessFontName[32];
+EXPORT u8 gMessFontLoaded;
 
 
 // @Ok
@@ -105,10 +110,28 @@ i32 Mess_GetSort(void)
 	return gSort;
 }
 
-// @SMALLTODO
-void Mess_LoadFont(char *,i32,i32,i32)
+// @Ok
+i32 Mess_LoadFont(
+		const char* pName,
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("Mess_LoadFont(char *,i32,i32,i32)");
+	Font* pFont = FontManager::LoadFont(pName);
+	gMessFont = *pFont;
+
+	strcpy(gMessFontName, pName);
+
+	gMessFont.field_C = a2;
+	gMessFont.field_10 = a2;
+
+	gMessFont.field_24 = a3;
+	gMessFont.field_28 = a3;
+	gMessFont.field_8 = 1;
+
+	gMessFontLoaded = 1;
+
+	return 0;
 }
 
 // @Ok
