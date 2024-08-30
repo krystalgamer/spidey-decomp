@@ -10,7 +10,7 @@ EXPORT u8 gTextJustify;
 EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
 EXPORT Font gMessFont;
-EXPORT u16 gTextScale;
+EXPORT u16 gScale;
 
 EXPORT i32 gMessRelated;
 
@@ -89,10 +89,10 @@ void Mess_DrawText(i32,i32,char const *,i32,u32)
     printf("Mess_DrawText(i32,i32,char const *,i32,u32)");
 }
 
-// @SMALLTODO
-void Mess_GetScale(void)
+// @Ok
+i32 Mess_GetScale(void)
 {
-    printf("Mess_GetScale(void)");
+	return gScale;
 }
 
 // @SMALLTODO
@@ -215,7 +215,7 @@ void Mess_SetTextJustify(unsigned char value)
 // Global
 void Mess_SetScale(int value)
 {
-	gTextScale = value;
+	gScale = value;
 }
 
 static int gRGBBottom;
