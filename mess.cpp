@@ -89,10 +89,26 @@ void Mess_DeleteAll(void)
 	pSimpleMessages = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Mess_Display(void)
 {
-    printf("Mess_Display(void)");
+	SSimpleMessage* pMess = pSimpleMessages;
+	Mess_SetTextJustify(1);
+	Mess_SetRGB(0x60, 0x60, 0x80, 0);
+
+	while (pMess)
+	{
+		Mess_SetScale(pMess->field_14);
+		Mess_DrawText(
+				pMess->field_C,
+				pMess->field_10,
+				pMess->field_0,
+				0,
+				pMess->field_18);
+
+		pMess = pMess->pNext;
+	}
 }
 
 // @Ok
@@ -297,7 +313,7 @@ void Mess_Update(void)
 
 // @NotOk
 // Global
-void Mess_SetTextJustify(unsigned char value)
+INLINE void Mess_SetTextJustify(unsigned char value)
 {
 	gTextJustify = value;
 }
@@ -366,7 +382,7 @@ INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
 
 // @Ok
 // @Matching
-void Mess_SetRGB(u8 r, u8 g, u8 b, i32)
+INLINE void Mess_SetRGB(u8 r, u8 g, u8 b, i32)
 {
 	gMessFont.mRed = r;
 	gMessFont.mGreen = g;
