@@ -7,8 +7,12 @@
 
 struct SSimpleMessage
 {
-	u8 padTop[0x1C];
+	u8 padTop[0x4];
+	u32 field_4;
+	u32 field_8;
+	u8 paAfter8[0x18-0x8-4];
 
+	u32 field_18;
 	SSimpleMessage* pNext;
 	SSimpleMessage* pPrevious;
 };

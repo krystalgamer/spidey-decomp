@@ -1,6 +1,7 @@
 #include "mess.h"
 #include "FontTools.h"
 #include "mem.h"
+#include "bit.h"
 
 #include "validate.h"
 
@@ -10,6 +11,8 @@ EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
 EXPORT Font gMessFont;
 EXPORT u16 gTextScale;
+
+EXPORT i32 gMessRelated;
 
 
 // @Ok
@@ -161,10 +164,44 @@ void Mess_UnloadAllFonts(void)
 	FontManager::UnloadAllFonts();
 }
 
-// @SMALLTODO
+// @Ok
 void Mess_Update(void)
 {
-    printf("Mess_Update(void)");
+	if (!gMessRelated)
+		gMessRelated = gTimerRelated - 2;
+
+	i32 v1 = gTimerRelated - gMessRelated;
+	SSimpleMessage* pMessage = pSimpleMessages;
+	gMessRelated = gTimerRelated;
+
+	while (pMessage)
+	{
+		pMessage->field_4 += v1;
+
+		if (pMessage->field_4 > pMessage->field_8 + 90)
+		{
+			SSimpleMessage *next = pMessage->pNext;
+			DeleteSimpleMessage(pMessage);
+			pMessage = next;
+		}
+		else
+		{
+			if (pMessage->field_4 > pMessage->field_8 + 30)
+			{
+				pMessage->field_18 = 4096 - ((pMessage->field_4 - (pMessage->field_8 + 30)) << 12) / 60;
+			}
+			else if (pMessage->field_4 > 60)
+			{
+				pMessage->field_18 = 4096;
+			}
+			else
+			{
+				pMessage->field_18 = (pMessage->field_4 << 12) / 60;
+			}
+
+			pMessage = pMessage->pNext;
+		}
+	}
 }
 
 // @NotOk
@@ -251,6 +288,10 @@ void validate_SimpleMessage(void)
 {
 	VALIDATE_SIZE(SSimpleMessage, 0x24);
 
+	VALIDATE(SSimpleMessage, field_4, 0x4);
+	VALIDATE(SSimpleMessage, field_8, 0x8);
+
+	VALIDATE(SSimpleMessage, field_18, 0x18);
 	VALIDATE(SSimpleMessage, pNext, 0x1C);
 	VALIDATE(SSimpleMessage, pPrevious, 0x20);
 }
