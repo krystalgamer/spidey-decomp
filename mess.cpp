@@ -152,11 +152,12 @@ void Mess_SimpleMessage(char const *,u32,u32,u32)
     printf("Mess_SimpleMessage(char const *,u32,u32,u32)");
 }
 
-// @SMALLTODO
-i32 Mess_TextWidth(const char*)
+// @Ok
+// @Matching
+i32 Mess_TextWidth(const char* pMessage)
 {
-    printf("Mess_TextWidth(char const *)");
-	return 0x28082024;
+	gMessFont.field_34 = 8 * gScale;
+	return gMessFont.width(pMessage);
 }
 
 // @Ok

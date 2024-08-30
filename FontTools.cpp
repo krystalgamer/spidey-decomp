@@ -151,6 +151,13 @@ int Font::height(char* txt)
 	return this->heightBelowBaseline(txt) + this->heightAboveBaseline(txt);
 }
 
+// @SMALLTODO
+i32 Font::width(const char*)
+{
+	printf("i32 Font::width(const char*)");
+	return 0x30082024;
+}
+
 // @Ok
 INLINE void Font::unload(void)
 {

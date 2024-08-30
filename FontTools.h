@@ -14,6 +14,7 @@ class Font : public CClass
 		EXPORT int isEscapeChar(char);
 		EXPORT char getCharIndex(char);
 		EXPORT int height(char*);
+		EXPORT i32 width(const char*);
 		EXPORT void unload(void);
 		EXPORT i32 heightBelowBaseline(char*);
 		EXPORT i32 heightAboveBaseline(char*);
