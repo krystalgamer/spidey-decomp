@@ -11,6 +11,7 @@ EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
 EXPORT Font gMessFont;
 EXPORT u16 gScale;
+EXPORT u16 gSort;
 
 EXPORT i32 gMessRelated;
 
@@ -95,10 +96,10 @@ i32 Mess_GetScale(void)
 	return gScale;
 }
 
-// @SMALLTODO
-void Mess_GetSort(void)
+// @Ok
+i32 Mess_GetSort(void)
 {
-    printf("Mess_GetSort(void)");
+	return gSort;
 }
 
 // @SMALLTODO
