@@ -8,6 +8,9 @@ EXPORT u8 gTextJustify;
 
 EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
+EXPORT Font gMessFont;
+EXPORT u16 gTextScale;
+
 
 // @Ok
 // @Matching
@@ -152,10 +155,10 @@ i32 Mess_TextWidth(const char*)
 	return 0x28082024;
 }
 
-// @SMALLTODO
+// @Ok
 void Mess_UnloadAllFonts(void)
 {
-    printf("Mess_UnloadAllFonts(void)");
+	FontManager::UnloadAllFonts();
 }
 
 // @SMALLTODO
@@ -170,8 +173,6 @@ void Mess_SetTextJustify(unsigned char value)
 {
 	gTextJustify = value;
 }
-
-static unsigned __int16 gTextScale;
 
 // @NotOk
 // Global
@@ -188,24 +189,23 @@ void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
 	gRGBBottom = a2 | (a3 << 8) | (a4 << 16);
 }
 
-static Font FontRelated;
-
 // @NotOk
 // global
 void Mess_UnloadFont(void)
 {
-	FontManager::UnloadFont(&FontRelated);
+	FontManager::UnloadFont(&gMessFont);
 }
 
+// @Ok
 char* Mess_GetCurrentFont(void)
 {
-	return FontManager::GetFontName(&FontRelated);
+	return FontManager::GetFontName(&gMessFont);
 }
 
 // @Ok
 int Mess_TextHeight(char *pStr)
 {
-	return FontRelated.height(pStr);
+	return gMessFont.height(pStr);
 }
 
 // @Ok

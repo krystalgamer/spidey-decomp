@@ -47,6 +47,7 @@ class FontManager
 		EXPORT static void AllShadowOff(void);
 		EXPORT static void AllShadowOn(void);
 		EXPORT static void UnloadFont(Font*);
+		EXPORT static void UnloadAllFonts(void);
 };
 
 

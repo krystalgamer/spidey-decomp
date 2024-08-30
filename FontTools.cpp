@@ -121,6 +121,12 @@ void FontManager::UnloadFont(Font* pFont)
 }
 
 // @SMALLTODO
+void FontManager::UnloadAllFonts(void)
+{
+	printf("void FontManager::UnloadAllFonts(void)");
+}
+
+// @SMALLTODO
 i32 Font::heightBelowBaseline(char*)
 {
 	return 0x14072024;
