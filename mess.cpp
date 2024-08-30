@@ -14,6 +14,9 @@ EXPORT u16 gScale;
 EXPORT u16 gSort;
 
 EXPORT i32 gMessRelated;
+EXPORT i32 gRGBBottom = 0x808080;
+
+EXPORT u8 gShadowRGB = 0x80;
 
 
 // @Ok
@@ -122,10 +125,13 @@ SMessage* Mess_Message(const char * pText, SMessageProg* pProg)
 	return newMessage;
 }
 
-// @SMALLTODO
-void Mess_SetShadowRGB(u8)
+// @Ok
+void Mess_SetShadowRGB(u8 rgb)
 {
-    printf("Mess_SetShadowRGB(u8)");
+	if (rgb < 0x80)
+		rgb = 0x80;
+
+	gShadowRGB = rgb;
 }
 
 // @Ok
@@ -220,7 +226,6 @@ void Mess_SetScale(int value)
 	gScale = value;
 }
 
-static int gRGBBottom;
 // @NotOk
 // global
 void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
