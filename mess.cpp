@@ -95,10 +95,48 @@ void Mess_Display(void)
     printf("Mess_Display(void)");
 }
 
-// @SMALLTODO
-void Mess_DrawText(i32,i32,char const *,i32,u32)
+// @Ok
+i32 Mess_DrawText(
+		i32 a1,
+		i32 a2,
+		const char * a3,
+		i32 a4,
+		u32 a5)
 {
-    printf("Mess_DrawText(i32,i32,char const *,i32,u32)");
+	switch (gTextJustify)
+	{
+		case 0:
+			gMessFont.field_4 = 1;
+			break;
+		case 1:
+			gMessFont.field_4 = 0;
+			break;
+		case 2:
+			gMessFont.field_4 = 2;
+			break;
+	}
+
+	gMessFont.field_34 = 8 * gScale;
+
+	float v6;
+	switch (gSort)
+	{
+		case 4093:
+			v6 = 6.0999999f;
+			break;
+		case 4094:
+			v6 = -4.0f;
+			break;
+		case 4095:
+			v6 = -3.0f;
+			break;
+		default:
+			v6 = 4.0f;
+			break;
+	}
+
+	gMessFont.draw(a1, a2, a3, 8, v6);
+	return 0;
 }
 
 // @Ok

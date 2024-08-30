@@ -53,7 +53,7 @@ EXPORT SSimpleMessage* CreateSimpleMessage(void);
 EXPORT void Mess_ClearSimpleMessages(void);
 EXPORT void Mess_DeleteAll(void);
 EXPORT void Mess_Display(void);
-EXPORT void Mess_DrawText(i32,i32,char const *,i32,u32);
+EXPORT i32 Mess_DrawText(i32,i32,const char *,i32,u32);
 EXPORT i32 Mess_GetScale(void);
 EXPORT i32 Mess_GetSort(void);
 EXPORT i32 Mess_LoadFont(const char *,i32,i32,i32);

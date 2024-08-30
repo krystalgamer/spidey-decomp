@@ -4,6 +4,12 @@
 #include "mem.h"
 #include <cstring>
 
+// @MEDIUMTODO
+void Font::draw(i32, i32, const char*, i32, float)
+{
+	printf("void Font::draw(i32, i32, const char*, i32, float)");
+}
+
 // @Ok
 int Font::isEscapeChar(char a1)
 {
