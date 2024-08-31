@@ -1,6 +1,21 @@
 #include "Image.h"
 #include "validate.h"
 #include "dcshellutils.h"
+#include "PCTex.h"
+
+// @Ok
+Image::~Image(void)
+{
+}
+
+// @Ok
+SlicedImage2::~SlicedImage2(void)
+{
+	if (this->field_18)
+	{
+		PCTex_ReleaseTexture(this->field_18, true);
+	}
+}
 
 // @SMALLTODO
 void SlicedImage2::UnknownSlicedImageVirtualFunc(void)

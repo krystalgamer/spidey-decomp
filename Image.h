@@ -10,6 +10,7 @@ class Image : public CClass
 {
 	public:
 		EXPORT Image(void);
+		EXPORT ~Image(void);
 		u8 field_4;
 		u8 field_5;
 		u8 field_6;
@@ -25,6 +26,7 @@ class SlicedImage2 : public Image
 {
 	public:
 		EXPORT SlicedImage2(void);
+		EXPORT ~SlicedImage2(void);
 		EXPORT i32 screenHeight(void);
 
 		EXPORT virtual void UnknownSlicedImageVirtualFunc(void);
@@ -33,9 +35,10 @@ class SlicedImage2 : public Image
 
 		unsigned char padTop[0x6];
 
-		__int16 field_16;
+		i16 field_16;
+		i32 field_18;
 
-		unsigned char padBottom[0x20-0x16-4];
+		unsigned char padBottom[0x20-0x18-4];
 };
 
 EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);
