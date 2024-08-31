@@ -133,15 +133,17 @@ u16* PCTex_CreateClut(i32 colorCount)
 }
 
 // @MEDIUMTODO
-void PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32)
+i32 PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32)
 {
     printf("PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32)");
+	return 0x31082024;
 }
 
 // @MEDIUMTODO
-void PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)
+i32 PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)
 {
     printf("PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)");
+	return 0x31082024;
 }
 
 // @Ok

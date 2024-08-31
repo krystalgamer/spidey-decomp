@@ -26,6 +26,8 @@ class SlicedImage2 : public Image
 {
 	public:
 		EXPORT SlicedImage2(void);
+		EXPORT SlicedImage2(void*, i32, i32, i32, i32, u8, u16, u32);
+
 		EXPORT ~SlicedImage2(void);
 		EXPORT i32 screenHeight(void);
 
@@ -33,12 +35,14 @@ class SlicedImage2 : public Image
 		EXPORT virtual void setData(void*);
 		EXPORT virtual void draw(i32, i32, i32, float);
 
-		unsigned char padTop[0x6];
+		u32 field_10;
 
+		i16 field_14;
 		i16 field_16;
 		i32 field_18;
+		u8 field_1C;
 
-		unsigned char padBottom[0x20-0x18-4];
+		unsigned char padBottom[0x20-0x1C-1];
 };
 
 EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);

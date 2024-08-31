@@ -3,9 +3,93 @@
 #include "dcshellutils.h"
 #include "PCTex.h"
 
+
+// @FIXME
+EXPORT u16 gSlicedImageRelated[1];
+
 // @Ok
 Image::~Image(void)
 {
+}
+
+// @Ok
+SlicedImage2::SlicedImage2(
+		void* pData,
+		i32 width,
+		i32 height,
+		i32 slicew,
+		i32 sliceh,
+		u8 a7,
+		u16 a8,
+		u32 a9)
+{
+	print_if_false(width >= 2 && width <= 640, "Unlikely width for SlicedImage2");
+	print_if_false(height >= 0 && height <= 480, "Unlikely height for SlicedImage2");
+
+	print_if_false(slicew >= 0 && slicew <= 256, "Unlikely slicew for SlicedImage2");
+	print_if_false(sliceh >= 0 && sliceh <= 256, "Unlikely sliceh for SlicedImage2");
+
+	if (a7 == 8)
+	{
+		width >>= 1;
+	}
+
+	u8 v11;
+	if (a7 == 4)
+	{
+		v11 = 2;
+	}
+	else
+	{
+		v11 = a7 == 8;
+	}
+
+	this->field_1C = v11;
+	this->field_10 = a9;
+
+	if ( a7 == 8 )
+	{
+		this->field_18 = PCTex_CreateTexture256(
+				width,
+				height,
+				pData,
+				0,
+				a9,
+				"SlicedImage2",
+				0,
+				0);
+	}
+	else if ( a7 == 4 )
+	{
+		this->field_18 = PCTex_CreateTexture16(
+				width,
+				height,
+				pData,
+				0,
+				"SlicedImage2",
+				0,
+				0,
+				1);
+	}
+	else
+	{
+		error("Invalid slicedimage color depth.");
+	}
+
+	if (a9 & 8)
+	{
+		Bitmap256* pBitmap = new Bitmap256(
+				reinterpret_cast<char*>(pData),
+				gSlicedImageRelated,
+				width,
+				height,
+				this->field_18);
+		PCTex_SetTextureUserData(this->field_18, pBitmap);
+	}
+
+	this->field_16 = height;
+	this->field_14 = width >> this->field_1C;
+	
 }
 
 // @Ok
@@ -90,7 +174,13 @@ int Load8BitBMP_2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5)
 void validate_SlicedImage2(void)
 {
 	VALIDATE_SIZE(SlicedImage2, 0x20);
+
+	VALIDATE(SlicedImage2, field_10, 0x10);
+
+	VALIDATE(SlicedImage2, field_14, 0x14);
 	VALIDATE(SlicedImage2, field_16, 0x16);
+	VALIDATE(SlicedImage2, field_18, 0x18);
+	VALIDATE(SlicedImage2, field_1C, 0x1C);
 
 	VALIDATE_VTABLE(SlicedImage2, UnknownSlicedImageVirtualFunc, 1);
 	VALIDATE_VTABLE(SlicedImage2, setData, 2);
