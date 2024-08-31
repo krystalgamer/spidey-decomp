@@ -107,10 +107,45 @@ void SlicedImage2::UnknownSlicedImageVirtualFunc(void)
 	printf("void SlicedImage2::UnknownSlicedImageVirtualFunc(void)");
 }
 
-// @SMALLTODO
-void SlicedImage2::setData(void*)
+// @Ok
+// @Matching
+void SlicedImage2::setData(void* pData)
 {
-	printf("void SlicedImage2::setData(void*)");
+	PCTex_ReleaseTexture(this->field_18, 1);
+
+	i32 texture;
+	if (this->field_1C == 1)
+		texture = PCTex_CreateTexture256(
+			2 * this->field_14,
+			this->field_16,
+			pData,
+			0,
+			this->field_10,
+			"SlicedImage2",
+			0,
+			0);
+	else
+		texture = PCTex_CreateTexture16(
+			this->field_14 << this->field_1C,
+			this->field_16,
+			pData,
+			0,
+			"SlicedImage2",
+			0,
+			0,
+			1);
+	this->field_18 = texture;
+	if (this->field_10 & 8)
+	{
+		Bitmap256* pBit = new Bitmap256(
+			reinterpret_cast<char*>(pData),
+			gSlicedImageRelated,
+			this->field_14 << this->field_1C,
+			this->field_16,
+			this->field_18);
+
+		PCTex_SetTextureUserData(this->field_18, pBit);
+	}
 }
 
 // @SMALLTODO
