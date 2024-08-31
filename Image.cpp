@@ -53,14 +53,15 @@ void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)
     printf("LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 SlicedImage2::SlicedImage2(void)
 {
-    printf("SlicedImage2::SlicedImage2(void)");
+    printf_fancy("stubbed: SlicedImage2::SlicedImage2");
 }
 
 // @Ok
-Image::Image(void)
+INLINE Image::Image(void)
 {
 	this->field_4 = 0;
 	this->field_5 = 0;
