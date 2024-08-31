@@ -119,10 +119,14 @@ void SlicedImage2::draw(i32, i32, i32, float)
 	printf("void SlicedImage2::draw(i32, i32, i32, float)");
 }
 
-// @SMALLTODO
-void GetBMPBitDepth(char *)
+// @Ok
+u16 GetBMPBitDepth(char* pData)
 {
-    printf("GetBMPBitDepth(char *)");
+	u16* buf = reinterpret_cast<u16*>(pData);
+	u16 depth = buf[14];
+
+	print_if_false(depth == 4 || depth == 8, "Unrecognized color depth %d", depth);
+	return depth;
 }
 
 // @MEDIUMTODO

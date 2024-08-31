@@ -46,7 +46,7 @@ class SlicedImage2 : public Image
 };
 
 EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);
-EXPORT void GetBMPBitDepth(char *);
+EXPORT u16 GetBMPBitDepth(char *);
 EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
 EXPORT void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *);
 
