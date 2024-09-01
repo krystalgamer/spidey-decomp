@@ -2,6 +2,8 @@
 #include "validate.h"
 #include "dcshellutils.h"
 #include "PCTex.h"
+#include "dcfileio.h"
+#include "mem.h"
 
 
 // @FIXME
@@ -155,10 +157,10 @@ void SlicedImage2::draw(i32, i32, i32, float)
 }
 
 // @Ok
-u16 GetBMPBitDepth(char* pData)
+INLINE i32 GetBMPBitDepth(char* pData)
 {
 	u16* buf = reinterpret_cast<u16*>(pData);
-	u16 depth = buf[14];
+	i32 depth = buf[14];
 
 	print_if_false(depth == 4 || depth == 8, "Unrecognized color depth %d", depth);
 	return depth;
@@ -170,10 +172,48 @@ void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *)
     printf("Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *)");
 }
 
-// @SMALLTODO
-void LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)
+// @Ok
+i32 LoadNBitBMP_(
+		char* a1,
+		char** a2,
+		i32* a3,
+		i32* a4,
+		u16* a5,
+		i32* a6)
 {
-    printf("LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *)");
+
+	i32 fileSize = FileIO_Open(a1);
+	if (fileSize <= 0)
+	{
+		error("\nFile %s not found", a1);
+		return 0;
+	}
+
+	print_if_false(fileSize > 16, "screwy BMP file size");
+
+	u16* pBmp = static_cast<u16*>(DCMem_New(fileSize, 1, 1, 0, 1));
+	if (pBmp)
+	{
+		FileIO_Load(pBmp);
+		FileIO_Sync();
+
+		*a6 = GetBMPBitDepth(reinterpret_cast<char*>(pBmp));
+
+		if (*a6 == 4)
+		{
+			Load4BitBMP_2(reinterpret_cast<char*>(pBmp), a2, a3, a4, a5);
+		}
+		else
+		{
+			Load8BitBMP2(reinterpret_cast<char*>(pBmp), a2, a3, a4, a5, 0);
+		}
+
+		Mem_Delete(pBmp);
+		return 1;
+	}
+
+	error("\nNot enough memory to load %s", a1);
+	return 0;
 }
 
 // @Ok
