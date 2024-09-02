@@ -52,17 +52,42 @@ void CTorch::Shouldnt_DoPhysics_Be_Virtual(void)
 void CTorch::DoPhysics(void)
 {}
 
-// @BIGTODO
-__inline int* CTorch::KillCommandBlock(int*)
+// @Ok
+// @Matching
+i32* CTorch::KillCommandBlock(i32* a1)
 {
-	return (int*)0x02062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_350 == a1)
+	{
+		this->field_350 = res;
+	}
+	else
+	{
+		i32* it = this->field_350;
+
+		while (it)
+		{
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
+			{
+				it[it[1]-1] = reinterpret_cast<i32>(res);
+				break;
+			}
+
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
 // @NotOk
 // Revisit
 void CTorch::KillAllCommandBlocks(void)
 {
-	for (int* cur = reinterpret_cast<int*>(this->field_350); cur; cur = this->KillCommandBlock(cur));
+	for (int* cur = this->field_350; cur; cur = this->KillCommandBlock(cur))
+		;
 	this->field_350 = 0;
 }
 

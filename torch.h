@@ -30,7 +30,7 @@ public:
 	unsigned char field_348;
 
 	int field_34C;
-	int* field_350;
+	i32* field_350;
 };
 
 
