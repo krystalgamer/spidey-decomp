@@ -1,4 +1,5 @@
 #include "backgrnd.h"
+#include "spool.h"
 
 #include "validate.h"
 
@@ -11,10 +12,19 @@ void CBackground::AI(void)
     printf("CBackground::AI(void)");
 }
 
-// @SMALLTODO
-CBackground::CBackground(u32, CSVector*)
+// @Ok
+// @Matching
+CBackground::CBackground(
+		u32 checksum,
+		CSVector* ang_vel)
 {
-	printf("CBackground::CBackground(u32, CSVector*)");
+	this->InitItem(gObjFile);
+	this->mModel = Spool_GetModel(checksum, this->mRegion);
+	this->mFlags &= ~2u;
+	this->mCBodyFlags &= ~2u;
+	this->field_38 = 502;
+	this->AttachTo(reinterpret_cast<CBody**>(&BackgroundList));
+	this->field_F8 = gBackgroundIndex++;
 }
 
 // @Ok
@@ -74,4 +84,6 @@ void Backgrnd_Off(unsigned __int16 a1)
 void validate_CBackground(void)
 {
 	VALIDATE_SIZE(CBackground, 0xFC);
+
+	VALIDATE(CBackground, field_F8, 0xF8);
 }

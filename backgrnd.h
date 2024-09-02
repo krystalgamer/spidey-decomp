@@ -17,8 +17,9 @@ class CBackground : public CBody
 
 		EXPORT void AI(void) OVERRIDE;
 
-		u8 padBottom[8];
-
+		u8 padTop[4];
+		i16 field_F8;
+		u8 padBottom[2];
 };
 
 void validate_CBackground(void);

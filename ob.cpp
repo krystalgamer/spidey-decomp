@@ -8,7 +8,7 @@
 #include "m3dutils.h"
 #include "spool.h"
 
-EXPORT const char *gObjFile;
+const char *gObjFile;
 EXPORT CBody* EnvironmentalObjectList;
 EXPORT CBody* SuspendedList;
 CItem* EnviroList;
