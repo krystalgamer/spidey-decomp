@@ -11,6 +11,8 @@ class CTorch : public CBaddy {
 public:
 
 	EXPORT CTorch(int* a2, int a3);
+	EXPORT ~CTorch(void);
+
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 	EXPORT int* KillCommandBlock(int*);

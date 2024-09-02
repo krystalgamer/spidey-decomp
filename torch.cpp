@@ -5,6 +5,15 @@
 
 extern u8 submarinerDieRelated;
 
+// @Ok
+// @Matching
+CTorch::~CTorch(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	delete this->gTorchQuadBit;
+	this->KillAllCommandBlocks();
+}
+
 // @NotOk
 // Globals
 CTorch::CTorch(int* a2, int a3)
@@ -54,7 +63,7 @@ void CTorch::DoPhysics(void)
 
 // @Ok
 // @Matching
-i32* CTorch::KillCommandBlock(i32* a1)
+INLINE i32* CTorch::KillCommandBlock(i32* a1)
 {
 	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
 
@@ -82,11 +91,11 @@ i32* CTorch::KillCommandBlock(i32* a1)
 	return res;
 }
 
-// @NotOk
-// Revisit
-void CTorch::KillAllCommandBlocks(void)
+// @Ok
+// @Matching
+INLINE void CTorch::KillAllCommandBlocks(void)
 {
-	for (int* cur = this->field_350; cur; cur = this->KillCommandBlock(cur))
+	for (i32* cur = this->field_350; cur; cur = this->KillCommandBlock(cur))
 		;
 	this->field_350 = 0;
 }
