@@ -363,48 +363,46 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 }
 
 
-// @NotOk
-// slightly different due to many jumps to same printf_if_false, no biggie
-// completly wrong
+// @Ok
+// v3 is not assigned early for some reason
 SHandle Mem_MakeHandle(void* a1)
 {
-	/*
-	char *v1; // esi
-	int v2; // eax
-	char *v3; // esi
-	int v4; // eax
-	unsigned int v5; // ecx
-
-	if ( a1 )
+	if (a1)
 	{
-		v1 = (char *)a1 - *((char *)a1 - 1);
-		v2 = *((unsigned int *)v1 - 6);
-		v3 = v1 - 32;
-		if ( v2 & 0x80000000 )
+		i32* v1 = (i32*)((char*)a1 - *((char*)a1 - 1));
+		i32 v2 = *(v1 - 6);
+		i32* v3 = v1 - 8;
+
+		if (v2 & 0x80000000)
 		{
 			print_if_false(0, "Tried to make handle out of a free block");
 		}
 		else
 		{
 			print_if_false(v2 != 0, "A unique identifier has not been assigned to the memory block");
-			v4 = (int)(*(unsigned int *)v3 << 28) >> 28;
-			if ( v4 < 0 || v4 > 1 )
+			i32 v4 = *v3 << 28 >> 28;
+
+			if (v4 >= 0 && v4 <= 1)
 			{
-				print_if_false(0, "Tried to make handle out of invalid pointer\n bad heap");
+				u32 v5 = *v3 & 0xFFFFFFF0;
+				if ( v5 >= 0x40 && v5 <= 0x2000000 )
+				{
+					SHandle result;
+					result.field_4 = v3[2];
+					result.field_0 = reinterpret_cast<i32>(a1);
+					return result;
 				}
+				print_if_false(0, "Tried to make handle out of invalid pointer\n bad size");
+			}
 			else
 			{
-				v5 = *(unsigned int *)v3 & 0xFFFFFFF0;
-				if ( v5 >= 0x40 && v5 <= (unsigned int)0x2000000 )
-					return reinterpret_cast<int>(a1);
-				print_if_false(0, "Tried to make handle out of invalid pointer\n bad size");
+				print_if_false(0, "Tried to make handle out of invalid pointer\n bad heap");
 			}
 		}
 	}
-	return 0;
-	*/
 
 	SHandle tmp;
+	tmp.field_0 = 0;
 	return tmp;
 }
 
