@@ -1585,15 +1585,13 @@ INLINE i32* CPlayer::KillCommandBlock(i32* a1)
 
 		while (it)
 		{
-			i32** pNext = reinterpret_cast<i32**>(&it[it[1]-1]);
-
-			if (a1 == *pNext)
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
 			{
-				*pNext = res;
+				it[it[1]-1] = reinterpret_cast<i32>(res);
 				break;
 			}
 
-			it = *pNext;
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
 		}
 	}
 

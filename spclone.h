@@ -32,7 +32,7 @@ class CSpClone : public CBaddy {
 		unsigned char padAfter338[0x348-0x338-4];
 
 		i32 field_348;
-		int* field_34C;
+		i32* field_34C;
 };
 
 void validate_CSpClone(void);

@@ -106,10 +106,34 @@ void CSpClone::Shouldnt_DoPhysics_Be_Virtual(void)
 void CSpClone::DoPhysics(void)
 {}
 
-// @BIGTODO
-INLINE int* CSpClone::KillCommandBlock(int*)
+// @Ok
+// @Matching
+INLINE i32* CSpClone::KillCommandBlock(i32* a1)
 {
-	return (int*)0x02062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_34C == a1)
+	{
+		this->field_34C = res;
+	}
+	else
+	{
+		i32* it = this->field_34C;
+
+		while (it)
+		{
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
+			{
+				it[it[1]-1] = reinterpret_cast<i32>(res);
+				break;
+			}
+
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
 // @NotOk
