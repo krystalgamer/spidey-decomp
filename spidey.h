@@ -256,7 +256,7 @@ class CPlayer : public CSuper
 		EXPORT void GetDamageInflictedFromDifficulty(i32);
 		EXPORT void GetEnterExitFrameInfoPointer(u16);
 		EXPORT void GetFreeIndicatorListEntry(void);
-		EXPORT void GetNewCommandBlock(u32);
+		EXPORT i32* GetNewCommandBlock(u32);
 		EXPORT void GetPerpendicularisationRadius(void);
 		EXPORT void GrabUpdate(CVector *,i16 *);
 		EXPORT void HandleControlsForSurfaceTransition(bool);
