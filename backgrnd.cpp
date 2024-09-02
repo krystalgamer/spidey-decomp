@@ -6,10 +6,11 @@
 EXPORT CSuper* BackgroundList;
 EXPORT i16 gBackgroundIndex = 0;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CBackground::AI(void)
 {
-    printf("CBackground::AI(void)");
+	this->mAngles += this->csVector1;
 }
 
 // @Ok
