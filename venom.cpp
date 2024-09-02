@@ -40,17 +40,42 @@ void CVenomWrap::Die(void)
 	CBit::Die();
 }
 
-// @BIGTODO
-__inline int* CVenom::KillCommandBlock(int*)
+// @Ok
+// @Matching
+INLINE i32* CVenom::KillCommandBlock(i32* a1)
 {
-	return (int*)0x03062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_35C == a1)
+	{
+		this->field_35C = res;
+	}
+	else
+	{
+		i32* it = this->field_35C;
+
+		while (it)
+		{
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
+			{
+				it[it[1]-1] = reinterpret_cast<i32>(res);
+				break;
+			}
+
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
-// @NotOk
-// Revisit
-void CVenom::KillAllCommandBlocks(void)
+// @Ok
+// @Matching
+INLINE void CVenom::KillAllCommandBlocks(void)
 {
-	for (int* cur = reinterpret_cast<int*>(this->field_35C); cur; cur = this->KillCommandBlock(cur));
+	for (i32* cur = this->field_35C; cur; cur = this->KillCommandBlock(cur))
+		;
 	this->field_35C = 0;
 }
 
