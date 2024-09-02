@@ -398,17 +398,42 @@ void CSuperDocOck::RenderClaws(void)
 	M3d_Render(this->field_3F4[0]);
 }
 
-// @BIGTODO
-__inline int* CSuperDocOck::KillCommandBlock(int*)
+// @Ok
+// @Matching
+INLINE i32* CSuperDocOck::KillCommandBlock(i32* a1)
 {
-	return (int*)0x02062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_348 == a1)
+	{
+		this->field_348 = res;
+	}
+	else
+	{
+		i32* it = this->field_348;
+
+		while (it)
+		{
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
+			{
+				it[it[1]-1] = reinterpret_cast<i32>(res);
+				break;
+			}
+
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
-// @NotOk
-// Revisit
-void CSuperDocOck::KillAllCommandBlocks(void)
+// @Ok
+// @Matching
+INLINE void CSuperDocOck::KillAllCommandBlocks(void)
 {
-	for (int* cur = reinterpret_cast<int*>(this->field_348); cur; cur = this->KillCommandBlock(cur));
+	for (int* cur = this->field_348; cur; cur = this->KillCommandBlock(cur))
+		;
 	this->field_348 = 0;
 }
 

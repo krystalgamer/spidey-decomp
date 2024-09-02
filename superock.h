@@ -39,7 +39,7 @@ public:
 	unsigned char padAfter338[0x344-0x338-4];
 
 	int field_344;
-	int* field_348;
+	i32* field_348;
 	u8 padAfter348[0x360-0x348-4];
 
 	void* field_360;
