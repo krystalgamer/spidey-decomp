@@ -468,7 +468,7 @@ void CPlayer::GetFreeIndicatorListEntry(void)
 }
 
 // @Ok
-i32* CPlayer::GetNewCommandBlock(u32 a1)
+INLINE i32* CPlayer::GetNewCommandBlock(u32 a1)
 {
 	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
 	res[a1 - 1] = 0;

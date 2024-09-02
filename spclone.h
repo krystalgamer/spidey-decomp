@@ -12,7 +12,7 @@ class CSpClone : public CBaddy {
 		EXPORT void AI(void);
 		EXPORT CSpClone(i16 *,i32);
 		EXPORT void DoMGSShadow(void);
-		EXPORT void GetNewCommandBlock(u32);
+		EXPORT i32* GetNewCommandBlock(u32);
 		EXPORT void KillCommandBlockByID(i32);
 		EXPORT void SynthesizeAnalogueInput(void);
 		EXPORT ~CSpClone(void);
