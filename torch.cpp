@@ -2,8 +2,36 @@
 #include "export.h"
 #include "validate.h"
 #include "trig.h"
+#include "mem.h"
 
 extern u8 submarinerDieRelated;
+
+// @Ok
+INLINE i32* CTorch::GetNewCommandBlock(u32 a1)
+{
+	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
+	res[a1 - 1] = 0;
+
+	if (!this->field_350)
+	{
+		this->field_350 = res;
+	}
+	else
+	{
+		i32* it = this->field_350;
+		while (1)
+		{
+			if (!it[it[1] - 1])
+				break;
+
+			it = reinterpret_cast<i32*>(it[it[1] - 1]);
+		}
+
+		it[it[1] - 1] = reinterpret_cast<i32>(res);
+	}
+
+	return res;
+}
 
 // @Ok
 // @Matching

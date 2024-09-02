@@ -15,7 +15,8 @@ public:
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
-	EXPORT int* KillCommandBlock(int*);
+	EXPORT i32* KillCommandBlock(i32*);
+	EXPORT i32* GetNewCommandBlock(u32);
 	EXPORT void KillAllCommandBlocks(void);
 
 	int field_324;
