@@ -14,8 +14,11 @@ public:
 	EXPORT CVenom(i32*, i32);
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
+
 	EXPORT i32* KillCommandBlock(i32*);
 	EXPORT void KillAllCommandBlocks(void);
+	EXPORT i32* GetNewCommandBlock(u32);
+
 	EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
 	EXPORT void PlayNextFootstepSFX(void);
 	EXPORT void GetTargetPosFromNode(CVector *, i32);

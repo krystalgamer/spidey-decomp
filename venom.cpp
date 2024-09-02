@@ -11,6 +11,33 @@
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList;
 
+// @Ok
+INLINE i32* CVenom::GetNewCommandBlock(u32 a1)
+{
+	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
+	res[a1 - 1] = 0;
+
+	if (!this->field_35C)
+	{
+		this->field_35C = res;
+	}
+	else
+	{
+		i32* it = this->field_35C;
+		while (1)
+		{
+			if (!it[it[1] - 1])
+				break;
+
+			it = reinterpret_cast<i32*>(it[it[1] - 1]);
+		}
+
+		it[it[1] - 1] = reinterpret_cast<i32>(res);
+	}
+
+	return res;
+}
+
 // @MEDIUMTODO
 CVenom::CVenom(int*, int)
 {
