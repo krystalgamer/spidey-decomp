@@ -17,7 +17,7 @@ public:
 	EXPORT void Gloat(void);
 	EXPORT void PlayIdleOrGloatAnim(void);
 	EXPORT void KillAllCommandBlocks(void);
-	EXPORT int* KillCommandBlock(int*);
+	EXPORT i32* KillCommandBlock(i32*);
 	EXPORT void TakeHit(void);
 	EXPORT void CalculateStage(void);
 	EXPORT void HangAndGetBeaten(void);
@@ -32,7 +32,7 @@ public:
 	unsigned char padAfter334[0xC];
 
 	int field_4A8;
-	int field_4AC;
+	i32* field_4AC;
 	u8 padAfter4AC[0x4B8-0x4AC-4];
 
 	i32 field_4B8;
