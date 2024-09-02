@@ -16,7 +16,7 @@ public:
 
 	EXPORT void AI(void) OVERRIDE;
 	EXPORT void DoMGSShadow(void);
-	EXPORT void GetNewCommandBlock(u32);
+	EXPORT i32* GetNewCommandBlock(u32);
 	EXPORT void KillCommandBlockByID(i32);
 	EXPORT void SynthesizeAnalogueInput(void);
 

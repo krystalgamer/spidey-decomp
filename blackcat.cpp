@@ -32,10 +32,31 @@ void CBlackCat::DoMGSShadow(void)
     printf("CBlackCat::DoMGSShadow(void)");
 }
 
-// @SMALLTODO
-void CBlackCat::GetNewCommandBlock(u32)
+// @Ok
+i32* CBlackCat::GetNewCommandBlock(u32 a1)
 {
-    printf("CBlackCat::GetNewCommandBlock(u32)");
+	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
+	res[a1 - 1] = 0;
+
+	if (!this->field_350)
+	{
+		this->field_350 = res;
+	}
+	else
+	{
+		i32* it = this->field_350;
+		while (1)
+		{
+			if (!it[it[1] - 1])
+				break;
+
+			it = reinterpret_cast<i32*>(it[it[1] - 1]);
+		}
+
+		it[it[1] - 1] = reinterpret_cast<i32>(res);
+	}
+
+	return res;
 }
 
 // @SMALLTODO
