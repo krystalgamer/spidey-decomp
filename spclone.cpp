@@ -10,7 +10,7 @@ void CSpClone::AI(void)
     printf("CSpClone::AI(void)");
 }
 
-// @NotOk
+// @Ok
 // @Matching
 CSpClone::CSpClone(i16 * a2,i32 a3)
 {

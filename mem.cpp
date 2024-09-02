@@ -244,8 +244,9 @@ void Mem_Copy(void* dst, void* src, int size)
 
 unsigned int dword_60D11C;
 unsigned int UniqueIdentifier;
+
 // @NotOk
-// Revisit
+// seems ok tbh
 void *Mem_NewTop(unsigned int a1)
 {
 	unsigned int v1; // esi

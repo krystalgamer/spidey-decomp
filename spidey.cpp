@@ -1570,10 +1570,35 @@ void CPlayer::StopAlertMusic(void)
 	}
 }
 
-// @BIGTODO
-__inline int* CPlayer::KillCommandBlock(int*)
+// @Ok
+INLINE i32* CPlayer::KillCommandBlock(i32* a1)
 {
-	return (int*)0x02062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_1BC == a1)
+	{
+		this->field_1BC = res;
+	}
+	else
+	{
+		i32* it = this->field_1BC;
+
+		while (it)
+		{
+			i32** pNext = reinterpret_cast<i32**>(&it[it[1]-1]);
+
+			if (a1 == *pNext)
+			{
+				*pNext = res;
+				break;
+			}
+
+			it = *pNext;
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
 // @NotOk

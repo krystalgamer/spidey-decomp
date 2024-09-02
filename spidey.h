@@ -210,7 +210,7 @@ class CPlayer : public CSuper
 		EXPORT void DeleteStuff(void);
 		EXPORT void StopAlertMusic(void);
 		EXPORT void KillAllCommandBlocks(void);
-		EXPORT int* KillCommandBlock(int*);
+		EXPORT i32* KillCommandBlock(i32*);
 		EXPORT void Die(void);
 		EXPORT void SetStartOrientation(CSVector*);
 		EXPORT u8 IncreaseWebbing(i32);
