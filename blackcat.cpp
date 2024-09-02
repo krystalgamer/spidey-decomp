@@ -112,17 +112,41 @@ void CBlackCat::Shouldnt_DoPhysics_Be_Virtual(void)
 void CBlackCat::DoPhysics(void)
 {}
 
-// @BIGTODO
-int* CBlackCat::KillCommandBlock(int*)
+// @Ok
+// @Matching
+i32* CBlackCat::KillCommandBlock(i32* a1)
 {
-	return (int*)0x01062024;
+	i32* res = reinterpret_cast<i32*>(a1[a1[1]-1]);
+
+	if (this->field_350 == a1)
+	{
+		this->field_350 = res;
+	}
+	else
+	{
+		i32* it = this->field_350;
+
+		while (it)
+		{
+			if (a1 == reinterpret_cast<i32*>(it[it[1]-1]))
+			{
+				it[it[1]-1] = reinterpret_cast<i32>(res);
+				break;
+			}
+
+			it = reinterpret_cast<i32*>(it[it[1]-1]);
+		}
+	}
+
+	Mem_Delete(reinterpret_cast<void*>(a1));
+	return res;
 }
 
 // @NotOk
 // Revisit
 void CBlackCat::KillAllCommandBlocks(void)
 {
-	for (int* cur = reinterpret_cast<int*>(this->field_350); cur; cur = this->KillCommandBlock(cur));
+	for (i32* cur = this->field_350; cur; cur = this->KillCommandBlock(cur));
 	this->field_350 = 0;
 }
 
