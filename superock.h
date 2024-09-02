@@ -16,7 +16,8 @@ public:
 	EXPORT void DoPhysics(void);
 	EXPORT void RenderClaws(void);
 	EXPORT void KillAllCommandBlocks(void);
-	EXPORT int* KillCommandBlock(int*);
+	EXPORT i32* KillCommandBlock(i32*);
+	EXPORT i32* GetNewCommandBlock(u32);
 
 	EXPORT void PlaySingleAnim(u32, i32, i32);
 	EXPORT void Initialise(void);

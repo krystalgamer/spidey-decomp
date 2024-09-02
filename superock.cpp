@@ -13,6 +13,33 @@ extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
 // @Ok
+INLINE i32* CSuperDocOck::GetNewCommandBlock(u32 a1)
+{
+	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
+	res[a1 - 1] = 0;
+
+	if (!this->field_348)
+	{
+		this->field_348 = res;
+	}
+	else
+	{
+		i32* it = this->field_348;
+		while (1)
+		{
+			if (!it[it[1] - 1])
+				break;
+
+			it = reinterpret_cast<i32*>(it[it[1] - 1]);
+		}
+
+		it[it[1] - 1] = reinterpret_cast<i32>(res);
+	}
+
+	return res;
+}
+
+// @Ok
 i32 CSuperDocOck::Hit(SHitInfo* a2)
 {
 	if ( this->field_E2 < 0 )
