@@ -17,6 +17,8 @@ public:
 	EXPORT void Gloat(void);
 	EXPORT void PlayIdleOrGloatAnim(void);
 	EXPORT void KillAllCommandBlocks(void);
+	EXPORT i32* GetNewCommandBlock(u32);
+
 	EXPORT i32* KillCommandBlock(i32*);
 	EXPORT void TakeHit(void);
 	EXPORT void CalculateStage(void);

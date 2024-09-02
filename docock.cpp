@@ -15,6 +15,33 @@ extern i32 gBossRelated;
 extern CBody* ControlBaddyList;
 
 // @Ok
+INLINE i32* CDocOc::GetNewCommandBlock(u32 a1)
+{
+	i32* res = static_cast<i32*>(DCMem_New(4 * a1, 0, 1, 0, 1));
+	res[a1 - 1] = 0;
+
+	if (!this->field_4AC)
+	{
+		this->field_4AC = res;
+	}
+	else
+	{
+		i32* it = this->field_4AC;
+		while (1)
+		{
+			if (!it[it[1] - 1])
+				break;
+
+			it = reinterpret_cast<i32*>(it[it[1] - 1]);
+		}
+
+		it[it[1] - 1] = reinterpret_cast<i32>(res);
+	}
+
+	return res;
+}
+
+// @Ok
 CDocOc::~CDocOc(void)
 {
 	gBossRelated = 0;
@@ -150,9 +177,9 @@ void CDocOc::PlayIdleOrGloatAnim(void)
 }
 
 // @Ok
-void __inline CDocOc::Gloat(void)
+INLINE void CDocOc::Gloat(void)
 {
-	if(this->field_142)
+	if (this->field_142)
 	{
 		this->field_31C.bothFlags = 2;
 		this->dumbAssPad = 0;
