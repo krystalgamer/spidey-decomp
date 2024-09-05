@@ -76,7 +76,7 @@ void LoadPushOffsets(void)
 }
 
 // @SMALLTODO
-void MyD3DEnumCallback(char *,char *,_D3DDeviceDesc7 *,void *)
+void MyD3DEnumCallback(char *,char *, D3DDEVICEDESC7 *,void *)
 {
     printf("MyD3DEnumCallback(char *,char *,_D3DDeviceDesc7 *,void *)");
 }
@@ -106,13 +106,13 @@ void enumDisplayModes(void)
 }
 
 // @SMALLTODO
-void enumerateModesCB(_DDSURFACEDESC2 *,void *)
+void enumerateModesCB(DDSURFACEDESC2 *,void *)
 {
     printf("enumerateModesCB(_DDSURFACEDESC2 *,void *)");
 }
 
 // @SMALLTODO
-void enumerateZBuffersCB(_DDPIXELFORMAT *,void *)
+void enumerateZBuffersCB(DDPIXELFORMAT *,void *)
 {
     printf("enumerateZBuffersCB(_DDPIXELFORMAT *,void *)");
 }

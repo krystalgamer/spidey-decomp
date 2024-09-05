@@ -10,6 +10,18 @@
 // @FIXME
 #define PCTexture i32
 
+//@FIXME
+typedef void* _DDPIXELFORMAT;
+//@FIXME
+typedef void* IDirectDrawSurface7;
+//@FIXME
+typedef void* IDirectInputA;
+//@FIXME
+typedef void* _DXPOLY;
+//@FIXME
+typedef void* DIDEVICEINSTANCEA;
+
+
 struct ClutPC
 {
 	ClutPC* mNext;

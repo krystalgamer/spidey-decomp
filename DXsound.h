@@ -10,6 +10,18 @@
 #ifndef _WIN32
 #endif
 
+//@FIXME
+typedef void* _DDPIXELFORMAT;
+//@FIXME
+typedef void* IDirectDrawSurface7;
+//@FIXME
+typedef void* IDirectInputA;
+//@FIXME
+typedef void* _DXPOLY;
+//@FIXME
+typedef void* DIDEVICEINSTANCEA;
+
+
 
 EXPORT u8 DXINPUT_GetControllerButtonState(u8);
 EXPORT u8 DXINPUT_GetKeyState(u8);
