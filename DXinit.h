@@ -8,6 +8,9 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+EXPORT extern i32 gLowGraphics;
+EXPORT extern void* gLowGraphicsRelated;
+
 EXPORT void DXINIT_GetCurrentResolution(int *, int *);
 EXPORT void AUDIOGROUPS_GetGroup(char *);
 
@@ -37,5 +40,6 @@ EXPORT void initDirectSound8(HWND);
 EXPORT void shutdownDirect3D7(i32);
 EXPORT void shutdownDirectInput8(void);
 EXPORT void shutdownDirectSound8(void);
+EXPORT void gsub_5027A0(void);
 
 #endif

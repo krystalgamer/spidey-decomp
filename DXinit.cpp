@@ -3,6 +3,22 @@
 EXPORT int gResolutionX;
 EXPORT int gResolutionY;
 
+EXPORT i32 gLowGraphics;
+EXPORT void* gLowGraphicsRelated;
+
+// @Ok
+void gsub_5027A0(void)
+{
+	if (gLowGraphics)
+	{
+		if (gLowGraphicsRelated)
+		{
+			free(gLowGraphicsRelated);
+			gLowGraphicsRelated = 0;
+		}
+	}
+}
+
 // @MEDIUMTODO
 void AUDIOGROUPS_GetGroup(char *)
 {
