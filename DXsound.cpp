@@ -2,13 +2,18 @@
 
 #include <cstring>
 
+EXPORT i32 gKeyBoardRelated;
+EXPORT i32 gMouseRelated;
+EXPORT i32 gControllerRelated;
+EXPORT i32 gForceFeedbackRelated;
+
 IDirectInputA* gDirectInputRelated;
 EXPORT i32 gNumControllerButtons;
 EXPORT u8 gKeyState[0x100];
 EXPORT u8 gControllerButtonState[0x20];
 EXPORT u8 gMouseButtonState[3];
 
-EXPORT char* gKeyNames[0x100] = 
+EXPORT char* gDxKeyNames[0x100] = 
 {
 	"NULL",
 	"ESC",
@@ -268,11 +273,15 @@ EXPORT char* gKeyNames[0x100] =
 	".FF.",
 };
 
+EXPORT IDirectInputA* gDxInputDinput;
+EXPORT HWND gDxInputHwnd;
+EXPORT u8 gDxInputRelated;
+
 // @Ok
 // @Matching
 void DXINPUT_GetKeyName(u8 key, char* dstName)
 {
-	strcpy(dstName, gKeyNames[key]);
+	strcpy(dstName, gDxKeyNames[key]);
 }
 
 // @Ok
@@ -303,10 +312,24 @@ i32 DXINPUT_GetNumControllerButtons(void)
 	return gNumControllerButtons;
 }
 
-// @SMALLTODO
-void DXINPUT_Initialize(IDirectInputA *,HWND)
+// @Ok
+// @Matching
+void DXINPUT_Initialize(IDirectInputA* a1, HWND a2)
 {
-    printf("DXINPUT_Initialize(IDirectInputA *,HWND)");
+	gDxInputDinput = a1;
+	gDxInputHwnd = a2;
+
+	gKeyBoardRelated = 0;
+	gMouseRelated = 0;
+	gControllerRelated = 0;
+	gForceFeedbackRelated = 0;
+	
+	memset(gKeyState, 0, sizeof(gKeyState));
+	memset(gMouseButtonState, 0, sizeof(gMouseButtonState));
+	memset(gControllerButtonState, 0, sizeof(gControllerButtonState));
+
+	gDxInputRelated = 0;
+	gNumControllerButtons = 0;
 }
 
 // @MEDIUMTODO

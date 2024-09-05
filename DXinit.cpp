@@ -1,5 +1,7 @@
 #include "DXinit.h"
 
+#include <cstdlib>
+
 EXPORT int gResolutionX;
 EXPORT int gResolutionY;
 
