@@ -4,6 +4,7 @@ IDirectInputA* gDirectInputRelated;
 EXPORT i32 gNumControllerButtons;
 EXPORT u8 gKeyState[0x100];
 EXPORT u8 gControllerButtonState[0x20];
+EXPORT u8 gMouseButtonState[3];
 
 // @SMALLTODO
 void DXINPUT_GetKeyName(u32, char*)
@@ -25,11 +26,11 @@ u8 DXINPUT_GetKeyState(u8 key)
 	return gKeyState[key];
 }
 
-// @SMALLTODO
-u8 DXINPUT_GetMouseButtonState(u8)
+// @Ok
+// @Matching
+u8 DXINPUT_GetMouseButtonState(u8 button)
 {
-	printf("u8 DXINPUT_GetMouseButtonState(u8)");
-	return (u8)0x22082024;
+	return gMouseButtonState[button];
 }
 
 // @Ok
