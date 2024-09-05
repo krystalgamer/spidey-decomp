@@ -80,10 +80,11 @@ void DXINPUT_SetKeyState(u8 key, u8 state)
 	gKeyState[key] = state;
 }
 
-// @SMALLTODO
-void DXINPUT_SetMouseButtonState(u8,u8)
+// @Ok
+// @Matching
+void DXINPUT_SetMouseButtonState(u8 button, u8 state)
 {
-    printf("DXINPUT_SetMouseButtonState(u8,u8)");
+	gMouseButtonState[button] = state;
 }
 
 // @MEDIUMTODO
