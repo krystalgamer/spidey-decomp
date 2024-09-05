@@ -1,6 +1,7 @@
 #include "DXsound.h"
 
 IDirectInputA* gDirectInputRelated;
+EXPORT i32 gNumControllerButtons;
 
 // @SMALLTODO
 void DXINPUT_GetKeyName(u32, char*)
@@ -29,11 +30,11 @@ u8 DXINPUT_GetMouseButtonState(u8)
 	return (u8)0x22082024;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 DXINPUT_GetNumControllerButtons(void)
 {
-    printf("DXINPUT_GetNumControllerButtons(void)");
-	return 0x22082024;
+	return gNumControllerButtons;
 }
 
 // @SMALLTODO

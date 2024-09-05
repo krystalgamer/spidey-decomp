@@ -173,7 +173,7 @@ void shutdownDirect3D7(i32)
 }
 
 // @SMALLTODO
-void shutdownDirectInput8(void)
+INLINE void shutdownDirectInput8(void)
 {
     printf("shutdownDirectInput8(void)");
 }
