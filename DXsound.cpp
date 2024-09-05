@@ -73,10 +73,11 @@ void DXINPUT_Release(void)
     printf("DXINPUT_Release(void)");
 }
 
-// @SMALLTODO
-void DXINPUT_SetKeyState(u8,u8)
+// @Ok
+// @Matching
+void DXINPUT_SetKeyState(u8 key, u8 state)
 {
-    printf("DXINPUT_SetKeyState(u8,u8)");
+	gKeyState[key] = state;
 }
 
 // @SMALLTODO
