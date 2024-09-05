@@ -67,10 +67,13 @@ void DXINIT_SetDisplayOptions(u32,u32,u32,i32,i32)
     printf("DXINIT_SetDisplayOptions(u32,u32,u32,i32,i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void DXINIT_ShutDown(void)
 {
-    printf("DXINIT_ShutDown(void)");
+	gsub_5027A0();
+	shutdownDirect3D7(1);
+	shutdownDirectSound8();
+	shutdownDirectInput8();
 }
 
 // @SMALLTODO
