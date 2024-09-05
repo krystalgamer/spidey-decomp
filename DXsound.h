@@ -40,7 +40,7 @@ EXPORT i32 DXINPUT_SetupKeyboard(i32,i32);
 EXPORT i32 DXINPUT_SetupMouse(i32);
 EXPORT i32 DXINPUT_StartForceFeedbackEffect(void);
 EXPORT i32 DXINPUT_StopForceFeedbackEffect(void);
-EXPORT void DXINPUT_GetKeyName(u32, char*);
+EXPORT void DXINPUT_GetKeyName(u8, char*);
 
 EXPORT void DXPOLY_BeginScene(void);
 EXPORT void DXPOLY_DrawPoly(_DXPOLY *,i32,i32,float);
