@@ -355,11 +355,50 @@ i32 DXINPUT_PollController(i32 *,i32 *,i32 *)
 	return 0x24082024;
 }
 
-// @SMALLTODO
+// @Ok
 i32 DXINPUT_PollKeyboard(void)
 {
-    printf("DXINPUT_PollKeyboard(void)");
-	return 0x23082024;
+	DWORD dwElements = 16;
+	DIDEVICEOBJECTDATA didod[16]; 
+	memset(didod, 0, sizeof(didod));
+
+	if (!g_pKeyboard)
+	{
+		return -1;
+	}
+
+	if (g_pKeyboard->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), didod, &dwElements, 0) == DIERR_INPUTLOST)
+	{
+		HRESULT hr = g_pKeyboard->Acquire();
+		if (hr == DIERR_OTHERAPPHASPRIO)
+		{
+			DXERR_printf("Other application has priority when attempting to acquire keyboard\n");
+			return -1;
+		}
+
+		DI_ERROR_LOG_AND_QUIT(hr);
+		if (g_pKeyboard->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), didod, &dwElements, 0) == DIERR_NOTACQUIRED)
+		{
+			return -1;
+		}
+	}
+
+	for (i32 i = 0; i < 256; i++)
+		gKeyState[i] &= ~0x80u;
+
+	for (DWORD k = 0; k < dwElements; k++)
+	{
+		if (didod[k].dwData & 0x80)
+		{
+			gKeyState[didod[k].dwOfs] = -1;
+		}
+		else
+		{
+			gKeyState[didod[k].dwOfs] = 0x80;
+		}
+	}
+
+	return dwElements;
 }
 
 // @MEDIUMTODO
@@ -434,7 +473,7 @@ i32 DXINPUT_SetupKeyboard(i32 exclusive, i32 buffered)
 	hr = g_pKeyboard->Acquire();
 	if (hr == DIERR_OTHERAPPHASPRIO)
 	{
-		DXERR_printf("Other application has priority when attempting to acquire mouse\n");
+		DXERR_printf("Other application has priority when attempting to acquire keyboard\n");
 	}
 	else
 	{
