@@ -5,7 +5,7 @@
 
 #include <cstring>
 
-EXPORT i32 gKeyBoardRelated;
+EXPORT LPDIRECTINPUTDEVICEA g_pKeyboard;
 EXPORT LPDIRECTINPUTDEVICEA g_pMouse;
 EXPORT i32 gControllerRelated;
 EXPORT i32 gForceFeedbackRelated;
@@ -335,7 +335,7 @@ void DXINPUT_Initialize(IDirectInputA* a1, HWND a2)
 	g_pDI = a1;
 	gDxInputHwnd = a2;
 
-	gKeyBoardRelated = 0;
+	g_pKeyboard = 0;
 	g_pMouse = 0;
 	gControllerRelated = 0;
 	gForceFeedbackRelated = 0;
@@ -403,11 +403,45 @@ i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float)
 	return 0x24082024;
 }
 
-// @MEDIUMTODO
-i32 DXINPUT_SetupKeyboard(i32,i32)
+// @Ok
+i32 DXINPUT_SetupKeyboard(i32 exclusive, i32 buffered)
 {
-    printf("DXINPUT_SetupKeyboard(i32,i32)");
-	return 0x23082024;
+	HRESULT hr = g_pDI->CreateDevice(GUID_SysKeyboard, &g_pKeyboard, NULL);
+	DI_ERROR_LOG_AND_QUIT(hr);
+
+	hr = g_pKeyboard->SetCooperativeLevel(gDxInputHwnd,
+			exclusive ? 
+				DISCL_NOWINKEY | DISCL_FOREGROUND | DISCL_EXCLUSIVE :
+				DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	DI_ERROR_LOG_AND_QUIT(hr);
+
+	hr = g_pKeyboard->SetDataFormat(&c_dfDIKeyboard);
+	DI_ERROR_LOG_AND_QUIT(hr);
+
+	if (buffered)
+	{
+		DIPROPDWORD v12;
+		v12.diph.dwHeaderSize = 16;
+		v12.dwData = 16;
+		v12.diph.dwSize = 20;
+		v12.diph.dwObj = 0;
+		v12.diph.dwHow = 0;
+
+		hr = g_pKeyboard->SetProperty(DIPROP_BUFFERSIZE, &v12.diph);
+		DI_ERROR_LOG_AND_QUIT(hr);
+	}
+
+	hr = g_pKeyboard->Acquire();
+	if (hr == DIERR_OTHERAPPHASPRIO)
+	{
+		DXERR_printf("Other application has priority when attempting to acquire mouse\n");
+	}
+	else
+	{
+		DI_ERROR_LOG_AND_QUIT(hr);
+	}
+	
+	return 1;
 }
 
 // @Ok
@@ -415,7 +449,6 @@ i32 DXINPUT_SetupMouse(i32 exclusive)
 {
 	HRESULT hr = g_pDI->CreateDevice(GUID_SysMouse, &g_pMouse, NULL);
 	DI_ERROR_LOG_AND_QUIT(hr);
-
 
 	DIPROPDWORD v12;
 	v12.diph.dwHeaderSize = 16;
