@@ -6,3 +6,4 @@ Release/
 *.swp
 *.opt
 out/
+out_win/

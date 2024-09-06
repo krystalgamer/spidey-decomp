@@ -1,5 +1,7 @@
 #include "non_win32.h"
 
+// #define BOOT_GAME
+
 #include "main.h"
 #include "ob.h"
 #include "vector.h"
@@ -80,6 +82,7 @@ extern int FAIL_VALIDATION;
 // @MEDIUMTODO
 void SpideyMain(void)
 {
+	while(1);
 	printf("void SpideyMain(void)");
 }
 
