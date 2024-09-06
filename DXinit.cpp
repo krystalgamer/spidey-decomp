@@ -109,7 +109,7 @@ void displayD3DError(long,char *,i32)
 }
 
 // @SMALLTODO
-void displayDIError(long,char *,i32)
+void displayDIError(HRESULT error, char* buf, i32 line)
 {
     printf("displayDIError(long,char *,i32)");
 }

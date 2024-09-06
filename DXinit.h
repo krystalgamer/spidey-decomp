@@ -42,4 +42,6 @@ EXPORT void shutdownDirectInput8(void);
 EXPORT void shutdownDirectSound8(void);
 EXPORT void gsub_5027A0(void);
 
+#define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
+
 #endif
