@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *  Copyright (C) 1995-1999 Microsoft Corporation.  All Rights Reserved.
+ *  Copyright (C) 1995-2000 Microsoft Corporation.  All Rights Reserved.
  *
  *  File:       dinputd.h
  *  Content:    DirectInput include file for device driver implementors
@@ -10,7 +10,7 @@
 #define __DINPUTD_INCLUDED__
 
 #ifndef DIRECTINPUT_VERSION
-#define DIRECTINPUT_VERSION         0x0700
+#define DIRECTINPUT_VERSION         0x0800
 #endif
 
 #ifdef __cplusplus
@@ -28,6 +28,8 @@ extern "C" {
 DEFINE_GUID(IID_IDirectInputEffectDriver,   0x02538130,0x898F,0x11D0,0x9A,0xD0,0x00,0xA0,0xC9,0xA0,0x6E,0x35);
 DEFINE_GUID(IID_IDirectInputJoyConfig,      0x1DE12AB1,0xC9F5,0x11CF,0xBF,0xC7,0x44,0x45,0x53,0x54,0x00,0x00);
 DEFINE_GUID(IID_IDirectInputPIDDriver,      0xEEC6993A,0xB3FD,0x11D2,0xA9,0x16,0x00,0xC0,0x4F,0xB9,0x86,0x38);
+
+DEFINE_GUID(IID_IDirectInputJoyConfig8,     0xeb0d7dfa,0x1990,0x4f27,0xb4,0xd6,0xed,0xf2,0xee,0xc4,0xa4,0x4c);
 
 #endif /* DIJ_RINGZERO */
 
@@ -254,6 +256,21 @@ typedef struct IDirectInputEffectDriver *LPDIRECTINPUTEFFECTDRIVER;
 #define JOYTYPE_NOHIDDIRECT             0x00000004l /* Do not use HID directly for this device */
 #define JOYTYPE_DEFAULTPROPSHEET        0x80000000l /* CPL overrides custom property sheet */
 
+/* Settings for TypeInfo Flags2 */
+#define JOYTYPE_DEVICEHIDE              0x00010000l /* Hide unclassified devices */
+#define JOYTYPE_MOUSEHIDE               0x00020000l /* Hide mice */
+#define JOYTYPE_KEYBHIDE                0x00040000l /* Hide keyboards */
+#define JOYTYPE_GAMEHIDE                0x00080000l /* Hide game controllers */
+#define JOYTYPE_HIDEACTIVE              0x00100000l /* Hide flags are active */
+#define JOYTYPE_INFOMASK                0x00E00000l /* Mask for type specific info */
+#define JOYTYPE_INFODEFAULT             0x00000000l /* Use default axis mappings */
+#define JOYTYPE_INFOYYPEDALS            0x00200000l /* Use Y as a combined pedals axis */
+#define JOYTYPE_INFOZYPEDALS            0x00400000l /* Use Z for accelerate, Y for brake */
+#define JOYTYPE_INFOYRPEDALS            0x00600000l /* Use Y for accelerate, R for brake */
+#define JOYTYPE_INFOZRPEDALS            0x00800000l /* Use Z for accelerate, R for brake */
+#define JOYTYPE_INFOZISSLIDER           0x00200000l /* Use Z as a slider */
+#define JOYTYPE_INFOZISZ                0x00400000l /* Use Z as Z axis */
+
 /* struct for storing x,y, z, and rudder values */
 typedef struct joypos_tag {
     DWORD       dwX;
@@ -345,6 +362,9 @@ typedef BOOL (FAR PASCAL * LPDIJOYTYPECALLBACK)(LPCWSTR, LPVOID);
 #define DITC_CALLOUT                0x00000008
 #define DITC_HARDWAREID             0x00000010
 #define DITC_FLAGS1                 0x00000020
+#define DITC_FLAGS2                 0x00000040
+#define DITC_MAPFILE                0x00000080
+
 
 
 /* This structure is defined for DirectX 5.0 compatibility */
@@ -358,6 +378,18 @@ typedef struct DIJOYTYPEINFO_DX5 {
 } DIJOYTYPEINFO_DX5, *LPDIJOYTYPEINFO_DX5;
 typedef const DIJOYTYPEINFO_DX5 *LPCDIJOYTYPEINFO_DX5;
 
+/* This structure is defined for DirectX 6.1 compatibility */
+typedef struct DIJOYTYPEINFO_DX6 {
+    DWORD dwSize;
+    JOYREGHWSETTINGS hws;
+    CLSID clsidConfig;
+    WCHAR wszDisplayName[MAX_JOYSTRING];
+    WCHAR wszCallout[MAX_JOYSTICKOEMVXDNAME];
+    WCHAR wszHardwareId[MAX_JOYSTRING];
+    DWORD dwFlags1;
+} DIJOYTYPEINFO_DX6, *LPDIJOYTYPEINFO_DX6;
+typedef const DIJOYTYPEINFO_DX6 *LPCDIJOYTYPEINFO_DX6;
+
 typedef struct DIJOYTYPEINFO {
     DWORD dwSize;
     JOYREGHWSETTINGS hws;
@@ -367,10 +399,13 @@ typedef struct DIJOYTYPEINFO {
 #if(DIRECTINPUT_VERSION >= 0x05b2)
     WCHAR wszHardwareId[MAX_JOYSTRING];
     DWORD dwFlags1;
+#if(DIRECTINPUT_VERSION >= 0x0800)
+    DWORD dwFlags2;
+    WCHAR wszMapFile[MAX_JOYSTRING];
+#endif /* DIRECTINPUT_VERSION >= 0x0800 */
 #endif /* DIRECTINPUT_VERSION >= 0x05b2 */
 } DIJOYTYPEINFO, *LPDIJOYTYPEINFO;
 typedef const DIJOYTYPEINFO *LPCDIJOYTYPEINFO;
-
 #define DIJC_GUIDINSTANCE           0x00000001
 #define DIJC_REGHWCONFIGTYPE        0x00000002
 #define DIJC_GAIN                   0x00000004
@@ -495,6 +530,142 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
 
 #endif /* DIJ_RINGZERO */
 
+#if(DIRECTINPUT_VERSION >= 0x0800)
+
+#ifndef DIJ_RINGZERO
+
+#undef INTERFACE
+#define INTERFACE IDirectInputJoyConfig8
+
+DECLARE_INTERFACE_(IDirectInputJoyConfig8, IUnknown)
+{
+    /*** IUnknown methods ***/
+    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+    STDMETHOD_(ULONG,Release)(THIS) PURE;
+
+    /*** IDirectInputJoyConfig8 methods ***/
+    STDMETHOD(Acquire)(THIS) PURE;
+    STDMETHOD(Unacquire)(THIS) PURE;
+    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+    STDMETHOD(SendNotify)(THIS) PURE;
+    STDMETHOD(EnumTypes)(THIS_ LPDIJOYTYPECALLBACK,LPVOID) PURE;
+    STDMETHOD(GetTypeInfo)(THIS_ LPCWSTR,LPDIJOYTYPEINFO,DWORD) PURE;
+    STDMETHOD(SetTypeInfo)(THIS_ LPCWSTR,LPCDIJOYTYPEINFO,DWORD,LPWSTR) PURE;
+    STDMETHOD(DeleteType)(THIS_ LPCWSTR) PURE;
+    STDMETHOD(GetConfig)(THIS_ UINT,LPDIJOYCONFIG,DWORD) PURE;
+    STDMETHOD(SetConfig)(THIS_ UINT,LPCDIJOYCONFIG,DWORD) PURE;
+    STDMETHOD(DeleteConfig)(THIS_ UINT) PURE;
+    STDMETHOD(GetUserValues)(THIS_ LPDIJOYUSERVALUES,DWORD) PURE;
+    STDMETHOD(SetUserValues)(THIS_ LPCDIJOYUSERVALUES,DWORD) PURE;
+    STDMETHOD(AddNewHardware)(THIS_ HWND,REFGUID) PURE;
+    STDMETHOD(OpenTypeKey)(THIS_ LPCWSTR,DWORD,PHKEY) PURE;
+    STDMETHOD(OpenAppStatusKey)(THIS_ PHKEY) PURE;
+};
+
+typedef struct IDirectInputJoyConfig8 *LPDIRECTINPUTJOYCONFIG8;
+
+#if !defined(__cplusplus) || defined(CINTERFACE)
+#define IDirectInputJoyConfig8_QueryInterface(p,a,b) (p)->lpVtbl->QueryInterface(p,a,b)
+#define IDirectInputJoyConfig8_AddRef(p) (p)->lpVtbl->AddRef(p)
+#define IDirectInputJoyConfig8_Release(p) (p)->lpVtbl->Release(p)
+#define IDirectInputJoyConfig8_Acquire(p) (p)->lpVtbl->Acquire(p)
+#define IDirectInputJoyConfig8_Unacquire(p) (p)->lpVtbl->Unacquire(p)
+#define IDirectInputJoyConfig8_SetCooperativeLevel(p,a,b) (p)->lpVtbl->SetCooperativeLevel(p,a,b)
+#define IDirectInputJoyConfig8_SendNotify(p) (p)->lpVtbl->SendNotify(p)
+#define IDirectInputJoyConfig8_EnumTypes(p,a,b) (p)->lpVtbl->EnumTypes(p,a,b)
+#define IDirectInputJoyConfig8_GetTypeInfo(p,a,b,c) (p)->lpVtbl->GetTypeInfo(p,a,b,c)
+#define IDirectInputJoyConfig8_SetTypeInfo(p,a,b,c,d) (p)->lpVtbl->SetTypeInfo(p,a,b,c,d)
+#define IDirectInputJoyConfig8_DeleteType(p,a) (p)->lpVtbl->DeleteType(p,a)
+#define IDirectInputJoyConfig8_GetConfig(p,a,b,c) (p)->lpVtbl->GetConfig(p,a,b,c)
+#define IDirectInputJoyConfig8_SetConfig(p,a,b,c) (p)->lpVtbl->SetConfig(p,a,b,c)
+#define IDirectInputJoyConfig8_DeleteConfig(p,a) (p)->lpVtbl->DeleteConfig(p,a)
+#define IDirectInputJoyConfig8_GetUserValues(p,a,b) (p)->lpVtbl->GetUserValues(p,a,b)
+#define IDirectInputJoyConfig8_SetUserValues(p,a,b) (p)->lpVtbl->SetUserValues(p,a,b)
+#define IDirectInputJoyConfig8_AddNewHardware(p,a,b) (p)->lpVtbl->AddNewHardware(p,a,b)
+#define IDirectInputJoyConfig8_OpenTypeKey(p,a,b,c) (p)->lpVtbl->OpenTypeKey(p,a,b,c)
+#define IDirectInputJoyConfig8_OpenAppStatusKey(p,a) (p)->lpVtbl->OpenAppStatusKey(p,a)
+#else
+#define IDirectInputJoyConfig8_QueryInterface(p,a,b) (p)->QueryInterface(a,b)
+#define IDirectInputJoyConfig8_AddRef(p) (p)->AddRef()
+#define IDirectInputJoyConfig8_Release(p) (p)->Release()
+#define IDirectInputJoyConfig8_Acquire(p) (p)->Acquire()
+#define IDirectInputJoyConfig8_Unacquire(p) (p)->Unacquire()
+#define IDirectInputJoyConfig8_SetCooperativeLevel(p,a,b) (p)->SetCooperativeLevel(a,b)
+#define IDirectInputJoyConfig8_SendNotify(p) (p)->SendNotify()
+#define IDirectInputJoyConfig8_EnumTypes(p,a,b) (p)->EnumTypes(a,b)
+#define IDirectInputJoyConfig8_GetTypeInfo(p,a,b,c) (p)->GetTypeInfo(a,b,c)
+#define IDirectInputJoyConfig8_SetTypeInfo(p,a,b,c,d) (p)->SetTypeInfo(a,b,c,d)
+#define IDirectInputJoyConfig8_DeleteType(p,a) (p)->DeleteType(a)
+#define IDirectInputJoyConfig8_GetConfig(p,a,b,c) (p)->GetConfig(a,b,c)
+#define IDirectInputJoyConfig8_SetConfig(p,a,b,c) (p)->SetConfig(a,b,c)
+#define IDirectInputJoyConfig8_DeleteConfig(p,a) (p)->DeleteConfig(a)
+#define IDirectInputJoyConfig8_GetUserValues(p,a,b) (p)->GetUserValues(a,b)
+#define IDirectInputJoyConfig8_SetUserValues(p,a,b) (p)->SetUserValues(a,b)
+#define IDirectInputJoyConfig8_AddNewHardware(p,a,b) (p)->AddNewHardware(a,b)
+#define IDirectInputJoyConfig8_OpenTypeKey(p,a,b,c) (p)->OpenTypeKey(a,b,c)
+#define IDirectInputJoyConfig8_OpenAppStatusKey(p,a) (p)->OpenAppStatusKey(a)
+#endif
+
+#endif /* DIJ_RINGZERO */
+
+/****************************************************************************
+ *
+ *  Notification Messages
+ *
+ ****************************************************************************/
+
+/* RegisterWindowMessage with this to get DirectInput notification messages */
+#define DIRECTINPUT_NOTIFICATION_MSGSTRINGA  "DIRECTINPUT_NOTIFICATION_MSGSTRING"
+#define DIRECTINPUT_NOTIFICATION_MSGSTRINGW  L"DIRECTINPUT_NOTIFICATION_MSGSTRING"
+
+#ifdef UNICODE
+#define DIRECTINPUT_NOTIFICATION_MSGSTRING  DIRECTINPUT_NOTIFICATION_MSGSTRINGW
+#else
+#define DIRECTINPUT_NOTIFICATION_MSGSTRING  DIRECTINPUT_NOTIFICATION_MSGSTRINGA
+#endif
+
+#define DIMSGWP_NEWAPPSTART         0x00000001
+#define DIMSGWP_DX8APPSTART         0x00000002
+#define DIMSGWP_DX8MAPPERAPPSTART   0x00000003
+
+#endif /* DIRECTINPUT_VERSION >= 0x0800 */
+
+#define DIRECTINPUT_REGSTR_KEY_LASTAPPA     "MostRecentApplication"
+#define DIRECTINPUT_REGSTR_KEY_LASTMAPAPPA  "MostRecentMapperApplication"
+#define DIRECTINPUT_REGSTR_VAL_VERSIONA     "Version"
+#define DIRECTINPUT_REGSTR_VAL_NAMEA        "Name"
+#define DIRECTINPUT_REGSTR_VAL_IDA          "Id"
+#define DIRECTINPUT_REGSTR_VAL_MAPPERA      "UsesMapper"
+#define DIRECTINPUT_REGSTR_VAL_LASTSTARTA   "MostRecentStart"
+
+#define DIRECTINPUT_REGSTR_KEY_LASTAPPW     L"MostRecentApplication"
+#define DIRECTINPUT_REGSTR_KEY_LASTMAPAPPW  L"MostRecentMapperApplication"
+#define DIRECTINPUT_REGSTR_VAL_VERSIONW     L"Version"
+#define DIRECTINPUT_REGSTR_VAL_NAMEW        L"Name"
+#define DIRECTINPUT_REGSTR_VAL_IDW          L"Id"
+#define DIRECTINPUT_REGSTR_VAL_MAPPERW      L"UsesMapper"
+#define DIRECTINPUT_REGSTR_VAL_LASTSTARTW   L"MostRecentStart"
+
+#ifdef UNICODE
+#define DIRECTINPUT_REGSTR_KEY_LASTAPP      DIRECTINPUT_REGSTR_KEY_LASTAPPW
+#define DIRECTINPUT_REGSTR_KEY_LASTMAPAPP   DIRECTINPUT_REGSTR_KEY_LASTMAPAPPW
+#define DIRECTINPUT_REGSTR_VAL_VERSION      DIRECTINPUT_REGSTR_VAL_VERSIONW
+#define DIRECTINPUT_REGSTR_VAL_NAME         DIRECTINPUT_REGSTR_VAL_NAMEW
+#define DIRECTINPUT_REGSTR_VAL_ID           DIRECTINPUT_REGSTR_VAL_IDW
+#define DIRECTINPUT_REGSTR_VAL_MAPPER       DIRECTINPUT_REGSTR_VAL_MAPPERW
+#define DIRECTINPUT_REGSTR_VAL_LASTSTART    DIRECTINPUT_REGSTR_VAL_LASTSTARTW
+#else
+#define DIRECTINPUT_REGSTR_KEY_LASTAPP      DIRECTINPUT_REGSTR_KEY_LASTAPPA
+#define DIRECTINPUT_REGSTR_KEY_LASTMAPAPP   DIRECTINPUT_REGSTR_KEY_LASTMAPAPPA
+#define DIRECTINPUT_REGSTR_VAL_VERSION      DIRECTINPUT_REGSTR_VAL_VERSIONA
+#define DIRECTINPUT_REGSTR_VAL_NAME         DIRECTINPUT_REGSTR_VAL_NAMEA
+#define DIRECTINPUT_REGSTR_VAL_ID           DIRECTINPUT_REGSTR_VAL_IDA
+#define DIRECTINPUT_REGSTR_VAL_MAPPER       DIRECTINPUT_REGSTR_VAL_MAPPERA
+#define DIRECTINPUT_REGSTR_VAL_LASTSTART    DIRECTINPUT_REGSTR_VAL_LASTSTARTA
+#endif
+
+
 /****************************************************************************
  *
  *  Return Codes
@@ -507,8 +678,27 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
 /*
  *  Device driver-specific codes.
  */
+
 #define DIERR_DRIVERFIRST               0x80040300L
 #define DIERR_DRIVERLAST                0x800403FFL
+
+/*
+ *  Unless the specific driver has been precisely identified, no meaning 
+ *  should be attributed to these values other than that the driver 
+ *  originated the error.  However, to illustrate the types of error that 
+ *  may be causing the failure, the PID force feedback driver distributed 
+ *  with DirectX 7 could return the following errors:
+ *
+ *  DIERR_DRIVERFIRST + 1   
+ *      The requested usage was not found.
+ *  DIERR_DRIVERFIRST + 2   
+ *      The parameter block couldn't be	downloaded to the device.
+ *  DIERR_DRIVERFIRST + 3   
+ *      PID initialization failed.
+ *  DIERR_DRIVERFIRST + 4   
+ *      The provided values couldn't be scaled.
+ */
+
 
 /*
  *  Device installer errors.
@@ -531,31 +721,16 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
  */
 #define DIERR_BADINF                    0x80040402L
 
-/*
- * Device-specific errors for USB/PID force feedback devices. 
- */
+/****************************************************************************
+ *
+ *  Map files
+ *
+ ****************************************************************************/
 
 /*
- *  The requested usage was not found.
+ *  Delete particular data from default map file.
  */
-#define  DIERR_PID_USAGENOTFOUND	DIERR_DRIVERFIRST + 1
-
-/*
- *  The parameter block couldn't be	downloaded to the device.
- */
-#define DIERR_PID_BLOCKLOADERROR	DIERR_DRIVERFIRST + 2
-
-/*
- *  PID initialization failed.
- */
-#define DIERR_PID_NOTINITIALIZED	DIERR_DRIVERFIRST + 3
-
-/*
- *  The provided values couldn't be scaled.
- */
-#define DIERR_PID_INVALIDSCALING	DIERR_DRIVERFIRST + 4
-
-
+#define DIDIFT_DELETE                   0x01000000
 
 #ifdef __cplusplus
 };

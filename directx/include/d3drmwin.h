@@ -2,8 +2,8 @@
  *
  *  Copyright (C) 1995-1997 Microsoft Corporation.  All Rights Reserved.
  *
- *  File:       d3drm.h
- *  Content:    Direct3DRM include file
+ *  File:	d3drm.h
+ *  Content:	Direct3DRM include file
  *
  ***************************************************************************/
 
@@ -22,7 +22,7 @@
 /*
  * GUIDS used by Direct3DRM Windows interface
  */
-DEFINE_GUID(IID_IDirect3DRMWinDevice,   0xc5016cc0, 0xd273, 0x11ce, 0xac, 0x48, 0x0, 0x0, 0xc0, 0x38, 0x25, 0xa1);
+DEFINE_GUID(IID_IDirect3DRMWinDevice,	0xc5016cc0, 0xd273, 0x11ce, 0xac, 0x48, 0x0, 0x0, 0xc0, 0x38, 0x25, 0xa1);
 
 WIN_TYPES(IDirect3DRMWinDevice, DIRECT3DRMWINDEVICE);
 

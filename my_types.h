@@ -26,6 +26,7 @@
 #ifndef _WIN32
 #define __int16 short
 #define __int8 char
+
 #endif
 
 typedef unsigned char u8;
@@ -46,6 +47,10 @@ typedef int i32;
 #define OVERRIDE override
 #else
 #define OVERRIDE
+#endif
+
+#ifndef _WIN32
+#define FAILED(x) ((i32)(x) < 0)
 #endif
 
 #endif

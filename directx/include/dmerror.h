@@ -2,7 +2,7 @@
 *                                                                       *
 *   dmerror.h -- Error code returned by DirectMusic API's               *
 *                                                                       *
-*   Copyright (c) 1998, Microsoft Corp. All rights reserved.            *
+*   Copyright (c) 1998-1999 Microsoft Corporation
 *                                                                       *
 ************************************************************************/
 
@@ -23,15 +23,18 @@
 /* DMUS_S_PARTIALLOAD
  *
  * The object could only load partially. This can happen if some components are
- * not registered properly, such as embedded tracks and tools.
+ * not registered properly, such as embedded tracks and tools. This can also happen
+ * if some content is missing. For example, if a segment uses a DLS collection that
+ * is not in the loader's current search directory.
  */
 #define DMUS_S_PARTIALLOAD              MAKE_DMHRESULTSUCCESS(0x091)
 
 /* DMUS_S_PARTIALDOWNLOAD
  *
- * This code indicates that a band download was only successful in reaching
- * some, but not all, of the referenced ports. Some samples may not play
- * correctly.
+ * Return value from IDirectMusicBand::Download() which indicates that
+ * some of the instruments safely downloaded, but others failed. This usually
+ * occurs when some instruments are on PChannels not supported by the performance
+ * or port.
  */
 #define DMUS_S_PARTIALDOWNLOAD          MAKE_DMHRESULTSUCCESS(0x092)
 
@@ -40,7 +43,6 @@
  * Return value from IDirectMusicTool::ProcessPMsg() which indicates to the
  * performance that it should cue the PMsg again automatically.
  */
-
 #define DMUS_S_REQUEUE                  MAKE_DMHRESULTSUCCESS(0x200)
 
 /* DMUS_S_FREE
@@ -120,6 +122,13 @@
  *
  */
 #define DMUS_S_NOBUFFERCONTROL          MAKE_DMHRESULTSUCCESS(0x215)
+
+/* DMUS_S_GARBAGE_COLLECTED
+ *
+ * The requested operation was not performed because during CollectGarbage
+ * the loader determined that the object had been released.
+ */
+#define DMUS_S_GARBAGE_COLLECTED        MAKE_DMHRESULTSUCCESS(0x216)
 
 /* DMUS_E_DRIVER_FAILED
  *
@@ -521,6 +530,12 @@
  */
 #define DMUS_E_TRACK_NOT_FOUND			MAKE_DMHRESULTERROR(0x0166)
 
+/* DMUS_E_TRACK_NO_CLOCKTIME_SUPPORT
+ *
+ * The track does not support clock time playback or getparam.
+ */
+#define DMUS_E_TRACK_NO_CLOCKTIME_SUPPORT   MAKE_DMHRESULTERROR(0x0167)
+ 
 /* DMUS_E_NO_MASTER_CLOCK
  *
  * There is no master clock in the performance. Be sure to call
@@ -616,13 +631,15 @@
  */
 #define DMUS_E_CANNOT_OPEN_PORT         MAKE_DMHRESULTERROR(0x0206)
 
-/* DMUS_E_CONNOT_CONVERT
+/* DMUS_E_CANNOT_CONVERT
  *
  * A call to MIDIToMusic() or MusicToMIDI() resulted in an error because
  * the requested conversion could not happen. This usually occurs when the
  * provided DMUS_CHORD_KEY structure has an invalid chord or scale pattern.
  */
-#define DMUS_E_CONNOT_CONVERT           MAKE_DMHRESULTERROR(0x0207)
+#define DMUS_E_CANNOT_CONVERT           MAKE_DMHRESULTERROR(0x0207)
+/* misspelling in previous versions of DirectX preserved for backward compatibility */
+#define DMUS_E_CONNOT_CONVERT           DMUS_E_CANNOT_CONVERT
 
 /* DMUS_E_DESCEND_CHUNK_FAIL
  * 
@@ -631,5 +648,196 @@
  */
 #define DMUS_E_DESCEND_CHUNK_FAIL       MAKE_DMHRESULTERROR(0x0210)
 
-#endif
+/* DMUS_E_NOT_LOADED
+ *
+ * An attempt to use this object failed because it first needs to
+ * be loaded.
+ */
+#define DMUS_E_NOT_LOADED               MAKE_DMHRESULTERROR(0x0211)
 
+/* DMUS_E_SCRIPT_LANGUAGE_INCOMPATIBLE
+ *
+ * The activeX scripting engine for the script's language is not compatible with
+ * DirectMusic.
+ *
+ */
+#define DMUS_E_SCRIPT_LANGUAGE_INCOMPATIBLE  MAKE_DMHRESULTERROR(0x0213)
+
+/* DMUS_E_SCRIPT_UNSUPPORTED_VARTYPE
+ *
+ * A varient was used that had a type that is not supported by DirectMusic.
+ *
+ */
+#define DMUS_E_SCRIPT_UNSUPPORTED_VARTYPE    MAKE_DMHRESULTERROR(0x0214)
+
+/* DMUS_E_SCRIPT_ERROR_IN_SCRIPT
+ *
+ * An error was encountered while parsing or executing the script.
+ * The pErrorInfo parameter (if supplied) was filled with information about the error.
+ */
+#define DMUS_E_SCRIPT_ERROR_IN_SCRIPT        MAKE_DMHRESULTERROR(0x0215)
+
+/* DMUS_E_SCRIPT_CANTLOAD_OLEAUT32
+ *
+ * Loading of oleaut32.dll failed.  VBScript and other activeX scripting languages
+ * require use of oleaut32.dll.  On platforms where oleaut32.dll is not present, only
+ * the DirectMusicScript language, which doesn't require oleaut32.dll can be used.
+ */
+#define DMUS_E_SCRIPT_CANTLOAD_OLEAUT32      MAKE_DMHRESULTERROR(0x0216)
+
+/* DMUS_E_SCRIPT_LOADSCRIPT_ERROR
+ *
+ * An error occured while parsing a script loaded using LoadScript.  The script that
+ * was loaded contains an error.
+ */
+#define DMUS_E_SCRIPT_LOADSCRIPT_ERROR       MAKE_DMHRESULTERROR(0x0217)
+
+/* DMUS_E_SCRIPT_INVALID_FILE
+ *
+ * The script file is invalid.
+ */
+#define DMUS_E_SCRIPT_INVALID_FILE           MAKE_DMHRESULTERROR(0x0218)
+
+/* DMUS_E_INVALID_SCRIPTTRACK
+ *
+ * The file contains an invalid script track.
+ */
+#define DMUS_E_INVALID_SCRIPTTRACK           MAKE_DMHRESULTERROR(0x0219)
+
+/* DMUS_E_SCRIPT_VARIABLE_NOT_FOUND
+ *
+ * The script does not contain a variable with the specified name.
+ */
+#define DMUS_E_SCRIPT_VARIABLE_NOT_FOUND     MAKE_DMHRESULTERROR(0x021A)
+
+/* DMUS_E_SCRIPT_ROUTINE_NOT_FOUND
+ *
+ * The script does not contain a routine with the specified name.
+ */
+#define DMUS_E_SCRIPT_ROUTINE_NOT_FOUND      MAKE_DMHRESULTERROR(0x021B)
+
+/* DMUS_E_SCRIPT_CONTENT_READONLY
+ *
+ * Scripts variables for content referenced or embedded in a script cannot be set.
+ */
+#define DMUS_E_SCRIPT_CONTENT_READONLY       MAKE_DMHRESULTERROR(0x021C)
+
+/* DMUS_E_SCRIPT_NOT_A_REFERENCE
+ *
+ * Attempt was made to set a script's variable by reference to a value that was
+ * not an object type.
+ */
+#define DMUS_E_SCRIPT_NOT_A_REFERENCE        MAKE_DMHRESULTERROR(0x021D)
+
+/* DMUS_E_SCRIPT_VALUE_NOT_SUPPORTED
+ *
+ * Attempt was made to set a script's variable by value to an object that does
+ * not support a default value property.
+ */
+#define DMUS_E_SCRIPT_VALUE_NOT_SUPPORTED    MAKE_DMHRESULTERROR(0x021E)
+
+/* DMUS_E_INVALID_SEGMENTTRIGGERTRACK
+ *
+ * The file contains an invalid segment trigger track.
+ */
+#define DMUS_E_INVALID_SEGMENTTRIGGERTRACK   MAKE_DMHRESULTERROR(0x0220)
+
+/* DMUS_E_INVALID_LYRICSTRACK
+ *
+ * The file contains an invalid lyrics track.
+ */
+#define DMUS_E_INVALID_LYRICSTRACK           MAKE_DMHRESULTERROR(0x0221)
+
+/* DMUS_E_INVALID_PARAMCONTROLTRACK
+ *
+ * The file contains an invalid parameter control track.
+ */
+#define DMUS_E_INVALID_PARAMCONTROLTRACK     MAKE_DMHRESULTERROR(0x0222)
+
+/* DMUS_E_AUDIOVBSCRIPT_SYNTAXERROR
+ *
+ * A script written in AudioVBScript could not be read because it contained a statement that
+ * is not allowed by the AudioVBScript language.
+ */
+#define DMUS_E_AUDIOVBSCRIPT_SYNTAXERROR     MAKE_DMHRESULTERROR(0x0223)
+
+/* DMUS_E_AUDIOVBSCRIPT_RUNTIMEERROR
+ *
+ * A script routine written in AudioVBScript failed because an invalid operation occurred.  For example,
+ * adding the number 3 to a segment object would produce this error.  So would attempting to call a routine
+ * that doesn't exist.
+ */
+#define DMUS_E_AUDIOVBSCRIPT_RUNTIMEERROR     MAKE_DMHRESULTERROR(0x0224)
+
+/* DMUS_E_AUDIOVBSCRIPT_OPERATIONFAILURE
+ *
+ * A script routine written in AudioVBScript failed because a function outside of a script failed to complete.
+ * For example, a call to PlaySegment that fails to play because of low memory would return this error.
+ */
+#define DMUS_E_AUDIOVBSCRIPT_OPERATIONFAILURE     MAKE_DMHRESULTERROR(0x0225)
+
+/* DMUS_E_AUDIOPATHS_NOT_VALID
+ *
+ * The Performance has set up some PChannels using the AssignPChannel command, which 
+ * makes it not capable of supporting audio paths.
+ */
+#define DMUS_E_AUDIOPATHS_NOT_VALID     MAKE_DMHRESULTERROR(0x0226)
+
+/* DMUS_E_AUDIOPATHS_IN_USE
+ *
+ * This is the inverse of the previous error. 
+ * The Performance has set up some audio paths, which makes is incompatible
+ * with the calls to allocate pchannels, etc. 
+ */
+#define DMUS_E_AUDIOPATHS_IN_USE     MAKE_DMHRESULTERROR(0x0227)
+
+/* DMUS_E_NO_AUDIOPATH_CONFIG
+ *
+ * A segment or song was asked for its embedded audio path configuration,
+ * but there isn't any. 
+ */
+#define DMUS_E_NO_AUDIOPATH_CONFIG     MAKE_DMHRESULTERROR(0x0228)
+
+/* DMUS_E_AUDIOPATH_INACTIVE
+ *
+ * An audiopath is inactive, perhaps because closedown was called.
+ */
+#define DMUS_E_AUDIOPATH_INACTIVE     MAKE_DMHRESULTERROR(0x0229)
+
+/* DMUS_E_AUDIOPATH_NOBUFFER
+ *
+ * An audiopath failed to create because a requested buffer could not be created.
+ */
+#define DMUS_E_AUDIOPATH_NOBUFFER     MAKE_DMHRESULTERROR(0x022A)
+
+/* DMUS_E_AUDIOPATH_NOPORT
+ *
+ * An audiopath could not be used for playback because it lacked port assignments.
+ */
+#define DMUS_E_AUDIOPATH_NOPORT     MAKE_DMHRESULTERROR(0x022B)
+
+/* DMUS_E_NO_AUDIOPATH
+ *
+ * Attempt was made to play segment in audiopath mode and there was no audiopath.
+ */
+#define DMUS_E_NO_AUDIOPATH     MAKE_DMHRESULTERROR(0x022C)
+
+/* DMUS_E_INVALIDCHUNK
+ *
+ * Invalid data was found in a RIFF file chunk.
+ */
+#define DMUS_E_INVALIDCHUNK     MAKE_DMHRESULTERROR(0x022D)
+
+/* DMUS_E_AUDIOPATH_NOGLOBALFXBUFFER
+ *
+ * Attempt was made to create an audiopath that sends to a global effects buffer which did not exist.
+ */
+#define DMUS_E_AUDIOPATH_NOGLOBALFXBUFFER     MAKE_DMHRESULTERROR(0x022E)
+
+/* DMUS_E_INVALID_CONTAINER_OBJECT
+ *
+ * The file does not contain a valid container object.
+ */
+#define DMUS_E_INVALID_CONTAINER_OBJECT    MAKE_DMHRESULTERROR(0x022F)
+
+#endif

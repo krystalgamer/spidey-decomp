@@ -2,7 +2,7 @@
 *                                                                       *
 *   dmdls.h -- DLS download definitions for DirectMusic API's           *
 *                                                                       *
-*   Copyright (c) 1998, Microsoft Corp. All rights reserved.            *
+*   Copyright (c) 1998-1999 Microsoft Corporation                       *
 *                                                                       *
 ************************************************************************/
 
@@ -36,9 +36,15 @@ typedef struct _DMUS_DOWNLOADINFO
     DWORD cbSize;                       /* Total size of this memory chunk. */
 } DMUS_DOWNLOADINFO;
 
-#define DMUS_DOWNLOADINFO_INSTRUMENT    1
-#define DMUS_DOWNLOADINFO_WAVE          2
-#define DMUS_DOWNLOADINFO_INSTRUMENT2   3   /* New version for better DLS2 support. */
+#define DMUS_DOWNLOADINFO_INSTRUMENT        1
+#define DMUS_DOWNLOADINFO_WAVE              2
+#define DMUS_DOWNLOADINFO_INSTRUMENT2       3   /* New version for better DLS2 support. */
+
+/* Support for oneshot and streaming wave data 
+ */
+#define DMUS_DOWNLOADINFO_WAVEARTICULATION  4   /* Wave articulation data */
+#define DMUS_DOWNLOADINFO_STREAMINGWAVE     5   /* One chunk of a streaming */
+#define DMUS_DOWNLOADINFO_ONESHOTWAVE       6
 
 #define DMUS_DEFAULT_SIZE_OFFSETTABLE   1
 
@@ -171,6 +177,22 @@ typedef struct _DMUS_NOTERANGE
     DWORD           dwLowNote;  /* Sets the low note for the range of MIDI note events to which the instrument responds.*/
     DWORD           dwHighNote; /* Sets the high note for the range of MIDI note events to which the instrument responds.*/
 } DMUS_NOTERANGE;
+
+typedef struct _DMUS_WAVEARTDL
+{
+    ULONG               ulDownloadIdIdx;    /* Download ID's of each buffer */
+    ULONG               ulBus;              /* Playback bus */
+    ULONG               ulBuffers;          /* Buffers */
+    ULONG               ulMasterDLId;       /* Download ID of master voice of slave group */
+    USHORT              usOptions;          /* Same as DLS2 region options */
+}   DMUS_WAVEARTDL,
+    *LPDMUS_WAVEARTDL;
+
+typedef struct _DMUS_WAVEDL
+{
+    ULONG               cbWaveData;         /* Bytes of wave data */
+}   DMUS_WAVEDL,
+    *LPDMUS_WAVEDL;
 
 #endif 
 

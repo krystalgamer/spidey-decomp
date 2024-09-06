@@ -361,6 +361,21 @@ typedef const DPSESSIONDESC2 FAR *LPCDPSESSIONDESC2;
 #define DPSESSION_OPTIMIZELATENCY		0x00008000
 
 /*
+ * This flag allows lobby launched games that aren't voice enabled
+ * to get voice capabilities.
+ */
+#define DPSESSION_ALLOWVOICERETRO		0x00010000
+
+/*
+ * This flag supresses transmission of session desc changes.
+ * DPSESSION_NODATAMESSAGES was supposed to do that, but SetSessionDesc
+ * was ignoring the flag and some apps depended on the broken behavior, this
+ * flag allows applications to get the right behaviour without breaking apps depending
+ * on old broken behavior.
+ */
+#define DPSESSION_NOSESSIONDESCMESSAGES		0x00020000
+ 
+/*
  * DPNAME
  * Used to hold the name of a DirectPlay entity
  * like a player or a group
@@ -1242,8 +1257,6 @@ DECLARE_INTERFACE_( IDirectPlay4, IDirectPlay3 )
 #define DPENUMSESSIONS_ALL          0x00000002
 
 
-
-
 /*
  * Start an asynchronous enum sessions
  */
@@ -1320,7 +1333,6 @@ DECLARE_INTERFACE_( IDirectPlay4, IDirectPlay3 )
  * any status dialogs.
  */
  #define DPOPEN_RETURNSTATUS		DPENUMSESSIONS_RETURNSTATUS
-
 
 
 /****************************************************************************
@@ -2124,9 +2136,6 @@ DEFINE_GUID(IID_IDirectPlay, 0x5454e9a0, 0xdb65, 0x11ce, 0x92, 0x1c, 0x00, 0xaa,
 
 #endif // IDirectPlay interface macros 
 
-
-
-
 #ifdef __cplusplus
 };
 #endif
@@ -2134,3 +2143,4 @@ DEFINE_GUID(IID_IDirectPlay, 0x5454e9a0, 0xdb65, 0x11ce, 0x92, 0x1c, 0x00, 0xaa,
 #pragma warning(default:4201)
 
 #endif
+

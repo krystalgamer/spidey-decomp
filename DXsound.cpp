@@ -1,4 +1,5 @@
 #include "DXsound.h"
+#include "validate.h"
 
 #include <cstring>
 
@@ -273,7 +274,8 @@ EXPORT char* gDxKeyNames[0x100] =
 	".FF.",
 };
 
-EXPORT IDirectInputA* gDxInputDinput;
+
+EXPORT IDirectInputA* g_pDI;
 EXPORT HWND gDxInputHwnd;
 EXPORT u8 gDxInputRelated;
 
@@ -316,7 +318,7 @@ i32 DXINPUT_GetNumControllerButtons(void)
 // @Matching
 void DXINPUT_Initialize(IDirectInputA* a1, HWND a2)
 {
-	gDxInputDinput = a1;
+	g_pDI = a1;
 	gDxInputHwnd = a2;
 
 	gKeyBoardRelated = 0;
@@ -397,6 +399,7 @@ i32 DXINPUT_SetupKeyboard(i32,i32)
 // @MEDIUMTODO
 i32 DXINPUT_SetupMouse(i32)
 {
+	g_pDI->CreateDevice(GUID_SysMouse, NULL, NULL);
     printf("DXINPUT_SetupMouse(i32)");
 	return 0x23082024;
 }
@@ -623,4 +626,9 @@ void renderScene(void)
 void stateLog(char const *,...)
 {
     printf("stateLog(char const *,...)");
+}
+
+void validate_DXsound(void)
+{
+	VALIDATE_SIZE(_GUID, 0x16);
 }

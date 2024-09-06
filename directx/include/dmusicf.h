@@ -2,12 +2,13 @@
 *                                                                       *
 *   dmusicf.h -- This module defines the DirectMusic file formats       *
 *                                                                       *
-*   Copyright (c) 1998, Microsoft Corp. All rights reserved.            *
+*   Copyright (c) 1998-1999 Microsoft Corporation
 *                                                                       *
 ************************************************************************/
 
 #ifndef _DMUSICF_
 #define _DMUSICF_
+
 
 #include <windows.h>
 
@@ -32,11 +33,11 @@ typedef interface IDirectMusicCollection IDirectMusicCollection;
 #define DMUS_FOURCC_GUID_CHUNK        mmioFOURCC('g','u','i','d')
 #define DMUS_FOURCC_INFO_LIST         mmioFOURCC('I','N','F','O')
 #define DMUS_FOURCC_UNFO_LIST         mmioFOURCC('U','N','F','O')
-#define DMUS_FOURCC_UNAM_CHUNK         mmioFOURCC('U','N','A','M')
-#define DMUS_FOURCC_UART_CHUNK         mmioFOURCC('U','A','R','T')
-#define DMUS_FOURCC_UCOP_CHUNK         mmioFOURCC('U','C','O','P')
-#define DMUS_FOURCC_USBJ_CHUNK         mmioFOURCC('U','S','B','J')
-#define DMUS_FOURCC_UCMT_CHUNK         mmioFOURCC('U','C','M','T')
+#define DMUS_FOURCC_UNAM_CHUNK        mmioFOURCC('U','N','A','M')
+#define DMUS_FOURCC_UART_CHUNK        mmioFOURCC('U','A','R','T')
+#define DMUS_FOURCC_UCOP_CHUNK        mmioFOURCC('U','C','O','P')
+#define DMUS_FOURCC_USBJ_CHUNK        mmioFOURCC('U','S','B','J')
+#define DMUS_FOURCC_UCMT_CHUNK        mmioFOURCC('U','C','M','T')
 #define DMUS_FOURCC_CATEGORY_CHUNK    mmioFOURCC('c','a','t','g')
 #define DMUS_FOURCC_VERSION_CHUNK     mmioFOURCC('v','e','r','s')
 
@@ -70,6 +71,9 @@ typedef struct _DMUS_IO_CURVE_ITEM
     BYTE        bCurveShape;
     BYTE        bCCData;
     BYTE        bFlags;
+    /* Following was added for DX8. */
+    WORD        wParamType;      /* RPN or NRPN parameter number. */
+    WORD        wMergeIndex;     /* Allows multiple parameters to be merged (pitchbend, volume, and expression.) */
 } DMUS_IO_CURVE_ITEM;
 
 
@@ -86,32 +90,6 @@ typedef struct _DMUS_IO_SYSEX_ITEM
     DWORD         dwPChannel;
     DWORD         dwSysExLength;
 } DMUS_IO_SYSEX_ITEM;
-
-
-typedef struct _DMUS_IO_TIMESIGNATURE_ITEM
-{
-    MUSIC_TIME    lTime;
-    BYTE          bBeatsPerMeasure;   /* beats per measure (top of time sig) */
-    BYTE          bBeat;              /* what note receives the beat (bottom of time sig.) */
-                                      /* we can assume that 0 means 256th note */
-    WORD          wGridsPerBeat;      /* grids per beat */
-} DMUS_IO_TIMESIGNATURE_ITEM;
-
-/* PARAM structures, used by GetParam() and SetParam() */
-typedef struct _DMUS_COMMAND_PARAM
-{
-    BYTE bCommand;
-    BYTE bGrooveLevel;
-    BYTE bGrooveRange;
-} DMUS_COMMAND_PARAM;
-
-typedef struct _DMUS_COMMAND_PARAM_2
-{
-	MUSIC_TIME mtTime;
-    BYTE bCommand;
-    BYTE bGrooveLevel;
-    BYTE bGrooveRange;
-} DMUS_COMMAND_PARAM_2;
 
 typedef DMUS_CHORD_KEY DMUS_CHORD_PARAM; /* DMUS_CHORD_KEY defined in dmusici.h */
 
@@ -137,19 +115,22 @@ typedef struct _DMUS_MUTE_PARAM
 
 /* Style chunks */
 
-#define DMUS_FOURCC_STYLE_FORM        mmioFOURCC('D','M','S','T')
-#define DMUS_FOURCC_STYLE_CHUNK       mmioFOURCC('s','t','y','h')
-#define DMUS_FOURCC_PART_LIST         mmioFOURCC('p','a','r','t')
-#define DMUS_FOURCC_PART_CHUNK        mmioFOURCC('p','r','t','h')
-#define DMUS_FOURCC_NOTE_CHUNK        mmioFOURCC('n','o','t','e')
-#define DMUS_FOURCC_CURVE_CHUNK       mmioFOURCC('c','r','v','e')
-#define DMUS_FOURCC_PATTERN_LIST      mmioFOURCC('p','t','t','n')
-#define DMUS_FOURCC_PATTERN_CHUNK     mmioFOURCC('p','t','n','h')
-#define DMUS_FOURCC_RHYTHM_CHUNK      mmioFOURCC('r','h','t','m')
-#define DMUS_FOURCC_PARTREF_LIST      mmioFOURCC('p','r','e','f')
-#define DMUS_FOURCC_PARTREF_CHUNK     mmioFOURCC('p','r','f','c')
-#define DMUS_FOURCC_STYLE_PERS_REF_LIST   mmioFOURCC('p', 'r', 'r', 'f')
-#define DMUS_FOURCC_MOTIFSETTINGS_CHUNK   mmioFOURCC('m', 't', 'f', 's')
+#define DMUS_FOURCC_STYLE_FORM            mmioFOURCC('D','M','S','T')
+#define DMUS_FOURCC_STYLE_CHUNK           mmioFOURCC('s','t','y','h')
+#define DMUS_FOURCC_PART_LIST             mmioFOURCC('p','a','r','t')
+#define DMUS_FOURCC_PART_CHUNK            mmioFOURCC('p','r','t','h')
+#define DMUS_FOURCC_NOTE_CHUNK            mmioFOURCC('n','o','t','e')
+#define DMUS_FOURCC_CURVE_CHUNK           mmioFOURCC('c','r','v','e')
+#define DMUS_FOURCC_MARKER_CHUNK          mmioFOURCC('m','r','k','r')
+#define DMUS_FOURCC_RESOLUTION_CHUNK      mmioFOURCC('r','s','l','n')
+#define DMUS_FOURCC_ANTICIPATION_CHUNK    mmioFOURCC('a','n','p','n')
+#define DMUS_FOURCC_PATTERN_LIST          mmioFOURCC('p','t','t','n')
+#define DMUS_FOURCC_PATTERN_CHUNK         mmioFOURCC('p','t','n','h')
+#define DMUS_FOURCC_RHYTHM_CHUNK          mmioFOURCC('r','h','t','m')
+#define DMUS_FOURCC_PARTREF_LIST          mmioFOURCC('p','r','e','f')
+#define DMUS_FOURCC_PARTREF_CHUNK         mmioFOURCC('p','r','f','c')
+#define DMUS_FOURCC_STYLE_PERS_REF_LIST   mmioFOURCC('p','r','r','f')
+#define DMUS_FOURCC_MOTIFSETTINGS_CHUNK   mmioFOURCC('m','t','f','s')
 
 /* Flags used by variations: these make up the DWORDs in dwVariationChoices.               */
 
@@ -177,12 +158,41 @@ typedef struct _DMUS_MUTE_PARAM
 #define DMUS_VARIATIONF_TYPE_COMPLEX 0x04000000 /* Handles complex chords. */  
 #define DMUS_VARIATIONF_DEST_TO1     0x08000000 /* Handles transitions to 1 chord. */  
 #define DMUS_VARIATIONF_DEST_TO5     0x10000000 /* Handles transitions to 5 chord. */  
+#define DMUS_VARIATIONF_DEST_OTHER   0x40000000 /* Handles transitions to chords other than 1 . */  
 
-/* The top three bits of the variation flags are the Mode bits.  If all are 0, it's IMA. */  
-/* If the smallest is 1, it's Direct Music. */
+/* legacy mask for variation modes */
 #define DMUS_VARIATIONF_MODES        0xE0000000
+/* Bits 29 and 31 of the variation flags are the Mode bits.  If both are 0, it's IMA. */  
+/* If bit 29 is 1, it's Direct Music. */
+#define DMUS_VARIATIONF_MODES_EX     (0x20000000 | 0x80000000)
 #define DMUS_VARIATIONF_IMA25_MODE   0x00000000
 #define DMUS_VARIATIONF_DMUS_MODE    0x20000000
+
+/* Set this if the part uses marker events */
+#define DMUS_PARTF_USE_MARKERS       0x1
+/* Set this if the part is allowed to switch only on chord-aligned markers */
+#define DMUS_PARTF_ALIGN_CHORDS      0x2
+
+/* These specify if the marker event signals whether to stop a variation or start a 
+pattern/variation (or both), and whether new variations must align with a chord */
+#define DMUS_MARKERF_START            0x1
+#define DMUS_MARKERF_STOP             0x2
+#define DMUS_MARKERF_CHORD_ALIGN      0x4
+
+/* if this flag is set, variation settings in a playing pattern-based track's state data will 
+persist in the track after it stops playing */
+#define DMUS_PATTERNF_PERSIST_CONTROL 0x1
+
+/* These specify possible values for DMUS_IO_PARTREF.bRandomVariation
+   all but DMUS_VARIATIONT_SEQUENTIAL and DMUS_VARIATIONT_RANDOM are dx8. */
+typedef enum enumDMUS_VARIATIONT_TYPES
+{
+    DMUS_VARIATIONT_SEQUENTIAL       = 0, /* Play sequential starting with variation 1. */
+    DMUS_VARIATIONT_RANDOM           = 1, /* Play randomly. */
+    DMUS_VARIATIONT_RANDOM_START     = 2, /* Play sequential starting with a random variation. */
+    DMUS_VARIATIONT_NO_REPEAT        = 3, /* Play randomly, but don't play the same variation twice. */
+    DMUS_VARIATIONT_RANDOM_ROW       = 4  /* Play randomly as a row: don't repeat any variation until all have played. */
+} DMUS_VARIATIONT_TYPES;
 
 #pragma pack(2)
 
@@ -210,11 +220,14 @@ typedef struct _DMUS_IO_VERSION
 
 typedef struct _DMUS_IO_PATTERN
 {
-    DMUS_IO_TIMESIG     timeSig;        /* Patterns can override the Style's Time sig. */
-    BYTE                bGrooveBottom;  /* bottom of groove range */
-    BYTE                bGrooveTop;     /* top of groove range */
-    WORD                wEmbellishment; /* Fill, Break, Intro, End, Normal, Motif */
-    WORD                wNbrMeasures;   /* length in measures */
+    DMUS_IO_TIMESIG     timeSig;           /* Patterns can override the Style's Time sig. */
+    BYTE                bGrooveBottom;     /* bottom of groove range */
+    BYTE                bGrooveTop;        /* top of groove range */
+    WORD                wEmbellishment;    /* Fill, Break, Intro, End, Normal, Motif */
+    WORD                wNbrMeasures;      /* length in measures */
+    BYTE                bDestGrooveBottom; /* bottom of groove range for next pattern */
+    BYTE                bDestGrooveTop;    /* top of groove range for next pattern */
+    DWORD               dwFlags;           /* various flags */
 } DMUS_IO_PATTERN;
 
 typedef struct _DMUS_IO_STYLEPART
@@ -226,12 +239,14 @@ typedef struct _DMUS_IO_STYLEPART
     BYTE                bPlayModeFlags; /* see PLAYMODE flags */
     BYTE                bInvertUpper;   /* inversion upper limit */
     BYTE                bInvertLower;   /* inversion lower limit */
+    BYTE                bPad[3];        /* for DWORD alignment */
+    DWORD               dwFlags;        /* various flags */ 
 } DMUS_IO_STYLEPART;
 
 typedef struct _DMUS_IO_PARTREF
 {
     GUID    guidPartID;         /* unique ID for matching up with parts */
-    WORD    wLogicalPartID;     /* corresponds to port/device/midi channel */
+    WORD    wLogicalPartID;     /* corresponds to port/device/midi channel OBSOLETE */
     BYTE    bVariationLockID;   /* parts with the same ID lock variations. */
                                 /* high bit is used to identify master Part */
     BYTE    bSubChordLevel;     /* tells which sub chord level this part wants */
@@ -240,6 +255,8 @@ typedef struct _DMUS_IO_PARTREF
                                 /* notes */
     BYTE    bRandomVariation;   /* when set, matching variations play in random order */
                                 /* when clear, matching variations play sequentially */
+    WORD    wPad;               /* not used */
+    DWORD   dwPChannel;         /* replaces wLogicalPartID */
 } DMUS_IO_PARTREF;
 
 typedef struct _DMUS_IO_STYLENOTE
@@ -255,6 +272,8 @@ typedef struct _DMUS_IO_STYLENOTE
     BYTE        bVelRange;      /* Range to randomize velocity. */
     BYTE        bInversionID;   /* Identifies inversion group to which this note belongs */
     BYTE        bPlayModeFlags; /* Can override part */
+    /* Following exists only under DX8 and on */
+    BYTE        bNoteFlags;     /* values from DMUS_NOTEF_FLAGS */
 } DMUS_IO_STYLENOTE;
 
 typedef struct _DMUS_IO_STYLECURVE
@@ -272,14 +291,40 @@ typedef struct _DMUS_IO_STYLECURVE
     BYTE        bCCData;        /* CC# */
     BYTE        bFlags;         /* Bit 1=TRUE means to send nResetValue. Otherwise, don't.
                                    Other bits are reserved. */
+    /*  Following was added for DX8. */
+    WORD        wParamType;      /* RPN or NRPN parameter number. */
+    WORD        wMergeIndex;     /* Allows multiple parameters to be merged (pitchbend, volume, and expression.) */
 } DMUS_IO_STYLECURVE;
+
+typedef struct _DMUS_IO_STYLEMARKER
+{
+    MUSIC_TIME  mtGridStart;    /* when this marker occurs */
+    DWORD       dwVariation;    /* variation bits */
+    WORD        wMarkerFlags;   /* how the marker is used */
+} DMUS_IO_STYLEMARKER;
+
+typedef struct _DMUS_IO_STYLERESOLUTION
+{
+    DWORD    dwVariation;       /* variation bits */
+    WORD     wMusicValue;       /* Position in scale. */
+    BYTE     bInversionID;      /* Identifies inversion group to which this note belongs */
+    BYTE     bPlayModeFlags;    /* Can override part */
+} DMUS_IO_STYLERESOLUTION;
+
+typedef struct _DMUS_IO_STYLE_ANTICIPATION
+{
+    MUSIC_TIME    mtGridStart;   /* when this anticipation occurs */
+    DWORD         dwVariation;   /* variation bits */
+    short         nTimeOffset;   /* offset from mtGridStart */
+    BYTE          bTimeRange;    /* Range to randomize start time. */
+} DMUS_IO_STYLE_ANTICIPATION;
 
 typedef struct _DMUS_IO_MOTIFSETTINGS
 {
     DWORD       dwRepeats;      /* Number of repeats. By default, 0. */
     MUSIC_TIME  mtPlayStart;    /* Start of playback. By default, 0. */
     MUSIC_TIME  mtLoopStart;    /* Start of looping portion. By default, 0. */
-    MUSIC_TIME  mtLoopEnd;      /* End of loop. Must be greater than mtLoopStart. By default equal to length of motif. */
+    MUSIC_TIME  mtLoopEnd;      /* End of loop. Must be greater than mtLoopStart. Or, 0, indicating loop full motif.  */
     DWORD       dwResolution;   /* Default resolution. */
 } DMUS_IO_MOTIFSETTINGS;
 
@@ -294,11 +339,10 @@ RIFF
     <guid-ck>       // Every Style has a GUID
     [<UNFO-list>]   // Name, author, copyright info., comments
     [<vers-ck>]     // version chunk
-    <part-list>...  // List of parts in the Style, used by patterns
-    <pttn-list>...  // List of patterns in the Style
-    <DMBD-form>...  // List of bands in the Style
-    [<motf-list>]   // List of motifs in the Style
-    [<prrf-list>]   // List of chord map references in the Style
+    <part-list>...  // Array of parts in the Style, used by patterns
+    <pttn-list>...  // Array of patterns in the Style
+    <DMBD-form>...  // Array of bands in the Style
+    [<prrf-list>]...// Optional array of chord map references in the Style
 )
 
     // <styh-ck>
@@ -324,9 +368,12 @@ RIFF
     (
         'part'
         <prth-ck>       // Part header chunk
-        [<UNFO-list>]
-        [<note-ck>]     // List of notes in Part
-        [<crve-ck>]     // List of curves in Part
+        [<UNFO-list>]   // Name, author, copyright info., comments
+        [<note-ck>]     // Optional chunk containing an array of notes in Part
+        [<crve-ck>]     // Optional chunk containing an array of curves in Part
+        [<mrkr-ck>]     // Optional chunk containing an array of markers in Part
+        [<rsln-ck>]     // Optional chunk containing an array of variation resolutions in Part
+        [<anpn-ck>]     // Optional chunk containing an array of resolution anticipations in Part
     )
 
         // <orth-ck>
@@ -349,15 +396,37 @@ RIFF
             <DMUS_IO_STYLECURVE>...
         )
 
+        // <mrkr-ck>
+        'mrkr'
+        (
+            // sizeof DMUS_IO_STYLEMARKER:DWORD
+            <DMUS_IO_STYLEMARKER>...
+        )
+
+        // <rsln-ck>
+        'rsln'
+        (
+            // sizeof DMUS_IO_STYLERESOLUTION:DWORD
+            <DMUS_IO_STYLERESOLUTION>...
+        )
+
+        // <anpn-ck>
+        'anpn'
+        (
+            // sizeof DMUS_IO_STYLE_ANTICIPATION:DWORD
+            <DMUS_IO_STYLE_ANTICIPATION>...
+        )
+
     // <pttn-list>
     LIST
     (
         'pttn'
         <ptnh-ck>       // Pattern header chunk
-        <rhtm-ck>       // List of rhythms for chord matching
-        [<UNFO-list>]
+        <rhtm-ck>       // Chunk containing an array of rhythms for chord matching
+        [<UNFO-list>]   // Name, author, copyright info., comments
         [<mtfs-ck>]     // Motif settings chunk
-        <pref-list>...  // List of part reference id's
+        [<DMBD-form>]   // Optional band to be associated with the pattern (for motifs)
+        <pref-list>...  // Array of part reference id's
     )
 
         // <ptnh-ck>
@@ -372,6 +441,7 @@ RIFF
             // DWORD's representing rhythms for chord matching based on number
             // of measures in the pattern
         )
+
 
         // pref-list
         LIST
@@ -396,11 +466,36 @@ RIFF
     LIST
     (
         'prrf'
-        // some number of <DMRF>
+        <DMRF-list>... // Array of Chordmap references
     )
 */
 
+/* Pattern chunk, for use in Pattern tracks */
+
+#define DMUS_FOURCC_PATTERN_FORM        mmioFOURCC('D','M','P','T')
+
+/*
+RIFF
+(
+    'DMPT'          // Pattern
+    <styh-ck>       // Style header chunk
+    <pttn-list>     // The pattern, in single pattern format (includes DMUS_FOURCC_PART_LIST chunks)
+)
+*/
+
+
 /* Chord and command file formats */
+
+/* These specify possible values for DMUS_IO_COMMAND.bRepeatMode (dx8) */
+typedef enum enumDMUS_PATTERNT_TYPES
+{
+    DMUS_PATTERNT_RANDOM           = 0, /* Play randomly. (dx7 behavior) */
+    DMUS_PATTERNT_REPEAT           = 1, /* Repeat last pattern. */
+    DMUS_PATTERNT_SEQUENTIAL       = 2, /* Play sequential starting with first matching pattern. */
+    DMUS_PATTERNT_RANDOM_START     = 3, /* Play sequential starting with a random pattern. */
+    DMUS_PATTERNT_NO_REPEAT        = 4, /* Play randomly, but don't play the same pattern twice. */
+    DMUS_PATTERNT_RANDOM_ROW       = 5  /* Play randomly as a row: don't repeat any pattern until all have played. */
+} DMUS_PATTERNT_TYPES;
 
 #define DMUS_FOURCC_CHORDTRACK_LIST         mmioFOURCC('c','o','r','d')
 #define DMUS_FOURCC_CHORDTRACKHEADER_CHUNK  mmioFOURCC('c','r','d','h')
@@ -414,6 +509,7 @@ typedef struct _DMUS_IO_CHORD
     MUSIC_TIME  mtTime;         /* Time of this chord */
     WORD        wMeasure;       /* Measure this falls on */
     BYTE        bBeat;          /* Beat this falls on */
+    BYTE        bFlags;         /* Various flags */
 } DMUS_IO_CHORD;
 
 typedef struct _DMUS_IO_SUBCHORD
@@ -434,6 +530,7 @@ typedef struct _DMUS_IO_COMMAND
     BYTE        bCommand;       /* Command type (see #defines below) */
     BYTE        bGrooveLevel;   /* Groove level (0 if command is not a groove) */
     BYTE        bGrooveRange;   /* Groove range  */
+    BYTE        bRepeatMode;    /* Used to control selection of patterns with same groove level  */
 } DMUS_IO_COMMAND;
 
 
@@ -520,18 +617,15 @@ RIFF
     // <toll-list>
     LIST
     (
-        'toll'          // List of tools
+        'toll'          // Array of tools
         <DMTL-form>...  // Each tool is encapsulated in a RIFF chunk
     )
 
-// <DMTL-form>      // Tools can be embedded in a graph or stored as separate files.
+// <DMTL-form>      Tools are embedded in a graph. Theoretically, they can be saved as individual files too.
 RIFF
 (
     'DMTL'
     <tolh-ck>
-    [<guid-ck>]     // Optional GUID for tool object instance (not to be confused with Class id in track header)
-    [<vers-ck>]     // Optional version info
-    [<UNFO-list>]   // Optional name, author, copyright info., comments
     [<data>]        // Tool data. Must be a RIFF readable chunk.
 )
 
@@ -540,6 +634,137 @@ RIFF
         'tolh'
         <DMUS_IO_TOOL_HEADER>   // Tool header
     )
+*/
+
+/*  The AudioPath file carries everything for describing a specific audio path,
+    including Tool Graph and Buffer Descriptor.
+    This can even be used for configuring a complete performance.
+*/
+
+#define DMUS_FOURCC_AUDIOPATH_FORM  mmioFOURCC('D','M','A','P')
+
+/*
+RIFF
+(
+    'DMAP'          // DirectMusic AudioPath chunk
+    [<guid-ck>]     // GUID for this Audio Path configuration
+    [<vers-ck>]     // Optional version info
+    [<UNFO-list>]   // Name, author, copyright info., comments
+    [<DMTG-form>]   // Optional ToolGraph
+    [<pcsl-list>]   // Optional list of port configurations
+    [<dbfl-list>]...// Optional array of Dsound buffer descriptors
+)
+*/
+
+#define DMUS_FOURCC_PORTCONFIGS_LIST    mmioFOURCC('p','c','s','l')
+#define DMUS_FOURCC_PORTCONFIG_LIST     mmioFOURCC('p','c','f','l')
+#define DMUS_FOURCC_PORTCONFIG_ITEM     mmioFOURCC('p','c','f','h')
+#define DMUS_FOURCC_PORTPARAMS_ITEM     mmioFOURCC('p','p','r','h')
+#define DMUS_FOURCC_DSBUFFER_LIST       mmioFOURCC('d','b','f','l')
+#define DMUS_FOURCC_DSBUFFATTR_ITEM     mmioFOURCC('d','d','a','h')
+#define DMUS_FOURCC_PCHANNELS_LIST      mmioFOURCC('p','c','h','l')
+#define DMUS_FOURCC_PCHANNELS_ITEM      mmioFOURCC('p','c','h','h')
+
+typedef struct _DMUS_IO_PORTCONFIG_HEADER
+{
+    GUID    guidPort;           /* GUID of requested port. */
+    DWORD   dwPChannelBase;     /* PChannel that this should start on. */
+    DWORD   dwPChannelCount;    /* How many channels. */
+    DWORD   dwFlags;            /* Various flags. */
+} DMUS_IO_PORTCONFIG_HEADER;
+
+#define DMUS_PORTCONFIGF_DRUMSON10  1   /* This port configured for drums on channel 10. */
+#define DMUS_PORTCONFIGF_USEDEFAULT 2   /* Use the default port. */
+
+/* Each portconfig has one or more pchannel to buffer mappings. Each buffer
+   is identified by a guid. Each pchannel can map to one or more buffers.
+   This is defined with one or more DMUS_IO_PCHANNELTOBUFFER_HEADER
+   structures. Each defines a range of PChannels and the set of buffers
+   that they connect to. 
+*/
+
+typedef struct _DMUS_IO_PCHANNELTOBUFFER_HEADER
+{
+    DWORD   dwPChannelBase;     /* PChannel that this should start on. */
+    DWORD   dwPChannelCount;    /* How many PChannels. */
+    DWORD   dwBufferCount;      /* How many buffers do these connect to. */
+    DWORD   dwFlags;            /* Various flags. Currently reserved for future use. Must be 0. */
+} DMUS_IO_PCHANNELTOBUFFER_HEADER;
+
+/* Each buffer is represented by an DSBC form. This is wrapped by the 
+   DMUS_IO_BUFFER_ATTRIBUTES_HEADER which identifies how to use the
+   buffer. In particular, it indicates whether this gets dynamically duplicated
+   or all references to this should share the same instance. 
+   To resolve references, the unique GUID of the buffer is also stored
+   in this structure. 
+*/
+   
+typedef struct _DMUS_IO_BUFFER_ATTRIBUTES_HEADER
+{
+    GUID    guidBufferID;       /* Each buffer config has a unique ID. */
+    DWORD   dwFlags;            /* Various flags. */
+} DMUS_IO_BUFFER_ATTRIBUTES_HEADER;
+
+/* DMUS_IO_BUFFER_ATTRIBUTES_HEADER.dwFlags: */
+#define DMUS_BUFFERF_SHARED     1   /* Share this with other audio paths, instead of creating unique copies. */
+#define DMUS_BUFFERF_DEFINED    2   /* Use one of the standard predefined buffers (see GUID_Buffer... in dmusici.h.) */
+#define DMUS_BUFFERF_MIXIN      8   /* This is a mixin buffer. */
+
+/*
+
+LIST
+(
+    'pcsl'          // Array of port configurations
+    <pcfl-list>...  // One or more port configurations, each in a list chunk
+)
+
+LIST
+(
+    'pcfl'          // List container for one port configuration.
+    <pcfh-ck>       // Portconfig header chunk.
+    <pprh-ck>       // Port params, to be used to create the port.
+    [<dbfl-list>]...// Optional array of Dsound buffer descriptors
+    [<pchl-list>]   // Optional list of pchannel to buffer assignments
+
+)
+
+    // <pcfh-ck>            // Port config header chunk
+    (
+        'pcfh'
+        <DMUS_IO_PORTCONFIG_HEADER>   // Port config header
+    )
+
+    // <pprh-ck>            // Port params header chunk
+    (
+        'pprh'
+        <DMUS_PORTPARAMS8>   // Port params header
+    )
+
+LIST
+(
+    'pchl'          // List container for one or more pchannel to buffer assignments.
+    <pchh-ck>...    // One or more pchannel to buffer assignment headers and data.
+
+    // <pchh-ck>
+    (
+        'pchh'
+        <DMUS_IO_PCHANNELTOBUFFER_HEADER>   // Description of PChannels
+        <GUID>...                           // Array of GUIDs defining the buffers they all connect to.
+    )
+)
+
+LIST
+(
+    'dbfl'          // List container for one buffer and buffer attributes header.
+    <ddah-ck>       // Buffer attributes header. 
+    [<DSBC-form>]   // Buffer configuration. Not required when header uses a predefined buffer type.
+
+    // <ddah-ck>
+    (
+        'ddah'
+        <DMUS_IO_BUFFER_ATTRIBUTES_HEADER>   // Buffer attributes.
+    )
+)
 */
 
 /*  File io for DirectMusic Band Track object */
@@ -551,8 +776,9 @@ RIFF
 #define DMUS_FOURCC_BANDS_LIST      mmioFOURCC('l','b','d','l')
 #define DMUS_FOURCC_BAND_LIST       mmioFOURCC('l','b','n','d')
 #define DMUS_FOURCC_BANDITEM_CHUNK  mmioFOURCC('b','d','i','h')
+#define DMUS_FOURCC_BANDITEM_CHUNK2 mmioFOURCC('b','d','2','h')
 
-/*  io structures */
+/* io structures */
 typedef struct _DMUS_IO_BAND_TRACK_HEADER
 {
     BOOL bAutoDownload;     /* Determines if Auto-Download is enabled. */
@@ -563,6 +789,12 @@ typedef struct _DMUS_IO_BAND_ITEM_HEADER
     MUSIC_TIME lBandTime;   /* Position in track list. */
 } DMUS_IO_BAND_ITEM_HEADER;
 
+typedef struct _DMUS_IO_BAND_ITEM_HEADER2
+{
+    MUSIC_TIME lBandTimeLogical;   /* Position in track list. Time in the music with which band change is associated. */
+    MUSIC_TIME lBandTimePhysical;  /* Precise time band change will take effect. Should be close to logical time. */
+} DMUS_IO_BAND_ITEM_HEADER2;
+
 /*
 RIFF
 (
@@ -571,7 +803,7 @@ RIFF
     [<guid-ck>]     // GUID for band track
     [<vers-ck>]     // Optional version info
     [<UNFO-list>]   // Name, author, copyright info., comments
-    <lbdl-list>     // List of Band Lists
+    <lbdl-list>     // List of Band items
 )
 
     // <bnth-ck>
@@ -595,21 +827,21 @@ RIFF
     // <lbdl-list>
     LIST
     (
-        'lbdl'          // List of bands
-        <lbnd-list>     // Each band is encapsulated in a list
+        'lbdl'
+        <lbnd-list>...  // Array of bands, each encapsulated in a list chunk
     )
 
         // <lbnd-list>
         LIST
         (
             'lbnd'
-            <bdih-ck>
+            <bdih-ck> or <bd2h-ck>  // bdih is a legacy format.  bd2h is preferred for new content.
             <DMBD-form> // Band
         )
 
-            // <bdih-ck>            // band item header
+            // <bdih-ck> or <bd2h-ck>       // band item header
             (
-                <DMUS_IO_BAND_ITEM_HEADER>  // Band item header
+                <DMUS_IO_BAND_ITEM_HEADER> or <DMUS_IO_BAND_ITEM_HEADER2> // Band item header
             )
 */      
 
@@ -639,8 +871,9 @@ RIFF
 #define DMUS_IO_INST_CHANNEL_PRIORITY (1 << 11)     /* dwChannelPriority is valid */
 #define DMUS_IO_INST_USE_DEFAULT_GM_SET (1 << 12)   /* Always use the default GM set for this patch,  */
                                                     /* don't rely on the synth caps stating GM or GS in hardware. */
+#define DMUS_IO_INST_PITCHBENDRANGE (1 << 13)     /* nPitchBendRange is valid */
 
-/*  io structures */
+/* io structures */
 typedef struct _DMUS_IO_INSTRUMENT
 {
     DWORD   dwPatch;            /* MSB, LSB and Program change to define instrument */
@@ -652,6 +885,7 @@ typedef struct _DMUS_IO_INSTRUMENT
     BYTE    bVolume;            /* Volume for instrument */
     short   nTranspose;         /* Number of semitones to transpose notes */
     DWORD   dwChannelPriority;  /* Channel priority */
+    short   nPitchBendRange;    /* Number of semitones shifted by pitch bend */
 } DMUS_IO_INSTRUMENT;
 
 /*
@@ -680,8 +914,8 @@ RIFF
     // <lbil-list>
     LIST
     (
-        'lbil'          // List of instruments
-        <lbin-list>     // Each instrument is encapsulated in a list
+        'lbil'          // Array of instruments
+        <lbin-list>...  // Each instrument is encapsulated in a list
     )
 
         // <lbin-list>
@@ -699,17 +933,226 @@ RIFF
             )
 */      
 
+/* This RIFF id and io struct have been added to allow wave files (and the wave object) to 
+   differentiate between streaming and one-shot waves, and to give a prefetch for streaming
+   waves  */
+
+#define DMUS_FOURCC_WAVEHEADER_CHUNK   mmioFOURCC('w','a','v','h')
+
+typedef struct _DMUS_IO_WAVE_HEADER
+{
+    REFERENCE_TIME  rtReadAhead;    /* How far ahead in the stream wave data will be read (in REFERENCE_TIME).  Ignored for one-shot waves.  */
+    DWORD           dwFlags;        /* Various flags, including whether this is a streaming wave and whether it can be invalidated. */
+} DMUS_IO_WAVE_HEADER;
+
+
+/*  File io for Wave track */
+
+/* RIFF ids: */
+
+#define DMUS_FOURCC_WAVETRACK_LIST      mmioFOURCC('w','a','v','t')
+#define DMUS_FOURCC_WAVETRACK_CHUNK     mmioFOURCC('w','a','t','h')
+#define DMUS_FOURCC_WAVEPART_LIST       mmioFOURCC('w','a','v','p')
+#define DMUS_FOURCC_WAVEPART_CHUNK      mmioFOURCC('w','a','p','h')
+#define DMUS_FOURCC_WAVEITEM_LIST       mmioFOURCC('w','a','v','i')
+#define DMUS_FOURCC_WAVE_LIST           mmioFOURCC('w','a','v','e')
+#define DMUS_FOURCC_WAVEITEM_CHUNK      mmioFOURCC('w','a','i','h')
+
+/* This flag is included in DMUS_IO_WAVE_TRACK_HEADER.dwFlags.  If set, the track will get its 
+   variations from a pattern track, via GetParam(GUID_Variations). */
+#define DMUS_WAVETRACKF_SYNC_VAR   0x1
+/* This is also included in DMUS_IO_WAVE_TRACK_HEADER.dwFlags.  If set, variation control 
+   information will persist from one playback instance to the next.*/
+#define DMUS_WAVETRACKF_PERSIST_CONTROL 0x2
+
+typedef struct _DMUS_IO_WAVE_TRACK_HEADER
+{
+    long        lVolume;        /* Gain, in 1/100th of dB, to be applied to all waves.  Note:  All gain values should be negative. */
+    DWORD       dwFlags;        /* Flags, including whether this track syncs to a pattern track for its variations. */
+} DMUS_IO_WAVE_TRACK_HEADER;
+
+typedef struct _DMUS_IO_WAVE_PART_HEADER
+{
+    long            lVolume;        /* Gain, in 1/100th of dB, to be applied to all waves in wave part.  Note:  All gain values should be negative. */
+    DWORD           dwVariations;   /* Variation mask for which of 32 variations */
+    DWORD           dwPChannel;     /* PChannel */
+    DWORD           dwLockToPart;   /* Part ID to lock to. */
+    DWORD           dwFlags;        /* Flags, including stuff for managing how variations are chosen (in low-order nibble) */
+    DWORD           dwIndex;        /* Index for distinguishing multiple parts on the same PChannel*/
+} DMUS_IO_WAVE_PART_HEADER;
+
+typedef struct _DMUS_IO_WAVE_ITEM_HEADER
+{
+    long            lVolume;        /* Gain, in 1/100th of dB.  Note:  All gain values should be negative. */
+    long            lPitch;         /* Pitch offset in 1/100th of a semitone. */
+    DWORD           dwVariations;   /* Variation flags for which of 32 variations this wave belongs to. */
+    REFERENCE_TIME  rtTime;         /* Start time, in REFERENCE_TIME, if clock time track, or MUSIC_TIME for music time track. */
+    REFERENCE_TIME  rtStartOffset;  /* Distance into wave to start playback, in reference time units. */
+    REFERENCE_TIME  rtReserved;     /* Reserved field. */
+    REFERENCE_TIME  rtDuration;     /* Duration, in REFERENCE_TIME or MUSIC_TIME, depending on track timing format. */
+    MUSIC_TIME      mtLogicalTime;  /* If in music track format, this indicates the musical boundary where this belongs. Otherwise, ignored. */
+    DWORD           dwLoopStart;    /* Start point for a looping wave. */
+    DWORD           dwLoopEnd;      /* End point for a looping wave. */
+    DWORD           dwFlags;        /* Various flags, including whether this is a streaming wave and whether it can be invalidated. */
+} DMUS_IO_WAVE_ITEM_HEADER;
+
+/*
+LIST
+{
+    'wavt'          // Wave track chunk
+    <wath-ck>       // Wave track header
+    <wavp-list>...  // Array of Wave Parts
+}
+    // <wath-ck>
+    'wath'
+    {
+        <DMUS_IO_WAVE_TRACK_HEADER>
+    }
+
+    //  <wavp-list>
+    LIST
+    {
+        'wavp'
+        <waph-ck>       //  Wave Part Header
+        <wavi-list>     //  List of wave items
+    }
+
+        //  <waph-ck>
+        'waph'
+        {
+            <DMUS_IO_WAVE_PART_HEADER>
+        }
+
+        //  <wavi-list>
+        LIST
+        {
+            'wavi'
+            <wave-list>...  //  Array of waves; each wave is encapsulated in a list
+        }
+
+            //  <wave-list>
+            LIST
+            {
+                'wave'
+                <waih-ck>       //  Wave item header
+                <DMRF-list>     //  Reference to wave object
+            }
+
+                //  <waih-ck>
+                'waih'
+                {
+                    <DMUS_IO_WAVE_ITEM_HEADER>
+                }
+
+*/
+
+/*  File io for DirectMusic Container file. This embeds a set of related files. And,
+    in turn, it can be embedded within a segment or script file.
+*/
+
+#define DMUS_FOURCC_CONTAINER_FORM          mmioFOURCC('D','M','C','N')
+#define DMUS_FOURCC_CONTAINER_CHUNK         mmioFOURCC('c','o','n','h')
+#define DMUS_FOURCC_CONTAINED_ALIAS_CHUNK   mmioFOURCC('c','o','b','a')
+#define DMUS_FOURCC_CONTAINED_OBJECT_CHUNK  mmioFOURCC('c','o','b','h')
+#define DMUS_FOURCC_CONTAINED_OBJECTS_LIST  mmioFOURCC('c','o','s','l')
+#define DMUS_FOURCC_CONTAINED_OBJECT_LIST   mmioFOURCC('c','o','b','l')
+
+typedef struct _DMUS_IO_CONTAINER_HEADER
+{
+    DWORD       dwFlags;        /* Flags. */
+} DMUS_IO_CONTAINER_HEADER;
+
+#define DMUS_CONTAINER_NOLOADS  (1 << 1)   /* Contained items are not loaded when the container is loaded.
+                                              Entries will be created in the loader (via SetObject) but
+                                              the actual objects will not be created until they are
+                                              specifically loaded at a later time. */
+
+typedef struct _DMUS_IO_CONTAINED_OBJECT_HEADER
+{
+    GUID        guidClassID;    /* Class id of object. */
+    DWORD       dwFlags;        /* Flags, for example DMUS_CONTAINED_OBJF_KEEP. */
+    FOURCC      ckid;           /* chunk ID of track's data chunk if 0 fccType valid. */
+    FOURCC      fccType;        /* list type if NULL ckid valid */
+        /* Note that LIST:DMRF may be used for ckid and fccType in order to reference an
+           object instead of embedding it within the container. */
+} DMUS_IO_CONTAINED_OBJECT_HEADER;
+
+#define DMUS_CONTAINED_OBJF_KEEP    1   /* Keep the object cached in the loader after the container is released. */
+
+/*
+RIFF
+(
+    'DMCN'          // DirectMusic Container chunk
+    <conh-ck>       // Container header chunk
+    [<guid-ck>]     // GUID for container
+    [<vers-ck>]     // Optional version info
+    [<UNFO-list>]   // Name, author, copyright info., comments
+    <cosl-list>     // List of objects.
+)
+
+    // <conh-ck>        
+    'conh'
+    (
+        <DMUS_IO_CONTAINER_HEADER>
+    )
+    
+    // <guid-ck>
+    'guid'
+    (
+        <GUID>
+    )
+
+    // <vers-ck>
+    vers
+    (
+        <DMUS_IO_VERSION>
+    )
+
+    LIST
+    (
+        'cosl'          // Array of embedded objects.
+        <cobl-list>...  // Each object is encapsulated in a LIST chunk
+    )
+
+    // <cobl-list>      // Encapsulates one object
+    LIST
+    (
+        'cobl'
+        [<coba-ck>]         // Alias.  An alternative name by which this object is known
+                            // within the container.
+        <cobh-ck>           // Required header, includes CLASS ID for object.
+        [<data>] or <DMRF>  // Object data of the type specified in <cobh-ck>.
+                            // If DMRF, it is a reference of where to find the object.
+                            // Otherwise, it could be any RIFF readable chunk in the
+                            //    exact same format as a file.  The object will load
+                            //    itself from this data.
+    )
+
+    // <coba-ck>
+    'coba'
+    (
+        // Alias, stored as NULL terminated string of WCHARs
+    )
+
+    // <cobh-ck>
+    'cobh'
+    (
+        <DMUS_IO_CONTAINED_OBJECT_HEADER>
+    )
+*/
+
 /*  File io for DirectMusic Segment object */
 
 /* RIFF ids: */
 
-#define DMUS_FOURCC_SEGMENT_FORM    mmioFOURCC('D','M','S','G')
-#define DMUS_FOURCC_SEGMENT_CHUNK   mmioFOURCC('s','e','g','h')
-#define DMUS_FOURCC_TRACK_LIST      mmioFOURCC('t','r','k','l')
-#define DMUS_FOURCC_TRACK_FORM      mmioFOURCC('D','M','T','K')
-#define DMUS_FOURCC_TRACK_CHUNK     mmioFOURCC('t','r','k','h')
+#define DMUS_FOURCC_SEGMENT_FORM        mmioFOURCC('D','M','S','G')
+#define DMUS_FOURCC_SEGMENT_CHUNK       mmioFOURCC('s','e','g','h')
+#define DMUS_FOURCC_TRACK_LIST          mmioFOURCC('t','r','k','l')
+#define DMUS_FOURCC_TRACK_FORM          mmioFOURCC('D','M','T','K')
+#define DMUS_FOURCC_TRACK_CHUNK         mmioFOURCC('t','r','k','h')
+#define DMUS_FOURCC_TRACK_EXTRAS_CHUNK  mmioFOURCC('t','r','k','x')
 
-/*  io structures:*/
+/* io structures:*/
 
 typedef struct _DMUS_IO_SEGMENT_HEADER
 {
@@ -717,18 +1160,33 @@ typedef struct _DMUS_IO_SEGMENT_HEADER
     MUSIC_TIME  mtLength;       /* Length, in music time. */
     MUSIC_TIME  mtPlayStart;    /* Start of playback. By default, 0. */
     MUSIC_TIME  mtLoopStart;    /* Start of looping portion. By default, 0. */
-    MUSIC_TIME  mtLoopEnd;      /* End of loop. Must be greater than dwPlayStart. By default equal to length. */
+    MUSIC_TIME  mtLoopEnd;      /* End of loop. Must be greater than dwPlayStart. Or, 0, indicating loop full segment. */
     DWORD       dwResolution;   /* Default resolution. */
+    /* Following added for DX8: */
+    REFERENCE_TIME rtLength;    /* Length, in reference time (overrides music time length.) */
+    DWORD       dwFlags;
+    DWORD       dwReserved;     /* Reserved. */
 } DMUS_IO_SEGMENT_HEADER;
+
+#define DMUS_SEGIOF_REFLENGTH   1  /* Use the time in rtLength for the segment length. */
 
 typedef struct _DMUS_IO_TRACK_HEADER
 {
     GUID        guidClassID;    /* Class id of track. */
     DWORD       dwPosition;     /* Position in track list. */
     DWORD       dwGroup;        /* Group bits for track. */
-    FOURCC      ckid;           /* chunk ID of track's data chunk if 0 fccType valid. */
-    FOURCC      fccType;        /* list type if NULL ckid valid */
+    FOURCC      ckid;           /* chunk ID of track's data chunk. */
+    FOURCC      fccType;        /* list type if ckid is RIFF or LIST */ 
 } DMUS_IO_TRACK_HEADER;
+
+/*  Additional parameters for the track header chunk, introduced in DX8 and
+    on, are stored in a separate chunk. */
+
+typedef struct _DMUS_IO_TRACK_EXTRAS_HEADER
+{
+    DWORD       dwFlags;        /* DX8 Added flags for control tracks. */
+    DWORD       dwPriority;     /* Priority for composition. */
+} DMUS_IO_TRACK_EXTRAS_HEADER;
 
 /*
 RIFF
@@ -738,8 +1196,10 @@ RIFF
     [<guid-ck>]     // GUID for segment
     [<vers-ck>]     // Optional version info
     [<UNFO-list>]   // Name, author, copyright info., comments
+    [<DMCN-form>]   // Optional container of objects embedded in file. Must precede tracklist.
     <trkl-list>     // List of Tracks
     [<DMTG-form>]   // Optional ToolGraph
+    [<DMAP-form>]   // Optional Audio Path
 )
 
     // <segh-ck>        
@@ -763,25 +1223,185 @@ RIFF
     // <trkl-list>
     LIST
     (
-        'trkl'          // List of tracks
+        'trkl'          // Array of tracks
         <DMTK-form>...  // Each track is encapsulated in a RIFF chunk
     )
 
-// <DMTK-form>      // Tracks can be embedded in a segment or stored as separate files.
-RIFF
-(
-    'DMTK'
-    <trkh-ck>
-    [<guid-ck>]     // Optional GUID for track object instance (not to be confused with Class id in track header)
-    [<vers-ck>]     // Optional version info
-    [<UNFO-list>]   // Optional name, author, copyright info., comments
-    [<data>]        // Track data. Must be a RIFF readable chunk.
-)
+    // <DMTK-form>      // Tracks can be embedded in a segment or stored as separate files.
+    RIFF
+    (
+        'DMTK'
+        <trkh-ck>
+        [<trkx-ck>]     // Optional track flags. 
+        [<guid-ck>]     // Optional GUID for track object instance (not to be confused with Class id in track header)
+        [<vers-ck>]     // Optional version info
+        [<UNFO-list>]   // Optional name, author, copyright info., comments
+        [<data>]        // Track data. Must be a RIFF readable chunk.
+    )
 
     // <trkh-ck>            // Track header chunk
     (
         'trkh'
         <DMUS_IO_TRACK_HEADER>  // Track header
+    )
+
+    // <trkx-ck>            // Track flags chunk
+    (
+        'trkx'
+        <DMUS_IO_TRACK_EXTRAS_HEADER>  // DX8 Track flags header
+    )
+*/
+
+/*  File io for DirectMusic Song object */
+/*  Note: Song file format is not supported in DX8. */
+
+/* RIFF ids: */
+
+#define DMUS_FOURCC_SONG_FORM           mmioFOURCC('D','M','S','O') /* Entire song. */
+#define DMUS_FOURCC_SONG_CHUNK          mmioFOURCC('s','n','g','h') /* Song header info. */
+#define DMUS_FOURCC_SONGSEGMENTS_LIST   mmioFOURCC('s','e','g','l') /* List of embedded segments. */
+#define DMUS_FOURCC_SONGSEGMENT_LIST    mmioFOURCC('s','s','g','l') /* Container for a segment or segment reference. */
+#define DMUS_FOURCC_TOOLGRAPHS_LIST     mmioFOURCC('t','l','g','l') /* List of embedded tool graphs. */
+#define DMUS_FOURCC_SEGREFS_LIST        mmioFOURCC('s','r','s','l') /* List of segment references. */
+#define DMUS_FOURCC_SEGREF_LIST         mmioFOURCC('s','g','r','l') /* Container for a segment reference. */
+#define DMUS_FOURCC_SEGREF_CHUNK        mmioFOURCC('s','g','r','h') /* Segment reference header. */
+#define DMUS_FOURCC_SEGTRANS_CHUNK      mmioFOURCC('s','t','r','h') /* Set of transitions to this segment. */
+#define DMUS_FOURCC_TRACKREFS_LIST      mmioFOURCC('t','r','s','l') /* Set of track references within the segment reference. */
+#define DMUS_FOURCC_TRACKREF_LIST       mmioFOURCC('t','k','r','l') /* Container for a track reference. */
+#define DMUS_FOURCC_TRACKREF_CHUNK      mmioFOURCC('t','k','r','h') /* Track reference header. */
+
+/* io structures:*/
+
+typedef struct _DMUS_IO_SONG_HEADER
+{
+    DWORD       dwFlags;
+    DWORD       dwStartSegID;   /* Id of the segment that starts playback. */
+} DMUS_IO_SONG_HEADER;
+
+typedef struct _DMUS_IO_SEGREF_HEADER
+{
+    DWORD       dwID;           /* Each has a unique ID. Must be less than DMUS_SONG_MAXSEGID. */
+    DWORD       dwSegmentID;    /* Optional segment to link to. */
+    DWORD       dwToolGraphID;  /* Optional tool graph to use for processing. */
+    DWORD       dwFlags;        /* Various control flags. Currently reserved for future use. Must be 0. */
+    DWORD       dwNextPlayID;   /* ID of next segment, to chain segments into a song. */
+} DMUS_IO_SEGREF_HEADER;
+
+
+typedef struct _DMUS_IO_TRACKREF_HEADER
+{
+    DWORD       dwSegmentID;    /* Which segment to find this in. */
+    DWORD       dwFlags;        /* Reference control flags. */
+} DMUS_IO_TRACKREF_HEADER;
+
+/*  Transition definition chunk defines a transition, using an optional transition template
+    segment.
+*/
+
+typedef struct _DMUS_IO_TRANSITION_DEF
+{
+    DWORD       dwSegmentID;        /* Segment the transition goes to. */
+    DWORD       dwTransitionID;     /* Template segment to use for the transition. */
+    DWORD       dwPlayFlags;        /* Flags to use for transition. */
+} DMUS_IO_TRANSITION_DEF;
+
+#define DMUS_SONG_MAXSEGID      0x7FFFFFFF  /* Segment ids can not go higher than this. */
+#define DMUS_SONG_ANYSEG        0x80000000  /* Special ID to indicate any segment. */
+#define DMUS_SONG_NOSEG         0xFFFFFFFF  /* Special ID to indicate no segment. */
+#define DMUS_SONG_NOFROMSEG     0x80000001  /* Special ID for dwSegmentID to indicate transition from nothing (or outside the song) into this segment. */
+
+/*
+RIFF
+(
+    'DMSO'          // DirectMusic Song chunk
+    <sngh-ck>       // Song header chunk
+    [<guid-ck>]     // GUID for song
+    [<vers-ck>]     // Optional version info
+    [<UNFO-list>]   // Name, author, copyright info., comments
+    [<DMCN-form>]   // Optional container of objects embedded in file. Must precede segment list.
+    <segl-list>     // List of Segments
+    [<tlgl-list>]   // Optional list of ToolGraphs
+    [<DMAP-form>]   // Optional Audio Path - to be shared by all segments in song.
+    <srsl-list>     // List of segment references.
+)
+
+    // <sngh-ck>        
+    'sngh'
+    (
+        <DMUS_IO_SONG_HEADER>
+    )
+    
+    // <segl-list>
+    LIST
+    (
+        'segl'          // Array of segments
+        <ssgl-list>...  // Each segment is wrapped in this.
+    )
+
+    // <ssgl-list>
+    LIST
+    (
+        'ssgl'          // Segment container.
+        [DMSG-form]     // Each segment is either a full embedded segment RIFF form.
+        [DMRF-list]     // Or a reference to an external segment.
+    )
+
+    // <tlgl-list>
+    LIST
+    (
+        'tlgl'          // Array of toolgraphs
+        <DMTG-form>...  // Each toolgraph is a full RIFF form.
+    )
+
+    // <srsl-list>
+    LIST
+    (
+        'srsl'          // Array of segment references
+        <sgrl-list>...  // Each segment reference is contained in a RIFF list.
+    )
+
+    // <sgrl-list>      // Segment reference container.
+    LIST
+    (
+        'sgrl'
+        <sgrh-ck>       // Segment reference header chunk.
+        <segh-ck>       // Segment header chunk. Defines the segment. 
+        <UNFO-list>     // Name, author, etc. Primarily for name, though, which is required for Song->GetSegment().
+        [<strh-ck>]     // Segment transition chunk. Defines how to do transitions from other segments.
+        [<trsl-list>]   // List of track references, to create a segment from tracks in multiple segments.
+    )
+
+    // <sgrh-ck>        // Segment reference header chunk
+    (
+        'sgrh'
+        <DMUS_IO_SEGREF_HEADER>  // Segment reference header
+    )
+
+    // <strh-ck>        // Segment transition chunk. 
+    (
+        'strh'
+        <DMUS_IO_TRANSITION_DEF>    // Default transition.
+        <DMUS_IO_TRANSITION_DEF>... // Additional transitions.
+    )
+
+    // <trsl-list>      // Array of track references
+    (
+        'trsl'
+        <tkrl-list>...  // Each track reference is multiple chunks in a tkrl list.
+    )
+
+    // <tkrl-list>      // Track reference container
+    (
+        'tkrl'
+        <tkrh-ck>       // Track reference header chunk.
+        <trkh-ck>       // Normal track header chunk.
+        [<trkx-ck>]     // Optional track flags. 
+    )
+
+    // <tkrh-ck>        // Track reference header chunk
+    (
+        'tkrh'
+        <DMUS_IO_TRACKREF_HEADER>  // Track reference header
     )
 */
 
@@ -901,6 +1521,9 @@ LIST
 #define DMUS_SIGNPOSTF_ROOT     (DMUS_SIGNPOSTF_1 | DMUS_SIGNPOSTF_2 | DMUS_SIGNPOSTF_3 | DMUS_SIGNPOSTF_4 | DMUS_SIGNPOSTF_5 | DMUS_SIGNPOSTF_6 | DMUS_SIGNPOSTF_7)
 #define DMUS_SIGNPOSTF_CADENCE  0x8000
 
+/* values for dwFlags field of DMUS_IO_CHORDMAP */
+#define DMUS_CHORDMAPF_VERSION8  1   /* Chordmap is version 8 or above. */
+
 /* values for dwChord field of DMUS_IO_PERS_SIGNPOST */
 #define DMUS_SPOSTCADENCEF_1  2   /* Use the first cadence chord. */
 #define DMUS_SPOSTCADENCEF_2  4   /* Use the second cadence chord. */
@@ -910,7 +1533,7 @@ typedef struct _DMUS_IO_CHORDMAP
 {
     WCHAR   wszLoadName[20];
     DWORD   dwScalePattern;
-    DWORD   dwFlags;
+    DWORD   dwFlags;           /* Various flags. Only lower 16 bits are significant. */
 } DMUS_IO_CHORDMAP;
 
 typedef struct _DMUS_IO_CHORDMAP_SUBCHORD
@@ -1008,6 +1631,83 @@ RIFF
 
 */
 
+/*  File io for DirectMusic Script object */
+
+/* RIFF ids: */
+
+#define DMUS_FOURCC_SCRIPT_FORM             mmioFOURCC('D','M','S','C')
+#define DMUS_FOURCC_SCRIPT_CHUNK            mmioFOURCC('s','c','h','d')
+#define DMUS_FOURCC_SCRIPTVERSION_CHUNK     mmioFOURCC('s','c','v','e')
+#define DMUS_FOURCC_SCRIPTLANGUAGE_CHUNK    mmioFOURCC('s','c','l','a')
+#define DMUS_FOURCC_SCRIPTSOURCE_CHUNK      mmioFOURCC('s','c','s','r')
+
+/* io structures:*/
+
+typedef struct _DMUS_IO_SCRIPT_HEADER
+{
+    DWORD       dwFlags; /* DMUS_SCRIPTIOF_ flags */
+} DMUS_IO_SCRIPT_HEADER;
+
+#define DMUS_SCRIPTIOF_LOAD_ALL_CONTENT       (1 << 0)
+    /* If set, when the script loads it will also load all the content in its container. */
+#define DMUS_SCRIPTIOF_DOWNLOAD_ALL_SEGMENTS  (1 << 1)
+    /* If set and LOAD_ALL_CONTENT is also set, when the script initializes it will also download all the segments in its container.
+       If set and LOAD_ALL_CONTENT is not set, when the script calls segment.Load on a segment then the segment will also be downloaded.
+       If not set, the script must manually download and unload by calling segment.DownloadSoundData and segment.UnloadSoundData. */
+
+/*
+RIFF
+(
+    'DMSC'              // DirectMusic Script chunk
+    <schd-ck>           // Script header chunk
+    [<guid-ck>]         // GUID for script
+    [<vers-ck>]         // Optional version info
+    [<UNFO-list>]       // Name, author, copyright info., comments
+    <scve-ck>           // Version of DirectMusic this script was authored to run against
+    <DMCN-form>         // Container of content referenced by the script.
+    <scla-ck>           // ActiveX scripting language in which the script is written
+    <scsr-ck> or <DMRF> // The script's source code.
+                        // If scsr-ck, the source is embedding in the chunk.
+                        // If DMRF, it is a reference of where to find a text file with the source.
+                        //    Class id (guidClassID in DMUS_IO_REFERENCE) must be GUID_NULL because
+                        //    this text file is not a DirectMusic object in its own right.
+)
+
+    // <schd-ck>
+    'schd'
+    (
+        <DMUS_FOURCC_SCRIPT_CHUNK>
+    )
+    
+    // <guid-ck>
+    'guid'
+    (
+        <GUID>
+    )
+
+    // <vers-ck>
+    vers
+    (
+        <DMUS_IO_VERSION>
+    )
+
+    // <scve-ck>
+    scve
+    (
+        <DMUS_IO_VERSION>
+    )
+
+    'scla'
+    (
+        // Language name, stored as NULL terminated string of WCHARs
+    )
+
+    'scsr'
+    (
+        // Source code, stored as NULL terminated string of WCHARs
+    )
+*/
+
 /* Signpost tracks */
 
 #define DMUS_FOURCC_SIGNPOST_TRACK_CHUNK     mmioFOURCC( 's', 'g', 'n', 'p' )
@@ -1066,7 +1766,7 @@ typedef struct _DMUS_IO_MUTE
     // <sttr-list>
     LIST('sttr'
     (
-        // some number of <strf-list>
+        <strf-list>...  // Array of Style references
     )
 
     // <strf-list>
@@ -1076,7 +1776,11 @@ typedef struct _DMUS_IO_MUTE
         <DMRF>
     )
 
-    // <stmp-ck> defined in ..\dmcompos\dmcompp.h
+  // <stmp-ck>
+  'stmp'
+  (
+    // time:DWORD
+  )
 
 */
 
@@ -1090,7 +1794,7 @@ typedef struct _DMUS_IO_MUTE
     // <pftr-list>
     LIST('pftr'
     (
-        // some number of <pfrf-list>
+        <pfrf-list>...  // Array of Chord map references
     )
 
     // <pfrf-list>
@@ -1106,20 +1810,18 @@ typedef struct _DMUS_IO_MUTE
     // time:DWORD
   )
 
-
-
 */
 
 #define DMUS_FOURCC_TEMPO_TRACK     mmioFOURCC('t','e','t','r')
 
 /*
-    // tempo list
+    // tempo array
     'tetr'
     (
         // sizeof DMUS_IO_TEMPO_ITEM: DWORD
         <DMUS_IO_TEMPO_ITEM>...
     )
-  */
+ */
 
 #define DMUS_FOURCC_SEQ_TRACK       mmioFOURCC('s','e','q','t')
 #define DMUS_FOURCC_SEQ_LIST        mmioFOURCC('e','v','t','l')
@@ -1129,13 +1831,13 @@ typedef struct _DMUS_IO_MUTE
     // sequence track
     'seqt'
     (
-        // sequence list
+        // sequence array
         'evtl'
         (
             // sizeof DMUS_IO_SEQ_ITEM: DWORD
             <DMUS_IO_SEQ_ITEM>...
         )
-        // curve list
+        // curve array
         'curl'
         (
             // sizeof DMUS_IO_CURVE_ITEM: DWORD
@@ -1150,24 +1852,517 @@ typedef struct _DMUS_IO_MUTE
     // sysex track
     'syex'
     (
-        // list of:
-        // {
-        //      <DMUS_IO_SYSEX_ITEM>
-        //      sys-ex: data
-        // }...
+        {
+            <DMUS_IO_SYSEX_ITEM>
+            <BYTE>...    // Array of bytes, length defined in the DMUS_IO_SYSEXITEM structure
+        }...
     )
 */
 
 #define DMUS_FOURCC_TIMESIGNATURE_TRACK mmioFOURCC('t','i','m','s')
 
-/*
-    // time signature track
+typedef struct _DMUS_IO_TIMESIGNATURE_ITEM
+{
+    MUSIC_TIME    lTime;
+    BYTE          bBeatsPerMeasure;   /* beats per measure (top of time sig) */
+    BYTE          bBeat;              /* what note receives the beat (bottom of time sig.) */
+                                      /* we can assume that 0 means 256th note */
+    WORD          wGridsPerBeat;      /* grids per beat */
+} DMUS_IO_TIMESIGNATURE_ITEM;
+
+/*  DX6 time signature track
+    
     'tims'
     (
         // size of DMUS_IO_TIMESIGNATURE_ITEM : DWORD
         <DMUS_IO_TIMESIGNATURE_ITEM>...
     )
 */
+
+/*  DX8 Time signature track. The track has been updated from DX7 to support a list of
+    RIFF chunks. This will allow the time signature track to expand in the future.
+*/
+
+#define DMUS_FOURCC_TIMESIGTRACK_LIST   mmioFOURCC('T','I','M','S')
+#define DMUS_FOURCC_TIMESIG_CHUNK       DMUS_FOURCC_TIMESIGNATURE_TRACK
+
+/*
+LIST
+(
+    'TIMS'          // Time Signature Track list-type
+    <tims-ck>       // Chunk containing an array of time signatures
+)
+
+    'tims'
+    (
+        // size of DMUS_IO_TIMESIGNATURE_ITEM : DWORD
+        <DMUS_IO_TIMESIGNATURE_ITEM>...
+    )
+ 
+*/
+
+/*  DX8 Marker track. This is used to store valid start points and other
+    flow control parameters that may come later. For example, if we want
+    to implement more sophisticated looping and branching constructs, they
+    would live in this track.
+*/
+
+#define DMUS_FOURCC_MARKERTRACK_LIST    mmioFOURCC('M','A','R','K')
+#define DMUS_FOURCC_VALIDSTART_CHUNK    mmioFOURCC('v','a','l','s')
+#define DMUS_FOURCC_PLAYMARKER_CHUNK    mmioFOURCC('p','l','a','y')
+
+/* io structures */
+typedef struct _DMUS_IO_VALID_START
+{
+    MUSIC_TIME mtTime;      /* Time of a legal start. */
+} DMUS_IO_VALID_START;
+
+typedef struct _DMUS_IO_PLAY_MARKER
+{
+    MUSIC_TIME mtTime;      /* Time of a next legal play point marker. */
+} DMUS_IO_PLAY_MARKER;
+
+/*
+LIST
+(
+    'MARK'          // Marker Track list-type
+    [<vals-ck>]     // Chunk containing an array of start points
+    [<play-ck>]     // Chunk containing an array of play start markers
+)
+
+    'vals'
+    (
+        // size of DMUS_IO_VALID_START : DWORD
+        <DMUS_IO_VALID_START>...
+    )
+
+    'play'
+    (
+        // size of DMUS_IO_PLAY_MARKER : DWORD
+        <DMUS_IO_PLAY_MARKER>...
+    )
+  
+*/
+
+/* segment trigger tracks */
+
+/* RIFF ids: */
+#define DMUS_FOURCC_SEGTRACK_LIST                   mmioFOURCC('s','e','g','t')
+#define DMUS_FOURCC_SEGTRACK_CHUNK                  mmioFOURCC('s','g','t','h')
+#define DMUS_FOURCC_SEGMENTS_LIST                   mmioFOURCC('l','s','g','l')
+#define DMUS_FOURCC_SEGMENT_LIST                    mmioFOURCC('l','s','e','g')
+#define DMUS_FOURCC_SEGMENTITEM_CHUNK               mmioFOURCC('s','g','i','h')
+#define DMUS_FOURCC_SEGMENTITEMNAME_CHUNK           mmioFOURCC('s','n','a','m')
+
+/* io structures */
+typedef struct _DMUS_IO_SEGMENT_TRACK_HEADER
+{
+    DWORD dwFlags; /* Reserved leave as 0. */
+} DMUS_IO_SEGMENT_TRACK_HEADER;
+
+typedef struct _DMUS_IO_SEGMENT_ITEM_HEADER
+{
+    MUSIC_TIME      lTimeLogical;    /* Position in track list. Time in the music with which the event is associated. */
+    MUSIC_TIME      lTimePhysical;   /* Precise time event will be triggered. Should be close to logical time. */
+    DWORD           dwPlayFlags;     /* Flags for PlaySegment(). */
+    DWORD           dwFlags;         /* Flags. */
+} DMUS_IO_SEGMENT_ITEM_HEADER;
+
+/* values for dwflags field of DMUS_IO_SEGMENT_ITEM_HEADER */
+#define DMUS_SEGMENTTRACKF_MOTIF                 1        /* interpret DMRF as link to style, and use snam as the name of a motif within the style */
+
+/*
+LIST
+(
+    'segt'          // DirectMusic Segment Trigger Track form-type
+    [<sgth-ck>]     // Segment track header
+    <lsgl-list>     // List of Segment Lists
+)
+
+    // <sgth-ck>
+    'sgth'
+    (
+        <DMUS_IO_SEGMENT_TRACK_HEADER>
+    )
+
+    // <lsgl-list>
+    LIST
+    (
+        'lsgl'          // Array of segments
+        <lseg-list>...  // Each segment is encapsulated in a list (that way it can still be riff parsed.)
+    )
+
+        // <lseg-list>
+        LIST
+        (
+            'lseg'
+            <sgih-ck>
+            <DMRF-list>    // Link to a segment or style file.
+            [<snam-ck>]    // Name field.  Used with DMUS_SEGMENTTRACKF_MOTIF flag.
+        )
+
+            // <sgih-ck>            // segment item header
+            (
+                <DMUS_IO_SEGMENT_ITEM_HEADER>  // Segment item header
+            )
+
+            // <snam-ck>
+            (
+                // Name, stored as NULL terminated string of WCHARs
+            )
+*/      
+
+/* Script track. */
+
+/* RIFF ids: */
+#define DMUS_FOURCC_SCRIPTTRACK_LIST                mmioFOURCC('s','c','r','t')
+#define DMUS_FOURCC_SCRIPTTRACKEVENTS_LIST          mmioFOURCC('s','c','r','l')
+#define DMUS_FOURCC_SCRIPTTRACKEVENT_LIST           mmioFOURCC('s','c','r','e')
+#define DMUS_FOURCC_SCRIPTTRACKEVENTHEADER_CHUNK    mmioFOURCC('s','c','r','h')
+#define DMUS_FOURCC_SCRIPTTRACKEVENTNAME_CHUNK      mmioFOURCC('s','c','r','n')
+
+/* Flags for DMUS_IO_SCRIPTTRACK_TIMING
+ */
+#define DMUS_IO_SCRIPTTRACKF_PREPARE (1 << 0)        /* Fire event in advance of time stamp, at Prepare time.  This is the default because it leaves the script time to change the music happening at the target time. */
+#define DMUS_IO_SCRIPTTRACKF_QUEUE   (1 << 1)        /* Fire event just before time stamp, at Queue time. */
+#define DMUS_IO_SCRIPTTRACKF_ATTIME  (1 << 2)        /* Fire event right at the time stamp. */
+
+typedef struct _DMUS_IO_SCRIPTTRACK_EVENTHEADER
+{
+    DWORD dwFlags;              /* various bits (see DMUS_IO_SCRIPTTRACKF_*) */
+    MUSIC_TIME lTimeLogical;    /* Position in track list. Time in the music with which the event is associated. */
+    MUSIC_TIME lTimePhysical;   /* Precise time event will be triggered. Should be close to logical time. */
+} DMUS_IO_SCRIPTTRACK_EVENTHEADER;
+
+/*
+    // Script Track
+
+    // <scrt-list>
+    LIST
+    (
+        <scrl-list>       // List of script events
+    )
+
+        // <scrl-list>
+        LIST
+        (
+            <scre-list>...    // Array of event descriptions
+        )
+
+            // <scre-list>
+            LIST
+            (
+                <scrh-ck>         // Event header chunk
+                <DMRF>
+                <scrn-ck>         // Routine name
+            )
+
+                'scrh'
+                (
+                    <DMUS_IO_SCRIPTTRACK_EVENTHEADER>
+                )
+
+                'scrn'
+                (
+                    // Name, stored as NULL terminated string of WCHARs
+                )
+*/
+
+/* Lyrics/Notification track. */
+
+/* RIFF ids: */
+#define DMUS_FOURCC_LYRICSTRACK_LIST                mmioFOURCC('l','y','r','t')
+#define DMUS_FOURCC_LYRICSTRACKEVENTS_LIST          mmioFOURCC('l','y','r','l')
+#define DMUS_FOURCC_LYRICSTRACKEVENT_LIST           mmioFOURCC('l','y','r','e')
+#define DMUS_FOURCC_LYRICSTRACKEVENTHEADER_CHUNK    mmioFOURCC('l','y','r','h')
+#define DMUS_FOURCC_LYRICSTRACKEVENTTEXT_CHUNK      mmioFOURCC('l','y','r','n')
+
+typedef struct _DMUS_IO_LYRICSTRACK_EVENTHEADER
+{
+    DWORD dwFlags;              /* Reserved leave as 0. */
+    DWORD dwTimingFlags;        /* Combination DMUS_PMSGF_TOOL_* flags.  Determines the precise timing of when the notification happens. Invalid with the flag DMUS_PMSGF_REFTIME, DMUS_PMSGF_MUSICTIME, DMUS_PMSGF_TOOL_FLUSH, or DMUS_PMSGF_LOCKTOREFTIME. */
+    MUSIC_TIME lTimeLogical;    /* Position in track list. Time in the music with which the event is associated. */
+    MUSIC_TIME lTimePhysical;   /* Precise time event will be triggered. Should be close to logical time. */
+} DMUS_IO_LYRICSTRACK_EVENTHEADER;
+
+/*
+    // Lyrics/Notification Track
+
+    // <lyrt-list>
+    LIST
+    (
+        <lyrl-list>       // List of notification events
+    )
+
+        // <lyrl-list>
+        LIST
+        (
+            <lyre-list>...    // Array of event descriptions
+        )
+
+            // <lyre-list>
+            LIST
+            (
+                <lyrh-ck>         // Event header chunk
+                <lyrn-ck>         // Notification text
+            )
+
+                'lyrh'
+                (
+                    <DMUS_IO_LYRICSTRACK_EVENTHEADER>
+                )
+
+                'lyrn'
+                (
+                    // Name, stored as NULL terminated string of WCHARs
+                )
+*/
+
+/* Parameter control track */
+
+/* RIFF ids: */
+#define DMUS_FOURCC_PARAMCONTROLTRACK_TRACK_LIST            mmioFOURCC('p','r','m','t')
+#define DMUS_FOURCC_PARAMCONTROLTRACK_OBJECT_LIST           mmioFOURCC('p','r','o','l')
+#define DMUS_FOURCC_PARAMCONTROLTRACK_OBJECT_CHUNK          mmioFOURCC('p','r','o','h')
+#define DMUS_FOURCC_PARAMCONTROLTRACK_PARAM_LIST            mmioFOURCC('p','r','p','l')
+#define DMUS_FOURCC_PARAMCONTROLTRACK_PARAM_CHUNK           mmioFOURCC('p','r','p','h')
+#define DMUS_FOURCC_PARAMCONTROLTRACK_CURVES_CHUNK          mmioFOURCC('p','r','c','c')
+
+typedef struct _DMUS_IO_PARAMCONTROLTRACK_OBJECTHEADER
+{
+    DWORD dwFlags;              /* Reserved.  Must be zero. */
+    GUID guidTimeFormat;        /* Time format to set the object to.  Must be GUID_TIME_REFERNCE or GUID_TIME_MUSIC from medparam.h. */
+    /* Path for finding the object. These fields correspond to the first five parameters of IDirectMusicSegmentState::GetObjectInPath. */
+    DWORD dwPChannel;
+    DWORD dwStage;
+    DWORD dwBuffer;
+    GUID guidObject;
+    DWORD dwIndex;
+} DMUS_IO_PARAMCONTROLTRACK_OBJECTHEADER;
+
+typedef struct _DMUS_IO_PARAMCONTROLTRACK_PARAMHEADER
+{
+    DWORD dwFlags;              /* Reserved.  Must be zero. */
+    DWORD dwIndex;              /* Index number of the parameter on the object */
+} DMUS_IO_PARAMCONTROLTRACK_PARAMHEADER;
+
+typedef struct _DMUS_IO_PARAMCONTROLTRACK_CURVEINFO
+{
+    MUSIC_TIME  mtStartTime;
+    MUSIC_TIME  mtEndTime;
+    float       fltStartValue;
+    float       fltEndValue;
+    DWORD       dwCurveType;   /* One of the items from the MP_CURVE_TYPE enum in medparam.h */
+    DWORD       dwFlags;       /* A combination of the MPF_ENVLP_* constants in medparam.h */
+} DMUS_IO_PARAMCONTROLTRACK_CURVEINFO;
+
+/*
+    // <prmt-list>
+    LIST
+    (
+        <prol-list>...   // one for each object
+    )
+
+        // <prol-list>
+        LIST
+        (
+            <proh-ck>       // object header chunk
+            <prpl-list>...  // one for each parameter
+        )
+
+            // <proh-ck>
+            proh
+            (
+                <DMUS_IO_PARAMCONTROLTRACK_OBJECTHEADER>
+            )
+
+            // <prpl-list>
+            LIST
+            (
+                <prph-ck>       // parameter header chunk
+                <prcc-ck>       // chunk containing an array of curves
+            )
+
+                // <prph-ck>
+                prph
+                (
+                    <DMUS_IO_PARAMCONTROLTRACK_PARAMHEADER>
+                )
+
+                // <prcc-ck>
+                prcc
+                (
+                    // sizeof DMUS_IO_PARAMCONTROLTRACK_CURVEINFO:DWORD
+                    <DMUS_IO_PARAMCONTROLTRACK_CURVEINFO>... // curves, sorted in order of mtTime
+                )
+*/
+
+/* Melody formulation track */
+/* Note: Melody formulation file format is not supported in DX8. */
+
+typedef DMUS_CONNECTION_RULE DMUS_IO_CONNECTION_RULE; /* defined in dmusici.h */
+
+typedef DMUS_MELODY_FRAGMENT DMUS_IO_MELODY_FRAGMENT; /* defined in dmusici.h */
+
+#define DMUS_FOURCC_MELODYFORM_TRACK_LIST     mmioFOURCC( 'm', 'f', 'r', 'm' )
+#define DMUS_FOURCC_MELODYFORM_HEADER_CHUNK   mmioFOURCC( 'm', 'l', 'f', 'h' )
+#define DMUS_FOURCC_MELODYFORM_BODY_CHUNK     mmioFOURCC( 'm', 'l', 'f', 'b' )
+
+typedef struct _DMUS_IO_MELFORM
+{
+    DWORD        dwPlaymode;       /* NOT CURRENTLY USED - MUST BE 0 */   
+} DMUS_IO_MELFORM;
+
+
+/*
+    // <mfrm-list>
+    LIST
+    (
+        'mfrm'
+        <mlfh-ck>       // Melody formulation header chunk
+        <mlfb-ck>       // Melody formulation body chunk
+    )
+
+    // <mlfb-ck>
+    'mlfb'
+    (
+        <DMUS_IO_MELFORM>
+    )
+
+  // <mlfb-ck>
+    'mlfb'
+    (
+        //sizeof DMUS_IO_MELODY_FRAGMENT: DWORD
+        <DMUS_IO_MELODY_FRAGMENT>...
+    )
+
+*/
+
+#if (DIRECTSOUND_VERSION >= 0x0800)
+
+/* DirectSoundBufferConfig FX Map */
+
+/* RIFF ids: */
+
+#define DMUS_FOURCC_DSBC_FORM       mmioFOURCC('D','S','B','C')
+#define DMUS_FOURCC_DSBD_CHUNK      mmioFOURCC('d','s','b','d')
+#define DMUS_FOURCC_BSID_CHUNK      mmioFOURCC('b','s','i','d')
+#define DMUS_FOURCC_DS3D_CHUNK      mmioFOURCC('d','s','3','d')
+#define DMUS_FOURCC_DSBC_LIST       mmioFOURCC('f','x','l','s')
+#define DMUS_FOURCC_DSFX_FORM       mmioFOURCC('D','S','F','X')
+#define DMUS_FOURCC_DSFX_CHUNK      mmioFOURCC('f','x','h','r')
+#define DMUS_FOURCC_DSFX_DATA       mmioFOURCC('d','a','t','a')
+
+/* io structures */
+
+typedef struct _DSOUND_IO_DSBUFFERDESC
+{
+    DWORD dwFlags;        /* DirectSound buffer creation flags */
+    WORD nChannels;       /* No. of channels (rest of buffer format is determined by owning sink) */
+    LONG lVolume;         /* Initial pan; only used if CTRLVOLUME is specified */
+    LONG lPan;            /* Initial pan; only used if CTRLPAN is specified */
+    DWORD dwReserved;     /* Reserved - must be 0 */
+} DSOUND_IO_DSBUFFERDESC;
+
+typedef struct _DSOUND_IO_DSBUSID
+{
+    DWORD busid[1];       /* Array size determined from chunk size */
+} DSOUND_IO_DSBUSID;
+
+typedef struct _DSOUND_IO_3D
+{
+    GUID guid3DAlgorithm; /* GUID identifying the 3D algorithm to use (defined in dsound.h) */
+    DS3DBUFFER ds3d;      /* Initial 3D parameters */
+} DSOUND_IO_3D;
+
+typedef struct _DSOUND_IO_DXDMO_HEADER
+{
+    DWORD dwEffectFlags;  /* Effect creation flags - equivalent to DSEFFECTDESC::dwFlags */
+    GUID guidDSFXClass;   /* GUID identifying the effect to use - corresponds to a COM CLSID */
+    GUID guidReserved;    /* Reserved - must be the null GUID */
+    GUID guidSendBuffer;  /* GUID identifying the buffer to send to if this is a send effect */
+    DWORD dwReserved;     /* Reserved - must be 0 */
+} DSOUND_IO_DXDMO_HEADER;
+
+typedef struct _DSOUND_IO_DXDMO_DATA
+{
+    DWORD data[1];      /* Array size determined by the DMO involved */
+} DSOUND_IO_DXDMO_DATA;
+
+/*
+RIFF
+(
+    'DSBC'          // DirectSoundBufferConfig chunk
+    [<guid-ck>]     // GUID identifier for this DirectSoundBufferConfig
+    [<vers-ck>]     // Optional version info
+    [<UNFO-list>]   // Name, author, copyright info., comments
+    <dsbd-ck>       // DirectSound Buffer descriptor chunk
+    [<bsid-ck>]     // Optional bus id array
+    [<ds3d-ck>]     // Optional 3d Parameters
+    [<fxls-list>]   // Optional list of FX descriptors
+)
+
+    // <guid-ck>
+    'guid'
+    (
+        <GUID>
+    )
+
+    // <vers-ck>
+    'vers'
+    (
+        <DMUS_IO_VERSION>
+    )
+
+    // <dsbd-ck>
+    'dsbd'
+    (
+        <DSOUND_IO_DSBUFFERDESC>  // Creation parameters and initial settings for the buffer
+    )
+
+    // <bsid-ck>
+    'bsid'
+    (
+        <DSOUND_IO_DSBUSID>  // The size of DSOUND_IO_DSBUSID is determined by the chunk size 
+    )
+
+    // <ds3d-ck>
+    'ds3d'
+    (
+        <DSOUND_IO_3D>  // Initial 3D buffer parameters: position, etc.
+    )
+
+    // <fx-list>
+    LIST
+    (
+        'fxls'          // Array of DMO creation parameter blocks
+        <DSFX-form>...  // Each DMO is encapsulated in a RIFF chunk
+    )
+
+// <DSFX-form>          // DMOs can be embedded in a buffer configuration or stored as separate files
+RIFF
+(
+    'DSFX'
+    <fxhr-ck>           // FX header chunk
+    [<data-ck>]         // FX initial settings chunk
+)
+
+    // <fxhr-ck>
+    'fxhr'
+    (
+        <DSOUND_IO_DXDMO_HEADER>
+    )
+
+    // <data-ck>
+    'data'
+    (
+        <DSOUND_IO_DXDMO_DATA>  // Opaque data block used by the DMO to load itself.
+        // For our standard included DMOs, this is simply the structure accepted by
+        // the DMO's SetAllParameters() method - e.g. struct DSFXChorus for Chorus.
+    )
+*/
+
+#endif
 
 #ifdef __cplusplus
 }; /* extern "C" */

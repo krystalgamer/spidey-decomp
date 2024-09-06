@@ -558,6 +558,8 @@ typedef struct _D3DExecuteBufferDesc {
 #define D3DDEBCAPS_VIDEOMEMORY  0x00000002l     /* buffer in device memory */
 #define D3DDEBCAPS_MEM (D3DDEBCAPS_SYSTEMMEMORY|D3DDEBCAPS_VIDEOMEMORY)
 
+#if(DIRECT3D_VERSION < 0x0800)
+
 #if(DIRECT3D_VERSION >= 0x0700)
 typedef struct _D3DDEVINFO_TEXTUREMANAGER {
     BOOL    bThrashing;                 /* indicates if thrashing */
@@ -587,7 +589,10 @@ typedef struct _D3DDEVINFO_TEXTURING {
 } D3DDEVINFO_TEXTURING, *LPD3DDEVINFO_TEXTURING;
 #endif /* DIRECT3D_VERSION >= 0x0700 */
 
+#endif //(DIRECT3D_VERSION < 0x0800)
+
 #pragma pack()
+
 
 #endif /* _D3DCAPS_H_ */
 

@@ -58,16 +58,39 @@ typedef struct tagMONITORINFO
 #endif
 
 #ifdef __cplusplus
-typedef struct tagMONITORINFOEX : public tagMONITORINFO
+typedef struct tagMONITORINFOEXA : public tagMONITORINFO
 {
-    TCHAR       szDevice[CCHDEVICENAME];
-} MONITORINFOEX, *LPMONITORINFOEX;
+    CHAR        szDevice[CCHDEVICENAME];
+} MONITORINFOEXA, *LPMONITORINFOEXA;
+typedef struct tagMONITORINFOEXW : public tagMONITORINFO
+{
+    WCHAR       szDevice[CCHDEVICENAME];
+} MONITORINFOEXW, *LPMONITORINFOEXW;
+#ifdef UNICODE
+typedef MONITORINFOEXW MONITORINFOEX;
+typedef LPMONITORINFOEXW LPMONITORINFOEX;
 #else
-typedef struct
+typedef MONITORINFOEXA MONITORINFOEX;
+typedef LPMONITORINFOEXA LPMONITORINFOEX;
+#endif // UNICODE
+#else // ndef __cplusplus
+typedef struct tagMONITORINFOEXA
 {
     MONITORINFO;
-    TCHAR       szDevice[CCHDEVICENAME];
-} MONITORINFOEX, *LPMONITORINFOEX;
+    CHAR        szDevice[CCHDEVICENAME];
+} MONITORINFOEXA, *LPMONITORINFOEXA;
+typedef struct tagMONITORINFOEXW
+{
+    MONITORINFO;
+    WCHAR       szDevice[CCHDEVICENAME];
+} MONITORINFOEXW, *LPMONITORINFOEXW;
+#ifdef UNICODE
+typedef MONITORINFOEXW MONITORINFOEX;
+typedef LPMONITORINFOEXW LPMONITORINFOEX;
+#else
+typedef MONITORINFOEXA MONITORINFOEX;
+typedef LPMONITORINFOEXA LPMONITORINFOEX;
+#endif // UNICODE
 #endif
 
 typedef BOOL (CALLBACK* MONITORENUMPROC)(HMONITOR, HDC, LPRECT, LPARAM);
@@ -134,35 +157,47 @@ int      (WINAPI* g_pfnGetSystemMetrics)(int) = NULL;
 HMONITOR (WINAPI* g_pfnMonitorFromWindow)(HWND, DWORD) = NULL;
 HMONITOR (WINAPI* g_pfnMonitorFromRect)(LPCRECT, DWORD) = NULL;
 HMONITOR (WINAPI* g_pfnMonitorFromPoint)(POINT, DWORD) = NULL;
-BOOL     (WINAPI* g_pfnGetMonitorInfoA)(HMONITOR, LPMONITORINFO) = NULL;
+BOOL     (WINAPI* g_pfnGetMonitorInfo)(HMONITOR, LPMONITORINFO) = NULL;
 BOOL     (WINAPI* g_pfnEnumDisplayMonitors)(HDC, LPCRECT, MONITORENUMPROC, LPARAM) = NULL;
 BOOL     (WINAPI* g_pfnEnumDisplayDevices)(PVOID, DWORD, PDISPLAY_DEVICE,DWORD) = NULL;
 BOOL     g_fMultiMonInitDone = FALSE;
+BOOL     g_fMultimonPlatformNT = FALSE;
 
 #endif
+
+BOOL IsPlatformNT()
+{ 
+    OSVERSIONINFOA osvi = {0};
+    osvi.dwOSVersionInfoSize = sizeof(osvi);
+    GetVersionExA((OSVERSIONINFOA*)&osvi);
+    return (VER_PLATFORM_WIN32_NT == osvi.dwPlatformId);    
+}
 
 BOOL InitMultipleMonitorStubs(void)
 {
     HMODULE hUser32;
-
     if (g_fMultiMonInitDone)
     {
-        return g_pfnGetMonitorInfoA != NULL;
+        return g_pfnGetMonitorInfo != NULL;
     }
 
-    if ((hUser32 = GetModuleHandle(TEXT("USER32"))) &&
-        (*(FARPROC*)&g_pfnGetSystemMetrics    = GetProcAddress(hUser32,"GetSystemMetrics")) &&
-        (*(FARPROC*)&g_pfnMonitorFromWindow   = GetProcAddress(hUser32,"MonitorFromWindow")) &&
-        (*(FARPROC*)&g_pfnMonitorFromRect     = GetProcAddress(hUser32,"MonitorFromRect")) &&
-        (*(FARPROC*)&g_pfnMonitorFromPoint    = GetProcAddress(hUser32,"MonitorFromPoint")) &&
-        (*(FARPROC*)&g_pfnEnumDisplayMonitors = GetProcAddress(hUser32,"EnumDisplayMonitors")) &&
-        (*(FARPROC*)&g_pfnGetMonitorInfoA     = GetProcAddress(hUser32,"GetMonitorInfoA")) &&
+    g_fMultimonPlatformNT = IsPlatformNT();
+    hUser32 = GetModuleHandle(TEXT("USER32"));
+    if (hUser32 &&
+        (*(FARPROC*)&g_pfnGetSystemMetrics    = GetProcAddress(hUser32,"GetSystemMetrics")) != NULL &&
+        (*(FARPROC*)&g_pfnMonitorFromWindow   = GetProcAddress(hUser32,"MonitorFromWindow")) != NULL &&
+        (*(FARPROC*)&g_pfnMonitorFromRect     = GetProcAddress(hUser32,"MonitorFromRect")) != NULL &&
+        (*(FARPROC*)&g_pfnMonitorFromPoint    = GetProcAddress(hUser32,"MonitorFromPoint")) != NULL &&
+        (*(FARPROC*)&g_pfnEnumDisplayMonitors = GetProcAddress(hUser32,"EnumDisplayMonitors")) != NULL &&
 #ifdef UNICODE
-        (*(FARPROC*)&g_pfnEnumDisplayDevices  = GetProcAddress(hUser32,"EnumDisplayDevicesW")) )
+        (*(FARPROC*)&g_pfnEnumDisplayDevices  = GetProcAddress(hUser32,"EnumDisplayDevicesW")) != NULL &&
+        (*(FARPROC*)&g_pfnGetMonitorInfo      = g_fMultimonPlatformNT ? GetProcAddress(hUser32,"GetMonitorInfoW") : 
+                                                GetProcAddress(hUser32,"GetMonitorInfoA")) != NULL
 #else
-        (*(FARPROC*)&g_pfnEnumDisplayDevices  = GetProcAddress(hUser32,"EnumDisplayDevicesA")) )
+        (*(FARPROC*)&g_pfnGetMonitorInfo      = GetProcAddress(hUser32,"GetMonitorInfoA")) != NULL &&
+        (*(FARPROC*)&g_pfnEnumDisplayDevices  = GetProcAddress(hUser32,"EnumDisplayDevicesA")) != NULL
 #endif
-    {
+    ) {
         g_fMultiMonInitDone = TRUE;
         return TRUE;
     }
@@ -172,7 +207,7 @@ BOOL InitMultipleMonitorStubs(void)
         g_pfnMonitorFromWindow   = NULL;
         g_pfnMonitorFromRect     = NULL;
         g_pfnMonitorFromPoint    = NULL;
-        g_pfnGetMonitorInfoA     = NULL;
+        g_pfnGetMonitorInfo      = NULL;
         g_pfnEnumDisplayMonitors = NULL;
         g_pfnEnumDisplayDevices  = NULL;
 
@@ -282,18 +317,13 @@ xGetMonitorInfo(HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo)
 
     if (InitMultipleMonitorStubs())
     {
-        BOOL f = g_pfnGetMonitorInfoA(hMonitor, lpMonitorInfo);
-
+        BOOL f = g_pfnGetMonitorInfo(hMonitor, lpMonitorInfo);
 #ifdef UNICODE
-        if (lpMonitorInfo->cbSize >= sizeof(MONITORINFOEX))
-        {
-            WCHAR szDeviceW[CCHDEVICENAME];
-
+        if (f && !g_fMultimonPlatformNT && (lpMonitorInfo->cbSize >= sizeof(MONITORINFOEX)))
+        { 
             MultiByteToWideChar(CP_ACP, 0,
                 (LPSTR)((MONITORINFOEX*)lpMonitorInfo)->szDevice, -1,
-                szDeviceW, CCHDEVICENAME);
-
-            lstrcpy(((MONITORINFOEX*)lpMonitorInfo)->szDevice, szDeviceW);
+                ((MONITORINFOEX*)lpMonitorInfo)->szDevice, (sizeof(((MONITORINFOEX*)lpMonitorInfo)->szDevice)/sizeof(TCHAR)));
         }
 #endif
         return f;
@@ -312,7 +342,13 @@ xGetMonitorInfo(HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo)
         lpMonitorInfo->dwFlags = MONITORINFOF_PRIMARY;
 
         if (lpMonitorInfo->cbSize >= sizeof(MONITORINFOEX))
+        {
+#ifdef UNICODE
+            MultiByteToWideChar(CP_ACP, 0, "DISPLAY", -1, ((MONITORINFOEX*)lpMonitorInfo)->szDevice, (sizeof(((MONITORINFOEX*)lpMonitorInfo)->szDevice)/sizeof(TCHAR)));
+#else // UNICODE
             lstrcpy(((MONITORINFOEX*)lpMonitorInfo)->szDevice, TEXT("DISPLAY"));
+#endif // UNICODE
+        }
 
         return TRUE;
     }
@@ -403,8 +439,14 @@ xEnumDisplayDevices(
     if (lpDisplayDevice == NULL || lpDisplayDevice->cb < sizeof(DISPLAY_DEVICE))
         return FALSE;
 
-    lstrcpy((TCHAR *)lpDisplayDevice->DeviceName,   TEXT("DISPLAY"));
-    lstrcpy((TCHAR *)lpDisplayDevice->DeviceString, TEXT("DISPLAY"));
+#ifdef UNICODE
+    MultiByteToWideChar(CP_ACP, 0, "DISPLAY", -1, lpDisplayDevice->DeviceName, (sizeof(lpDisplayDevice->DeviceName)/sizeof(TCHAR)));
+    MultiByteToWideChar(CP_ACP, 0, "DISPLAY", -1, lpDisplayDevice->DeviceString, (sizeof(lpDisplayDevice->DeviceName)/sizeof(TCHAR)));
+#else // UNICODE
+    lstrcpy((LPTSTR)lpDisplayDevice->DeviceName,   TEXT("DISPLAY"));
+    lstrcpy((LPTSTR)lpDisplayDevice->DeviceString, TEXT("DISPLAY"));
+#endif // UNICODE
+
     lpDisplayDevice->StateFlags = DISPLAY_DEVICE_ATTACHED_TO_DESKTOP | DISPLAY_DEVICE_PRIMARY_DEVICE;
 
     return TRUE;

@@ -2,7 +2,7 @@
 *                                                                       *
 *   dmusicc.h -- This module defines the DirectMusic core API's         *
 *                                                                       *
-*   Copyright (c) 1998, Microsoft Corp. All rights reserved.            *
+*   Copyright (c) 1998-1999 Microsoft Corporation
 *                                                                       *
 ************************************************************************/
 
@@ -28,11 +28,16 @@
 extern "C" {
 #endif
 
+typedef ULONGLONG    SAMPLE_TIME;
+typedef ULONGLONG    SAMPLE_POSITION;	
+typedef SAMPLE_TIME *LPSAMPLE_TIME;
+
 #define DMUS_MAX_DESCRIPTION 128
 #define DMUS_MAX_DRIVER 128
 
 typedef struct _DMUS_BUFFERDESC *LPDMUS_BUFFERDESC;
-typedef struct _DMUS_BUFFERDESC{
+typedef struct _DMUS_BUFFERDESC
+{
     DWORD dwSize;
     DWORD dwFlags;
     GUID guidBufferFormat;
@@ -53,20 +58,22 @@ typedef struct _DMUS_BUFFERDESC{
 
 /* For DMUS_PORTCAPS dwFlags
  */
-#define DMUS_PC_DLS              (0x00000001)
-#define DMUS_PC_EXTERNAL         (0x00000002)
-#define DMUS_PC_SOFTWARESYNTH    (0x00000004)
-#define DMUS_PC_MEMORYSIZEFIXED  (0x00000008)
-#define DMUS_PC_GMINHARDWARE     (0x00000010)
-#define DMUS_PC_GSINHARDWARE     (0x00000020)
-#define DMUS_PC_XGINHARDWARE     (0x00000040)
-#define DMUS_PC_DIRECTSOUND      (0x00000080)
-#define DMUS_PC_SHAREABLE        (0x00000100)
-#define DMUS_PC_DLS2             (0x00000200)
-#define DMUS_PC_SYSTEMMEMORY     (0x7FFFFFFF)
+#define DMUS_PC_DLS              (0x00000001)   // Supports DLS downloading and DLS level 1.
+#define DMUS_PC_EXTERNAL         (0x00000002)   // External MIDI module.
+#define DMUS_PC_SOFTWARESYNTH    (0x00000004)   // Software synthesizer.
+#define DMUS_PC_MEMORYSIZEFIXED  (0x00000008)   // Memory size is fixed.
+#define DMUS_PC_GMINHARDWARE     (0x00000010)   // GM sound set is built in, no need to download.
+#define DMUS_PC_GSINHARDWARE     (0x00000020)   // GS sound set is built in.
+#define DMUS_PC_XGINHARDWARE     (0x00000040)   // XG sound set is built in.
+#define DMUS_PC_DIRECTSOUND      (0x00000080)   // Connects to DirectSound via a DSound buffer.
+#define DMUS_PC_SHAREABLE        (0x00000100)   // Synth can be actively shared by multiple apps at once.
+#define DMUS_PC_DLS2             (0x00000200)   // Supports DLS2 instruments.
+#define DMUS_PC_AUDIOPATH        (0x00000400)   // Multiple outputs can be connected to DirectSound for audiopaths.
+#define DMUS_PC_WAVE             (0x00000800)   // Supports streaming and one shot waves.
+
+#define DMUS_PC_SYSTEMMEMORY     (0x7FFFFFFF)   // Sample memory is system memory.
 
 
-typedef struct _DMUS_PORTCAPS *LPDMUS_PORTCAPS;
 typedef struct _DMUS_PORTCAPS
 {
     DWORD   dwSize;
@@ -81,6 +88,8 @@ typedef struct _DMUS_PORTCAPS
     DWORD   dwEffectFlags;
     WCHAR   wszDescription[DMUS_MAX_DESCRIPTION];
 } DMUS_PORTCAPS;
+
+typedef DMUS_PORTCAPS *LPDMUS_PORTCAPS;
 
 /* Values for DMUS_PORTCAPS dwType. This field indicates the underlying 
  * driver type of the port.
@@ -98,8 +107,8 @@ typedef struct _DMUS_PORTCAPS
 #define DMUS_PORTPARAMS_SAMPLERATE       0x00000008
 #define DMUS_PORTPARAMS_EFFECTS          0x00000020
 #define DMUS_PORTPARAMS_SHARE            0x00000040
+#define DMUS_PORTPARAMS_FEATURES         0x00000080     /* DirectX 8.0 and above */
 
-typedef struct _DMUS_PORTPARAMS *LPDMUS_PORTPARAMS;
 typedef struct _DMUS_PORTPARAMS
 {
     DWORD   dwSize;
@@ -110,9 +119,30 @@ typedef struct _DMUS_PORTPARAMS
     DWORD   dwSampleRate;
     DWORD   dwEffectFlags;
     BOOL    fShare;
-} DMUS_PORTPARAMS;
+} DMUS_PORTPARAMS7;
+
+typedef struct _DMUS_PORTPARAMS8
+{
+    DWORD   dwSize;
+    DWORD   dwValidParams;
+    DWORD   dwVoices;
+    DWORD   dwChannelGroups;
+    DWORD   dwAudioChannels;
+    DWORD   dwSampleRate;
+    DWORD   dwEffectFlags;
+    BOOL    fShare;
+    DWORD   dwFeatures;
+} DMUS_PORTPARAMS8;
+
+#define DMUS_PORT_FEATURE_AUDIOPATH     0x00000001	/* Supports audiopath connection to DSound buffers. */
+#define DMUS_PORT_FEATURE_STREAMING     0x00000002	/* Supports streaming waves through the synth. */
+
+
+typedef DMUS_PORTPARAMS8 DMUS_PORTPARAMS;
+typedef DMUS_PORTPARAMS *LPDMUS_PORTPARAMS;
 
 typedef struct _DMUS_SYNTHSTATS *LPDMUS_SYNTHSTATS;
+typedef struct _DMUS_SYNTHSTATS8 *LPDMUS_SYNTHSTATS8;
 typedef struct _DMUS_SYNTHSTATS
 {
     DWORD   dwSize;             /* Size in bytes of the structure */
@@ -124,6 +154,19 @@ typedef struct _DMUS_SYNTHSTATS
     DWORD   dwFreeMemory;       /* Free memory in bytes */
     long    lPeakVolume;        /* Decibel level * 100. */
 } DMUS_SYNTHSTATS;
+
+typedef struct _DMUS_SYNTHSTATS8
+{
+    DWORD   dwSize;             /* Size in bytes of the structure */
+    DWORD   dwValidStats;       /* Flags indicating which fields below are valid. */
+    DWORD   dwVoices;           /* Average number of voices playing. */
+    DWORD   dwTotalCPU;         /* Total CPU usage as percent * 100. */
+    DWORD   dwCPUPerVoice;      /* CPU per voice as percent * 100. */
+    DWORD   dwLostNotes;        /* Number of notes lost in 1 second. */
+    DWORD   dwFreeMemory;       /* Free memory in bytes */
+    long    lPeakVolume;        /* Decibel level * 100. */
+	DWORD   dwSynthMemUse;		/* Memory used by synth wave data */ 
+} DMUS_SYNTHSTATS8;
 
 #define DMUS_SYNTHSTATS_VOICES          (1 << 0)
 #define DMUS_SYNTHSTATS_TOTAL_CPU       (1 << 1)
@@ -163,32 +206,98 @@ typedef enum
     DMUS_CLOCK_WAVE = 1
 } DMUS_CLOCKTYPE;
 
-typedef struct _DMUS_CLOCKINFO *LPDMUS_CLOCKINFO;
-typedef struct _DMUS_CLOCKINFO
+#define DMUS_CLOCKF_GLOBAL              0x00000001
+
+typedef struct _DMUS_CLOCKINFO7 *LPDMUS_CLOCKINFO7;
+typedef struct _DMUS_CLOCKINFO7
 {
     DWORD           dwSize;
     DMUS_CLOCKTYPE  ctType;
     GUID            guidClock;          /* Identifies this time source */
     WCHAR           wszDescription[DMUS_MAX_DESCRIPTION];
-} DMUS_CLOCKINFO;
+} DMUS_CLOCKINFO7;
+
+typedef struct _DMUS_CLOCKINFO8 *LPDMUS_CLOCKINFO8;
+typedef struct _DMUS_CLOCKINFO8
+{
+    DWORD           dwSize;
+    DMUS_CLOCKTYPE  ctType;
+    GUID            guidClock;          /* Identifies this time source */
+    WCHAR           wszDescription[DMUS_MAX_DESCRIPTION];
+    DWORD           dwFlags;           
+} DMUS_CLOCKINFO8;
+
+typedef DMUS_CLOCKINFO8 DMUS_CLOCKINFO;
+typedef DMUS_CLOCKINFO *LPDMUS_CLOCKINFO;
+
+/* Default bus identifiers
+ *
+ * The first 17 are direct mappings to the destinations defined in both
+ * the MMA DLS Level 2 specification and the Microsoft Multi-Channel audio
+ * specification.
+ */
+#define DSBUSID_FIRST_SPKR_LOC              0
+#define DSBUSID_FRONT_LEFT                  0
+#define DSBUSID_LEFT                        0   /* Front left is also just left */
+#define DSBUSID_FRONT_RIGHT                 1
+#define DSBUSID_RIGHT                       1   /* Ditto front right */ 
+#define DSBUSID_FRONT_CENTER                2
+#define DSBUSID_LOW_FREQUENCY               3
+#define DSBUSID_BACK_LEFT                   4
+#define DSBUSID_BACK_RIGHT                  5
+#define DSBUSID_FRONT_LEFT_OF_CENTER        6 
+#define DSBUSID_FRONT_RIGHT_OF_CENTER       7
+#define DSBUSID_BACK_CENTER                 8
+#define DSBUSID_SIDE_LEFT                   9
+#define DSBUSID_SIDE_RIGHT                 10
+#define DSBUSID_TOP_CENTER                 11
+#define DSBUSID_TOP_FRONT_LEFT             12
+#define DSBUSID_TOP_FRONT_CENTER           13
+#define DSBUSID_TOP_FRONT_RIGHT            14
+#define DSBUSID_TOP_BACK_LEFT              15
+#define DSBUSID_TOP_BACK_CENTER            16
+#define DSBUSID_TOP_BACK_RIGHT             17
+#define DSBUSID_LAST_SPKR_LOC              17
+
+#define DSBUSID_IS_SPKR_LOC(id) ( ((id) >= DSBUSID_FIRST_SPKR_LOC) && ((id) <= DSBUSID_LAST_SPKR_LOC) )
+
+/* These bus identifiers are for the standard DLS effect sends 
+ */
+#define DSBUSID_REVERB_SEND                64
+#define DSBUSID_CHORUS_SEND                65
+
+/* Dynamic bus identifiers start here. See the documentation for how
+ * synthesizers map the output of voices to static and dynamic
+ * bus identifiers.
+ */ 
+#define DSBUSID_DYNAMIC_0                 512 
+
+/* Null bus, used to identify busses that have no function mapping. 
+*/
+#define DSBUSID_NULL			   0xFFFFFFFF
 
 interface IDirectMusic;
+interface IDirectMusic8;
 interface IDirectMusicBuffer;
 interface IDirectMusicPort;
 interface IDirectMusicThru;
 interface IReferenceClock;
 
 #ifndef __cplusplus 
+
 typedef interface IDirectMusic IDirectMusic;
-typedef interface IDirectMusicBuffer IDirectMusicBuffer;
+typedef interface IDirectMusic8 IDirectMusic8;
 typedef interface IDirectMusicPort IDirectMusicPort;
+typedef interface IDirectMusicBuffer IDirectMusicBuffer;
 typedef interface IDirectMusicThru IDirectMusicThru;
 typedef interface IReferenceClock IReferenceClock;
-#endif
+
+#endif  /* C++ */
 
 typedef IDirectMusic *LPDIRECTMUSIC;
-typedef IDirectMusicBuffer *LPDIRECTMUSICBUFFER;
+typedef IDirectMusic8 *LPDIRECTMUSIC8;
 typedef IDirectMusicPort *LPDIRECTMUSICPORT;
+typedef IDirectMusicBuffer *LPDIRECTMUSICBUFFER;
 
 #undef  INTERFACE
 #define INTERFACE  IDirectMusic
@@ -218,7 +327,39 @@ DECLARE_INTERFACE_(IDirectMusic, IUnknown)
     STDMETHOD(GetDefaultPort)       (THIS_ LPGUID pguidPort) PURE;
     STDMETHOD(SetDirectSound)       (THIS_ LPDIRECTSOUND pDirectSound,
                                            HWND hWnd) PURE;
-    
+};
+
+#undef  INTERFACE
+#define INTERFACE  IDirectMusic8
+DECLARE_INTERFACE_(IDirectMusic8, IDirectMusic)
+{
+    /*  IUnknown */
+    STDMETHOD(QueryInterface)       (THIS_ REFIID, LPVOID FAR *) PURE;
+    STDMETHOD_(ULONG,AddRef)        (THIS) PURE;
+    STDMETHOD_(ULONG,Release)       (THIS) PURE;
+
+    /*  IDirectMusic */
+    STDMETHOD(EnumPort)             (THIS_ DWORD dwIndex, 
+                                           LPDMUS_PORTCAPS pPortCaps) PURE;
+    STDMETHOD(CreateMusicBuffer)    (THIS_ LPDMUS_BUFFERDESC pBufferDesc, 
+                                           LPDIRECTMUSICBUFFER *ppBuffer, 
+                                           LPUNKNOWN pUnkOuter) PURE;
+    STDMETHOD(CreatePort)           (THIS_ REFCLSID rclsidPort, 
+                                           LPDMUS_PORTPARAMS pPortParams, 
+                                           LPDIRECTMUSICPORT *ppPort, 
+                                           LPUNKNOWN pUnkOuter) PURE;
+    STDMETHOD(EnumMasterClock)      (THIS_ DWORD dwIndex, 
+                                           LPDMUS_CLOCKINFO lpClockInfo) PURE;
+    STDMETHOD(GetMasterClock)       (THIS_ LPGUID pguidClock, 
+                                           IReferenceClock **ppReferenceClock) PURE;
+    STDMETHOD(SetMasterClock)       (THIS_ REFGUID rguidClock) PURE;
+    STDMETHOD(Activate)             (THIS_ BOOL fEnable) PURE;
+    STDMETHOD(GetDefaultPort)       (THIS_ LPGUID pguidPort) PURE;
+    STDMETHOD(SetDirectSound)       (THIS_ LPDIRECTSOUND pDirectSound,
+                                           HWND hWnd) PURE;
+    /*  IDirectMusic8 */
+    STDMETHOD(SetExternalMasterClock)
+                                    (THIS_ IReferenceClock *pClock) PURE;                                          
 };
 
 #undef  INTERFACE
@@ -259,6 +400,9 @@ DECLARE_INTERFACE_(IDirectMusicBuffer, IUnknown)
     STDMETHOD(SetUsedBytes)         (THIS_ DWORD cb) PURE;
 };
 
+typedef IDirectMusicBuffer IDirectMusicBuffer8;
+typedef IDirectMusicBuffer8 *LPDIRECTMUSICBUFFER8;
+
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicInstrument
 DECLARE_INTERFACE_(IDirectMusicInstrument, IUnknown)
@@ -273,6 +417,9 @@ DECLARE_INTERFACE_(IDirectMusicInstrument, IUnknown)
     STDMETHOD(SetPatch)                 (THIS_ DWORD dwPatch) PURE;
 };
 
+typedef IDirectMusicInstrument IDirectMusicInstrument8;
+typedef IDirectMusicInstrument8 *LPDIRECTMUSICINSTRUMENT8;
+
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicDownloadedInstrument
 DECLARE_INTERFACE_(IDirectMusicDownloadedInstrument, IUnknown)
@@ -285,6 +432,9 @@ DECLARE_INTERFACE_(IDirectMusicDownloadedInstrument, IUnknown)
     /* IDirectMusicDownloadedInstrument */
     /* None at this time */
 };
+
+typedef IDirectMusicDownloadedInstrument IDirectMusicDownloadedInstrument8;
+typedef IDirectMusicDownloadedInstrument8 *LPDIRECTMUSICDOWNLOADEDINSTRUMENT8;
 
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicCollection
@@ -304,6 +454,9 @@ DECLARE_INTERFACE_(IDirectMusicCollection, IUnknown)
                                                DWORD dwNameLen) PURE;
 };
 
+typedef IDirectMusicCollection IDirectMusicCollection8;
+typedef IDirectMusicCollection8 *LPDIRECTMUSICCOLLECTION8;
+
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicDownload 
 DECLARE_INTERFACE_(IDirectMusicDownload , IUnknown)
@@ -317,6 +470,9 @@ DECLARE_INTERFACE_(IDirectMusicDownload , IUnknown)
     STDMETHOD(GetBuffer)            (THIS_ void** ppvBuffer, 
                                            DWORD* pdwSize) PURE;
 };
+
+typedef IDirectMusicDownload IDirectMusicDownload8;
+typedef IDirectMusicDownload8 *LPDIRECTMUSICDOWNLOAD8;
 
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicPortDownload
@@ -338,6 +494,9 @@ DECLARE_INTERFACE_(IDirectMusicPortDownload, IUnknown)
     STDMETHOD(Download)             (THIS_ IDirectMusicDownload* pIDMDownload) PURE;
     STDMETHOD(Unload)               (THIS_ IDirectMusicDownload* pIDMDownload) PURE;
 };
+
+typedef IDirectMusicPortDownload IDirectMusicPortDownload8;
+typedef IDirectMusicPortDownload8 *LPDIRECTMUSICPORTDOWNLOAD8;
 
 /* Standard values for voice priorities. Numerically higher priorities are higher in priority.
  * These priorities are used to set the voice priority for all voices on a channel. They are
@@ -440,6 +599,9 @@ DECLARE_INTERFACE_(IDirectMusicPort, IUnknown)
     STDMETHOD(GetFormat)            (THIS_ LPWAVEFORMATEX pWaveFormatEx, LPDWORD pdwWaveFormatExSize, LPDWORD pdwBufferSize) PURE;
 };
 
+typedef IDirectMusicPort IDirectMusicPort8;
+typedef IDirectMusicPort8 *LPDIRECTMUSICPORT8;
+
 #undef  INTERFACE
 #define INTERFACE  IDirectMusicThru
 DECLARE_INTERFACE_(IDirectMusicThru, IUnknown)
@@ -457,6 +619,9 @@ DECLARE_INTERFACE_(IDirectMusicThru, IUnknown)
                                            DWORD dwDestinationChannel,
                                            LPDIRECTMUSICPORT pDestinationPort) PURE;
 };
+
+typedef IDirectMusicThru IDirectMusicThru8;
+typedef IDirectMusicThru8 *LPDIRECTMUSICTHRU8;
 
 #ifndef __IReferenceClock_INTERFACE_DEFINED__
 #define __IReferenceClock_INTERFACE_DEFINED__
@@ -510,8 +675,19 @@ DEFINE_GUID(IID_IDirectMusicCollection,0xd2ac287c, 0xb39b, 0x11d1, 0x87, 0x4, 0x
 DEFINE_GUID(IID_IDirectMusicInstrument,0xd2ac287d, 0xb39b, 0x11d1, 0x87, 0x4, 0x0, 0x60, 0x8, 0x93, 0xb1, 0xbd);
 DEFINE_GUID(IID_IDirectMusicDownloadedInstrument,0xd2ac287e, 0xb39b, 0x11d1, 0x87, 0x4, 0x0, 0x60, 0x8, 0x93, 0xb1, 0xbd);
 
+
 /* Alternate interface ID for IID_IDirectMusic, available in DX7 release and after. */
 DEFINE_GUID(IID_IDirectMusic2,0x6fc2cae1, 0xbc78, 0x11d2, 0xaf, 0xa6, 0x0, 0xaa, 0x0, 0x24, 0xd8, 0xb6);
+
+DEFINE_GUID(IID_IDirectMusic8,0x2d3629f7,0x813d,0x4939,0x85,0x08,0xf0,0x5c,0x6b,0x75,0xfd,0x97);
+
+#define IID_IDirectMusicThru8 IID_IDirectMusicThru
+#define IID_IDirectMusicPortDownload8 IID_IDirectMusicPortDownload
+#define IID_IDirectMusicDownload8 IID_IDirectMusicDownload
+#define IID_IDirectMusicCollection8 IID_IDirectMusicCollection
+#define IID_IDirectMusicInstrument8 IID_IDirectMusicInstrument
+#define IID_IDirectMusicDownloadedInstrument8 IID_IDirectMusicDownloadedInstrument
+#define IID_IDirectMusicPort8 IID_IDirectMusicPort
 
 
 /* Property Query GUID_DMUS_PROP_GM_Hardware - Local GM set, no need to download

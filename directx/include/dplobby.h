@@ -405,6 +405,34 @@ DECLARE_INTERFACE_( IDirectPlayLobby3, IDirectPlayLobby )
  */
 #define DPLMSG_STANDARD					0x00000002
 
+/*
+ *  Lobbyable Application registration flags
+ */
+
+/*
+ *  Applications registered with this flag will not show up when
+ *  applications are enumerated in the lobby.  This application
+ *  will only be able to be launched by a lobby client that already
+ *  knows about the application.
+ */
+#define DPLAPP_NOENUM					0x80000000
+
+/*
+ *  Applications registered with this flag want voice to automatically
+ *  be enabled for their application.  All players will be launched into
+ *  an 'n'-way voice conference when the application is started.  The 
+ *  user will be able to enable this flag for existing non-voice 
+ *  directplay applications.
+ */
+#define DPLAPP_AUTOVOICE				0x00000001 
+
+/*
+ * Applications that do their own voice conferencing should register with
+ * this flag to avoid allowing the user to enable other voice chat 
+ * capabilites during the same session.  This is to avoid users forcing
+ * the DPLAPP_AUTOVOICE flag for the application.
+ */
+#define DPLAPP_SELFVOICE				0x00000002 
 
 /****************************************************************************
  *
@@ -569,6 +597,10 @@ typedef struct _DPLMSG_NEWSESSIONHOST
  */
 #define DPLSYS_NEWCONNECTIONSETTINGS    0x0000000A
 
+/*
+ *  The Lobby Client has released the DirectPlayLobby Interface
+ */
+#define DPLSYS_LOBBYCLIENTRELEASE		0x0000000B
 
 /****************************************************************************
  *
@@ -818,3 +850,4 @@ DEFINE_GUID(DPAID_ComPort,
 #pragma warning(default:4201)
 
 #endif /* __DPLOBBY_INCLUDED__ */
+

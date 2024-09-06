@@ -6,10 +6,10 @@
 #include "export.h"
 
 #include "non_win32.h"
+#include "my_dx.h"
 
 #ifndef _WIN32
-#endif
-
+/*
 //@FIXME
 typedef void* _DDPIXELFORMAT;
 //@FIXME
@@ -17,9 +17,12 @@ typedef void* IDirectDrawSurface7;
 //@FIXME
 typedef void* IDirectInputA;
 //@FIXME
-typedef void* _DXPOLY;
-//@FIXME
 typedef void* DIDEVICEINSTANCEA;
+*/
+#endif
+
+//@FIXME
+typedef void* _DXPOLY;
 
 
 
@@ -79,5 +82,7 @@ EXPORT void renderScene(void);
 EXPORT void stateLog(char const *,...);
 
 EXPORT extern IDirectInputA* gDirectInputRelated;
+
+void validate_DXsound(void);
 
 #endif

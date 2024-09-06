@@ -22,11 +22,6 @@
 extern "C" {
 #endif
 
-typedef struct _DLSVERSION {
- DWORD dwVersionMS;
- DWORD dwVersionLS;
-} DLSVERSION, FAR * LPDLSVERSION;
-
 #define FOURCC_VERS mmioFOURCC('v','e','r','s')
 
 // DSETUP Error Codes, must remain compatible with previous setup.
@@ -45,7 +40,9 @@ typedef struct _DLSVERSION {
 #define DSETUPERR_UNKNOWNOS             -11
 #define DSETUPERR_USERHITCANCEL         -12
 #define DSETUPERR_NOTPREINSTALLEDONNT   -13
-#define DSETUPERR_NEWERVERSION			-14
+#define DSETUPERR_NEWERVERSION          -14
+#define DSETUPERR_NOTADMIN              -15
+#define DSETUPERR_UNSUPPORTEDPROCESSOR  -16
 
 // DSETUP flags. DirectX 5.0 apps should use these flags only.
 #define DSETUP_DDRAWDRV         0x00000008      /* install DirectDraw Drivers           */

@@ -3,9 +3,13 @@
 
 #ifdef _WIN32
 
+#define DIRECTINPUT_VERSION 0x0800
+
 #include <d3d.h>
 #include <d3dcaps.h>
 #include <ddraw.h>
+#include <basetsd.h>
+#include <dinput.h>
 
 #else
 

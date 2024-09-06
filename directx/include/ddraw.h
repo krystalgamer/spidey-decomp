@@ -10,8 +10,15 @@
 #ifndef __DDRAW_INCLUDED__
 #define __DDRAW_INCLUDED__
 
-//Disable the nameless union warning
+//Disable the nameless union warning when building internally
+#undef ENABLE_NAMELESS_UNION_PRAGMA
+#ifdef DIRECTX_REDIST
+#define ENABLE_NAMELESS_UNION_PRAGMA
+#endif
+
+#ifdef ENABLE_NAMELESS_UNION_PRAGMA
 #pragma warning(disable:4201)
+#endif
 
 /*
  * If you wish an application built against the newest version of DirectDraw
@@ -88,7 +95,6 @@ DEFINE_GUID( IID_IDirectDrawSurface2,           0x57805885,0x6eec,0x11cf,0x94,0x
 DEFINE_GUID( IID_IDirectDrawSurface3,           0xDA044E00,0x69B2,0x11D0,0xA1,0xD5,0x00,0xAA,0x00,0xB8,0xDF,0xBB );
 DEFINE_GUID( IID_IDirectDrawSurface4,           0x0B2B8630,0xAD35,0x11D0,0x8E,0xA6,0x00,0x60,0x97,0x97,0xEA,0x5B );
 DEFINE_GUID( IID_IDirectDrawSurface7,           0x06675a80,0x3b9b,0x11d2,0xb9,0x2f,0x00,0x60,0x97,0x97,0xea,0x5b );
-
 DEFINE_GUID( IID_IDirectDrawPalette,            0x6C14DB84,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60 );
 DEFINE_GUID( IID_IDirectDrawClipper,            0x6C14DB85,0xA733,0x11CE,0xA5,0x21,0x00,0x20,0xAF,0x0B,0xE5,0x60 );
 DEFINE_GUID( IID_IDirectDrawColorControl,       0x4B9F0EE0,0x0D7E,0x11D0,0x9B,0x06,0x00,0xA0,0xC9,0x03,0xA3,0xB8 );
@@ -118,7 +124,6 @@ typedef struct IDirectDrawSurface2      FAR *LPDIRECTDRAWSURFACE2;
 typedef struct IDirectDrawSurface3      FAR *LPDIRECTDRAWSURFACE3;
 typedef struct IDirectDrawSurface4      FAR *LPDIRECTDRAWSURFACE4;
 typedef struct IDirectDrawSurface7      FAR *LPDIRECTDRAWSURFACE7;
-
 typedef struct IDirectDrawPalette               FAR *LPDIRECTDRAWPALETTE;
 typedef struct IDirectDrawClipper               FAR *LPDIRECTDRAWCLIPPER;
 typedef struct IDirectDrawColorControl          FAR *LPDIRECTDRAWCOLORCONTROL;
@@ -340,7 +345,11 @@ typedef struct _DDSCAPSEX
 {
     DWORD       dwCaps2;
     DWORD       dwCaps3;
-    DWORD       dwCaps4;
+    union
+    {
+        DWORD       dwCaps4;
+        DWORD       dwVolumeDepth;
+    } DUMMYUNIONNAMEN(1);
 } DDSCAPSEX, FAR * LPDDSCAPSEX;
 
 /*
@@ -351,7 +360,11 @@ typedef struct _DDSCAPS2
     DWORD       dwCaps;         // capabilities of surface wanted
     DWORD       dwCaps2;
     DWORD       dwCaps3;
-    DWORD       dwCaps4;
+    union
+    {
+        DWORD       dwCaps4;
+        DWORD       dwVolumeDepth;
+    } DUMMYUNIONNAMEN(1);
 } DDSCAPS2;
 
 typedef DDSCAPS2 FAR* LPDDSCAPS2;
@@ -696,6 +709,8 @@ typedef struct _DDPIXELFORMAT
         DWORD   dwAlphaBitDepth;        // how many bits for alpha channels
         DWORD   dwLuminanceBitCount;    // how many bits per pixel
         DWORD   dwBumpBitCount;         // how many bits per "buxel", total
+        DWORD   dwPrivateFormatBitCount;// Bits per pixel of private driver formats. Only valid in texture
+                                        // format list and if DDPF_D3DFORMAT is set
     } DUMMYUNIONNAMEN(1);
     union
     {
@@ -704,6 +719,7 @@ typedef struct _DDPIXELFORMAT
         DWORD   dwStencilBitDepth;      // how many stencil bits (note: dwZBufferBitDepth-dwStencilBitDepth is total Z-only bits)
         DWORD   dwLuminanceBitMask;     // mask for luminance bits
         DWORD   dwBumpDuBitMask;        // mask for bump map U delta bits
+        DWORD   dwOperations;           // DDPF_D3DFORMAT Operations
     } DUMMYUNIONNAMEN(2);
     union
     {
@@ -711,6 +727,12 @@ typedef struct _DDPIXELFORMAT
         DWORD   dwUBitMask;             // mask for U bits
         DWORD   dwZBitMask;             // mask for Z bits
         DWORD   dwBumpDvBitMask;        // mask for bump map V delta bits
+        struct
+        {
+            WORD    wFlipMSTypes;       // Multisample methods supported via flip for this D3DFORMAT
+            WORD    wBltMSTypes;        // Multisample methods supported via blt for this D3DFORMAT
+        } MultiSampleCaps;
+
     } DUMMYUNIONNAMEN(3);
     union
     {
@@ -1360,7 +1382,6 @@ DECLARE_INTERFACE_( IDirectDrawPalette, IUnknown )
 #endif
 
 #endif
-
 
 
 /*
@@ -2122,7 +2143,6 @@ DECLARE_INTERFACE_( IDirectDrawSurface7, IUnknown )
 #endif
 
 
-
 /*
  * IDirectDrawColorControl
  */
@@ -2241,7 +2261,11 @@ typedef struct _DDSURFACEDESC2
         LONG            lPitch;                 // distance to start of next line (return value only)
         DWORD           dwLinearSize;           // Formless late-allocated optimized surface size
     } DUMMYUNIONNAMEN(1);
-    DWORD               dwBackBufferCount;      // number of back buffers requested
+    union
+    {
+        DWORD           dwBackBufferCount;      // number of back buffers requested
+        DWORD           dwDepth;                // the depth if this is a volume texture 
+    } DUMMYUNIONNAMEN(5);
     union
     {
         DWORD           dwMipMapCount;          // number of mip-map levels requestde
@@ -2362,11 +2386,16 @@ typedef struct _DDSURFACEDESC2
  * dwSrcVBHandle is valid
  */
 #define DDSD_SRCVBHANDLE        0x00400000l
+
+/*
+ * dwDepth is valid
+ */
+#define DDSD_DEPTH              0x00800000l
+
 /*
  * All input fields are valid.
  */
-#define DDSD_ALL                0x007ff9eel
-
+#define DDSD_ALL                0x00fff9eel
 
 /*
  * DDOPTSURFACEDESC
@@ -2601,6 +2630,7 @@ typedef struct _DDCOLORCONTROL
  * obsolete.
  */
 #define DDSCAPS_RESERVED3               0x00000400l
+#define DDSCAPS_PRIMARYSURFACELEFT              0x00000000l
 
 /*
  * Indicates that this surface memory was allocated in system memory
@@ -2726,14 +2756,11 @@ typedef struct _DDCOLORCONTROL
 
 
 
-
 /*
- * Indicates that this surface will receive data from a video port using
- * the de-interlacing hardware.  This allows the driver to allocate memory
- * for any extra buffers that may be required.  The DDSCAPS_VIDEOPORT and
- * DDSCAPS_OVERLAY flags must also be set.
+ * This bit is reserved
  */
-#define DDSCAPS2_HARDWAREDEINTERLACE            0x00000002L
+#define DDSCAPS2_RESERVED4                      0x00000002L
+#define DDSCAPS2_HARDWAREDEINTERLACE            0x00000000L
 
 /*
  * Indicates to the driver that this surface will be locked very frequently
@@ -2831,7 +2858,52 @@ typedef struct _DDCOLORCONTROL
 #define DDSCAPS2_STEREOSURFACELEFT              0x00080000L
 
 
+/*
+ * Indicates that the surface is a volume.
+ * Can be combined with DDSCAPS_MIPMAP to indicate a multi-level volume
+ */
+#define DDSCAPS2_VOLUME                         0x00200000L
 
+/*
+ * Indicates that the surface may be locked multiple times by the application.
+ * This cap cannot be used with DDSCAPS2_OPAQUE.
+ */
+#define DDSCAPS2_NOTUSERLOCKABLE                0x00400000L
+
+/*
+ * Indicates that the vertex buffer data can be used to render points and
+ * point sprites.
+ */
+#define DDSCAPS2_POINTS                         0x00800000L
+
+/*
+ * Indicates that the vertex buffer data can be used to render rt pactches.
+ */
+#define DDSCAPS2_RTPATCHES                      0x01000000L
+
+/*
+ * Indicates that the vertex buffer data can be used to render n patches.
+ */
+#define DDSCAPS2_NPATCHES                       0x02000000L
+
+/*
+ * This bit is reserved for internal use 
+ */
+#define DDSCAPS2_RESERVED3                      0x04000000L
+
+
+/*
+ * Indicates that the contents of the backbuffer do not have to be preserved
+ * the contents of the backbuffer after they are presented.
+ */
+#define DDSCAPS2_DISCARDBACKBUFFER              0x10000000L
+
+/*
+ * This is a mask that indicates the set of bits that may be set
+ * at createsurface time to indicate number of samples per pixel
+ * when multisampling
+ */
+#define DDSCAPS3_MULTISAMPLE_MASK               0x0000001FL
 
 
  /****************************************************************************
@@ -3159,11 +3231,11 @@ typedef struct _DDCOLORCONTROL
 #define DDCAPS2_STEREO                  0x02000000L
 
 /*
- * This caps bit is intended for internal DirectDraw use. 
+ * This caps bit is intended for internal DirectDraw use.
  * -It is only valid if DDCAPS2_NONLOCALVIDMEMCAPS is set.
  * -If this bit is set, then DDCAPS_CANBLTSYSMEM MUST be set by the driver (and
  *  all the assoicated system memory blt caps must be correct).
- * -It implies that the system->video blt caps in DDCAPS also apply to system to 
+ * -It implies that the system->video blt caps in DDCAPS also apply to system to
  *  nonlocal blts. I.e. the dwSVBCaps, dwSVBCKeyCaps, dwSVBFXCaps and dwSVBRops
  *  members of DDCAPS (DDCORECAPS) are filled in correctly.
  * -Any blt from system to nonlocal memory that matches these caps bits will
@@ -3175,6 +3247,10 @@ typedef struct _DDCOLORCONTROL
  */
 #define DDCAPS2_SYSTONONLOCAL_AS_SYSTOLOCAL   0x04000000L
 
+/*
+ * Indicates that the driver can support PUREHAL.
+ */
+#define DDCAPS2_PUREHAL                       0x08000000L
 
 
 /****************************************************************************
@@ -3265,7 +3341,6 @@ typedef struct _DDCOLORCONTROL
 
 #if DIRECTDRAW_VERSION < 0x0600
 #endif  //DIRECTDRAW_VERSION
-
 
 
 /****************************************************************************
@@ -3428,6 +3503,11 @@ typedef struct _DDCOLORCONTROL
 #define DDFXCAPS_OVERLAYMIRRORUPDOWN    0x10000000l
 
 /*
+ * DirectDraw supports deinterlacing of overlay surfaces
+ */
+#define DDFXCAPS_OVERLAYDEINTERLACE		0x20000000l
+
+/*
  * Driver can do alpha blending for blits.
  */
 #define DDFXCAPS_BLTALPHA               0x00000001l
@@ -3448,7 +3528,6 @@ typedef struct _DDCOLORCONTROL
  * Driver can do surface-reconstruction filtering for warped overlays.
  */
 #define DDFXCAPS_OVERLAYFILTER          DDFXCAPS_OVERLAYARITHSTRETCHY
-
 
 /****************************************************************************
  *
@@ -3971,7 +4050,6 @@ typedef struct _DDCOLORCONTROL
 #define DDSDM_STANDARDVGAMODE                   0x00000001l
 
 
-
 /****************************************************************************
  *
  * DIRECTDRAW ENUMDISPLAYMODES FLAGS
@@ -4246,6 +4324,44 @@ typedef struct _DDCOLORCONTROL
  */
 #define DDBLT_DONOTWAIT                         0x08000000l
 
+/*
+ * These flags indicate a presentation blt (i.e. a blt
+ * that moves surface contents from an offscreen back buffer to the primary
+ * surface). The driver is not allowed to "queue"  more than three such blts.
+ * The "end" of the presentation blt is indicated, since the
+ * blt may be clipped, in which case the runtime will call the driver with 
+ * several blts. All blts (even if not clipped) are tagged with DDBLT_PRESENTATION
+ * and the last (even if not clipped) additionally with DDBLT_LAST_PRESENTATION.
+ * Thus the true rule is that the driver must not schedule a DDBLT_PRESENTATION
+ * blt if there are 3 or more DDBLT_PRESENTLAST blts in the hardware pipe.
+ * If there are such blts in the pipe, the driver should return DDERR_WASSTILLDRAWING
+ * until the oldest queued DDBLT_LAST_PRESENTATION blts has been retired (i.e. the
+ * pixels have been actually written to the primary surface). Once the oldest blt
+ * has been retired, the driver is free to schedule the current blt.
+ * The goal is to provide a mechanism whereby the device's hardware queue never
+ * gets more than 3 frames ahead of the frames being generated by the application.
+ * When excessive queueing occurs, applications become unusable because the application
+ * visibly lags user input, and such problems make windowed interactive applications impossible.
+ * Some drivers may not have sufficient knowledge of their hardware's FIFO to know
+ * when a certain blt has been retired. Such drivers should code cautiously, and 
+ * simply not allow any frames to be queued at all. DDBLT_LAST_PRESENTATION should cause
+ * such drivers to return DDERR_WASSTILLDRAWING until the accelerator is completely
+ * finished- exactly as if the application had called Lock on the source surface
+ * before calling Blt. 
+ * In other words, the driver is allowed and encouraged to 
+ * generate as much latency as it can, but never more than 3 frames worth.
+ * Implementation detail: Drivers should count blts against the SOURCE surface, not
+ * against the primary surface. This enables multiple parallel windowed application
+ * to function more optimally.
+ * This flag is passed only to DX8 or higher drivers.
+ *
+ * APPLICATIONS DO NOT SET THESE FLAGS. THEY ARE SET BY THE DIRECTDRAW RUNTIME.
+ * 
+ */
+#define DDBLT_PRESENTATION                      0x10000000l
+#define DDBLT_LAST_PRESENTATION                 0x20000000l
+
+
 
 /****************************************************************************
  *
@@ -4258,8 +4374,6 @@ typedef struct _DDCOLORCONTROL
 #define DDBLTFAST_DESTCOLORKEY                  0x00000002
 #define DDBLTFAST_WAIT                          0x00000010
 #define DDBLTFAST_DONOTWAIT                     0x00000020
-
-
 
 /****************************************************************************
  *
@@ -4332,7 +4446,6 @@ typedef struct _DDCOLORCONTROL
  * the DDERR_WASSTILLDRAWING return code) then use DDFLIP_DONOTWAIT.
  */
 #define DDFLIP_DONOTWAIT                     0x00000020L
-
 
 
 /****************************************************************************
@@ -4488,12 +4601,6 @@ typedef struct _DDCOLORCONTROL
 #define DDOVER_DEGRADEARGBSCALING               0x04000000l
 
 
-
-
-
-
-
-
 /****************************************************************************
  *
  * DIRECTDRAWSURFACE LOCK FLAGS
@@ -4551,7 +4658,7 @@ typedef struct _DDCOLORCONTROL
 #define DDLOCK_NOOVERWRITE                      0x00001000L
 
 /*
- * Indicates that no assumptions will be made about the contents of the 
+ * Indicates that no assumptions will be made about the contents of the
  * surface or vertex buffer during this lock.
  * This enables two things:
  * -    Direct3D or the driver may provide an alternative memory
@@ -4679,6 +4786,11 @@ typedef struct _DDCOLORCONTROL
  */
 #define DDOVERFX_MIRRORUPDOWN                   0x00000004l
 
+/*
+ * Deinterlace the overlay, if possible
+ */
+#define DDOVERFX_DEINTERLACE                    0x00000008l
+
 
 /****************************************************************************
  *
@@ -4785,7 +4897,6 @@ typedef struct _DDCOLORCONTROL
  * Move Overlay in back of relative surface
  */
 #define DDOVERZ_INSERTINBACKOF          0x00000005l
-
 
 
 /****************************************************************************
@@ -5437,7 +5548,6 @@ typedef struct _DDCOLORCONTROL
 #define DDERR_INVALIDSURFACETYPE                MAKE_DDHRESULT( 592 )
 
 
-
 /*
  * Device does not support optimized surfaces, therefore no video memory optimized surfaces
  */
@@ -5549,7 +5659,10 @@ typedef struct _DDCOLORCONTROL
 };
 #endif
 
+#ifdef ENABLE_NAMELESS_UNION_PRAGMA
 #pragma warning(default:4201)
+#endif
 
 #endif //__DDRAW_INCLUDED__
+
 

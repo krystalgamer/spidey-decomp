@@ -6,10 +6,12 @@
 #include "export.h"
 #include "bitmap256.h"
 #include "non_win32.h"
+#include "my_dx.h"
 
 // @FIXME
 #define PCTexture i32
 
+#ifndef _WIN32
 //@FIXME
 typedef void* _DDPIXELFORMAT;
 //@FIXME
@@ -17,9 +19,11 @@ typedef void* IDirectDrawSurface7;
 //@FIXME
 typedef void* IDirectInputA;
 //@FIXME
-typedef void* _DXPOLY;
-//@FIXME
 typedef void* DIDEVICEINSTANCEA;
+#endif
+
+//@FIXME
+typedef void* _DXPOLY;
 
 
 struct ClutPC

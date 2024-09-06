@@ -4,12 +4,6 @@ rc = brc32
 link = ilink32
 bldlib = tlib
 cflags = -c -3 -j1 -X -Vd -I$(INCLUDE)
-cflags = $(cflags) -Dsinf=(FLOAT)sin
-cflags = $(cflags) -Dcosf=(FLOAT)cos
-cflags = $(cflags) -Dasinf=(FLOAT)asin
-cflags = $(cflags) -Dacosf=(FLOAT)acos
-cflags = $(cflags) -Dsqrtf=(FLOAT)sqrt
-cflags = $(cflags) -Dexpf=(FLOAT)exp
 rcflags = -r -fo
 linkflags = -n -V4.0 -aa 
 !IFDEF main
@@ -55,12 +49,6 @@ link = link
 bldlib = lib
 deflibs = kernel32.lib gdi32.lib user32.lib advapi32.lib gdi32.lib comdlg32.lib winspool.lib shell32.lib winmm.lib comctl32.lib ole32.lib oleaut32.lib
 cflags = -c /D "WIN32" /D "_WINDOWS"
-cflags = $(cflags) -Dsinf=sin
-cflags = $(cflags) -Dcosf=cos
-cflags = $(cflags) -Dasinf=asin
-cflags = $(cflags) -Dacosf=acos
-cflags = $(cflags) -Dsqrtf=sqrt
-cflags = $(cflags) -Dexpf=exp
 !IFDEF NODEBUG
 cflags =$(cflags) /D "NDEBUG"
 cdebug = -Ox

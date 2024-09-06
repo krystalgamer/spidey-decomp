@@ -72,6 +72,8 @@
 #include "PCInput.h"
 #include "PCShell.h"
 #include "stubs.h"
+#include "SpideyDX.h"
+#include "DXsound.h"
 
 extern int FAIL_VALIDATION;
 
@@ -420,6 +422,7 @@ i32 validate(void)
 	validate_SMessageProg();
 	validate_SLevel();
 	validate_SMessage();
+	validate_DXsound();
 
 	puts("[*] Validation done!");
 
