@@ -63,9 +63,7 @@ public:
 	EXPORT virtual void SetVariable(unsigned __int16);
 	EXPORT virtual unsigned __int16 GetVariable(unsigned __int16);
 
-	int field_194;
-	int field_198;
-	unsigned char padAfter198[0x1A8-0x198-4];
+	u8 padAfter1A4[4];
 
 	CVector field_1A8[6];
 

@@ -12,8 +12,7 @@ class CPlayer : public CSuper
 {
 	public:
 
-		int field_194;
-		unsigned char padAfter194[0x1A8-0x194-4];
+		unsigned char padtop[4];
 
 		int field_1A8;
 		char field_1AC;

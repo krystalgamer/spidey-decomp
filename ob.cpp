@@ -791,6 +791,8 @@ void validate_CSuper(void){
 	unsigned char field_142;
 	__int16 field_148;
 	*/
+
+	VALIDATE_SIZE(CSuper, 0x1A4);
 	
 	VALIDATE(CSuper, field_F4, 0xF4);
 	VALIDATE(CSuper, field_F8, 0xF8);

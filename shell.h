@@ -36,14 +36,11 @@ class CShellMysterioHeadGlow : public CWobblyGlow
 		unsigned char padBottom[0xA8-0xA4-2];
 };
 
-class CRudeWordHitterSpidey : public CSuper {
+class CRudeWordHitterSpidey : public CSuper
+{
 public:
 	EXPORT CRudeWordHitterSpidey(void);
 	EXPORT void AI(void);
-
-	u32 field_194;
-	
-	u8 padAfter194[0x1A4-0x194-4];
 
 	i32 field_1A4;
 	i32 field_1A8;
@@ -56,7 +53,6 @@ public:
 	EXPORT void FadeAway(void);
 	EXPORT void SelectNewTrack(int);
 	EXPORT void SelectNewAnim(void);
-	unsigned char padStart[0x1A4-0x194];
 
 	u16* field_1A4;
 	u16* field_1A8;
@@ -93,8 +89,6 @@ class Spidey_CIcon : public CSuper
 		EXPORT Spidey_CIcon(i32);
 		EXPORT void AI(void);
 		EXPORT void SetIcon(i32);
-
-		unsigned char pad[0x10];
 };
 
 class CShellSymBurn : public CSuper
@@ -102,8 +96,6 @@ class CShellSymBurn : public CSuper
 	public:
 		EXPORT CShellSymBurn(CVector*);
 		EXPORT void AI(void);
-
-		u8 padTop[0x10];
 
 		i32 field_1A4;
 };

@@ -747,5 +747,5 @@ void stateLog(char const *,...)
 
 void validate_DXsound(void)
 {
-	VALIDATE_SIZE(_GUID, 0x16);
+	VALIDATE_SIZE(_GUID, 0x10);
 }

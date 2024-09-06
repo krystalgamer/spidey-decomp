@@ -185,9 +185,8 @@ class CSymBurn : public CSuper
 		EXPORT CSymBurn(CVector*);
 		EXPORT virtual ~CSymBurn(void);
 
-		EXPORT virtual void AI(void);
+		EXPORT void AI(void) OVERRIDE;
 
-		u8 padTop[0x10];
 		i32 field_1A4;
 
 };

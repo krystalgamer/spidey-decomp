@@ -247,6 +247,11 @@ public:
 	void* field_188;
 	unsigned char padEE[0x4];
 	__int16 *actualcsuperend;
+
+	i32 field_194;
+	i32 field_198;
+
+	u8 padCsuperBottom[0x8];
 };
 
 
