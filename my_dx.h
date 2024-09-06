@@ -13,9 +13,14 @@
 
 #else
 
+typedef i32 _DDPIXELFORMAT;
 typedef i32 DDPIXELFORMAT;
 typedef i32 DDSURFACEDESC2;
 typedef i32 D3DDEVICEDESC7;
+typedef i32 IDirectInputA;
+typedef i32 IDirectDrawSurface7;
+typedef void* DIDEVICEINSTANCEA;
+typedef i32* LPDIRECTINPUTDEVICEA;
 
 #endif
 

@@ -51,6 +51,13 @@ typedef int i32;
 
 #ifndef _WIN32
 #define FAILED(x) ((i32)(x) < 0)
+
+struct _GUID
+{
+	u8 pad[0x10];
+};
+
+typedef u32 HRESULT;
 #endif
 
 #endif

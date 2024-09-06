@@ -11,17 +11,6 @@
 // @FIXME
 #define PCTexture i32
 
-#ifndef _WIN32
-//@FIXME
-typedef void* _DDPIXELFORMAT;
-//@FIXME
-typedef void* IDirectDrawSurface7;
-//@FIXME
-typedef void* IDirectInputA;
-//@FIXME
-typedef void* DIDEVICEINSTANCEA;
-#endif
-
 //@FIXME
 typedef void* _DXPOLY;
 

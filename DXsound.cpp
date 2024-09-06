@@ -358,6 +358,7 @@ i32 DXINPUT_PollController(i32 *,i32 *,i32 *)
 // @Ok
 i32 DXINPUT_PollKeyboard(void)
 {
+#ifdef _WIN32
 	DWORD dwElements = 16;
 	DIDEVICEOBJECTDATA didod[16]; 
 	memset(didod, 0, sizeof(didod));
@@ -399,6 +400,8 @@ i32 DXINPUT_PollKeyboard(void)
 	}
 
 	return dwElements;
+#endif
+	return 0;
 }
 
 // @MEDIUMTODO
@@ -445,6 +448,7 @@ i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float)
 // @Ok
 i32 DXINPUT_SetupKeyboard(i32 exclusive, i32 buffered)
 {
+#ifdef _WIN32
 	HRESULT hr = g_pDI->CreateDevice(GUID_SysKeyboard, &g_pKeyboard, NULL);
 	DI_ERROR_LOG_AND_QUIT(hr);
 
@@ -479,6 +483,7 @@ i32 DXINPUT_SetupKeyboard(i32 exclusive, i32 buffered)
 	{
 		DI_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 	
 	return 1;
 }
@@ -486,6 +491,7 @@ i32 DXINPUT_SetupKeyboard(i32 exclusive, i32 buffered)
 // @Ok
 i32 DXINPUT_SetupMouse(i32 exclusive)
 {
+#ifdef _WIN32
 	HRESULT hr = g_pDI->CreateDevice(GUID_SysMouse, &g_pMouse, NULL);
 	DI_ERROR_LOG_AND_QUIT(hr);
 
@@ -517,6 +523,7 @@ i32 DXINPUT_SetupMouse(i32 exclusive)
 	{
 		DI_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 	
 	return 1;
 }
