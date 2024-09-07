@@ -1,5 +1,10 @@
 #include "dcmodel.h"
 
+#include <cmath>
+
+EXPORT float gPreComputedColorRelated = -1.0f;
+EXPORT u8 gConvertedColors[256];
+
 // @SMALLTODO
 void DCClearSkater(void)
 {
@@ -54,8 +59,20 @@ DCStrip::~DCStrip(void)
     printf("DCStrip::~DCStrip(void)");
 }
 
-// @SMALLTODO
-void PreComputeConvertedColors(float)
+// @Ok
+// @Matching
+void PreComputeConvertedColors(float a1)
 {
-    printf("PreComputeConvertedColors(float)");
+	for (i32 i = 0;
+			i < 256;
+			i++)
+	{
+		float v4 = (float)i / 255.0f;
+		float v5 = pow(v4, a1);
+		if (v5 > 1.0)
+			v5 = 1.0;
+		gConvertedColors[i] = (v5 * 255.0f);
+	}
+
+	gPreComputedColorRelated = a1;
 }
