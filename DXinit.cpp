@@ -200,7 +200,7 @@ void initDirectDraw7(HWND)
     printf("initDirectDraw7(HWND__ *)");
 }
 
-// @SMALLTODO
+// @Ok
 INLINE void initDirectInput8(HINSTANCE hInstance)
 {
 	HRESULT hr = DirectInput8Create(
@@ -225,10 +225,16 @@ void shutdownDirect3D7(i32)
     printf("shutdownDirect3D7(i32)");
 }
 
-// @SMALLTODO
+// @Ok
 INLINE void shutdownDirectInput8(void)
 {
-    printf("shutdownDirectInput8(void)");
+	if (gDirectInputRelated)
+	{
+		HRESULT hr = gDirectInputRelated->Release();
+		DI_ERROR_LOG_AND_QUIT(hr);
+
+		gDirectInputRelated = 0;
+	}
 }
 
 // @SMALLTODO
