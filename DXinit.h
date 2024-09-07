@@ -44,8 +44,10 @@ EXPORT void gsub_5027A0(void);
 
 EXPORT extern i32 gColorCount;
 EXPORT extern LPDIRECTINPUT8 gDirectInputRelated;
+EXPORT extern LPDIRECTSOUND8 g_pDS;
 
 #define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
+#define DISPLAY_DS_ERROR(x) displayDSError(x, __FILE__, __LINE__)
 
 #define DI_ERROR_LOG_AND_QUIT(x) {\
 	if (x)\
@@ -56,6 +58,14 @@ EXPORT extern LPDIRECTINPUT8 gDirectInputRelated;
 			DXINIT_ShutDown();\
 			exit(hr);\
 		}\
+	}\
+}
+
+#define DS_ERROR_LOG_AND_QUIT(x) {\
+	if (x)\
+	{\
+		DISPLAY_DS_ERROR(x);\
+		shutdownDirectSound8();\
 	}\
 }
 

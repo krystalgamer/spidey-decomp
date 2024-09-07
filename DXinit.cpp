@@ -20,6 +20,9 @@ EXPORT i32 gDxOptionRelated;
 EXPORT LPDIRECTDRAWSURFACE7 pDDS;
 
 LPDIRECTINPUT8 gDirectInputRelated;
+LPDIRECTSOUND8 g_pDS;
+
+EXPORT DSCAPS gDsCaps;
 
 // @Ok
 void gsub_5027A0(void)
@@ -214,9 +217,22 @@ INLINE void initDirectInput8(HINSTANCE hInstance)
 }
 
 // @SMALLTODO
-void initDirectSound8(HWND)
+INLINE void initDirectSound8(HWND hwnd)
 {
-    printf("initDirectSound8(HWND__ *)");
+	HRESULT hr = DirectSoundCreate8(
+			&DSDEVID_DefaultPlayback,
+			&g_pDS,
+			0);
+
+	hr = g_pDS->SetCooperativeLevel(hwnd, DSSCL_EXCLUSIVE);
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	memset(&gDsCaps, 0, sizeof(gDsCaps));
+	gDsCaps.dwSize = sizeof(gDsCaps);
+	hr = g_pDS->GetCaps(&gDsCaps);
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	DXSOUND_Init();
 }
 
 // @MEDIUMTODO
