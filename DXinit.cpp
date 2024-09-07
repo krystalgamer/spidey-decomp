@@ -216,7 +216,7 @@ INLINE void initDirectInput8(HINSTANCE hInstance)
 	DI_ERROR_LOG_AND_QUIT(hr);
 }
 
-// @SMALLTODO
+// @Ok
 INLINE void initDirectSound8(HWND hwnd)
 {
 	HRESULT hr = DirectSoundCreate8(
@@ -225,12 +225,20 @@ INLINE void initDirectSound8(HWND hwnd)
 			0);
 
 	hr = g_pDS->SetCooperativeLevel(hwnd, DSSCL_EXCLUSIVE);
-	DS_ERROR_LOG_AND_QUIT(hr);
+	if (hr)
+	{
+		DISPLAY_DS_ERROR(hr);
+		shutdownDirectSound8();
+	}
 
 	memset(&gDsCaps, 0, sizeof(gDsCaps));
 	gDsCaps.dwSize = sizeof(gDsCaps);
 	hr = g_pDS->GetCaps(&gDsCaps);
-	DS_ERROR_LOG_AND_QUIT(hr);
+	if (hr)
+	{
+		DISPLAY_DS_ERROR(hr);
+		shutdownDirectSound8();
+	}
 
 	DXSOUND_Init();
 }
@@ -253,10 +261,17 @@ INLINE void shutdownDirectInput8(void)
 	}
 }
 
-// @SMALLTODO
-void shutdownDirectSound8(void)
+// @Ok
+INLINE void shutdownDirectSound8(void)
 {
-    printf("shutdownDirectSound8(void)");
+	DXSOUND_ShutDown();
+
+	if(g_pDS)
+	{
+		HRESULT hr = g_pDS->Release();
+		DS_ERROR_LOG_AND_QUIT(hr);
+		g_pDS = 0;
+	}
 }
 
 // @NotOk

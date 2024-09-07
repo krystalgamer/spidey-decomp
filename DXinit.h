@@ -65,7 +65,11 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 	if (x)\
 	{\
 		DISPLAY_DS_ERROR(x);\
-		shutdownDirectSound8();\
+		if (FAILED(hr))\
+		{\
+			DXINIT_ShutDown();\
+			exit(hr);\
+		}\
 	}\
 }
 
