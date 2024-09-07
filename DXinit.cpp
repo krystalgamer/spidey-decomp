@@ -1,4 +1,8 @@
 #include "DXinit.h"
+#include "SpideyDX.h"
+#include "dcmodel.h"
+#include "PCGfx.h"
+#include "DXsound.h"
 
 #include <cstdlib>
 
@@ -7,6 +11,13 @@ EXPORT int gResolutionY;
 
 EXPORT i32 gLowGraphics;
 EXPORT void* gLowGraphicsRelated;
+
+i32 gColorCount;
+
+EXPORT HWND gDxHwnd;
+EXPORT i32 gDxOptionRelated;
+
+EXPORT LPDIRECTDRAWSURFACE7 pDDS;
 
 // @Ok
 void gsub_5027A0(void)
@@ -27,10 +38,40 @@ void AUDIOGROUPS_GetGroup(char *)
     printf("AUDIOGROUPS_GetGroup(char *)");
 }
 
-// @SMALLTODO
-void DXINIT_DirectX8(HWND ,HINSTANCE,u32)
+// @Ok
+void DXINIT_DirectX8(
+		HWND hwnd,
+		HINSTANCE hInstance,
+		u32 a3)
 {
-    printf("DXINIT_DirectX8(HWND__ *,HINSTANCE__ *,u32)");
+	i32 v3 = a3;
+	gDxOptionRelated = a3 & 1;
+	gDxHwnd = hwnd;
+
+	PreComputeConvertedColors(1.0);
+	PCGfx_SetBrightness(gBrightnessRelated);
+
+	if (gLowGraphics)
+		v3 &= 0xFFFFFFFD;
+	initDirectDraw7(hwnd);
+
+	if (!initDirect3D7(v3))
+	{
+		i32 v4 = gColorCount;
+		shutdownDirect3D7(1);
+		gColorCount = 16;
+		initDirectDraw7(hwnd);
+		initDirect3D7(v3);
+		gColorCount = v4;
+	}
+
+	if (gLowGraphics || !pDDS)
+		v3 &= ~2;
+
+	initDirectSound8(hwnd);
+	initDirectInput8(hInstance);
+
+	DXPOLY_Init(v3);
 }
 
 // @SMALLTODO
@@ -145,9 +186,10 @@ void getNextNumber(char *,i32 *)
 }
 
 // @MEDIUMTODO
-void initDirect3D7(u32)
+u8 initDirect3D7(u32)
 {
     printf("initDirect3D7(u32)");
+	return (u8)0x07092024;
 }
 
 // @MEDIUMTODO

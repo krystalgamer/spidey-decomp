@@ -33,7 +33,7 @@ EXPORT void enumDisplayModes(void);
 EXPORT void enumerateModesCB(DDSURFACEDESC2 *,void *);
 EXPORT void enumerateZBuffersCB(DDPIXELFORMAT *,void *);
 EXPORT void getNextNumber(char *,i32 *);
-EXPORT void initDirect3D7(u32);
+EXPORT u8 initDirect3D7(u32);
 EXPORT void initDirectDraw7(HWND);
 EXPORT void initDirectInput8(HINSTANCE);
 EXPORT void initDirectSound8(HWND);
@@ -41,6 +41,8 @@ EXPORT void shutdownDirect3D7(i32);
 EXPORT void shutdownDirectInput8(void);
 EXPORT void shutdownDirectSound8(void);
 EXPORT void gsub_5027A0(void);
+
+EXPORT extern i32 gColorCount;
 
 #define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
 
