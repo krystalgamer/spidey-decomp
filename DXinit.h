@@ -43,7 +43,20 @@ EXPORT void shutdownDirectSound8(void);
 EXPORT void gsub_5027A0(void);
 
 EXPORT extern i32 gColorCount;
+EXPORT extern LPDIRECTINPUT8 gDirectInputRelated;
 
 #define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
+
+#define DI_ERROR_LOG_AND_QUIT(x) {\
+	if (x)\
+	{\
+		DISPLAY_DI_ERROR(x);\
+		if (FAILED(hr))\
+		{\
+			DXINIT_ShutDown();\
+			exit(hr);\
+		}\
+	}\
+}
 
 #endif

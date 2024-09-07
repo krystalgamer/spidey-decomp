@@ -30,7 +30,7 @@ EXPORT u8 DXINPUT_GetControllerButtonState(u8);
 EXPORT u8 DXINPUT_GetKeyState(u8);
 EXPORT u8 DXINPUT_GetMouseButtonState(u8);
 EXPORT i32 DXINPUT_GetNumControllerButtons(void);
-EXPORT void DXINPUT_Initialize(IDirectInputA *,HWND);
+EXPORT void DXINPUT_Initialize(LPDIRECTINPUT8,HWND);
 EXPORT i32 DXINPUT_PollController(i32 *,i32 *,i32 *);
 EXPORT i32 DXINPUT_PollKeyboard(void);
 EXPORT i32 DXINPUT_PollMouse(i32 *,i32 *);
@@ -81,7 +81,7 @@ EXPORT void loadWAV(char *,tWAVEFORMATEX *,long *);
 EXPORT void renderScene(void);
 EXPORT void stateLog(char const *,...);
 
-EXPORT extern IDirectInputA* gDirectInputRelated;
+EXPORT extern LPDIRECTINPUT8 g_pDI;
 
 void validate_DXsound(void);
 

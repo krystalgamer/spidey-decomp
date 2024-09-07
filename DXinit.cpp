@@ -19,6 +19,8 @@ EXPORT i32 gDxOptionRelated;
 
 EXPORT LPDIRECTDRAWSURFACE7 pDDS;
 
+LPDIRECTINPUT8 gDirectInputRelated;
+
 // @Ok
 void gsub_5027A0(void)
 {
@@ -111,7 +113,7 @@ void DXINIT_SetDisplayOptions(u32,u32,u32,i32,i32)
 }
 
 // @Ok
-void DXINIT_ShutDown(void)
+INLINE void DXINIT_ShutDown(void)
 {
 	gsub_5027A0();
 	shutdownDirect3D7(1);
@@ -199,9 +201,16 @@ void initDirectDraw7(HWND)
 }
 
 // @SMALLTODO
-void initDirectInput8(HINSTANCE)
+INLINE void initDirectInput8(HINSTANCE hInstance)
 {
-    printf("initDirectInput8(HINSTANCE__ *)");
+	HRESULT hr = DirectInput8Create(
+			hInstance,
+			DIRECTINPUT_VERSION,
+			IID_IDirectInput8,
+			reinterpret_cast<void**>(&gDirectInputRelated),
+			0);
+
+	DI_ERROR_LOG_AND_QUIT(hr);
 }
 
 // @SMALLTODO

@@ -2,6 +2,7 @@
 #include "SpideyDX.h"
 #include "DXsound.h"
 #include "non_win32.h"
+#include "DXinit.h"
 
 #include <cstring>
 

@@ -5,28 +5,15 @@
 
 #include <cstring>
 
-EXPORT LPDIRECTINPUTDEVICEA g_pKeyboard;
-EXPORT LPDIRECTINPUTDEVICEA g_pMouse;
+EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
+EXPORT LPDIRECTINPUTDEVICE8A g_pMouse;
 EXPORT i32 gControllerRelated;
 EXPORT i32 gForceFeedbackRelated;
 
-IDirectInputA* gDirectInputRelated;
 EXPORT i32 gNumControllerButtons;
 EXPORT u8 gKeyState[0x100];
 EXPORT u8 gControllerButtonState[0x20];
 EXPORT u8 gMouseButtonState[3];
-
-#define DI_ERROR_LOG_AND_QUIT(x) {\
-	if (x)\
-	{\
-		DISPLAY_DI_ERROR(x);\
-		if (FAILED(hr))\
-		{\
-			DXINIT_ShutDown();\
-			exit(hr);\
-		}\
-	}\
-}
 
 EXPORT char* gDxKeyNames[0x100] = 
 {
@@ -289,7 +276,7 @@ EXPORT char* gDxKeyNames[0x100] =
 };
 
 
-EXPORT IDirectInputA* g_pDI;
+LPDIRECTINPUT8 g_pDI;
 EXPORT HWND gDxInputHwnd;
 EXPORT u8 gDxInputRelated;
 
@@ -330,7 +317,7 @@ i32 DXINPUT_GetNumControllerButtons(void)
 
 // @Ok
 // @Matching
-void DXINPUT_Initialize(IDirectInputA* a1, HWND a2)
+void DXINPUT_Initialize(LPDIRECTINPUT8 a1, HWND a2)
 {
 	g_pDI = a1;
 	gDxInputHwnd = a2;
