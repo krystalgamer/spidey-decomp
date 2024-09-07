@@ -91,6 +91,7 @@ LRESULT CALLBACK SpideyWndProc(
 		WPARAM wParam,
 		LPARAM lParam)
 {
+#ifdef _WIN32
 	switch (uMsg)
 	{
 		case WM_KEYDOWN:
@@ -140,6 +141,7 @@ LRESULT CALLBACK SpideyWndProc(
 		default:
 			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 	}
+#endif
 
 	return 0;
 }

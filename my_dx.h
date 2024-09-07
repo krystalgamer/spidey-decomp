@@ -23,6 +23,16 @@ typedef i32 IDirectInputA;
 typedef i32 IDirectDrawSurface7;
 typedef void* DIDEVICEINSTANCEA;
 typedef i32* LPDIRECTINPUTDEVICEA;
+typedef i32* LPDIRECTINPUTDEVICE8A;
+typedef i32 DIRECTINPUT8;
+typedef DIRECTINPUT8* LPDIRECTINPUT8;
+typedef i32 DIRECTSOUND8;
+typedef DIRECTSOUND8* LPDIRECTSOUND8;
+typedef void* LPDIRECTDRAWSURFACE7;
+
+struct DSCAPS
+{
+};
 
 #endif
 

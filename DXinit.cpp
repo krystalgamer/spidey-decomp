@@ -4,6 +4,7 @@
 #include "PCGfx.h"
 #include "DXsound.h"
 
+#include <cstring>
 #include <cstdlib>
 
 EXPORT int gResolutionX;
@@ -206,6 +207,7 @@ void initDirectDraw7(HWND)
 // @Ok
 INLINE void initDirectInput8(HINSTANCE hInstance)
 {
+#ifdef _WIN32
 	HRESULT hr = DirectInput8Create(
 			hInstance,
 			DIRECTINPUT_VERSION,
@@ -214,11 +216,13 @@ INLINE void initDirectInput8(HINSTANCE hInstance)
 			0);
 
 	DI_ERROR_LOG_AND_QUIT(hr);
+#endif
 }
 
 // @Ok
 INLINE void initDirectSound8(HWND hwnd)
 {
+#ifdef _WIN32
 	HRESULT hr = DirectSoundCreate8(
 			&DSDEVID_DefaultPlayback,
 			&g_pDS,
@@ -241,6 +245,7 @@ INLINE void initDirectSound8(HWND hwnd)
 	}
 
 	DXSOUND_Init();
+#endif
 }
 
 // @MEDIUMTODO
@@ -252,6 +257,7 @@ void shutdownDirect3D7(i32)
 // @Ok
 INLINE void shutdownDirectInput8(void)
 {
+#ifdef _WIN32
 	if (gDirectInputRelated)
 	{
 		HRESULT hr = gDirectInputRelated->Release();
@@ -259,11 +265,13 @@ INLINE void shutdownDirectInput8(void)
 
 		gDirectInputRelated = 0;
 	}
+#endif
 }
 
 // @Ok
 INLINE void shutdownDirectSound8(void)
 {
+#ifdef _WIN32
 	DXSOUND_ShutDown();
 
 	if(g_pDS)
@@ -272,6 +280,7 @@ INLINE void shutdownDirectSound8(void)
 		DS_ERROR_LOG_AND_QUIT(hr);
 		g_pDS = 0;
 	}
+#endif
 }
 
 // @NotOk
