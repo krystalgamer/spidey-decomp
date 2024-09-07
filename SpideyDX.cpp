@@ -18,6 +18,9 @@ HWND gHwnd;
 
 i32 gBrightnessRelated = 4;
 
+EXPORT u8 gMissingCD;
+EXPORT i32 gActive;
+
 // @Ok
 EXPORT u8 isMMX(void)
 {
@@ -81,10 +84,63 @@ void SPIDEYDX_Shutdown(void)
     printf("SPIDEYDX_Shutdown(void)");
 }
 
-// @SMALLTODO
-LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM)
+// @Ok
+LRESULT CALLBACK SpideyWndProc(
+		HWND hWnd,
+		UINT uMsg,
+		WPARAM wParam,
+		LPARAM lParam)
 {
-    printf("SpideyWndProc(HWND__ *,u32,u32,long)");
+	switch (uMsg)
+	{
+		case WM_KEYDOWN:
+			switch (wParam)
+			{
+				case VK_TAB:
+				case VK_SHIFT:
+				case VK_CONTROL:
+				case VK_LWIN:
+				case VK_RWIN:
+				case VK_APPS:
+					return 0;
+				case VK_F12:
+					PostMessageA(hWnd, WM_CLOSE, 0, 0);
+					return 0;
+				default:
+					return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			}
+			break;
+		case WM_DESTROY:
+			if (gMissingCD)
+			{
+				MessageBoxA(
+					0,
+					"Please insert the Spider-Man CD-ROM, select OK, and restart the game.",
+					"Spider-Man Error",
+					MB_TASKMODAL | MB_ICONEXCLAMATION);
+			}
+			PostQuitMessage(0);
+			break;
+		case WM_SIZE:
+			break;
+		case WM_ACTIVATE:
+			gActive = wParam != WA_INACTIVE;
+			break;
+		case WM_CLOSE:
+			DestroyWindow(hWnd);
+			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		case WM_KEYUP:
+		case WM_CHAR:
+		case WM_DEADCHAR:
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+		case WM_SYSCOMMAND:
+		case WM_HOTKEY:
+			break;
+		default:
+			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+	}
+
 	return 0;
 }
 
