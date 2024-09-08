@@ -8,6 +8,20 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+
+struct DXVideoModeContext
+{
+	i32 mNumEntries;
+	DDSURFACEDESC2 mSurfaces[64];
+	u8 mFlags[64];
+};
+struct SVideoMode
+{
+	DWORD dwWidth;
+	DWORD dwHeight;
+	u8 field_8;
+};
+
 struct DXContextEntry
 {
 	GUID mGUID;
@@ -102,5 +116,7 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 
 void validate_DXContext(void);
 void validate_DXContextEntry(void);
+void validate_SVideoMode(void);
+void validate_DXVideoModeContext(void);
 
 #endif

@@ -33,6 +33,16 @@ EXPORT LPDIRECTDRAW7 lpDD;
 
 EXPORT DWORD gTotalVideoMemory;
 
+// @FIXME
+EXPORT SVideoMode gVideoModes[5] =
+{
+	{ 0x200, 0x180, 2 },
+	{ 0x280, 0x1E0, 6 },
+	{ 0x320, 0x258, 4 },
+	{ 0x400, 0x300, 4 },
+	{ 0x500, 0x400, 4 },
+};
+
 // @Ok
 void gsub_5027A0(void)
 {
@@ -215,11 +225,52 @@ INLINE void enumDisplayModes(void)
 	D3D_ERROR_LOG_AND_QUIT(hr);
 }
 
-// @SMALLTODO
-HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2, void *)
+// @Ok
+// Slightly different register allocation
+HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 {
-    printf("enumerateModesCB(_DDSURFACEDESC2 *,void *)");
-	return 0;
+	DXVideoModeContext* pContext = reinterpret_cast<DXVideoModeContext*>(pUnkContext);
+
+	if (pContext->mNumEntries < 64)
+	{
+		LPDDSURFACEDESC2 pCurDesc = &pContext->mSurfaces[pContext->mNumEntries];
+
+		// @BUG
+		// I think the devs wanted to skip devices that don't support RGB
+		if ((pDesc->ddpfPixelFormat.dwFlags | DDPF_RGB) == 0)
+		{
+			return TRUE;
+		}
+
+		if (pDesc->ddpfPixelFormat.dwRGBBitCount < 16)
+			return TRUE;
+
+		i32 i;
+		for (i = 0; i <= 5; i++)
+		{
+			if (i == 5)
+				return TRUE;
+
+
+			if (pDesc->dwWidth == gVideoModes[i].dwWidth
+					&& pDesc->dwHeight == gVideoModes[i].dwHeight)
+			{
+				pContext->mFlags[i] |= gVideoModes[i].field_8;
+				break;
+			}
+		}
+
+		memcpy(pCurDesc, pDesc, sizeof(pContext->mSurfaces[i]));
+		DXERR_printf(
+			"Got Video Mode: %ix%ix%ibpp\n",
+				pCurDesc->dwWidth,
+				pCurDesc->dwHeight,
+				pCurDesc->ddpfPixelFormat.dwRGBBitCount);
+		pContext->mFlags[i] |= 1;
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // @SMALLTODO
@@ -411,4 +462,22 @@ void validate_DXContextEntry(void)
 
 	VALIDATE(DXContextEntry, mGUID, 0x0);
 	VALIDATE(DXContextEntry, pDescription, 0xFC);
+}
+
+void validate_SVideoMode(void)
+{
+	VALIDATE_SIZE(SVideoMode, 0xC);
+
+	VALIDATE(SVideoMode, dwWidth, 0x0);
+	VALIDATE(SVideoMode, dwHeight, 0x4);
+	VALIDATE(SVideoMode, field_8, 0x8);
+}
+
+void validate_DXVideoModeContext(void)
+{
+	VALIDATE_SIZE(DXVideoModeContext, 0x1F44);
+
+	VALIDATE(DXVideoModeContext, mNumEntries, 0x0);
+	VALIDATE(DXVideoModeContext, mSurfaces, 0x4);
+	VALIDATE(DXVideoModeContext, mFlags, 0x1F04);
 }

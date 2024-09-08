@@ -379,6 +379,8 @@ i32 validate(void)
 	validate_DXsound();
 	validate_DXContext();
 	validate_DXContextEntry();
+	validate_SVideoMode();
+	validate_DXVideoModeContext();
 
 	puts("[*] Validation done!");
 
