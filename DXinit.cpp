@@ -202,16 +202,24 @@ void displayDSError(long,char *,i32)
     printf("displayDSError(long,char *,i32)");
 }
 
-// @SMALLTODO
-void enumDisplayModes(void)
+// @Ok
+INLINE void enumDisplayModes(void)
 {
-    printf("enumDisplayModes(void)");
+	DDSURFACEDESC2 v123;
+
+	memset(&v123, 0, sizeof(v123));
+	v123.dwSize = 124;
+	v123.ddpfPixelFormat.dwRGBBitCount = 16;
+	v123.ddsCaps.dwCaps = DDSCAPS_3DDEVICE;
+	HRESULT hr = lpDD->EnumDisplayModes(0, &v123, gD3DOptionsRelated, enumerateModesCB);
+	D3D_ERROR_LOG_AND_QUIT(hr);
 }
 
 // @SMALLTODO
-void enumerateModesCB(DDSURFACEDESC2 *,void *)
+HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2, void *)
 {
     printf("enumerateModesCB(_DDSURFACEDESC2 *,void *)");
+	return 0;
 }
 
 // @SMALLTODO
@@ -279,7 +287,7 @@ void initDirectDraw7(HWND hwnd)
 
 	DDSCAPS2 v117;
 	memset(&v117, 0, sizeof(v117));
-	v117.dwCaps = DDCAPS2_WIDESURFACES;
+	v117.dwCaps = DDSCAPS_TEXTURE;
 
 	DWORD freeVMem;
 	hr = lpDD->GetAvailableVidMem(&v117, (LPDWORD)&gTotalVideoMemory, &freeVMem);

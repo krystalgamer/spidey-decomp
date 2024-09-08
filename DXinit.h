@@ -44,7 +44,7 @@ EXPORT void displayD3DError(long,char *,i32);
 EXPORT void displayDIError(long,char *,i32);
 EXPORT void displayDSError(long,char *,i32);
 EXPORT void enumDisplayModes(void);
-EXPORT void enumerateModesCB(DDSURFACEDESC2 *,void *);
+EXPORT HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2,void *);
 EXPORT void enumerateZBuffersCB(DDPIXELFORMAT *,void *);
 EXPORT void getNextNumber(char *,i32 *);
 EXPORT u8 initDirect3D7(u32);
