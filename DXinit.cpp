@@ -32,8 +32,8 @@ EXPORT u32 gDisplayDeviceIndex;
 EXPORT LPDIRECTDRAW7 lpDD;
 
 EXPORT DWORD gTotalVideoMemory;
+EXPORT LPDIRECTDRAWSURFACE7 g_pDDS;
 
-// @FIXME
 EXPORT SVideoMode gVideoModes[5] =
 {
 	{ 0x200, 0x180, 2 },
@@ -42,6 +42,9 @@ EXPORT SVideoMode gVideoModes[5] =
 	{ 0x400, 0x300, 4 },
 	{ 0x500, 0x400, 4 },
 };
+
+EXPORT struct tagPOINT Point;
+EXPORT RECT gRect;
 
 // @Ok
 void gsub_5027A0(void)
@@ -295,12 +298,13 @@ u8 initDirect3D7(u32)
 // @MEDIUMTODO
 void initDirectDraw7(HWND hwnd)
 {
-	GUID v119;
+#ifdef _WIN32
+	GUID Guid;
 	DXContext Context;
 
 	memset(&Context, 0, sizeof(Context));
 	memset(gD3DOptionsRelated, 0, sizeof(gD3DOptionsRelated));
-	memset(&v119, 0, sizeof(v119));
+	memset(&Guid, 0, sizeof(Guid));
 	
 	HRESULT hr = DirectDrawEnumerateEx(
 			MyD3DEnumCallback,
@@ -318,7 +322,7 @@ void initDirectDraw7(HWND hwnd)
 		chosenDisplayIndex = gDisplayDeviceIndex;
 	}
 
-	v119 = Context.mEntry[chosenDisplayIndex].mGUID;
+	Guid = Context.mEntry[chosenDisplayIndex].mGUID;
 	char* pDesc = Context.mEntry[chosenDisplayIndex].pDescription;
 	DXERR_printf("DD Device: %s\n", pDesc);
 
@@ -332,7 +336,7 @@ void initDirectDraw7(HWND hwnd)
 		}
 	}
 
-	hr = DirectDrawCreateEx(&v119, reinterpret_cast<void**>(&lpDD), IID_IDirectDraw7, NULL);
+	hr = DirectDrawCreateEx(&Guid, reinterpret_cast<void**>(&lpDD), IID_IDirectDraw7, NULL);
 	D3D_ERROR_LOG_AND_QUIT(hr);
 
 
@@ -359,6 +363,54 @@ void initDirectDraw7(HWND hwnd)
 	DXERR_printf("\t\tAvailiable Video Mem: %i\r\n", gTotalVideoMemory);
 
 	enumDisplayModes();
+
+	if (!gDxResolutionX && !gDxResolutionY)
+	{
+		gDxResolutionX = 640;
+		gDxResolutionY = 480;
+		gGameResolutionX = 640;
+		gGameResolutionY = 480;
+	}
+
+	if (!gColorCount)
+		gColorCount = 16;
+
+	if (gDxOptionRelated)
+	{
+		hr = lpDD->SetCooperativeLevel(hwnd, DDSCL_NORMAL);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
+
+	struct tagRECT v119;
+	v119.left = 0;
+	v119.top = 0;
+	v119.right = gDxResolutionX;
+	v119.bottom = gDxResolutionY;
+	DWORD WindowLongA = GetWindowLongA(hwnd, -20);
+
+	DWORD v42 = GetWindowLongA(hwnd, -16);
+	AdjustWindowRectEx(&v119, v42, 0, WindowLongA);
+	MoveWindow(hwnd, 0, 0, v119.right - v119.left, v119.bottom - v119.top, 1);
+
+	Point.x = 0;
+	Point.y = 0;
+	ClientToScreen(hwnd, &Point);
+
+	gRect.left = Point.x;
+	gRect.top = Point.y;
+	gRect.right = gDxResolutionX + Point.x;
+	gRect.bottom = gDxResolutionY + Point.y;
+
+	DDSURFACEDESC2 v121;
+	memset(&v121, 0, sizeof(v121));
+
+	v121.dwSize = 124;
+	v121.dwFlags = 1;
+
+	v121.ddsCaps.dwCaps = DDSCAPS_3DDEVICE | DDSCAPS_PRIMARYSURFACE;
+	hr = lpDD->CreateSurface(&v121, &g_pDDS, 0);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+#endif
 }
 
 // @Ok
