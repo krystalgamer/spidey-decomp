@@ -62,6 +62,7 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 
 #define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
 #define DISPLAY_DS_ERROR(x) displayDSError(x, __FILE__, __LINE__)
+#define DISPLAY_D3D_ERROR(x) displayD3DError(x, __FILE__, __LINE__)
 
 #define DI_ERROR_LOG_AND_QUIT(x) {\
 	if (x)\
@@ -79,6 +80,18 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 	if (x)\
 	{\
 		DISPLAY_DS_ERROR(x);\
+		if (FAILED(hr))\
+		{\
+			DXINIT_ShutDown();\
+			exit(hr);\
+		}\
+	}\
+}
+
+#define D3D_ERROR_LOG_AND_QUIT(x) {\
+	if (x)\
+	{\
+		DISPLAY_D3D_ERROR(x);\
 		if (FAILED(hr))\
 		{\
 			DXINIT_ShutDown();\

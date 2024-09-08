@@ -26,6 +26,13 @@ LPDIRECTSOUND8 g_pDS;
 
 EXPORT DSCAPS gDsCaps;
 
+EXPORT u8 gD3DOptionsRelated[8004];
+
+EXPORT u32 gDisplayDeviceIndex;
+EXPORT LPDIRECTDRAW7 lpDD;
+
+EXPORT DWORD gTotalVideoMemory;
+
 // @Ok
 void gsub_5027A0(void)
 {
@@ -227,9 +234,72 @@ u8 initDirect3D7(u32)
 }
 
 // @MEDIUMTODO
-void initDirectDraw7(HWND)
+void initDirectDraw7(HWND hwnd)
 {
-    printf("initDirectDraw7(HWND__ *)");
+	GUID v119;
+	DXContext Context;
+
+	memset(&Context, 0, sizeof(Context));
+	memset(gD3DOptionsRelated, 0, sizeof(gD3DOptionsRelated));
+	memset(&v119, 0, sizeof(v119));
+	
+	HRESULT hr = DirectDrawEnumerateEx(
+			MyD3DEnumCallback,
+			&Context,
+			DDENUM_ATTACHEDSECONDARYDEVICES |
+			DDENUM_DETACHEDSECONDARYDEVICES |
+			DDENUM_NONDISPLAYDEVICES);
+
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	u32 chosenDisplayIndex = Context.mNumEntries - 1;
+	if (gDisplayDeviceIndex < chosenDisplayIndex)
+	{
+		DXERR_printf("Using device %u instead of %i.\r\n", gDisplayDeviceIndex, Context.mNumEntries - 1);
+		chosenDisplayIndex = gDisplayDeviceIndex;
+	}
+
+	v119 = Context.mEntry[chosenDisplayIndex].mGUID;
+	char* pDesc = Context.mEntry[chosenDisplayIndex].pDescription;
+	DXERR_printf("DD Device: %s\n", pDesc);
+
+	if (Context.mNumEntries >= 1)
+	{
+		i32 entries = Context.mNumEntries;
+		while(entries)
+		{
+			free(Context.mEntry[entries].pDescription);
+			entries--;
+		}
+	}
+
+	hr = DirectDrawCreateEx(&v119, reinterpret_cast<void**>(&lpDD), IID_IDirectDraw7, NULL);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+
+	DDSCAPS2 v117;
+	memset(&v117, 0, sizeof(v117));
+	v117.dwCaps = DDCAPS2_WIDESURFACES;
+
+	DWORD freeVMem;
+	hr = lpDD->GetAvailableVidMem(&v117, (LPDWORD)&gTotalVideoMemory, &freeVMem);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	DDDEVICEIDENTIFIER2 v124;
+	memset(&v124, 0, sizeof(v124));
+	hr = lpDD->GetDeviceIdentifier(&v124, 0);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+
+	DXERR_printf("\t\tVideo Card: %s\r\n", v124.szDescription);
+	if (strstr(v124.szDescription, "Voodoo Rush"))
+	{
+		gTotalVideoMemory *= 2;
+		DXERR_printf("\t\tDoubling Video Mem on %s boards\r\n", "Voodoo Rush");
+	}
+	DXERR_printf("\t\tAvailiable Video Mem: %i\r\n", gTotalVideoMemory);
+
+	enumDisplayModes();
 }
 
 // @Ok
