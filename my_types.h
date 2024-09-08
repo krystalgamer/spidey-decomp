@@ -52,12 +52,28 @@ typedef int i32;
 #ifndef _WIN32
 #define FAILED(x) ((i32)(x) < 0)
 
-struct _GUID
+typedef struct _GUID
 {
 	u8 pad[0x10];
-};
+} GUID;
 
 typedef u32 HRESULT;
+typedef i32 BOOL;
+typedef char* LPSTR;
+typedef void* LPVOID;
+typedef i32 HMONITOR;
+
+struct RECT
+{};
+
+struct tagPOINT
+{
+};
+
+#define TRUE 1
+#define FALSE 0
+
+
 #endif
 
 #endif

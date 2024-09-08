@@ -218,6 +218,7 @@ void displayDSError(long,char *,i32)
 // @Ok
 INLINE void enumDisplayModes(void)
 {
+#ifdef _WIN32
 	DDSURFACEDESC2 v123;
 
 	memset(&v123, 0, sizeof(v123));
@@ -226,12 +227,14 @@ INLINE void enumDisplayModes(void)
 	v123.ddsCaps.dwCaps = DDSCAPS_3DDEVICE;
 	HRESULT hr = lpDD->EnumDisplayModes(0, &v123, gD3DOptionsRelated, enumerateModesCB);
 	D3D_ERROR_LOG_AND_QUIT(hr);
+#endif
 }
 
 // @Ok
 // Slightly different register allocation
 HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 {
+#ifdef _WIN32
 	DXVideoModeContext* pContext = reinterpret_cast<DXVideoModeContext*>(pUnkContext);
 
 	if (pContext->mNumEntries < 64)
@@ -272,7 +275,7 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 		pContext->mFlags[i] |= 1;
 		return TRUE;
 	}
-
+#endif
 	return FALSE;
 }
 
@@ -527,9 +530,11 @@ void validate_SVideoMode(void)
 
 void validate_DXVideoModeContext(void)
 {
+#ifdef _WIN32
 	VALIDATE_SIZE(DXVideoModeContext, 0x1F44);
 
 	VALIDATE(DXVideoModeContext, mNumEntries, 0x0);
 	VALIDATE(DXVideoModeContext, mSurfaces, 0x4);
 	VALIDATE(DXVideoModeContext, mFlags, 0x1F04);
+#endif
 }
