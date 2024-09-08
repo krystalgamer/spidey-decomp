@@ -3,6 +3,7 @@
 #include "dcmodel.h"
 #include "PCGfx.h"
 #include "DXsound.h"
+#include "validate.h"
 
 #include <cstring>
 #include <cstdlib>
@@ -143,10 +144,37 @@ void LoadPushOffsets(void)
     printf("LoadPushOffsets(void)");
 }
 
-// @SMALLTODO
-void MyD3DEnumCallback(char *,char *, D3DDEVICEDESC7 *,void *)
+// @Ok
+// @Matching
+BOOL WINAPI MyD3DEnumCallback(
+		GUID* pGUID,
+		LPSTR pDescription,
+		LPSTR,
+		LPVOID pUnkContext,
+		HMONITOR)
 {
-    printf("MyD3DEnumCallback(char *,char *,_D3DDeviceDesc7 *,void *)");
+	DXContext* pContext = reinterpret_cast<DXContext*>(pUnkContext);
+	if (pContext->mNumEntries < 8)
+	{
+		DXContextEntry* pEntry = &pContext->mEntry[pContext->mNumEntries];
+		if (pGUID)
+		{
+			pEntry->mGUID = *pGUID;
+		}
+		else
+		{
+			memset(&pEntry->mGUID, 0, sizeof(pEntry->mGUID));
+		}
+
+		pEntry->pDescription = static_cast<char*>(malloc(strlen(pDescription) + 1));
+		strcpy(pEntry->pDescription, pDescription);
+		DXERR_printf("Got DD Device: %s\n", pEntry->pDescription);
+
+		pContext->mNumEntries++;
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // @SMALLTODO
@@ -289,4 +317,20 @@ void DXINIT_GetCurrentResolution(int *x, int *y)
 {
 	*x = gResolutionX;
 	*y = gResolutionY;
+}
+
+void validate_DXContext(void)
+{
+	VALIDATE_SIZE(DXContext, 0x804);
+
+	VALIDATE(DXContext, mNumEntries, 0x0);
+	VALIDATE(DXContext, mEntry, 0x4);
+}
+
+void validate_DXContextEntry(void)
+{
+	VALIDATE_SIZE(DXContextEntry, 0x100);
+
+	VALIDATE(DXContextEntry, mGUID, 0x0);
+	VALIDATE(DXContextEntry, pDescription, 0xFC);
 }

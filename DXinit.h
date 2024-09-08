@@ -8,6 +8,19 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+struct DXContextEntry
+{
+	GUID mGUID;
+	u8 padAfter010[0xFC-0x10];
+	char *pDescription;
+};
+
+struct DXContext
+{
+	i32 mNumEntries;
+	DXContextEntry mEntry[8];
+};
+
 EXPORT extern i32 gLowGraphics;
 EXPORT extern void* gLowGraphicsRelated;
 
@@ -26,6 +39,7 @@ EXPORT void DXINIT_ZBufSupported(u32);
 EXPORT void FreePushOffsets(void);
 EXPORT void LoadPushOffsets(void);
 EXPORT void MyD3DEnumCallback(char *,char *, D3DDEVICEDESC7 *,void *);
+EXPORT BOOL WINAPI MyD3DEnumCallback(GUID*, LPSTR, LPSTR, LPVOID, HMONITOR);
 EXPORT void displayD3DError(long,char *,i32);
 EXPORT void displayDIError(long,char *,i32);
 EXPORT void displayDSError(long,char *,i32);
@@ -72,5 +86,8 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 		}\
 	}\
 }
+
+void validate_DXContext(void);
+void validate_DXContextEntry(void);
 
 #endif

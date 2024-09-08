@@ -76,6 +76,7 @@
 #include "stubs.h"
 #include "SpideyDX.h"
 #include "DXsound.h"
+#include "DXinit.h"
 
 extern int FAIL_VALIDATION;
 
@@ -376,6 +377,8 @@ i32 validate(void)
 	validate_SLevel();
 	validate_SMessage();
 	validate_DXsound();
+	validate_DXContext();
+	validate_DXContextEntry();
 
 	puts("[*] Validation done!");
 
