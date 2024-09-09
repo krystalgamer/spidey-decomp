@@ -51,6 +51,9 @@ EXPORT RECT gRect;
 
 EXPORT LPDIRECT3D7 g_D3D7;
 
+EXPORT LPDIRECT3DDEVICE7 g_D3DDevice7;
+EXPORT D3DDEVICEDESC7 gD3DDevCaps;
+
 // @Ok
 void gsub_5027A0(void)
 {
@@ -458,6 +461,40 @@ u8 initDirect3D7(u32 a1)
 			free(Context.mEntry[i].pDescription);
 		}
 	}
+
+	DxZBufferContext zBufContext;
+	memset(&zBufContext, 0, sizeof(zBufContext));
+
+	GUID& pGUID = Context.mEntry[i_d3dDevice].mDeviceDesc.deviceGUID;
+	hr = g_D3D7->EnumZBufferFormats(
+			pGUID,
+			enumerateZBuffersCB,
+			reinterpret_cast<void*>(&zBufContext));
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	if (v77 && !gLowGraphics)
+	{
+	}
+	
+	hr = g_D3D7->CreateDevice(pGUID, g_pDDS_Scene, &g_D3DDevice7);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	hr = g_D3DDevice7->GetCaps(&gD3DDevCaps);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	D3DVIEWPORT7 v80;
+	v80.dwWidth = gDxResolutionX;
+	v80.dwHeight = gDxResolutionY;
+	v80.dwX = 0;
+	v80.dwY = 0;
+	v80.dvMinZ = 0.0;
+	v80.dvMaxZ = 1.0;
+
+	hr = g_D3DDevice7->SetViewport(&v80);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	if ( (gD3DDevCaps.dwTextureOpCaps & 5) == 0 )
+		DXERR_printf("\tSelected 3D device does not support Modulate2X color mode!\r\n");
 
 	return 1;
 }
