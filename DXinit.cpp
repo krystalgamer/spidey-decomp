@@ -849,19 +849,23 @@ void DXINIT_GetCurrentResolution(int *x, int *y)
 
 void validate_DXContext(void)
 {
+#ifdef _WIN32
 	VALIDATE_SIZE(DXContext, 0x804);
 
 	VALIDATE(DXContext, mNumEntries, 0x0);
 	VALIDATE(DXContext, mEntry, 0x4);
+#endif
 }
 
 void validate_DXContextEntry(void)
 {
+#ifdef _WIN32
 	VALIDATE_SIZE(DXContextEntry, 0x100);
 
 	VALIDATE(DXContextEntry, mGUID, 0x0);
 	VALIDATE(DXContextEntry, mDeviceDesc, 0x10);
 	VALIDATE(DXContextEntry, pDescription, 0xFC);
+#endif
 }
 
 void validate_SVideoMode(void)

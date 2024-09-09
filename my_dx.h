@@ -32,6 +32,11 @@ typedef i32 DIRECTSOUND8;
 typedef DIRECTSOUND8* LPDIRECTSOUND8;
 typedef void* LPDIRECTDRAWSURFACE7;
 typedef void* LPDIRECTDRAW7;
+typedef void* LPD3DDEVICEDESC7;
+typedef void* LPDIRECTDRAWCLIPPER;
+typedef void* LPDIRECT3D7;
+typedef void* LPDDPIXELFORMAT;
+typedef void* LPDIRECT3DDEVICE7;
 
 struct DSCAPS
 {
