@@ -49,7 +49,7 @@ EXPORT SVideoMode gVideoModes[5] =
 EXPORT struct tagPOINT Point;
 EXPORT RECT gRect;
 
-EXPORT LPDIRECT3D7 g_D3D;
+EXPORT LPDIRECT3D7 g_D3D7;
 
 // @Ok
 void gsub_5027A0(void)
@@ -204,12 +204,13 @@ BOOL WINAPI MyDDEnumCallback(
 
 // @Ok
 // @Matching
-BOOL WINAPI MyD3DEnumCallback(
+HRESULT WINAPI MyD3DEnumCallback(
 		LPSTR pDesc,
 		LPSTR,
 		LPD3DDEVICEDESC7 a3,
 		LPVOID pUnkContext)
 {
+#ifndef _WIN32
 	DXContext* pContext = reinterpret_cast<DXContext*>(pUnkContext);
 
 	if (pContext->mNumEntries < 8)
@@ -229,6 +230,7 @@ BOOL WINAPI MyD3DEnumCallback(
 		return TRUE;
 	}
 
+#endif
 	return FALSE;
 }
 
@@ -328,12 +330,120 @@ void getNextNumber(char *,i32 *)
 }
 
 // @MEDIUMTODO
-u8 initDirect3D7(u32)
+u8 initDirect3D7(u32 a1)
 {
+	u32 v77 = (a1 & 2);
+	HRESULT hr;
 
-	g_D3D = 0;
-    printf("initDirect3D7(u32)");
-	return (u8)0x07092024;
+	LPDIRECT3D7 v1 = g_D3D7;
+	if (!v1)
+	{
+		hr = lpDD->QueryInterface(IID_IDirect3D7, reinterpret_cast<void**>(&g_D3D7));
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		v1 = g_D3D7;
+	}
+
+	DXContext Context;
+	memset(&Context, 0, sizeof(Context));
+
+	hr = v1->EnumDevices(MyD3DEnumCallback, reinterpret_cast<void**>(&Context));
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+
+	i32 i_d3dDevice = -1;
+	i32 i_RGB = -1;
+	i32 i_hal = -1;
+	i32 i_tnl = -1;
+
+	if (Context.mNumEntries >= 1)
+	{
+		for (
+				i32 i = Context.mNumEntries - 1;
+				i >= 0;
+				i--)
+		{
+			if (!memcmp(&Context.mEntry[i].mDeviceDesc.deviceGUID, &IID_IDirect3DTnLHalDevice, sizeof(_GUID)))
+			{
+				i_tnl = i;
+			}
+			else if (!memcmp(&Context.mEntry[i].mDeviceDesc.deviceGUID, &IID_IDirect3DHALDevice, sizeof(_GUID)))
+			{
+				i_hal = i;
+			}
+			else if (!memcmp(&Context.mEntry[i].mDeviceDesc.deviceGUID, &IID_IDirect3DRGBDevice, sizeof(_GUID)))
+			{
+				i_RGB = i;
+			}
+		}
+
+		if (i_tnl == -1 && i_hal == -1)
+		{
+			g3DAccelator = 0;
+		}
+		else
+		{
+			g3DAccelator = 1;
+		}
+	}
+	else
+	{
+		g3DAccelator = 0;
+	}
+
+	if (!gLowGraphics)
+	{
+		if (i_tnl != -1)
+		{
+			i_d3dDevice = i_tnl;
+		}
+		else if (i_hal != -1)
+		{
+			i_d3dDevice = i_hal;
+		}
+		else if (i_RGB != -1)
+		{
+			i_d3dDevice = -1;
+		}
+
+		if (!g3DAccelator)
+		{
+			if (pDDS)
+			{
+				hr = g_pDDS_Scene->DeleteAttachedSurface(0, pDDS);
+				D3D_ERROR_LOG_AND_QUIT(hr);
+
+				hr = pDDS->Release();
+				D3D_ERROR_LOG_AND_QUIT(hr);
+				pDDS = 0;
+				v77 = 0;
+			}
+
+			gLowGraphics = 1;
+			i_d3dDevice = i_RGB;
+		}
+	}
+	else
+	{
+		i_d3dDevice = i_RGB;
+	}
+
+	print_if_false(i_d3dDevice != -1, "no D3D device found!");
+	if (i_d3dDevice == i_tnl && i_hal != -1)
+	{
+		i_d3dDevice = i_hal;
+	}
+	DXERR_printf("D3D Device: %s\n", Context.mEntry[i_d3dDevice].pDescription);
+
+	if (Context.mNumEntries > 0)
+	{
+		for (i32 i = 0; i < Context.mNumEntries; i++)
+		{
+			free(Context.mEntry[i].pDescription);
+		}
+	}
+
+	return 1;
 }
 
 // @Ok
