@@ -49,6 +49,8 @@ EXPORT SVideoMode gVideoModes[5] =
 EXPORT struct tagPOINT Point;
 EXPORT RECT gRect;
 
+EXPORT LPDIRECT3D7 g_D3D;
+
 // @Ok
 void gsub_5027A0(void)
 {
@@ -169,7 +171,7 @@ void LoadPushOffsets(void)
 
 // @Ok
 // @Matching
-BOOL WINAPI MyD3DEnumCallback(
+BOOL WINAPI MyDDEnumCallback(
 		GUID* pGUID,
 		LPSTR pDescription,
 		LPSTR,
@@ -194,6 +196,36 @@ BOOL WINAPI MyD3DEnumCallback(
 		DXERR_printf("Got DD Device: %s\n", pEntry->pDescription);
 
 		pContext->mNumEntries++;
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+// @Ok
+// @Matching
+BOOL WINAPI MyD3DEnumCallback(
+		LPSTR pDesc,
+		LPSTR,
+		LPD3DDEVICEDESC7 a3,
+		LPVOID pUnkContext)
+{
+	DXContext* pContext = reinterpret_cast<DXContext*>(pUnkContext);
+
+	if (pContext->mNumEntries < 8)
+	{
+		DXContextEntry* pEntry = &pContext->mEntry[pContext->mNumEntries];
+		memcpy(
+				&pEntry->mDeviceDesc,
+				a3,
+				sizeof(pEntry->mDeviceDesc));
+
+		 pEntry->pDescription = static_cast<char*>(malloc(strlen(pDesc)+1));
+
+		 strcpy(pEntry->pDescription, pDesc);
+		 DXERR_printf("Got D3D Device: %s\n", pEntry->pDescription);
+		 pContext->mNumEntries++;
+
 		return TRUE;
 	}
 
@@ -298,6 +330,8 @@ void getNextNumber(char *,i32 *)
 // @MEDIUMTODO
 u8 initDirect3D7(u32)
 {
+
+	g_D3D = 0;
     printf("initDirect3D7(u32)");
 	return (u8)0x07092024;
 }
@@ -314,7 +348,7 @@ void initDirectDraw7(HWND hwnd)
 	memset(&Guid, 0, sizeof(Guid));
 	
 	HRESULT hr = DirectDrawEnumerateEx(
-			MyD3DEnumCallback,
+			MyDDEnumCallback,
 			&Context,
 			DDENUM_ATTACHEDSECONDARYDEVICES |
 			DDENUM_DETACHEDSECONDARYDEVICES |
@@ -617,6 +651,7 @@ void validate_DXContextEntry(void)
 	VALIDATE_SIZE(DXContextEntry, 0x100);
 
 	VALIDATE(DXContextEntry, mGUID, 0x0);
+	VALIDATE(DXContextEntry, mDeviceDesc, 0x10);
 	VALIDATE(DXContextEntry, pDescription, 0xFC);
 }
 
