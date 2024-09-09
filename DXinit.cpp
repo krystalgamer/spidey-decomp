@@ -32,7 +32,10 @@ EXPORT u32 gDisplayDeviceIndex;
 EXPORT LPDIRECTDRAW7 lpDD;
 
 EXPORT DWORD gTotalVideoMemory;
-EXPORT LPDIRECTDRAWSURFACE7 g_pDDS;
+EXPORT LPDIRECTDRAWSURFACE7 g_pDDS_SaveScreen;
+EXPORT LPDIRECTDRAWSURFACE7 g_pDDS_Scene;
+
+EXPORT LPDIRECTDRAWCLIPPER g_pClipper;
 
 EXPORT SVideoMode gVideoModes[5] =
 {
@@ -299,7 +302,7 @@ u8 initDirect3D7(u32)
 	return (u8)0x07092024;
 }
 
-// @MEDIUMTODO
+// @Ok
 void initDirectDraw7(HWND hwnd)
 {
 #ifdef _WIN32
@@ -383,37 +386,134 @@ void initDirectDraw7(HWND hwnd)
 	{
 		hr = lpDD->SetCooperativeLevel(hwnd, DDSCL_NORMAL);
 		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		struct tagRECT v119;
+		v119.left = 0;
+		v119.top = 0;
+		v119.right = gDxResolutionX;
+		v119.bottom = gDxResolutionY;
+		DWORD WindowLongA = GetWindowLongA(hwnd, -20);
+
+		DWORD v42 = GetWindowLongA(hwnd, -16);
+		AdjustWindowRectEx(&v119, v42, 0, WindowLongA);
+		MoveWindow(hwnd, 0, 0, v119.right - v119.left, v119.bottom - v119.top, 1);
+
+		Point.x = 0;
+		Point.y = 0;
+		ClientToScreen(hwnd, &Point);
+
+		gRect.left = Point.x;
+		gRect.top = Point.y;
+		gRect.right = gDxResolutionX + Point.x;
+		gRect.bottom = gDxResolutionY + Point.y;
+
+		DDSURFACEDESC2 v121;
+		memset(&v121, 0, sizeof(v121));
+		v121.dwSize = sizeof(v121);
+		v121.dwFlags = DDSD_CAPS;
+
+		v121.ddsCaps.dwCaps = DDSCAPS_3DDEVICE | DDSCAPS_PRIMARYSURFACE;
+		hr = lpDD->CreateSurface(&v121, &g_pDDS_SaveScreen, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		memset(&v121, 0, sizeof(v121));
+		v121.dwWidth = gDxResolutionX;
+		v121.dwHeight = gDxResolutionY;
+		v121.dwSize = sizeof(v121);
+		v121.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
+		v121.ddsCaps.dwCaps = DDSCAPS_3DDEVICE | DDSCAPS_OFFSCREENPLAIN;
+
+		hr = lpDD->CreateSurface(&v121, &g_pDDS_Scene, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		hr = lpDD->CreateClipper(0, &g_pClipper, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		hr = g_pDDS_SaveScreen->SetClipper(g_pClipper);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		hr = g_pClipper->SetHWnd(0, hwnd);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
+	else
+	{
+		hr = lpDD->SetCooperativeLevel(hwnd, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+		if (hr != DDERR_EXCLUSIVEMODEALREADYSET)
+		{
+			D3D_ERROR_LOG_AND_QUIT(hr);
+		}
+
+		DXERR_printf("Video Mode %ix%ix%ibpp\r\n", gDxResolutionX, gDxResolutionY, gColorCount);
+		hr = lpDD->SetDisplayMode(gDxResolutionX, gDxResolutionY, gColorCount, 0, 0);
+		if (hr == DDERR_NOEXCLUSIVEMODE)
+		{
+			hr = lpDD->SetCooperativeLevel(hwnd, DDSCL_NORMAL);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+			lpDD->SetCooperativeLevel(hwnd, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+			hr = lpDD->SetDisplayMode(gDxResolutionX, gDxResolutionY, gColorCount, 0, 0);
+		}
+
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		DDSURFACEDESC2 v121;
+		memset(&v121, 0, sizeof(v121));
+		v121.dwSize = sizeof(v121);
+		v121.dwFlags = DDSD_BACKBUFFERCOUNT | DDSD_CAPS;
+		v121.ddsCaps.dwCaps =
+			DDSCAPS_3DDEVICE |
+			DDSCAPS_PRIMARYSURFACE |
+			DDSCAPS_FLIP |
+			DDSCAPS_COMPLEX;
+		v121.dwBackBufferCount = 1;
+
+		hr = lpDD->CreateSurface(&v121, &g_pDDS_SaveScreen, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		memset(&v117, 0, sizeof(v117));
+		v117.dwCaps = DDSCAPS_BACKBUFFER;
+
+		hr = g_pDDS_SaveScreen->GetAttachedSurface(&v117, &g_pDDS_Scene);
+		D3D_ERROR_LOG_AND_QUIT(hr);
 	}
 
-	struct tagRECT v119;
-	v119.left = 0;
-	v119.top = 0;
-	v119.right = gDxResolutionX;
-	v119.bottom = gDxResolutionY;
-	DWORD WindowLongA = GetWindowLongA(hwnd, -20);
+	DDBLTFX v122;
+	v122.dwSize = sizeof(v122);
+	v122.dwFillColor = 0xFF000000;
 
-	DWORD v42 = GetWindowLongA(hwnd, -16);
-	AdjustWindowRectEx(&v119, v42, 0, WindowLongA);
-	MoveWindow(hwnd, 0, 0, v119.right - v119.left, v119.bottom - v119.top, 1);
+	if (g_pDDS_SaveScreen)
+	{
+		if (gDxOptionRelated)
+		{
+			hr = g_pDDS_SaveScreen->Blt(
+					&gRect,
+					0,
+					0,
+					DDBLT_WAIT | DDBLT_COLORFILL,
+					&v122);
+		}
+		else
+		{
+			hr = g_pDDS_SaveScreen->Blt(
+					0,
+					0,
+					0,
+					DDBLT_WAIT | DDBLT_COLORFILL,
+					&v122);
+		}
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
 
-	Point.x = 0;
-	Point.y = 0;
-	ClientToScreen(hwnd, &Point);
+	if (g_pDDS_Scene)
+	{
+		hr = g_pDDS_Scene->Blt(
+				0,
+				0,
+				0,
+				DDBLT_WAIT | DDBLT_COLORFILL,
+				&v122);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
 
-	gRect.left = Point.x;
-	gRect.top = Point.y;
-	gRect.right = gDxResolutionX + Point.x;
-	gRect.bottom = gDxResolutionY + Point.y;
-
-	DDSURFACEDESC2 v121;
-	memset(&v121, 0, sizeof(v121));
-
-	v121.dwSize = 124;
-	v121.dwFlags = 1;
-
-	v121.ddsCaps.dwCaps = DDSCAPS_3DDEVICE | DDSCAPS_PRIMARYSURFACE;
-	hr = lpDD->CreateSurface(&v121, &g_pDDS, 0);
-	D3D_ERROR_LOG_AND_QUIT(hr);
 #endif
 }
 
