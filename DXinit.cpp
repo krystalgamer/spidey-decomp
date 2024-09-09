@@ -14,7 +14,7 @@ EXPORT int gResolutionY;
 EXPORT i32 gLowGraphics;
 EXPORT void* gLowGraphicsRelated;
 
-i32 gColorCount;
+u32 gColorCount;
 
 EXPORT HWND gDxHwnd;
 EXPORT i32 gDxOptionRelated;
@@ -321,7 +321,7 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 }
 
 // @Ok
-// @matching
+// @Matching
 HRESULT WINAPI enumerateZBuffersCB(LPDDPIXELFORMAT a1, LPVOID a2)
 {
 #ifdef _WIN32
@@ -348,9 +348,10 @@ void getNextNumber(char *,i32 *)
     printf("getNextNumber(char *,i32 *)");
 }
 
-// @MEDIUMTODO
+// @Ok
 u8 initDirect3D7(u32 a1)
 {
+#ifdef _WIN32
 	u32 v77 = (a1 & 2);
 	HRESULT hr;
 
@@ -474,6 +475,50 @@ u8 initDirect3D7(u32 a1)
 
 	if (v77 && !gLowGraphics)
 	{
+		i32 i_ZBuf = 0;
+		for (
+				i32 i = 1;
+				i < zBufContext.mNumEntries;
+				i++)
+		{
+			if (zBufContext.mEntry[i].dwRGBBitCount == 16)
+				i_ZBuf = i;
+		}
+
+		if (zBufContext.mEntry[i_ZBuf].dwRGBBitCount != 16)
+		{
+			i_ZBuf = zBufContext.mNumEntries - 1;
+			DXERR_printf(
+					"No 16-bit ZBuffer found. Using %i-bit ZBuffer\r\n",
+					zBufContext.mEntry[i_ZBuf].dwRGBBitCount);
+		}
+
+		DXERR_printf("ZBuffer: %i\n", zBufContext.mEntry[i_ZBuf].dwRGBBitCount);
+
+		DDSURFACEDESC2 v81;
+		memset(&v81, 0, sizeof(v81));
+
+		v81.dwWidth = gDxResolutionX;
+		v81.dwSize = sizeof(v81);
+		v81.dwFlags = DDSD_PIXELFORMAT | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
+		v81.ddsCaps.dwCaps = DDSCAPS_ZBUFFER;
+		v81.dwHeight = gDxResolutionY;
+		memcpy(&v81.ddpfPixelFormat, &zBufContext.mEntry[i_ZBuf], sizeof(v81.ddpfPixelFormat));
+
+		if ( i_d3dDevice == i_RGB )
+			v81.ddsCaps.dwCaps = DDSCAPS_ZBUFFER | DDSCAPS_SYSTEMMEMORY;
+		hr = lpDD->CreateSurface(&v81, &pDDS, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		hr = g_pDDS_Scene->AddAttachedSurface(pDDS);
+		if (hr == DDERR_CANNOTATTACHSURFACE)
+		{
+			if (gColorCount > 0x10)
+			{
+				return 0;
+			}
+		}
+		D3D_ERROR_LOG_AND_QUIT(hr);
 	}
 	
 	hr = g_D3D7->CreateDevice(pGUID, g_pDDS_Scene, &g_D3DDevice7);
@@ -495,6 +540,7 @@ u8 initDirect3D7(u32 a1)
 
 	if ( (gD3DDevCaps.dwTextureOpCaps & 5) == 0 )
 		DXERR_printf("\tSelected 3D device does not support Modulate2X color mode!\r\n");
+#endif
 
 	return 1;
 }

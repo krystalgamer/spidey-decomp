@@ -75,7 +75,7 @@ EXPORT void shutdownDirectInput8(void);
 EXPORT void shutdownDirectSound8(void);
 EXPORT void gsub_5027A0(void);
 
-EXPORT extern i32 gColorCount;
+EXPORT extern u32 gColorCount;
 EXPORT extern LPDIRECTINPUT8 gDirectInputRelated;
 EXPORT extern LPDIRECTSOUND8 g_pDS;
 
