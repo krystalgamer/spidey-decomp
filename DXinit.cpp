@@ -272,7 +272,8 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 				pCurDesc->dwWidth,
 				pCurDesc->dwHeight,
 				pCurDesc->ddpfPixelFormat.dwRGBBitCount);
-		pContext->mFlags[i] |= 1;
+		pContext->mFlags[pContext->mNumEntries] |= 1;
+		pContext->mNumEntries++;
 		return TRUE;
 	}
 #endif
