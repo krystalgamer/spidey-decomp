@@ -210,7 +210,7 @@ HRESULT WINAPI MyD3DEnumCallback(
 		LPD3DDEVICEDESC7 a3,
 		LPVOID pUnkContext)
 {
-#ifndef _WIN32
+#ifdef _WIN32
 	DXContext* pContext = reinterpret_cast<DXContext*>(pUnkContext);
 
 	if (pContext->mNumEntries < 8)
@@ -317,10 +317,26 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 	return FALSE;
 }
 
-// @SMALLTODO
-void enumerateZBuffersCB(DDPIXELFORMAT *,void *)
+// @Ok
+// @matching
+HRESULT WINAPI enumerateZBuffersCB(LPDDPIXELFORMAT a1, LPVOID a2)
 {
-    printf("enumerateZBuffersCB(_DDPIXELFORMAT *,void *)");
+#ifdef _WIN32
+	DxZBufferContext* pContext = reinterpret_cast<DxZBufferContext*>(a2);
+	if (pContext->mNumEntries < 8)
+	{
+		if (a1->dwFlags == 1024)
+		{
+			memcpy(&pContext->mEntry[pContext->mNumEntries], a1, sizeof(*a1));
+			DXERR_printf("Got ZBuffer: %i\n", pContext->mEntry[pContext->mNumEntries].dwRGBBitCount);
+			pContext->mNumEntries++;
+		}
+		return TRUE;
+	}
+
+#endif
+
+	return FALSE;
 }
 
 // @SMALLTODO
@@ -782,5 +798,14 @@ void validate_DXVideoModeContext(void)
 	VALIDATE(DXVideoModeContext, mNumEntries, 0x0);
 	VALIDATE(DXVideoModeContext, mSurfaces, 0x4);
 	VALIDATE(DXVideoModeContext, mFlags, 0x1F04);
+#endif
+}
+
+void validate_DxZBufferContext(void)
+{
+#ifdef _WIN32
+	VALIDATE_SIZE(DxZBufferContext, 0x104);
+	VALIDATE(DxZBufferContext, mNumEntries, 0x0);
+	VALIDATE(DxZBufferContext, mEntry, 0x4);
 #endif
 }

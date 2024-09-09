@@ -8,6 +8,11 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+struct DxZBufferContext
+{
+	i32 mNumEntries;
+	DDPIXELFORMAT mEntry[8];
+};
 
 struct DXVideoModeContext
 {
@@ -59,7 +64,7 @@ EXPORT void displayDIError(long,char *,i32);
 EXPORT void displayDSError(long,char *,i32);
 EXPORT void enumDisplayModes(void);
 EXPORT HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2,void *);
-EXPORT void enumerateZBuffersCB(DDPIXELFORMAT *,void *);
+EXPORT HRESULT WINAPI enumerateZBuffersCB(DDPIXELFORMAT *,void *);
 EXPORT void getNextNumber(char *,i32 *);
 EXPORT u8 initDirect3D7(u32);
 EXPORT void initDirectDraw7(HWND);
@@ -118,5 +123,6 @@ void validate_DXContext(void);
 void validate_DXContextEntry(void);
 void validate_SVideoMode(void);
 void validate_DXVideoModeContext(void);
+void validate_DxZBufferContext(void);
 
 #endif
