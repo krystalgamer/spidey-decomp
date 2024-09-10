@@ -5,6 +5,9 @@
 
 #include <cstring>
 
+EXPORT bool gDepthWriting;
+EXPORT bool gDxPolyRelated;
+
 EXPORT i32 gHudOffset;
 EXPORT float gFlHudOffset = 1.0f;
 
@@ -602,10 +605,21 @@ void DXPOLY_SetDepthCompare(u32)
     printf("DXPOLY_SetDepthCompare(u32)");
 }
 
-// @SMALLTODO
-void DXPOLY_SetDepthWriting(bool)
+// @Ok
+// @Matching
+void DXPOLY_SetDepthWriting(bool a1)
 {
-    printf("DXPOLY_SetDepthWriting(bool)");
+	if (gDxPolyRelated && a1 != gDepthWriting)
+	{
+		g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, a1);
+		gDepthWriting = a1;
+
+		char *status = "Enabled";
+		if (!a1)
+			status = "Disabled";
+
+		DXERR_printf("Depth Buffer Writes %s.\r\n", status);
+	}
 }
 
 // @SMALLTODO
