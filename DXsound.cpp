@@ -5,6 +5,8 @@
 
 #include <cstring>
 
+EXPORT u32 gDxPolyBackgroundColor = 0x0FF000000;
+
 EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
 EXPORT LPDIRECTINPUTDEVICE8A g_pMouse;
 EXPORT i32 gControllerRelated;
@@ -577,10 +579,11 @@ void DXPOLY_SaveSurfaceAsBMP(char *,void *,i32,i32,i32,_DDPIXELFORMAT *,bool)
     printf("DXPOLY_SaveSurfaceAsBMP(char *,void *,i32,i32,i32,_DDPIXELFORMAT *,bool)");
 }
 
-// @SMALLTODO
-void DXPOLY_SetBackgroundColor(u32)
+// @Ok
+// @Matching
+void DXPOLY_SetBackgroundColor(u32 color)
 {
-    printf("DXPOLY_SetBackgroundColor(u32)");
+	gDxPolyBackgroundColor = color;
 }
 
 // @MEDIUMTODO
