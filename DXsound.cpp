@@ -5,6 +5,22 @@
 
 #include <cstring>
 
+EXPORT char* gD3DDepthCompareNames[9] =
+{
+	"",
+    "D3DCMP_NEVER",
+    "D3DCMP_LESS",
+    "D3DCMP_EQUAL",
+    "D3DCMP_LESSEQUAL",
+    "D3DCMP_GREATER",
+    "D3DCMP_NOTEQUAL",
+    "D3DCMP_GREATEREQUAL",
+    "D3DCMP_ALWAYS",
+};
+
+EXPORT float gFlDepthCompare = 1.0f;
+EXPORT u32 gDepthCompareIndex;
+EXPORT u8 gDepthBuffering;
 EXPORT DWORD gMagFilters[2] = { 1, 2 };
 EXPORT DWORD gMinFilters[2] = { 1, 2 };
 
@@ -604,10 +620,42 @@ void DXPOLY_SetBlendMode(u32)
     printf("DXPOLY_SetBlendMode(u32)");
 }
 
-// @SMALLTODO
-void DXPOLY_SetDepthCompare(u32)
+// @Ok
+// @Matching
+void DXPOLY_SetDepthCompare(u32 a1)
 {
-    printf("DXPOLY_SetDepthCompare(u32)");
+	if (gDxPolyRelated)
+	{
+		if (!a1)
+		{
+			if (gDepthWriting)
+			{
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZENABLE, 0);
+				gDepthWriting = 0;
+				DXERR_printf("Depth Buffering Disabled.\r\n");
+			}
+
+			return;
+		}
+
+		if (!gDepthWriting)
+		{
+			g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZENABLE, 1);
+			gDepthWriting = 1;
+			DXERR_printf("Depth Buffering Enabled.\r\n");
+		}
+
+		if (a1 != gDepthCompareIndex)
+		{
+			g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZFUNC, a1);
+			char* status = gD3DDepthCompareNames[a1];
+			gDepthCompareIndex = a1;
+
+			DXERR_printf("Depth Compare = %s\r\n", status);
+			if ( a1 == 5 || (gFlDepthCompare = 1.0f, a1 == 7) )
+				gFlDepthCompare = 0.0f;
+		}
+	}
 }
 
 // @Ok

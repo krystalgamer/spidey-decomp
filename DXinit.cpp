@@ -17,7 +17,7 @@ EXPORT void* gLowGraphicsRelated;
 u32 gColorCount;
 
 EXPORT HWND gDxHwnd;
-EXPORT i32 gDxOptionRelated;
+i32 gDxOptionRelated;
 
 EXPORT LPDIRECTDRAWSURFACE7 pDDS;
 

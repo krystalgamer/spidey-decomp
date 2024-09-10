@@ -120,6 +120,7 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 }
 
 EXPORT extern LPDIRECT3DDEVICE7 g_D3DDevice7;
+EXPORT extern i32 gDxOptionRelated;
 
 void validate_DXContext(void);
 void validate_DXContextEntry(void);
