@@ -5,6 +5,11 @@
 
 #include <cstring>
 
+EXPORT DWORD gMagFilters[2] = { 1, 2 };
+EXPORT DWORD gMinFilters[2] = { 1, 2 };
+
+EXPORT u32 gCurrentFilterIndex;
+
 EXPORT bool gDepthWriting;
 EXPORT bool gDxPolyRelated;
 
@@ -622,10 +627,22 @@ void DXPOLY_SetDepthWriting(bool a1)
 	}
 }
 
-// @SMALLTODO
-void DXPOLY_SetFilterMode(u32)
+// @Ok
+// @Matching
+void DXPOLY_SetFilterMode(u32 filterIndex)
 {
-    printf("DXPOLY_SetFilterMode(u32)");
+	if (filterIndex != gCurrentFilterIndex)
+	{
+		g_D3DDevice7->SetTextureStageState(0, D3DTSS_MAGFILTER, gMagFilters[filterIndex]);
+		g_D3DDevice7->SetTextureStageState(0, D3DTSS_MINFILTER, gMinFilters[filterIndex]);
+
+		gCurrentFilterIndex = filterIndex;
+
+		char *status = "PointSample";
+		if (filterIndex)
+			status = "Bilinear";
+		DXERR_printf("Filter %s.\r\n", status);
+	}
 }
 
 // @Ok
