@@ -6,6 +6,7 @@
 #include <cstring>
 
 EXPORT u32 gDxPolyBackgroundColor = 0x0FF000000;
+EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
 EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
 EXPORT LPDIRECTINPUTDEVICE8A g_pMouse;
@@ -616,10 +617,11 @@ void DXPOLY_SetHUDOffset(i32)
     printf("DXPOLY_SetHUDOffset(i32)");
 }
 
-// @SMALLTODO
-void DXPOLY_SetOutlineColor(u32)
+// @Ok
+// @Matching
+void DXPOLY_SetOutlineColor(u32 a1)
 {
-    printf("DXPOLY_SetOutlineColor(u32)");
+	gDxOutlineColor = a1;
 }
 
 // @SMALLTODO
