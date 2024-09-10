@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+EXPORT u32 gCurrentBlendMode;
 EXPORT char* gD3DDepthCompareNames[9] =
 {
 	"",
@@ -614,10 +615,48 @@ void DXPOLY_SetBackgroundColor(u32 color)
 	gDxPolyBackgroundColor = color;
 }
 
-// @MEDIUMTODO
-void DXPOLY_SetBlendMode(u32)
+// @Ok
+void DXPOLY_SetBlendMode(u32 a1)
 {
-    printf("DXPOLY_SetBlendMode(u32)");
+	u32 newBlendMode = a1;
+	if (gCurrentBlendMode != a1)
+	{
+		switch(a1)
+		{
+			default:
+				DXERR_printf("ERROR: Invalid blend mode passed to DXPOLY_SetBlendMode(): %lu\r\n", a1);
+				newBlendMode = 0;
+			case 0:
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_SRCBLEND, 2);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_DESTBLEND, 1);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, 0);
+				DXPOLY_SetDepthWriting(1);
+				break;
+			case 3:
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_SRCBLEND, 1);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_DESTBLEND, 4);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, 1);
+				DXPOLY_SetDepthWriting(0);
+				break;
+			case 1:
+			case 5:
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_SRCBLEND, 5);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_DESTBLEND, 6);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, 1);
+				DXPOLY_SetDepthWriting(0);
+				break;
+			case 2:
+			case 4:
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_SRCBLEND, 5);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_DESTBLEND, 2);
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, 1);
+				DXPOLY_SetDepthWriting(0);
+				break;
+
+		}
+
+		gCurrentBlendMode = newBlendMode;
+	}
 }
 
 // @Ok
@@ -660,7 +699,7 @@ void DXPOLY_SetDepthCompare(u32 a1)
 
 // @Ok
 // @Matching
-void DXPOLY_SetDepthWriting(bool a1)
+INLINE void DXPOLY_SetDepthWriting(bool a1)
 {
 	if (gDxPolyRelated && a1 != gDepthWriting)
 	{
