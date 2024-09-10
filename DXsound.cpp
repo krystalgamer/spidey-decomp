@@ -5,6 +5,9 @@
 
 #include <cstring>
 
+EXPORT i32 gHudOffset;
+EXPORT float gFlHudOffset = 1.0f;
+
 EXPORT u32 gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
@@ -611,10 +614,13 @@ void DXPOLY_SetFilterMode(u32)
     printf("DXPOLY_SetFilterMode(u32)");
 }
 
-// @SMALLTODO
-void DXPOLY_SetHUDOffset(i32)
+// @Ok
+// @Matching
+void DXPOLY_SetHUDOffset(i32 a1)
 {
-    printf("DXPOLY_SetHUDOffset(i32)");
+	gHudOffset = a1;
+	float v1 = (float)(4096 - a1);
+	gFlHudOffset = v1 / 4096.0f;
 }
 
 // @Ok
