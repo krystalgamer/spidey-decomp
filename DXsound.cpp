@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+EXPORT i32 gScreenshotNumber;
 EXPORT u32 gCurrentBlendMode;
 EXPORT char* gD3DDepthCompareNames[9] =
 {
@@ -596,10 +597,52 @@ void DXPOLY_Init(u32)
     printf("DXPOLY_Init(u32)");
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void DXPOLY_SaveScreen(void)
 {
-    printf("DXPOLY_SaveScreen(void)");
+	char v7[32];
+	sprintf(v7, "scrn%4.4i.bmp", ++gScreenshotNumber);
+
+	DDSURFACEDESC2 v6;
+	memset(&v6, 0, sizeof(v6));
+	v6.dwSize = sizeof(v6);
+
+	if (gDxOptionRelated)
+	{
+		u32 width, height;
+		DXINIT_GetCurrentResolution(&width, &height);
+
+		HRESULT hr = g_pDDS_SaveScreen->Lock(&gRect, &v6, 16, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		DXPOLY_SaveSurfaceAsBMP(
+				v7,
+				v6.lpSurface,
+				width,
+				height,
+				v6.lPitch,
+				&v6.ddpfPixelFormat,
+				false);
+		g_pDDS_SaveScreen->Unlock(&gRect);
+	}
+	else
+	{
+		HRESULT hr = g_pDDS_SaveScreen->Lock(0, &v6, 16, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		DXPOLY_SaveSurfaceAsBMP(
+				v7,
+				v6.lpSurface,
+				v6.dwWidth,
+				v6.dwHeight,
+				v6.lPitch,
+				&v6.ddpfPixelFormat,
+				false);
+		g_pDDS_SaveScreen->Unlock(0);
+	}
+
+	DXERR_printf("Saved Screenshot %i.\r\n", gScreenshotNumber);
 }
 
 // @MEDIUMTODO
