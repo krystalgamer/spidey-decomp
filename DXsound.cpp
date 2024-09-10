@@ -589,6 +589,7 @@ void DXPOLY_EndScene(bool)
 // @Matching
 void DXPOLY_Flip(void)
 {
+#ifdef _WIN32
 	if (gDxOptionRelated)
 	{
 		DDBLTFX v4;
@@ -603,6 +604,7 @@ void DXPOLY_Flip(void)
 		HRESULT hr = g_pDDS_SaveScreen->Flip(0, 1);
 		D3D_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 EXPORT u8 byte_6B7A80 = 0;
@@ -654,6 +656,7 @@ void DXPOLY_Init(u32 a1)
 	gCurrentBlendMode = 0;
 	dword_6B7A74 = 0;
 
+#ifdef _WIN32
 	g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ANTIALIAS, 0);
 	g_D3DDevice7->SetRenderState((D3DRENDERSTATETYPE)4, 1);
 	g_D3DDevice7->SetRenderState((D3DRENDERSTATETYPE)7, gDxPolyRelated != 0);
@@ -730,12 +733,14 @@ void DXPOLY_Init(u32 a1)
 	g_D3DDevice7->SetTextureStageState(0, (D3DTEXTURESTAGESTATETYPE)16, gMagFilters[gCurrentFilterIndex]);
 	g_D3DDevice7->SetTextureStageState(0, (D3DTEXTURESTAGESTATETYPE)17, gMinFilters[gCurrentFilterIndex]);
 	g_D3DDevice7->SetTextureStageState(0, (D3DTEXTURESTAGESTATETYPE)18, 1);
+#endif
 }
 
 // @Ok
 // @Matching
 void DXPOLY_SaveScreen(void)
 {
+#ifdef _WIN32
 	char v7[32];
 	sprintf(v7, "scrn%4.4i.bmp", ++gScreenshotNumber);
 
@@ -778,6 +783,7 @@ void DXPOLY_SaveScreen(void)
 	}
 
 	DXERR_printf("Saved Screenshot %i.\r\n", gScreenshotNumber);
+#endif
 }
 
 // @MEDIUMTODO
@@ -796,6 +802,8 @@ void DXPOLY_SetBackgroundColor(u32 color)
 // @Ok
 void DXPOLY_SetBlendMode(u32 a1)
 {
+
+#ifdef _WIN32
 	u32 newBlendMode = a1;
 	if (gCurrentBlendMode != a1)
 	{
@@ -835,12 +843,14 @@ void DXPOLY_SetBlendMode(u32 a1)
 
 		gCurrentBlendMode = newBlendMode;
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXPOLY_SetDepthCompare(u32 a1)
 {
+#ifdef _WIN32
 	if (gDxPolyRelated)
 	{
 		if (!a1)
@@ -873,12 +883,14 @@ void DXPOLY_SetDepthCompare(u32 a1)
 				gFlDepthCompare = 0.0f;
 		}
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 INLINE void DXPOLY_SetDepthWriting(bool a1)
 {
+#ifdef _WIN32
 	if (gDxPolyRelated && a1 != gDepthWriting)
 	{
 		g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, a1);
@@ -890,12 +902,14 @@ INLINE void DXPOLY_SetDepthWriting(bool a1)
 
 		DXERR_printf("Depth Buffer Writes %s.\r\n", status);
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXPOLY_SetFilterMode(u32 filterIndex)
 {
+#ifdef _WIN32
 	if (filterIndex != gCurrentFilterIndex)
 	{
 		g_D3DDevice7->SetTextureStageState(0, D3DTSS_MAGFILTER, gMagFilters[filterIndex]);
@@ -908,6 +922,7 @@ void DXPOLY_SetFilterMode(u32 filterIndex)
 			status = "Bilinear";
 		DXERR_printf("Filter %s.\r\n", status);
 	}
+#endif
 }
 
 // @Ok

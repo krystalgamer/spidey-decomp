@@ -3,6 +3,10 @@
 #include "PCTimer.h"
 #include "DXinit.h"
 
+#include "stdarg.h"
+#include <cstdio>
+#include <cstring>
+
 i32 gRenderTest;
 
 i32 gGameResolutionX = 640;
@@ -198,9 +202,19 @@ EXPORT u8 gDrmShit(i32)
 }
 
 // @Ok
-void DXERR_printf(const char*, ...)
+void DXERR_printf(const char* format, ...)
 {
-	printf("void DXERR_printf(const char*, ...)");
+	static char output_string[1024];
+
+	memset(output_string, 0, sizeof(output_string));
+	va_list args;
+	va_start(args, format);
+	vsprintf(output_string, format, args);
+
+#ifdef _WIN32
+	OutputDebugStringA(output_string);
+#endif
+	printf(output_string);
 }
 
 #if _WIN32

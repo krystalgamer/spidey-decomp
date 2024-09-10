@@ -291,8 +291,7 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 		if (pDesc->ddpfPixelFormat.dwRGBBitCount < 16)
 			return TRUE;
 
-		i32 i;
-		for (i = 0; i <= 5; i++)
+		for (i32 i = 0; i <= 5; i++)
 		{
 			if (i == 5)
 				return TRUE;
@@ -301,12 +300,12 @@ HRESULT WINAPI enumerateModesCB(LPDDSURFACEDESC2 pDesc, void* pUnkContext)
 			if (pDesc->dwWidth == gVideoModes[i].dwWidth
 					&& pDesc->dwHeight == gVideoModes[i].dwHeight)
 			{
-				pContext->mFlags[i] |= gVideoModes[i].field_8;
+				pContext->mFlags[pContext->mNumEntries] |= gVideoModes[i].field_8;
 				break;
 			}
 		}
 
-		memcpy(pCurDesc, pDesc, sizeof(pContext->mSurfaces[i]));
+		memcpy(pCurDesc, pDesc, sizeof(pContext->mSurfaces[pContext->mNumEntries]));
 		DXERR_printf(
 			"Got Video Mode: %ix%ix%ibpp\n",
 				pCurDesc->dwWidth,
