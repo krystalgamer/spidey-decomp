@@ -588,7 +588,20 @@ void DXPOLY_EndScene(bool)
 // @SMALLTODO
 void DXPOLY_Flip(void)
 {
-    printf("DXPOLY_Flip(void)");
+	if (gDxOptionRelated)
+	{
+		DDBLTFX v4;
+		memset(&v4, 0, sizeof(v4));
+		v4.dwSize = sizeof(v4);
+
+		HRESULT hr = g_pDDS_SaveScreen->Blt(&gRect, g_pDDS_Scene, 0, 0x1000000, &v4);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
+	else
+	{
+		HRESULT hr = g_pDDS_SaveScreen->Flip(0, 1);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @SMALLTODO

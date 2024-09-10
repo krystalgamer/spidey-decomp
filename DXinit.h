@@ -123,6 +123,7 @@ EXPORT extern LPDIRECT3DDEVICE7 g_D3DDevice7;
 EXPORT extern i32 gDxOptionRelated;
 EXPORT extern LPDIRECTDRAWSURFACE7 g_pDDS_SaveScreen;
 EXPORT extern RECT gRect;
+EXPORT extern LPDIRECTDRAWSURFACE7 g_pDDS_Scene;
 
 void validate_DXContext(void);
 void validate_DXContextEntry(void);
