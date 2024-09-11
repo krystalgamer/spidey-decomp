@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+EXPORT LPDIRECTDRAWSURFACE7 gDDSurface7;
 EXPORT bool gTexAlpha = false;
 EXPORT u32 dword_6B7A8C;
 EXPORT float flt_56817C = 10.0f;
@@ -729,7 +730,6 @@ EXPORT u32 gFogEnd;
 EXPORT u32 gFogColor;
 EXPORT u32 gAddressU;
 EXPORT u32 gAddressV;
-EXPORT u32 dword_6B7A74;
 
 u32 dword_568F98;
 u32 dword_568F94;
@@ -767,7 +767,7 @@ void DXPOLY_Init(u32 a1)
 	gAddressU = 3;
 	gAddressV = 3;
 	gCurrentBlendMode = 0;
-	dword_6B7A74 = 0;
+	gDDSurface7 = 0;
 
 #ifdef _WIN32
 	g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ANTIALIAS, 0);
@@ -1054,10 +1054,16 @@ void DXPOLY_SetOutlineColor(u32 a1)
 	gDxOutlineColor = a1;
 }
 
-// @SMALLTODO
-void DXPOLY_SetTexture(IDirectDrawSurface7 *)
+// @Ok
+// @Matching
+INLINE void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
 {
-    printf("DXPOLY_SetTexture(IDirectDrawSurface7 *)");
+	if (a1 != gDDSurface7)
+	{
+		HRESULT hr = g_D3DDevice7->SetTexture(0, a1);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+		gDDSurface7 = a1;
+	}
 }
 
 // @SMALLTODO
@@ -1181,6 +1187,7 @@ void validate_DXsound(void)
 
 void validate_DXPOLY(void)
 {
-	VALIDATE_SIZE(DXPOLY, 0x4);
+	VALIDATE_SIZE(DXPOLY, 0x8);
 	VALIDATE(DXPOLY, field_0, 0x0);
+	VALIDATE(DXPOLY, field_4, 0x0);
 }

@@ -24,6 +24,7 @@ typedef void* DIDEVICEINSTANCEA;
 struct DXPOLY
 {
 	DXPOLY* field_0;
+	LPDIRECTDRAWSURFACE7 field_4;
 };
 
 
