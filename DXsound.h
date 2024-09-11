@@ -23,8 +23,12 @@ typedef void* DIDEVICEINSTANCEA;
 
 struct DXPOLY
 {
-	DXPOLY* field_0;
+	DXPOLY* pNext;
 	LPDIRECTDRAWSURFACE7 field_4;
+	u16 mBlendMode;
+	u16 field_A;
+	DWORD field_C;
+	char field_10;
 };
 
 
@@ -84,6 +88,7 @@ EXPORT void loadWAV(char *,tWAVEFORMATEX *,long *);
 EXPORT void renderScene(void);
 EXPORT void stateLog(char const *,...);
 EXPORT void gsub_514ED0(void);
+EXPORT void DXPOLY_SetAddressUAndV(DWORD, DWORD);
 
 EXPORT extern LPDIRECTINPUT8 g_pDI;
 

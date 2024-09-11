@@ -570,7 +570,7 @@ i32 DXINPUT_StopForceFeedbackEffect(void)
 
 
 // @MEDIUMTODO
-// lowgraphics stuff
+// low graphics stuff
 EXPORT void gsub_514DB0(LPVOID,
 			i32,
 			i32,
@@ -650,7 +650,7 @@ void DXPOLY_DrawPoly(
 	else
 	{
 		print_if_false(a2 <= 4096, "Invalid forced slot number!");
-		pPoly->field_0 = gSceneBuffer[a2];
+		pPoly->pNext = gSceneBuffer[a2];
 		gSceneBuffer[a2] = pPoly;
 	}
 }
@@ -728,8 +728,8 @@ EXPORT u8 byte_6B7A80 = 0;
 EXPORT u32 gFogStart;
 EXPORT u32 gFogEnd;
 EXPORT u32 gFogColor;
-EXPORT u32 gAddressU;
-EXPORT u32 gAddressV;
+EXPORT DWORD gAddressU;
+EXPORT DWORD gAddressV;
 
 u32 dword_568F98;
 u32 dword_568F94;
@@ -1020,7 +1020,7 @@ INLINE void DXPOLY_SetDepthWriting(bool a1)
 
 // @Ok
 // @Matching
-void DXPOLY_SetFilterMode(u32 filterIndex)
+INLINE void DXPOLY_SetFilterMode(u32 filterIndex)
 {
 #ifdef _WIN32
 	if (filterIndex != gCurrentFilterIndex)
@@ -1168,10 +1168,70 @@ void loadWAV(char *,tWAVEFORMATEX *,long *)
     printf("loadWAV(char *,tWAVEFORMATEX *,long *)");
 }
 
-// @SMALLTODO
+// @Ok
+INLINE void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
+{
+	if (addressU != gAddressU)
+	{
+		g_D3DDevice7->SetTextureStageState(0, D3DTSS_ADDRESSU, addressU);
+		gAddressU = addressU;
+	}
+
+	if (addressV != gAddressV)
+	{
+		g_D3DDevice7->SetTextureStageState(0, D3DTSS_ADDRESSV, addressV);
+		gAddressV = addressV;
+	}
+}
+
+// @NotOk
+// Missing low graphics
 INLINE void renderScene(void)
 {
-    printf("renderScene(void)");
+#ifdef _WIN32
+	if (gLowGraphics)
+	{
+		DXERR_printf("DO ME PLEASE renderScene");
+	}
+	else
+	{
+		for (
+				i32 i = 4096;
+				i >= 0;
+				i--)
+		{
+			
+			DXPOLY* pPoly = gSceneBuffer[i];
+			if (gDxPolyRelated && gHudOffset > 0 && i == gHudOffset)
+				g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZENABLE, 0);
+
+			while (pPoly)
+			{
+				DXPOLY_SetTexture(pPoly->field_4);
+				DXPOLY_SetBlendMode(pPoly->mBlendMode);
+
+				DXPOLY_SetAddressUAndV(
+						(pPoly->field_A & 2) ? 1 : 3,
+						(pPoly->field_A & 4) ? 1 : 3);
+
+				DXPOLY_EnableTexAlpha((pPoly->field_A & 8) != 0);
+				DXPOLY_SetFilterMode((pPoly->field_A & 0x10) == 0);
+
+				g_D3DDevice7->DrawPrimitive(
+						D3DPT_TRIANGLEFAN,
+						324,
+						&pPoly->field_10,
+						pPoly->field_C,
+						0);
+
+				pPoly = pPoly->pNext;
+			}
+		}
+
+		if (gDxPolyRelated && gHudOffset > 0)
+			g_D3DDevice7->SetRenderState(D3DRENDERSTATE_ZENABLE, 1);
+	}
+#endif
 }
 
 // @SMALLTODO
@@ -1187,7 +1247,13 @@ void validate_DXsound(void)
 
 void validate_DXPOLY(void)
 {
-	VALIDATE_SIZE(DXPOLY, 0x8);
-	VALIDATE(DXPOLY, field_0, 0x0);
-	VALIDATE(DXPOLY, field_4, 0x0);
+	VALIDATE_SIZE(DXPOLY, 0x14);
+
+	VALIDATE(DXPOLY, pNext, 0x0);
+	VALIDATE(DXPOLY, field_4, 0x4);
+	VALIDATE(DXPOLY, mBlendMode, 0x8);
+	VALIDATE(DXPOLY, field_A, 0xA);
+
+	VALIDATE(DXPOLY, field_C, 0xC);
+	VALIDATE(DXPOLY, field_10, 0x10);
 }
