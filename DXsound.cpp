@@ -5,6 +5,9 @@
 
 #include <cstring>
 
+EXPORT float flt_56817C = 10.0f;
+EXPORT i32 dword_568184;
+EXPORT i32 gSceneBuffer[0x1001];
 EXPORT u8 gInBeginScene;
 EXPORT i32 gScreenshotNumber;
 EXPORT u32 gCurrentBlendMode;
@@ -21,7 +24,7 @@ EXPORT char* gD3DDepthCompareNames[9] =
     "D3DCMP_ALWAYS",
 };
 
-EXPORT float gFlDepthCompare = 1.0f;
+EXPORT D3DVALUE gFlDepthCompare = 1.0f;
 EXPORT u32 gDepthCompareIndex;
 EXPORT u8 gDepthBuffering;
 EXPORT DWORD gMagFilters[2] = { 1, 2 };
@@ -35,7 +38,7 @@ EXPORT bool gDxPolyRelated;
 EXPORT i32 gHudOffset;
 EXPORT float gFlHudOffset = 1.0f;
 
-EXPORT u32 gDxPolyBackgroundColor = 0x0FF000000;
+EXPORT D3DCOLOR gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
 EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
@@ -562,10 +565,66 @@ i32 DXINPUT_StopForceFeedbackEffect(void)
 	return 0x23082024;
 }
 
-// @SMALLTODO
+
+// @MEDIUMTODO
+// lowgraphics stuff
+EXPORT void gsub_514DB0(LPVOID,
+			i32,
+			i32,
+			LONG,
+			u32,
+			float,
+			i32,
+			float,
+			float)
+{
+	printf("void gsub_514DB0(LPVOID,");
+}
+
+// @Ok
 void DXPOLY_BeginScene(void)
 {
-    printf("DXPOLY_BeginScene(void)");
+	print_if_false(gInBeginScene == 0, "nested BeginScene() calls!");
+	memset(gSceneBuffer, 0, sizeof(gSceneBuffer));
+	gInBeginScene = 1;
+
+	if (gLowGraphics)
+	{
+		DDSURFACEDESC2 v13;
+		memset(&v13, 0, sizeof(v13));
+		v13.dwSize = sizeof(v13);
+
+		HRESULT hr = g_pDDS_Scene->Lock(0, &v13, 2048, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		i32 width, height;
+		DXINIT_GetCurrentResolution(&width, &height);
+		float v9 = height;
+		float v8 = v9 * 0.5f;
+		float v10 = width;
+		float v7 = v10 * 0.5f;
+		gsub_514DB0(
+			v13.lpSurface,
+			width,
+			height,
+			v13.lPitch,
+			(gDxPolyBackgroundColor & 0xF8 | ((gDxPolyBackgroundColor & 0xFC00 | (gDxPolyBackgroundColor >> 3) & 0x1F0000) >> 2)) >> 3,
+			flt_56817C,
+			dword_568184,
+			v7,
+			v8);
+	}
+	else
+	{
+		HRESULT hr = g_D3DDevice7->BeginScene();
+		D3D_ERROR_LOG_AND_QUIT(hr);
+
+		if (gDxPolyRelated)
+			hr = g_D3DDevice7->Clear(0, 0, 3, gDxPolyBackgroundColor, gFlDepthCompare, 0);
+		else
+			hr = g_D3DDevice7->Clear(0, 0, 1, gDxPolyBackgroundColor, gFlDepthCompare, 0);
+		D3D_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @MEDIUMTODO
