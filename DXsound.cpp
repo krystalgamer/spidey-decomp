@@ -5,9 +5,10 @@
 
 #include <cstring>
 
+EXPORT u32 dword_6B7A8C;
 EXPORT float flt_56817C = 10.0f;
 EXPORT i32 dword_568184;
-EXPORT i32 gSceneBuffer[0x1001];
+EXPORT DXPOLY* gSceneBuffer[0x1001];
 EXPORT u8 gInBeginScene;
 EXPORT i32 gScreenshotNumber;
 EXPORT u32 gCurrentBlendMode;
@@ -584,6 +585,7 @@ EXPORT void gsub_514DB0(LPVOID,
 // @Ok
 void DXPOLY_BeginScene(void)
 {
+#ifdef _WIN32
 	print_if_false(gInBeginScene == 0, "nested BeginScene() calls!");
 	memset(gSceneBuffer, 0, sizeof(gSceneBuffer));
 	gInBeginScene = 1;
@@ -599,9 +601,9 @@ void DXPOLY_BeginScene(void)
 
 		i32 width, height;
 		DXINIT_GetCurrentResolution(&width, &height);
-		float v9 = height;
+		float v9 = (float)height;
 		float v8 = v9 * 0.5f;
-		float v10 = width;
+		float v10 = (float)width;
 		float v7 = v10 * 0.5f;
 		gsub_514DB0(
 			v13.lpSurface,
@@ -625,12 +627,30 @@ void DXPOLY_BeginScene(void)
 			hr = g_D3DDevice7->Clear(0, 0, 1, gDxPolyBackgroundColor, gFlDepthCompare, 0);
 		D3D_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
-// @MEDIUMTODO
-void DXPOLY_DrawPoly(_DXPOLY *,i32,i32,float)
+// @NotOk
+// need the low graphics stuff
+void DXPOLY_DrawPoly(
+		DXPOLY* pPoly,
+		i32 a2,
+		i32,
+		float)
 {
-    printf("DXPOLY_DrawPoly(_DXPOLY *,i32,i32,float)");
+	if ( !gInBeginScene )
+		DXERR_printf("drawing outside scene\r\n");
+	if (gLowGraphics && dword_6B7A8C != 1)
+	{
+		// @FIXME
+		DXERR_printf("DO ME");
+	}
+	else
+	{
+		print_if_false(a2 <= 4096, "Invalid forced slot number!");
+		pPoly->field_0 = gSceneBuffer[a2];
+		gSceneBuffer[a2] = pPoly;
+	}
 }
 
 // @SMALLTODO
@@ -649,6 +669,7 @@ void gsub_514ED0(void)
 // @Ok
 void DXPOLY_EndScene(bool a1)
 {
+#ifdef _WIN32
 	if (gInBeginScene)
 	{
 		gInBeginScene = 0;
@@ -669,6 +690,7 @@ void DXPOLY_EndScene(bool a1)
 			DXPOLY_Flip();
 		}
 	}
+#endif
 }
 
 // @Ok
@@ -699,7 +721,6 @@ EXPORT u8 byte_6B7A88 = 0;
 EXPORT u32 gFogStart;
 EXPORT u32 gFogEnd;
 EXPORT u32 gFogColor;
-EXPORT u32 dword_6B7A8C;
 EXPORT u32 gAddressU;
 EXPORT u32 gAddressV;
 EXPORT u32 dword_6B7A74;
@@ -1150,4 +1171,10 @@ void stateLog(char const *,...)
 void validate_DXsound(void)
 {
 	VALIDATE_SIZE(_GUID, 0x10);
+}
+
+void validate_DXPOLY(void)
+{
+	VALIDATE_SIZE(DXPOLY, 0x4);
+	VALIDATE(DXPOLY, field_0, 0x0);
 }

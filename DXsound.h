@@ -21,8 +21,10 @@ typedef void* DIDEVICEINSTANCEA;
 */
 #endif
 
-//@FIXME
-typedef void* _DXPOLY;
+struct DXPOLY
+{
+	DXPOLY* field_0;
+};
 
 
 
@@ -46,7 +48,7 @@ EXPORT i32 DXINPUT_StopForceFeedbackEffect(void);
 EXPORT void DXINPUT_GetKeyName(u8, char*);
 
 EXPORT void DXPOLY_BeginScene(void);
-EXPORT void DXPOLY_DrawPoly(_DXPOLY *,i32,i32,float);
+EXPORT void DXPOLY_DrawPoly(DXPOLY*,i32,i32,float);
 EXPORT void DXPOLY_EnableTexAlpha(bool);
 EXPORT void DXPOLY_EndScene(bool);
 EXPORT void DXPOLY_Flip(void);
@@ -85,5 +87,6 @@ EXPORT void gsub_514ED0(void);
 EXPORT extern LPDIRECTINPUT8 g_pDI;
 
 void validate_DXsound(void);
+void validate_DXPOLY(void);
 
 #endif
