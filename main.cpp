@@ -83,8 +83,12 @@ extern int FAIL_VALIDATION;
 // @MEDIUMTODO
 void SpideyMain(void)
 {
-	while(1);
-	printf("void SpideyMain(void)");
+	while(1)
+	{
+		DXPOLY_SetBackgroundColor(0xFF800080);
+		DXPOLY_BeginScene();
+		DXPOLY_EndScene(true);
+	}
 }
 
 // @Ok

@@ -1058,12 +1058,14 @@ void DXPOLY_SetOutlineColor(u32 a1)
 // @Matching
 INLINE void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
 {
+#ifdef _WIN32
 	if (a1 != gDDSurface7)
 	{
 		HRESULT hr = g_D3DDevice7->SetTexture(0, a1);
 		D3D_ERROR_LOG_AND_QUIT(hr);
 		gDDSurface7 = a1;
 	}
+#endif
 }
 
 // @SMALLTODO
@@ -1171,6 +1173,7 @@ void loadWAV(char *,tWAVEFORMATEX *,long *)
 // @Ok
 INLINE void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
 {
+#ifdef _WIN32
 	if (addressU != gAddressU)
 	{
 		g_D3DDevice7->SetTextureStageState(0, D3DTSS_ADDRESSU, addressU);
@@ -1182,6 +1185,7 @@ INLINE void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
 		g_D3DDevice7->SetTextureStageState(0, D3DTSS_ADDRESSV, addressV);
 		gAddressV = addressV;
 	}
+#endif
 }
 
 // @NotOk

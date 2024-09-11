@@ -37,6 +37,9 @@ typedef void* LPDIRECTDRAWCLIPPER;
 typedef void* LPDIRECT3D7;
 typedef void* LPDDPIXELFORMAT;
 typedef void* LPDIRECT3DDEVICE7;
+typedef float D3DVALUE;
+typedef u32 D3DCOLOR;
+typedef i32 LONG;
 
 struct DSCAPS
 {
