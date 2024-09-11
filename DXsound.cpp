@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+EXPORT bool gTexAlpha = false;
 EXPORT u32 dword_6B7A8C;
 EXPORT float flt_56817C = 10.0f;
 EXPORT i32 dword_568184;
@@ -653,10 +654,16 @@ void DXPOLY_DrawPoly(
 	}
 }
 
-// @SMALLTODO
-void DXPOLY_EnableTexAlpha(bool)
+// @Ok
+INLINE void DXPOLY_EnableTexAlpha(bool a1)
 {
-    printf("DXPOLY_EnableTexAlpha(bool)");
+#ifdef _WIN32
+	if (a1 != gTexAlpha)
+	{
+		gTexAlpha = a1;
+		g_D3DDevice7->SetTextureStageState(0, D3DTSS_ALPHAOP, a1 ? 4 : 3);
+	}
+#endif
 }
 
 // @MEDIUMTODO
@@ -716,7 +723,6 @@ void DXPOLY_Flip(void)
 }
 
 EXPORT u8 byte_6B7A80 = 0;
-EXPORT u8 byte_6B7A88 = 0;
 
 EXPORT u32 gFogStart;
 EXPORT u32 gFogEnd;
@@ -752,7 +758,7 @@ void DXPOLY_Init(u32 a1)
 	byte_6B7A80 = 0;
 	gDepthBuffering = (a1 & 2) != 0;
 	gDepthWriting = (a1 & 2) != 0;
-	byte_6B7A88 = 0;
+	gTexAlpha = false;
 	gCurrentFilterIndex = 1;
 	gFogStart = 0x3DCCCCCD;
 	gFogEnd = 0x3F7D70A4;
@@ -1157,7 +1163,7 @@ void loadWAV(char *,tWAVEFORMATEX *,long *)
 }
 
 // @SMALLTODO
-void renderScene(void)
+INLINE void renderScene(void)
 {
     printf("renderScene(void)");
 }
