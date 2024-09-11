@@ -80,6 +80,7 @@ EXPORT void initialSettings(void);
 EXPORT void loadWAV(char *,tWAVEFORMATEX *,long *);
 EXPORT void renderScene(void);
 EXPORT void stateLog(char const *,...);
+EXPORT void gsub_514ED0(void);
 
 EXPORT extern LPDIRECTINPUT8 g_pDI;
 

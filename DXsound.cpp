@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+EXPORT u8 gInBeginScene;
 EXPORT i32 gScreenshotNumber;
 EXPORT u32 gCurrentBlendMode;
 EXPORT char* gD3DDepthCompareNames[9] =
@@ -579,10 +580,36 @@ void DXPOLY_EnableTexAlpha(bool)
     printf("DXPOLY_EnableTexAlpha(bool)");
 }
 
-// @SMALLTODO
-void DXPOLY_EndScene(bool)
+// @MEDIUMTODO
+// low graphics related and uses mmx :O
+void gsub_514ED0(void)
 {
-    printf("DXPOLY_EndScene(bool)");
+	printf("void gsub_514ED0(void)");
+}
+
+// @Ok
+void DXPOLY_EndScene(bool a1)
+{
+	if (gInBeginScene)
+	{
+		gInBeginScene = 0;
+		renderScene();
+		if (gLowGraphics)
+		{
+			gsub_514ED0();
+			g_pDDS_Scene->Unlock(0);
+		}
+		else
+		{
+			HRESULT hr = g_D3DDevice7->EndScene();
+			D3D_ERROR_LOG_AND_QUIT(hr);
+		}
+
+		if (a1)
+		{
+			DXPOLY_Flip();
+		}
+	}
 }
 
 // @Ok
