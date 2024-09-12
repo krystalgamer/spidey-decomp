@@ -1,6 +1,8 @@
 #include "ps2pad.h"
 #include "validate.h"
 
+SControl gSControl;
+
 static int gPadActuator[255];
 // @NotOk
 // global

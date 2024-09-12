@@ -7,6 +7,7 @@
 #include "vector.h"
 #include "ob.h"
 
+EXPORT extern i32 DifficultyLevel;
 EXPORT extern volatile u32 Vblanks;
 
 EXPORT u32 Utils_CrapDist(const CVector& a,const CVector& b);

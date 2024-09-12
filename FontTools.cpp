@@ -2,6 +2,9 @@
 #include "validate.h"
 #include "pal.h"
 #include "mem.h"
+#include "ps2pad.h"
+#include "utils.h"
+
 #include <cstring>
 
 // @Ok
@@ -55,10 +58,290 @@ void __inline Font::SetCharMap(int a2)
 	}
 }
 
+#define CHAR(x) ((char)(x))
 // @BIGTODO
-char Font::getCharIndex(char)
+// @Test
+char Font::getCharIndex(char a2)
 {
-	return (char)0xFF;
+	i32 v3 = this->field_58;
+
+	if (v3 == 2)
+	{
+		if ( a2 >= 'a' && a2 <= 'z' )
+			return a2 - 48;
+
+		if (a2 == (char)0xC0 || a2 == (char)0xC1)
+			return 75;
+
+		if (a2  == (char)0xC7)
+			return 76;
+
+		if (a2 == CHAR(0xC8) || a2 == CHAR(0xC9) || a2 == CHAR(0xCA))
+			return 77;
+
+		if (a2 == CHAR(0xD4))
+			return CHAR(0x4E);
+
+		if (a2 == CHAR(0xD9) || a2 == CHAR(0xDA))
+			return CHAR(0x4F);
+
+		if (a2 == CHAR(0x8C))
+			return CHAR(0x50);
+
+		if (a2 == CHAR(0xC4))
+			return CHAR(0x51);
+
+		if (a2 == CHAR(0xD6))
+			return CHAR(0x52);
+
+		if (a2 == CHAR(0xDC))
+			return CHAR(0x53);
+
+		if (a2 == CHAR(0xDF))
+			return CHAR(0x54);
+
+		if (a2 == CHAR(0xE0) || a2 == CHAR(0xE1))
+			return CHAR(0x55);
+
+		if (a2 == CHAR(0xE7))
+			return CHAR(0x56);
+
+
+		if (a2 == CHAR(0xE8) || a2 == CHAR(0xE9) || a2 == CHAR(0xEA))
+			return CHAR(0x57);
+
+		if (a2 == CHAR(0xF4))
+			return CHAR(0x58);
+
+		if (a2 == CHAR(0xF9) || a2 == CHAR(0xFA))
+			return CHAR(0x59);
+
+		if (a2 == CHAR(0x9C))
+			return CHAR(0x5A);
+
+		if (a2 == CHAR(0xE4))
+			return CHAR(0x5B);
+
+		if (a2 == CHAR(0xF6))
+			return CHAR(0x5C);
+
+		if (a2 == CHAR(0xFC))
+			return CHAR(0x5D);
+
+		v3 = 0;
+	}
+
+	if (!v3)
+	{
+
+	}
+	else if (v3 == 1)
+	{
+		if ( a2 >= 48 && a2 <= 57 )
+			return a2 - 48;
+		if ( a2 == 58 )
+			return 10;
+		if ( a2 == 32 )
+			return -1;
+	}
+	else
+	{
+		print_if_false(0, "Unrecognized char mapping");
+	}
+
+	/*
+	switch (v3)
+	{
+		default:
+			break;
+		case 1:
+		case 0:
+			if ( a2 >= 65 && a2 <= 90 )
+				return a2 - 65;
+			if ( a2 >= 97 && a2 <= 122 )
+				return a2 - 97;
+			if ( a2 >= 48 && a2 <= 57 )
+				return a2 - 22;
+			
+			char result;
+			switch ( a2 )
+			{
+				case 32:
+					return -1;
+				case 63:
+					result = 37;
+					if ( this->field_4C > 37 )
+						return result;
+					break;
+				case 33:
+					result = 38;
+					if ( this->field_4C > 38 )
+						return result;
+					break;
+				case 58:
+					result = 39;
+					if ( this->field_4C > 39 )
+						return result;
+					break;
+				case 46:
+					result = 40;
+					if ( this->field_4C > 40 )
+						return result;
+					break;
+				case 45:
+					result = 41;
+					if ( this->field_4C > 41 )
+						return result;
+					break;
+				case 165:
+					if ( gSControl.field_14C > 512 )
+					{
+						if ( gSControl.field_14C == 1024 )
+							return 23;
+					}
+					else
+					{
+						switch ( gSControl.field_14C )
+						{
+							case 0x200:
+							return 24;
+							case 2:
+							return 1;
+							case 4:
+							return 0;
+						}
+					}
+					break;
+				default:
+					result = 43;
+					switch ( a2 )
+					{
+						case 43:
+						if ( this->field_4C > 43 )
+							return result;
+							break;
+						case 39:
+							result = 42;
+							if ( this->field_4C > 42 )
+							return result;
+							break;
+						case 95:
+							result = 36;
+							if ( this->field_4C > 36 )
+							return result;
+							break;
+						case -64:
+						case -63:
+						case -32:
+						case -31:
+							return 49;
+						case -57:
+						case -25:
+							return 50;
+						case -56:
+						case -55:
+						case -24:
+						case -23:
+						case -54:
+						case -22:
+							return 51;
+						case -44:
+						case -12:
+							return 52;
+						case -39:
+						case -38:
+						case -7:
+						case -6:
+							return 53;
+						case -116:
+						case -100:
+							return 54;
+						case -60:
+						case -28:
+							return 55;
+						case -42:
+						case -10:
+							return 56;
+						case -36:
+						case -4:
+							return 57;
+						case -33:
+							return 58;
+				}
+				break;
+			}
+
+			if ( a2 == 167 )
+			{
+				if ( gSControl.field_148 > 512 )
+				{
+					if ( gSControl.field_148 == 1024 )
+						return 23;
+				}
+				else
+				{
+					switch ( gSControl.field_148 )
+					{
+						case 0x200:
+						return 24;
+						case 2:
+						return 1;
+						case 4:
+						return 0;
+					}
+				}
+			}
+			if ( a2 == 166 )
+			{
+				if ( gSControl.field_144 > 512 )
+				{
+					if ( gSControl.field_144 == 1024 )
+					return 23;
+				}
+				else
+				{
+					switch ( gSControl.field_144 )
+					{
+						case 0x200:
+						return 24;
+						case 2:
+						return 1;
+						case 4:
+						return 0;
+					}
+				}
+			}
+
+			if ( a2 == 164 )
+			{
+				if ( !DifficultyLevel )
+					return 0;
+				if (gSControl.field_140 != 512)
+				{
+					switch (gSControl.field_140)
+					{
+						case 2:
+							return 1;
+						case 4:
+							return 0;
+						case 1024:
+							return 0x17;
+					}
+				}
+				else
+				{
+					return 24;
+				}
+			}
+
+			break;
+	}
+*/
+
+	if (this->isEscapeChar(a2))
+		return (char)0xFF;
+
+	return this->field_4C;
 }
 
 static Font* FontList[6];
