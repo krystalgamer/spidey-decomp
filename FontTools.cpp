@@ -4,6 +4,11 @@
 #include "mem.h"
 #include <cstring>
 
+// @Ok
+Font::~Font(void)
+{
+}
+
 // @MEDIUMTODO
 void Font::draw(i32, i32, const char*, i32, float)
 {

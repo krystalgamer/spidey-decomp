@@ -9,6 +9,7 @@
 class Font : public CClass
 {
 	public:
+		EXPORT ~Font(void);
 		EXPORT int GetCharMap(void);
 		EXPORT void SetCharMap(int);
 		EXPORT int isEscapeChar(char);
