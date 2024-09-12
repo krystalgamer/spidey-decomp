@@ -5,12 +5,23 @@
 
 #include "main.h"
 #include "export.h"
+#include "Image.h"
+
+struct SFontEntry
+{
+	SlicedImage2* pImage;
+	u8 field_4;
+	u8 field_5;
+	u8 field_6;
+	u8 field_7;
+};
 
 class Font : public CClass
 {
 	public:
 		EXPORT Font(void);
 		EXPORT Font(u8*, char*);
+
 		EXPORT ~Font(void);
 
 		EXPORT int GetCharMap(void);
@@ -44,7 +55,8 @@ class Font : public CClass
 
 		char field_38[16];
 
-		i32** field_48;
+		SFontEntry* field_48;
+
 		i32 field_4C;
 		i32 field_50;
 		i32 field_54;
@@ -74,4 +86,6 @@ class FontManager
 
 
 void validate_Font(void);
+void validate_SFontEntry(void);
+
 #endif

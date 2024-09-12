@@ -6,8 +6,7 @@
 #include "mem.h"
 
 
-// @FIXME
-EXPORT u16 gSlicedImageRelated[1];
+u16 gSlicedImageRelated[16];
 
 // @Ok
 Image::~Image(void)

@@ -387,6 +387,7 @@ i32 validate(void)
 	validate_DXVideoModeContext();
 	validate_DxZBufferContext();
 	validate_DXPOLY();
+	validate_SFontEntry();
 
 	puts("[*] Validation done!");
 

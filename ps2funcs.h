@@ -6,6 +6,9 @@
 #include "export.h"
 #include "quat.h"
 
+EXPORT extern i32 gClutRelatedOne;
+EXPORT extern i32 gClutRelatedTwo;
+
 EXPORT extern u8 gPrintStubbed;
 EXPORT extern u8 gClearImagePrint;
 
@@ -91,7 +94,8 @@ EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 
 EXPORT int ratan2(int, int);
 
-EXPORT int GetClut(int, int);
+EXPORT u16 GetClut(i32, i32);
+EXPORT i32 GetFree16Slot(void);
 
 EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
 
@@ -115,6 +119,15 @@ INLINE static void ClearImage(void)
 	if (!gPrintStubbed)
 	{
 		stubbed_printf("stubbed out: DrawSync");
+	}
+}
+
+// @Ok
+INLINE static void _LoadImage(void)
+{
+	if (!gPrintStubbed)
+	{
+		stubbed_printf("stubbed out: LoadImage");
 	}
 }
 

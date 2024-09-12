@@ -50,6 +50,8 @@ EXPORT i32 GetBMPBitDepth(char *);
 EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
 EXPORT i32 LoadNBitBMP_(char *,char **,i32 *,i32 *,u16 *,i32 *);
 
+EXPORT extern u16 gSlicedImageRelated[16];
+
 void validate_Image(void);
 void validate_SlicedImage2(void);
 #endif

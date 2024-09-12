@@ -5,6 +5,9 @@
 #include "ob.h"
 #include "m3dcolij.h"
 
+i32 gClutRelatedOne;
+i32 gClutRelatedTwo;
+
 EXPORT i16 gRotMatrix[3][3];
 
 EXPORT int vertexRegister[4];
@@ -558,9 +561,16 @@ static int gClutRelated;
 
 // @NotOk
 // Globals
-int GetClut(int, int a2)
+u16 GetClut(int, int a2)
 {
 	return a2 - gClutRelated;
+}
+
+// @SMALLTODO
+i32 GetFree16Slot(void)
+{
+	printf("i32 GetFree16Slot(void)");
+	return 0x12092024;
 }
 
 // @BIGTODO

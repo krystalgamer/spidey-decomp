@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "ps2pad.h"
 #include "utils.h"
+#include "PCTex.h"
 
 #include <cstring>
 
@@ -15,8 +16,49 @@ Font::Font(void)
 }
 
 // @SMALLTODO
-Font::Font(u8*, char*)
+Font::Font(
+		u8* a2,
+		char* a3)
 {
+	strcpy(this->field_38, a3);
+	this->field_8 = 3;
+	this->field_10 = 3;
+	this->field_4 = 0;
+	this->mRed = 128;
+	this->mGreen = 128;
+	this->mBlue = 128;
+	this->field_C = 2;
+	this->field_20 = 0;
+	this->field_21 = 1;
+	this->field_24 = 1;
+	this->field_28 = 1;
+	this->field_2C = 255;
+	this->field_30 = 0;
+	this->field_34 = 3800;
+	this->field_54 = 0;
+	this->field_4C = *reinterpret_cast<i32*>(a2);
+
+	this->SetCharMap(0);
+
+	this->field_48 = static_cast<SFontEntry*>(
+			DCMem_New(sizeof(SFontEntry) * (this->field_4C + 1), 0, 1, 0, 1));
+
+	i32 v26 = gClutRelatedOne;
+	i32 v6 = gClutRelatedTwo + GetFree16Slot();
+	u16* Clut = PCTex_CreateClut(16);
+
+	for (i32 i = 0; i < 16; i++)
+	{
+		u16* pColor = reinterpret_cast<u16*>(a2);
+		u16 color = pColor[8 * this->field_4C + 2 + i];
+		Clut[i] = color;
+		gSlicedImageRelated[i] = color;
+	}
+
+	_LoadImage();
+
+	this->field_50 = GetClut(v26, v6);
+	
 }
 
 // @Ok
@@ -61,7 +103,7 @@ int __inline Font::GetCharMap(void)
 
 
 // @Ok
-void __inline Font::SetCharMap(int a2)
+INLINE void Font::SetCharMap(int a2)
 {
 	this->field_58 = a2;
 	for (int i = 0; i < 256; i++)
@@ -462,11 +504,7 @@ INLINE void Font::unload(void)
 
 	for (i32 i = 0; i < this->field_4C + 1; i++)
 	{
-		Font *ouch = reinterpret_cast<Font*>(this->field_48[2*i]);
-		// @FIXME this should be fixed to the correct type, it just works
-		// because it's invoking a virtual destructor
-		if (ouch)
-			delete ouch;
+		delete this->field_48[i].pImage;
 	}
 
 	Mem_Delete(reinterpret_cast<void*>(this->field_48));
@@ -509,4 +547,15 @@ void validate_Font(void)
 	VALIDATE(Font, field_5F, 0x5F);
 
 	VALIDATE(Font, field_160, 0x160);
+}
+
+void validate_SFontEntry(void)
+{
+	VALIDATE_SIZE(SFontEntry, 0x8);
+
+	VALIDATE(SFontEntry, pImage, 0x0);
+	VALIDATE(SFontEntry, field_4, 0x4);
+	VALIDATE(SFontEntry, field_5, 0x5);
+	VALIDATE(SFontEntry, field_6, 0x6);
+	VALIDATE(SFontEntry, field_7, 0x7);
 }
