@@ -8,6 +8,18 @@
 #include <cstring>
 
 // @Ok
+// @Matching
+Font::Font(void)
+{
+	this->field_50 = 0xFFFFFFFF;
+}
+
+// @SMALLTODO
+Font::Font(u8*, char*)
+{
+}
+
+// @Ok
 Font::~Font(void)
 {
 }
