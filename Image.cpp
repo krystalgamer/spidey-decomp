@@ -9,6 +9,16 @@
 u16 gSlicedImageRelated[16];
 
 // @Ok
+void SlicedImage2::pack(void)
+{
+}
+
+// @Ok
+void SlicedImage2::removeFromMemory(void)
+{
+}
+
+// @Ok
 Image::~Image(void)
 {
 }
@@ -226,7 +236,7 @@ SlicedImage2::SlicedImage2(void)
 INLINE Image::Image(void)
 {
 	this->field_4 = 0;
-	this->field_5 = 0;
+	this->Shaded = 0;
 	this->field_6 = 0;
 	this->field_7 = 0x80;
 	this->field_8 = 0x80;
@@ -268,7 +278,7 @@ void validate_SlicedImage2(void)
 void validate_Image(void)
 {
 	VALIDATE(Image, field_4, 0x4);
-	VALIDATE(Image, field_5, 0x5);
+	VALIDATE(Image, Shaded, 0x5);
 	VALIDATE(Image, field_6, 0x6);
 	VALIDATE(Image, field_7, 0x7);
 	VALIDATE(Image, field_8, 0x8);

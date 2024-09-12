@@ -7,7 +7,7 @@
 #include "export.h"
 #include "Image.h"
 
-struct SFontEntry
+struct FontCharacter
 {
 	SlicedImage2* pImage;
 	u8 field_4;
@@ -55,9 +55,9 @@ class Font : public CClass
 
 		char field_38[16];
 
-		SFontEntry* field_48;
+		FontCharacter* pCharTab;
 
-		i32 field_4C;
+		i32 NumChars;
 		i32 field_50;
 		i32 field_54;
 		i32 field_58;

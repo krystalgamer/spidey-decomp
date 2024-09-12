@@ -36,12 +36,12 @@ Font::Font(
 	this->field_30 = 0;
 	this->field_34 = 3800;
 	this->field_54 = 0;
-	this->field_4C = *reinterpret_cast<i32*>(a2);
+	this->NumChars = *reinterpret_cast<i32*>(a2);
 
 	this->SetCharMap(0);
 
-	this->field_48 = static_cast<SFontEntry*>(
-			DCMem_New(sizeof(SFontEntry) * (this->field_4C + 1), 0, 1, 0, 1));
+	this->pCharTab = static_cast<FontCharacter*>(
+			DCMem_New(sizeof(FontCharacter) * (this->NumChars + 1), 0, 1, 0, 1));
 
 	i32 v26 = gClutRelatedOne;
 	i32 v6 = gClutRelatedTwo + GetFree16Slot();
@@ -50,7 +50,7 @@ Font::Font(
 	for (i32 i = 0; i < 16; i++)
 	{
 		u16* pColor = reinterpret_cast<u16*>(a2);
-		u16 color = pColor[8 * this->field_4C + 2 + i];
+		u16 color = pColor[8 * this->NumChars + 2 + i];
 		Clut[i] = color;
 		gSlicedImageRelated[i] = color;
 	}
@@ -58,7 +58,13 @@ Font::Font(
 	_LoadImage();
 
 	this->field_50 = GetClut(v26, v6);
-	
+
+	this->pCharTab[this->NumChars].pImage->pack();
+	this->pCharTab[this->NumChars].pImage->removeFromMemory();
+
+	this->pCharTab[this->NumChars].pImage->field_A = 0;
+	this->pCharTab[this->NumChars].pImage->field_B = 0;
+	this->pCharTab[this->NumChars].pImage->Shaded = 1;
 }
 
 // @Ok
@@ -199,28 +205,28 @@ char Font::getCharIndex(char a2)
 		if (a2 == CHAR(0x20))
 			return CHAR(0xFF);
 
-		if (a2 == CHAR(0x3F) && this->field_4C > 0x25)
+		if (a2 == CHAR(0x3F) && this->NumChars > 0x25)
 			return CHAR(0x25);
 
-		if (a2 == CHAR(0x21) && this->field_4C > 0x26)
+		if (a2 == CHAR(0x21) && this->NumChars > 0x26)
 			return CHAR(0x26);
 
 		if (a2 == CHAR(0x3A))
 			return CHAR(0x27);
 
-		if (a2 == CHAR(0x2E) && this->field_4C > 0x28)
+		if (a2 == CHAR(0x2E) && this->NumChars > 0x28)
 			return CHAR(0x28);
 
-		if (a2 == CHAR(0x2D) && this->field_4C > 0x29)
+		if (a2 == CHAR(0x2D) && this->NumChars > 0x29)
 			return CHAR(0x29);
 
-		if (a2 == CHAR(0x2B) && this->field_4C > 0x2B)
+		if (a2 == CHAR(0x2B) && this->NumChars > 0x2B)
 			return CHAR(0x2B);
 
-		if (a2 == CHAR(0x27) && this->field_4C > 0x2A)
+		if (a2 == CHAR(0x27) && this->NumChars > 0x2A)
 			return CHAR(0x2A);
 
-		if (a2 == CHAR(0x5F) && this->field_4C > 0x24)
+		if (a2 == CHAR(0x5F) && this->NumChars > 0x24)
 			return CHAR(0x24);
 
 		if (a2 == CHAR(0xC0) || a2 == CHAR(0xC1) ||
@@ -378,7 +384,7 @@ char Font::getCharIndex(char a2)
 	if (this->isEscapeChar(a2))
 		return (char)0xFF;
 
-	return this->field_4C;
+	return this->NumChars;
 }
 
 static Font* FontList[6];
@@ -502,12 +508,12 @@ INLINE void Font::unload(void)
 	if (this->field_50 != -1)
 		Free16Slot(this->field_50);
 
-	for (i32 i = 0; i < this->field_4C + 1; i++)
+	for (i32 i = 0; i < this->NumChars + 1; i++)
 	{
-		delete this->field_48[i].pImage;
+		delete this->pCharTab[i].pImage;
 	}
 
-	Mem_Delete(reinterpret_cast<void*>(this->field_48));
+	Mem_Delete(reinterpret_cast<void*>(this->pCharTab));
 
 	if (this->field_160)
 	{
@@ -539,8 +545,8 @@ void validate_Font(void)
 
 	VALIDATE(Font, field_38, 0x38);
 
-	VALIDATE(Font, field_48, 0x48);
-	VALIDATE(Font, field_4C, 0x4C);
+	VALIDATE(Font, pCharTab, 0x48);
+	VALIDATE(Font, NumChars, 0x4C);
 	VALIDATE(Font, field_50, 0x50);
 
 	VALIDATE(Font, field_58, 0x58);
@@ -551,11 +557,11 @@ void validate_Font(void)
 
 void validate_SFontEntry(void)
 {
-	VALIDATE_SIZE(SFontEntry, 0x8);
+	VALIDATE_SIZE(FontCharacter, 0x8);
 
-	VALIDATE(SFontEntry, pImage, 0x0);
-	VALIDATE(SFontEntry, field_4, 0x4);
-	VALIDATE(SFontEntry, field_5, 0x5);
-	VALIDATE(SFontEntry, field_6, 0x6);
-	VALIDATE(SFontEntry, field_7, 0x7);
+	VALIDATE(FontCharacter, pImage, 0x0);
+	VALIDATE(FontCharacter, field_4, 0x4);
+	VALIDATE(FontCharacter, field_5, 0x5);
+	VALIDATE(FontCharacter, field_6, 0x6);
+	VALIDATE(FontCharacter, field_7, 0x7);
 }
