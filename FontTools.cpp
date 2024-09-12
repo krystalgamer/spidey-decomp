@@ -12,10 +12,10 @@
 // @Matching
 Font::Font(void)
 {
-	this->field_50 = 0xFFFFFFFF;
+	this->Clut = 0xFFFFFFFF;
 }
 
-// @SMALLTODO
+// @Ok
 Font::Font(
 		u8* a2,
 		char* a3)
@@ -57,7 +57,66 @@ Font::Font(
 
 	_LoadImage();
 
-	this->field_50 = GetClut(v26, v6);
+	this->Clut = GetClut(v26, v6);
+
+	SDataGlyph* pGlyph = reinterpret_cast<SDataGlyph*>(&a2[4]);
+	void* pData = &a2[16 * this->NumChars + 36];
+
+	for (i32 j = 0; j < this->NumChars; j++)
+	{
+		this->pCharTab[j].W = pGlyph[j].mWidth;
+		this->pCharTab[j].H = pGlyph[j].mHeight;
+		this->pCharTab[j].Baseline = pGlyph[j].mBaseline;
+
+		i32 charSliceWidth = pGlyph[j].mSliceWidth;
+
+		this->pCharTab[j].pImage = new SlicedImage2(
+				pData,
+				4 * charSliceWidth,
+				this->pCharTab[j].H,
+				0,
+				0,
+				4,
+				this->Clut,
+				1);
+
+		this->pCharTab[j].pImage->pack();
+		this->pCharTab[j].pImage->removeFromMemory();
+
+		this->pCharTab[j].pImage->field_A = 0;
+		this->pCharTab[j].pImage->field_B = 0;
+		this->pCharTab[j].pImage->Shaded = 1;
+
+		i32 v17 = 0;
+		i32 size = charSliceWidth * this->pCharTab[j].H;
+		if (size & 1)
+			v17 = 2;
+
+		pData = reinterpret_cast<void*>(static_cast<u8*>(pData) + size * 2 + v17);
+	}
+
+	this->pCharTab[this->NumChars].W = pGlyph[0].mWidth;
+	this->pCharTab[this->NumChars].H = pGlyph[0].mHeight;
+	this->pCharTab[this->NumChars].Baseline = pGlyph[0].mBaseline;
+
+	i32 sliceWidth = pGlyph[0].mSliceWidth;
+	i32 v20 = 2 * sliceWidth * this->pCharTab[this->NumChars].H;
+	void* v21 = DCMem_New(v20, 0, 1, 0, 1);
+	if ( v20 > 0 )
+		memset(v21, 0x12u, v20);
+
+
+	this->pCharTab[this->NumChars].pImage = new SlicedImage2(
+			v21,
+			4 * sliceWidth,
+			this->pCharTab[this->NumChars].H,
+			0,
+			0,
+			4,
+			this->Clut,
+			1);
+	Mem_Delete(v21);
+
 
 	this->pCharTab[this->NumChars].pImage->pack();
 	this->pCharTab[this->NumChars].pImage->removeFromMemory();
@@ -505,8 +564,8 @@ i32 Font::width(const char*)
 // @Ok
 INLINE void Font::unload(void)
 {
-	if (this->field_50 != -1)
-		Free16Slot(this->field_50);
+	if (this->Clut != -1)
+		Free16Slot(this->Clut);
 
 	for (i32 i = 0; i < this->NumChars + 1; i++)
 	{
@@ -547,7 +606,7 @@ void validate_Font(void)
 
 	VALIDATE(Font, pCharTab, 0x48);
 	VALIDATE(Font, NumChars, 0x4C);
-	VALIDATE(Font, field_50, 0x50);
+	VALIDATE(Font, Clut, 0x50);
 
 	VALIDATE(Font, field_58, 0x58);
 	VALIDATE(Font, field_5F, 0x5F);
@@ -560,8 +619,18 @@ void validate_SFontEntry(void)
 	VALIDATE_SIZE(FontCharacter, 0x8);
 
 	VALIDATE(FontCharacter, pImage, 0x0);
-	VALIDATE(FontCharacter, field_4, 0x4);
-	VALIDATE(FontCharacter, field_5, 0x5);
-	VALIDATE(FontCharacter, field_6, 0x6);
+	VALIDATE(FontCharacter, W, 0x4);
+	VALIDATE(FontCharacter, H, 0x5);
+	VALIDATE(FontCharacter, Baseline, 0x6);
 	VALIDATE(FontCharacter, field_7, 0x7);
+}
+
+void validate_SDataGlyph(void)
+{
+	VALIDATE_SIZE(SDataGlyph, 0x10);
+
+	VALIDATE(SDataGlyph, mSliceWidth, 0x0);
+	VALIDATE(SDataGlyph, mHeight, 0x4);
+	VALIDATE(SDataGlyph, mBaseline, 0x8);
+	VALIDATE(SDataGlyph, mWidth, 0xC);
 }

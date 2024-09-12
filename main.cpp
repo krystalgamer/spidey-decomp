@@ -388,6 +388,7 @@ i32 validate(void)
 	validate_DxZBufferContext();
 	validate_DXPOLY();
 	validate_SFontEntry();
+	validate_SDataGlyph();
 
 	puts("[*] Validation done!");
 

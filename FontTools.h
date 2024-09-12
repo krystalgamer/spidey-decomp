@@ -7,12 +7,20 @@
 #include "export.h"
 #include "Image.h"
 
+struct SDataGlyph
+{
+	i32 mSliceWidth;
+	i32 mHeight;
+	i32 mBaseline;
+	i32 mWidth;
+};
+
 struct FontCharacter
 {
 	SlicedImage2* pImage;
-	u8 field_4;
-	u8 field_5;
-	u8 field_6;
+	u8 W;
+	u8 H;
+	u8 Baseline;
 	u8 field_7;
 };
 
@@ -58,7 +66,8 @@ class Font : public CClass
 		FontCharacter* pCharTab;
 
 		i32 NumChars;
-		i32 field_50;
+		i32 Clut;
+
 		i32 field_54;
 		i32 field_58;
 		u8 field_5C;
@@ -87,5 +96,6 @@ class FontManager
 
 void validate_Font(void);
 void validate_SFontEntry(void);
+void validate_SDataGlyph(void);
 
 #endif
