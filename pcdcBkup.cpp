@@ -1,6 +1,8 @@
 #include "pcdcBkup.h"
 #include "non_win32.h"
 
+#include <cstring>
+
 EXPORT CHAR gMemorycardPath[688];
 
 // @Ok

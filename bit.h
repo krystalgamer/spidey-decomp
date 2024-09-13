@@ -380,6 +380,9 @@ EXPORT void Bit_Init(void);
 
 EXPORT extern CTextBox* TextBoxList;
 
+// @FIXME
+// that's not the name
+// it's something like rcosin_table
 EXPORT extern SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT extern i32 gAnimTable[0x1D];

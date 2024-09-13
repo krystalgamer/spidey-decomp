@@ -21,4 +21,8 @@ void GetCurrentDirectoryA(u32, char*)
 {
 }
 
+void CreateDirectoryA(char*, i32)
+{
+}
+
 #endif
