@@ -176,10 +176,9 @@ void Spool_RemoveAccess(void **,i32)
     printf("Spool_RemoveAccess(void **,i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void Spool_Sync(void)
 {
-    printf("Spool_Sync(void)");
 }
 
 // @SMALLTODO
