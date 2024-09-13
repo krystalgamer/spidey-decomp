@@ -389,6 +389,8 @@ i32 validate(void)
 	validate_DXPOLY();
 	validate_SFontEntry();
 	validate_SDataGlyph();
+	validate_POLY_FT4();
+	validate_POLY_GT4();
 
 	puts("[*] Validation done!");
 

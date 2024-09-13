@@ -1,6 +1,115 @@
 #include "panel.h"
+#include "spool.h"
 #include "validate.h"
 
+EXPORT SAnimFrame* gAnimSp;
+EXPORT SAnimFrame* gAnimCompass;
+EXPORT SAnimFrame* gAnimWebcart;
+
+// @MEDIUMTODO
+void DCDrawGouraudPoly(float,POLY_GT4 *,Texture *,i32)
+{
+    printf("DCDrawGouraudPoly(float,POLY_GT4 *,Texture *,i32)");
+}
+
+// @MEDIUMTODO
+void DCDrawGouraudPoly(float,i32,i32,i32,i32,u32,u32,u32,u32,i32)
+{
+    printf("DCDrawGouraudPoly(float,i32,i32,i32,i32,u32,u32,u32,u32,i32)");
+}
+
+// @MEDIUMTODO
+void DCPanel_DrawFlatShadedPoly(float,i32,i32,i32,i32,u8,u8,u8,i32,i32)
+{
+    printf("DCPanel_DrawFlatShadedPoly(float,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
+}
+
+// @MEDIUMTODO
+void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)
+{
+    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)");
+}
+
+// @MEDIUMTODO
+void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,u32)
+{
+    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,u32)");
+}
+
+// @MEDIUMTODO
+void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)
+{
+    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)");
+}
+
+// @SMALLTODO
+void Panel_CreateCompass(CVector *)
+{
+    printf("Panel_CreateCompass(CVector *)");
+}
+
+// @SMALLTODO
+void Panel_DestroyHealthBar(void)
+{
+    printf("Panel_DestroyHealthBar(void)");
+}
+
+// @MEDIUMTODO
+void Panel_Display(void)
+{
+    printf("Panel_Display(void)");
+}
+
+// @MEDIUMTODO
+void Panel_DisplayCompass(void)
+{
+    printf("Panel_DisplayCompass(void)");
+}
+
+// @MEDIUMTODO
+void Panel_DisplayHealthBar(void)
+{
+    printf("Panel_DisplayHealthBar(void)");
+}
+
+// @MEDIUMTODO
+void Panel_DisplayTimer(void)
+{
+    printf("Panel_DisplayTimer(void)");
+}
+
+// @SMALLTODO
+void Panel_DrawFlatShadedPoly(i32,i32,i32,i32,u8,u8,u8,i32,i32)
+{
+    printf("Panel_DrawFlatShadedPoly(i32,i32,i32,i32,u8,u8,u8,i32,i32)");
+}
+
+// @Ok
+// @Matching
+void Panel_Init(void)
+{
+	Spool_AnimAccess("Sp", &gAnimSp);
+	Spool_AnimAccess("Compass", &gAnimCompass);
+	Spool_AnimAccess("Webcart", &gAnimWebcart);
+}
+
+// @SMALLTODO
+void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)
+{
+    printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)");
+}
+
+// @SMALLTODO
+void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)
+{
+    printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)");
+}
+
+// @SMALLTODO
+void Panel_UpdateTimer(void)
+{
+    printf("Panel_UpdateTimer(void)");
+}
 
 // @SMALLTODO
 void Panel_CreateHealthBar(const CBody*, int)
@@ -65,4 +174,12 @@ void validate_Texture(void)
 
 	VALIDATE(Texture, Checksum, 0x14);
 	VALIDATE(Texture, pNext, 0x20);
+}
+
+void validate_POLY_FT4(void)
+{
+}
+
+void validate_POLY_GT4(void)
+{
 }
