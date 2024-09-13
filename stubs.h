@@ -18,6 +18,7 @@ EXPORT void removeMemoryAlloc(MEMORY_ALLOC*);
 EXPORT void syMallocFinish(void);
 EXPORT void syMallocInit(void);
 EXPORT void *syMalloc(u32);
+EXPORT i32 gsExit(void);
 
 void validate_MEMORY_ALLOC(void);
 

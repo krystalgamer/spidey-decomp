@@ -1,5 +1,6 @@
 #include "dcmemcard.h"
 #include "pcdcBkup.h"
+#include "stubs.h"
 
 #include <cstring>
 
@@ -8,10 +9,30 @@ EXPORT u8 gCardData[8];
 EXPORT u8 gCardInit;
 EXPORT u8 gCardInitTwo;
 
+EXPORT i32 gDcCardRelated;
+
 // @SMALLTODO
-i32 DCCard_BupComplete(i32,i32,i32,u32)
+i32 DCCard_BupComplete(
+		i32 a1,
+		i32 a2,
+		i32 a3,
+		u32)
 {
-    printf("DCCard_BupComplete(i32,i32,i32,u32)");
+	switch (a2)
+	{
+		case 1:
+			gDcCardRelated = 0;
+			if (!a3)
+			{
+				gDcCardRelated = 1;
+				gsExit();
+			}
+			break;
+		case 2:
+			gDcCardRelated = 0;
+			gCardData[a1] = 0;
+			break;
+	}
 	return 0;
 }
 

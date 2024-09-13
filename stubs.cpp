@@ -87,6 +87,12 @@ INLINE void removeMemoryAlloc(MEMORY_ALLOC* pAlloc)
 	free(pAlloc);
 }
 
+// @Ok
+i32 gsExit(void)
+{
+	return 1;
+}
+
 
 void validate_MEMORY_ALLOC(void)
 {
