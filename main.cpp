@@ -77,6 +77,7 @@
 #include "SpideyDX.h"
 #include "DXsound.h"
 #include "DXinit.h"
+#include "pack.h"
 
 extern int FAIL_VALIDATION;
 
@@ -391,6 +392,7 @@ i32 validate(void)
 	validate_SDataGlyph();
 	validate_POLY_FT4();
 	validate_POLY_GT4();
+	validate_SPack();
 
 	puts("[*] Validation done!");
 
