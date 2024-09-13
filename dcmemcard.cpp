@@ -1,4 +1,12 @@
 #include "dcmemcard.h"
+#include "pcdcBkup.h"
+
+#include <cstring>
+
+
+EXPORT u8 gCardData[8];
+EXPORT u8 gCardInit;
+EXPORT u8 gCardInitTwo;
 
 // @SMALLTODO
 void DCCard_BupComplete(i32,i32,i32,u32)
@@ -60,9 +68,15 @@ void DCCard_Wait(i32,i32)
     printf("DCCard_Wait(i32,i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void MemCardInit(i32)
 {
+	print_if_false(gCardInit == 0, "card already initialized");
+	memset(gCardData, 0, sizeof(gCardData));
+	print_if_false(buInit(122, 255, NULL, DCCard_InitCallback) == 0, "bu init failed");
+
+	gCardInit = 1;
+	gCardInitTwo = 1;
 }
 
 // @SMALLTODO

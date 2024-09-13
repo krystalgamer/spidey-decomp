@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef DCMEMCARD_H
 #define DCMEMCARD_H
+
+#pragma once
 
 #include "export.h"
 
