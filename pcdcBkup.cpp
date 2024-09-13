@@ -14,7 +14,12 @@ i32 buInit(i32, i32, void*, void (*a4)(void))
 	return 0;
 }
 
-i32 buSetCompleteCallback(i32 (*pFunc)(i32, i32, i32, u32))
+// @Ok
+// @Matching
+void buSetCompleteCallback(i32 (*pFunc)(i32, i32, i32, u32))
 {
-	return 0;
+	for (i32 i = 0; i < 8; i++)
+	{
+		pFunc(i, 1, 0, 0);
+	}
 }
