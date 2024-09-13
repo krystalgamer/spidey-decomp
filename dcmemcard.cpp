@@ -9,9 +9,10 @@ EXPORT u8 gCardInit;
 EXPORT u8 gCardInitTwo;
 
 // @SMALLTODO
-void DCCard_BupComplete(i32,i32,i32,u32)
+i32 DCCard_BupComplete(i32,i32,i32,u32)
 {
     printf("DCCard_BupComplete(i32,i32,i32,u32)");
+	return 0;
 }
 
 // @SMALLTODO
@@ -38,10 +39,10 @@ void DCCard_HappyBeep(i32,u32)
     printf("DCCard_HappyBeep(i32,u32)");
 }
 
-// @SMALLTODO
+// @Ok
 void DCCard_InitCallback(void)
 {
-    printf("DCCard_InitCallback(void)");
+	buSetCompleteCallback(DCCard_BupComplete);
 }
 
 // @SMALLTODO
