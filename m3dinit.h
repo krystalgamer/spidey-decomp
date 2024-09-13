@@ -5,6 +5,8 @@
 
 #include "export.h"
 
+EXPORT extern u32 M3d_FadeColour;
+
 union ItemOffsetUnion
 {
 	unsigned Full;

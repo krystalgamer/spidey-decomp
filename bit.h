@@ -379,6 +379,8 @@ EXPORT void Bit_SetSparkSize(u32);
 
 EXPORT extern CTextBox* TextBoxList;
 
+EXPORT extern SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
+
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);
 void validate_CQuadBit(void);

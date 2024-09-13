@@ -19,7 +19,7 @@ EXPORT i32 TotalBitUsage = 0;
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
-EXPORT SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
+SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 

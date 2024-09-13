@@ -1,5 +1,16 @@
 #include "m3dinit.h"
+#include "bit.h"
 #include "validate.h"
+
+u32 M3d_FadeColour;
+
+EXPORT i16 WibbleTables[1024];
+EXPORT u32 Xres;
+EXPORT u32 Yres;
+
+EXPORT i32 PixelAspectX;
+EXPORT i32 PixelAspectY;
+
 
 // @SMALLTODO
 void DCClearRegion(i32)
@@ -7,10 +18,23 @@ void DCClearRegion(i32)
     printf("DCClearRegion(i32)");
 }
 
-// @SMALLTODO
+// @Ok
 void M3dInit_InitAtStart(void)
 {
-    printf("M3dInit_InitAtStart(void)");
+	M3dInit_SetResolution(0x200, 0xF0);
+	M3dInit_SetFoggingParams(0, 6000, 0x800);
+
+	i16 *pWibble = &WibbleTables[0];
+	for (i32 i = 0; i < 16; i++)
+	{
+		for (i32 j = 0; j < 4096; j+=64)
+		{
+			*pWibble = (i * FlatBitVelocities[j].vxVel) >> 4;
+			pWibble++;
+		}
+	}
+
+	M3d_FadeColour = 0x80000000;
 }
 
 // @MEDIUMTODO
@@ -25,10 +49,22 @@ void M3dInit_SetFoggingParams(long,long,u32)
     printf("M3dInit_SetFoggingParams(long,long,u32)");
 }
 
-// @SMALLTODO
-void M3dInit_SetResolution(u32,u32)
+// @Ok
+INLINE void M3dInit_SetResolution(u32 X,u32 Y)
 {
-    printf("M3dInit_SetResolution(u32,u32)");
+	if (Y << 2 < X * 3)
+	{
+		Xres = X;
+		Yres = Y;
+		PixelAspectX = 0x1000;
+		PixelAspectY = (X * 0x3000) / (Y << 2);
+		return;
+	}
+
+	Xres = X;
+	Yres = Y;
+	PixelAspectX = (Y << 0xE) / (X * 3);
+	PixelAspectX = 0x1000;
 }
 
 // @SMALLTODO
