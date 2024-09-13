@@ -23,3 +23,10 @@ void buSetCompleteCallback(i32 (*pFunc)(i32, i32, i32, u32))
 		pFunc(i, 1, 0, 0);
 	}
 }
+
+// @Ok
+// @Matching
+i32 buIsReady(i32)
+{
+	return 1;
+}

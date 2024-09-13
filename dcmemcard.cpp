@@ -11,7 +11,8 @@ EXPORT u8 gCardInitTwo;
 
 EXPORT i32 gDcCardRelated;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 DCCard_BupComplete(
 		i32 a1,
 		i32 a2,
@@ -24,8 +25,8 @@ i32 DCCard_BupComplete(
 			gDcCardRelated = 0;
 			if (!a3)
 			{
-				gDcCardRelated = 1;
-				gsExit();
+				gCardData[a1] = 1;
+				buIsReady(a1);
 			}
 			break;
 		case 2:
