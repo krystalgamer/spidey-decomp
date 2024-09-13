@@ -9,11 +9,12 @@
 #include "ps2lowsfx.h"
 
 
+i32 gAnimTable[0x1D];
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
 
-volatile static i32 BitCount = 0;
+EXPORT volatile i32 BitCount = 0;
 EXPORT i32 TotalBitUsage = 0;
 
 EXPORT CFlatBit *FlatBitList;
@@ -26,6 +27,120 @@ EXPORT CPixel* PixelList;
 u32 SparkSize = 1;
 
 i32 gTimerRelated;
+
+EXPORT CBit* NonRenderedBitList;
+EXPORT CBit* Linked2EndedBitListLeftover;
+EXPORT CBit* PolyLineList;
+EXPORT CBit* GPolyLineList;
+EXPORT CBit* QuadBitList;
+EXPORT CBit* GenPolyList;
+EXPORT CBit* GlassList;
+EXPORT CBit* GLineList;
+
+EXPORT CBitServer* gBitServer = 0;
+
+// @MEDIUMTODO
+void DisplayGLineList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplaySpecialDisplayList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayGlassList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayGlowList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayChunkBitList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayQuadBitList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayTextBoxList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayFlatBitList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayLinked2EndedBitListLeftover(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayPixelList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayPolyLineList(void**)
+{
+}
+
+// @MEDIUMTODO
+void DisplayGPolyLineList(void**)
+{
+}
+
+// @TODO
+void Bit_Init(void)
+{
+	BitCount = 0;
+	NonRenderedBitList = 0;
+	TextBoxList = 0;
+	FlatBitList = 0;
+	Linked2EndedBitListLeftover = 0;
+	PixelList = 0;
+	PolyLineList = 0;
+	GPolyLineList = 0;
+	QuadBitList = 0;
+	GenPolyList = 0;
+	ChunkBitList = 0;
+	GlowList = 0;
+	GlassList = 0;
+	GLineList = 0;
+	SpecialDisplayList = 0;
+
+	if (gBitServer)
+	{
+		gBitServer = new CBitServer();
+
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&TextBoxList), DisplayTextBoxList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&FlatBitList), DisplayFlatBitList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&Linked2EndedBitListLeftover), DisplayLinked2EndedBitListLeftover);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&PixelList), DisplayPixelList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&PolyLineList), DisplayPolyLineList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GPolyLineList), DisplayGPolyLineList);
+
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&QuadBitList), DisplayQuadBitList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&ChunkBitList), DisplayChunkBitList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GlowList), DisplayGlowList);
+
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GlassList), DisplayGlassList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GLineList), DisplayGLineList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&SpecialDisplayList), DisplaySpecialDisplayList);
+	}
+
+	setDrawTPage();
+	memset(gAnimTable, 0, sizeof(gAnimTable));
+}
 
 // @Ok
 void Bit_SetSparkSize(u32 size)
@@ -597,7 +712,7 @@ void CFT4Bit::SetTransparency(unsigned char t){
 	this->mCodeBGR = t | this->mCodeBGR & 0xFF000000 | ((t | (t << 8)) << 8);
 }
 
-static int * const gAnimTable = (int*)0x0056EA64;
+
 static const unsigned int maxANimTableEntry = 0x1D;
 
 // @Ok

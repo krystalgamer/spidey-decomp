@@ -376,10 +376,13 @@ EXPORT void Bit_SetSparkTrajectory(const CSVector *);
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
 EXPORT void Bit_ReduceRGB(unsigned int*, int);
 EXPORT void Bit_SetSparkSize(u32);
+EXPORT void Bit_Init(void);
 
 EXPORT extern CTextBox* TextBoxList;
 
 EXPORT extern SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
+
+EXPORT extern i32 gAnimTable[0x1D];
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);

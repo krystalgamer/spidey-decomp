@@ -131,4 +131,13 @@ INLINE static void _LoadImage(void)
 	}
 }
 
+// @Ok
+INLINE static void setDrawTPage(void)
+{
+	if (!gPrintStubbed)
+	{
+		stubbed_printf("stubbed out: setDrawTPage");
+	}
+}
+
 #endif
