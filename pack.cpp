@@ -5,10 +5,23 @@
 EXPORT SPack Pack_pFull;
 EXPORT u32 gPackRelated;
 
-// @SMALLTODO
+EXPORT u32 gFuckPackInit;
+EXPORT u32 gPackInitRelatedOne;
+EXPORT u32 gPackInitRelatedTwo;
+EXPORT u32 gInsidePackInitOne;
+EXPORT u32 gInsidePackInitTwo;
+
+// @Ok
+// @Matching
 void Pack_Init(void)
 {
-    printf("Pack_Init(void)");
+	gFuckPackInit = 0;
+	print_if_false(!gPackInitRelatedOne && !gPackInitRelatedTwo, "Pack_Init called before cleanup");
+
+	gPackInitRelatedOne = 0;
+	gPackInitRelatedTwo = 0;
+	gInsidePackInitOne = 0;
+	gInsidePackInitTwo = 0x200;
 }
 
 // @Ok
