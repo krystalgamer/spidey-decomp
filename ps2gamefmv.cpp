@@ -18,3 +18,21 @@ int PShell_GetNumCostumePSXs(void)
 {
 	return 10;
 }
+
+// @SMALLTODO
+void GameFMV_Init(void)
+{
+    printf("GameFMV_Init(void)");
+}
+
+// @SMALLTODO
+void GameFMV_SetStartTrack(u8)
+{
+    printf("GameFMV_SetStartTrack(u8)");
+}
+
+// @SMALLTODO
+void GameFMV_StopFMV(void)
+{
+    printf("GameFMV_StopFMV(void)");
+}

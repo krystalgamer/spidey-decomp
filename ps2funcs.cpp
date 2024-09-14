@@ -570,13 +570,6 @@ u16 GetClut(int, int a2)
 	return a2 - gClutRelated;
 }
 
-// @SMALLTODO
-i32 GetFree16Slot(void)
-{
-	printf("i32 GetFree16Slot(void)");
-	return 0x12092024;
-}
-
 // @BIGTODO
 void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16)
 {}

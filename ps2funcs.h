@@ -110,7 +110,6 @@ EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 EXPORT int ratan2(int, int);
 
 EXPORT u16 GetClut(i32, i32);
-EXPORT i32 GetFree16Slot(void);
 
 EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
 

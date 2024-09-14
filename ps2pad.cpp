@@ -32,6 +32,66 @@ void Pad_ActuatorOn(u8, u16, u8, u8)
 	printf("void Pad_ActuatorOn(u8, u16, u8, u8)");
 }
 
+// @SMALLTODO
+void DCPad_ExpireVibrations(void)
+{
+    printf("DCPad_ExpireVibrations(void)");
+}
+
+// @SMALLTODO
+void DCPad_ShutDownVibrations(void)
+{
+    printf("DCPad_ShutDownVibrations(void)");
+}
+
+// @SMALLTODO
+void DCPad_Vibrate(i32,signed char,u8,u8)
+{
+    printf("DCPad_Vibrate(i32,signed char,u8,u8)");
+}
+
+// @SMALLTODO
+void Pad_Button(SButton *,i32)
+{
+    printf("Pad_Button(SButton *,i32)");
+}
+
+// @SMALLTODO
+void Pad_Clear(SControl *)
+{
+    printf("Pad_Clear(SControl *)");
+}
+
+// @SMALLTODO
+void Pad_ClearAll(void)
+{
+    printf("Pad_ClearAll(void)");
+}
+
+// @SMALLTODO
+void Pad_ClearAllOne(i32)
+{
+    printf("Pad_ClearAllOne(i32)");
+}
+
+// @SMALLTODO
+void Pad_ClearTriggers(SControl *)
+{
+    printf("Pad_ClearTriggers(SControl *)");
+}
+
+// @SMALLTODO
+void Pad_InitAtStart(void)
+{
+    printf("Pad_InitAtStart(void)");
+}
+
+// @SMALLTODO
+void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32)
+{
+    printf("Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32)");
+}
+
 void validate_SControl(void)
 {
 	VALIDATE(SControl, field_140, 0x140);

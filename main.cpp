@@ -78,6 +78,7 @@
 #include "DXsound.h"
 #include "DXinit.h"
 #include "pack.h"
+#include "pal.h"
 
 extern int FAIL_VALIDATION;
 
@@ -393,6 +394,7 @@ i32 validate(void)
 	validate_POLY_FT4();
 	validate_POLY_GT4();
 	validate_SPack();
+	validate_tag_S_Pal();
 
 	puts("[*] Validation done!");
 
