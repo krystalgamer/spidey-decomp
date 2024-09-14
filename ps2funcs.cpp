@@ -7,6 +7,8 @@
 
 #include <cstdlib>
 
+SSinCos rcossin_tbl[FLATBIT_VELOCITIES_SIZE];
+
 i32 gClutRelatedOne;
 i32 gClutRelatedTwo;
 
@@ -584,4 +586,16 @@ void DCSetFatalError(i32)
 {
 	printf("void DCSetFatalError(i32)");
 	exit(0);
+}
+
+// @Ok
+void DCInitSinCosTable(void)
+{
+	for (i32 i = 0; i < FLATBIT_VELOCITIES_SIZE; i++)
+	{
+		double v9 = (double)i * 0.001536096911877394;
+		rcossin_tbl[i].sin = sin(v9) * 4096.0;
+		rcossin_tbl[i].cos = cos(v9) * 4096.0;
+	}
+
 }

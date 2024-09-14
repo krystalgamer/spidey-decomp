@@ -20,7 +20,6 @@ EXPORT i32 TotalBitUsage = 0;
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
 
-SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT CPixel* PixelList;
 
@@ -1162,10 +1161,10 @@ void validate_CSpecialDisplay(void)
 
 void validate_SFlatBitVelocity(void)
 {
-	VALIDATE_SIZE(SFlatBitVelocity, 0x4);
+	VALIDATE_SIZE(SSinCos, 0x4);
 
-	VALIDATE(SFlatBitVelocity, vxVel, 0x0);
-	VALIDATE(SFlatBitVelocity, vzVel, 0x2);
+	VALIDATE(SSinCos, sin, 0x0);
+	VALIDATE(SSinCos, cos, 0x2);
 }
 
 void validate_CCombatImpactRing(void)

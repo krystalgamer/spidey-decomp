@@ -5,7 +5,7 @@
 #include "validate.h"
 
 extern i32 CurrentSuit;
-extern SFlatBitVelocity FlatBitVelocities[];
+extern SSinCos rcossin_tbl[];
 
 EXPORT i32 gTextureRelated;
 
@@ -103,8 +103,8 @@ CBouncingRock::CBouncingRock(
 	i32 v6 = Rnd(4096);
 	i32 v7 = Rnd(10) + 10;
 	i32 v8 = v6 & 0xFFF;
-	this->mVel.vx = v7 * FlatBitVelocities[v8].vxVel;
-	this->mVel.vz = v7 * FlatBitVelocities[v8].vzVel;
+	this->mVel.vx = v7 * rcossin_tbl[v8].sin;
+	this->mVel.vz = v7 * rcossin_tbl[v8].cos;
 
 	this->mVel.vy = -81920 - (Rnd(20) << 12);
 	this->field_5A = 500;
@@ -229,8 +229,8 @@ CFootprint::CFootprint(CVector* pVector, i32 a3)
 	this->mPosC.vy = pVector->vy;
 	this->mPosD.vy = pVector->vy;
 
-	i32 vxVel = FlatBitVelocities[a3 & 0xFFF].vxVel;
-	i32 vzVel = FlatBitVelocities[a3 & 0xFFF].vzVel;
+	i32 vxVel = rcossin_tbl[a3 & 0xFFF].sin;
+	i32 vzVel = rcossin_tbl[a3 & 0xFFF].cos;
 
 	this->mPos.vx = vxVel - vzVel;
 	i32 v12 = vxVel + vzVel;

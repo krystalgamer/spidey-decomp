@@ -29,7 +29,7 @@ void M3dInit_InitAtStart(void)
 	{
 		for (i32 j = 0; j < 4096; j+=64)
 		{
-			*pWibble = (i * FlatBitVelocities[j].vxVel) >> 4;
+			*pWibble = (i * rcossin_tbl[j].sin) >> 4;
 			pWibble++;
 		}
 	}

@@ -6,6 +6,21 @@
 #include "export.h"
 #include "quat.h"
 
+
+struct SSinCos
+{
+	i16 sin;
+	i16 cos;
+};
+
+#define FLATBIT_VELOCITIES_SIZE (4096)
+#define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
+
+// @FIXME
+// that's not the name
+// it's something like rcosin_table
+EXPORT extern SSinCos rcossin_tbl[FLATBIT_VELOCITIES_SIZE];
+
 EXPORT extern i32 gClutRelatedOne;
 EXPORT extern i32 gClutRelatedTwo;
 
@@ -106,6 +121,7 @@ EXPORT void MTC2(i32*, GTREGType);
 
 
 EXPORT void DCSetFatalError(i32);
+EXPORT void DCInitSinCosTable(void);
 
 // @Ok
 INLINE static void DrawSync(void)

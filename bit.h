@@ -8,9 +8,6 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
-#define FLATBIT_VELOCITIES_SIZE (4096)
-#define FLATBIT_VELOCITIES_MAX_INDEX (FLATBIT_VELOCITIES_SIZE-1)
-
 EXPORT extern u32 SparkSize;
 EXPORT extern i32 gTimerRelated;
 
@@ -39,12 +36,6 @@ struct SRibbonPoint {
 	i32 Last2Scr;
 	// offset: 0020
 	i32 Last3Scr;
-};
-
-struct SFlatBitVelocity
-{
-	i16 vxVel;
-	i16 vzVel;
 };
 
 class CBit
@@ -379,11 +370,6 @@ EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
 
 EXPORT extern CTextBox* TextBoxList;
-
-// @FIXME
-// that's not the name
-// it's something like rcosin_table
-EXPORT extern SFlatBitVelocity FlatBitVelocities[FLATBIT_VELOCITIES_SIZE];
 
 EXPORT extern i32 gAnimTable[0x1D];
 

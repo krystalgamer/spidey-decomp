@@ -12,7 +12,7 @@
 
 extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
-extern SFlatBitVelocity FlatBitVelocities[];
+extern SSinCos rcossin_tbl[];
 
 extern i32 DifficultyLevel;
 extern i16 **gTrigNodes;
@@ -467,8 +467,8 @@ CBulletFrag::CBulletFrag(CVector* a2)
 	i32 v3 = Rnd(4096);
 	i32 v4 = Rnd(10) + 10;
 
-	this->mVel.vx = v4 * FlatBitVelocities[v3 & FLATBIT_VELOCITIES_MAX_INDEX].vxVel;
-	this->mVel.vz = v4 * FlatBitVelocities[v3 & FLATBIT_VELOCITIES_MAX_INDEX].vzVel;
+	this->mVel.vx = v4 * rcossin_tbl[v3 & FLATBIT_VELOCITIES_MAX_INDEX].sin;
+	this->mVel.vz = v4 * rcossin_tbl[v3 & FLATBIT_VELOCITIES_MAX_INDEX].cos;
 
 	this->mVel.vy = -81920 - (Rnd(30) << 12);
 	this->field_5A = 500;
