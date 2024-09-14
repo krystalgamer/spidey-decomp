@@ -21,6 +21,31 @@ extern i16 gRotMatrix[3][3];
 i32 DifficultyLevel;
 volatile u32 Vblanks;
 
+EXPORT i32 gUtilsRelatedOne[6];
+EXPORT i32 gUtilsRelatedTwo;
+EXPORT i32 gUtilsRelatedThree;
+EXPORT u16 gUtilsRelatedFour;
+EXPORT u16 gUtilsRelatedFive;
+EXPORT u16 gUtilsRelatedSix;
+EXPORT u16 gUtilsRelatedSeven;
+
+// @Ok
+void Utils_Init(void)
+{
+	gUtilsRelatedOne[0] = 0x6000000;
+	gUtilsRelatedOne[1] = 0xE3000000;
+	gUtilsRelatedOne[2] = 0xE407FDFF;
+	gUtilsRelatedOne[3] = 0xE5000000;
+	gUtilsRelatedOne[4] = 0xE1000640;
+	gUtilsRelatedOne[5] = 0xE2000000;
+	gUtilsRelatedTwo = 0xE6000000;
+	gUtilsRelatedThree = 0x5000000;
+	gUtilsRelatedFour = 0;
+	gUtilsRelatedFive = 512;
+	gUtilsRelatedSix = 0;
+	gUtilsRelatedSeven = 512;
+}
+
 // @UNKTODO
 // different in windows version
 void MyVSync(void)
