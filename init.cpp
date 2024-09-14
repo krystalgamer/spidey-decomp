@@ -33,10 +33,21 @@ EXPORT i32 gInitRelatedTwo;
 EXPORT i32 gInitRelatedThree;
 EXPORT i32 gSpideyMainRelated;
 
-// @SMALLTODO
-void DeleteList(CBody *)
+// @Ok
+INLINE void DeleteList(CBody *pLst)
 {
-    printf("DeleteList(CBody *)");
+	CBody* pCur = pLst;
+	while (pCur)
+	{
+		CBody *pNext = reinterpret_cast<CBody*>(pCur->field_20);
+
+		if (pCur->mCBodyFlags & 0x20)
+		{
+			delete pCur;
+		}
+
+		pCur = pNext;
+	}
 }
 
 // @SMALLTODO
