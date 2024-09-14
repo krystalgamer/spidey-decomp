@@ -82,6 +82,7 @@ EXPORT Texture* Spool_FindTextureEntry(u32);
 EXPORT Texture* Spool_FindTextureEntry(char *);
 EXPORT u32 Spool_FindTextureChecksum(char *);
 EXPORT u32 Spool_GetModelChecksum(CItem *);
+EXPORT i32 Spool_PSX(const char*, i32);
 
 EXPORT void DecrementTextureUsage(i32);
 EXPORT char* GetNextLine(char *);

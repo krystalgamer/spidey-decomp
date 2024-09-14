@@ -21,6 +21,13 @@ EXPORT TextureEntry gTextureEntries[256];
 EXPORT i32 HashIndex;
 EXPORT Texture* pCurrentTex;
 
+// @MEDIUMTODO
+i32 Spool_PSX(const char*, i32)
+{
+	printf("i32 Spool_PSX(const char*, i32)");
+	return 0x14092024;
+}
+
 #if _WIN32
 static const char SuitNames[5][32];
 #else

@@ -6,6 +6,8 @@
 #include "export.h"
 #include "quat.h"
 
+EXPORT extern i32 gPortRelatedOne;
+EXPORT extern i32 gSomeSize;
 
 struct SSinCos
 {
@@ -60,6 +62,8 @@ typedef struct {		/* 2D short vector */
 
 
 void validate_MATRIX(void);
+
+EXPORT void Port_InitAtStart(void);
 EXPORT void gte_SetRotMatrix(MATRIX*);
 EXPORT void gte_ldv0(const SVECTOR* a1);
 EXPORT void gte_rtv0tr(void);
@@ -136,7 +140,7 @@ INLINE static void ClearImage(void)
 {
 	if (!gPrintStubbed)
 	{
-		stubbed_printf("stubbed out: DrawSync");
+		stubbed_printf("stubbed out: ClearImage");
 	}
 }
 
@@ -157,5 +161,26 @@ INLINE static void setDrawTPage(void)
 		stubbed_printf("stubbed out: setDrawTPage");
 	}
 }
+
+// @Ok
+INLINE static void PutDispEnv(void)
+{
+	if (!gPrintStubbed)
+	{
+		stubbed_printf("stubbed out: PutDispEnv");
+	}
+}
+
+#define STUBBED_FUNC(x)\
+	INLINE static void x(void)\
+	{\
+		if (!gPrintStubbed)\
+		{\
+			stubbed_printf("stubbed out: #x");\
+		}\
+	}
+
+STUBBED_FUNC(SetDispMask)
+STUBBED_FUNC(ClearImage2)
 
 #endif

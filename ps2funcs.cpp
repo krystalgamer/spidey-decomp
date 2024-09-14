@@ -7,6 +7,9 @@
 
 #include <cstdlib>
 
+i32 gPortRelatedOne;
+i32 gSomeSize = 0x6E0000;
+
 SSinCos rcossin_tbl[FLATBIT_VELOCITIES_SIZE];
 
 i32 gClutRelatedOne;
@@ -591,4 +594,10 @@ void DCInitSinCosTable(void)
 		rcossin_tbl[i].cos = cos(v9) * 4096.0;
 	}
 
+}
+
+// @SMALLTODO
+void Port_InitAtStart(void)
+{
+	printf("void Port_InitAtStart(void)");
 }

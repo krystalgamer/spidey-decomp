@@ -9,6 +9,8 @@
 #include "ps2funcs.h"
 #include "mem.h"
 
+EXPORT extern u8 gPsxItemsIndex;
+
 struct SHitInfo
 {
 	u8 field_0;

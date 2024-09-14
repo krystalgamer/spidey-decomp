@@ -2,6 +2,10 @@
 
 #include "export.h"
 
+EXPORT extern u32 dword_60D228;
+EXPORT extern u32 dword_60D220;
+EXPORT extern u32 dword_60D21C;
+
 
 struct SHandle
 {

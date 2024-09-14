@@ -7,6 +7,7 @@
 #include "spool.h"
 #include "exp.h"
 
+i32 gLevelStatus;
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;
 EXPORT i32 NumNodes;
@@ -19,7 +20,7 @@ static int gTrigMenu[40];
 static int gRestartPoints;
 EXPORT i32 Restart;
 i32 RestartNode;
-EXPORT i32 gReStartDeathRelated;
+i32 gReStartDeathRelated;
 EXPORT i32 EndLevelNode;
 extern CSpecialDisplay *SpecialDisplayList;
 

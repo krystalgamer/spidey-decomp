@@ -8,6 +8,8 @@
 #include "ob.h"
 #include "manipob.h"
 
+EXPORT extern u8 gSpideyPsxIndex;
+
 class CPlayer : public CSuper 
 {
 	public:

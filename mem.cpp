@@ -105,9 +105,9 @@ int gMemInitRelatedOne[32];
 
 static MemRelated * const gMemInitRelatedBottom =  (MemRelated*)0x0060D214;
 
-unsigned int dword_60D228;
-unsigned int dword_60D220;
-unsigned int dword_60D21C;
+u32 dword_60D228;
+u32 dword_60D220;
+u32 dword_60D21C;
 
 // @Ok
 // @Revisit, too many globals
@@ -123,7 +123,7 @@ void Mem_Init(void)
 
 	printf_fancy("Heap sizes: ");
 	Heap = 0;
-	v1 = gMemInitRelatedBottom;
+	v1 = (MemRelated*)&gMemInitRelatedBottom;
 	do
 	{
 

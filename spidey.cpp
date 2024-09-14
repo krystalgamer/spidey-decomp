@@ -16,6 +16,7 @@
 #include "ps2lowsfx.h"
 #include "spool.h"
 
+u8 gSpideyPsxIndex;
 EXPORT CPlayer* MechList;
 EXPORT CVector gGlobalNormal;
 extern i32 CurrentSuit;

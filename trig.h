@@ -7,6 +7,8 @@
 #include "vector.h"
 
 EXPORT extern i32 RestartNode;
+EXPORT extern i32 gReStartDeathRelated;
+EXPORT extern i32 gLevelStatus;
 
 class CBody;
 

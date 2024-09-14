@@ -8,6 +8,7 @@
 #include "m3dutils.h"
 #include "spool.h"
 
+u8 gPsxItemsIndex;
 const char *gObjFile;
 EXPORT CBody* EnvironmentalObjectList;
 EXPORT CBody* SuspendedList;
