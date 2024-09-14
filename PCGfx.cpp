@@ -3,6 +3,8 @@
 #include "DXsound.h"
 #include "SpideyDX.h"
 
+#include <cmath>
+
 u8 gSceneRelated;
 
 EXPORT float gZLayerFurthest;
@@ -161,10 +163,43 @@ void PCGfx_RenderModelPreview(void *,char const *,i32)
     printf("PCGfx_RenderModelPreview(void *,char const *,i32)");
 }
 
-// @SMALLTODO
-void PCGfx_SetBrightness(i32)
+EXPORT i8 gPcGfxBrightnessValues[256];
+EXPORT float gPcGfxBrightnessPower[8] =
 {
-    printf("PCGfx_SetBrightness(i32)");
+	0.80000001f,
+	0.85000002f,
+	0.89999998f,
+	0.94999999f,
+	1.0f,
+	1.05f,
+	1.1f,
+	1.15f
+};
+
+// @Ok
+// @Test
+INLINE void PCGfx_SetBrightness(i32 a1)
+{
+	float v8 = 1.0f / gPcGfxBrightnessPower[a1];
+	for (i32 i = 0; i < 256; i++)
+	{
+
+		float v9 = i;
+		float v6 = v9 / 255.0f;
+		float v7 = pow(v6, v8);
+
+		i32 v3 = (v7 * 255.0f + 0.5f);
+		if (v3 >= 128)
+		{
+			v3 = 255;
+		}
+		else
+		{
+			v3 *= 2;
+		}
+
+		gPcGfxBrightnessValues[i] = v3;
+	}
 }
 
 // @Ok
