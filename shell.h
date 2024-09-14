@@ -6,6 +6,8 @@
 #include "ob.h"
 #include "export.h"
 
+EXPORT extern CBody *MiscList;
+
 struct SSaveGame
 {
 	i32 mChecksum;

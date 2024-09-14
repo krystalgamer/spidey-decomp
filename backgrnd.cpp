@@ -3,7 +3,7 @@
 
 #include "validate.h"
 
-EXPORT CSuper* BackgroundList;
+CSuper* BackgroundList;
 EXPORT i16 gBackgroundIndex = 0;
 
 // @Ok

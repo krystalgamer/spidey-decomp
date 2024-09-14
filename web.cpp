@@ -4,6 +4,7 @@
 #include "m3dcolij.h"
 #include "m3dzone.h"
 
+CBody* WebList;
 
 EXPORT SLineInfo gLineInfo;
 EXPORT i32 gGetGroundRelated;

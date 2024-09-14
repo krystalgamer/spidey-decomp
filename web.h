@@ -7,6 +7,7 @@
 #include "export.h"
 #include "spidey.h"
 
+EXPORT extern CBody* WebList;
 
 class CImpactWeb : public CFlatBit{
 public:

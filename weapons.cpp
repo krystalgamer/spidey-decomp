@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "spool.h"
 
+CItem* CWeapons;
 extern SCamera gMikeCamera[2];
 
 // @MEDIUMTODO

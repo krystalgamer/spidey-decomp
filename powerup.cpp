@@ -6,7 +6,7 @@
 #include "validate.h"
 
 extern i32 TotalBitUsage;
-EXPORT CBody* PowerUpList;
+CBody* PowerUpList;
 EXPORT i32 gPowerUpRelated;
 
 // @MEDIUMTODO

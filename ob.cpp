@@ -10,8 +10,8 @@
 
 u8 gPsxItemsIndex;
 const char *gObjFile;
-EXPORT CBody* EnvironmentalObjectList;
-EXPORT CBody* SuspendedList;
+CBody* EnvironmentalObjectList;
+CBody* SuspendedList;
 CItem* EnviroList;
 
 void CBody::DeleteStuff(void)

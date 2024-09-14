@@ -10,7 +10,7 @@
 #include "PCGfx.h"
 #include "mess.h"
 
-EXPORT CBody *MiscList;
+CBody *MiscList;
 
 EXPORT SSkinGooSource gVenomSkinGooSource;
 EXPORT SSkinGooParams gVenomSkinGooParams;

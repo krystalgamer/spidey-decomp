@@ -300,6 +300,11 @@ class CPlayer : public CSuper
 		EXPORT void nullsub_one(i32);
 };
 
+EXPORT extern CPlayer* MechList;
+EXPORT extern CItem* SpideyAdditionalBodyPartsList;
+EXPORT extern CItem* MiscellaneousRenderingList;
+
+
 EXPORT void Bruce_Sync(void);
 
 EXPORT void Spidey_SetUserFunction(const char *, unsigned int);

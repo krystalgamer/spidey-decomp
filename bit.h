@@ -368,6 +368,7 @@ EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
 EXPORT void Bit_ReduceRGB(unsigned int*, int);
 EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
+EXPORT void Bit_DeleteAll(void);
 
 EXPORT extern CTextBox* TextBoxList;
 

@@ -6,6 +6,8 @@
 #include "bit.h"
 #include "export.h"
 
+EXPORT extern CItem* CWeapons;
+
 // @FIXME
 #define SCalcBuffer i32
 

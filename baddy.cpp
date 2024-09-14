@@ -8,7 +8,7 @@
 #include "trig.h"
 #include "ai.h"
 
-EXPORT CBody* ControlBaddyList;
+CBody* ControlBaddyList;
 CBaddy* BaddyList;
 EXPORT CSVector gTrajectoryVector;
 

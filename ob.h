@@ -264,6 +264,9 @@ void validate_SHitInfo(void);
 
 static CSuper *globalSuper = (CSuper*)0x006A9038;
 EXPORT extern CItem* EnviroList;
+EXPORT extern CBody* EnvironmentalObjectList;
+EXPORT extern CBody* SuspendedList;
+
 EXPORT extern const char *gObjFile;
 
 #endif

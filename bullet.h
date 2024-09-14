@@ -7,6 +7,7 @@
 #include "export.h"
 #include "ob.h"
 
+EXPORT extern CBody* BulletList;
 enum HitId
 {
 	ALWAYS_TWENTY_NINE = 29,

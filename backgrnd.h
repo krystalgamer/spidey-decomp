@@ -22,5 +22,6 @@ class CBackground : public CBody
 		u8 padBottom[2];
 };
 
+EXPORT extern CSuper* BackgroundList;
 void validate_CBackground(void);
 #endif

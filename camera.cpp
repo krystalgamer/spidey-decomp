@@ -3,7 +3,7 @@
 #include "ps2funcs.h"
 #include "utils.h"
 
-EXPORT CCamera *CameraList;
+CCamera *CameraList;
 EXPORT i32 NumCameras;
 
 EXPORT SCamera gMikeCamera[2];

@@ -52,5 +52,6 @@ class CPowerUp : public CBody
 		u8 padBottom[0x138-0x130-4];
 };
 
+EXPORT extern CBody* PowerUpList;
 void validate_CPowerUp(void);
 #endif

@@ -38,6 +38,12 @@ EXPORT CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
+// @SMALLTODO
+void Bit_DeleteAll(void)
+{
+	printf("void Bit_DeleteAll(void)");
+}
+
 // @MEDIUMTODO
 void DisplayGLineList(void**)
 {

@@ -2,6 +2,7 @@
 #include "validate.h"
 
 
+CBody* BulletList;
 EXPORT i32 gBullets;
 
 
