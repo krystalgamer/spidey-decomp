@@ -32,4 +32,8 @@ static void error(const char *message, ...) {
 	printf("static void error(const char *message, ...)");
 }
 
+static void DebugPrintfX(const char *message, ...)
+{
+}
+
 #endif

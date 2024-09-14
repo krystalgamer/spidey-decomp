@@ -5,6 +5,8 @@
 #include "ob.h"
 #include "m3dcolij.h"
 
+#include <cstdlib>
+
 i32 gClutRelatedOne;
 i32 gClutRelatedTwo;
 
@@ -576,3 +578,10 @@ i32 GetFree16Slot(void)
 // @BIGTODO
 void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16)
 {}
+
+// @SMALLTODO
+void DCSetFatalError(i32)
+{
+	printf("void DCSetFatalError(i32)");
+	exit(0);
+}

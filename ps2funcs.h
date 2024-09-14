@@ -104,6 +104,9 @@ EXPORT void TransMatrix(MATRIX*, VECTOR*);
 EXPORT void setPolyGT4(void);
 EXPORT void MTC2(i32*, GTREGType);
 
+
+EXPORT void DCSetFatalError(i32);
+
 // @Ok
 INLINE static void DrawSync(void)
 {
