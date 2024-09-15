@@ -37,10 +37,10 @@ void Card_SetHeader(void)
     printf("Card_SetHeader(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void Card_Stop(void)
 {
-    printf("Card_Stop(void)");
+	MemCardStop();
 }
 
 // @MEDIUMTODO
