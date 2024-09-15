@@ -7,6 +7,11 @@
 static SBlockHeader ** const Heaps = (SBlockHeader**)0x0060D118;
 i32 gMemInitRelatedTop;
 
+EXPORT i32 Used[2];
+EXPORT u32 HeapDefs[2][2];
+EXPORT i32 LowMemory;
+EXPORT u32 CriticalBigHeapUsage;
+
 int dword_54D55C = 1;
 
 // @OK
@@ -150,32 +155,44 @@ void Mem_Init(void)
 unsigned int dword_60D208;
 
 // @Ok
-// @Revisit, different registers at begin
-void Mem_Delete(void* a1)
+// @Matching
+INLINE void Mem_DeleteX(void *p)
 {
-	void *v1; // ecx
-	char *v2; // esi
-	unsigned int v3; // eax
-	SBlockHeader *v4; // ecx
-	int Heap; // esi
+	print_if_false(p != 0, "NULL pointer sent to Mem_Delete");
 
-	v1 = (void *)*((char *)a1 - 1);
-	v2 = (char *)((unsigned char *)a1 - (unsigned char *)v1);
-	print_if_false(a1 != v1, "NULL pointer sent to Mem_Delete");
-	v3 = *((unsigned int*)v2 - 8);
-	v4 = (SBlockHeader *)(v2 - 32);
-	Heap = (int)(v3 << 28) >> 28;
-	if ( Heap < 0 || Heap >= 2 )
+	u32 v3 = *(reinterpret_cast<u32*>(p) - 8);
+	i32 v4 = (reinterpret_cast<i32>(p) - 32);
+	i32 Heap = ((static_cast<i32>(v3) << 28)) >> 28;
+
+	if (Heap < 0 || Heap >= 2)
 	{
 		print_if_false(0, "Invalid pointer sent to Mem_Delete");
 	}
 	else
 	{
-		gMemInitRelatedOne[Heap] += -32 - (v3 >> 4);
-		AddToFreeList(v4, Heap);
-		if ( Heap == 1 )
-			gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		i32 newUsed = 32 + (v3 >> 4);
+		Used[Heap] -= newUsed;
+		AddToFreeList(
+				reinterpret_cast<SBlockHeader*>(v4),
+				Heap);
+
+		if (Heap == 1)
+			LowMemory = Used[1] >= CriticalBigHeapUsage;
 	}
+}
+
+// @Ok
+// @Matching
+INLINE void Mem_CoreDelete(void* a1)
+{
+	Mem_DeleteX(a1);
+}
+
+// @Ok
+// @Matching
+void Mem_Delete(void* a1)
+{
+	Mem_CoreDelete((char *)a1 - *((char *)a1 - 1));
 }
 
 // @Ok
