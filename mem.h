@@ -13,6 +13,11 @@ struct SHandle
 	i32 field_4;
 };
 
+struct SRealBlockHeader
+{
+	SRealBlockHeader *Next;
+};
+
 struct SBlockHeader {
 
 	unsigned int ParentHeap;

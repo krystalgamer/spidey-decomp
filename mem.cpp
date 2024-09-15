@@ -11,6 +11,7 @@ EXPORT i32 Used[2];
 EXPORT u32 HeapDefs[2][2];
 EXPORT i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
+EXPORT SBlockHeader *FirstFreeBlock[2];
 
 int dword_54D55C = 1;
 
@@ -115,41 +116,35 @@ u32 dword_60D220;
 u32 dword_60D21C;
 
 // @Ok
-// @Revisit, too many globals
-// ebx is used for some reason to write 0
+// @Ok
 void Mem_Init(void)
 {
-
-	int Heap; // edi
-	MemRelated *v1; // esi
-	SBlockHeader *pAllFreeMem; // eax
-	int v4; // ecx
-	int HeapBottom; // edx
-
 	printf_fancy("Heap sizes: ");
-	Heap = 0;
-	v1 = (MemRelated*)&gMemInitRelatedBottom;
-	do
+
+	for (
+			i32 Heap = 0;
+			Heap < 2;
+			Heap++)
 	{
+		print_if_false(HeapDefs[Heap][0] + 20 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
 
-		print_if_false((unsigned int)(v1->HeapBottom + 32) < (unsigned int)v1->HeapTop, "Bad values for HEAPBOT and HEAPTOP");
+		SRealBlockHeader* pNewFreeBlock = reinterpret_cast<SRealBlockHeader*>(HeapDefs[Heap][0]);
 
-		pAllFreeMem = (SBlockHeader *)v1->HeapBottom;
-		v4 = v1->HeapTop;
-		HeapBottom = v1->HeapBottom;
-		Heaps[Heap] = 0;
-		gMemInitRelatedOne[Heap] = 0;
-		pAllFreeMem->ParentHeap = pAllFreeMem->ParentHeap & 0xF ^ (16
-				* ((HeapBottom << 28) - (unsigned int)pAllFreeMem + v4 + 0xFFFFFE0));
-		AddToFreeList(pAllFreeMem, Heap);
+		u32 v4 = HeapDefs[Heap][1];
+		u32 HeapBottom = HeapDefs[Heap][0];
 
-		printf_fancy("Heap %d: %ld bytes, ", Heap, v1->HeapTop - v1->HeapBottom);
-		++v1;
-		++Heap;
+		FirstFreeBlock[Heap] = 0;
+		Used[Heap] = 0;
+
+		pNewFreeBlock->Next = (SRealBlockHeader*)((u32)(pNewFreeBlock->Next) & 0xF ^ (16
+								* ((HeapBottom << 28) - (u32)pNewFreeBlock + v4 + 0xFFFFFE0)));
+
+		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
+		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);
 	}
-	while ( (int)v1 < (int)gMemInitRelatedTop );
+
 	printf_fancy("\n");
-	dword_60D228 = (98 * dword_60D220 - 98 * dword_60D21C) / 0x64u;
+	CriticalBigHeapUsage = (0x62 * (HeapDefs[1][1] - HeapDefs[1][0])) / 0x64;
 }
 
 unsigned int dword_60D208;
