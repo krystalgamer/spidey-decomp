@@ -8,7 +8,7 @@ static SBlockHeader ** const Heaps = (SBlockHeader**)0x0060D118;
 i32 gMemInitRelatedTop;
 
 EXPORT i32 Used[2];
-EXPORT u32 HeapDefs[2][2];
+u32 HeapDefs[2][2];
 EXPORT i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
 EXPORT SBlockHeader *FirstFreeBlock[2];
@@ -116,7 +116,9 @@ u32 dword_60D220;
 u32 dword_60D21C;
 
 // @Ok
-// @Ok
+// okay the -32 part is so strange that I have no words for it
+// with this re-written version, the code is better optimized for some reason
+// i just gave up
 void Mem_Init(void)
 {
 	printf_fancy("Heap sizes: ");
@@ -126,18 +128,18 @@ void Mem_Init(void)
 			Heap < 2;
 			Heap++)
 	{
-		print_if_false(HeapDefs[Heap][0] + 20 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
+		print_if_false(HeapDefs[Heap][0] + 32 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
 
 		SRealBlockHeader* pNewFreeBlock = reinterpret_cast<SRealBlockHeader*>(HeapDefs[Heap][0]);
 
-		u32 v4 = HeapDefs[Heap][1];
-		u32 HeapBottom = HeapDefs[Heap][0];
+		i32 v4 = HeapDefs[Heap][1];
+		i32 HeapBottom = HeapDefs[Heap][0];
 
 		FirstFreeBlock[Heap] = 0;
 		Used[Heap] = 0;
 
-		pNewFreeBlock->Next = (SRealBlockHeader*)((u32)(pNewFreeBlock->Next) & 0xF ^ (16
-								* ((HeapBottom << 28) - (u32)pNewFreeBlock + v4 + 0xFFFFFE0)));
+		pNewFreeBlock->Next = (SRealBlockHeader*)((reinterpret_cast<u32>(pNewFreeBlock->Next) & 0xF) ^
+								((v4 - HeapBottom - 32) << 4));
 
 		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
 		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);

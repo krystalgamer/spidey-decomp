@@ -5,6 +5,7 @@
 EXPORT extern u32 dword_60D228;
 EXPORT extern u32 dword_60D220;
 EXPORT extern u32 dword_60D21C;
+EXPORT extern u32 HeapDefs[2][2];
 
 
 struct SHandle

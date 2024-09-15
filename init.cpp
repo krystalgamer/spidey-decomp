@@ -106,12 +106,10 @@ u8 Init_AtStart(i32)
 	dword_628618 = (int *)&unk_628690;
 	dword_654F54 = (int)&unk_62A5D0;
 	*/
-	/*
-	gMemInitRelatedBottom = gPortRelatedOne;
-	dword_60D218 = gPortRelatedOne + 64;
-	dword_60D21C = gPortRelatedOne + 64;
-	dword_60D220 = gPortRelatedOne + gSomeSize;
-	*/
+	HeapDefs[0][0] = gPortRelatedOne;
+	HeapDefs[0][1] = gPortRelatedOne + 64;
+	HeapDefs[1][0] = gPortRelatedOne + 64;
+	HeapDefs[1][1] = gPortRelatedOne + gSomeSize;
 
 	Mem_Init();
 
