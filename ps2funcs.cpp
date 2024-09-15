@@ -8,6 +8,7 @@
 
 #include <cstdlib>
 
+i32 DoVblankProcessing = 1;
 i32 gPortRelatedOne;
 i32 gSomeSize = 0x6E0000;
 
