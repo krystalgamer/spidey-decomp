@@ -395,6 +395,7 @@ i32 validate(void)
 	validate_POLY_GT4();
 	validate_SPack();
 	validate_tag_S_Pal();
+	validate_SViewport();
 
 	puts("[*] Validation done!");
 

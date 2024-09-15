@@ -10,6 +10,13 @@
 
 static int * const gCameraRelated = (int*)0x56F254;
 
+struct SViewport
+{
+	u8 padTop[0xC];
+	u16 Zoom;
+	u16 field_E;
+};
+
 struct SCamera
 {
 	u32 Style;
@@ -203,5 +210,6 @@ EXPORT extern CCamera *CameraList;
 
 void validate_CCamera(void);
 void validate_SCamera(void);
+void validate_SViewport(void);
 
 #endif

@@ -169,10 +169,13 @@ u8 Init_AtStart(i32)
 // @SMALLTODO
 void Init_Cleanup(i32)
 {
-    printf("Init_Cleanup(i32)");
+	Pad_ActuatorOff(0, 0);
+	Pad_ActuatorOff(0, 1);
+
+	SFX_LevelStart();
 }
 
-// @MEDIUMTODO
+// @Ok
 void Init_KillAll(void)
 {
 	DeleteList(MechList);
@@ -189,31 +192,18 @@ void Init_KillAll(void)
 	DeleteList(WebList);
 
 	print_if_false(MechList == 0, "Leftover protected members of MechList");
-
 	print_if_false(CameraList == 0, "Leftover protected members of CameraList");
-
 	print_if_false(BaddyList == 0, "Leftover protected members of BaddyList");
-
 	print_if_false(ControlBaddyList == 0, "Leftover protected members of ControlBaddyList");
-
 	print_if_false(BackgroundList == 0, "Leftover protected members of BackgroundList");
-
 	print_if_false(EnvironmentalObjectList == 0, "Leftover protected members of EnvironmentalObjectList");
-
 	print_if_false(PowerUpList == 0, "Leftover protected members of PowerUpList");
-
 	print_if_false(BulletList == 0, "Leftover protected members of BulletList");
-
 	print_if_false(SuspendedList == 0, "Leftover protected members of SuspendedList");
-
 	print_if_false(MiscList == 0, "Leftover protected members of MiscList");
-
 	print_if_false(WebList == 0, "Leftover protected members of WebList");
-
 	print_if_false(SpideyAdditionalBodyPartsList == 0, "Leftover protected members of SpideyAdditionalBodyPartsList");
-
 	print_if_false(MiscellaneousRenderingList == 0, "Leftover protected members of MiscellaneousRenderingList");
-
 	print_if_false(CWeapons == 0, "Left over CWeapons");
 
 	Bit_DeleteAll();

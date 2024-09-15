@@ -684,3 +684,11 @@ void validate_SCamera(void)
 	VALIDATE(SCamera, Angles, 0x2C);
 	VALIDATE(SCamera, Transform, 0x34);
 }
+
+void validate_SViewport(void)
+{
+	VALIDATE_SIZE(SViewport, 0x10);
+
+	VALIDATE(SViewport, Zoom, 0xC);
+	VALIDATE(SViewport, field_E, 0xE);
+}
