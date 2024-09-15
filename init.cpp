@@ -35,6 +35,7 @@
 #include "physics.h"
 #include "m3dzone.h"
 #include "reloc.h"
+#include "SpideyDX.h"
 
 EXPORT Texture* gShadowBit;
 EXPORT i32 gPsxSpArmorIndex;
@@ -69,6 +70,30 @@ INLINE void DeleteList(CBody *pLst)
 void Init_AtEnd(void)
 {
     printf("Init_AtEnd(void)");
+	DXERR_printf("\nStart of Init_AtEnd\n");
+	Spool_Sync();
+	DXERR_printf("1,");
+
+	DrawSync();
+
+	DXERR_printf("2,");
+	Pause(1);
+
+	//dword_5598B8 = 0;
+	SFX_Off();
+	DXERR_printf("3,");
+	//j_MemCardStop(v0);
+	Pause(1);
+	DXERR_printf("6,");
+
+	SetDispMask();
+	DXERR_printf("7,");
+	PCGfx_Exit();
+	//j__sbExitSystem(v1);
+	DXERR_printf("13a,");
+	DXERR_printf("14,");
+	DXERR_printf("17,");
+	DXERR_printf("\nEnd of Init_AtEnd\n");
 }
 
 EXPORT i32 dword_60D218;

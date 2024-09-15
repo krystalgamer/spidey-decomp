@@ -4,6 +4,7 @@
 #include <cstring>
 #include "ob.h"
 #include "m3dcolij.h"
+#include "Sbinit.h"
 
 #include <cstdlib>
 
@@ -600,4 +601,10 @@ void DCInitSinCosTable(void)
 void Port_InitAtStart(void)
 {
 	printf("void Port_InitAtStart(void)");
+}
+
+// @Ok
+void Port_Exit(void)
+{
+	sbExitSystem();
 }
