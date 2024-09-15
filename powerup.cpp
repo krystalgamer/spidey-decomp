@@ -7,7 +7,7 @@
 
 extern i32 TotalBitUsage;
 CBody* PowerUpList;
-EXPORT i32 gPowerUpRelated;
+i32 gPowerUpRelated;
 
 // @MEDIUMTODO
 void CPowerUp::DoPhysics(void)

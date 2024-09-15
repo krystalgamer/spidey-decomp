@@ -31,6 +31,10 @@
 #include "backgrnd.h"
 #include "bullet.h"
 #include "weapons.h"
+#include "flash.h"
+#include "physics.h"
+#include "m3dzone.h"
+#include "reloc.h"
 
 EXPORT Texture* gShadowBit;
 EXPORT i32 gPsxSpArmorIndex;
@@ -166,13 +170,79 @@ u8 Init_AtStart(i32)
 	return 0;
 }
 
-// @SMALLTODO
-void Init_Cleanup(i32)
+EXPORT i32 gMovieIndex = 0xFFFFFFFF;
+EXPORT i32 gInitBaddyRelated;
+
+// @Ok
+void Init_Cleanup(i32 a1)
 {
 	Pad_ActuatorOff(0, 0);
 	Pad_ActuatorOff(0, 1);
 
 	SFX_LevelStart();
+
+	gViewport.field_E = 256;
+	Redbook_XAExit();
+	GameFMV_StopFMV();
+	Init_KillAll();
+	Trig_DeleteCommandPoints();
+
+	delete pYesNoMenu;
+
+	if (a1 == 3)
+	{
+		for (i32 i = 0; i < MAXPSX; i++)
+		{
+			PSXRegion[i].Protected = 0;
+		}
+		Spidey_FreeHeadModel();
+
+		a1 = 0;
+	}
+
+	if (a1)
+	{
+		if (a1 == 1)
+		{
+			Spool_ClearEnvironmentRegions();
+			M3dZone_Init();
+		}
+	}
+	else
+	{
+		SFX_SpoolOutLevelSFX();
+		SFX_ReverbOff();
+		Spool_ClearAllPSXs();
+		Trig_DeleteTrigFile();
+
+		gRestartPointName[0] = 0;
+		Reloc_UnloadAll();
+		M3dZone_Init();
+	}
+
+
+
+
+	Trig_ClearTrigMenu();
+	Flash_Reset();
+	Panel_Init();
+
+	CVector v6;
+	v6.vx = 0;
+	v6.vy = 0x8000;
+	v6.vz = 0;
+	Physics_SetGravity(&v6);
+	gPowerUpRelated = 0;
+	Pad_ClearAll();
+
+	gInitBaddyRelated = 0;
+	SuspendedDistance = 13000;
+	Levels[35].field_C = 0xFFEC;
+
+	if ( gMovieIndex != -1 )
+		GameFMV_PlayMovie(gMovieIndex, 1, 1, 1.0);
+		gMovieIndex = -1;
+	Redbook_XAInit();
 }
 
 // @Ok

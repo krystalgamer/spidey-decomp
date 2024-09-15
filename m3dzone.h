@@ -8,5 +8,8 @@
 
 
 EXPORT void M3dZone_LineToItem(SLineInfo *, i32);
+EXPORT void M3dZone_FreePSX(i32);
+EXPORT void M3dZone_Init(void);
+EXPORT void M3dZone_SetZone(i32,u32 *);
 
 #endif

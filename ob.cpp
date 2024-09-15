@@ -8,6 +8,7 @@
 #include "m3dutils.h"
 #include "spool.h"
 
+u32 SuspendedDistance;
 u8 gPsxItemsIndex;
 const char *gObjFile;
 CBody* EnvironmentalObjectList;

@@ -10,6 +10,7 @@
 #include "mem.h"
 
 EXPORT extern u8 gPsxItemsIndex;
+EXPORT extern u32 SuspendedDistance;
 
 struct SHitInfo
 {

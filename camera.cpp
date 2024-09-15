@@ -3,6 +3,7 @@
 #include "ps2funcs.h"
 #include "utils.h"
 
+SViewport gViewport;
 CCamera *CameraList;
 EXPORT i32 NumCameras;
 

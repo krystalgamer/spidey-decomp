@@ -5,12 +5,13 @@
 #include "ps2funcs.h"
 #include "trig.h"
 
+CMenu* pYesNoMenu;
+
 EXPORT i32 gFrontGauge;
 char gRestartPointName[50];
 
-const i32 NUM_LEVELS = 41;
 // @FIXME add content
-EXPORT SLevel Levels[NUM_LEVELS];
+SLevel Levels[FRONT_NUM_LEVELS];
 
 // @Ok
 // @Matching
@@ -117,7 +118,7 @@ void Front_Display(void)
 INLINE SLevel* Front_FindLevel(char* pTRGName)
 {
 	for (i32 i = 0;
-			i < NUM_LEVELS;
+			i < FRONT_NUM_LEVELS;
 			i++)
 	{
 		char *pName = Levels[i].mName;
@@ -588,4 +589,6 @@ void validate_SLevel(void)
 
 	VALIDATE(SLevel, mDisplayName, 0x0);
 	VALIDATE(SLevel, mName, 0x4);
+
+	VALIDATE(SLevel, field_C, 0xC);
 }

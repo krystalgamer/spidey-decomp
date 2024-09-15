@@ -207,6 +207,7 @@ public:
 
 EXPORT __int16 CalcTheta(__int16, __int16);
 EXPORT extern CCamera *CameraList;
+EXPORT extern SViewport gViewport;
 
 void validate_CCamera(void);
 void validate_SCamera(void);
