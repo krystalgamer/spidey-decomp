@@ -98,17 +98,13 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 
 }
 
-//Guessed the number
-int gMemInitRelatedOne[32];
-
-u32 dword_60D228;
-u32 dword_60D220;
-u32 dword_60D21C;
+EXPORT void Mem_Secret(SNewBlockHeader *p, i32 x)
+{
+	p->ParentHeap = x;
+}
 
 // @Ok
-// okay the -32 part is so strange that I have no words for it
-// with this re-written version, the code is better optimized for some reason
-// i just gave up
+// @Matching
 void Mem_Init(void)
 {
 	printf_fancy("Heap sizes: ");
@@ -146,9 +142,8 @@ INLINE void Mem_DeleteX(void *p)
 {
 	print_if_false(p != 0, "NULL pointer sent to Mem_Delete");
 
-	u32 v3 = *(reinterpret_cast<u32*>(p) - 8);
-	i32 v4 = (reinterpret_cast<i32>(p) - 32);
-	i32 Heap = ((static_cast<i32>(v3) << 28)) >> 28;
+	SNewBlockHeader* v4 = (SNewBlockHeader*)(reinterpret_cast<i32>(p) - 32);
+	i32 Heap = v4->ParentHeap;
 
 	if (Heap < 0 || Heap >= 2)
 	{
@@ -156,7 +151,7 @@ INLINE void Mem_DeleteX(void *p)
 	}
 	else
 	{
-		i32 newUsed = 32 + (v3 >> 4);
+		i32 newUsed = 32 + v4->Size;
 		Used[Heap] -= newUsed;
 		AddToFreeList(
 				reinterpret_cast<SBlockHeader*>(v4),
