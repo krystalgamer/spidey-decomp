@@ -101,15 +101,8 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 
 }
 
-struct MemRelated {
-	int HeapBottom;
-	int HeapTop;
-};
-
 //Guessed the number
 int gMemInitRelatedOne[32];
-
-static MemRelated * const gMemInitRelatedBottom =  (MemRelated*)0x0060D214;
 
 u32 dword_60D228;
 u32 dword_60D220;
@@ -218,6 +211,22 @@ void Mem_ShrinkX(void* a1, unsigned int newSize)
 		if ( v3 == 1 )
 			gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
 	}
+}
+
+// @Ok
+INLINE void Mem_CoreShrink(void* a1, u32 a2)
+{
+	if ( a2 <= 4 )
+		a2 = 8;
+	Mem_ShrinkX(a1, a2);
+}
+
+// @Ok
+void Mem_Shrink(void* a1, u32 a2)
+{
+	Mem_CoreShrink(
+			reinterpret_cast<char*>(a1) - *(reinterpret_cast<char *>(a1) - 1),
+			a2 + 32);
 }
 
 // @Ok

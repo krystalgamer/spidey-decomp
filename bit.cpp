@@ -104,7 +104,7 @@ void DisplayGPolyLineList(void**)
 {
 }
 
-// @TODO
+// @Ok
 void Bit_Init(void)
 {
 	BitCount = 0;

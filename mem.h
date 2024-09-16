@@ -31,6 +31,8 @@ struct SBlockHeader {
 EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);
 EXPORT void Mem_Init(void);
 EXPORT void Mem_Delete(void*);
+EXPORT void Mem_Shrink(void*, u32);
+EXPORT void Mem_CoreShrink(void*, u32);
 EXPORT void Mem_ShrinkX(void*, unsigned int);
 EXPORT void Mem_Copy(void*, void*, int);
 EXPORT void *Mem_NewTop(unsigned int);
