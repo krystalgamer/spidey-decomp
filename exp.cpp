@@ -7,7 +7,7 @@
 // @Ok
 void Exp_SmallExplosion(CVector* a1)
 {
-	if ( !gMemInitRelatedTop )
+	if ( !LowMemory )
 	{
 		Exp_Frag(a1, Rnd(20), 6u, 750, 80);
 		Exp_GlowFlash(a1, 70, 0xF0u, 0xC8u, 0, 5, 0, 100);
@@ -17,7 +17,7 @@ void Exp_SmallExplosion(CVector* a1)
 // @Ok
 void Exp_Frag(CVector* a1, i32 a2, i32 a3, i32 a4, i32 a5)
 {
-	if (!gMemInitRelatedTop)
+	if (!LowMemory)
 	{
 		for (i32 i = 0; i < a2; i++)
 		{
@@ -29,7 +29,7 @@ void Exp_Frag(CVector* a1, i32 a2, i32 a3, i32 a4, i32 a5)
 // @Ok
 void Exp_BigExplosion(CVector *a1)
 {
-	if ( !gMemInitRelatedTop )
+	if ( !LowMemory )
 	{
 		Exp_Frag(a1, Rnd(20), 6u, 750, 80);
 		Exp_GlowFlash(a1, 200, 0xF0u, 0xC8u, 0, 5, 0, 100);
@@ -131,7 +131,7 @@ void Exp_GlowFlash(
 		i32 a7,
 		i32 a8)
 {
-	if ( !gMemInitRelatedTop )
+	if ( !LowMemory )
 	{
 		if ( a7 )
 		{

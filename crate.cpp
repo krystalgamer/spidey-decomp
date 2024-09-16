@@ -33,7 +33,7 @@ void Crate_Destroy(CItem* pItem)
 
 		Trig_TriggerCommandPoint(gCommandPointRelated[EnvIndex][pItem->mModel], false);
 
-		if (!gMemInitRelatedTop)
+		if (!LowMemory)
 		{
 			CVector vec = pItem->mPos;
 

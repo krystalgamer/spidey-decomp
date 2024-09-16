@@ -6,6 +6,7 @@ EXPORT extern u32 dword_60D228;
 EXPORT extern u32 dword_60D220;
 EXPORT extern u32 dword_60D21C;
 EXPORT extern u32 HeapDefs[2][2];
+EXPORT extern i32 LowMemory;
 
 
 struct SHandle
@@ -14,18 +15,21 @@ struct SHandle
 	i32 field_4;
 };
 
-struct SRealBlockHeader
-{
-	SRealBlockHeader *Next;
-};
-
 struct SBlockHeader {
 
-	unsigned int ParentHeap;
-	SBlockHeader* Next;
+	i32 ParentHeap;
+	unsigned int Next;
+	SBlockHeader* field_4;
 	int field_8;
 	unsigned char padding[0x20-0x8-4];
 
+};
+
+struct SNewBlockHeader {
+
+	i32 ParentHeap: 4;
+	u32 Size: 28;
+	SBlockHeader* Next;
 };
 
 EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);
@@ -41,8 +45,6 @@ EXPORT void *DCMem_New(unsigned int, int, int, void*, bool);
 EXPORT SHandle Mem_MakeHandle(void*);
 
 EXPORT void *Mem_RecoverPointer(SHandle*);
-
-EXPORT extern i32 gMemInitRelatedTop;
 
 void validate_SBlockHeader(void);
 void validate_SHandle(void);

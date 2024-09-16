@@ -4,12 +4,9 @@
 #include "validate.h"
 
 
-static SBlockHeader ** const Heaps = (SBlockHeader**)0x0060D118;
-i32 gMemInitRelatedTop;
-
 EXPORT i32 Used[2];
 u32 HeapDefs[2][2];
-EXPORT i32 LowMemory;
+i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
 EXPORT SBlockHeader *FirstFreeBlock[2];
 
@@ -19,28 +16,28 @@ int dword_54D55C = 1;
 // @CM: Different register allocation
 void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 {
-	register SBlockHeader *pAfter = Heaps[Heap];
+	register SBlockHeader *pAfter = FirstFreeBlock[Heap];
 	register SBlockHeader *pBefore = NULL;
 
 	while ( pAfter < pNewFreeBlock && pAfter )
 	{
 		pBefore = pAfter;
-		pAfter = pAfter->Next;
+		pAfter = pAfter->field_4;
 	}
 
 
 	if (pBefore)
 	{
-		if ((SBlockHeader *)((char*)(pBefore + 1) + (pBefore->ParentHeap >> 4)) == pNewFreeBlock)
+		if ((SBlockHeader *)((char*)(pBefore + 1) + (pBefore->Next >> 4)) == pNewFreeBlock)
 		{
-			if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->ParentHeap >> 4)) == pAfter )
+			if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->Next >> 4)) == pAfter )
 			{
-				pBefore->Next = pAfter->Next;
-				pBefore->ParentHeap = (pAfter->ParentHeap + (pBefore->ParentHeap & 0xFFFFFFF0) + pNewFreeBlock->ParentHeap + 1024) ^ (pBefore->ParentHeap ^ (pAfter->ParentHeap + pNewFreeBlock->ParentHeap)) & 0xF;
+				pBefore->field_4 = pAfter->field_4;
+				pBefore->Next = (pAfter->Next + (pBefore->Next & 0xFFFFFFF0) + pNewFreeBlock->Next + 1024) ^ (pBefore->Next ^ (pAfter->Next + pNewFreeBlock->Next)) & 0xF;
 
 				if ( dword_54D55C )
 				{
-					int size = ((pNewFreeBlock->ParentHeap >> 4) + 64) >> 2;
+					i32 size = ((pNewFreeBlock->Next >> 4) + 64) >> 2;
 					if ( size > 0)
 					{
 						memset(pNewFreeBlock, 0x55u, 4 * size);
@@ -50,10 +47,10 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 			}
 			else
 			{
-				pBefore->ParentHeap = (pBefore->ParentHeap ^ pNewFreeBlock->ParentHeap) & 0xF ^ ((pBefore->ParentHeap & 0xFFFFFFF0) + pNewFreeBlock->ParentHeap + 512);
+				pBefore->Next = (pBefore->Next ^ pNewFreeBlock->Next) & 0xF ^ ((pBefore->Next & 0xFFFFFFF0) + pNewFreeBlock->Next + 512);
 				if ( dword_54D55C )
 				{
-					int size = ((pNewFreeBlock->ParentHeap >> 4) + 32) >> 2;
+					int size = ((pNewFreeBlock->Next >> 4) + 32) >> 2;
 					if ( size > 0 )
 					{
 						memset(pNewFreeBlock, 0x55, 4 * size);
@@ -65,25 +62,25 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 			return;
 		}
 
-		pBefore->Next = pNewFreeBlock;
+		pBefore->field_4 = pNewFreeBlock;
 	}
 	else
 	{
-		Heaps[Heap] = pNewFreeBlock;
+		FirstFreeBlock[Heap] = pNewFreeBlock;
 	}
 
 	if ( dword_54D55C )
 	{
-		int size = pNewFreeBlock->ParentHeap >> 6;
+		int size = pNewFreeBlock->Next >> 6;
 		if ( size > 0 )
 			memset((pNewFreeBlock+1), 0x55u, 4 * size);
 	}
 
-	unsigned int ParentHeap = pNewFreeBlock->ParentHeap;
-	if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->ParentHeap >> 4)) == pAfter )
+	unsigned int Next = pNewFreeBlock->Next;
+	if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->Next >> 4)) == pAfter )
 	{
-		pNewFreeBlock->Next = pAfter->Next;
-		pNewFreeBlock->ParentHeap = (ParentHeap ^ pAfter->ParentHeap) & 0xF ^ ((ParentHeap & 0xFFFFFFF0) + pAfter->ParentHeap + 0x200);
+		pNewFreeBlock->field_4 = pAfter->field_4;
+		pNewFreeBlock->Next = (Next ^ pAfter->Next) & 0xF ^ ((Next & 0xFFFFFFF0) + pAfter->Next + 0x200);
 
 		if ( dword_54D55C )
 		{
@@ -94,7 +91,7 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 	}
 	else
 	{
-		pNewFreeBlock->Next = pAfter;
+		pNewFreeBlock->field_4 = pAfter;
 	}
 
 	pNewFreeBlock->field_8 = 0;
@@ -123,7 +120,7 @@ void Mem_Init(void)
 	{
 		print_if_false(HeapDefs[Heap][0] + 32 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
 
-		SRealBlockHeader* pNewFreeBlock = reinterpret_cast<SRealBlockHeader*>(HeapDefs[Heap][0]);
+		SNewBlockHeader* pNewFreeBlock = reinterpret_cast<SNewBlockHeader*>(HeapDefs[Heap][0]);
 
 		i32 v4 = HeapDefs[Heap][1];
 		i32 HeapBottom = HeapDefs[Heap][0];
@@ -131,8 +128,7 @@ void Mem_Init(void)
 		FirstFreeBlock[Heap] = 0;
 		Used[Heap] = 0;
 
-		pNewFreeBlock->Next = (SRealBlockHeader*)((reinterpret_cast<u32>(pNewFreeBlock->Next) & 0xF) ^
-								((v4 - HeapBottom - 32) << 4));
+		pNewFreeBlock->Size = ((v4 - HeapBottom - 32));
 
 		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
 		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);
@@ -272,10 +268,11 @@ unsigned int UniqueIdentifier;
 // seems ok tbh
 void *Mem_NewTop(unsigned int a1)
 {
+	/*
 	unsigned int v1; // esi
-	unsigned int *v2; // eax
-	unsigned int *v3; // edx
-	unsigned int *v4; // edi
+	SBlockHeader *v2; // eax
+	SBlockHeader *v3; // edx
+	SBlockHeader *v4; // edi
 	unsigned int *v5; // ecx
 	unsigned int v6; // eax
 	unsigned int *v8; // ecx
@@ -291,23 +288,17 @@ void *Mem_NewTop(unsigned int a1)
 	print_if_false(v1 != 0, "Zero size sent to Mem_New");
 	print_if_false(v1 < 0xFFFFFFF, "size exceeds 28 bit range");
 
-	v2 = (unsigned int *)dword_60D11C;
+	v2 = FirstFreeBlock[1];
 	v3 = 0;
 	v4 = 0;
-	v5 = (unsigned int *)dword_60D11C;
-	if ( dword_60D11C )
+	for ( i = FirstFreeBlock[1]; v2; v2 = v2->Next )
 	{
-		do
+		if ( v2->ParentHeap >> 4 >= v1 )
 		{
-			if ( *v2 >> 4 >= v1 )
-			{
-				v5 = v2;
-				v4 = v3;
-			}
-			v3 = v2;
-			v2 = (unsigned int *)v2[1];
+			i = v2;
+			v4 = v3;
 		}
-		while ( v2 );
+			v3 = v2;
 	}
 
 	v6 = *v5 >> 4;
@@ -327,8 +318,8 @@ void *Mem_NewTop(unsigned int a1)
 		v9 ^= 1u;
 		*v8 = v9;
 		v10 = v8 + 8;
-		dword_60D208 += (v9 >> 4) + 32;
-		gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		Used[1] += (v9 >> 4) + 32;
+		LowMemory = Used[1] >= CriticalBigHeapUsage;
 		if ( v1 >> 2 )
 		{
 			memset(v10, 0x33u, 4 * (v1 >> 2));
@@ -350,11 +341,13 @@ void *Mem_NewTop(unsigned int a1)
 		*v5 = v11;
 		v10 = v5 + 8;
 		dword_60D208 += (v11 >> 4) + 32;
-		gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+		LowMemory = Used[1] >= CriticalBigHeapUsage;
 		if ( v1 >> 2 )
 			memset(v10, 0x33u, 4 * (v1 >> 2));
 	}
 	return v10;
+	*/
+	return 0;
 }
 
 // @Ok
@@ -472,7 +465,14 @@ void validate_SBlockHeader(void){
 	VALIDATE_SIZE(SBlockHeader, 0x20);
 
 
-	VALIDATE(SBlockHeader, ParentHeap, 0x0);
-	VALIDATE(SBlockHeader, Next, 0x4);
+	VALIDATE(SBlockHeader, Next, 0x0);
+	VALIDATE(SBlockHeader, field_4, 0x4);
 	VALIDATE(SBlockHeader, field_8, 0x8);
+
+	VALIDATE_SIZE(SNewBlockHeader, 0x8);
+	/*
+	VALIDATE(SNewBlockHeader, ParentHeap, 0x0);
+	VALIDATE(SNewBlockHeader, Size, 0x0);
+	*/
+	VALIDATE(SNewBlockHeader, Next, 0x4);
 }
