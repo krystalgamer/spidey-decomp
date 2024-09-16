@@ -179,8 +179,9 @@ void Mem_Copy(void* dst, void* src, int size)
 
 EXPORT u32 UniqueIdentifier;
 
-// @NotOk
-// seems ok tbh
+// @Ok
+// what a goofy function. a1 aka the size already contains the space for the head but
+// then there's an extra +32 everywhere for some reason
 void *Mem_NewTop(unsigned int a1)
 {
 	UniqueIdentifier = (UniqueIdentifier + 1) & 0x7FFFFFFF;
@@ -220,109 +221,45 @@ void *Mem_NewTop(unsigned int a1)
 	{
 		pCurBlock->Size = v6 - roundedSize - 32;
 		SNewBlockHeader* pNewBlock = reinterpret_cast<SNewBlockHeader*>(
-				reinterpret_cast<char*>(pCurBlock) + 32 - roundedSize);
+				reinterpret_cast<char*>(pCurBlock) + v6 - roundedSize);
 
 
 
 		pNewBlock->Size = roundedSize;
-		pNewBlock->ParentHeap = 1;
 		pNewBlock->UniqueIdentifier = UniqueIdentifier;
+		pNewBlock->ParentHeap = 1;
 
 		void* ret = &pNewBlock[1];
 
-		Used[1] = pNewBlock->Size + 32;
+		Used[1] += pNewBlock->Size + 32;
 		LowMemory = Used[1] >= CriticalBigHeapUsage;
 
-		if (roundedSize >> 2)
+		for (i32 i = 0; i < (roundedSize >> 2); i++)
 		{
-			memset(ret, 0x33, 4 * (roundedSize >> 2));
+			reinterpret_cast<i32*>(ret)[i] = 0x33333333;
 		}
 
 		return ret;
 	}
 
-
-	/*
-	unsigned int v1; // esi
-	SBlockHeader *v2; // eax
-	SBlockHeader *v3; // edx
-	SBlockHeader *v4; // edi
-	unsigned int *v5; // ecx
-	unsigned int v6; // eax
-	unsigned int *v8; // ecx
-	unsigned int v9; // eax
-	void *v10; // edx
-	unsigned int v11; // eax
-
-	UniqueIdentifier = (UniqueIdentifier + 1) & 0x7FFFFFFF;
-	if ( !UniqueIdentifier )
-		UniqueIdentifier = 1;
-	v1 = (a1 + 3) & 0xFFFFFFFC;
-
-	print_if_false(v1 != 0, "Zero size sent to Mem_New");
-	print_if_false(v1 < 0xFFFFFFF, "size exceeds 28 bit range");
-
-	v2 = FirstFreeBlock[1];
-	v3 = 0;
-	v4 = 0;
-	for ( i = FirstFreeBlock[1]; v2; v2 = v2->Next )
-	{
-		if ( v2->ParentHeap >> 4 >= v1 )
-		{
-			i = v2;
-			v4 = v3;
-		}
-			v3 = v2;
-	}
-
-	v6 = *v5 >> 4;
-	if ( v6 < v1 )
-		return 0;
-	if ( v6 > v1 + 32 )
-	{
-
-
-		*v5 = *v5 & 0xF ^ (16 * (0xFFFFFFF * v1 + v6 + 0xFFFFFE0));
-		v8 = (unsigned int *)((char *)v5 + v6 - v1);
-		v9 = (16 * v1) | *v8 & 0xF;
-		*v8 = v9;
-
-		v9 &= 0xFFFFFFF0;
-		v8[2] = UniqueIdentifier;
-		v9 ^= 1u;
-		*v8 = v9;
-		v10 = v8 + 8;
-		Used[1] += (v9 >> 4) + 32;
-		LowMemory = Used[1] >= CriticalBigHeapUsage;
-		if ( v1 >> 2 )
-		{
-			memset(v10, 0x33u, 4 * (v1 >> 2));
-			return v8 + 8;
-		}
-
-	}
+	if ( pPrevBlock )
+		pPrevBlock->Next = pCurBlock->Next;
 	else
+		FirstFreeBlock[1] = pCurBlock->Next;
+
+	pCurBlock->UniqueIdentifier = UniqueIdentifier;
+	pCurBlock->ParentHeap = 1;
+
+	void* ret = &pCurBlock[1];
+	Used[1] += pCurBlock->Size + 32;
+	LowMemory = Used[1] >= CriticalBigHeapUsage;
+	for (i32 i = 0; i < (roundedSize >> 2); i++)
 	{
-		if ( v4 )
-			v4[1] = v5[1];
-		else
-			dword_60D11C = v5[1];
-		v11 = *v5;
-
-		v11 |= (unsigned char)(*v5 & 0xF0);
-		v5[2] = UniqueIdentifier;
-		v11 ^= 1u;
-		*v5 = v11;
-		v10 = v5 + 8;
-		dword_60D208 += (v11 >> 4) + 32;
-		LowMemory = Used[1] >= CriticalBigHeapUsage;
-		if ( v1 >> 2 )
-			memset(v10, 0x33u, 4 * (v1 >> 2));
+		reinterpret_cast<i32*>(ret)[i] = 0x33333333;
 	}
-	return v10;
-	*/
-	return 0;
 
+
+	return ret;
 }
 
 // @Ok
