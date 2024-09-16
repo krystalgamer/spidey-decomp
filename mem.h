@@ -12,16 +12,6 @@ struct SHandle
 	i32 field_4;
 };
 
-struct SBlockHeader {
-
-	i32 ParentHeap;
-	unsigned int Next;
-	SBlockHeader* field_4;
-	int field_8;
-	unsigned char padding[0x20-0x8-4];
-
-};
-
 struct SNewBlockHeader {
 
 	i32 ParentHeap: 4;

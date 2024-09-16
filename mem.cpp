@@ -382,13 +382,17 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 
 
 // @Ok
-// v3 is not assigned early for some reason
+// @Matching
 SHandle Mem_MakeHandle(void* a1)
 {
+	SHandle tmp;
+	tmp.field_0 = 0;
+
 	if (a1)
 	{
 		i32* v1 = (i32*)((char*)a1 - *((char*)a1 - 1));
-		i32 v2 = *(v1 - 6);
+		SNewBlockHeader* pBlock = reinterpret_cast<SNewBlockHeader*>(v1 - 8);
+		u32 v2 = pBlock->UniqueIdentifier;
 		i32* v3 = v1 - 8;
 
 		if (v2 & 0x80000000)
@@ -398,15 +402,14 @@ SHandle Mem_MakeHandle(void* a1)
 		else
 		{
 			print_if_false(v2 != 0, "A unique identifier has not been assigned to the memory block");
-			i32 v4 = *v3 << 28 >> 28;
+			i32 v4 = pBlock->ParentHeap;
 
 			if (v4 >= 0 && v4 <= 1)
 			{
-				u32 v5 = *v3 & 0xFFFFFFF0;
-				if ( v5 >= 0x40 && v5 <= 0x2000000 )
+				if (pBlock->Size  >= 0x4 && pBlock->Size <= 0x200000)
 				{
 					SHandle result;
-					result.field_4 = v3[2];
+					result.field_4 = pBlock->UniqueIdentifier;
 					result.field_0 = reinterpret_cast<i32>(a1);
 					return result;
 				}
@@ -419,8 +422,6 @@ SHandle Mem_MakeHandle(void* a1)
 		}
 	}
 
-	SHandle tmp;
-	tmp.field_0 = 0;
 	return tmp;
 }
 
