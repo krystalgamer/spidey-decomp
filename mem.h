@@ -27,6 +27,7 @@ struct SNewBlockHeader {
 	i32 ParentHeap: 4;
 	u32 Size: 28;
 	SBlockHeader* Next;
+	unsigned char padding[0x20-0x8];
 };
 
 EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);

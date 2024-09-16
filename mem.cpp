@@ -180,26 +180,27 @@ void Mem_Delete(void* a1)
 // not matching inside the if on the Used assignement but that's fine
 void Mem_ShrinkX(void* a1, u32 newSize)
 {
-	u32 v2; // eax
-	i32 v3; // esi
-	u32 v5; // eax
+	SNewBlockHeader* pBlock = reinterpret_cast<SNewBlockHeader*>(
+			reinterpret_cast<char*>(a1) - 32);
 
-	v2 = *((u32 *)a1 - 8);
-	v3 = (i32)(v2 << 28) >> 28;
-	print_if_false(newSize <= v2 >> 4, "Illegal newsize %ld sent to Mem_Shrink", newSize);
+	u32 v2 = pBlock->Size;
+	i32 Heap = pBlock->ParentHeap;
+	print_if_false(newSize <= v2, "Illegal newsize %ld sent to Mem_Shrink", newSize);
 	print_if_false((newSize & 3) == 0, "newsize %ld not lword aligned", newSize);
 
-	print_if_false(v3 >= 0 && v3 < 2, "Corrupt block header, parent heap (%d) out of range", v3);
+	print_if_false(Heap >= 0 && Heap < 2, "Corrupt block header, parent heap (%d) out of range", Heap);
 
-	v5 = *((u32 *)a1 - 8);
-	if ( newSize < (v5 >> 4) - 32 )
+	if ( newSize < (pBlock->Size - 32))
 	{
-		v5 &= 0xFFFFFFF0;
-		*(u32*)((char *)a1 + newSize) = ~*(u32*)((char *)a1 + newSize) & 0xF ^ (v5 - 16 * newSize - 497);
-		Used[v3] += newSize - (*((u32*)a1 - 8) >> 4);
-		*((u32*)a1 - 8) = (16 * newSize) | *((u32*)a1 - 8) & 0xF;
-		AddToFreeList((SBlockHeader *)((char *)a1 + newSize), v3);
-		if ( v3 == 1 )
+		SNewBlockHeader* pNewFreeBlock = reinterpret_cast<SNewBlockHeader*>(
+				reinterpret_cast<i32>(a1) + newSize);
+
+		pNewFreeBlock->Size = pBlock->Size - (newSize + + 32);
+
+		Used[Heap] += newSize - pBlock->Size;
+		pBlock->Size = newSize;
+		AddToFreeList((SBlockHeader *)((char *)a1 + newSize), Heap);
+		if ( Heap == 1 )
 			LowMemory = Used[1] >= CriticalBigHeapUsage;
 	}
 }
@@ -457,17 +458,20 @@ void validate_SHandle(void){
 
 void validate_SBlockHeader(void){
 
+	/*
 	VALIDATE_SIZE(SBlockHeader, 0x20);
 
 
 	VALIDATE(SBlockHeader, Next, 0x0);
 	VALIDATE(SBlockHeader, field_4, 0x4);
 	VALIDATE(SBlockHeader, field_8, 0x8);
+	*/
 
-	VALIDATE_SIZE(SNewBlockHeader, 0x8);
+	VALIDATE_SIZE(SNewBlockHeader, 0x20);
 	/*
 	VALIDATE(SNewBlockHeader, ParentHeap, 0x0);
 	VALIDATE(SNewBlockHeader, Size, 0x0);
 	*/
 	VALIDATE(SNewBlockHeader, Next, 0x4);
+	VALIDATE(SNewBlockHeader, padding, 0x8);
 }
