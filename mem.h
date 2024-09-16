@@ -8,7 +8,7 @@ EXPORT extern i32 LowMemory;
 
 struct SHandle
 {
-	i32 field_0;
+	void* field_0;
 	i32 field_4;
 };
 

@@ -410,7 +410,7 @@ SHandle Mem_MakeHandle(void* a1)
 				{
 					SHandle result;
 					result.field_4 = pBlock->UniqueIdentifier;
-					result.field_0 = reinterpret_cast<i32>(a1);
+					result.field_0 = a1;
 					return result;
 				}
 				print_if_false(0, "Tried to make handle out of invalid pointer\n bad size");
@@ -427,32 +427,27 @@ SHandle Mem_MakeHandle(void* a1)
 
 
 // @Ok
-// Small difference where if a1->field_0 is 0 it jumps to xor eax, eax, which is
-// not needed :D
+// @Matching
 void *Mem_RecoverPointer(SHandle *a1)
 {
 	void *result; // eax
 	int v2; // edx
-	char *v3; // ecx
 
-	result = (void *)a1->field_0;
-	if ( a1->field_0 )
+	if (a1->field_0)
 	{
-
 		v2 = *((char *)result - 1);
-		v3 = (char *)result - v2;
-		if ( v2 > ' ' ||
-				((unsigned __int8)v3 & ~0xFFFFFFFC) != 0 ||
-				*((unsigned int *)v3 - 6) != (unsigned int)a1[1].field_0 )
+		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
+		if ( v2 > ' ' || (v3 & 3) ||
+				(reinterpret_cast<SNewBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->field_4 )
 		{
 			a1->field_0 = 0;
 			return 0;
 		}
-
+		
+		return a1->field_0;
 	}
 
-	return (void*)a1->field_0;
-
+	return 0;
 }
 
 void validate_SHandle(void){
