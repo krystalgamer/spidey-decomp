@@ -31,7 +31,7 @@ struct SNewBlockHeader {
 	unsigned char padding[0x20-0x8-4];
 };
 
-EXPORT void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap);
+EXPORT void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap);
 EXPORT void Mem_Init(void);
 EXPORT void Mem_Delete(void*);
 EXPORT void Mem_Shrink(void*, u32);

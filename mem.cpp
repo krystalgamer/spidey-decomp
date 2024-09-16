@@ -10,12 +10,100 @@ i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
 EXPORT SNewBlockHeader *FirstFreeBlock[2];
 
-int dword_54D55C = 1;
+EXPORT i32 dword_54D55C = 1;
 
 // @OK
 // @CM: Different register allocation
-void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
+// but code matches perfect :D
+void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
 {
+	SNewBlockHeader* pAfter = FirstFreeBlock[Heap];
+	SNewBlockHeader* pBefore = 0;
+
+	while (reinterpret_cast<u32>(pAfter) < reinterpret_cast<u32>(pNewFreeBlock))
+	{
+		if (!pAfter)
+			break;
+
+		pBefore = pAfter;
+		pAfter = pAfter->Next;
+	}
+
+	if (pBefore)
+	{
+		if ( (SNewBlockHeader *)((char *)&pBefore[1] + pBefore->Size) == pNewFreeBlock )
+		{
+			if ( (SNewBlockHeader *)((char *)&pNewFreeBlock[1] + pNewFreeBlock->Size) == pAfter )
+			{
+				pBefore->Next = pAfter->Next;
+				pBefore->Size = pBefore->Size + pNewFreeBlock->Size + pAfter->Size + 2*32;
+
+				if ( dword_54D55C )
+				{
+					i32* dst = reinterpret_cast<i32*>(pNewFreeBlock);
+					i32 size = ((pNewFreeBlock->Size + 64) >> 2);
+					for (i32 i = 0; i < size; i++)
+					{
+						dst[i] = 0x55555555;
+					}
+				}
+				return;
+			}
+			else
+			{
+				pBefore->Size = pBefore->Size + pNewFreeBlock->Size + 32;
+				if ( dword_54D55C )
+				{
+					i32* dst = reinterpret_cast<i32*>(pNewFreeBlock);
+					i32 size = ((pNewFreeBlock->Size + 32) >> 2);
+					for (i32 i = 0; i < size; i++)
+					{
+						dst[i] = 0x55555555;
+					}
+				}
+				return;
+			}
+
+			return;
+		}
+
+		pBefore->Next = pNewFreeBlock;
+	}
+	else
+	{
+		FirstFreeBlock[Heap] = pNewFreeBlock;
+	}
+
+	if (dword_54D55C)
+	{
+		i32* dst = reinterpret_cast<i32*>(&pNewFreeBlock[1]);
+		i32 size = (pNewFreeBlock->Size >> 2);
+		for (i32 i = 0; i < size; i++)
+		{
+			dst[i] = 0x55555555;
+		}
+	}
+
+	if ((SNewBlockHeader*)(reinterpret_cast<char*>(&pNewFreeBlock[1]) + pNewFreeBlock->Size) == pAfter)
+	{
+		pNewFreeBlock->Next = pAfter->Next;
+		pNewFreeBlock->Size = pNewFreeBlock->Size + pAfter->Size + 32;
+
+		if(dword_54D55C)
+		{
+			i32* dst = reinterpret_cast<i32*>(&pNewFreeBlock[1]);
+			for (i32 i = 0; i < (sizeof(SNewBlockHeader) >> 2); i++)
+			{
+				dst[i] = 0x55555555;
+			}
+		}
+	}
+	else
+	{
+		pNewFreeBlock->Next = pAfter;
+	}
+
+	pNewFreeBlock->UniqueIdentifier = 0;
 }
 
 EXPORT void Mem_Secret(SNewBlockHeader *p, i32 x)
@@ -46,7 +134,7 @@ void Mem_Init(void)
 
 		pNewFreeBlock->Size = ((v4 - HeapBottom - 32));
 
-		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
+		AddToFreeList(reinterpret_cast<SNewBlockHeader*>(pNewFreeBlock), Heap);
 		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);
 	}
 
@@ -74,7 +162,7 @@ INLINE void Mem_DeleteX(void *p)
 		i32 newUsed = 32 + v4->Size;
 		Used[Heap] -= newUsed;
 		AddToFreeList(
-				reinterpret_cast<SBlockHeader*>(v4),
+				reinterpret_cast<SNewBlockHeader*>(v4),
 				Heap);
 
 		if (Heap == 1)
@@ -97,7 +185,7 @@ void Mem_Delete(void* a1)
 }
 
 // @Ok
-// not matching inside the if on the Used assignement but that's fine
+// @Matching
 void Mem_ShrinkX(void* a1, u32 newSize)
 {
 	SNewBlockHeader* pBlock = reinterpret_cast<SNewBlockHeader*>(
@@ -119,7 +207,7 @@ void Mem_ShrinkX(void* a1, u32 newSize)
 
 		Used[Heap] += newSize - pBlock->Size;
 		pBlock->Size = newSize;
-		AddToFreeList((SBlockHeader *)((char *)a1 + newSize), Heap);
+		AddToFreeList((SNewBlockHeader *)((char *)a1 + newSize), Heap);
 		if ( Heap == 1 )
 			LowMemory = Used[1] >= CriticalBigHeapUsage;
 	}
@@ -268,7 +356,8 @@ void *Mem_CoreNew(unsigned int a1)
 	return Mem_NewTop(a1);
 }
 
-bool dword_54D560;
+u32 dword_54D560;
+
 // @Ok
 // Does not match, no need to revisit
 void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
@@ -279,11 +368,11 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 	void *result; // eax
 
 	print_if_false(a4 == 0, "Bad Mem_new");
-	if ( a5 )
+	if (a5)
 		dword_54D560 = a5;
 	v5 = a1 + 32;
-	if ( a1 + 32 <= 4 )
-	v5 = 8;
+	if ( v5 <= 4 )
+		v5 = 8;
 	v6 = Mem_CoreNew(v5);
 	v7 = (int)v6 & 0x1F;
 	result = (void*)((int)v6 + 32 - v7);
