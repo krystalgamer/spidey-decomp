@@ -8,7 +8,7 @@ EXPORT i32 Used[2];
 u32 HeapDefs[2][2];
 i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
-EXPORT SBlockHeader *FirstFreeBlock[2];
+EXPORT SNewBlockHeader *FirstFreeBlock[2];
 
 int dword_54D55C = 1;
 
@@ -16,86 +16,6 @@ int dword_54D55C = 1;
 // @CM: Different register allocation
 void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 {
-	register SBlockHeader *pAfter = FirstFreeBlock[Heap];
-	register SBlockHeader *pBefore = NULL;
-
-	while ( pAfter < pNewFreeBlock && pAfter )
-	{
-		pBefore = pAfter;
-		pAfter = pAfter->field_4;
-	}
-
-
-	if (pBefore)
-	{
-		if ((SBlockHeader *)((char*)(pBefore + 1) + (pBefore->Next >> 4)) == pNewFreeBlock)
-		{
-			if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->Next >> 4)) == pAfter )
-			{
-				pBefore->field_4 = pAfter->field_4;
-				pBefore->Next = (pAfter->Next + (pBefore->Next & 0xFFFFFFF0) + pNewFreeBlock->Next + 1024) ^ (pBefore->Next ^ (pAfter->Next + pNewFreeBlock->Next)) & 0xF;
-
-				if ( dword_54D55C )
-				{
-					i32 size = ((pNewFreeBlock->Next >> 4) + 64) >> 2;
-					if ( size > 0)
-					{
-						memset(pNewFreeBlock, 0x55u, 4 * size);
-						return;
-					}
-				}
-			}
-			else
-			{
-				pBefore->Next = (pBefore->Next ^ pNewFreeBlock->Next) & 0xF ^ ((pBefore->Next & 0xFFFFFFF0) + pNewFreeBlock->Next + 512);
-				if ( dword_54D55C )
-				{
-					int size = ((pNewFreeBlock->Next >> 4) + 32) >> 2;
-					if ( size > 0 )
-					{
-						memset(pNewFreeBlock, 0x55, 4 * size);
-						return;
-					}
-				}
-			}
-
-			return;
-		}
-
-		pBefore->field_4 = pNewFreeBlock;
-	}
-	else
-	{
-		FirstFreeBlock[Heap] = pNewFreeBlock;
-	}
-
-	if ( dword_54D55C )
-	{
-		int size = pNewFreeBlock->Next >> 6;
-		if ( size > 0 )
-			memset((pNewFreeBlock+1), 0x55u, 4 * size);
-	}
-
-	unsigned int Next = pNewFreeBlock->Next;
-	if ( (SBlockHeader *)((char *)(pNewFreeBlock + 1) + (pNewFreeBlock->Next >> 4)) == pAfter )
-	{
-		pNewFreeBlock->field_4 = pAfter->field_4;
-		pNewFreeBlock->Next = (Next ^ pAfter->Next) & 0xF ^ ((Next & 0xFFFFFFF0) + pAfter->Next + 0x200);
-
-		if ( dword_54D55C )
-		{
-			memset(pAfter, 0x55u, sizeof(SBlockHeader));
-			pNewFreeBlock->field_8 = 0;
-			return;
-		}
-	}
-	else
-	{
-		pNewFreeBlock->field_4 = pAfter;
-	}
-
-	pNewFreeBlock->field_8 = 0;
-
 }
 
 EXPORT void Mem_Secret(SNewBlockHeader *p, i32 x)
@@ -257,13 +177,71 @@ void Mem_Copy(void* dst, void* src, int size)
 	}
 }
 
-unsigned int dword_60D11C;
-unsigned int UniqueIdentifier;
+EXPORT u32 UniqueIdentifier;
 
 // @NotOk
 // seems ok tbh
 void *Mem_NewTop(unsigned int a1)
 {
+	UniqueIdentifier = (UniqueIdentifier + 1) & 0x7FFFFFFF;
+	if ( !UniqueIdentifier )
+		UniqueIdentifier = 1;
+
+	u32 roundedSize = (a1 + 3) & 0xFFFFFFFC;
+
+	print_if_false(roundedSize != 0, "Zero size sent to Mem_New");
+	print_if_false(roundedSize < 0xFFFFFFF, "size exceeds 28 bit range");
+
+	SNewBlockHeader* pCurBlock = FirstFreeBlock[1];
+	SNewBlockHeader* pPrevIterBlock = 0;
+	SNewBlockHeader* pPrevBlock = 0;
+
+	for (
+			SNewBlockHeader* pIter = FirstFreeBlock[1];
+			pIter;
+			pIter = pIter->Next)
+	{
+		if (pIter->Size >= roundedSize)
+		{
+			pCurBlock = pIter;
+			pPrevBlock = pPrevIterBlock;
+		}
+
+		pPrevIterBlock = pIter;
+	}
+
+	u32 v6 = pCurBlock->Size;
+	if (v6 < roundedSize)
+	{
+		return 0;
+	}
+
+	if (v6 > roundedSize + 32)
+	{
+		pCurBlock->Size = v6 - roundedSize - 32;
+		SNewBlockHeader* pNewBlock = reinterpret_cast<SNewBlockHeader*>(
+				reinterpret_cast<char*>(pCurBlock) + 32 - roundedSize);
+
+
+
+		pNewBlock->Size = roundedSize;
+		pNewBlock->ParentHeap = 1;
+		pNewBlock->UniqueIdentifier = UniqueIdentifier;
+
+		void* ret = &pNewBlock[1];
+
+		Used[1] = pNewBlock->Size + 32;
+		LowMemory = Used[1] >= CriticalBigHeapUsage;
+
+		if (roundedSize >> 2)
+		{
+			memset(ret, 0x33, 4 * (roundedSize >> 2));
+		}
+
+		return ret;
+	}
+
+
 	/*
 	unsigned int v1; // esi
 	SBlockHeader *v2; // eax
@@ -344,6 +322,7 @@ void *Mem_NewTop(unsigned int a1)
 	return v10;
 	*/
 	return 0;
+
 }
 
 // @Ok
@@ -473,5 +452,6 @@ void validate_SBlockHeader(void){
 	VALIDATE(SNewBlockHeader, Size, 0x0);
 	*/
 	VALIDATE(SNewBlockHeader, Next, 0x4);
-	VALIDATE(SNewBlockHeader, padding, 0x8);
+	VALIDATE(SNewBlockHeader, UniqueIdentifier, 0x8);
+	VALIDATE(SNewBlockHeader, padding, 0xC);
 }
