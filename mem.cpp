@@ -186,30 +186,30 @@ void Mem_Delete(void* a1)
 }
 
 // @Ok
-// not matching in one area, but logic same
-void Mem_ShrinkX(void* a1, unsigned int newSize)
+// not matching inside the if on the Used assignement but that's fine
+void Mem_ShrinkX(void* a1, u32 newSize)
 {
-	unsigned int v2; // eax
-	int v3; // esi
-	unsigned int v5; // eax
+	u32 v2; // eax
+	i32 v3; // esi
+	u32 v5; // eax
 
-	v2 = *((unsigned int *)a1 - 8);
-	v3 = (int)(v2 << 28) >> 28;
+	v2 = *((u32 *)a1 - 8);
+	v3 = (i32)(v2 << 28) >> 28;
 	print_if_false(newSize <= v2 >> 4, "Illegal newsize %ld sent to Mem_Shrink", newSize);
 	print_if_false((newSize & 3) == 0, "newsize %ld not lword aligned", newSize);
 
 	print_if_false(v3 >= 0 && v3 < 2, "Corrupt block header, parent heap (%d) out of range", v3);
 
-	v5 = *((unsigned int *)a1 - 8);
+	v5 = *((u32 *)a1 - 8);
 	if ( newSize < (v5 >> 4) - 32 )
 	{
 		v5 &= 0xFFFFFFF0;
-		*(unsigned int *)((char *)a1 + newSize) = ~*(unsigned int *)((char *)a1 + newSize) & 0xF ^ (v5 - 16 * newSize - 497);
-		gMemInitRelatedOne[v3] += newSize - (*((unsigned int *)a1 - 8) >> 4);
-		*((unsigned int *)a1 - 8) = (16 * newSize) | *((unsigned int *)a1 - 8) & 0xF;
+		*(u32*)((char *)a1 + newSize) = ~*(u32*)((char *)a1 + newSize) & 0xF ^ (v5 - 16 * newSize - 497);
+		Used[v3] += newSize - (*((u32*)a1 - 8) >> 4);
+		*((u32*)a1 - 8) = (16 * newSize) | *((u32*)a1 - 8) & 0xF;
 		AddToFreeList((SBlockHeader *)((char *)a1 + newSize), v3);
 		if ( v3 == 1 )
-			gMemInitRelatedTop = dword_60D208 >= (unsigned int)dword_60D228;
+			LowMemory = Used[1] >= CriticalBigHeapUsage;
 	}
 }
 
