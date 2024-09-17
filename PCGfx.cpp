@@ -239,10 +239,18 @@ void PCGfx_ProcessTexture(
 	}
 }
 
-// @SMALLTODO
-void PCGfx_RenderInit(float,float,float,float,float)
+EXPORT float gRenderInitOne[3] = {  10.0f, 8048.0f, 276.0f };
+EXPORT float gRenderInitTwo[2] = { 8038.0f, 1.9624f };
+
+// @Ok
+// @Matching
+void PCGfx_RenderInit(float a1, float a2, float a3)
 {
-    printf("PCGfx_RenderInit(float,float,float,float,float)");
+	gRenderInitOne[2] = a3;
+	gRenderInitOne[0] = a1;
+	gRenderInitOne[1] = a2;
+	gRenderInitTwo[0] = a2 - a1;
+	gRenderInitTwo[1] = gRenderInitTwo[0] / 4096.0f;
 }
 
 // @SMALLTODO
