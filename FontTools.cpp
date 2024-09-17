@@ -516,10 +516,19 @@ void FontManager::UnloadFont(Font* pFont)
 	FontList[count] = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void FontManager::UnloadAllFonts(void)
 {
-	printf("void FontManager::UnloadAllFonts(void)");
+	for (i32 i = 0; i < 6; i++)
+	{
+		if (FontList[i])
+		{
+			FontList[i]->unload();
+			delete FontList[i];
+			FontList[i] = 0;
+		}
+	}
 }
 
 // @SMALLTODO
