@@ -3,6 +3,10 @@
 #include "DXsound.h"
 #include "SpideyDX.h"
 #include "DXinit.h"
+#include "camera.h"
+#include "mess.h"
+#include "ps2m3d.h"
+#include "pshell.h"
 
 #include <cmath>
 
@@ -108,7 +112,7 @@ void PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float)
 // @Ok
 // @Matching
 // @Note powerpc has fps counter here and fog level
-void PCGfx_EndScene(i32 a1)
+INLINE void PCGfx_EndScene(i32 a1)
 {
 	if (gSceneRelated)
 	{
@@ -253,10 +257,47 @@ void PCGfx_RenderInit(float a1, float a2, float a3)
 	gRenderInitTwo[1] = gRenderInitTwo[0] / 4096.0f;
 }
 
-// @SMALLTODO
-void PCGfx_RenderModelPreview(void *,char const *,i32)
+// @NotOk
+// third parameter of rendesetup seems to be useless but also DB related
+void PCGfx_RenderModelPreview(
+		void* a1,
+		char const* a2,
+		i32 a3)
 {
-    printf("PCGfx_RenderModelPreview(void *,char const *,i32)");
+	char v3[128];
+
+	M3dMaths_RotMatrixYXZ(&gMikeCamera[0].Angles, &gMikeCamera[0].Transform);
+	TransMatrix(&gMikeCamera[0].Transform, &gMikeCamera[0].Position);
+	PCGfx_BeginScene(1u, -1);
+
+	// @FIXME: third param seems to be ignored
+	M3d_RenderSetup(&gMikeCamera[0], &gViewport, 0);
+	M3d_Render(a1);
+	M3d_RenderCleanup();
+	Mess_SetSort(4095);
+	PShell_SmallFont();
+	Mess_SetRGB(0xFFu, 0xFFu, 0xFFu, 0);
+	Mess_SetRGBBottom(0xFFu, 255, 255);
+	Mess_SetShadowRGB(0xFFu);
+	Mess_SetTextJustify(1);
+
+	sprintf(v3, "PSX: %s", a2);
+	Mess_DrawText(20, 20, v3, 0, 0x1000u);
+	sprintf(v3, "IDX: %i", a3);
+	Mess_DrawText(220, 20, v3, 0, 0x1000u);
+	sprintf(v3, "CAM: %i %i %i", gMikeCamera[0].Position.vx, gMikeCamera[0].Position.vy, gMikeCamera[0].Position.vz);
+	Mess_DrawText(20, 45, v3, 0, 0x1000u);
+
+	CItem* pItem = static_cast<CItem*>(a1);
+	sprintf(
+		v3,
+		"ITM: %i %i %i",
+		pItem->mPos.vx >> 12,
+		pItem->mPos.vy >> 12,
+		pItem->mPos.vz >> 12);
+	Mess_DrawText(220, 45, v3, 0, 0x1000u);
+
+	PCGfx_EndScene(1);
 }
 
 EXPORT i8 gPcGfxBrightnessValues[256];

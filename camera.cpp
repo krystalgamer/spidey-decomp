@@ -7,7 +7,7 @@ SViewport gViewport;
 CCamera *CameraList;
 EXPORT i32 NumCameras;
 
-EXPORT SCamera gMikeCamera[2];
+SCamera gMikeCamera[2];
 
 // @Ok
 // @Test
