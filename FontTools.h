@@ -73,7 +73,7 @@ class Font : public CClass
 		u8 field_5C;
 		u8 field_5D;
 		u8 field_5E;
-		unsigned char field_5F[256];
+		u8 field_5F[256];
 
 		u8* field_160;
 };

@@ -606,22 +606,68 @@ Font* FontManager::LoadFont(const char* pName)
 	return pFont;
 }
 
-// @SMALLTODO
-i32 Font::heightBelowBaseline(char*)
+// @Ok
+// @Note: see comment for heightAboveBaseline
+INLINE i32 Font::heightBelowBaseline(char* pStr)
 {
-	return 0x14072024;
+	i32 max_h = 0;
+	i32 i = 0;
+	
+	while(pStr[i])
+	{
+		i32 c = pStr[i];
+		if (c != 0x000000FF)
+		{
+			u32 tmp = this->field_5F[c];
+
+			if ((i32)tmp != 0x000000FF)
+			{
+				i32 val = this->pCharTab[tmp].H - this->pCharTab[tmp].Baseline;
+				if (val > max_h)
+					max_h = val;
+			}
+		}
+
+		i++;
+	}
+
+	return (max_h * this->field_34) >> 12;
 }
 
-// @SMALLTODO
-i32 Font::heightAboveBaseline(char*)
+// @Ok
+// @Note: fuck this function, can't  get it to match now matter how much i try
+// the first if inside the while oculd be removed because it performs sign extension,
+// not sure what's up with that to be honest. i think it's a bug somewhere because on the PPC version, it does the same checks but with i8 not i32
+INLINE i32 Font::heightAboveBaseline(char* pStr)
 {
-	return 0x14072024;
+	i32 max_h = 0;
+	i32 i = 0;
+	
+	while(pStr[i])
+	{
+		i32 c = pStr[i];
+		if (c != 0x000000FF)
+		{
+			u32 tmp = this->field_5F[c];
+
+			if ((i32)tmp != 0x000000FF)
+			{
+				i32 val = this->pCharTab[tmp].Baseline;
+				if (val > max_h)
+					max_h = val;
+			}
+		}
+
+		i++;
+	}
+
+	return (max_h * this->field_34) >> 12;
 }
 
 // @Ok
 int Font::height(char* txt)
 {
-	return this->heightBelowBaseline(txt) + this->heightAboveBaseline(txt);
+	return this->heightAboveBaseline(txt) + this->heightBelowBaseline(txt);
 }
 
 // @SMALLTODO
