@@ -36,11 +36,20 @@ enum DCGfx_RenderSetting
 	DCGfx_RenderSetting_MAX  = DCGfx_RenderSetting_e,
 };
 
+enum DCGfx_BlendingMode
+{
+	DCGfx_BlendingMode_0  = 0,
+	DCGfx_BlendingMode_1  = 1,
+	DCGfx_BlendingMode_2  = 2,
+	DCGfx_BlendingMode_3  = 3,
+	DCGfx_BlendingMode_4  = 4,
+	DCGfx_BlendingMode_MAX  = DCGfx_BlendingMode_4,
+};
+
 // @FIXME
 #define _DXVERT i32
 #define tagKMVERTEX3 i32
 #define _tagKMSTRIPHEAD i32
-#define DCGfx_BlendingMode i32
 
 EXPORT void PCGfx_BeginScene(u32,i32);
 EXPORT void PCGfx_ClipSendIndexedVertList(tagKMVERTEX3 const *,i32,u16 const *,i32);

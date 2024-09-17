@@ -345,7 +345,7 @@ void PCTex_ReloadTextures(void)
 
 // @Ok
 // @Matching
-i32 PCTex_TextureHasAlpha(i32 index)
+u8 PCTex_TextureHasAlpha(i32 index)
 {
 	return gGlobalTextures[index].mAlpha & 1;
 }

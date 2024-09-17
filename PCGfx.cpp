@@ -37,7 +37,7 @@ void PCGfx_BeginScene(u32,i32)
 			setupFog();
 		}
 
-		PCGfx_ProcessTexture(0, -1, 0);
+		PCGfx_ProcessTexture(0, -1, DCGfx_BlendingMode_0);
 		DXPOLY_BeginScene();
 		gSceneRelated = 1;
 		gZLayerNearest = 0.0099999998;
@@ -113,7 +113,7 @@ void PCGfx_EndScene(i32 a1)
 	if (gSceneRelated)
 	{
 		DXPOLY_EndScene(a1 != 0);
-		PCGfx_ProcessTexture(0, -1, 0);
+		PCGfx_ProcessTexture(0, -1, DCGfx_BlendingMode_0);
 		gEndSceneRelated = -1;
 		gSceneRelated = 0;
 		gEndSceneRelatedTwo = 0;
@@ -124,7 +124,7 @@ void PCGfx_EndScene(i32 a1)
 // @Matching
 void PCGfx_Exit(void)
 {
-	PCGfx_ProcessTexture(0, -1, 0);
+	PCGfx_ProcessTexture(0, -1, DCGfx_BlendingMode_0);
 	PCTex_ReleaseAllTextures();
 	print_if_false(PCTex_CountActiveTextures() == 0, "some textures still allocated!");
 }
@@ -164,7 +164,7 @@ void PCGfx_InitAtStart(void)
 {
 	DXPOLY_SetOutlineColor(0xFF00FF00);
 	DXPOLY_SetHUDOffset(7);
-	PCGfx_ProcessTexture(0, -1, 0);
+	PCGfx_ProcessTexture(0, -1, DCGfx_BlendingMode_0);
 	PCGfx_SetBrightness(gBrightnessRelated);
 }
 
@@ -175,10 +175,68 @@ u8 PCGfx_IsInScene(void)
 	return gSceneRelated;
 }
 
-// @SMALLTODO
-void PCGfx_ProcessTexture(_tagKMSTRIPHEAD *,i32,DCGfx_BlendingMode)
+EXPORT i32 gBlendingModes[DCGfx_BlendingMode_MAX + 1] =
 {
-    printf("PCGfx_ProcessTexture(_tagKMSTRIPHEAD *,i32,DCGfx_BlendingMode)");
+	0, 1, 2, 3, 4
+};
+
+EXPORT u8 gProcessTextureRelated;
+EXPORT u16 gChosenBlendingMode;
+EXPORT u16 gProcessedTextureFlags;
+
+// @NotOk
+// missing low graphics stuff
+void PCGfx_ProcessTexture(
+		_tagKMSTRIPHEAD *,
+		i32 a2,
+		DCGfx_BlendingMode a3)
+{
+	i32 TextureFlags = PCTex_GetTextureFlags(a2);
+	gProcessTextureRelated = (TextureFlags & 0x1000) != 0 && (a3 == DCGfx_BlendingMode_0 || a3 == DCGfx_BlendingMode_1);
+
+	i32 curBlendingMode;
+	if (a3 || a2 < 0 || !PCTex_TextureHasAlpha(a2))
+	{
+		curBlendingMode = gBlendingModes[a3];
+	}
+	else
+	{
+		curBlendingMode = gProcessTextureRelated ? 1 : 5;
+	}
+
+	gChosenBlendingMode = curBlendingMode;
+	gNonRendderSettingE = (TextureFlags & 0x20) == 0 ? gIsRenderSettingE : 0;
+
+	if (gLowGraphics)
+	{
+	}
+	else if (a2 >= 0)
+	{
+		IDirectDrawSurface7* Direct3DTexture = PCTex_GetDirect3DTexture(a2);
+		DXPOLY_SetTexture(Direct3DTexture);
+		gProcessedTextureFlags = 0;
+
+		if (PCTex_TextureHasAlpha(a2))
+			gProcessedTextureFlags |= 8;
+
+		i32 v9 = PCTex_GetTextureFlags(a2);
+		if ((v9 & 8) != 0)
+			gProcessedTextureFlags |= 0x10;
+
+		if ((v9 & 0x20) != 0)
+			gProcessedTextureFlags |= 1;
+
+		if ((v9 & 2) == 0)
+			gProcessedTextureFlags |= 2;
+
+		if ((v9 & 4) == 0)
+			gProcessedTextureFlags |= 4;
+	}
+	else
+	{
+		DXPOLY_SetTexture(0);
+		gProcessedTextureFlags = 0;
+	}
 }
 
 // @SMALLTODO

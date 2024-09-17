@@ -87,7 +87,7 @@ EXPORT void PCTex_ReleaseAllTextures(void);
 EXPORT void PCTex_ReleaseSysTexture(i32,bool);
 EXPORT void PCTex_ReleaseTexture(i32,bool);
 EXPORT void PCTex_ReloadTextures(void);
-EXPORT i32 PCTex_TextureHasAlpha(i32);
+EXPORT u8 PCTex_TextureHasAlpha(i32);
 EXPORT void PCTex_UnbufferPVR(PVRHeader *);
 EXPORT void PCTex_UnloadTextures(void);
 EXPORT void PCTex_UpdateForSoftwareRenderer(void);
