@@ -11,7 +11,7 @@
 EXPORT int gResolutionX;
 EXPORT int gResolutionY;
 
-EXPORT i32 gLowGraphics;
+i32 gLowGraphics;
 EXPORT void* gLowGraphicsRelated;
 
 u32 gColorCount;

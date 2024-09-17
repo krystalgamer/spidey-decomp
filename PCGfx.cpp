@@ -2,8 +2,13 @@
 #include "PCTex.h"
 #include "DXsound.h"
 #include "SpideyDX.h"
+#include "DXinit.h"
 
 #include <cmath>
+
+
+EXPORT u8 gIsRenderSettingE = 1;
+EXPORT u8 gNonRendderSettingE;
 
 u8 gSceneRelated;
 
@@ -247,10 +252,53 @@ void PCGfx_SetFogParams(
 	gBFoggingRelated = 1;
 }
 
-// @SMALLTODO
-void PCGfx_SetRenderParameter(DCGfx_RenderParameter,DCGfx_RenderSetting)
+u32 gDepthCompareValues[DCGfx_RenderSetting_7 + 1] =
 {
-    printf("PCGfx_SetRenderParameter(DCGfx_RenderParameter,DCGfx_RenderSetting)");
+	0, 2, 3, 4, 5, 6, 7, 8,
+};
+
+u32 gFilterModeValues[DCGfx_RenderSetting_d - DCGfx_RenderSetting_a + 1] =
+{
+	0, 1 ,1 ,1
+};
+
+// @Ok
+// @Matching
+void PCGfx_SetRenderParameter(
+		DCGfx_RenderParameter a1,
+		DCGfx_RenderSetting a2)
+{
+	if ( !gLowGraphics )
+	{
+		switch ( a1 )
+		{
+			case DCGfx_RenderParameter_0:
+				print_if_false(a2 >= DCGfx_RenderSetting_0, "Invalid render setting.");
+				print_if_false(a2 <= DCGfx_RenderSetting_7, "Invalid render setting.");
+				DXPOLY_SetDepthCompare(gDepthCompareValues[a2]);
+				break;
+			case DCGfx_RenderParameter_1:
+				print_if_false(a2 >= DCGfx_RenderSetting_8, "Invalid render setting.");
+				print_if_false(a2 <= DCGfx_RenderSetting_9, "Invalid render setting.");
+				DXPOLY_SetDepthWriting(a2 == DCGfx_RenderSetting_8);
+				break;
+			case DCGfx_RenderParameter_2:
+				break;
+			case DCGfx_RenderParameter_3:
+				print_if_false(a2 >= DCGfx_RenderSetting_a, "Invalid render setting.");
+				print_if_false(a2 <= DCGfx_RenderSetting_d, "Invalid render setting.");
+				DXPOLY_SetFilterMode(gFilterModeValues[a2-DCGfx_RenderSetting_a]);
+				break;
+			case DCGfx_RenderParameter_4:
+				gIsRenderSettingE = a2 == DCGfx_RenderSetting_e;
+				if (!gIsRenderSettingE)
+					gNonRendderSettingE = gIsRenderSettingE;
+				break;
+			default:
+				print_if_false(0, "Invalid render parameter.");
+				break;
+		}
+	}
 }
 
 // @Ok

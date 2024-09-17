@@ -7,11 +7,38 @@
 #include "texture.h"
 #include "export.h"
 
+enum DCGfx_RenderParameter
+{
+	DCGfx_RenderParameter_0  = 0,
+	DCGfx_RenderParameter_1  = 1,
+	DCGfx_RenderParameter_2  = 2,
+	DCGfx_RenderParameter_3  = 3,
+	DCGfx_RenderParameter_4  = 4,
+};
+
+enum DCGfx_RenderSetting
+{
+	DCGfx_RenderSetting_0  = 0x0,
+	DCGfx_RenderSetting_1  = 0x1,
+	DCGfx_RenderSetting_2  = 0x2,
+	DCGfx_RenderSetting_3  = 0x3,
+	DCGfx_RenderSetting_4  = 0x4,
+	DCGfx_RenderSetting_5  = 0x5,
+	DCGfx_RenderSetting_6  = 0x6,
+	DCGfx_RenderSetting_7  = 0x7,
+	DCGfx_RenderSetting_8  = 0x8,
+	DCGfx_RenderSetting_9  = 0x9,
+	DCGfx_RenderSetting_a  = 0xA,
+	DCGfx_RenderSetting_b  = 0xB,
+	DCGfx_RenderSetting_c  = 0xC,
+	DCGfx_RenderSetting_d  = 0xD,
+	DCGfx_RenderSetting_e  = 0xE,
+	DCGfx_RenderSetting_MAX  = DCGfx_RenderSetting_e,
+};
+
 // @FIXME
 #define _DXVERT i32
 #define tagKMVERTEX3 i32
-#define DCGfx_RenderParameter i32
-#define DCGfx_RenderSetting i32
 #define _tagKMSTRIPHEAD i32
 #define DCGfx_BlendingMode i32
 
