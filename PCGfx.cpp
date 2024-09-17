@@ -18,6 +18,9 @@ EXPORT u8 gBFoggingRelated;
 
 EXPORT u32 gPcGfxSkyColor;
 
+EXPORT i32 gEndSceneRelated = -1;
+EXPORT i32 gEndSceneRelatedTwo;
+
 // @NotOk
 // missing fog stuff
 void PCGfx_BeginScene(u32,i32)
@@ -97,10 +100,19 @@ void PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float)
     printf("PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float)");
 }
 
-// @MEDIUMTODO
-void PCGfx_EndScene(i32)
+// @Ok
+// @Matching
+// @Note powerpc has fps counter here and fog level
+void PCGfx_EndScene(i32 a1)
 {
-    printf("PCGfx_EndScene(i32)");
+	if (gSceneRelated)
+	{
+		DXPOLY_EndScene(a1 != 0);
+		PCGfx_ProcessTexture(0, -1, 0);
+		gEndSceneRelated = -1;
+		gSceneRelated = 0;
+		gEndSceneRelatedTwo = 0;
+	}
 }
 
 // @Ok
