@@ -28,7 +28,7 @@ class Font : public CClass
 {
 	public:
 		EXPORT Font(void);
-		EXPORT Font(u8*, char*);
+		EXPORT Font(u8*, const char*);
 
 		EXPORT ~Font(void);
 

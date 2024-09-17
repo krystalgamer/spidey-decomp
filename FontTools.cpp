@@ -19,7 +19,7 @@ Font::Font(void)
 // @Ok
 Font::Font(
 		u8* a2,
-		char* a3)
+		const char* a3)
 {
 	strcpy(this->field_38, a3);
 	this->field_8 = 3;
@@ -538,7 +538,7 @@ INLINE u8 FontManager::IsFontLoaded(const char* pName)
 {
 	for (i32 i = 0; i < 6; i++)
 	{
-		if (FontList[i] && strcmp(FontList[i]->field_38, pName))
+		if (FontList[i] && !strcmp(FontList[i]->field_38, pName))
 		{
 			return 1;
 		}
@@ -554,7 +554,7 @@ INLINE Font* FontManager::GetFont(const char* pName)
 	i32 i;
 	for (i = 0; i < 6; i++)
 	{
-		if (FontList[i] && strcmp(FontList[i]->field_38, pName))
+		if (FontList[i] && !strcmp(FontList[i]->field_38, pName))
 		{
 			break;
 		}
@@ -564,11 +564,25 @@ INLINE Font* FontManager::GetFont(const char* pName)
 	return FontList[i];
 }
 
-// @SMALLTODO
-Font* FontManager::LoadFont(u8* buf, const char* pName)
+// @Ok
+// @Matching
+Font* FontManager::LoadFont(u8* pBuf, const char* pName)
 {
-	printf("Font* FontManager::LoadFont(u8* buf, const char* pName)");
-	return 0;
+	i32 i;
+	for (i = 0; i < 6; i++)
+	{
+		if (FontList[i] == 0)
+		{
+			print_if_false(i < 6, "out of font slots");
+			FontList[i] = new Font(pBuf, pName);
+			break;
+		}
+
+		if (!strcmp(FontList[i]->field_38, pName))
+			break;
+	}
+
+	return FontList[i];
 }
 
 // @Ok
