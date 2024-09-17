@@ -75,7 +75,7 @@ class Font : public CClass
 		u8 field_5E;
 		unsigned char field_5F[256];
 
-		i32 field_160;
+		u8* field_160;
 };
 
 class FontManager
@@ -91,6 +91,7 @@ class FontManager
 		EXPORT static u8 IsFontLoaded(const char*);
 
 		EXPORT static Font* LoadFont(const char*);
+		EXPORT static Font* LoadFont(u8*, const char*);
 };
 
 

@@ -5,6 +5,7 @@
 #include "ps2pad.h"
 #include "utils.h"
 #include "PCTex.h"
+#include "dcfileio.h"
 
 #include <cstring>
 
@@ -446,9 +447,9 @@ char Font::getCharIndex(char a2)
 	return this->NumChars;
 }
 
-static Font* FontList[6];
+EXPORT Font* FontList[6];
 
-// NotOk
+// @NotOk
 // globals
 // managed to make it match with the this->field_58 = this->field_58, by deref through array
 void FontManager::ResetCharMaps(void)
@@ -532,7 +533,8 @@ void FontManager::UnloadAllFonts(void)
 }
 
 // @Ok
-u8 FontManager::IsFontLoaded(const char* pName)
+// @Matching
+INLINE u8 FontManager::IsFontLoaded(const char* pName)
 {
 	for (i32 i = 0; i < 6; i++)
 	{
@@ -545,18 +547,49 @@ u8 FontManager::IsFontLoaded(const char* pName)
 	return 0;
 }
 
-// @SMALLTODO
-Font* FontManager::GetFont(const char*)
+// @Ok
+// @Matching
+INLINE Font* FontManager::GetFont(const char* pName)
 {
-	printf("Font* FontManager::GetFont(const char*)");
-	return reinterpret_cast<Font*>(0x30082024);
+	i32 i;
+	for (i = 0; i < 6; i++)
+	{
+		if (FontList[i] && strcmp(FontList[i]->field_38, pName))
+		{
+			break;
+		}
+	}
+
+	print_if_false(i < 6, "Font %s is not loaded", pName);
+	return FontList[i];
 }
 
 // @SMALLTODO
-Font* FontManager::LoadFont(const char*)
+Font* FontManager::LoadFont(u8* buf, const char* pName)
 {
-	printf("Font* FontManager::LoadFont(const char*)");
-	return reinterpret_cast<Font*>(0x30082024);
+	printf("Font* FontManager::LoadFont(u8* buf, const char* pName)");
+	return 0;
+}
+
+// @Ok
+// @Matching
+Font* FontManager::LoadFont(const char* pName)
+{
+	if (FontManager::IsFontLoaded(pName))
+		return FontManager::GetFont(pName);
+
+	i32 v2 = FileIO_Open(pName);
+	print_if_false(v2 > 40, "unlikely font file size");
+	print_if_false(v2 != 0, "File not found");
+
+	u8* v3 = static_cast<u8*>(DCMem_New(v2, 0, 1, 0, 1));
+	print_if_false(v3 != 0, "Out of memory");
+	FileIO_Load(v3);
+	FileIO_Sync();
+
+	Font* pFont = FontManager::LoadFont(v3, pName);
+	pFont->field_160 = v3;
+	return pFont;
 }
 
 // @SMALLTODO
