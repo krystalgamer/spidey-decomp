@@ -531,6 +531,20 @@ void FontManager::UnloadAllFonts(void)
 	}
 }
 
+// @Ok
+u8 FontManager::IsFontLoaded(const char* pName)
+{
+	for (i32 i = 0; i < 6; i++)
+	{
+		if (FontList[i] && strcmp(FontList[i]->field_38, pName))
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 // @SMALLTODO
 Font* FontManager::GetFont(const char*)
 {

@@ -88,6 +88,7 @@ class FontManager
 		EXPORT static void UnloadFont(Font*);
 		EXPORT static void UnloadAllFonts(void);
 		EXPORT static Font* GetFont(const char*);
+		EXPORT static u8 IsFontLoaded(const char*);
 
 		EXPORT static Font* LoadFont(const char*);
 };
