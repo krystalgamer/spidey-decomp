@@ -18,10 +18,23 @@ EXPORT u8 gBFoggingRelated;
 
 EXPORT u32 gPcGfxSkyColor;
 
-// @SMALLTODO
+// @NotOk
+// missing fog stuff
 void PCGfx_BeginScene(u32,i32)
 {
-    printf("PCGfx_BeginScene(u32,i32)");
+	if (!gSceneRelated)
+	{
+		if (gBFoggingRelated)
+		{
+			setupFog();
+		}
+
+		PCGfx_ProcessTexture(0, -1, 0);
+		DXPOLY_BeginScene();
+		gSceneRelated = 1;
+		gZLayerNearest = 0.0099999998;
+		gZLayerFurthest = -0.2;
+	}
 }
 
 // @MEDIUMTODO
