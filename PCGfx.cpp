@@ -415,10 +415,29 @@ INLINE void PCGfx_SetSkyColor(u32 a1)
 	DXPOLY_SetBackgroundColor(a1 | 0xFF000000);
 }
 
-// @SMALLTODO
-void PCGfx_UseTexture(i32,DCGfx_BlendingMode)
+EXPORT i32 gUseTextureRelated = 0x0FFFFFFFF;
+EXPORT DCGfx_BlendingMode gTextureBlendingMode;
+
+// @Ok
+// @Matching
+void PCGfx_UseTexture(i32 a1, DCGfx_BlendingMode a2)
 {
-    printf("PCGfx_UseTexture(i32,DCGfx_BlendingMode)");
+	i32 v2 = a1;
+	if ( a1 <= 2 )
+	{
+		v2 = -1;
+		gNonRendderSettingE = gIsRenderSettingE;
+	}
+	if ( gUseTextureRelated != v2 || gTextureBlendingMode != a2 )
+	{
+		gUseTextureRelated = v2;
+		gTextureBlendingMode = a2;
+		if (!gSceneRelated)
+		{
+			PCGfx_BeginScene(3u, -1);
+		}
+		PCGfx_ProcessTexture(0, v2, a2);
+	}
 }
 
 // @MEDIUMTODO
