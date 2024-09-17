@@ -67,7 +67,7 @@ EXPORT void DXPOLY_SetDepthWriting(bool);
 EXPORT void DXPOLY_SetFilterMode(u32);
 EXPORT void DXPOLY_SetHUDOffset(i32);
 EXPORT void DXPOLY_SetOutlineColor(u32);
-EXPORT void DXPOLY_SetTexture(IDirectDrawSurface7 *);
+EXPORT void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7);
 EXPORT void DXSOUND_Close(i32);
 EXPORT void DXSOUND_CreateDSBuffer(char *,i32);
 EXPORT void DXSOUND_Init(void);
