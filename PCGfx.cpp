@@ -475,3 +475,9 @@ i32 kmSetPALEXTCallback(void*, i32)
 {
 	return 120;
 }
+
+// @Ok
+i32 kmSetDisplayMode(i32, i32, i32, i32)
+{
+	return 120;
+}
