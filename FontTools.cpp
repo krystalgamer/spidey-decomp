@@ -670,11 +670,31 @@ int Font::height(char* txt)
 	return this->heightAboveBaseline(txt) + this->heightBelowBaseline(txt);
 }
 
-// @SMALLTODO
-i32 Font::width(const char*)
+// @Ok
+i32 Font::width(const char* pStr)
 {
-	printf("i32 Font::width(const char*)");
-	return 0x30082024;
+	i32 width = 0;
+	while (*pStr)
+	{
+		char c = *pStr;
+		if (c != 255)
+		{
+			i32 v6 = (u8)this->field_5F[c];
+			if (v6 == 255)
+			{
+				if (!this->isEscapeChar(c))
+					width += 80 * (u8)this->pCharTab[0].W / 100;
+			}
+			else
+			{
+				width += this->field_C + (u8)this->pCharTab[v6].W;
+			}
+		}
+
+		pStr++;
+	}
+
+	return (width * this->field_34) >> 12;
 }
 
 // @Ok
