@@ -1,4 +1,9 @@
 #include "db.h"
+#include "validate.h"
+
+SDoubleBuffer* pDoubleBuffer;
+SDoubleBuffer* pOtherBuffer;
+SDoubleBuffer DoubleBuffer[2];
 
 // @SMALLTODO
 void Db_CreateOTsAndPolyBuffers(void)
@@ -34,4 +39,9 @@ void Db_Init(void)
 void Db_UpdateSky(void)
 {
     printf("Db_UpdateSky(void)");
+}
+
+void validate_SDoubleBuffer(void)
+{
+	VALIDATE_SIZE(SDoubleBuffer, 0x7C);
 }
