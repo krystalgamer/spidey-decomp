@@ -13,7 +13,7 @@ u8* PolyBufferEnd;
 
 // @Ok
 // @Matching
-INLINE void Db_CreateOTsAndPolyBuffers(void)
+void Db_CreateOTsAndPolyBuffers(void)
 {
 	print_if_false(DoubleBuffer[0].OrderingTable == (void*)-1, "OrderingTable 0 not NULL");
 	print_if_false(DoubleBuffer[1].OrderingTable == (void*)-1, "OrderingTable 1 not NULL");
@@ -89,10 +89,20 @@ void Db_Init(void)
 
 	Db_DefaultScreenOffsets();
 	DoubleBuffer[0].field_18 = 1;
+
+	setRGB0();
 	DoubleBuffer[1].field_18 = 1;
+	setRGB0();
+
+	DoubleBuffer[0].OrderingTable = (u32*)0xFFFFFFFF;
+	DoubleBuffer[1].OrderingTable = (u32*)0xFFFFFFFF;
+	DoubleBuffer[0].Polys = (u8*)0xFFFFFFFF;
+	DoubleBuffer[1].Polys = (u8*)0xFFFFFFFF;
 
 	Db_CreateOTsAndPolyBuffers();
 	Db_FlipClear();
+
+	PutDispEnv();
 
 }
 
