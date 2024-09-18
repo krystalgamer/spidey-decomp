@@ -4,15 +4,13 @@
 #include "PCGfx.h"
 #include "pcdcPad.h"
 
-// @SMALLTODO
+// @Ok
 INLINE void sbExitSystem(void)
 {
 	gdFsFinish();
 	pdExitPeripheral();
-	/*
 	kmUnloadDevice();
-	*/
-	syMallocFinis();
+	syMallocFinish();
 }
 
 EXPORT i32 gSbInitRelated;
