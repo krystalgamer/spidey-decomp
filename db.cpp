@@ -6,6 +6,7 @@ SDoubleBuffer* pDoubleBuffer;
 SDoubleBuffer* pOtherBuffer;
 SDoubleBuffer DoubleBuffer[2];
 i32 gDbRelated;
+u8* PolyBufferEnd;
 
 // @SMALLTODO
 void Db_CreateOTsAndPolyBuffers(void)
@@ -23,27 +24,27 @@ void Db_DefaultScreenOffsets(void)
 // @Matching
 void Db_DeleteOTsAndPolyBuffers(void)
 {
-	void* const minus_one = (void*)0xFFFFFFFF;
-	if (DoubleBuffer[0].field_70)
+	u32* const minus_one = (u32*)0xFFFFFFFF;
+	if (DoubleBuffer[0].OrderingTable)
 	{
-		Mem_Delete(DoubleBuffer[0].field_70);
-		DoubleBuffer[0].field_70 = minus_one;
+		Mem_Delete(DoubleBuffer[0].OrderingTable);
+		DoubleBuffer[0].OrderingTable = minus_one;
 	}
-	if (DoubleBuffer[1].field_70)
+	if (DoubleBuffer[1].OrderingTable)
 	{
-		Mem_Delete(DoubleBuffer[1].field_70);
-		DoubleBuffer[1].field_70 = minus_one;
+		Mem_Delete(DoubleBuffer[1].OrderingTable);
+		DoubleBuffer[1].OrderingTable = minus_one;
 	}
 
-	if (DoubleBuffer[0].field_78)
+	if (DoubleBuffer[0].Polys)
 	{
-		Mem_Delete(DoubleBuffer[0].field_78);
-		DoubleBuffer[0].field_78 = minus_one;
+		Mem_Delete(DoubleBuffer[0].Polys);
+		DoubleBuffer[0].Polys = minus_one;
 	}
-	if (DoubleBuffer[1].field_78)
+	if (DoubleBuffer[1].Polys)
 	{
-		Mem_Delete(DoubleBuffer[1].field_78);
-		DoubleBuffer[1].field_78 = minus_one;
+		Mem_Delete(DoubleBuffer[1].Polys);
+		DoubleBuffer[1].Polys = minus_one;
 	}
 
 	gDbRelated = 1;
@@ -71,6 +72,6 @@ void validate_SDoubleBuffer(void)
 {
 	VALIDATE_SIZE(SDoubleBuffer, 0x7C);
 
-	VALIDATE(SDoubleBuffer, field_70, 0x70);
-	VALIDATE(SDoubleBuffer, field_78, 0x78);
+	VALIDATE(SDoubleBuffer, OrderingTable, 0x70);
+	VALIDATE(SDoubleBuffer, Polys, 0x78);
 }

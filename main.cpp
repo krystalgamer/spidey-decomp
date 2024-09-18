@@ -83,6 +83,16 @@
 
 extern int FAIL_VALIDATION;
 
+const i32 POLYBUFFERSIZE = 0x17000;
+
+// @Ok
+// @Matching
+void CalcPolyBufferEnd(void)
+{
+	PolyBufferEnd = reinterpret_cast<u8*>(
+			(reinterpret_cast<u32>(pDoubleBuffer->Polys) + POLYBUFFERSIZE - 0x100) & 0x7FFFFFFF);
+}
+
 // @MEDIUMTODO
 void SpideyMain(void)
 {

@@ -6,12 +6,13 @@
 #include "export.h"
 
 EXPORT extern i32 gDbRelated;
+EXPORT extern u8* PolyBufferEnd;
 struct SDoubleBuffer
 {
 	u8 pad[0x70];
-	void* field_70;
+	u32* OrderingTable;
 	u8 padAfter70[4];
-	void* field_78;
+	void* Polys;
 };
 
 
