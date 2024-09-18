@@ -98,7 +98,7 @@ void Init_AtEnd(void)
 EXPORT i32 dword_60D218;
 
 // @NotOk
-// regvisit after memory stuff done
+// revisit after needing those quirky dwords
 u8 Init_AtStart(i32)
 {
 	Port_InitAtStart();

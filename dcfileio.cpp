@@ -1,6 +1,9 @@
 #include "dcfileio.h"
 #include "ps2funcs.h"
 #include "stubs.h"
+#include "pre.h"
+#include "ps2redbook.h"
+#include "ps2gamefmv.h"
 
 #include "pcdcFile.h"
 
@@ -62,11 +65,49 @@ void FileIO_Load(void *)
     printf("FileIO_Load(void *)");
 }
 
-// @SMALLTODO
-i32 FileIO_Open(const char*)
+EXPORT i32 gFileIoSize;
+EXPORT i32 gFileIoOldSize;
+EXPORT i32 gFileIoInPre;
+EXPORT HANDLE gFileIoWeirdHandle;
+EXPORT char gFileIoFileName[64];
+
+// @Ok
+// @Matching
+i32 FileIO_Open(const char* pName)
 {
-    printf("FileIO_Open(char const *)");
-	return 0x19082024;
+	print_if_false(gFileIOStatus == 0, "Previous file not finished loading");
+	gFileIoOldSize = 0;
+	gFileIoInPre = 0;
+
+	if (gPreManager && (gPreFileBuf = gPreManager->getFile(pName, &gPreFileSize)))
+	{
+		gFileIoInPre = 1;
+		gFileIoSize = gPreFileSize;
+		return gPreFileSize;
+	}
+
+	if (gFileIoWeirdHandle)
+	{
+		gdFsClose(gFileIoWeirdHandle);
+		gFileIoWeirdHandle = 0;
+	}
+
+	Redbook_XAStop();
+	GameFMV_StopFMV();
+
+	strcpy(gFileIoFileName, pName);
+	gFileIoWeirdHandle = gdFsOpen(gFileIoFileName, 0);
+	if (!gFileIoWeirdHandle)
+	{
+		DebugPrintfX("unable to open file %s", pName);
+		return 0;
+	}
+
+	gFileIOStatus = 0;
+	gdFsGetFileSize(
+			reinterpret_cast<i32>(gFileIoWeirdHandle),
+			&gFileIoSize);
+	return gFileIoSize;
 }
 
 // @Ok
