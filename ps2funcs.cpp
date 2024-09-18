@@ -6,6 +6,7 @@
 #include "m3dcolij.h"
 #include "Sbinit.h"
 #include "stubs.h"
+#include "PCGfx.h"
 
 #include <cstdlib>
 
@@ -588,7 +589,7 @@ void DCSetFatalError(i32)
 }
 
 // @Ok
-void DCInitSinCosTable(void)
+INLINE void DCInitSinCosTable(void)
 {
 	for (i32 i = 0; i < FLATBIT_VELOCITIES_SIZE; i++)
 	{
@@ -610,18 +611,22 @@ INLINE u8 IsForEurope(void)
 	return gEuropeVersion;
 }
 
-// @SMALLTODO
+// @Ok
 void Port_InitAtStart(void)
 {
 	gBroadcastMode = 0x38;
 	gDisplayModeRelated = 0;
 	gDisplayModeRelatedTwo = 1;
 
+	i32 v1 = syCblCheck();
+	i32 v2 = 0;
+
 	switch (syCblCheck())
 	{
 		case 0:
 		case 2:
-			switch (syCblCheckBroadcast())
+			v2 = syCblCheckBroadcast();
+			switch (v2)
 			{
 				case 0:
 				case 2:
@@ -646,7 +651,15 @@ void Port_InitAtStart(void)
 			break;
 	}
 
-
+	sbInitSystem(gBroadcastMode, gDisplayModeRelated, gDisplayModeRelatedTwo);
+	if (!v1 && (v2 == 1 || v2 == 3))
+	{
+		kmSetPALEXTCallback(reinterpret_cast<void*>(0x46CD70), 0);
+		kmSetDisplayMode(122, 0, 1, 0);
+	}
+	gPortRelatedOne = reinterpret_cast<i32>(syMalloc(gSomeSize));
+	print_if_false(gPortRelatedOne != 0, "Out of system memory.");
+	DCInitSinCosTable();
 }
 
 // @Ok
