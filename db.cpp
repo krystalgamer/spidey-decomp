@@ -103,7 +103,7 @@ void Db_Init(void)
 	Db_FlipClear();
 
 	PutDispEnv();
-
+	PutDrawEnv();
 }
 
 // @SMALLTODO
