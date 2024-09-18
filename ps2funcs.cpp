@@ -5,6 +5,7 @@
 #include "ob.h"
 #include "m3dcolij.h"
 #include "Sbinit.h"
+#include "stubs.h"
 
 #include <cstdlib>
 
@@ -601,6 +602,13 @@ void DCInitSinCosTable(void)
 EXPORT i32 gBroadcastMode = 0x38;
 EXPORT i32 gDisplayModeRelated;
 EXPORT i32 gDisplayModeRelatedTwo = 2;
+EXPORT u8 gEuropeVersion;
+
+// @Ok
+INLINE u8 IsForEurope(void)
+{
+	return gEuropeVersion;
+}
 
 // @SMALLTODO
 void Port_InitAtStart(void)
@@ -613,6 +621,22 @@ void Port_InitAtStart(void)
 	{
 		case 0:
 		case 2:
+			switch (syCblCheckBroadcast())
+			{
+				case 0:
+				case 2:
+					print_if_false(IsForEurope() == 0, "NTSC TV on European version.");
+					gBroadcastMode = 0x38;
+					break;
+				case 1:
+				case 3:
+					print_if_false(IsForEurope(), "Pal TV on non-European version.");
+					gBroadcastMode = 0x7A;
+					break;
+				default:
+					print_if_false(0, "invalid broadcast enumeration value.");
+					break;
+			}
 			break;
 		case 1:
 			gBroadcastMode = 0x31;
@@ -621,6 +645,8 @@ void Port_InitAtStart(void)
 			print_if_false(0, "invalid cable enumeration value.");
 			break;
 	}
+
+
 }
 
 // @Ok

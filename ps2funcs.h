@@ -127,6 +127,7 @@ EXPORT void MTC2(i32*, GTREGType);
 
 EXPORT void DCSetFatalError(i32);
 EXPORT void DCInitSinCosTable(void);
+EXPORT u8 IsForEurope(void);
 
 // @Ok
 INLINE static void DrawSync(void)
