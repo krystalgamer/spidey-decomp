@@ -493,3 +493,9 @@ i32 STDCALL kmSetWaitVsyncCount(i32)
 {
 	return 120;
 }
+
+// @Ok
+i32 STDCALL kmUnloadDevice(void)
+{
+	return 120;
+}

@@ -5,6 +5,12 @@
 
 EXPORT MEMORY_ALLOC* gSysMemory;
 
+// @SMALLTODO
+void syMallocFinis(void)
+{
+	printf("void syMallocFinis(void)");
+}
+
 // @Ok
 void *syMalloc(u32 size)
 {

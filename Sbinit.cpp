@@ -11,8 +11,8 @@ INLINE void sbExitSystem(void)
 	pdExitPeripheral();
 	/*
 	kmUnloadDevice();
-	syMallocFinis();
 	*/
+	syMallocFinis();
 }
 
 EXPORT i32 gSbInitRelated;

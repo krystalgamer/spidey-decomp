@@ -89,6 +89,7 @@ EXPORT i32 STDCALL kmSetPALEXTCallback(void*, i32);
 EXPORT i32 STDCALL kmSetDisplayMode(i32, i32, i32, i32);
 EXPORT i32 STDCALL kmInitDevice(i32);
 EXPORT i32 STDCALL kmSetWaitVsyncCount(i32);
+EXPORT i32 STDCALL kmUnloadDevice(void);
 
 EXPORT extern u8 gSceneRelated;
 
