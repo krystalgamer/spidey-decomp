@@ -186,5 +186,6 @@ INLINE static void PutDispEnv(void)
 STUBBED_FUNC(SetDispMask)
 STUBBED_FUNC(ClearImage2)
 STUBBED_FUNC(ClearOTagR)
+STUBBED_FUNC(SetDefDrawEnv)
 
 #endif

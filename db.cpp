@@ -79,6 +79,8 @@ INLINE void Db_FlipClear(void)
 // @SMALLTODO
 void Db_Init(void)
 {
+	SetDefDrawEnv();
+	SetDefDispEnv();
     printf("Db_Init(void)");
 }
 
