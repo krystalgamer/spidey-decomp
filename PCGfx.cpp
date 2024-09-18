@@ -487,3 +487,9 @@ i32 STDCALL kmInitDevice(i32)
 {
 	return 0;
 }
+
+// @Ok
+i32 STDCALL kmSetWaitVsyncCount(i32)
+{
+	return 120;
+}

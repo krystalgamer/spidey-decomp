@@ -16,9 +16,9 @@ void sbInitSystem(
 		i32 a3)
 {
 	kmInitDevice(0);
-	/*
 	kmSetDisplayMode(a1, a2, 1, 0);
 	kmSetWaitVsyncCount(a3);
+	/*
 	pdInitPeripheral();
 	syRtcInit();
 	*/
