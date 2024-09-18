@@ -30,6 +30,7 @@ void Db_CreateOTsAndPolyBuffers(void)
 }
 
 // @Ok
+// @Matching
 INLINE void Db_DefaultScreenOffsets(void)
 {
 	DoubleBuffer[0].field_64 = 0;
@@ -104,6 +105,7 @@ void Db_Init(void)
 
 	PutDispEnv();
 	PutDrawEnv();
+	DrawOTag();
 }
 
 // @SMALLTODO
@@ -115,6 +117,8 @@ void Db_UpdateSky(void)
 void validate_SDoubleBuffer(void)
 {
 	VALIDATE_SIZE(SDoubleBuffer, 0x7C);
+
+	VALIDATE(SDoubleBuffer, field_18, 0x18);
 
 	VALIDATE(SDoubleBuffer, field_64, 0x64);
 	VALIDATE(SDoubleBuffer, field_66, 0x66);

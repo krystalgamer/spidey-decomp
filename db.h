@@ -9,7 +9,9 @@ EXPORT extern i32 gDbRelated;
 EXPORT extern u8* PolyBufferEnd;
 struct SDoubleBuffer
 {
-	u8 pad[0x64];
+	u8 pad[0x18];
+	u8 field_18;
+	u8 padAfter18[0x64-0x18-1];
 
 	u16 field_64;
 	u16 field_66;
