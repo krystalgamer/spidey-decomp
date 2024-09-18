@@ -19,7 +19,8 @@
 #define STDCALL __stdcall
 #else
 #define EXPORT
-#define FASTCALL __attribute__((stdcall))
+#define FASTCALL __attribute__((fastcall))
+#define STDCALL __attribute__((stdcall))
 #endif
 
 #include <cstdio>

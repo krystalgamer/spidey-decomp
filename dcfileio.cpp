@@ -8,6 +8,8 @@
 
 #include "pcdcFile.h"
 
+#include <cstring>
+
 EXPORT i32 gFileIoSize;
 EXPORT i32 gFileIoOldSize;
 EXPORT i32 gFileIoInPre;

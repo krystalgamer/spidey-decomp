@@ -179,7 +179,7 @@ INLINE static void PutDispEnv(void)
 	{\
 		if (!gPrintStubbed)\
 		{\
-			stubbed_printf("stubbed out: #x");\
+			stubbed_printf("stubbed out: " #x);\
 		}\
 	}
 
