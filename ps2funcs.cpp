@@ -598,10 +598,16 @@ void DCInitSinCosTable(void)
 
 }
 
+EXPORT i32 gBroadcastMode = 0x38;
+EXPORT i32 gDisplayModeRelated;
+EXPORT i32 gDisplayModeRelatedTwo = 2;
+
 // @SMALLTODO
 void Port_InitAtStart(void)
 {
-	printf("void Port_InitAtStart(void)");
+	gBroadcastMode = 0x38;
+	gDisplayModeRelated = 0;
+	gDisplayModeRelatedTwo = 1;
 }
 
 // @Ok

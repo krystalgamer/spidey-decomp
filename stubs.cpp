@@ -93,6 +93,11 @@ i32 gsExit(void)
 	return 1;
 }
 
+// @Ok
+i32 syCblCheck(void)
+{
+	return 1;
+}
 
 void validate_MEMORY_ALLOC(void)
 {
