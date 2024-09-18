@@ -39,36 +39,41 @@ void Db_DefaultScreenOffsets(void)
 // @Matching
 void Db_DeleteOTsAndPolyBuffers(void)
 {
-	u32* const minus_one = (u32*)0xFFFFFFFF;
 	if (DoubleBuffer[0].OrderingTable)
 	{
 		Mem_Delete(DoubleBuffer[0].OrderingTable);
-		DoubleBuffer[0].OrderingTable = minus_one;
+		DoubleBuffer[0].OrderingTable = (u32*)0xFFFFFFFF;
 	}
 	if (DoubleBuffer[1].OrderingTable)
 	{
 		Mem_Delete(DoubleBuffer[1].OrderingTable);
-		DoubleBuffer[1].OrderingTable = minus_one;
+		DoubleBuffer[1].OrderingTable = (u32*)0xFFFFFFFF;
 	}
 
 	if (DoubleBuffer[0].Polys)
 	{
 		Mem_Delete(DoubleBuffer[0].Polys);
-		DoubleBuffer[0].Polys = minus_one;
+		DoubleBuffer[0].Polys = (u8*)0xFFFFFFFF;
 	}
 	if (DoubleBuffer[1].Polys)
 	{
 		Mem_Delete(DoubleBuffer[1].Polys);
-		DoubleBuffer[1].Polys = minus_one;
+		DoubleBuffer[1].Polys = (u8*)0xFFFFFFFF;
 	}
 
 	gDbRelated = 1;
 }
 
-// @SMALLTODO
-void Db_FlipClear(void)
+// @Ok
+// @Matching
+INLINE void Db_FlipClear(void)
 {
-    printf("Db_FlipClear(void)");
+	pDoubleBuffer = pDoubleBuffer == &DoubleBuffer[0] ?
+		&DoubleBuffer[1] :
+		&DoubleBuffer[0];
+
+	ClearOTagR();
+	gDbRelated = reinterpret_cast<i32>(pDoubleBuffer->Polys) & 0x7FFFFFFF;
 }
 
 // @SMALLTODO
