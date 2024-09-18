@@ -16,9 +16,10 @@
 #ifdef _WIN32
 #define EXPORT __declspec( dllexport )
 #define FASTCALL __fastcall
+#define STDCALL __stdcall
 #else
 #define EXPORT
-#define FASTCALL __attribute__((fastcall))
+#define FASTCALL __attribute__((stdcall))
 #endif
 
 #include <cstdio>

@@ -471,13 +471,19 @@ void submitPoly(_DXVERT **,i32)
 }
 
 // @Ok
-i32 kmSetPALEXTCallback(void*, i32)
+i32 STDCALL kmSetPALEXTCallback(void*, i32)
 {
 	return 120;
 }
 
 // @Ok
-i32 kmSetDisplayMode(i32, i32, i32, i32)
+i32 STDCALL kmSetDisplayMode(i32, i32, i32, i32)
 {
 	return 120;
+}
+
+// @Ok
+i32 STDCALL kmInitDevice(i32)
+{
+	return 0;
 }
