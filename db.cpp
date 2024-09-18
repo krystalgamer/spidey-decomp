@@ -13,7 +13,7 @@ u8* PolyBufferEnd;
 
 // @Ok
 // @Matching
-void Db_CreateOTsAndPolyBuffers(void)
+INLINE void Db_CreateOTsAndPolyBuffers(void)
 {
 	print_if_false(DoubleBuffer[0].OrderingTable == (void*)-1, "OrderingTable 0 not NULL");
 	print_if_false(DoubleBuffer[1].OrderingTable == (void*)-1, "OrderingTable 1 not NULL");
@@ -83,8 +83,17 @@ INLINE void Db_FlipClear(void)
 void Db_Init(void)
 {
 	SetDefDrawEnv();
+	SetDefDrawEnv();
 	SetDefDispEnv();
-    printf("Db_Init(void)");
+	SetDefDispEnv();
+
+	Db_DefaultScreenOffsets();
+	DoubleBuffer[0].field_18 = 1;
+	DoubleBuffer[1].field_18 = 1;
+
+	Db_CreateOTsAndPolyBuffers();
+	Db_FlipClear();
+
 }
 
 // @SMALLTODO
