@@ -12,7 +12,7 @@ struct SDoubleBuffer
 	u8 pad[0x70];
 	u32* OrderingTable;
 	u8 padAfter70[4];
-	void* Polys;
+	u8* Polys;
 };
 
 

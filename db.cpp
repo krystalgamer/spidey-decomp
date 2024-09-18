@@ -1,5 +1,8 @@
 #include "db.h"
 #include "mem.h"
+#include "main.h"
+#include "ps2funcs.h"
+
 #include "validate.h"
 
 SDoubleBuffer* pDoubleBuffer;
@@ -8,10 +11,22 @@ SDoubleBuffer DoubleBuffer[2];
 i32 gDbRelated;
 u8* PolyBufferEnd;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Db_CreateOTsAndPolyBuffers(void)
 {
-    printf("Db_DefaultScreenOffsets(void)");
+	print_if_false(DoubleBuffer[0].OrderingTable == (void*)-1, "OrderingTable 0 not NULL");
+	print_if_false(DoubleBuffer[1].OrderingTable == (void*)-1, "OrderingTable 1 not NULL");
+	print_if_false(DoubleBuffer[0].Polys == (void*)-1, "Poly buffer 0 not NULL");
+	print_if_false(DoubleBuffer[1].Polys == (void*)-1, "Poly buffer 1 not NULL");
+	DoubleBuffer[0].OrderingTable = (u32*)DCMem_New(0x4000u, 1, 1, 0, 1);
+	DoubleBuffer[1].OrderingTable = (u32*)DCMem_New(0x4000u, 1, 1, 0, 1);
+	DoubleBuffer[0].Polys = (u8*)DCMem_New(0x17000u, 1, 1, 0, 1);
+	DoubleBuffer[1].Polys = (u8*)DCMem_New(0x17000u, 1, 1, 0, 1);
+
+	Db_FlipClear();
+
+	CalcPolyBufferEnd();
 }
 
 // @SMALLTODO
