@@ -608,6 +608,19 @@ void Port_InitAtStart(void)
 	gBroadcastMode = 0x38;
 	gDisplayModeRelated = 0;
 	gDisplayModeRelatedTwo = 1;
+
+	switch (syCblCheck())
+	{
+		case 0:
+		case 2:
+			break;
+		case 1:
+			gBroadcastMode = 0x31;
+			break;
+		default:
+			print_if_false(0, "invalid cable enumeration value.");
+			break;
+	}
 }
 
 // @Ok

@@ -20,6 +20,7 @@ EXPORT void syMallocInit(void);
 EXPORT void *syMalloc(u32);
 EXPORT i32 gsExit(void);
 EXPORT i32 syCblCheck(void);
+EXPORT i32 syCblCheckBroadcast(void);
 
 void validate_MEMORY_ALLOC(void);
 

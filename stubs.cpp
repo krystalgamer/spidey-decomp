@@ -99,6 +99,12 @@ i32 syCblCheck(void)
 	return 1;
 }
 
+// @Ok
+i32 syCblCheckBroadcast(void)
+{
+	return 0;
+}
+
 void validate_MEMORY_ALLOC(void)
 {
 	VALIDATE_SIZE(MEMORY_ALLOC, 0x10);
