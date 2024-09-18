@@ -85,6 +85,9 @@ EXPORT void createSuperItem(CItem *);
 EXPORT void setupFog(void);
 EXPORT void submitPoly(_DXVERT **,i32);
 
+EXPORT i32 kmSetPALEXTCallback(void*, i32);
+EXPORT i32 kmSetDisplayMode(i32, i32, i32, i32);
+
 EXPORT extern u8 gSceneRelated;
 
 #endif

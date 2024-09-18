@@ -469,3 +469,9 @@ void submitPoly(_DXVERT **,i32)
 {
     printf("submitPoly(_DXVERT **,i32)");
 }
+
+// @Ok
+i32 kmSetPALEXTCallback(void*, i32)
+{
+	return 120;
+}
