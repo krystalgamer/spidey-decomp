@@ -1,7 +1,7 @@
 #include "dcfileio.h"
 #include "ps2funcs.h"
 #include "stubs.h"
-#include "pre.h"
+#include "PRE.h"
 #include "ps2redbook.h"
 #include "ps2gamefmv.h"
 #include "mem.h"
