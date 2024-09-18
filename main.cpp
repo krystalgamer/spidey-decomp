@@ -79,6 +79,7 @@
 #include "DXinit.h"
 #include "pack.h"
 #include "pal.h"
+#include "db.h"
 
 extern int FAIL_VALIDATION;
 
@@ -396,6 +397,7 @@ i32 validate(void)
 	validate_SPack();
 	validate_tag_S_Pal();
 	validate_SViewport();
+	validate_SDoubleBuffer();
 
 	puts("[*] Validation done!");
 

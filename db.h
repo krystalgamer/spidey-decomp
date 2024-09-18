@@ -5,9 +5,13 @@
 
 #include "export.h"
 
+EXPORT extern i32 gDbRelated;
 struct SDoubleBuffer
 {
-	u8 pad[0x7C];
+	u8 pad[0x70];
+	void* field_70;
+	u8 padAfter70[4];
+	void* field_78;
 };
 
 
