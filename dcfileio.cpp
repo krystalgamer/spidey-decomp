@@ -4,8 +4,15 @@
 #include "pre.h"
 #include "ps2redbook.h"
 #include "ps2gamefmv.h"
+#include "mem.h"
 
 #include "pcdcFile.h"
+
+EXPORT i32 gFileIoSize;
+EXPORT i32 gFileIoOldSize;
+EXPORT i32 gFileIoInPre;
+EXPORT HANDLE gFileIoWeirdHandle;
+EXPORT char gFileIoFileName[64];
 
 EXPORT void* gFileIoMemory;
 EXPORT volatile i32 gFileIOStatus;
@@ -59,17 +66,84 @@ void FileIO_Init(void)
 	}
 }
 
-// @MEDIUMTODO
-void FileIO_Load(void *)
+// @Ok
+void FileIO_Load(void *where)
 {
-    printf("FileIO_Load(void *)");
-}
+	print_if_false(!gFileIOStatus && gFileIoWeirdHandle, "No file has been opened yet");
+	gFileIOStatus = 3;
+	gFileIoOldSize = gFileIoSize;
+	if (gPreManager && gFileIoInPre)
+	{
+		Mem_Copy(where, gPreFileBuf, gPreFileSize);
+		gFileIOStatus = 0;
+		return;
+	}
 
-EXPORT i32 gFileIoSize;
-EXPORT i32 gFileIoOldSize;
-EXPORT i32 gFileIoInPre;
-EXPORT HANDLE gFileIoWeirdHandle;
-EXPORT char gFileIoFileName[64];
+	u8* dstBuf = static_cast<u8*>(where);
+	print_if_false(where != 0, "Reading to NULL pointer");
+	print_if_false(gFileIoSize > 0, "Empty file");
+
+	i32 v4 = gFileIoSize;
+
+	if ( gFileIoSize > 2048 )
+	{
+		if (!(reinterpret_cast<u32>(dstBuf) & 0x1F))
+		{
+			i32 v5 = gFileIoSize / 2048;
+			gdFsRead(
+					reinterpret_cast<i32>(gFileIoWeirdHandle),
+					v5,
+					dstBuf);
+			v5 <<= 11;
+			v4 -= v5;
+			dstBuf += v5;
+		}
+
+		while (v4 > 2048)
+		{
+			i32 v6 = gdFsRead(
+					reinterpret_cast<i32>(gFileIoWeirdHandle),
+					1,
+					static_cast<u8*>(gFileIoMemory));
+			if (v6)
+			{
+				DebugPrintfX(
+						"error reading %s (%d), errnum: %d",
+						gFileIoFileName,
+						gFileIoSize - v4,
+						v6);
+				return;
+			}
+			v4 -= 2048;
+			memcpy(dstBuf, gFileIoMemory, 2048);
+			dstBuf += 2048;
+		}
+	}
+
+	if (v4)
+	{
+		i32 v6 = gdFsRead(
+				reinterpret_cast<i32>(gFileIoWeirdHandle),
+				1,
+				static_cast<u8*>(gFileIoMemory));
+		if (v6)
+		{
+			DebugPrintfX(
+					"error reading %s (%d), errnum: %d",
+					gFileIoFileName,
+					gFileIoSize - v4,
+					v6);
+			return;
+		}
+
+		for (i32 i = 0; i < v4; i++)
+		{
+			dstBuf[i] = static_cast<u8*>(gFileIoMemory)[i];
+		}
+	}
+
+	gFileIOStatus = 0;
+}
 
 // @Ok
 // @Matching
