@@ -29,10 +29,13 @@ void Db_CreateOTsAndPolyBuffers(void)
 	CalcPolyBufferEnd();
 }
 
-// @SMALLTODO
-void Db_DefaultScreenOffsets(void)
+// @Ok
+INLINE void Db_DefaultScreenOffsets(void)
 {
-    printf("Db_DefaultScreenOffsets(void)");
+	DoubleBuffer[0].field_64 = 0;
+	DoubleBuffer[1].field_64 = 0;
+	DoubleBuffer[0].field_66 = 0;
+	DoubleBuffer[1].field_66 = 0;
 }
 
 // @Ok
@@ -93,6 +96,9 @@ void Db_UpdateSky(void)
 void validate_SDoubleBuffer(void)
 {
 	VALIDATE_SIZE(SDoubleBuffer, 0x7C);
+
+	VALIDATE(SDoubleBuffer, field_64, 0x64);
+	VALIDATE(SDoubleBuffer, field_66, 0x66);
 
 	VALIDATE(SDoubleBuffer, OrderingTable, 0x70);
 	VALIDATE(SDoubleBuffer, Polys, 0x78);
