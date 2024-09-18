@@ -187,5 +187,6 @@ STUBBED_FUNC(SetDispMask)
 STUBBED_FUNC(ClearImage2)
 STUBBED_FUNC(ClearOTagR)
 STUBBED_FUNC(SetDefDrawEnv)
+STUBBED_FUNC(SetDefDispEnv)
 
 #endif
