@@ -6,6 +6,8 @@
 #include "export.h"
 
 EXPORT extern u32 M3d_FadeColour;
+EXPORT extern u32 Xres;
+EXPORT extern u32 Yres;
 
 union ItemOffsetUnion
 {

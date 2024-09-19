@@ -5,8 +5,8 @@
 u32 M3d_FadeColour;
 
 EXPORT i16 WibbleTables[1024];
-EXPORT u32 Xres;
-EXPORT u32 Yres;
+u32 Xres;
+u32 Yres;
 
 EXPORT i32 PixelAspectX;
 EXPORT i32 PixelAspectY;
