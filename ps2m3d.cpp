@@ -1,9 +1,12 @@
 #include "ps2m3d.h"
+#include "ps2funcs.h"
 
+i32 gWideScreen;
 
 // @SMALLTODO
-void M3d_BuildTransform(CSuper* a){
-	a->actualcsuperend = (__int16*)69;
+void M3d_BuildTransform(CSuper* a)
+{
+	printf("void M3d_BuildTransform(CSuper* a)");
 }
 
 // @BIGTODO
@@ -45,7 +48,7 @@ void M3d_RenderBackground(void *)
 // @MEDIUMTODO
 void M3d_RenderCleanup(void)
 {
-    printf("M3d_RenderCleanup(void)");
+	SetDrawArea();
 }
 
 // @MEDIUMTODO

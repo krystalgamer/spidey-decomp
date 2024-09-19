@@ -21,4 +21,6 @@ EXPORT void M3d_RenderCleanup(void);
 EXPORT void M3d_RenderSetup(SCamera *,SViewport *,u32 *);
 EXPORT void RenderSuperItem(CItem *,bool);
 
+EXPORT extern i32 gWideScreen;
+
 #endif
