@@ -1224,7 +1224,7 @@ INLINE void renderScene(void)
 				g_D3DDevice7->DrawPrimitive(
 						D3DPT_TRIANGLEFAN,
 						324,
-						&pPoly->field_10,
+						&pPoly->field_10[0],
 						pPoly->field_C,
 						0);
 
@@ -1251,7 +1251,7 @@ void validate_DXsound(void)
 
 void validate_DXPOLY(void)
 {
-	VALIDATE_SIZE(DXPOLY, 0x14);
+	VALIDATE_SIZE(DXPOLY, 0xF0);
 
 	VALIDATE(DXPOLY, pNext, 0x0);
 	VALIDATE(DXPOLY, field_4, 0x4);
@@ -1260,4 +1260,17 @@ void validate_DXPOLY(void)
 
 	VALIDATE(DXPOLY, field_C, 0xC);
 	VALIDATE(DXPOLY, field_10, 0x10);
+}
+
+void validate_SDXPolyField(void)
+{
+	VALIDATE_SIZE(SDXPolyField, 0x1C);
+
+	VALIDATE(SDXPolyField, field_0, 0x0);
+	VALIDATE(SDXPolyField, field_4, 0x4);
+	VALIDATE(SDXPolyField, field_8, 0x8);
+	VALIDATE(SDXPolyField, field_C, 0xC);
+	VALIDATE(SDXPolyField, field_10, 0x10);
+	VALIDATE(SDXPolyField, field_14, 0x14);
+	VALIDATE(SDXPolyField, field_18, 0x18);
 }

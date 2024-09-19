@@ -10,6 +10,23 @@
 
 #include <cmath>
 
+EXPORT i8 gPcGfxBrightnessValues[256];
+
+EXPORT u8 gProcessTextureRelated;
+EXPORT u16 gChosenBlendingMode;
+EXPORT u16 gProcessedTextureFlags;
+
+EXPORT i32 gUseTextureRelated = 0x0FFFFFFFF;
+EXPORT DCGfx_BlendingMode gTextureBlendingMode;
+
+EXPORT i32 gPcGfxBlendModeRelated;
+EXPORT DXPOLY gDxPolys[15360];
+
+EXPORT float gRenderInitOne[3] = {  10.0f, 8048.0f, 276.0f };
+EXPORT float gRenderInitTwo[2] = { 8038.0f, 1.9624f };
+
+EXPORT i32 gPcGfxDrawRelated = 1;
+EXPORT i32 gPcGfxSlotNumber =  0x0FFFFFFFF;
 
 EXPORT u8 gIsRenderSettingE = 1;
 EXPORT u8 gNonRendderSettingE;
@@ -85,10 +102,152 @@ void PCGfx_DrawQPoly3D(float,float,float,float,float,u32,float,float,float,float
     printf("PCGfx_DrawQPoly3D(float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32)");
 }
 
-// @MEDIUMTODO
-void PCGfx_DrawQuad2D(float,float,float,float,float,float,float,float,u32,float,bool)
+// @NotOk
+// missing low graphics
+// might be wrong too
+void PCGfx_DrawQuad2D(
+		float a1,
+		float a2,
+		float a3,
+		float a4,
+		float a5,
+		float a6,
+		float a7,
+		float a8,
+		u32 color,
+		float a10,
+		bool)
 {
-    printf("PCGfx_DrawQuad2D(float,float,float,float,float,float,float,float,u32,float,bool)");
+	gPcGfxDrawRelated &= 0xFFFFFFFB;
+
+	if (a10 <= 6.0f)
+		gPcGfxSlotNumber = a10;
+
+	float v13 = a10;
+	if (a10 < 0.0f)
+		v13 = v13 * a10 + gRenderInitOne[1];
+	else
+		v13 = v13 * a10 + gRenderInitOne[0];
+
+	float v24 = v13;
+	print_if_false(v24 > 0.0f, "invalid zOffset!");
+
+	SDXPolyField *pDxPolyFields[4];
+	SDXPolyField dxPolyFields[4];
+
+	dxPolyFields[0].field_18 = a6;
+	dxPolyFields[0].field_4 = a2;
+	dxPolyFields[1].field_4 = a2;
+	dxPolyFields[0].field_10 = color;
+	dxPolyFields[1].field_10 = color;
+	dxPolyFields[2].field_10 = color;
+	dxPolyFields[3].field_10 = color;
+	dxPolyFields[0].field_0 = a1;
+	dxPolyFields[0].field_14 = a5;
+	dxPolyFields[3].field_0 = a1;
+	dxPolyFields[3].field_14 = a5;
+	pDxPolyFields[2] = &dxPolyFields[2];
+
+	float v27 = (v24 - gRenderInitOne[0]) / gRenderInitTwo[0];
+	dxPolyFields[0].field_8 = v27;
+	dxPolyFields[1].field_8 = v27;
+	dxPolyFields[2].field_8 = v27;
+	dxPolyFields[3].field_8 = v27;
+
+	pDxPolyFields[0] = dxPolyFields;
+	pDxPolyFields[3] = &dxPolyFields[3];
+
+	float v32 = gRenderInitOne[2] / v24;
+	dxPolyFields[0].field_C = v32;
+	dxPolyFields[1].field_C = v32;
+	dxPolyFields[2].field_C = v32;
+	dxPolyFields[3].field_C = v32;
+
+	float v28 = a1 + a3;
+	dxPolyFields[1].field_0 = v28;
+	dxPolyFields[2].field_0 = v28;
+	pDxPolyFields[1] = &dxPolyFields[1];
+
+	float v25 = a5 + a7;
+	dxPolyFields[1].field_14 = v25;
+	dxPolyFields[1].field_18 = a6;
+	dxPolyFields[2].field_14 = v25;
+
+	float v29 = a2 + a4;
+	dxPolyFields[2].field_4 = v29;
+	dxPolyFields[3].field_4 = v29;
+
+	float v30 = a6 + a8;
+	dxPolyFields[2].field_18 = v30;
+	dxPolyFields[3].field_18 = v30;
+
+	if (gEndSceneRelatedTwo >= 15360)
+	{
+		gEndSceneRelatedTwo++;
+		return;
+	}
+
+	float v26 = 0.0;
+	DXPOLY* v16 = &gDxPolys[gEndSceneRelatedTwo++];
+	i32 v31 = gPcGfxBlendModeRelated;
+
+	if (gLowGraphics)
+	{
+		// @FIXME: TODO
+	}
+	else
+	{
+		LPDIRECTDRAWSURFACE7 Direct3DTexture;
+		if (gUseTextureRelated < 0)
+			Direct3DTexture = 0;
+		else
+			Direct3DTexture = PCTex_GetDirect3DTexture(gUseTextureRelated);
+		v16->field_4 = Direct3DTexture;
+		v16->mBlendMode = gChosenBlendingMode;
+		v16->field_A = gProcessedTextureFlags;
+		v16->field_C = 4;
+		
+		SDXPolyField **v21 = pDxPolyFields;
+		SDXPolyField *v22 = v16->field_10;
+
+		for (i32 i = 0; i < 4; i++)
+		{
+			memcpy(&v22[i], v21[i], sizeof(SDXPolyField));
+			
+			i32 v23;
+			if (gProcessTextureRelated)
+				v23 = 128;
+			else
+				v23 = (v22[i].field_10 >> 24) & 0xFF;
+
+			v22[i].field_10 =
+				gPcGfxBrightnessValues[v22[i].field_10 & 0xFF] |
+				gPcGfxBrightnessValues[(v22[i].field_10 >> 8) & 0xFF] << 8 |
+				gPcGfxBrightnessValues[(v22[i].field_10 >> 16) & 0xFF] << 16 |
+				v23 << 24;
+
+			if (v22[i].field_8 < 0.0f)
+			{
+				v22[i].field_8 = 0.0f;
+			}
+			else if (v22[i].field_8 > 0.99989998f)
+			{
+				v22[i].field_8 = 0.99989998f;
+				v26 = v22[i].field_8;
+			}
+			else if (v26 < v22[i].field_8)
+			{
+				v26 = v22[i].field_8;
+			}
+		}
+		if ( gChosenBlendingMode )
+		{
+			v31 = 0;
+		}
+	}
+
+	DXPOLY_DrawPoly(v16, gPcGfxSlotNumber, v31, v26);
+	gPcGfxSlotNumber = -1;
 }
 
 // @MEDIUMTODO
@@ -184,10 +343,6 @@ EXPORT i32 gBlendingModes[DCGfx_BlendingMode_MAX + 1] =
 	0, 1, 2, 3, 4
 };
 
-EXPORT u8 gProcessTextureRelated;
-EXPORT u16 gChosenBlendingMode;
-EXPORT u16 gProcessedTextureFlags;
-
 // @NotOk
 // missing low graphics stuff
 void PCGfx_ProcessTexture(
@@ -243,9 +398,6 @@ void PCGfx_ProcessTexture(
 	}
 }
 
-EXPORT float gRenderInitOne[3] = {  10.0f, 8048.0f, 276.0f };
-EXPORT float gRenderInitTwo[2] = { 8038.0f, 1.9624f };
-
 // @Ok
 // @Matching
 void PCGfx_RenderInit(float a1, float a2, float a3)
@@ -300,7 +452,6 @@ void PCGfx_RenderModelPreview(
 	PCGfx_EndScene(1);
 }
 
-EXPORT i8 gPcGfxBrightnessValues[256];
 EXPORT float gPcGfxBrightnessPower[8] =
 {
 	0.80000001f,
@@ -414,9 +565,6 @@ INLINE void PCGfx_SetSkyColor(u32 a1)
 	gPcGfxSkyColor = a1;
 	DXPOLY_SetBackgroundColor(a1 | 0xFF000000);
 }
-
-EXPORT i32 gUseTextureRelated = 0x0FFFFFFFF;
-EXPORT DCGfx_BlendingMode gTextureBlendingMode;
 
 // @Ok
 // @Matching

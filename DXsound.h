@@ -21,6 +21,17 @@ typedef void* DIDEVICEINSTANCEA;
 */
 #endif
 
+struct SDXPolyField
+{
+	float field_0;
+	float field_4;
+	float field_8;
+	float field_C;
+	u32 field_10;
+	float field_14;
+	float field_18;
+};
+
 struct DXPOLY
 {
 	DXPOLY* pNext;
@@ -28,7 +39,9 @@ struct DXPOLY
 	u16 mBlendMode;
 	u16 field_A;
 	DWORD field_C;
-	char field_10;
+	SDXPolyField field_10[4];
+
+	u8 padBottom[0x6D];
 };
 
 
@@ -94,5 +107,6 @@ EXPORT extern LPDIRECTINPUT8 g_pDI;
 
 void validate_DXsound(void);
 void validate_DXPOLY(void);
+void validate_SDXPolyField(void);
 
 #endif

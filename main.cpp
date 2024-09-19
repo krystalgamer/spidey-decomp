@@ -1,6 +1,6 @@
 #include "non_win32.h"
 
-// #define BOOT_GAME
+#define BOOT_GAME
 
 #include "main.h"
 #include "ob.h"
@@ -80,6 +80,8 @@
 #include "pack.h"
 #include "pal.h"
 #include "db.h"
+#include "ps2m3d.h"
+#include "PCGfx.h"
 
 extern int FAIL_VALIDATION;
 
@@ -98,9 +100,14 @@ void SpideyMain(void)
 {
 	while(1)
 	{
+		gWideScreen = 16;
 		DXPOLY_SetBackgroundColor(0xFF800080);
-		DXPOLY_BeginScene();
-		DXPOLY_EndScene(true);
+		gWideScreen = 16;
+		PCGfx_BeginScene(1, -1);
+		gWideScreen = 16;
+		M3d_RenderCleanup();
+		gWideScreen = 16;
+		PCGfx_EndScene(1);
 	}
 }
 
@@ -408,6 +415,7 @@ i32 validate(void)
 	validate_tag_S_Pal();
 	validate_SViewport();
 	validate_SDoubleBuffer();
+	validate_SDXPolyField();
 
 	puts("[*] Validation done!");
 
