@@ -9,6 +9,7 @@
 #include "pshell.h"
 
 #include <cmath>
+#include <cstring>
 
 EXPORT i8 gPcGfxBrightnessValues[256];
 
