@@ -5,6 +5,9 @@
 #include "panel.h"
 #include <cstring>
 
+const i32 MAXITEMSPERCHECKSUM = 5;
+EXPORT u16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
+
 SPSXRegion PSXRegion[MAXPSX];
 
 #define TEXTURE_CHECKSUM_TABLE_SIZE (512)
@@ -159,10 +162,16 @@ void Spool_Init(void)
     printf("Spool_Init(void)");
 }
 
-// @SMALLTODO
-void Spool_InitialiseEnvModelHashTable(void)
+// @Ok
+INLINE void Spool_InitialiseEnvModelHashTable(void)
 {
-    printf("Spool_InitialiseEnvModelHashTable(void)");
+	for (i32 i = 0; i < 256; i++)
+	{
+		for (i32 j = 0; j < MAXITEMSPERCHECKSUM; j++)
+		{
+			gEnvModelHashTable[i][j] = -1;
+		}
+	}
 }
 
 // @SMALLTODO

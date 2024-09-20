@@ -54,7 +54,7 @@ void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)
 }
 
 // @Ok
-// @Matching
+// @AlmostMatching: super close, the ordering of the bit count is slightly off, but generally it's awesome
 void PCTEX_Init(void)
 {
 	for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
