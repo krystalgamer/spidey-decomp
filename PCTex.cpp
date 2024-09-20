@@ -7,6 +7,8 @@
 #include <cstring>
 #include <cstdlib>
 
+EXPORT i32 gNumPixelFormats;
+
 EXPORT u32 gMaxTextureAspectRatio;
 EXPORT u32 gMaxTextureWidth;
 EXPORT u32 gTextureHeight;
@@ -50,7 +52,9 @@ void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)
 // @MEDIUMTODO
 void PCTEX_Init(void)
 {
-    printf("PCTEX_Init(void)");
+#ifdef _WIN32
+	g_D3DDevice7->EnumTextureFormats(enumPixelFormatsCB, NULL);
+#endif
 }
 
 // @Ok
@@ -460,10 +464,15 @@ void downloadTexture(PCTexture *,u16 *,i32,i32)
     printf("downloadTexture(PCTexture *,u16 *,i32,i32)");
 }
 
-// @SMALLTODO
-void enumPixelFormatsCB(_DDPIXELFORMAT *,void *)
+// @Ok
+// @Matching
+HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT lpDDPixFmt, void * lpContext)
 {
-    printf("enumPixelFormatsCB(_DDPIXELFORMAT *,void *)");
+	LPDDPIXELFORMAT pPixelFormat = static_cast<LPDDPIXELFORMAT>(lpContext);
+	memcpy(&pPixelFormat[gNumPixelFormats], lpDDPixFmt, sizeof(DDPIXELFORMAT));
+	gNumPixelFormats++;
+
+	return gNumPixelFormats < 16;
 }
 
 // @Ok
@@ -529,9 +538,9 @@ int PCTex_GetTextureFlags(int index)
 }
 
 // @Ok
-int __inline countBits(unsigned int value)
+INLINE i32 countBits(u32 value)
 {
-	int bits = 0;
+	i32 bits = 0;
 
 	while (value)
 	{
@@ -592,4 +601,9 @@ void validate_ClutPC(void)
 	VALIDATE(ClutPC, mRefs, 0x4);
 	VALIDATE(ClutPC, mColorCount, 0x6);
 	VALIDATE(ClutPC, mClut, 0x8);
+}
+
+void validate_SPCTexPixelFormat(void)
+{
+	VALIDATE_SIZE(DDPIXELFORMAT, 0x20);
 }

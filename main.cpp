@@ -416,6 +416,7 @@ i32 validate(void)
 	validate_SViewport();
 	validate_SDoubleBuffer();
 	validate_SDXPolyField();
+	validate_SPCTexPixelFormat();
 
 	puts("[*] Validation done!");
 

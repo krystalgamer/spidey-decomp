@@ -11,9 +11,10 @@
 // @FIXME
 #define PCTexture i32
 
-//@FIXME
-typedef void* _DXPOLY;
-
+struct SPCTexPixelFormat
+{
+	DDPIXELFORMAT ddpi;
+};
 
 struct ClutPC
 {
@@ -96,12 +97,13 @@ EXPORT void copyBitmap(void const *,i32,void *,i32,i32,i32,i32);
 EXPORT void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool);
 EXPORT i32 countLeadingZeroBits(u32);
 EXPORT void downloadTexture(PCTexture *,u16 *,i32,i32);
-EXPORT void enumPixelFormatsCB(_DDPIXELFORMAT *,void *);
+EXPORT HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT,void *);
 EXPORT void releaseClutPc(ClutPC *);
 EXPORT void shouldForceBlend(u16 *,i32,i32,i32);
 
 void validate_SPCTexture(void);
 void validate_PVRHeader(void);
 void validate_ClutPC(void);
+void validate_SPCTexPixelFormat(void);
 
 #endif
