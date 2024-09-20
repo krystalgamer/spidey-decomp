@@ -390,7 +390,7 @@ i32 PCTex_GetTextureSplitCount(i32 index)
 // @Matching
 void PCTex_InitSystemTextures(void)
 {
-	if ( gLowGraphics )
+	if (gLowGraphics)
 	{
 		gMaxTextureAspectRatio = 0;
 		gMaxTextureWidth = 256;
@@ -399,10 +399,12 @@ void PCTex_InitSystemTextures(void)
 	}
 	else
 	{
+#ifdef _WIN32
 		gMaxTextureWidth = gD3DDevCaps.dwMaxTextureWidth;
 		gTextureHeight = gD3DDevCaps.dwMaxTextureHeight;
 		gMaxTextureAspectRatio = gD3DDevCaps.dwMaxTextureAspectRatio;
 		gSquareOnly = (gD3DDevCaps.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
+#endif
 	}
 
 	PCTEX_Init();
@@ -593,8 +595,10 @@ void downloadTexture(PCTexture *,u16 *,i32,i32)
 // @Matching
 HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT lpDDPixFmt, void * lpContext)
 {
+#ifdef _WIN32
 	LPDDPIXELFORMAT pPixelFormat = static_cast<LPDDPIXELFORMAT>(lpContext);
 	memcpy(&pPixelFormat[gNumPixelFormats], lpDDPixFmt, sizeof(DDPIXELFORMAT));
+#endif
 	gNumPixelFormats++;
 
 	return gNumPixelFormats < 16;
