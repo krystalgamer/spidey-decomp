@@ -7,6 +7,10 @@
 #include <cstring>
 #include <cstdlib>
 
+EXPORT i32 gPcTexPvrAndSoftRendererRelated;
+const i32 NUM_PCTEX_CONTAINERS = 5;
+EXPORT SPCTexContainer gPcTexContainer[NUM_PCTEX_CONTAINERS];
+
 EXPORT i32 gNumPixelFormats;
 
 EXPORT u32 gMaxTextureAspectRatio;
@@ -49,12 +53,133 @@ void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)
     printf("ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)");
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void PCTEX_Init(void)
 {
+	for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
+	{
+		if (!i)
+			gPcTexContainer[i].field_24 = 2;
+		else
+			gPcTexContainer[i].field_24 = 0;
+	}
+	gNumPixelFormats = 0;
+
 #ifdef _WIN32
-	g_D3DDevice7->EnumTextureFormats(enumPixelFormatsCB, NULL);
+	DDPIXELFORMAT v36[16];
+	g_D3DDevice7->EnumTextureFormats(enumPixelFormatsCB, v36);
+
+	for (i32 j = 0; j < gNumPixelFormats; j++)
+	{
+		if (v36[j].dwFlags & DDPF_RGB)
+		{
+			i32 rgbBitCount = countBits(v36[j].dwRGBBitCount);
+			i32 rBitCount = countBits(v36[j].dwRBitMask);
+			i32 gBitCount = countBits(v36[j].dwGBitMask);
+			i32 bBitCount = countBits(v36[j].dwBBitMask);
+
+			i32 rgbLeadingBitCount = countLeadingZeroBits(v36[j].dwRGBBitCount);
+			i32 rLeadingBitCount = countLeadingZeroBits(v36[j].dwRBitMask);
+			i32 gLeadingBitCount = countLeadingZeroBits(v36[j].dwGBitMask);
+			i32 bLeadingBitCount = countLeadingZeroBits(v36[j].dwBBitMask);
+
+			for (
+					i32 containerIndex = 0;
+					containerIndex < NUM_PCTEX_CONTAINERS;
+					containerIndex++)
+			{
+				if ( bBitCount == gPcTexContainer[containerIndex].field_4
+					&& rgbBitCount == gPcTexContainer[containerIndex].field_8
+					&& rBitCount == gPcTexContainer[containerIndex].field_C
+					&& gBitCount == gPcTexContainer[containerIndex].field_10
+					&& bLeadingBitCount == gPcTexContainer[containerIndex].field_14
+					&& rgbLeadingBitCount == gPcTexContainer[containerIndex].field_18
+					&& rLeadingBitCount == gPcTexContainer[containerIndex].field_1C
+					&& gLeadingBitCount == gPcTexContainer[containerIndex].field_20)
+				{
+					gPcTexContainer[containerIndex].field_24 |= 4;
+					memcpy(
+							&gPcTexContainer[containerIndex].field_28,
+							&v36[j],
+							sizeof(DDPIXELFORMAT));
+				}
+			}
+		}
+	}
 #endif
+
+	if (gLowGraphics)
+	{
+		gPcTexContainer[0].field_24 |= 1;
+		if ((gPcTexContainer[0].field_24 & 4) == 0)
+		{
+			gPcTexContainer[0].field_28 = 32;
+			gPcTexContainer[0].field_2C = 65;
+			gPcTexContainer[0].field_30 = 0;
+			gPcTexContainer[0].field_34 = 16;
+			gPcTexContainer[0].field_38 = 31744;
+			gPcTexContainer[0].field_3C = 992;
+			gPcTexContainer[0].field_40 = 31;
+			gPcTexContainer[0].field_44 = 0x8000;
+		}
+	}
+	else
+	{
+		for (i32 k = 0; k < NUM_PCTEX_CONTAINERS; k++)
+		{
+			if (gPcTexContainer[k].field_24 & 4)
+			{
+				gPcTexContainer[k].field_24 |= 1;
+			}
+			else
+			{
+				gPcTexContainer[k].field_24 &= ~1;
+			}
+		}
+	}
+
+	if ( (gPcTexContainer[0].field_24 & 1) != 0 )
+	{
+		gPcTexPvrAndSoftRendererRelated = 0;
+	}
+	else if ( (gPcTexContainer[4].field_24 & 1) != 0 )
+	{
+		gPcTexPvrAndSoftRendererRelated = 4;
+	}
+	else if ( (gPcTexContainer[1].field_24 & 1) != 0 )
+	{
+		gPcTexPvrAndSoftRendererRelated = 1;
+	}
+	else
+	{
+		MessageBeep(0xFFFFFFFF);
+		error("D3DTEX: Did not find acceptable 16-bit Alpha format\r\n");
+
+		i32 index;
+
+		for (index = 0; index < NUM_PCTEX_CONTAINERS; index++)
+		{
+			if (gPcTexContainer[index].field_24 & 1)
+				break;
+		}
+
+		if (index < 5)
+		{
+			printf_fancy(
+				"  Using alternate format: ARGB %i,%i,%i,%i\r\n",
+					gPcTexContainer[index].field_4,
+					gPcTexContainer[index].field_8,
+					gPcTexContainer[index].field_C,
+					gPcTexContainer[index].field_10);
+
+			gPcTexPvrAndSoftRendererRelated = index;
+			return;
+		}
+
+		error("  NONE OF OUR FORMATS ARE SUPPORTED!  CAN'T RUN THE GAME!\r\n");
+		exit(1);
+	}
 }
 
 // @Ok
@@ -605,5 +730,33 @@ void validate_ClutPC(void)
 
 void validate_SPCTexPixelFormat(void)
 {
+#ifdef _WIN32
+	VALIDATE_SIZE(SPCTexPixelFormat, 0x20);
 	VALIDATE_SIZE(DDPIXELFORMAT, 0x20);
+#endif
+}
+
+void validate_SPCTexContainer(void)
+{
+	VALIDATE_SIZE(SPCTexContainer, 0x4C);
+
+	VALIDATE(SPCTexContainer, field_4, 0x4);
+	VALIDATE(SPCTexContainer, field_8, 0x8);
+	VALIDATE(SPCTexContainer, field_C, 0xC);
+	VALIDATE(SPCTexContainer, field_10, 0x10);
+
+	VALIDATE(SPCTexContainer, field_14, 0x14);
+	VALIDATE(SPCTexContainer, field_18, 0x18);
+	VALIDATE(SPCTexContainer, field_1C, 0x1C);
+	VALIDATE(SPCTexContainer, field_20, 0x20);
+
+	VALIDATE(SPCTexContainer, field_24, 0x24);
+	VALIDATE(SPCTexContainer, field_28, 0x28);
+	VALIDATE(SPCTexContainer, field_2C, 0x2C);
+	VALIDATE(SPCTexContainer, field_30, 0x30);
+	VALIDATE(SPCTexContainer, field_34, 0x34);
+	VALIDATE(SPCTexContainer, field_38, 0x38);
+	VALIDATE(SPCTexContainer, field_3C, 0x3C);
+	VALIDATE(SPCTexContainer, field_40, 0x40);
+	VALIDATE(SPCTexContainer, field_44, 0x44);
 }

@@ -25,4 +25,8 @@ void CreateDirectoryA(char*, i32)
 {
 }
 
+void MessageBeep(u32)
+{
+}
+
 #endif

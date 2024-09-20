@@ -11,6 +11,33 @@
 // @FIXME
 #define PCTexture i32
 
+struct SPCTexContainer
+{
+	u8 padTop[4];
+
+	i32 field_4;
+	i32 field_8;
+	i32 field_C;
+	i32 field_10;
+
+	i32 field_14;
+	i32 field_18;
+	i32 field_1C;
+	i32 field_20;
+
+	i32 field_24;
+	i32 field_28;
+	i32 field_2C;
+	i32 field_30;
+	i32 field_34;
+	i32 field_38;
+	i32 field_3C;
+	i32 field_40;
+	i32 field_44;
+
+	u8 padBottom[0x4C-0x44-4];
+};
+
 struct SPCTexPixelFormat
 {
 	DDPIXELFORMAT ddpi;
@@ -105,5 +132,6 @@ void validate_SPCTexture(void);
 void validate_PVRHeader(void);
 void validate_ClutPC(void);
 void validate_SPCTexPixelFormat(void);
+void validate_SPCTexContainer(void);
 
 #endif
