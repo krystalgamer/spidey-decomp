@@ -8,6 +8,21 @@
 #include "texture.h"
 #include "ob.h"
 
+struct SSpoolInitRelated
+{
+	u8 padTop[0x20];
+	SSpoolInitRelated* pNext;
+	u8 padBottom[0x2C-0x20-4];
+};
+
+struct SAccess
+{
+	SAccess* pNext;
+	SAccess* pPrev;
+	i32 mType;
+	char mName[8];
+};
+
 struct SAnimFrame;
 
 struct SPSXRegion {
@@ -22,7 +37,7 @@ struct SPSXRegion {
 	// offset: 000C
 	u32 *pModelChecksums;
 
-	u32 padAfterChecksum;
+	CClass* field_10;
 
 	// offset: 0010 (36 bytes)
 	void **ppModels; // SMode
@@ -117,6 +132,8 @@ EXPORT void texLoadChecksums(char *);
 
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);
+void validate_SAccess(void);
+void validate_SSpoolInitRelated(void);
 
 static const int MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];

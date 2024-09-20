@@ -418,6 +418,8 @@ i32 validate(void)
 	validate_SDXPolyField();
 	validate_SPCTexPixelFormat();
 	validate_SPCTexContainer();
+	validate_SAccess();
+	validate_SSpoolInitRelated();
 
 	puts("[*] Validation done!");
 

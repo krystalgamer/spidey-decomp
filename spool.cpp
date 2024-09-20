@@ -3,7 +3,22 @@
 #include "validate.h"
 #include "utils.h"
 #include "panel.h"
+#include "PCTex.h"
+
 #include <cstring>
+
+EXPORT i32 gSpoolAnimPacketRelated;
+EXPORT i32 gSpoolInitOne;
+EXPORT i32 gSpoolInitTwo;
+EXPORT i32 gSpoolColijEnvIndex;
+EXPORT i32 gSpoolInitRelatedUnk;
+
+EXPORT i32 gSpoolRegionRelated[2] = { -1, -1 };
+
+EXPORT SSpoolInitRelated* gSpoolTexturesRelated;
+EXPORT SSpoolInitRelated gSpoolInitRelated[512];
+
+EXPORT SAccess* gAccessRelated[MAXPSX];
 
 const i32 MAXITEMSPERCHECKSUM = 5;
 EXPORT i16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
@@ -156,10 +171,64 @@ void Spool_GetPalette(u32,i32)
     printf("Spool_GetPalette(u32,i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Spool_Init(void)
 {
-    printf("Spool_Init(void)");
+	print_if_false(1u, "MAXPSXS is too big");
+	PCTex_ReleaseAllTextures();
+	PCTex_InitSystemTextures();
+
+	for (i32 i = 0; i < MAXPSX; i++)
+	{
+		PSXRegion[i].Filename[0] = 0;
+		PSXRegion[i].Protected = 0;
+		PSXRegion[i].Usable = 0;
+		PSXRegion[i].ppModels = 0;
+
+		delete[] PSXRegion[i].field_10;
+
+		PSXRegion[i].field_10 = 0;
+		PSXRegion[i].pPSX = 0;
+		PSXRegion[i].pAnimFile = 0;
+		PSXRegion[i].pHierarchy = 0;
+		PSXRegion[i].pColourPulseData = 0;
+		PSXRegion[i].pTexWibData = 0;
+		PSXRegion[i].pHooks = 0;
+
+		while(gAccessRelated[i])
+		{
+			SAccess* pCur = gAccessRelated[i];
+			SAccess* next = pCur->pNext;
+			gAccessRelated[i] = next;
+
+			pCur->pPrev->pNext = 0;
+			delete pCur;
+		}
+	}
+
+	gSpoolTexturesRelated = &gSpoolInitRelated[0];
+	for (i32 j = 0; j < TEXTURE_CHECKSUM_TABLE_SIZE; j++)
+		TextureChecksumHashTable[j] = 0;
+
+	for (i32 k = 0; k < 511; k++)
+	{
+		gSpoolInitRelated[k].pNext = &gSpoolInitRelated[k+1];
+	}
+
+	gSpoolInitRelated[511].pNext = 0;
+	Spool_InitialiseEnvModelHashTable();
+
+	gSpoolAnimPacketRelated = 0;
+	gSpoolInitOne = 0;
+	gSpoolInitTwo = 0;
+	EnviroList = 0;
+	gSpoolColijEnvIndex = 0;
+	gSpoolInitRelatedUnk = 0;
+
+	gSpoolRegionRelated[0] = -1;
+	gSpoolRegionRelated[1] = -1;
+
 }
 
 // @Ok
@@ -479,9 +548,12 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, Usable, 0xA);
 	VALIDATE(SPSXRegion, Protected, 0xB);
 	VALIDATE(SPSXRegion, pModelChecksums, 0xC);
+	VALIDATE(SPSXRegion, field_10, 0x10);
 	VALIDATE(SPSXRegion, ppModels, 0x14);
+	VALIDATE(SPSXRegion, pPSX, 0x18);
 	VALIDATE(SPSXRegion, pAnimFile, 0x1C);
 	VALIDATE(SPSXRegion, pHierarchy, 0x20);
+	VALIDATE(SPSXRegion, pHooks, 0x24);
 	VALIDATE(SPSXRegion, pColourTable, 0x28);
 	VALIDATE(SPSXRegion, pTexWibData, 0x2C);
 	VALIDATE(SPSXRegion, pColourPulseData, 0x30);
@@ -495,4 +567,21 @@ void validate_TextureEntry(void)
 	VALIDATE(TextureEntry, Active, 0x0);
 	VALIDATE(TextureEntry, Name, 0x1);
 	VALIDATE(TextureEntry, Checksum, 0x24);
+}
+
+void validate_SAccess(void)
+{
+	VALIDATE_SIZE(SAccess, 0x14);
+
+	VALIDATE(SAccess, pNext, 0x0);
+	VALIDATE(SAccess, pPrev, 0x4);
+	VALIDATE(SAccess, mType, 0x8);
+	VALIDATE(SAccess, mName, 0xC);
+}
+
+void validate_SSpoolInitRelated(void)
+{
+	VALIDATE_SIZE(SSpoolInitRelated, 0x2C);
+
+	VALIDATE(SSpoolInitRelated, pNext, 0x20);
 }
