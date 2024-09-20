@@ -6,7 +6,7 @@
 #include <cstring>
 
 const i32 MAXITEMSPERCHECKSUM = 5;
-EXPORT u16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
+EXPORT i16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
 
 SPSXRegion PSXRegion[MAXPSX];
 
@@ -258,10 +258,32 @@ u32 Spool_GetModelChecksum(CItem *pItem)
 	return PSXRegion[pItem->mRegion].pModelChecksums[pItem->mModel];
 }
 
-// @SMALLTODO
-CItem* Spool_FindEnviroItem(u32)
+// @Ok
+// @Matching
+CItem* Spool_FindEnviroItem(u32 Checksum)
 {
-	return reinterpret_cast<CItem*>(0x15072024);
+	CItem* pList = EnviroList;
+	if (pList)
+	{
+		u32* pModelChecksums = PSXRegion[EnviroList->mRegion].pModelChecksums;
+		print_if_false(pModelChecksums != 0, "NULL pChecksums?");
+
+		i16* pHashes = gEnvModelHashTable[Checksum % 256];
+
+		for (i32 i = 0, curHash = pHashes[i]; curHash >= 0; curHash = pHashes[i])
+		{
+			if (Checksum == pModelChecksums[curHash])
+			{
+				return
+					reinterpret_cast<CItem*>(&reinterpret_cast<char*>(pList)[0x40 * curHash]);
+			}
+			
+			if (++i >= 5)
+				break;
+		}
+	}
+
+	return 0;
 }
 
 // @NotOk
@@ -406,7 +428,7 @@ void strlwr(char* inp)
 }
 #endif
 
-// NotOk
+// @NotOk
 // understand th ereturn for index >= 256
 Texture *Spool_FindTextureEntry(char *name)
 {
@@ -428,6 +450,7 @@ Texture *Spool_FindTextureEntry(char *name)
 	return Spool_FindTextureEntry(gTextureEntries[index].Checksum);
 }
 
+// @Ok
 u32 Spool_FindTextureChecksum(char *name)
 {
 	char localName[256];

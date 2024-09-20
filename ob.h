@@ -41,7 +41,7 @@ public:
 	unsigned short mModel;
 
 	unsigned char pad1[3];
-	unsigned char mRegion;
+	u8 mRegion;
 
 
 	CItem *field_20;
