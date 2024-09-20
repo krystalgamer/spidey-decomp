@@ -2,9 +2,15 @@
 #include "validate.h"
 #include "mem.h"
 #include "dcfileio.h"
+#include "DXinit.h"
 
 #include <cstring>
 #include <cstdlib>
+
+EXPORT u32 gMaxTextureAspectRatio;
+EXPORT u32 gMaxTextureWidth;
+EXPORT u32 gTextureHeight;
+EXPORT bool gSquareOnly;
 
 const i32 GLOBAL_TEXTURE_COUNT = 1024;
 EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
@@ -251,10 +257,26 @@ i32 PCTex_GetTextureSplitCount(i32 index)
 	return gGlobalTextures[index].mSplitCount;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCTex_InitSystemTextures(void)
 {
-    printf("PCTex_InitSystemTextures(void)");
+	if ( gLowGraphics )
+	{
+		gMaxTextureAspectRatio = 0;
+		gMaxTextureWidth = 256;
+		gTextureHeight = 256;
+		gSquareOnly = 0;
+	}
+	else
+	{
+		gMaxTextureWidth = gD3DDevCaps.dwMaxTextureWidth;
+		gTextureHeight = gD3DDevCaps.dwMaxTextureHeight;
+		gMaxTextureAspectRatio = gD3DDevCaps.dwMaxTextureAspectRatio;
+		gSquareOnly = (gD3DDevCaps.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
+	}
+
+	PCTEX_Init();
 }
 
 // @MEDIUMTODO
