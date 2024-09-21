@@ -159,12 +159,6 @@ void SlicedImage2::setData(void* pData)
 	}
 }
 
-// @SMALLTODO
-void SlicedImage2::draw(i32, i32, i32, float)
-{
-	printf("void SlicedImage2::draw(i32, i32, i32, float)");
-}
-
 // @Ok
 INLINE i32 GetBMPBitDepth(char* pData)
 {
