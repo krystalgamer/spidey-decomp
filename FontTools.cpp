@@ -10,6 +10,35 @@
 #include <cstring>
 
 // @Ok
+i32 Font::fixedCharWidth(char c)
+{
+	if (this->isEscapeChar(c))
+		return 0;
+
+	if (this->field_58 != 0 && this->field_58 != 2)
+	{
+		if (this->field_58 == 1)
+		{
+			if (c == ':')
+			{
+				return this->field_34 * (this->field_C + this->pCharTab[10].W) >> 12;
+			}
+			
+			return this->field_34 * (this->field_C + this->pCharTab->W) >> 12;
+		}
+		else
+		{
+			print_if_false(0, "Unrecognized char mapping");
+			return 0;
+		}
+	}
+	else
+	{
+		return (this->field_34 * (this->field_C + this->pCharTab->W)) >> 12;
+	}
+}
+
+// @Ok
 // @Matching
 Font::Font(void)
 {
