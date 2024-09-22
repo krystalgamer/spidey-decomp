@@ -1,6 +1,10 @@
 #include "pal.h"
 #include "ps2funcs.h"
 
+#include "validate.h"
+
+EXPORT struct tag_S_Pal *pPaletteList;
+
 const i32 MAXFREE16SLOTS = 192;
 EXPORT u8 Free16Slots[MAXFREE16SLOTS];
 
@@ -99,4 +103,11 @@ void RemovePaletteEntry(tag_S_Pal *)
 
 void validate_tag_S_Pal(void)
 {
+	VALIDATE_SIZE(tag_S_Pal, 0x10);
+
+	VALIDATE(tag_S_Pal, slot, 0x2);
+	VALIDATE(tag_S_Pal, flags, 0x3);
+	VALIDATE(tag_S_Pal, Usage, 0x4);
+
+	VALIDATE(tag_S_Pal, pNext, 0xC);
 }
