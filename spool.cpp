@@ -25,7 +25,7 @@ EXPORT i32 gSpoolInitTwo;
 EXPORT i32 gSpoolColijEnvIndex;
 EXPORT i32 gSpoolInitRelatedUnk;
 
-EXPORT i32 gSpoolRegionRelated[2] = { -1, -1 };
+EXPORT i32 EnvRegions[2] = { -1, -1 };
 
 EXPORT SSpoolInitRelated* gSpoolTexturesRelated;
 EXPORT SSpoolInitRelated gSpoolInitRelated[512];
@@ -101,8 +101,8 @@ i32 Spool_PSX(
 	print_if_false(openSpot == -1, "Too many PSX files loaded, increase MAXPSXS in spool.h");
 	if (IsEnviro)
 	{
-		print_if_false(gSpoolRegionRelated[0] == -1, "Old environment still loaded");
-		gSpoolRegionRelated[0] = openSpot;
+		print_if_false(EnvRegions[0] == -1, "Old environment still loaded");
+		EnvRegions[0] = openSpot;
 	}
 
 	Utils_CopyString(v22, PSXRegion[openSpot].Filename, 9);
@@ -292,11 +292,11 @@ void Spool_FindAnim(char *,i32)
     printf("Spool_FindAnim(char *,i32)");
 }
 
-// @SMALLTODO
-i32 Spool_GetEnvIndex(i32)
+// @Ok
+// @Matching
+i32 Spool_GetEnvIndex(i32 a1)
 {
-    printf("Spool_GetEnvIndex(i32)");
-	return 0x12082024;
+	return (a1 != EnvRegions[0]) ? -1 : 0;
 }
 
 // @SMALLTODO
@@ -360,8 +360,8 @@ void Spool_Init(void)
 	gSpoolColijEnvIndex = 0;
 	gSpoolInitRelatedUnk = 0;
 
-	gSpoolRegionRelated[0] = -1;
-	gSpoolRegionRelated[1] = -1;
+	EnvRegions[0] = -1;
+	EnvRegions[1] = -1;
 
 }
 
