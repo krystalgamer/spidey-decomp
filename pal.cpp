@@ -4,9 +4,12 @@
 const i32 MAXFREE16SLOTS = 192;
 EXPORT u8 Free16Slots[MAXFREE16SLOTS];
 
+const i32 MAXFREE256SLOTS = 68;
+EXPORT u8 Free256Slots[MAXFREE256SLOTS];
+
 // @Ok
 // @Matching
-void Free16Slot(u16 a1)
+INLINE void Free16Slot(u16 a1)
 {
 	for (i32 i = 0; i < MAXFREE16SLOTS; i++)
 	{
@@ -19,7 +22,7 @@ void Free16Slot(u16 a1)
 
 // @Ok
 // @Matching
-i32 GetFree16Slot(void)
+INLINE i32 GetFree16Slot(void)
 {
 	i32 freeSlot;
 
@@ -29,16 +32,27 @@ i32 GetFree16Slot(void)
 			break;
 	}
 
-	print_if_false(freeSlot < 192, "Run out of 16 colour palettes");
+	print_if_false(freeSlot < MAXFREE16SLOTS, "Run out of 16 colour palettes");
 	Free16Slots[freeSlot] = 0;
 
 	return freeSlot;
 }
 
 // @SMALLTODO
-void GetFree256Slot(void)
+INLINE i32 GetFree256Slot(void)
 {
-    printf("GetFree256Slot(void)");
+	i32 freeSlot;
+
+	for (freeSlot = 0; freeSlot < MAXFREE256SLOTS; freeSlot++)
+	{
+		if (Free256Slots[freeSlot])
+			break;
+	}
+
+	print_if_false(freeSlot < MAXFREE256SLOTS, "Run out of 256 colour palettes");
+	Free256Slots[freeSlot] = 0;
+
+	return freeSlot;
 }
 
 // @SMALLTODO
