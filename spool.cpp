@@ -280,7 +280,8 @@ void Spool_AnimAccess(char *,SAnimFrame **)
     printf("Spool_AnimAccess(char *,SAnimFrame **)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Spool_ClearEnvironmentRegions(void)
 {
 	ClearRegion(EnvRegions[0], 1);

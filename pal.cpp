@@ -1,5 +1,8 @@
 #include "pal.h"
 
+const i32 MAXFREE16SLOTS = 192;
+EXPORT u8 Free16Slots[MAXFREE16SLOTS];
+
 // @MEDIUMTODO
 void Free16Slot(u16)
 {
@@ -9,8 +12,18 @@ void Free16Slot(u16)
 // @SMALLTODO
 i32 GetFree16Slot(void)
 {
-    printf("GetFree16Slot(void)");
-	return 0x12092024;
+	i32 freeSlot;
+
+	for (freeSlot = 0; freeSlot < MAXFREE16SLOTS; freeSlot++)
+	{
+		if (Free16Slots[freeSlot])
+			break;
+	}
+
+	print_if_false(freeSlot < 192, "Run out of 16 colour palettes");
+	Free16Slots[freeSlot] = 0;
+
+	return freeSlot;
 }
 
 // @SMALLTODO
