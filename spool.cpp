@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "panel.h"
 #include "PCTex.h"
+#include "DXinit.h"
 
 #include <cstring>
 
@@ -39,18 +40,36 @@ EXPORT TextureEntry gTextureEntries[256];
 EXPORT i32 HashIndex;
 EXPORT Texture* pCurrentTex;
 
-// @MEDIUMTODO
-i32 Spool_PSX(const char*, i32)
+EXPORT char SuitNames[11][32] = 
 {
-	printf("i32 Spool_PSX(const char*, i32)");
+	"Dummy",
+	"spidey",
+	"sp2099",
+	"spSymbi",
+	"spUniv",
+	"spUnlim",
+	"spBagMan",
+	"spScar",
+	"spReilly",
+	"spQuick",
+	"spPark",
+
+};
+
+// @MEDIUMTODO
+i32 Spool_PSX(
+		const char* Filename,
+		i32 IsEnviro)
+{
+	char v22[32];
+	print_if_false(Filename != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(Filename, v22, sizeof(v22));
+
+	if ( !gLowGraphics && Utils_CompareStrings(v22, "spidey") )
+		Utils_CopyString(SuitNames[CurrentSuit], v22, sizeof(v22));
+
 	return 0x14092024;
 }
-
-#if _WIN32
-static const char SuitNames[5][32];
-#else
-static const char SuitNames[5][32] = { 0 };
-#endif
 
 // @SMALLTODO
 void DecrementTextureUsage(i32)

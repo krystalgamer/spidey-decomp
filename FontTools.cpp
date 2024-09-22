@@ -162,9 +162,16 @@ Font::~Font(void)
 }
 
 // @MEDIUMTODO
-void Font::draw(i32, i32, const char*, i32, float)
+void Font::draw(
+		i32 x,
+		i32 y,
+		const char* pStr,
+		i32 drawFirst,
+		float)
 {
-	printf("void Font::draw(i32, i32, const char*, i32, float)");
+	if (this->field_34 || this->field_30)
+	{
+	}
 }
 
 // @Ok
