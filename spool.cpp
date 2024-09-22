@@ -5,9 +5,19 @@
 #include "panel.h"
 #include "PCTex.h"
 #include "DXinit.h"
+#include "dcfileio.h"
 
 #include <cstring>
 
+EXPORT i32 gSpoolRegionRelatedOne;
+EXPORT i32 gSpoolRegionRelatedTwo;
+EXPORT i32 GrenadeExplosionRegion = -1;
+EXPORT i32 SymBurnRegion = -1;
+EXPORT i32 FireDomeRegion = -1;
+EXPORT i32 FireRingRegion = -1;
+
+
+EXPORT i32 gSpoolCurrentOpenSpot;
 EXPORT i32 gSpoolAnimPacketRelated;
 EXPORT i32 gSpoolInitOne;
 EXPORT i32 gSpoolInitTwo;
@@ -56,7 +66,8 @@ EXPORT char SuitNames[11][32] =
 
 };
 
-// @MEDIUMTODO
+// @Ok
+// @Validate
 i32 Spool_PSX(
 		const char* Filename,
 		i32 IsEnviro)
@@ -68,7 +79,91 @@ i32 Spool_PSX(
 	if ( !gLowGraphics && Utils_CompareStrings(v22, "spidey") )
 		Utils_CopyString(SuitNames[CurrentSuit], v22, sizeof(v22));
 
-	return 0x14092024;
+	for (i32 i = 0; i < MAXPSX; i++)
+	{
+		if (PSXRegion[i].Filename[0] && Utils_CompareStrings(v22, PSXRegion[i].Filename))
+		{
+			return i;
+		}
+	}
+
+	i32 openSpot = -1;
+	for (i32 k = 0; k < MAXPSX; k++)
+	{
+		if (PSXRegion[i].Filename[0] == '\0')
+		{
+			openSpot = k;
+			break;
+		}
+	}
+
+	print_if_false(openSpot == -1, "Too many PSX files loaded, increase MAXPSXS in spool.h");
+	if (IsEnviro)
+	{
+		print_if_false(gSpoolRegionRelated[0] == -1, "Old environment still loaded");
+		gSpoolRegionRelated[0] = openSpot;
+	}
+
+	Utils_CopyString(v22, PSXRegion[openSpot].Filename, 9);
+	gSpoolCurrentOpenSpot = openSpot;
+
+
+	i32 v8;
+	char v23[64];
+	if ( gLowGraphics && (sprintf(v23, "lowres\\%s.psx", v22), (v8 = FileIO_Open(v23)) != 0) )
+	{
+		print_if_false((unsigned __int8)"Loading LowRes Model: %s\r\n", v23);
+		PSXRegion[openSpot].LowRes = 1;
+	}
+	else
+	{
+		sprintf(v23, "%s.psx", v22);
+		v8 = FileIO_Open(v23);
+	}
+
+	void* v9 = DCMem_New(v8, 1, 1, 0, 1);
+	PSXRegion[openSpot].pPSX = static_cast<u32*>(v9);
+
+	FileIO_Load(v9);
+	FileIO_Sync();
+	ProcessNewPSX(openSpot);
+
+	if (IsEnviro)
+	{
+		print_if_false(EnviroList == 0, "EnviroList not NULL");
+		EnviroList = PSXRegion[openSpot].field_10;
+		gSpoolRegionRelatedOne = gSpoolRegionRelatedTwo;
+
+		Spool_SkipPackets(PSXRegion[openSpot].pPSX);
+		Spool_AddEnvModelsToHashTable();
+	}
+
+	if ( Utils_CompareStrings(v22, "expgrnd") )
+	{
+		print_if_false(GrenadeExplosionRegion == -1, "GrenadeExplosionRegion already set?");
+		GrenadeExplosionRegion = openSpot;
+	}
+
+	if ( Utils_CompareStrings(v22, "fire") )
+	{
+		print_if_false(SymBurnRegion == -1, "SymBurnRegion already set?");
+		Spool_MaskFaceFlags(openSpot, 512, -1);
+		SymBurnRegion = openSpot;
+	}
+
+	if ( Utils_CompareStrings(v22, "firedome") )
+	{
+		print_if_false(FireDomeRegion == -1, "FireDomeRegion already set?");
+		FireDomeRegion = openSpot;
+	}
+
+	if ( Utils_CompareStrings(v22, "firering") )
+	{
+		print_if_false(FireRingRegion == -1, "FireRingRegion already set?");
+		FireRingRegion = openSpot;
+	}
+
+	return openSpot;
 }
 
 // @SMALLTODO
@@ -418,7 +513,7 @@ unsigned int Spool_GetModel(unsigned int Checksum, int Region)
 
 // @NotOk
 // understand this piece of shit
-u32 *Spool_SkipPackets(u32  *pPSX)
+INLINE u32 *Spool_SkipPackets(u32 *pPSX)
 {
 	unsigned int *i; // r4
 	for ( i = (unsigned int *)((char *)pPSX + pPSX[1]); *i != -1; i = (unsigned int *)((char *)i + i[1] + 8) );

@@ -37,7 +37,7 @@ struct SPSXRegion {
 	// offset: 000C
 	u32 *pModelChecksums;
 
-	CClass* field_10;
+	CItem* field_10;
 
 	// offset: 0010 (36 bytes)
 	void **ppModels; // SMode
