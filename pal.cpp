@@ -5,7 +5,7 @@
 
 const i32 PAL_ARRAY_SIZE = 259;
 EXPORT tag_S_Pal gPalArrayData[PAL_ARRAY_SIZE];
-EXPORT tag_S_Pal* gPalArray;
+EXPORT tag_S_Pal* gPalArray = &gPalArrayData[0];
 
 EXPORT struct tag_S_Pal *pPaletteList;
 
@@ -93,14 +93,18 @@ void Pal_ProcessPalette(u16 *,i32)
     printf("Pal_ProcessPalette(u16 *,i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Pal_RemoveUnusedPalettes(void)
 {
+	tag_S_Pal* next;
 	for (
 			tag_S_Pal* pPal = pPaletteList;
 			pPal;
-			pPal = pPal->pNext)
+			pPal = next)
 	{
+		next = pPal->pNext;
+
 		if (!pPal->Usage)
 		{
 			if (pPal->flags & 1)
@@ -114,7 +118,8 @@ void Pal_RemoveUnusedPalettes(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 INLINE void RemovePaletteEntry(tag_S_Pal* pEntry)
 {
 	tag_S_Pal* pPrev = 0;
@@ -132,7 +137,11 @@ INLINE void RemovePaletteEntry(tag_S_Pal* pEntry)
 
 	if (pPrev)
 		pPrev->pNext = pEntry->pNext;
+	else
+		pPaletteList = pEntry->pNext;
 
+	pEntry->pNext = gPalArray;
+	gPalArray = pEntry;
 }
 
 void validate_tag_S_Pal(void)
