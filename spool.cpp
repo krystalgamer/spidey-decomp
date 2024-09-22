@@ -283,7 +283,7 @@ void Spool_AnimAccess(char *,SAnimFrame **)
 // @SMALLTODO
 void Spool_ClearEnvironmentRegions(void)
 {
-    printf("Spool_ClearEnvironmentRegions(void)");
+	ClearRegion(EnvRegions[0], 1);
 }
 
 // @SMALLTODO
@@ -534,6 +534,7 @@ INLINE u32 *Spool_SkipPackets(u32 *pPSX)
 // @BIGTODO
 void ClearRegion(int, int)
 {
+	printf("void ClearRegion(int, int)");
 }
 
 // @BIGTODO
