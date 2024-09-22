@@ -3,6 +3,10 @@
 
 #include "validate.h"
 
+const i32 PAL_ARRAY_SIZE = 259;
+EXPORT tag_S_Pal gPalArrayData[PAL_ARRAY_SIZE];
+EXPORT tag_S_Pal* gPalArray;
+
 EXPORT struct tag_S_Pal *pPaletteList;
 
 const i32 MAXFREE16SLOTS = 192;
@@ -92,18 +96,48 @@ void Pal_ProcessPalette(u16 *,i32)
 // @SMALLTODO
 void Pal_RemoveUnusedPalettes(void)
 {
-    printf("Pal_RemoveUnusedPalettes(void)");
+	for (
+			tag_S_Pal* pPal = pPaletteList;
+			pPal;
+			pPal = pPal->pNext)
+	{
+		if (!pPal->Usage)
+		{
+			if (pPal->flags & 1)
+				Free16Slots[pPal->slot] = 1;
+
+			if (pPal->flags & 2)
+				Free256Slots[pPal->slot] = 1;
+
+			RemovePaletteEntry(pPal);
+		}
+	}
 }
 
 // @SMALLTODO
-void RemovePaletteEntry(tag_S_Pal *)
+INLINE void RemovePaletteEntry(tag_S_Pal* pEntry)
 {
-    printf("RemovePaletteEntry(tag_S_Pal *)");
+	tag_S_Pal* pPrev = 0;
+	tag_S_Pal* pIter;
+
+	for (pIter = pPaletteList; pIter; pIter = pIter->pNext)
+	{
+		if (pIter == pEntry)
+			break;
+
+		pPrev = pIter;
+	}
+
+	print_if_false(pIter != 0, "pEntry not found for deletion");
+
+	if (pPrev)
+		pPrev->pNext = pEntry->pNext;
+
 }
 
 void validate_tag_S_Pal(void)
 {
-	VALIDATE_SIZE(tag_S_Pal, 0x10);
+	VALIDATE_SIZE(tag_S_Pal, 0x18);
 
 	VALIDATE(tag_S_Pal, slot, 0x2);
 	VALIDATE(tag_S_Pal, flags, 0x3);

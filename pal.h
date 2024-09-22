@@ -14,6 +14,8 @@ struct tag_S_Pal
 	u16 Usage;
 	u8 padAfter4[6];
 	tag_S_Pal* pNext;
+
+	u8 padBottom[0x18-0xC-4];
 };
 
 EXPORT void Free16Slot(u16);
