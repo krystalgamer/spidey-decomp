@@ -23,7 +23,8 @@ EXPORT u8 Free256Slots[MAXFREE256SLOTS];
 // @Matching
 INLINE void Free16Slot(u16 a1)
 {
-	for (i32 i = 0; i < MAXFREE16SLOTS; i++)
+	i32 i;
+	for (i = 0; i < MAXFREE16SLOTS; i++)
 	{
 		if (GetClut(Pal16X, Pal16Y + i) == a1)
 			break;

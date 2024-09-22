@@ -91,7 +91,7 @@ i32 Spool_PSX(
 	i32 openSpot = -1;
 	for (i32 k = 0; k < MAXPSX; k++)
 	{
-		if (PSXRegion[i].Filename[0] == '\0')
+		if (PSXRegion[k].Filename[0] == '\0')
 		{
 			openSpot = k;
 			break;
