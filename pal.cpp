@@ -1,9 +1,13 @@
 #include "pal.h"
 #include "ps2funcs.h"
+#include "pack.h"
+#include "mem.h"
 
 #include "validate.h"
 
-const i32 PAL_ARRAY_SIZE = 259;
+EXPORT i32 gPalRelated;
+
+const i32 PAL_ARRAY_SIZE = 260;
 EXPORT tag_S_Pal gPalArrayData[PAL_ARRAY_SIZE];
 EXPORT tag_S_Pal* gPalArray = &gPalArrayData[0];
 
@@ -75,10 +79,34 @@ void Pal_FindPaletteEntry(u32)
     printf("Pal_FindPaletteEntry(u32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Pal_Init(void)
 {
-    printf("Pal_Init(void)");
+	pPaletteList = 0;
+	gPalArray = &gPalArrayData[0];
+
+	for (i32 i = 0; i < PAL_ARRAY_SIZE - 1; i++)
+	{
+		gPalArrayData[i].pNext = &gPalArrayData[i+1];
+	}
+	gPalArrayData[PAL_ARRAY_SIZE-1].pNext = 0;
+
+	Mem_Delete(Pack_Pack(-1, 256, 12, &Pal16X, &Pal16Y, 16, 0, 0));
+	Mem_Delete(Pack_Pack(-1, 256, 68, &gClutRelated, &gPalRelated, 16, 0, 0));
+
+
+	for (i32 k = 0; k < MAXFREE16SLOTS; k++)
+	{
+		Free16Slots[k] = 1;
+	}
+
+	Free256Slots[0] = 0;
+	for (i32 m = 1; m < MAXFREE256SLOTS; m++)
+	{
+		Free256Slots[m] = 1;
+	}
+
 }
 
 // @SMALLTODO

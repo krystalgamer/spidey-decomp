@@ -10,6 +10,8 @@
 
 #include <cstdlib>
 
+i32 gClutRelated;
+
 i32 DoVblankProcessing = 1;
 i32 gPortRelatedOne;
 i32 gSomeSize = 0x6E0000;
@@ -568,7 +570,6 @@ int ratan2(int x, int y)
 
 }
 
-static int gClutRelated;
 
 // @NotOk
 // Globals

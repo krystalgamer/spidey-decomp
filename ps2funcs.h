@@ -6,6 +6,7 @@
 #include "export.h"
 #include "quat.h"
 
+EXPORT extern i32 gClutRelated;
 EXPORT extern i32 gPortRelatedOne;
 EXPORT extern i32 gSomeSize;
 EXPORT extern i32 DoVblankProcessing;
