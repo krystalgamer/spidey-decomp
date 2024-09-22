@@ -11,7 +11,7 @@
 EXPORT i32 gCrateRecursion = 0;
 
 // @FIXME find real size and shit
-EXPORT u32* gCommandPointRelated[1];
+u32* gCommandPointRelated[1];
 
 // @Ok
 // the shr 0x18 happening here is optimized in most cases, not sure what the devs did to

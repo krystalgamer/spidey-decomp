@@ -6,6 +6,7 @@
 #include "PCTex.h"
 #include "DXinit.h"
 #include "dcfileio.h"
+#include "crate.h"
 
 #include <cstring>
 
@@ -134,7 +135,7 @@ i32 Spool_PSX(
 		EnviroList = PSXRegion[openSpot].field_10;
 		gSpoolRegionRelatedOne = gSpoolRegionRelatedTwo;
 
-		Spool_SkipPackets(PSXRegion[openSpot].pPSX);
+		gCommandPointRelated[0] = Spool_SkipPackets(PSXRegion[openSpot].pPSX);
 		Spool_AddEnvModelsToHashTable();
 	}
 
@@ -248,10 +249,29 @@ void RemoveTextureEntry(Texture *)
     printf("RemoveTextureEntry(Texture *)");
 }
 
-// @SMALLTODO
-void Spool_AddEnvModelsToHashTable(void)
+// @Ok
+// @Validate
+INLINE void Spool_AddEnvModelsToHashTable(void)
 {
-    printf("Spool_AddEnvModelsToHashTable(void)");
+	print_if_false(EnviroList != 0, "NULL EnviroList?");
+	u32* pModelChecksums = PSXRegion[EnviroList->mRegion].pModelChecksums;
+	print_if_false(pModelChecksums != 0, "NULL pChecksums?");
+
+	u32 v16 = reinterpret_cast<u32>(PSXRegion[EnviroList->mRegion].ppModels[-1]);
+	for (u32 v15 = 0; v15 < v16; v15++)
+	{
+		u32 checksumIndex = pModelChecksums[v15] % 256;
+
+		i32 k;
+		for (k = 0; gEnvModelHashTable[checksumIndex][k] >= 0; k++)
+		{
+			print_if_false(
+				k < MAXITEMSPERCHECKSUM,
+				"Too many items have the same checksum mod 256\n Need to increase MAXITEMSPERCHECKSUM in spool.cpp");
+		}
+
+		gEnvModelHashTable[checksumIndex][k] = v15;
+	}
 }
 
 // @MEDIUMTODO
