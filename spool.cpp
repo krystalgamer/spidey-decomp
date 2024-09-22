@@ -469,8 +469,8 @@ CItem* Spool_FindEnviroItem(u32 Checksum)
 	return 0;
 }
 
-// @NotOk
-// Change constants with proper variables
+// @Ok
+// @Matching
 int Spool_FindRegion(const char *a1)
 {
 	char fileName[0x20];
@@ -484,23 +484,13 @@ int Spool_FindRegion(const char *a1)
 			Utils_CopyString(SuitNames[CurrentSuit], fileName, sizeof(fileName));
 	}
 
-	int region = 0;
-	int regionAddress = 0x6B2440;
-
-	do
+	for (i32 i = 0; i < MAXPSX; i++)
 	{
-		if (!Utils_CompareStrings(fileName, reinterpret_cast<char*>(regionAddress)))
+		if (Utils_CompareStrings(fileName, PSXRegion[i].Filename))
 		{
-			regionAddress += 0x44;
-			region++;
+			return i;
 		}
-		else{
-			return region;
-		}
-
-
-	} while (regionAddress < 0x6B2EE0);
-
+	}
 
 	return -1;
 }
