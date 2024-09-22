@@ -24,8 +24,8 @@ struct SSinCos
 // it's something like rcosin_table
 EXPORT extern SSinCos rcossin_tbl[FLATBIT_VELOCITIES_SIZE];
 
-EXPORT extern i32 gClutRelatedOne;
-EXPORT extern i32 gClutRelatedTwo;
+EXPORT extern i32 Pal16X;
+EXPORT extern i32 Pal16Y;
 
 EXPORT extern u8 gPrintStubbed;
 EXPORT extern u8 gClearImagePrint;

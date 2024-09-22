@@ -1,15 +1,24 @@
 #include "pal.h"
+#include "ps2funcs.h"
 
 const i32 MAXFREE16SLOTS = 192;
 EXPORT u8 Free16Slots[MAXFREE16SLOTS];
 
-// @MEDIUMTODO
-void Free16Slot(u16)
+// @Ok
+// @Matching
+void Free16Slot(u16 a1)
 {
-	printf("Free16Slot");
+	for (i32 i = 0; i < MAXFREE16SLOTS; i++)
+	{
+		if (GetClut(Pal16X, Pal16Y + i) == a1)
+			break;
+	}
+
+	Free16Slots[i] = 1;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 GetFree16Slot(void)
 {
 	i32 freeSlot;

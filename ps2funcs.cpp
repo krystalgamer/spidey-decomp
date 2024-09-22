@@ -16,8 +16,8 @@ i32 gSomeSize = 0x6E0000;
 
 SSinCos rcossin_tbl[FLATBIT_VELOCITIES_SIZE];
 
-i32 gClutRelatedOne;
-i32 gClutRelatedTwo;
+i32 Pal16X;
+i32 Pal16Y;
 
 EXPORT i16 gRotMatrix[3][3];
 

@@ -73,8 +73,8 @@ Font::Font(
 	this->pCharTab = static_cast<FontCharacter*>(
 			DCMem_New(sizeof(FontCharacter) * (this->NumChars + 1), 0, 1, 0, 1));
 
-	i32 v26 = gClutRelatedOne;
-	i32 v6 = gClutRelatedTwo + GetFree16Slot();
+	i32 v26 = Pal16X;
+	i32 v6 = Pal16Y + GetFree16Slot();
 	u16* Clut = PCTex_CreateClut(16);
 
 	for (i32 i = 0; i < 16; i++)
