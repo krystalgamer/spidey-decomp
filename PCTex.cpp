@@ -636,10 +636,35 @@ void releaseClutPc(ClutPC* pClut)
 	gClutCount--;
 }
 
-// @SMALLTODO
-void shouldForceBlend(u16 *,i32,i32,i32)
+// @Ok
+// @Validate
+i32 shouldForceBlend(
+		u16* a1,
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("shouldForceBlend(u16 *,i32,i32,i32)");
+	i32 v4 = 20 * a3 * a4 / 100;
+	for (i32 i = 0; i < a4; i++)
+	{
+		for (i32 j = 0; i < a4; i++)
+		{
+			u16 cur = a1[j];
+			cur >>= 0xC;
+			if (cur)
+			{
+				if (cur < 15)
+				{
+					if (--v4 < 0)
+						return 1;
+				}
+			}
+		}
+
+		a1 = &a1[a2];
+	}
+
+	return 0;
 }
 
 // @Ok

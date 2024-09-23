@@ -126,7 +126,7 @@ EXPORT i32 countLeadingZeroBits(u32);
 EXPORT void downloadTexture(PCTexture *,u16 *,i32,i32);
 EXPORT HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT,void *);
 EXPORT void releaseClutPc(ClutPC *);
-EXPORT void shouldForceBlend(u16 *,i32,i32,i32);
+EXPORT i32 shouldForceBlend(u16 *,i32,i32,i32);
 
 void validate_SPCTexture(void);
 void validate_PVRHeader(void);
