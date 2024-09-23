@@ -7,8 +7,7 @@
 
 struct tag_S_Pal
 {
-	u8 padTop[2];
-
+	u16 Clut;
 	u8 slot;
 	u8 flags;
 	u16 Usage;
@@ -26,7 +25,7 @@ EXPORT i32 GetFree256Slot(void);
 EXPORT tag_S_Pal* NewPaletteEntry(u32);
 EXPORT void Pal_FindPaletteEntry(u32);
 EXPORT void Pal_Init(void);
-EXPORT void Pal_LoadPalette(u32,u32 *,u8);
+EXPORT tag_S_Pal* Pal_LoadPalette(u32,u32 *,u8);
 EXPORT void Pal_ProcessPalette(u16 *,i32);
 EXPORT void Pal_RemoveUnusedPalettes(void);
 EXPORT void RemovePaletteEntry(tag_S_Pal *);

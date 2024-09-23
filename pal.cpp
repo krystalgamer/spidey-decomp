@@ -70,7 +70,8 @@ INLINE i32 GetFree256Slot(void)
 }
 
 // @Ok
-tag_S_Pal* NewPaletteEntry(u32 checksum)
+// @Matching
+INLINE tag_S_Pal* NewPaletteEntry(u32 checksum)
 {
 	print_if_false(gPalArray != 0, "Run out of palettes");
 
@@ -123,10 +124,35 @@ void Pal_Init(void)
 
 }
 
-// @SMALLTODO
-void Pal_LoadPalette(u32,u32 *,u8)
+// @Ok
+// @Matching
+tag_S_Pal* Pal_LoadPalette(
+		u32 checksum,
+		u32* pData,
+		u8 flags)
 {
-    printf("Pal_LoadPalette(u32,u32 *,u8)");
+	tag_S_Pal* result = NewPaletteEntry(checksum);
+
+	result->flags = flags;
+	print_if_false((flags & 3) != 3, "Bad flags");
+	print_if_false((flags & 3) != 0, "Bad flags");
+
+	i32 bpp = flags & 1 ? 16 : 256;
+
+	Pal_ProcessPalette(
+			reinterpret_cast<u16*>(pData),
+			bpp);
+
+	if (bpp == 16)
+		result->slot = GetFree16Slot();
+	else
+		result->slot = GetFree256Slot();
+
+	result->Clut = 0;
+
+	_LoadImage();
+	result->InVRAM = 1;
+	return result;
 }
 
 // @SMALLTODO
@@ -190,6 +216,7 @@ void validate_tag_S_Pal(void)
 {
 	VALIDATE_SIZE(tag_S_Pal, 0x18);
 
+	VALIDATE(tag_S_Pal, Clut, 0x0);
 	VALIDATE(tag_S_Pal, slot, 0x2);
 	VALIDATE(tag_S_Pal, flags, 0x3);
 	VALIDATE(tag_S_Pal, Usage, 0x4);
