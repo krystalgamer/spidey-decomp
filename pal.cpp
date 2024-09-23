@@ -88,10 +88,18 @@ INLINE tag_S_Pal* NewPaletteEntry(u32 checksum)
 	return result;
 }
 
-// @SMALLTODO
-void Pal_FindPaletteEntry(u32)
+// @Ok
+// @Matching
+tag_S_Pal* Pal_FindPaletteEntry(u32 checksum)
 {
-    printf("Pal_FindPaletteEntry(u32)");
+	tag_S_Pal* result;
+	for (result = pPaletteList; result; result = result->pNext)
+	{
+		if (result->Checksum == checksum)
+			break;
+	}
+
+	return result;
 }
 
 // @Ok
