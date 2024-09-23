@@ -27,8 +27,8 @@ EXPORT i32 gSpoolInitRelatedUnk;
 
 EXPORT i32 EnvRegions[2] = { -1, -1 };
 
-EXPORT SSpoolInitRelated* gSpoolTexturesRelated;
-EXPORT SSpoolInitRelated gSpoolInitRelated[512];
+EXPORT Texture* gSpoolTexturesRelated;
+EXPORT Texture gSpoolInitRelated[512];
 
 EXPORT SAccess* gAccessRelated[MAXPSX];
 
@@ -716,11 +716,4 @@ void validate_SAccess(void)
 	VALIDATE(SAccess, pPrev, 0x4);
 	VALIDATE(SAccess, mType, 0x8);
 	VALIDATE(SAccess, mName, 0xC);
-}
-
-void validate_SSpoolInitRelated(void)
-{
-	VALIDATE_SIZE(SSpoolInitRelated, 0x2C);
-
-	VALIDATE(SSpoolInitRelated, pNext, 0x20);
 }

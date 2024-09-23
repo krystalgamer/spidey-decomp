@@ -8,13 +8,6 @@
 #include "texture.h"
 #include "ob.h"
 
-struct SSpoolInitRelated
-{
-	u8 padTop[0x20];
-	SSpoolInitRelated* pNext;
-	u8 padBottom[0x2C-0x20-4];
-};
-
 struct SAccess
 {
 	SAccess* pNext;
@@ -133,7 +126,6 @@ EXPORT void texLoadChecksums(char *);
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);
 void validate_SAccess(void);
-void validate_SSpoolInitRelated(void);
 
 static const int MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
