@@ -155,10 +155,65 @@ tag_S_Pal* Pal_LoadPalette(
 	return result;
 }
 
-// @SMALLTODO
-void Pal_ProcessPalette(u16 *,i32)
+// @Ok
+// @Note: got optimzied somehow?
+// @Validate
+void Pal_ProcessPalette(
+		u16* pData,
+		i32 bpp)
 {
-    printf("Pal_ProcessPalette(u16 *,i32)");
+	u8 firstIf = 0;
+	u8 secondIf = 0;
+	for (i32 i = 0; i < bpp; i++)
+	{
+		if ((pData[i] & 0x7FFF) == 0x7C1F)
+		{
+			firstIf = 1;
+			break;
+		}
+
+		if (!pData[i])
+			secondIf = 1;
+	}
+
+	if (firstIf)
+	{
+		for (i32 j = 0; j < bpp; j++)
+		{
+			if ((pData[j] & 0x7FFF) == 0x7C1F)
+			{
+				pData[j] = 0;
+			}
+			else
+			{
+				pData[j] |= 0x8000;
+			}
+		}
+	}
+	else if (secondIf)
+	{
+		for (i32 m = 0; m < bpp; m++)
+		{
+			if (!pData[m])
+			{
+				pData[m] = 0;
+			}
+			else
+			{
+				pData[m] |= 0x8000;
+			}
+		}
+	}
+	else
+	{
+		u32* nPdata = reinterpret_cast<u32*>(pData);
+		i32 nBpp = bpp >> 1;
+		while (nBpp != 0)
+		{
+			*nPdata++ = 0x80008000;
+			nBpp--;
+		}
+	}
 }
 
 // @Ok
