@@ -26,7 +26,7 @@ struct Texture
 
 
 	u32 TexWin;
-	u8 padAfterC[0x12-0xC-4];
+	u16 field_10;
 	u16 Usage;
 	u32 Checksum;
 

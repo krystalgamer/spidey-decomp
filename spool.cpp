@@ -27,8 +27,9 @@ EXPORT i32 gSpoolInitRelatedUnk;
 
 EXPORT i32 EnvRegions[2] = { -1, -1 };
 
+const i32 MAXTEXTUREENTRIES = 512;
 EXPORT Texture* gSpoolTexturesRelated;
-EXPORT Texture gSpoolInitRelated[512];
+EXPORT Texture gSpoolInitRelated[MAXTEXTUREENTRIES];
 
 EXPORT SAccess* gAccessRelated[MAXPSX];
 
@@ -37,7 +38,7 @@ EXPORT i16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
 
 SPSXRegion PSXRegion[MAXPSX];
 
-#define TEXTURE_CHECKSUM_TABLE_SIZE (512)
+#define TEXTURE_CHECKSUM_TABLE_SIZE (MAXTEXTUREENTRIES)
 EXPORT Texture* TextureChecksumHashTable[TEXTURE_CHECKSUM_TABLE_SIZE];
 
 EXPORT i32 lowGraphics;
@@ -194,10 +195,36 @@ void GotoStartOfTextureList(void)
 	pCurrentTex = TextureChecksumHashTable[0];
 }
 
-// @SMALLTODO
+// @NotOk
+// @Validate
+// assignment to x should be 2 not 4
 void NewTextureEntry(u32 checksum)
 {
-    printf("NewTextureEntry(u32)");
+	print_if_false(
+		gSpoolTexturesRelated != 0,
+		"Run out of texture entries, increase MAXTEXTUREENTRIES in spool.cpp");
+
+	Texture* pTex = gSpoolTexturesRelated;
+	gSpoolTexturesRelated = gSpoolTexturesRelated->pNext;
+
+	pTex->pNext = TextureChecksumHashTable[checksum % MAXTEXTUREENTRIES];
+	pTex->pPrevious = 0;
+	TextureChecksumHashTable[checksum % MAXTEXTUREENTRIES] = pTex;
+
+	if (pTex->pNext != 0)
+		pTex->pNext->pPrevious = pTex;
+
+	pTex->Checksum = checksum;
+	pTex->Usage &= 0xFFF0;
+	pTex->field_10 = 0;
+	pTex->clut = 0;
+	pTex->u0 = 0;
+	pTex->v0 = 0;
+	pTex->u1 = 0;
+	pTex->v1 = 0;
+
+	// @FIXME
+	*reinterpret_cast<u32*>(&pTex->x) = 0;
 }
 
 // @NotOk
