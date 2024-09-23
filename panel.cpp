@@ -158,21 +158,32 @@ void validate_SAnimFrame(void)
 
 void validate_Texture(void)
 {
-	VALIDATE_SIZE(Texture, 0x28);
+	VALIDATE_SIZE(Texture, 0x2C);
 
-	VALIDATE(Texture, field_0, 0x0);
-	VALIDATE(Texture, field_1, 0x1);
-	VALIDATE(Texture, field_2, 0x2);
+	VALIDATE(Texture, u0, 0x0);
+	VALIDATE(Texture, v0, 0x1);
 
-	VALIDATE(Texture, field_4, 0x4);
-	VALIDATE(Texture, field_6, 0x6);
+	VALIDATE(Texture, clut, 0x2);
 
-	VALIDATE(Texture, field_9, 0x9);
+	VALIDATE(Texture, u1, 0x4);
+	VALIDATE(Texture, v1, 0x5);
+
+	VALIDATE(Texture, tpage, 0x6);
+
+	VALIDATE(Texture, u2, 0x8);
+	VALIDATE(Texture, v2, 0x9);
+
+	VALIDATE(Texture, u3, 0xA);
+	VALIDATE(Texture, v3, 0xB);
 
 	VALIDATE(Texture, TexWin, 0xC);
 	VALIDATE(Texture, Usage, 0x12);
-
 	VALIDATE(Texture, Checksum, 0x14);
+
+	VALIDATE(Texture, pPalette, 0x18);
+	VALIDATE(Texture, x, 0x1C);
+	VALIDATE(Texture, y, 0x1E);
+
 	VALIDATE(Texture, pNext, 0x20);
 	VALIDATE(Texture, pPrevious, 0x24);
 }

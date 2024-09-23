@@ -759,9 +759,9 @@ void CFT4Bit::SetTexture(Texture* pTexture)
 
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (unsigned __int8)pTexture->field_9;
-	v5 = (unsigned __int8)pTexture->field_4 - (unsigned __int8)pTexture->field_0;
-	v6 = (unsigned __int8)pTexture->field_1;
+	v4 = (unsigned __int8)pTexture->v2;
+	v5 = (unsigned __int8)pTexture->u1 - (unsigned __int8)pTexture->u0;
+	v6 = (unsigned __int8)pTexture->v0;
 
 	this->mPSXAnim->field_2 = v5;
 
@@ -792,9 +792,9 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (unsigned __int8)pTexture->field_9;
-	v5 = (unsigned __int8)pTexture->field_4 - (unsigned __int8)pTexture->field_0;
-	v6 = (unsigned __int8)pTexture->field_1;
+	v4 = (unsigned __int8)pTexture->v2;
+	v5 = (unsigned __int8)pTexture->u1 - (unsigned __int8)pTexture->u0;
+	v6 = (unsigned __int8)pTexture->v0;
 
 	this->mPSXAnim->field_2 = v5;
 

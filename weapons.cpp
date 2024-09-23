@@ -61,14 +61,14 @@ CSmokeRing::CSmokeRing(i32 NumSectors, u32 a3)
 		setPolyGT4();
 
 		this->mpSectors[i].field_3B |= 2;
-		this->mpSectors[i].field_42 = this->field_3C->field_2;
-		this->mpSectors[i].field_4E = this->field_3C->field_6;
+		this->mpSectors[i].field_42 = this->field_3C->clut;
+		this->mpSectors[i].field_4E = this->field_3C->tpage;
 
 		setPolyGT4();
 
 		this->mpSectors[i].field_7 |= 2;
-		this->mpSectors[i].field_E = this->field_3C->field_2;
-		this->mpSectors[i].field_1A = this->field_3C->field_6;
+		this->mpSectors[i].field_E = this->field_3C->clut;
+		this->mpSectors[i].field_1A = this->field_3C->tpage;
 	}
 
 	this->SetRGB(128, 128, 128);
@@ -144,9 +144,9 @@ void CSmokeRing::SetUV(i32 a2,i32 a3,i32 a4)
 {
 	this->field_58 = a2;
 	this->field_5C = a3;
-	u8 v6 = this->field_3C->field_0 + (a2 & 0x3F);
+	u8 v6 = this->field_3C->u0 + (a2 & 0x3F);
 
-	a3 = (a3 & 0x3F) + this->field_3C->field_1;
+	a3 = (a3 & 0x3F) + this->field_3C->v0;
 	i32 v9 = (a4 << 6) / this->mNumSectors;
 
 	u8 a2a = a3 + 32;
