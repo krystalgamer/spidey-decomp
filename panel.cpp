@@ -158,7 +158,7 @@ void validate_SAnimFrame(void)
 
 void validate_Texture(void)
 {
-	VALIDATE_SIZE(Texture, 0x24);
+	VALIDATE_SIZE(Texture, 0x28);
 
 	VALIDATE(Texture, field_0, 0x0);
 	VALIDATE(Texture, field_1, 0x1);
@@ -174,6 +174,7 @@ void validate_Texture(void)
 
 	VALIDATE(Texture, Checksum, 0x14);
 	VALIDATE(Texture, pNext, 0x20);
+	VALIDATE(Texture, pPrevious, 0x24);
 }
 
 void validate_POLY_FT4(void)

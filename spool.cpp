@@ -195,7 +195,7 @@ void GotoStartOfTextureList(void)
 }
 
 // @SMALLTODO
-void NewTextureEntry(u32)
+void NewTextureEntry(u32 checksum)
 {
     printf("NewTextureEntry(u32)");
 }
@@ -243,10 +243,23 @@ void RemoveAnimPacket(u32 *)
     printf("RemoveAnimPacket(u32 *)");
 }
 
-// @SMALLTODO
-void RemoveTextureEntry(Texture *)
+// @Ok
+// @Validate
+INLINE void RemoveTextureEntry(Texture* pTexture)
 {
-    printf("RemoveTextureEntry(Texture *)");
+	if (pTexture->pNext)
+		pTexture->pNext->pPrevious = pTexture->pPrevious;
+
+	if (pTexture->pPrevious)
+		pTexture->pPrevious->pNext = pTexture->pNext;
+
+	u32 checksum = pTexture->Checksum % TEXTURE_CHECKSUM_TABLE_SIZE;
+	if (pTexture == TextureChecksumHashTable[checksum])
+		TextureChecksumHashTable[checksum] = pTexture->pNext;
+
+	Texture** pFreeList = reinterpret_cast<Texture**>(&gSpoolInitRelated);
+	pTexture->pNext = *pFreeList;
+	*pFreeList = pTexture;
 }
 
 // @Ok

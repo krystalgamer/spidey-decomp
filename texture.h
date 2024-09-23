@@ -26,6 +26,7 @@ struct Texture
 	u32 Checksum;
 	u8 padAfter14[0x20-0x14-4];
 	Texture *pNext;
+	Texture *pPrevious;
 };
 
 struct TextureEntry
