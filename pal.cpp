@@ -51,7 +51,8 @@ INLINE i32 GetFree16Slot(void)
 	return freeSlot;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 INLINE i32 GetFree256Slot(void)
 {
 	i32 freeSlot;
@@ -68,10 +69,22 @@ INLINE i32 GetFree256Slot(void)
 	return freeSlot;
 }
 
-// @SMALLTODO
-void NewPaletteEntry(u32)
+// @Ok
+tag_S_Pal* NewPaletteEntry(u32 checksum)
 {
-    printf("NewPaletteEntry(u32)");
+	print_if_false(gPalArray != 0, "Run out of palettes");
+
+	tag_S_Pal* result = gPalArray;
+	gPalArray = gPalArray->pNext;
+
+	result->pNext = pPaletteList;
+	pPaletteList = result;
+
+	result->Checksum = checksum;
+	result->InVRAM = 0;
+	result->Usage = 0;
+
+	return result;
 }
 
 // @SMALLTODO
@@ -180,6 +193,9 @@ void validate_tag_S_Pal(void)
 	VALIDATE(tag_S_Pal, slot, 0x2);
 	VALIDATE(tag_S_Pal, flags, 0x3);
 	VALIDATE(tag_S_Pal, Usage, 0x4);
+
+	VALIDATE(tag_S_Pal, InVRAM, 0x6);
+	VALIDATE(tag_S_Pal, Checksum, 0x8);
 
 	VALIDATE(tag_S_Pal, pNext, 0xC);
 }

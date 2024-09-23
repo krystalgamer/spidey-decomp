@@ -7,6 +7,7 @@
 #include "ob.h"
 
 EXPORT extern u32* gCommandPointRelated[1];
+
 EXPORT void Crate_Destroy(CItem *);
 
 #endif

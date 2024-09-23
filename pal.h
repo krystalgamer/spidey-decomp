@@ -12,7 +12,9 @@ struct tag_S_Pal
 	u8 slot;
 	u8 flags;
 	u16 Usage;
-	u8 padAfter4[6];
+	u8 InVRAM;
+	u8 padAfterInVRAM;
+	u32 Checksum;
 	tag_S_Pal* pNext;
 
 	u8 padBottom[0x18-0xC-4];
@@ -21,7 +23,7 @@ struct tag_S_Pal
 EXPORT void Free16Slot(u16);
 EXPORT i32 GetFree16Slot(void);
 EXPORT i32 GetFree256Slot(void);
-EXPORT void NewPaletteEntry(u32);
+EXPORT tag_S_Pal* NewPaletteEntry(u32);
 EXPORT void Pal_FindPaletteEntry(u32);
 EXPORT void Pal_Init(void);
 EXPORT void Pal_LoadPalette(u32,u32 *,u8);
