@@ -486,10 +486,34 @@ INLINE void Spool_InitialiseEnvModelHashTable(void)
 	}
 }
 
-// @SMALLTODO
-void Spool_MaskFaceFlags(i32,u32,u32)
+// @Ok
+// @Validate
+void Spool_MaskFaceFlags(
+		i32 region,
+		u32 a2,
+		u32 a3)
 {
-    printf("Spool_MaskFaceFlags(i32,u32,u32)");
+	print_if_false(region < 0 || region >= 40, "Bad region number sent to Spool_MaskFaceFlags");
+
+	print_if_false(PSXRegion[region].Usable != 0, "PSX not usable in call to Spool_MaskFaceFlags");
+
+	i32* v4 = *reinterpret_cast<i32**>(PSXRegion[region].ppModels);
+	i32 v5 = v4[-1];
+
+	for (i32 i = 0; i < v5; i++)
+	{
+		i32 v6 = reinterpret_cast<u16*>(v4)[3];
+
+		v4 += 2 * reinterpret_cast<u16*>(v4)[1] + 2 * reinterpret_cast<u16*>(v4)[2] + 7;
+
+		for (i32 j = 0; j < v6; j++)
+		{
+			u32 v8 = a3 & (*v4 | a2);
+			*v4 = v8;
+
+			v4 += v8 >> 18;
+		}
+	}
 }
 
 // @Ok
