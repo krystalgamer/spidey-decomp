@@ -22,7 +22,7 @@ EXPORT i32 FireRingRegion = -1;
 
 
 EXPORT i32 gSpoolCurrentOpenSpot;
-EXPORT i32 gSpoolAnimPacketRelated;
+EXPORT AnimPacket* AnimPackets;
 EXPORT i32 gSpoolInitOne;
 EXPORT i32 gSpoolInitTwo;
 EXPORT i32 gSpoolColijEnvIndex;
@@ -256,9 +256,18 @@ INLINE Texture* NextTexture(void)
 }
 
 // @SMALLTODO
-void PreProcessAnimPacket(u32 *,u32 *)
+void PreProcessAnimPacket(
+		u32 * a1,
+		u32 * a2)
 {
-    printf("PreProcessAnimPacket(u32 *,u32 *)");
+	print_if_false(!a1[2] && !a1[3], "Sequencer PSX contains items or models!");
+
+	u32* pSkipped = Spool_SkipPackets(a1);
+
+	AnimPacket* pAnimPacket = static_cast<AnimPacket*>(
+			DCMem_New(sizeof(AnimPacket), 0, 1, 0, 1));
+
+	pAnimPacket->pNext = AnimPackets;
 }
 
 // @MEDIUMTODO
@@ -397,7 +406,7 @@ void Spool_Init(void)
 	gSpoolInitRelated[511].pNext = 0;
 	Spool_InitialiseEnvModelHashTable();
 
-	gSpoolAnimPacketRelated = 0;
+	AnimPackets = 0;
 	gSpoolInitOne = 0;
 	gSpoolInitTwo = 0;
 	EnviroList = 0;
