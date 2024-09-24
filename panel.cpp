@@ -187,6 +187,7 @@ void validate_Texture(void)
 
 	VALIDATE(Texture, pNext, 0x20);
 	VALIDATE(Texture, pPrevious, 0x24);
+	VALIDATE(Texture, mRegion, 0x28);
 }
 
 void validate_POLY_FT4(void)

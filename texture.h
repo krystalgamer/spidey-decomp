@@ -36,7 +36,7 @@ struct Texture
 
 	Texture *pNext;
 	Texture *pPrevious;
-	u8 padBottom[4];
+	i32 mRegion;
 };
 
 struct TextureEntry

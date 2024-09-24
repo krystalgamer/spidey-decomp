@@ -11,6 +11,7 @@
 
 #include <cstring>
 
+EXPORT u8 gSpoolLogFailedTextureAccess;
 EXPORT i32 gRegionReloadRelated = -1;
 EXPORT u8 gReloading = 1;
 
@@ -570,10 +571,49 @@ void Spool_Sync(void)
 {
 }
 
-// @SMALLTODO
-void Spool_TextureAccess(u32,Texture **)
+// @Ok
+// @Matching
+i32 Spool_TextureAccess(
+		u32 checksum,
+		Texture **ppTexture)
 {
-    printf("Spool_TextureAccess(u32,Texture **)");
+	Texture* pTexture;
+	for (
+			pTexture = TextureChecksumHashTable[checksum % TEXTURE_CHECKSUM_TABLE_SIZE];
+			pTexture;
+			pTexture = pTexture->pNext)
+	{
+		if (pTexture->Checksum == checksum)
+			break;
+	}
+
+	if (pTexture)
+	{
+		*ppTexture = pTexture;
+
+		if (addAccess(
+					reinterpret_cast<void**>(ppTexture),
+					3,
+					checksum,
+					pTexture->mRegion))
+			accessLog(
+					"Created Texture Access: csum=%8.8X, rgn=%i, addr=0x%8.8X\r\n",
+						checksum, pTexture->mRegion, ppTexture);
+		return pTexture->mRegion;
+	}
+
+	if (!gSpoolLogFailedTextureAccess)
+	{
+		print_if_false(0, "Can't find texture from checksum %ld", checksum);
+		*ppTexture = gAnimTable[13]->pTexture;
+		accessLog(
+				"Create Texture Access Fails [NOT FOUND]: csum=%8.8X, rgn=%i, addr=0x%8.8X\r\n",
+				checksum, gAnimTable[13]->pTexture->mRegion, ppTexture);
+		return gAnimTable[13]->pTexture->mRegion;
+	}
+
+	accessLog("Create Texture Access Fails [NOT FOUND]: csum=%8.8X, addr=0x%8.8X\r\n", checksum, ppTexture);
+	return -1;
 }
 
 // @MEDIUMTODO
@@ -601,9 +641,10 @@ void accessLog(char *,...)
 }
 
 // @SMALLTODO
-void addAccess(void **,u32,u32,i32)
+i32 addAccess(void **,u32,u32,i32)
 {
     printf("addAccess(void **,u32,u32,i32)");
+	return 0x24092024;
 }
 
 // @SMALLTODO
