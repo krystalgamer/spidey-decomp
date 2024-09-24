@@ -9,7 +9,7 @@
 #include "ps2lowsfx.h"
 
 
-i32 gAnimTable[0x1D];
+SAnimFrame* gAnimTable[0x1D];
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
@@ -728,7 +728,8 @@ void CFT4Bit::SetAnim(int a2){
 	print_if_false(a2 >= 0 && !((unsigned int)a2 >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
 	print_if_false(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
-	int v4 = gAnimTable[a2];
+	// @FIXME
+	int v4 = reinterpret_cast<i32>(gAnimTable[a2]);
 	this->mPSXAnim = reinterpret_cast<SCFT4BitTexture*>(v4);
 	v5 = *(char *)(v4 - 4);
 	this->field_53 = 0;

@@ -52,7 +52,6 @@ EXPORT i32 lowGraphics;
 EXPORT i32 CurrentSuit;
 
 EXPORT u8 gGiveDefaultTexture;
-EXPORT i32** gUnknownRelatedToFind;
 
 EXPORT TextureEntry gTextureEntries[256];
 
@@ -846,8 +845,7 @@ void Spool_ClearAllPSXs(void)
 	Spool_RemoveUnusedTextures();
 }
 
-// @NotOk
-// understand the unknown variable
+// @Ok
 Texture *Spool_FindTextureEntry(u32 checksum)
 {
 	Texture *pSearch;
@@ -864,15 +862,14 @@ Texture *Spool_FindTextureEntry(u32 checksum)
 		if (!gGiveDefaultTexture)
 		{
 			print_if_false(0, "Can't find texture from checksum %ld", checksum);
-			return reinterpret_cast<Texture*>(gUnknownRelatedToFind[1]);
+			return gAnimTable[13]->pTexture;
 		}
 	}
 
 	return pSearch;
 }
 
-// @NotOk
-// understand th ereturn for index >= 256
+// @Ok
 Texture *Spool_FindTextureEntry(char *name)
 {
 	char localName[256];
@@ -888,7 +885,7 @@ Texture *Spool_FindTextureEntry(char *name)
 	}
 
 	if (index >= 256)
-		return reinterpret_cast<Texture*>(gUnknownRelatedToFind[1]);
+		return gAnimTable[13]->pTexture;
 
 	return Spool_FindTextureEntry(gTextureEntries[index].Checksum);
 }

@@ -8,6 +8,16 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+struct SAnimFrame
+{
+	char OffX;
+	char OffY;
+	unsigned char Width;
+	unsigned char Height;
+	Texture *pTexture;
+};
+
+
 EXPORT extern u32 SparkSize;
 EXPORT extern i32 gTimerRelated;
 
@@ -373,7 +383,7 @@ EXPORT void Bit_UpdateQuickAnimLookups(void);
 
 EXPORT extern CTextBox* TextBoxList;
 
-EXPORT extern i32 gAnimTable[0x1D];
+EXPORT extern SAnimFrame* gAnimTable[0x1D];
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);

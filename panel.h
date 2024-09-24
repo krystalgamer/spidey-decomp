@@ -9,15 +9,6 @@
 #include "texture.h"
 
 
-struct SAnimFrame
-{
-	char OffX;
-	char OffY;
-	unsigned char Width;
-	unsigned char Height;
-	Texture *pTexture;
-};
-
 struct POLY_FT4
 {
 };
