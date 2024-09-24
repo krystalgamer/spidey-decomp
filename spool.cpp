@@ -7,8 +7,12 @@
 #include "DXinit.h"
 #include "dcfileio.h"
 #include "crate.h"
+#include "spidey.h"
 
 #include <cstring>
+
+EXPORT i32 gRegionReloadRelated = -1;
+EXPORT u8 gReloading = 1;
 
 // @FIXME: add proper value
 EXPORT void* gSpoolSystemMemory;
@@ -488,10 +492,48 @@ void Spool_MaskFaceFlags(i32,u32,u32)
     printf("Spool_MaskFaceFlags(i32,u32,u32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Validate
 void Spool_ReloadAll(void)
 {
-    printf("Spool_ReloadAll(void)");
+	i32 currentSuit = CurrentSuit;
+	gReloading = 0;
+
+	for (i32 i = 0; i < MAXPSX; i++)
+	{
+		i32 IsEnviro = EnvRegions[0] == i;
+
+		if (PSXRegion[i].Filename[0])
+		{
+			char a1[12];
+			u8 backupProtected = PSXRegion[i].Protected;
+
+			strncpy(a1, PSXRegion[i].Filename, 8);
+			a1[8] = 0;
+			if (gLowGraphics && Utils_CompareStrings(a1, SuitNames[CurrentSuit]))
+			{
+				Utils_CopyString("spidey", a1, 9);
+				CurrentSuit = 1;
+			}
+
+			PSXRegion[i].Protected = 0;
+			ClearRegion(i, 1);
+			Spool_PSX(a1, IsEnviro);
+			PSXRegion[i].Protected = backupProtected;
+			restoreRegionAccess(i);
+		}
+	}
+
+	if (currentSuit != CurrentSuit)
+		Spidey_LoadAlternativeTextureSet(0, currentSuit);
+
+	gReloading = 1;
+	if (!gLowGraphics && gRegionReloadRelated >= 0)
+	{
+		PSXRegion[gRegionReloadRelated].Protected = 0;
+		ClearRegion(gRegionReloadRelated, 1);
+		gRegionReloadRelated = -1;
+	}
 }
 
 // @SMALLTODO
