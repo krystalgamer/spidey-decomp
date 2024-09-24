@@ -255,19 +255,71 @@ INLINE Texture* NextTexture(void)
 	return res;
 }
 
-// @SMALLTODO
+// @Ok
+// @Validate
 void PreProcessAnimPacket(
-		u32 * a1,
-		u32 * a2)
+		u32 * pPSX,
+		u32 * pPacket)
 {
-	print_if_false(!a1[2] && !a1[3], "Sequencer PSX contains items or models!");
+	print_if_false(!pPSX[2] && !pPSX[3], "Sequencer PSX contains items or models!");
 
-	u32* pSkipped = Spool_SkipPackets(a1);
+	u32* pSkipped = Spool_SkipPackets(pPSX);
 
 	AnimPacket* pAnimPacket = static_cast<AnimPacket*>(
 			DCMem_New(sizeof(AnimPacket), 0, 1, 0, 1));
 
 	pAnimPacket->pNext = AnimPackets;
+	pAnimPacket->pPacket = pPacket;
+	pAnimPacket->mPsxOpenSpot = gSpoolCurrentOpenSpot;
+
+	AnimPackets = pAnimPacket;
+
+	u32 numAnims = *pPacket;
+	u32* v4 = &pPacket[1];
+	print_if_false(numAnims < 0xC8, "Got a vast number of anims in sequencer PSX");
+
+	for (u32 i = 0; i < numAnims; i++)
+	{
+
+		u8 v6 = *reinterpret_cast<u8*>(v4) >= 0x41 &&
+			*reinterpret_cast<u8*>(v4) <= 0x5A;
+
+		u32 v7 = v4[2];
+		v4 += 3;
+		print_if_false(v7 < 0x3E8, "Got a vast number of frames in sequencer PSX");
+
+		for (u32 j = 0; j < v7; j++)
+		{
+			u32 v8 = pSkipped[v4[1] + 2];
+			v4[1] = v8;
+			if (!v6)
+			{
+				*reinterpret_cast<u8*>(v8) |= 0x20;
+				u32 v9 = v4[1];
+
+				u8 v10 = *reinterpret_cast<u8*>(v9 + 4);
+				if (v10 != 0xFF)
+				{
+					*reinterpret_cast<u8*>(v9 + 4) = v10 + 1;
+				}
+
+				++*reinterpret_cast<u8*>(v4[1] + 9);
+				u32 v11 = v4[1];
+				u8 v12 = *reinterpret_cast<u8*>(v11 + 10);
+
+				if (v12 != 0xFF)
+				{
+					*reinterpret_cast<u8*>(v11 +10) = v12 + 1;
+				}
+
+				++*reinterpret_cast<u8*>(v4[1] + 11);
+			}
+
+			v4 += 2;
+		}
+	}
+
+	Bit_UpdateQuickAnimLookups();
 }
 
 // @MEDIUMTODO

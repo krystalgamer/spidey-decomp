@@ -369,6 +369,7 @@ EXPORT void Bit_ReduceRGB(unsigned int*, int);
 EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
 EXPORT void Bit_DeleteAll(void);
+EXPORT void Bit_UpdateQuickAnimLookups(void);
 
 EXPORT extern CTextBox* TextBoxList;
 

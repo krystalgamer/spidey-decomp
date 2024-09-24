@@ -1027,6 +1027,12 @@ CFlatBit::CFlatBit(void)
 	this->mPostScale = 0x10001000;
 }
 
+// @SMALLTODO
+void Bit_UpdateQuickAnimLookups(void)
+{
+	printf("void Bit_UpdateQuickAnimLookups(void)");
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
