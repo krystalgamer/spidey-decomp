@@ -10,6 +10,9 @@
 
 #include <cstring>
 
+// @FIXME: add proper value
+EXPORT void* gSpoolSystemMemory;
+
 EXPORT i32 gSpoolRegionRelatedOne;
 EXPORT i32 gSpoolRegionRelatedTwo;
 EXPORT i32 GrenadeExplosionRegion = -1;
@@ -175,7 +178,7 @@ void DecrementTextureUsage(i32)
 }
 
 // @Ok
-char* GetNextLine(char * a1)
+INLINE char* GetNextLine(char * a1)
 {
 	char * res = strchr(a1, '\r');
 	if (res)
@@ -489,10 +492,62 @@ void texClearChecksums(char *)
     printf("texClearChecksums(char *)");
 }
 
-// @SMALLTODO
-void texLoadChecksums(char *)
+// @Ok
+// @Validate
+void texLoadChecksums(char *pTexName)
 {
-    printf("texLoadChecksums(char *)");
+	i32 checksumIndex = 0;
+	char v12[16];
+	sprintf(v12, "%s.tex", pTexName);
+
+	i32 v2 = FileIO_Open(v12);
+
+	char v13[256];
+
+	if (v2)
+	{
+		char* v3 = reinterpret_cast<char*>(gSpoolSystemMemory);
+		print_if_false(v3 != 0, "Out of system memory.");
+		FileIO_Load(v3);
+		FileIO_Sync();
+
+		v3[v2] = 0;
+
+		while (v3)
+		{
+			print_if_false(checksumIndex < 256, "Too many checksums.");
+			if (!gTextureEntries[checksumIndex].Active)
+			{
+				sscanf(
+						v3,
+						"%lx %s",
+						gTextureEntries[checksumIndex].Checksum, 
+						v13);
+
+				strlwr(v13);
+
+				char* pNameStart = reinterpret_cast<char*>(reinterpret_cast<i32>(strrchr(v13, '\\')) - reinterpret_cast<i32>(v13) + 1);
+
+				for (i32 i = 0; i < 32; i++)
+				{
+					char c = pNameStart[i];
+					gTextureEntries[checksumIndex].Name[i] = c;
+
+					if (c == ' ')
+					{
+						if (pNameStart[i+1] < 'a' ||
+								pNameStart[i+1] > 'z')
+							break;
+					}
+				}
+			}
+
+			gTextureEntries[checksumIndex].Active = 1;
+
+			checksumIndex++;
+			v3 = GetNextLine(v3);
+		}
+	}
 }
 
 
