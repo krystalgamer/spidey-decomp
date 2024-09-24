@@ -486,10 +486,43 @@ void restoreRegionAccess(i32)
     printf("restoreRegionAccess(i32)");
 }
 
-// @SMALLTODO
-void texClearChecksums(char *)
+// @Ok
+// @Validate
+void texClearChecksums(char* pTexName)
 {
-    printf("texClearChecksums(char *)");
+	char v9[16];
+	sprintf(v9, "%s.tex", pTexName);
+	
+	i32 v1 = FileIO_Open(v9);
+	if (v1)
+	{
+		char* v2 = reinterpret_cast<char*>(gSpoolSystemMemory);
+		print_if_false(v2 != 0, "Out of system memory.");
+		FileIO_Load(v2);
+		FileIO_Sync();
+
+		v2[v1] = 0;
+
+		while (v2)
+		{
+			char v8;
+			char v10[256];
+
+			sscanf(v2, "%lx %s", &v8, v10);
+			strlwr(v10);
+
+			for (i32 i = 0; i < 256; i++)
+			{
+				if(gTextureEntries[i].Active &&
+						strstr(v10, gTextureEntries[i].Name))
+				{
+					gTextureEntries[i].Active = 0;
+					break;
+				}
+			}
+			v2 = GetNextLine(v2);
+		}
+	}
 }
 
 // @Ok
