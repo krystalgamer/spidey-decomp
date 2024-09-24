@@ -744,13 +744,6 @@ Texture *Spool_FindTextureEntry(u32 checksum)
 	return pSearch;
 }
 
-#ifndef _WIN32
-void strlwr(char* inp)
-{
-	// @TODO later date
-}
-#endif
-
 // @NotOk
 // understand th ereturn for index >= 256
 Texture *Spool_FindTextureEntry(char *name)
@@ -831,4 +824,13 @@ void validate_SAccess(void)
 	VALIDATE(SAccess, pPrev, 0x4);
 	VALIDATE(SAccess, mType, 0x8);
 	VALIDATE(SAccess, mName, 0xC);
+}
+
+void validate_AnimPacket(void)
+{
+	VALIDATE_SIZE(AnimPacket, 0xC);
+
+	VALIDATE(AnimPacket, pPacket, 0x0);
+	VALIDATE(AnimPacket, pNext, 0x4);
+	VALIDATE(AnimPacket, mPsxOpenSpot, 0x8);
 }

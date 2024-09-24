@@ -13,6 +13,7 @@ i32 GetDriveTypeA(char*);
 void GetCurrentDirectoryA(u32, char*);
 void CreateDirectoryA(char*, i32);
 void MessageBeep(u32);
+void strlwr(char*);
 
 typedef i32* HANDLE;
 #define INVALID_HANDLE_VALUE ((HANDLE)(-1))

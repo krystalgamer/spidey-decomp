@@ -29,4 +29,9 @@ void MessageBeep(u32)
 {
 }
 
+void strlwr(char* inp)
+{
+	// @TODO later date
+}
+
 #endif

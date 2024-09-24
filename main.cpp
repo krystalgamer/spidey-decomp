@@ -419,6 +419,7 @@ i32 validate(void)
 	validate_SPCTexPixelFormat();
 	validate_SPCTexContainer();
 	validate_SAccess();
+	validate_AnimPacket();
 
 	puts("[*] Validation done!");
 

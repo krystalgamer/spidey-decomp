@@ -18,6 +18,13 @@ struct SAccess
 
 struct SAnimFrame;
 
+struct AnimPacket
+{
+	u32* pPacket;
+	AnimPacket* pNext;
+	i32 mPsxOpenSpot;
+};
+
 struct SPSXRegion {
 	// offset: 0000 (9 bytes)
 	char Filename[9];
@@ -126,6 +133,7 @@ EXPORT void texLoadChecksums(char *);
 void validate_SPSXRegion(void);
 void validate_TextureEntry(void);
 void validate_SAccess(void);
+void validate_AnimPacket(void);
 
 static const int MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
