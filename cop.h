@@ -94,12 +94,12 @@ class CCopBulletTracer : public CNonRenderedBit
 
 		EXPORT void SetWidth(void);
 
-		EXPORT virtual void Move(void);
+		EXPORT virtual void Move(void) OVERRIDE;
 
-		CGouraudRibbon *field_3C;
-		CGouraudRibbon *field_40;
+		CGouraudRibbon *mpRibbon;
+		CGouraudRibbon *mpRibbon2;
+		u32 mMaxWidth;
 
-		u8 padBottom[0x48-0x40-4];
 };
 
 class CCopLaserPing : public CQuadBit

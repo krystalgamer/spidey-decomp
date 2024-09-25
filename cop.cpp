@@ -469,13 +469,26 @@ void CCop::LookForPlayer(void)
 // @SMALLTODO
 void CCopBulletTracer::Move(void)
 {
-	printf("void CCopBulletTracer::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CCopBulletTracer::SetWidth(void)
 {
-	printf("void CCopBulletTracer::SetWidth(void)");
+	print_if_false(this->mpRibbon && this->mpRibbon2, "NULL mpRibbon and mpRibbon2");
+
+	for (i32 i = 0; i < 5; i++)
+	{
+		this->mpRibbon->mpPoints[i].Width = (u16)(this->mMaxWidth) * 2 + Rnd(this->mMaxWidth);
+
+		this->mpRibbon2->mpPoints[i].Width = Rnd(this->mMaxWidth);
+	}
+
+
+	this->mpRibbon->mpPoints[0].Width = 0;
+	this->mpRibbon->mpPoints[4].Width = Rnd(this->mMaxWidth);
+	this->mpRibbon2->mpPoints[0].Width = 0;
+	this->mpRibbon2->mpPoints[4].Width = 0;
 }
 
 // @SMALLTODO
@@ -487,14 +500,12 @@ CCopBulletTracer::CCopBulletTracer(CVector*, CVector*, CSuper*, SLineInfo*, u8, 
 // @Ok
 CCopBulletTracer::~CCopBulletTracer(void)
 {
-	if (this->field_3C)
-		delete this->field_3C;
+	delete this->mpRibbon;
 
-	if (this->field_40)
-		delete this->field_40;
+	delete this->mpRibbon2;
 
-	this->field_3C = 0;
-	this->field_40 = 0;
+	this->mpRibbon = 0;
+	this->mpRibbon2 = 0;
 }
 
 // @Ok
@@ -656,8 +667,9 @@ void validate_CCopBulletTracer(void)
 {
 	VALIDATE_SIZE(CCopBulletTracer, 0x48);
 
-	VALIDATE(CCopBulletTracer, field_3C, 0x3C);
-	VALIDATE(CCopBulletTracer, field_40, 0x40);
+	VALIDATE(CCopBulletTracer, mpRibbon, 0x3C);
+	VALIDATE(CCopBulletTracer, mpRibbon2, 0x40);
+	VALIDATE(CCopBulletTracer, mMaxWidth, 0x44);
 }
 
 void validate_CCopLaserPing(void)
