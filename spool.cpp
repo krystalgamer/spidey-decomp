@@ -406,9 +406,10 @@ void Spool_ClearEnvironmentRegions(void)
 }
 
 // @SMALLTODO
-void Spool_FindAnim(char *,i32)
+i32 Spool_FindAnim(char *,i32)
 {
     printf("Spool_FindAnim(char *,i32)");
+	return 0x25092024;
 }
 
 // @Ok
@@ -710,10 +711,39 @@ i32 addAccess(
 	return 1;
 }
 
-// @SMALLTODO
-void restoreRegionAccess(i32)
+// @Ok
+INLINE void restoreRegionAccess(i32 region)
 {
-    printf("restoreRegionAccess(i32)");
+	for (
+			SAccess* pAccess = gAccessRelated[region];
+			pAccess;
+			pAccess = pAccess->pNext)
+	{
+		switch (pAccess->mType)
+		{
+			case 0:
+				pAccess->pLst = reinterpret_cast<void**>(Spool_GetModel(pAccess->mChecksum, region));
+				break;
+			case 1:
+				print_if_false(region == EnvRegions[0], "Non-Enviro Item Accessed!");
+				pAccess->pLst = reinterpret_cast<void**>(Spool_FindEnviroItem(pAccess->mChecksum));
+				break;
+			case 2:
+				pAccess->pLst = reinterpret_cast<void**>(Spool_FindAnim(pAccess->mName, 1));
+				break;
+			case 3:
+				pAccess->pLst = reinterpret_cast<void**>(Spool_FindTextureEntry(pAccess->mChecksum));
+				break;
+			case 4:
+				pAccess->pLst = reinterpret_cast<void**>(Spool_FindTextureEntry(pAccess->mName));
+				break;
+			default:
+				pAccess->pLst = 0;
+				break;
+		}
+
+		print_if_false(pAccess->pLst != 0, "Unable to restore previous PSX access!");
+	}
 }
 
 // @Ok
