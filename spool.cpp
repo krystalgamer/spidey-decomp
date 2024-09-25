@@ -175,10 +175,20 @@ i32 Spool_PSX(
 	return openSpot;
 }
 
-// @SMALLTODO
-void DecrementTextureUsage(i32)
+// @Ok
+void DecrementTextureUsage(i32 region)
 {
-    printf("DecrementTextureUsage(i32)");
+	i32 v3 = reinterpret_cast<i32*>(PSXRegion[region].ppModels)[-1];
+	u32* pSkipped = Spool_SkipPackets(PSXRegion[region].pPSX);
+
+	Texture** v5 = reinterpret_cast<Texture**>(pSkipped[v3 + 1]);
+	u32 v6 = pSkipped[v3];
+
+	for (u32 i = 0; i < v6; i++)
+	{
+		print_if_false(v5[i]->Usage != 0, "Tried to decrement zero usage");
+		v5[i]->Usage--;
+	}
 }
 
 // @Ok
