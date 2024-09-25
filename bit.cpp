@@ -420,7 +420,7 @@ void CQuadBit::SetTexture(u32 checksum)
 
 	if (pTexture)
 	{
-		if (pTexture->Usage & 0xF0)
+		if (pTexture->field_12 & 0xF0)
 			this->mCodeBGR |= 0x20;
 
 		// @FIXME

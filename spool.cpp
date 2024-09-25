@@ -222,8 +222,8 @@ void NewTextureEntry(u32 checksum)
 		pTex->pNext->pPrevious = pTex;
 
 	pTex->Checksum = checksum;
-	pTex->Usage &= 0xFFF0;
-	pTex->field_10 = 0;
+	pTex->field_12 &= 0xFFF0;
+	pTex->Usage = 0;
 	pTex->clut = 0;
 	pTex->u0 = 0;
 	pTex->v0 = 0;

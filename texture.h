@@ -26,8 +26,8 @@ struct Texture
 
 
 	u32 TexWin;
-	u16 field_10;
 	u16 Usage;
+	u16 field_12;
 	u32 Checksum;
 
 	tag_S_Pal* pPalette;

@@ -177,8 +177,8 @@ void validate_Texture(void)
 	VALIDATE(Texture, v3, 0xB);
 
 	VALIDATE(Texture, TexWin, 0xC);
-	VALIDATE(Texture, field_10, 0x10);
-	VALIDATE(Texture, Usage, 0x12);
+	VALIDATE(Texture, Usage, 0x10);
+	VALIDATE(Texture, field_12, 0x12);
 	VALIDATE(Texture, Checksum, 0x14);
 
 	VALIDATE(Texture, pPalette, 0x18);
