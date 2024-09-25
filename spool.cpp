@@ -342,10 +342,31 @@ void ProcessNewPSX(i32)
     printf("ProcessNewPSX(i32)");
 }
 
-// @SMALLTODO
-void RemoveAnimPacket(u32 *)
+// @Ok
+INLINE i32 RemoveAnimPacket(u32* pPacket)
 {
-    printf("RemoveAnimPacket(u32 *)");
+	AnimPacket* pPrev = 0;
+	AnimPacket* pIter;
+	for (
+			pIter = AnimPackets; 
+			pIter;
+			pIter = pIter->pNext)
+	{
+		if (pIter->pPacket == pPacket)
+			break;
+		pPrev = pIter;
+	}
+
+	print_if_false(pIter == 0, "Could not find anim packet to delete");
+	
+	if (pPrev)
+		pPrev->pNext = pIter->pNext;
+	else
+		AnimPackets = pIter->pNext;
+
+	Mem_Delete(pIter);
+	Bit_UpdateQuickAnimLookups();
+	return 0;
 }
 
 // @Ok

@@ -110,7 +110,7 @@ EXPORT void NewTextureEntry(u32);
 EXPORT Texture* NextTexture(void);
 EXPORT void PreProcessAnimPacket(u32 *,u32 *);
 EXPORT void ProcessNewPSX(i32);
-EXPORT void RemoveAnimPacket(u32 *);
+EXPORT i32 RemoveAnimPacket(u32 *);
 EXPORT void RemoveTextureEntry(Texture *);
 EXPORT void Spool_AddEnvModelsToHashTable(void);
 EXPORT void Spool_AnimAccess(char *,SAnimFrame **);
