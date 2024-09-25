@@ -31,7 +31,7 @@ EXPORT AnimPacket* AnimPackets;
 EXPORT i32 gSpoolInitOne;
 EXPORT i32 gSpoolInitTwo;
 EXPORT i32 gSpoolColijEnvIndex;
-EXPORT i32 gSpoolInitRelatedUnk;
+EXPORT i32 gNumAccesses;
 
 EXPORT i32 EnvRegions[2] = { -1, -1 };
 
@@ -455,7 +455,7 @@ void Spool_Init(void)
 			SAccess* next = pCur->pNext;
 			gAccessRelated[i] = next;
 
-			pCur->pPrev->pNext = 0;
+			*pCur->pLst = 0;
 			delete pCur;
 		}
 	}
@@ -477,7 +477,7 @@ void Spool_Init(void)
 	gSpoolInitTwo = 0;
 	EnviroList = 0;
 	gSpoolColijEnvIndex = 0;
-	gSpoolInitRelatedUnk = 0;
+	gNumAccesses = 0;
 
 	EnvRegions[0] = -1;
 	EnvRegions[1] = -1;
@@ -650,11 +650,42 @@ void accessLog(char *,...)
     printf("accessLog(char *,...)");
 }
 
-// @SMALLTODO
-i32 addAccess(void **,u32,u32,i32)
+// @Ok
+// @Matching
+i32 addAccess(
+		void** pLst,
+		u32 type,
+		u32 nameOrChecksum,
+		i32 region)
 {
-    printf("addAccess(void **,u32,u32,i32)");
-	return 0x24092024;
+	SAccess* pIter;
+	for (pIter = PSXRegion[region].pAccess; pIter; pIter = pIter->pNext)
+	{
+		if (pIter->pLst == pLst)
+			break;
+	}
+
+	if (pIter)
+		return 0;
+
+	SAccess* pAccess = static_cast<SAccess*>(malloc(sizeof(SAccess)));
+	if (!pAccess)
+	{
+		return 0;
+	}
+
+	pAccess->pNext = gAccessRelated[region];
+	pAccess->pLst = pLst;
+	pAccess->mType = type;
+
+	if ( type == 2 || type == 4 )
+		strncpy(pAccess->mName, reinterpret_cast<char*>(nameOrChecksum), 8u);
+	else
+		pAccess->mChecksum = nameOrChecksum;
+
+	gAccessRelated[region] = pAccess;
+	gNumAccesses++;
+	return 1;
 }
 
 // @SMALLTODO
@@ -980,6 +1011,8 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, pTexWibData, 0x2C);
 	VALIDATE(SPSXRegion, pColourPulseData, 0x30);
 	VALIDATE(SPSXRegion, LowRes, 0x3B);
+
+	VALIDATE(SPSXRegion, pAccess, 0x3C);
 }
 
 void validate_TextureEntry(void)
@@ -996,9 +1029,10 @@ void validate_SAccess(void)
 	VALIDATE_SIZE(SAccess, 0x14);
 
 	VALIDATE(SAccess, pNext, 0x0);
-	VALIDATE(SAccess, pPrev, 0x4);
+	VALIDATE(SAccess, pLst, 0x4);
 	VALIDATE(SAccess, mType, 0x8);
 	VALIDATE(SAccess, mName, 0xC);
+	VALIDATE(SAccess, mChecksum, 0xC);
 }
 
 void validate_AnimPacket(void)

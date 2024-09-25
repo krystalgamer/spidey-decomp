@@ -11,9 +11,13 @@
 struct SAccess
 {
 	SAccess* pNext;
-	SAccess* pPrev;
+	void** pLst;
 	i32 mType;
-	char mName[8];
+	union
+	{
+		char mName[8];
+		u32 mChecksum;
+	};
 };
 
 struct SAnimFrame;
@@ -80,7 +84,7 @@ struct SPSXRegion {
 	u8 LowRes;
 
 	// offset: 003C
-	int Size;
+	SAccess* pAccess;
 	u32 padBottom;
 };
 
