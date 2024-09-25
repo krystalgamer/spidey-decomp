@@ -10,6 +10,7 @@
 #include "spidey.h"
 
 #include <cstring>
+#include <cstdlib>
 
 EXPORT u8 gSpoolLogFailedTextureAccess;
 EXPORT i32 gRegionReloadRelated = -1;
