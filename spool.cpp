@@ -570,10 +570,32 @@ void Spool_ReloadAll(void)
 	}
 }
 
-// @SMALLTODO
-void Spool_RemoveAccess(void **,i32)
+// @Ok
+// @Matching
+void Spool_RemoveAccess(void **pLst, i32 region)
 {
-    printf("Spool_RemoveAccess(void **,i32)");
+	SAccess* pPrev = 0;
+	SAccess* pIter;
+
+	for (pIter = gAccessRelated[region]; pIter; pIter = pIter->pNext)
+	{
+		if (pIter->pLst == pLst)
+			break;
+
+		pPrev = pIter;
+	}
+
+	if (pIter)
+	{
+		if (pPrev)
+			pPrev->pNext = pIter->pNext;
+		else
+			gAccessRelated[region] = pIter->pNext;
+
+		free(pIter);
+		gNumAccesses--;
+		*pLst = 0;
+	}
 }
 
 // @Ok
