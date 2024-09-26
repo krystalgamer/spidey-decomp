@@ -128,7 +128,9 @@ class CTexturedRibbon : public CSpecialDisplay
 		EXPORT ~CTexturedRibbon(void);
 
 		u8 mTrail;
-		u8 padAfter3C[0x50-0x3C-1];
+		u8 padAfter3C[0x40-0x3C-1];
+		Texture* field_40;
+		u8 padAfter40[0x50-0x40-4];
 
 		i32 field_50;
 		u8 padAfter50[0x58-0x50-4];

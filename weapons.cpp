@@ -229,10 +229,12 @@ void CTexturedRibbon::SetOuterRGBi(i32 index, u8 a3, u8 a4,u8 a5)
 	this->field_60[index+1] = (a3 | (((a5 << 8) | a4) << 8));
 }
 
-// @SMALLTODO
-void CTexturedRibbon::SetTexture(Texture *)
+// @Ok
+// @Matching
+void CTexturedRibbon::SetTexture(Texture* pTex)
 {
-    printf("CTexturedRibbon::SetTexture(Texture *)");
+	print_if_false(pTex != 0, "no texture for ribbon");
+	this->field_40 = pTex;
 }
 
 // @Ok
@@ -322,6 +324,7 @@ void validate_CTexturedRibbon(void)
 {
 	VALIDATE(CTexturedRibbon, mTrail, 0x3C);
 
+	VALIDATE(CTexturedRibbon, field_40, 0x40);
 	VALIDATE(CTexturedRibbon, field_50, 0x50);
 
 	VALIDATE(CTexturedRibbon, mNumPoints, 0x58);
