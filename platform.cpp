@@ -109,10 +109,12 @@ INLINE void CPlatform::MoveTo(CVector* pVec)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CPlatform::NotifyTrodUpon(CBody *,CVector const *,CSVector const *)
 {
-    printf("CPlatform::NotifyTrodUpon(CBody *,CVector const *,CSVector const *)");
+	this->field_334 = 1;
+	this->field_338 = 0;
 }
 
 // @MEDIUMTODO
@@ -159,6 +161,7 @@ void validate_CPlatform(void){
 
 	VALIDATE(CPlatform, field_330, 0x330);
 
+	VALIDATE(CPlatform, field_334, 0x334);
 	VALIDATE(CPlatform, field_338, 0x338);
 	VALIDATE(CPlatform, field_33C, 0x33C);
 

@@ -23,10 +23,9 @@ public:
 	unsigned char padTop[0x330-0x324];
 
 	i16 field_330;
-	u8 padAfter330[0x338-0x330-2];
+	i32 field_334;
 
-	u16 field_338;
-	u8 padAfter338[0x33C-0x338-2];
+	u32 field_338;
 
 	u32 field_33C;
 	i32 field_340;
