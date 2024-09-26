@@ -91,8 +91,11 @@ struct SSmokeRingRelated
 
 	u8 field_64;
 	u8 field_65;
+	u8 padAfter65[0x68-0x65-1];
 
-	u8 padBottom[0x8C-0x65-1];
+	CVector field_68;
+	CVector field_74;
+	CVector field_80;
 };
 
 class CSmokeRing : public CSpecialDisplay
@@ -100,7 +103,7 @@ class CSmokeRing : public CSpecialDisplay
 	public:
 		EXPORT CSmokeRing(i32,u32);
 		EXPORT void Display(void);
-		EXPORT void SetParams(CVector const *,i32,i32);
+		EXPORT void SetParams(const CVector*,i32,i32);
 		EXPORT void SetRGB(i32,i32,i32);
 		EXPORT void SetUV(i32,i32,i32);
 		EXPORT ~CSmokeRing(void);
@@ -109,7 +112,10 @@ class CSmokeRing : public CSpecialDisplay
 		i32 mNumSectors;
 		SSmokeRingRelated* mpSectors;
 		CSVector field_48;
-		u8 padAfter48[0x58-0x48-sizeof(CSVector)];
+		u8 padAfter48[0x50-0x48-sizeof(CSVector)];
+
+		i32 field_50;
+		i32 field_54;
 
 		i32 field_58;
 		i32 field_5C;

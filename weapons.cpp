@@ -4,6 +4,7 @@
 #include "ps2funcs.h"
 #include "camera.h"
 #include "spool.h"
+#include "utils.h"
 
 CItem* CWeapons;
 extern SCamera gMikeCamera[2];
@@ -82,10 +83,38 @@ void CSmokeRing::Display(void)
     printf("CSmokeRing::Display(void)");
 }
 
-// @SMALLTODO
-void CSmokeRing::SetParams(CVector const *,i32,i32)
+// @Ok
+// @Validate
+void CSmokeRing::SetParams(
+		const CVector* a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("CSmokeRing::SetParams(CVector const *,i32,i32)");
+	this->mPos = *a2;
+	this->field_54 = a4;
+	this->field_50 = a3;
+
+	CSVector v15 = this->field_48;
+
+	i32 v23 = 4096 / this->mNumSectors;
+
+	SSmokeRingRelated* pSector = this->mpSectors;
+	for (i32 i = 0; i < this->mNumSectors; i++)
+	{
+		CVector v16;
+		v16.vx = 0;
+		v16.vy = 0;
+		v16.vz = 0;
+
+		Utils_GetVecFromMagDir(&v16, 1, &v15);
+
+		pSector[i].field_68 = (this->mPos + (v16 * this->field_50));
+		CVector v14 = (v16 * this->field_54);
+		pSector[i].field_74 = (pSector[i].field_68 + v14);
+		pSector[i].field_80 = (pSector[i].field_74 + v14);
+
+		v15.vy += v23;
+	}
 }
 
 // @Ok
@@ -315,6 +344,9 @@ void validate_CSmokeRing(void)
 
 	VALIDATE(CSmokeRing, field_48, 0x48);
 
+	VALIDATE(CSmokeRing, field_50, 0x50);
+	VALIDATE(CSmokeRing, field_54, 0x54);
+
 	VALIDATE(CSmokeRing, field_58, 0x58);
 	VALIDATE(CSmokeRing, field_5C, 0x5C);
 	VALIDATE(CSmokeRing, field_60, 0x60);
@@ -398,4 +430,8 @@ void validate_SSmokeRingRelated(void)
 
 	VALIDATE(SSmokeRingRelated, field_64, 0x64);
 	VALIDATE(SSmokeRingRelated, field_65, 0x65);
+
+	VALIDATE(SSmokeRingRelated, field_68, 0x68);
+	VALIDATE(SSmokeRingRelated, field_74, 0x74);
+	VALIDATE(SSmokeRingRelated, field_80, 0x80);
 }
