@@ -1,5 +1,8 @@
 #include "platform.h"
 #include "ps2lowsfx.h"
+#include "utils.h"
+#include "shatter.h"
+
 #include "validate.h"
 
 extern CBody* EnvironmentalObjectList;
@@ -49,11 +52,28 @@ i32 CPlatform::ExecuteCommand(u16)
     return 0x04082024;
 }
 
-// @SMALLTODO
-i32 CPlatform::Hit(SHitInfo *)
+// @Ok
+// @Matching
+i32 CPlatform::Hit(SHitInfo* a2)
 {
-    printf("CPlatform::Hit(SHitInfo *)");
-    return 0x04082024;
+	this->field_20F++;
+	if (this->attributeArr[1])
+	{
+
+		if (this->field_E2 > 0)
+		{
+			this->field_E2 -= a2->field_8;
+			if (this->field_E2 <= 0)
+			{
+				this->Die(0);
+				SFX_PlayPos(Rnd(2) + 1, &this->mPos, 0);
+				Shatter_Item(this, 0, 1);
+				this->mFlags |= 1;
+			}
+		}
+	}
+
+	return 1;
 }
 
 // @SMALLTODO
