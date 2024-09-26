@@ -8,8 +8,20 @@
 
 EXPORT extern CItem* CWeapons;
 
-// @FIXME
-#define SCalcBuffer i32
+struct SCalcBuffer
+{
+	i32 field_0;
+	i32 field_4;
+	u8 padAfter4[0x18-0x4-4];
+
+	i32 field_18;
+	u8 padAfter18[0x20-0x18-4];
+
+	i32 field_20;
+	u8 padAfter20[0x38-0x20-4];
+
+	i32 field_38;
+};
 
 struct SSmokeRingRelated
 {
@@ -150,6 +162,7 @@ void validate_CGouraudRibbon(void);
 void validate_CSmokeRing(void);
 void validate_CTexturedRibbon(void);
 void validate_SSmokeRingRelated(void);
+void validate_SCalcBuffer(void);
 
 EXPORT void CalcScreenNormal(SCalcBuffer *,i32 *,i32 *,i32);
 EXPORT i32 Transform(CVector *,i32 *);

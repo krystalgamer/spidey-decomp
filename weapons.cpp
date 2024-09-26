@@ -273,10 +273,50 @@ CTexturedRibbon::~CTexturedRibbon(void)
 	Mem_Delete(this->field_60);
 }
 
-// @SMALLTODO
-void CalcScreenNormal(SCalcBuffer *,i32 *,i32 *,i32)
+// @Ok
+// @Validate
+void CalcScreenNormal(
+		SCalcBuffer* pBuffer,
+		i32 * a2,
+		i32 * a3,
+		i32 a4)
 {
-    printf("CalcScreenNormal(SCalcBuffer *,i32 *,i32 *,i32)");
+	if (!pBuffer->field_18 && !pBuffer->field_38)
+	{
+		i32 v4 = pBuffer->field_20;
+		i32 v5 = ((pBuffer->field_20 << 16) >> 16) - ((pBuffer->field_0 << 16) >> 16);
+		i32 v6 = (pBuffer->field_20 >> 16) - ((pBuffer->field_0 << 16) >> 16);
+		*a2 = v6;
+		i32 v7 = 320 * v5 / 512;
+		i32 v8 = 320 * v5 / -512;
+		*a3 = v8;
+		if ( v7 < 0 )
+			v7 = v8;
+		if ( v6 < 0 )
+			v6 = -v6;
+
+		i32 v9;
+		if ( v7 <= v6 )
+			v9 = v6 + v7 / 2;
+		else
+			v9 = v7 + v6 / 2;
+		if ( v9 >= a4 )
+		{
+			*a2 = (*a2 << 6) / v9;
+			*a3 = (*a3 << 6) / v9;
+			*a2 = (*a2 << 9) / 320;
+		}
+		else
+		{
+			*a3 = 0;
+			*a2 = 0;
+		}
+	}
+	else
+	{
+		*a3 = 0;
+		*a2 = 0;
+	}
 }
 
 // @NotOk
@@ -434,4 +474,17 @@ void validate_SSmokeRingRelated(void)
 	VALIDATE(SSmokeRingRelated, field_68, 0x68);
 	VALIDATE(SSmokeRingRelated, field_74, 0x74);
 	VALIDATE(SSmokeRingRelated, field_80, 0x80);
+}
+
+void validate_SCalcBuffer(void)
+{
+	VALIDATE_SIZE(SCalcBuffer, 0x3C);
+
+	VALIDATE(SCalcBuffer, field_0, 0x0);
+	VALIDATE(SCalcBuffer, field_4, 0x4);
+
+	VALIDATE(SCalcBuffer, field_18, 0x18);
+	VALIDATE(SCalcBuffer, field_20, 0x20);
+
+	VALIDATE(SCalcBuffer, field_38, 0x38);
 }
