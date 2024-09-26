@@ -2,6 +2,7 @@
 #include "ps2lowsfx.h"
 #include "utils.h"
 #include "shatter.h"
+#include "spidey.h"
 
 #include "validate.h"
 
@@ -14,10 +15,30 @@ void CPlatform::AI(void)
     printf("CPlatform::AI(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CPlatform::AdjustBruceHealth(void)
 {
-    printf("CPlatform::AdjustBruceHealth(void)");
+	i16 value = this->field_330;
+	if (value)
+	{
+		if (value < 0)
+		{
+			MechList->IncHealth(value - 1);
+		}
+		else
+		{
+			SHitInfo v2;
+			v2.field_C.vx = 0;
+			v2.field_C.vy = 0;
+			v2.field_C.vz = 0;
+
+			v2.field_8 = value;
+			v2.field_0 = 4;
+
+			MechList->Hit(&v2);
+		}
+	}
 }
 
 // @Ok
@@ -129,6 +150,8 @@ u16 CPlatform::GetVariable(u16 a2)
 
 void validate_CPlatform(void){
 	VALIDATE_SIZE(CPlatform, 0x35C);
+
+	VALIDATE(CPlatform, field_330, 0x330);
 
 	VALIDATE(CPlatform, field_338, 0x338);
 	VALIDATE(CPlatform, field_33C, 0x33C);

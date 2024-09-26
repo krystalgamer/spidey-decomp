@@ -20,7 +20,10 @@ public:
 
 	EXPORT unsigned __int16 GetVariable(unsigned __int16);
 
-	unsigned char padTop[0x338-0x324];
+	unsigned char padTop[0x330-0x324];
+
+	i16 field_330;
+	u8 padAfter330[0x338-0x330-2];
 
 	u16 field_338;
 	u8 padAfter338[0x33C-0x338-2];
