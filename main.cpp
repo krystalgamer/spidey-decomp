@@ -420,6 +420,7 @@ i32 validate(void)
 	validate_SPCTexContainer();
 	validate_SAccess();
 	validate_AnimPacket();
+	validate_SCalcBuffer();
 
 	puts("[*] Validation done!");
 
