@@ -8,6 +8,13 @@
 #include "ps2funcs.h"
 
 // @Ok
+// @Matching
+i32 CVector::operator!=(const CVector& other)
+{
+	return this->vx != other.vx || this->vy != other.vy || this->vz != other.vz;
+}
+
+// @Ok
 CVector operator<<(const CVector& lhs, const i32& other){
 
 	CVector res;

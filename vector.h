@@ -25,6 +25,7 @@ public:
 	EXPORT CVector* operator/=(const int& other);
 	EXPORT CVector* operator+=(const CVector& other);
 	EXPORT CVector* operator%=(const CFriction& other);
+	EXPORT i32 operator!=(const CVector& other);
 	EXPORT void Zero(void);
 
 	EXPORT const CVector& operator=(const CVector& rhs) {
