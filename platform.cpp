@@ -97,10 +97,16 @@ i32 CPlatform::Hit(SHitInfo* a2)
 	return 1;
 }
 
-// @SMALLTODO
-void CPlatform::MoveTo(CVector *)
+// @Ok
+// @Validate
+INLINE void CPlatform::MoveTo(CVector* pVec)
 {
-    printf("CPlatform::MoveTo(CVector *)");
+	if (this->field_240 != *pVec)
+	{
+		this->field_240 = *pVec;
+		this->field_344 = ((this->mPos - *pVec) >> 12);
+		this->field_218 |= 1;
+	}
 }
 
 // @SMALLTODO
