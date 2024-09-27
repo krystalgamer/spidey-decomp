@@ -1,5 +1,4 @@
 #include "shell.h"
-#include "validate.h"
 #include "ps2m3d.h"
 #include "utils.h"
 #include "ps2lowsfx.h"
@@ -14,6 +13,9 @@
 #include "utils.h"
 #include "pcshell.h"
 #include "powerup.h"
+#include "pshell.h"
+
+#include "validate.h"
 
 CBody *MiscList;
 
@@ -156,10 +158,35 @@ void Shell_DrawBackground(void)
 	PCPanel_DrawTexturedPoly(-1.0, gBackgroundAnimFrame->pTexture, 0, 0, 512, 240, 128);
 }
 
-// @SMALLTODO
-void Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32)
+// @Ok
+// @Matching
+void Shell_DrawTitleBar(
+		i32 a1,
+		i32 a2,
+		const char * a3,
+		i32 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8)
 {
-    printf("Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32)");
+	Mess_SetTextJustify(0);
+	Mess_SetRGB(0x80u, 0x80u, 0x80u, 0);
+	Mess_SetRGBBottom(0x45u, 60, 107);
+	if (a4)
+		PShell_BigFont();
+	Mess_SetSort(4094);
+	Mess_DrawText(a1, a2, a3, 0, 0x1000u);
+
+	i32 v8;
+	if ( a5 < a1 )
+		v8 = a6 + a1 + Mess_TextWidth(a3) / 2 - a5;
+	else
+		v8 = a1 - Mess_TextWidth(a3) / 2 - a5 - a6;
+	PShell_DrawHighlight(a5, a7 + a2, v8, a8);
+	Mess_SetSort(0);
+	if (a4)
+		PShell_NormalFont();
 }
 
 // @MEDIUMTODO

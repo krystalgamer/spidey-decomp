@@ -40,6 +40,19 @@ EXPORT void PShell_DefaultText(void);
 EXPORT void PShell_SmallFont(void);
 EXPORT void PShell_InstructionalText(void);
 
+EXPORT void ActivateCheat(i32);
+EXPORT void DisplayScore(i32,i32,long,i32);
+EXPORT void PShell_ActivateCheat(char *);
+EXPORT void PShell_ApplyGameState(void);
+EXPORT void PShell_BigFont(void);
+EXPORT void PShell_DrawHighlight(i32,i32,i32,i32);
+EXPORT void PShell_EndTrainingDisplay(void);
+EXPORT void PShell_EndTrainingInit(void);
+EXPORT void PShell_EndTrainingUpdate(void);
+EXPORT void PShell_MaybeSaveGame(void);
+EXPORT void PShell_MaybeUnlockStuff(void);
+EXPORT void PShell_MoveTowards(i32,i32);
+
 void validate_CExpandingBox(void);
 
 #endif

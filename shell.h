@@ -260,7 +260,7 @@ EXPORT void Shell_Difficulty(i32);
 EXPORT void Shell_DisplayGameInfo(i32,i32,SSaveGame *);
 EXPORT void Shell_DoShell(u32 const *,u32 *);
 EXPORT void Shell_DrawBackground(void);
-EXPORT void Shell_DrawTitleBar(i32,i32,char const *,i32,i32,i32,i32,i32);
+EXPORT void Shell_DrawTitleBar(i32,i32,const char *,i32,i32,i32,i32,i32);
 EXPORT void Shell_Gallery(EShellResult);
 EXPORT void Shell_GameCovers(void);
 EXPORT void Shell_InputName(char *,i32,i32,char *);

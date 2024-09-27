@@ -4,6 +4,78 @@
 
 EXPORT i32 JoelJewCheatCode;
 
+// @MEDIUMTODO
+void ActivateCheat(i32)
+{
+    printf("ActivateCheat(i32)");
+}
+
+// @SMALLTODO
+void DisplayScore(i32,i32,long,i32)
+{
+    printf("DisplayScore(i32,i32,long,i32)");
+}
+
+// @SMALLTODO
+void PShell_ActivateCheat(char *)
+{
+    printf("PShell_ActivateCheat(char *)");
+}
+
+// @SMALLTODO
+void PShell_ApplyGameState(void)
+{
+    printf("PShell_ApplyGameState(void)");
+}
+
+// @SMALLTODO
+void PShell_BigFont(void)
+{
+    printf("PShell_BigFont(void)");
+}
+
+// @SMALLTODO
+void PShell_DrawHighlight(i32,i32,i32,i32)
+{
+    printf("PShell_DrawHighlight(i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void PShell_EndTrainingDisplay(void)
+{
+    printf("PShell_EndTrainingDisplay(void)");
+}
+
+// @MEDIUMTODO
+void PShell_EndTrainingInit(void)
+{
+    printf("PShell_EndTrainingInit(void)");
+}
+
+// @MEDIUMTODO
+void PShell_EndTrainingUpdate(void)
+{
+    printf("PShell_EndTrainingUpdate(void)");
+}
+
+// @MEDIUMTODO
+void PShell_MaybeSaveGame(void)
+{
+    printf("PShell_MaybeSaveGame(void)");
+}
+
+// @MEDIUMTODO
+void PShell_MaybeUnlockStuff(void)
+{
+    printf("PShell_MaybeUnlockStuff(void)");
+}
+
+// @SMALLTODO
+void PShell_MoveTowards(i32,i32)
+{
+    printf("PShell_MoveTowards(i32,i32)");
+}
+
 // @Ok
 CExpandingBox::~CExpandingBox(void)
 {
