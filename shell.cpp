@@ -11,7 +11,7 @@
 #include "ps2pad.h"
 #include "dcshellutils.h"
 #include "utils.h"
-#include "pcshell.h"
+#include "PCShell.h"
 #include "powerup.h"
 #include "pshell.h"
 #include "spidey.h"
