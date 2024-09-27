@@ -10,8 +10,13 @@ EXPORT extern CBody *MiscList;
 
 struct SSaveGame
 {
-	i32 mChecksum;
-	i32 fields[0x2E];
+	u32 mChecksum;
+	u8 padAfter4[0x3F-0x0-4];
+
+	// @FIXME: figure proper size
+	char field_3F[1];
+
+	u8 padBottom[0xBC-0x3F-1];
 };
 
 class CWobblyGlow : public CGlow
@@ -244,7 +249,7 @@ EXPORT void CallAI(CBody *);
 EXPORT i32 CalcIndexOfContinueLevel(void);
 
 EXPORT void Shell_AddGameSlots(CMenu *);
-EXPORT i32 Shell_CalculateGameChecksum(SSaveGame *);
+EXPORT u32 Shell_CalculateGameChecksum(SSaveGame *);
 EXPORT void Shell_CharacterViewer(void);
 EXPORT void Shell_Cheats(void);
 EXPORT void Shell_ChooseEnemy(i32,u8,signed char);

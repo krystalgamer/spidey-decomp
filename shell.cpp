@@ -37,23 +37,73 @@ extern SPSXRegion PSXRegion[];
 
 EXPORT SAnimFrame* gBackgroundAnimFrame;
 
-// @SMALLTODO
-void Shell_AddGameSlots(CMenu *)
+const i32 NUM_SAVE_GAME_SLOTS = 8;
+EXPORT SSaveGame gSaveGameSlots[NUM_SAVE_GAME_SLOTS];
+
+// @Ok
+void Shell_AddGameSlots(CMenu* pMenu)
 {
-    printf("Shell_AddGameSlots(CMenu *)");
+	print_if_false(pMenu->mNumLines == 0, "Tried to add slots to non-empty menu");
+
+	for (i32 i = 0; i < NUM_SAVE_GAME_SLOTS; i++)
+	{
+		i32 v6 = 0;
+
+		if (gSaveGameSlots[i].mChecksum)
+		{
+			u32 checksum = Shell_CalculateGameChecksum(&gSaveGameSlots[i]);
+
+			if (checksum == gSaveGameSlots[i].mChecksum)
+			{
+				pMenu->AddEntry(gSaveGameSlots[i].field_3F);
+			}
+			else
+			{
+				pMenu->AddEntry("read error");
+				v6 = 1;
+			}
+		}
+		else
+		{
+				pMenu->AddEntry("---- empty ----");
+				v6 = 1;
+		}
+
+		if (v6)
+		{
+			pMenu->mEntry[i].unk_c = 80;
+			pMenu->mEntry[i].unk_d = 16;
+			pMenu->mEntry[i].unk_e = 36;
+			pMenu->mEntry[i].field_11 = 40;
+			pMenu->mEntry[i].field_12 = 8;
+
+			pMenu->mEntry[i].field_13 = 0x12;
+			pMenu->mEntry[i].field_14 = 0x50;
+
+			pMenu->mEntry[i].field_15 = 0x10;
+			pMenu->mEntry[i].field_16 = 0x24;
+
+			pMenu->mEntry[i].field_17 = 0x28;
+			pMenu->mEntry[i].field_18 = 8;
+
+			pMenu->mEntry[i].field_19 = 0x12;
+		}
+	}
 }
 
 // @Ok
 // PowerPC version implies that mSize of SSaveGame is not a field but part of the array
 // i don't like it
-i32 Shell_CalculateGameChecksum(SSaveGame* pSave)
+INLINE u32 Shell_CalculateGameChecksum(SSaveGame* pSave)
 {
-	i32 checksum = 0;
+	u32 checksum = 0;
 	print_if_false(1u, "Size of SSaveGame not a multiple of 4");
+
+	u32* fields = &reinterpret_cast<u32*>(pSave)[1];
 
 	for (i32 i = 0; i<0x2E; i++)
 	{
-		if (checksum < 0)
+		if (checksum & 0x80000000)
 		{
 			checksum = checksum * 2 + 1;
 		}
@@ -62,7 +112,7 @@ i32 Shell_CalculateGameChecksum(SSaveGame* pSave)
 			checksum <<= 1;
 		}
 
-		checksum += pSave->fields[i];
+		checksum += fields[i];
 	}
 
 	return checksum | 1;
@@ -1410,5 +1460,7 @@ void validate_SSaveGame(void)
 	VALIDATE_SIZE(SSaveGame, 0xBC);
 
 	VALIDATE(SSaveGame, mChecksum, 0x0);
-	VALIDATE(SSaveGame, fields, 0x4);
+
+	VALIDATE(SSaveGame, field_3F, 0x3F);
+
 }
