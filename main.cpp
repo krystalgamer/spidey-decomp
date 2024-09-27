@@ -421,6 +421,7 @@ i32 validate(void)
 	validate_SAccess();
 	validate_AnimPacket();
 	validate_SCalcBuffer();
+	validate_SCheat();
 
 	puts("[*] Validation done!");
 

@@ -4,6 +4,58 @@
 
 EXPORT i32 JoelJewCheatCode;
 
+SCheat gCheats[NUM_CHEATS] =
+{
+	{
+			"WEAKNESS",
+			"full health",
+	},
+	{
+			"LEANEST",
+			"everything",
+	},
+	{
+			"GLANDS",
+			"unlimited webbing",
+	},
+	{
+			"EGOTRIP",
+			"pulsating head",
+	},
+	{
+			"RULUR",
+			"J James Jewett",
+	},
+	{
+			"SECRTWAR",
+			"symbiote spidey costume",
+	},
+	{
+			"MIGUELOH",
+			"spidey 2099 costume",
+	},
+	{
+			"TRISNTNL",
+			"Captain Universe Costume",
+	},
+	{
+			"SYNOPTIC",
+			"Spidey Unlimited Costume",
+	},
+	{
+			"XILRTRNS",
+			"Scarlet Spider Costume",
+	},
+	{
+			"KICK ME",
+			"Amazing Bag Man Costume",
+	},
+	{
+			"MRWATSON",
+			"Peter Parker Costume",
+	},
+};
+
 // @MEDIUMTODO
 void ActivateCheat(i32)
 {
@@ -279,3 +331,10 @@ void validate_CExpandingBox(void)
 	VALIDATE(CExpandingBox, field_2C, 0x2C);
 }
 
+void validate_SCheat(void)
+{
+	VALIDATE_SIZE(SCheat, 0x8);
+
+	VALIDATE(SCheat, pCode, 0x0);
+	VALIDATE(SCheat, pDescription, 0x4);
+}

@@ -7,6 +7,12 @@
 #include "ob.h"
 #include "main.h"
 
+struct SCheat
+{
+	const char* pCode;
+	const char* pDescription;
+};
+
 class CExpandingBox : public CClass
 {
 
@@ -54,5 +60,10 @@ EXPORT void PShell_MaybeUnlockStuff(void);
 EXPORT void PShell_MoveTowards(i32,i32);
 
 void validate_CExpandingBox(void);
+void validate_SCheat(void);
+
+
+static const i32 NUM_CHEATS = 24;
+EXPORT extern SCheat gCheats[NUM_CHEATS];
 
 #endif
