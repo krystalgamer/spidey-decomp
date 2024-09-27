@@ -69,9 +69,10 @@ void DisplayScore(i32,i32,long,i32)
 }
 
 // @SMALLTODO
-void PShell_ActivateCheat(char *)
+i32 PShell_ActivateCheat(char *)
 {
     printf("PShell_ActivateCheat(char *)");
+	return 0x27092024;
 }
 
 // @SMALLTODO

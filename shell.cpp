@@ -14,8 +14,12 @@
 #include "pcshell.h"
 #include "powerup.h"
 #include "pshell.h"
+#include "spidey.h"
 
 #include "validate.h"
+
+
+EXPORT u8 gCurrentCostume;
 
 CBody *MiscList;
 
@@ -67,13 +71,45 @@ i32 Shell_CalculateGameChecksum(SSaveGame* pSave)
 // @MEDIUMTODO
 void Shell_CharacterViewer(void)
 {
-    printf("Shell_CharacterViewer(void)");
+	printf("void Shell_CharacterViewer");
 }
 
-// @SMALLTODO
+// @Ok
+// @Note: at the end it does add esp 2 times instead of one time but it's the same
 void Shell_Cheats(void)
 {
-    printf("Shell_Cheats(void)");
+	const char *pDesc = 0;
+	char v3[12];
+
+	v3[0] = 0;
+
+	while (Shell_InputName(v3, 1, 1, pDesc))
+	{
+		i32 res = PShell_ActivateCheat(v3);
+		if (res != -1)
+		{
+			SFX_Play(0x1D, 0x2000, 0);
+			pDesc = gCheats[res].pDescription;
+		}
+		else
+		{
+			SFX_Play(0x1B, 0x2000, 0);
+			pDesc = 0;
+		}
+
+		v3[0] = 0;
+	}
+
+	SFX_Play(0x23, 0x2000, 0);
+
+	if (gCurrentCostume != 5)
+	{
+		Spidey_BagHead(4096, gCurrentCostume != 9 ? 0 : 2);
+	}
+	else
+	{
+		Spidey_BagHead(4096, 1);
+	}
 }
 
 // @MEDIUMTODO
@@ -202,9 +238,10 @@ void Shell_GameCovers(void)
 }
 
 // @MEDIUMTODO
-void Shell_InputName(char *,i32,i32,char *)
+i32 Shell_InputName(char *,i32,i32, const char *)
 {
     printf("Shell_InputName(char *,i32,i32,char *)");
+	return 0x27092024;
 }
 
 EXPORT u8 gInLegalScreen;
