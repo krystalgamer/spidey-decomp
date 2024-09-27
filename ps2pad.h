@@ -33,6 +33,7 @@ EXPORT void Pad_ClearAllOne(i32);
 EXPORT void Pad_ClearTriggers(SControl *);
 EXPORT void Pad_InitAtStart(void);
 EXPORT void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32);
+EXPORT void Pad_Update(void);
 
 void validate_SControl(void);
 EXPORT extern SControl gSControl;

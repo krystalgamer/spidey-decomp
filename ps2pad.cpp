@@ -4,6 +4,13 @@
 SControl gSControl;
 
 static int gPadActuator[255];
+
+// @SMALLTODO
+void Pad_Update(void)
+{
+	printf("void Pad_Update(void)");
+}
+
 // @NotOk
 // global
 void Pad_ActuatorOff(u8 a1, u8)

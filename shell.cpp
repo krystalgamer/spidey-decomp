@@ -9,6 +9,11 @@
 #include "front.h"
 #include "PCGfx.h"
 #include "mess.h"
+#include "ps2pad.h"
+#include "dcshellutils.h"
+#include "utils.h"
+#include "pcshell.h"
+#include "powerup.h"
 
 CBody *MiscList;
 
@@ -175,10 +180,51 @@ void Shell_InputName(char *,i32,i32,char *)
     printf("Shell_InputName(char *,i32,i32,char *)");
 }
 
-// @SMALLTODO
+EXPORT u8 gInLegalScreen;
+
+// @Ok
 void Shell_LegalScreen(void)
 {
-    printf("Shell_LegalScreen(void)");
+	if (!gInLegalScreen)
+	{
+		gInLegalScreen = 1;
+		Front_ClearScreen();
+
+		DrawSync();
+		Pad_ClearTriggers(&gSControl);
+		Pad_Update();
+		Pad_ClearTriggers(&gSControl);
+
+		Sprite2* v0 = new Sprite2("LegalPC.bmp", 1, 0, 0, 3);
+		u32 v3 = Vblanks + 180;
+		while ( 1 )
+		{
+			if (!gSceneRelated)
+				PCGfx_BeginScene(1u, -1);
+
+			v0->draw(
+				0,
+				0,
+				8,
+				-1.0f);
+			if (gSceneRelated)
+				PCGfx_EndScene(1);
+			++gPowerUpRelated;
+			Pad_Update();
+
+			if (Vblanks > v3)
+				break;
+
+			PCSHELL_Relax();
+		}
+
+		delete v0;
+		Mess_DeleteAll();
+		Front_ClearScreen();
+
+		DrawSync();
+		Pad_ClearTriggers(&gSControl);
+	}
 }
 
 // @MEDIUMTODO
