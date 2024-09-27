@@ -15,6 +15,7 @@
 #include "powerup.h"
 #include "pshell.h"
 #include "spidey.h"
+#include "ps2m3d.h"
 
 #include "validate.h"
 
@@ -222,10 +223,47 @@ void Shell_Difficulty(i32)
     printf("Shell_Difficulty(i32)");
 }
 
-// @SMALLTODO
-void Shell_DisplayGameInfo(i32,i32,SSaveGame *)
+// @Ok
+void Shell_DisplayGameInfo(
+		i32 a1,
+		i32 a2,
+		SSaveGame* pSave)
 {
-    printf("Shell_DisplayGameInfo(i32,i32,SSaveGame *)");
+	if (pSave->mChecksum)
+	{
+		u32 checksum = Shell_CalculateGameChecksum(pSave);
+
+		if (pSave->mChecksum == checksum)
+		{
+			SLevel* pLevel = Front_FindLevel(pSave->field_4);
+			if (pLevel)
+			{
+				Mess_SetTextJustify(1);
+				Mess_DrawText(a1, a2, pLevel->mDisplayName, 0, 0x1000);
+
+				const char* v9 = gRenderBuf;
+
+				switch (pSave->mDifficulty)
+				{
+					case 0:
+						v9 = "kid mode";
+						break;
+					case 1:
+						v9 = "easy";
+						break;
+					case 2:
+						v9 = "normal";
+						break;
+					case 3:
+						v9 = "hard";
+						break;
+				}
+
+				Mess_DrawText(a1, a2 + 15, "difficulty:", 0, 0x1000);
+				Mess_DrawText(a1 + 150, a2 + 15, v9, 0, 0x1000);
+			}
+		}
+	}
 }
 
 // @MEDIUMTODO
@@ -1460,7 +1498,9 @@ void validate_SSaveGame(void)
 	VALIDATE_SIZE(SSaveGame, 0xBC);
 
 	VALIDATE(SSaveGame, mChecksum, 0x0);
+	VALIDATE(SSaveGame, field_4, 0x4);
 
 	VALIDATE(SSaveGame, field_3F, 0x3F);
 
+	VALIDATE(SSaveGame, mDifficulty, 0x54);
 }

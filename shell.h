@@ -11,12 +11,19 @@ EXPORT extern CBody *MiscList;
 struct SSaveGame
 {
 	u32 mChecksum;
-	u8 padAfter4[0x3F-0x0-4];
+
+	// @FIXME: figure out proper size
+	char field_4[1];
+
+	u8 padAfter4[0x3F-0x4-1];
 
 	// @FIXME: figure proper size
 	char field_3F[1];
+	u8 padAfter3F[0x54-0x3F-1];
 
-	u8 padBottom[0xBC-0x3F-1];
+	i8 mDifficulty;
+
+	u8 padBottom[0xBC-0x54-1];
 };
 
 class CWobblyGlow : public CGlow
