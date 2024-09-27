@@ -1,5 +1,9 @@
 #include "pshell.h"
 #include "mess.h"
+#include "utils.h"
+
+#include <cstring>
+
 #include "validate.h"
 
 EXPORT i32 JoelJewCheatCode;
@@ -54,12 +58,62 @@ SCheat gCheats[NUM_CHEATS] =
 			"MRWATSON",
 			"Peter Parker Costume",
 	},
+	{
+			"SM LVIII",
+			"Quick Change Costume",
+	},
+	{
+			"ROBRTSON",
+			"Storyboard Viewer",
+	},
+	{
+			"KIRBYFAN",
+			"Game Comic Covers",
+	},
+	{
+			"MME WEB",
+			"Level Select",
+	},
+	{
+			"FANBOY",
+			"Comic Collection",
+	},
+	{
+			"CINEMA",
+			"Movie Viewer",
+	},
+	{
+			"RGSGLLRY",
+			"Character Viewer",
+	},
+	{
+			"UATUSEES",
+			"What If Contest",
+	},
+	{
+			"ADMNTIUM",
+			"invulnerable",
+	},
+	{
+			"CLUBNOIR",
+			"Ben Reilly Costume",
+	},
+	{
+			"STICKMAN",
+			"Stick Spidey",
+	},
+	{
+			"FUNKYTWN",
+			"Toon Spidey",
+	},
 };
 
 // @MEDIUMTODO
-void ActivateCheat(i32)
+i32 ActivateCheat(i32)
 {
     printf("ActivateCheat(i32)");
+	//return 0x27092024;
+	return 0;
 }
 
 // @SMALLTODO
@@ -68,11 +122,28 @@ void DisplayScore(i32,i32,long,i32)
     printf("DisplayScore(i32,i32,long,i32)");
 }
 
-// @SMALLTODO
-i32 PShell_ActivateCheat(char *)
+// @Ok
+// @Matching
+i32 PShell_ActivateCheat(char * pStr)
 {
-    printf("PShell_ActivateCheat(char *)");
-	return 0x27092024;
+	i32 v1 = -1;
+
+	for (i32 i = 0; i < NUM_CHEATS; i++)
+	{
+		if (Utils_CompareStrings(pStr, gCheats[i].pCode))
+		{
+			v1 = i;
+			break;
+		}
+	}
+
+	if (v1 == 4)
+		return -1;
+
+	if (ActivateCheat(v1))
+		return v1;
+
+	return -1;
 }
 
 // @SMALLTODO
@@ -339,4 +410,11 @@ void validate_SCheat(void)
 
 	VALIDATE(SCheat, pCode, 0x0);
 	VALIDATE(SCheat, pDescription, 0x4);
+
+	if (strcmp(gCheats[NUM_CHEATS-1].pCode, "FUNKYTWN"))
+	{
+		printf("MISMATCH IN CHEAT TABLE %s should be FUNKYTWN", gCheats[NUM_CHEATS-1].pCode);
+	}
+
+
 }
