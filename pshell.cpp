@@ -81,10 +81,11 @@ void PShell_ApplyGameState(void)
     printf("PShell_ApplyGameState(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PShell_BigFont(void)
 {
-    printf("PShell_BigFont(void)");
+	Mess_SetCurrentFont("font_big.fnt");
 }
 
 // @SMALLTODO
