@@ -6,6 +6,7 @@
 #include "baddy.h"
 #include "utils.h"
 #include "camera.h"
+#include "spool.h"
 
 #include "validate.h"
 
@@ -49,10 +50,28 @@ CDomeShockWave::~CDomeShockWave(void)
 {
 }
 
-// @SMALLTODO
-CDomePiece::CDomePiece(CVector*, i32, i32, i32)
+// @Ok
+CDomePiece::CDomePiece(
+		CVector* a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
 {
-	printf("CDomePiece::CDomePiece(CVector*, i32, i32, i32)");
+	this->mPos = *a2;
+	this->field_F8 = a4;
+
+	if (a5)
+		this->InitItem("firedome");
+	else
+		this->InitItem("webdome3");
+
+	print_if_false(a3 < reinterpret_cast<u32*>(PSXRegion[this->mRegion].ppModels)[-1], "Bad Model sent to CDomePiece");
+
+	this->mModel = a3;
+	this->AttachTo(&MiscList);
+	this->mFlags |= 0x400;
+	this->field_24 = 0;
+	this->field_FC = 4;
 }
 
 // @Ok
@@ -139,6 +158,7 @@ void validate_CImpactWeb(void){
 void validate_CDomePiece(void){
 	VALIDATE_SIZE(CDomePiece, 0x100);
 
+	VALIDATE(CDomePiece, field_F4, 0xF4);
 	VALIDATE(CDomePiece, field_F8, 0xF8);
 	VALIDATE(CDomePiece, field_FC, 0xFC);
 }

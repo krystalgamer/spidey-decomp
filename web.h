@@ -20,10 +20,9 @@ public:
 	EXPORT CDomePiece(CVector*, i32, i32, i32);
 	EXPORT virtual ~CDomePiece(void);
 
-	int padTop;
-
-	int field_F8;
-	int field_FC;
+	i32 field_F4;
+	i32 field_F8;
+	i32 field_FC;
 };
 
 class CDome : public CBody
