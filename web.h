@@ -7,6 +7,8 @@
 #include "export.h"
 #include "spidey.h"
 
+EXPORT extern i32 gFireDomes;
+EXPORT extern i32 gNumDomes;
 EXPORT extern CBody* WebList;
 
 class CImpactWeb : public CFlatBit{
@@ -31,8 +33,11 @@ class CDome : public CBody
 		EXPORT CDome(CPlayer*, i32);
 		EXPORT virtual ~CDome(void);
 
-		u8 padTop[0x10];
+		u8 padTop[0x4];
 
+		SHandle hPlayer;
+
+		i32 field_100;
 		i32 field_104;
 
 		// @FIXME types

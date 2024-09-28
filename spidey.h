@@ -178,7 +178,7 @@ class CPlayer : public CSuper
 		u8 field_EA4;
 		u8 padAFterEA4[(0xEA8-0xEA4)-0x1];
 
-		i16 field_EA8;
+		u16 field_EA8;
 		u8 padBottomPlayer[(0xEFC-0xEA8)-0x2];
 
 

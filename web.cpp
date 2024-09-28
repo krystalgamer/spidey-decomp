@@ -10,14 +10,13 @@
 
 #include "validate.h"
 
+i32 gFireDomes;
+i32 gNumDomes;
 CBody* WebList;
 
 EXPORT SLineInfo gLineInfo;
 EXPORT i32 gGetGroundRelated;
 EXPORT i32 gGetGroundDefaultValue;
-
-EXPORT i32 gDomeRelated;
-EXPORT i32 gDomeRelatedTwo;
 
 extern CBody* MiscList;
 
@@ -80,10 +79,36 @@ CDomePiece::~CDomePiece(void)
 	this->DeleteFrom(&MiscList);
 }
 
-// @SMALLTODO
-CDome::CDome(CPlayer*, i32)
+// @Ok
+CDome::CDome(
+		CPlayer* pSpidey,
+		i32 a3)
 {
-	printf("CDome::CDome(CPlayer*, i32)");
+	print_if_false(pSpidey != 0, "NULL pSpidey");
+	this->hPlayer = Mem_MakeHandle(pSpidey);
+
+	this->mPos = pSpidey->mPos;
+
+	this->mPos.vy += pSpidey->field_EA8 << 12;
+	this->field_104 = a3;
+
+	if ( a3 )
+	{
+		this->InitItem("firedome");
+		this->mModel = 1;
+		gFireDomes++;
+		this->mFlags |= 0x200;
+		this->field_2A = 0;
+	}
+	else
+	{
+		this->InitItem("webdome2");
+	}
+
+	this->mFlags |= 1;
+	this->AttachTo(&MiscList);
+	this->field_100 = 0;
+	++gNumDomes;
 }
 
 // @NotOk
@@ -99,8 +124,8 @@ CDome::~CDome(void)
 	delete reinterpret_cast<CClass*>(this->field_118);
 
 	if (this->field_104)
-		gDomeRelated--;
-	gDomeRelatedTwo--;
+		gFireDomes--;
+	gNumDomes--;
 }
 
 // @NotOk
@@ -165,6 +190,9 @@ void validate_CDomePiece(void){
 
 void validate_CDome(void){
 	VALIDATE_SIZE(CDome, 0x11C);
+
+	VALIDATE(CDome, hPlayer, 0xF8);
+	VALIDATE(CDome, field_100, 0x100);
 
 	VALIDATE(CDome, field_104, 0x104);
 	VALIDATE(CDome, field_108, 0x108);
