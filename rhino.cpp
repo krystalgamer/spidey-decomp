@@ -265,10 +265,9 @@ void CRhino::StuckInWall(void)
     printf("CRhino::StuckInWall(void)");
 }
 
-// @SMALLTODO
+// @Ok
 CRhinoNasalSteam::~CRhinoNasalSteam(void)
 {
-    printf("CRhinoNasalSteam::~CRhinoNasalSteam(void)");
 }
 
 // @SMALLTODO
