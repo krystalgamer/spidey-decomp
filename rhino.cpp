@@ -387,7 +387,7 @@ void CRhino::HitWall(void)
 CRhino::~CRhino(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
-	Panel_DestroyHealthbar();
+	Panel_DestroyHealthBar();
 
 	if (this->field_3E0)
 		delete reinterpret_cast<CItem*>(this->field_3E0);

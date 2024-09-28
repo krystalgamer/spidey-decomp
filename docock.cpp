@@ -45,7 +45,7 @@ INLINE i32* CDocOc::GetNewCommandBlock(u32 a1)
 CDocOc::~CDocOc(void)
 {
 	gBossRelated = 0;
-	Panel_DestroyHealthbar();
+	Panel_DestroyHealthBar();
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 	this->KillAllCommandBlocks();
 

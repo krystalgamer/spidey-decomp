@@ -78,12 +78,12 @@ i32 CPlayer::CalculateIntermediateTrailSteps(CVector *a2,CVector * a3,CVector * 
 	i32 len_a3 = a3->Length();
 	i32 len_a2 = a2->Length();
 
+	CVector v18;
 	switch (v8)
 	{
 		case 0:
 			return 0;
 		case 1:
-			CVector v18;
 
 			v18.vx = a3->vx + (a2->vx - a3->vx) / 2;
 			v18.vy = a3->vy + (a2->vy - a3->vy) / 2;

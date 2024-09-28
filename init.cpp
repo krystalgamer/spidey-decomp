@@ -243,8 +243,6 @@ void Init_Cleanup(i32 a1)
 	}
 
 
-
-
 	Trig_ClearTrigMenu();
 	Flash_Reset();
 	Panel_Init();

@@ -13,9 +13,12 @@
 class CVector  
 {
 public: 
+
 	i32 vx;
 	i32 vy;
 	i32 vz;
+
+	//EXPORT CVector(void);
 
 	EXPORT void KillSmall();
 	EXPORT CVector* operator-=(const CVector& other);

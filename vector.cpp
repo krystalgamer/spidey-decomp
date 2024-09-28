@@ -7,6 +7,15 @@
 #include "validate.h"
 #include "ps2funcs.h"
 
+/*
+CVector::CVector(void)
+{
+	this->vx = 0;
+	this->vy = 0;
+	this->vz = 0;
+}
+*/
+
 // @Ok
 // @Matching
 i32 CVector::operator!=(const CVector& other)

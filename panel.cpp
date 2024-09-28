@@ -2,9 +2,17 @@
 #include "spool.h"
 #include "validate.h"
 
+EXPORT CVector gCompassPosition = {0, 0, 0};
+
+EXPORT u8 gCompassStatus;
+
 EXPORT SAnimFrame* gAnimSp;
 EXPORT SAnimFrame* gAnimCompass;
 EXPORT SAnimFrame* gAnimWebcart;
+
+EXPORT i32 gHealthBarOne;
+EXPORT i32 gHealthBarTwo;
+
 
 // @MEDIUMTODO
 void DCDrawGouraudPoly(float,POLY_GT4 *,Texture *,i32)
@@ -42,16 +50,11 @@ void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)
     printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)");
 }
 
-// @SMALLTODO
-void Panel_CreateCompass(CVector *)
+// @Ok
+void Panel_CreateCompass(CVector * pVec)
 {
-    printf("Panel_CreateCompass(CVector *)");
-}
-
-// @SMALLTODO
-void Panel_DestroyHealthBar(void)
-{
-    printf("Panel_DestroyHealthBar(void)");
+	gCompassPosition = *pVec >> 12;
+	gCompassStatus = 1;
 }
 
 // @MEDIUMTODO
@@ -113,24 +116,20 @@ void Panel_UpdateTimer(void)
 
 // @SMALLTODO
 void Panel_CreateHealthBar(const CBody*, int)
-{}
+{
+}
 
-static int gHealthBarOne;
-static int gHealthBarTwo;
-// @NotOk
-// globals
-void Panel_DestroyHealthbar(void)
+// @Ok
+void Panel_DestroyHealthBar(void)
 {
 	gHealthBarOne = 0;
 	gHealthBarTwo = 0;
 }
 
-static unsigned char gPanelStatus;
-// @NotOk
-// Global
+// @Ok
 void Panel_DestroyCompass(void)
 {
-	gPanelStatus = 0;
+	gCompassStatus = 0;
 }
 
 // @Ok

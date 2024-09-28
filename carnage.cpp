@@ -23,7 +23,7 @@ CCarnageHitSpark::~CCarnageHitSpark(void)
 CCarnage::~CCarnage(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
-	Panel_DestroyHealthbar();
+	Panel_DestroyHealthBar();
 
 	if (this->field_32C)
 		delete reinterpret_cast<CItem*>(this->field_32C);

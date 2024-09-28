@@ -106,7 +106,7 @@ CMysterio::~CMysterio(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 	gBossRelated = 0;
-	Panel_DestroyHealthbar();
+	Panel_DestroyHealthBar();
 
 	if (this->field_3B8)
 		SFX_Stop(this->field_3B8);
