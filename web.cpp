@@ -1,8 +1,13 @@
 #include "web.h"
-#include "validate.h"
 #include "m3dinit.h"
 #include "m3dcolij.h"
 #include "m3dzone.h"
+#include "spidey.h"
+#include "baddy.h"
+#include "utils.h"
+#include "camera.h"
+
+#include "validate.h"
 
 CBody* WebList;
 
@@ -15,10 +20,28 @@ EXPORT i32 gDomeRelatedTwo;
 
 extern CBody* MiscList;
 
-// @SMALLTODO
-CDomeShockWave::CDomeShockWave(i32)
+// @Ok
+CDomeShockWave::CDomeShockWave(i32 a2)
 {
-	printf("CDomeShockWave::CDomeShockWave(i32)");
+	this->mType = 8;
+	this->mPos = MechList->mPos;
+	this->mPos.vy += 204800;
+
+	this->field_44.vx = 240;
+	this->field_44.vy = 240;
+	this->field_44.vz = 240;
+
+	this->field_90 = a2;
+
+	this->ResetHitFlags(BaddyList);
+	this->ResetHitFlags(EnvironmentalObjectList);
+
+	for (i32 i = 0; i < 16; i++)
+	{
+		this->field_50[i] = Rnd(4096);
+	}
+
+	CameraList->Shake(&this->mPos, EShake_0x1);
 }
 
 // @Ok
@@ -32,6 +55,7 @@ CDomePiece::CDomePiece(CVector*, i32, i32, i32)
 	printf("CDomePiece::CDomePiece(CVector*, i32, i32, i32)");
 }
 
+// @Ok
 CDomePiece::~CDomePiece(void)
 {
 	this->DeleteFrom(&MiscList);
@@ -102,7 +126,7 @@ void CSwinger::SetSpideyAnimFrame(int a2)
 
 
 // @Ok
-void __inline CDomeShockWave::ResetHitFlags(CBody* body)
+INLINE void CDomeShockWave::ResetHitFlags(CBody* body)
 {
 	for(CBody *cur = body; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
 		cur->mCBodyFlags &= 0xFEFF;
@@ -183,4 +207,8 @@ void validate_CTrapWebEffect(void)
 void validate_CDomeShockWave(void)
 {
 	VALIDATE_SIZE(CDomeShockWave, 0x98);
+
+	VALIDATE(CDomeShockWave, field_44, 0x44);
+	VALIDATE(CDomeShockWave, field_50, 0x50);
+	VALIDATE(CDomeShockWave, field_90, 0x90);
 }

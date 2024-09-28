@@ -36,6 +36,7 @@ enum ECameraMode {
 enum EShakeType
 {
 	EShake_0x0 = 0x0,
+	EShake_0x1 = 0x1,
 };
 
 class CCamera : public CBody {

@@ -121,7 +121,12 @@ class CDomeShockWave : public CNonRenderedBit
 		EXPORT virtual ~CDomeShockWave(void);
 
 		EXPORT void ResetHitFlags(CBody*);
-		unsigned char fullPad[0x5C];
+
+		u8 padTop[8];
+		CVector field_44;
+		i32 field_50[16];
+		i32 field_90;
+		u8 padBottom[0x4];
 };
 
 EXPORT int Web_GetGroundY(const CVector*);
