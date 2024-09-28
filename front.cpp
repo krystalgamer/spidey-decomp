@@ -185,7 +185,7 @@ void Front_SaveGameState(void)
 	v4.vy = 0;
 	v4.vz = 0;
 
-	char *pName = reinterpret_cast<char*>(Trig_GetPosition(&v4, RestartNode));
+	char *pName = &reinterpret_cast<char*>(Trig_GetPosition(&v4, RestartNode))[6];
 	char *pDestBuf = gRestartPointName;
 	i32 i = 0;
 
