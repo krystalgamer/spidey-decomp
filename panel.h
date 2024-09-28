@@ -17,7 +17,7 @@ struct POLY_GT4
 {
 };
 
-EXPORT void Panel_CreateHealthBar(const CBody*, int);
+EXPORT void Panel_CreateHealthBar(CBody*, i32);
 EXPORT void Panel_DestroyCompass(void);
 EXPORT int Panel_DrawTexturedPoly(SAnimFrame*, int);
 EXPORT int Panel_DrawTexturedPoly(Texture*, int);

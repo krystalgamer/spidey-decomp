@@ -2,6 +2,10 @@
 #include "spool.h"
 #include "validate.h"
 
+EXPORT i32 gHealthBarItemType;
+EXPORT i32 gHealthBarRelated;
+EXPORT i32 gHealthBarRelatedTwo;
+EXPORT Texture* gHealthBarTextures[5];
 EXPORT CVector gCompassPosition = {0, 0, 0};
 
 EXPORT u8 gCompassStatus;
@@ -10,8 +14,8 @@ EXPORT SAnimFrame* gAnimSp;
 EXPORT SAnimFrame* gAnimCompass;
 EXPORT SAnimFrame* gAnimWebcart;
 
-EXPORT i32 gHealthBarOne;
-EXPORT i32 gHealthBarTwo;
+EXPORT CBody* gHealthBarOne;
+EXPORT CBody* gHealthBarTwo;
 
 
 // @MEDIUMTODO
@@ -114,9 +118,61 @@ void Panel_UpdateTimer(void)
     printf("Panel_UpdateTimer(void)");
 }
 
-// @SMALLTODO
-void Panel_CreateHealthBar(const CBody*, int)
+// @Ok
+void Panel_CreateHealthBar(CBody* pBody, i32 a2)
 {
+	if ( a2 != 316 )
+	{
+		gHealthBarOne = pBody;
+		gHealthBarItemType = a2;
+		gHealthBarRelated = pBody->field_E2;
+	}
+	else
+	{
+		gHealthBarTwo = pBody;
+		gHealthBarRelatedTwo = pBody->field_E2;
+	}
+
+	switch ( a2 )
+	{
+		case 310:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("scorpion");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("jonah");
+			gHealthBarTextures[3] = Spool_FindTextureEntry("scorpion_wounded");
+			break;
+		case 307:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("rhino");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("rhino_wounded");
+			break;
+		case 311:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("mysterio");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("mysterio_wounded");
+			break;
+		case 313:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("venom");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("maryjane_01");
+			gHealthBarTextures[3] = Spool_FindTextureEntry("maryJane_bar");
+			gHealthBarTextures[4] = Spool_FindTextureEntry("venom_wounded");
+			break;
+		case 308:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("dococ");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("docOc_wounded");
+			break;
+		case 314:
+			gHealthBarTextures[0] = Spool_FindTextureEntry("carnage");
+			gHealthBarTextures[1] = Spool_FindTextureEntry("boss");
+			gHealthBarTextures[2] = Spool_FindTextureEntry("carnage_wounded");
+			break;
+		default:
+			gHealthBarOne = 0;
+			gHealthBarItemType = 0;
+			break;
+	}
 }
 
 // @Ok
