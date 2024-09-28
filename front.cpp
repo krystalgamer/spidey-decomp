@@ -8,7 +8,8 @@
 CMenu* pYesNoMenu;
 
 EXPORT i32 gFrontGauge;
-char gRestartPointName[50];
+
+SSaveGame gSaveGame;
 
 // @FIXME add content
 SLevel Levels[FRONT_NUM_LEVELS];
@@ -186,7 +187,7 @@ void Front_SaveGameState(void)
 	v4.vz = 0;
 
 	char *pName = &reinterpret_cast<char*>(Trig_GetPosition(&v4, RestartNode))[6];
-	char *pDestBuf = gRestartPointName;
+	char *pDestBuf = &gSaveGame.mRestartPointName[0];
 	i32 i = 0;
 
 	while (*pName)

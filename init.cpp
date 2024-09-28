@@ -237,7 +237,7 @@ void Init_Cleanup(i32 a1)
 		Spool_ClearAllPSXs();
 		Trig_DeleteTrigFile();
 
-		gRestartPointName[0] = 0;
+		gSaveGame.mRestartPointName[0] = 0;
 		Reloc_UnloadAll();
 		M3dZone_Init();
 	}

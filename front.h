@@ -6,8 +6,9 @@
 #include "export.h"
 #include "main.h"
 #include "pshell.h"
+#include "shell.h"
 
-EXPORT extern char gRestartPointName[50];
+EXPORT extern SSaveGame gSaveGame;
 
 struct SLevel
 {
@@ -111,9 +112,6 @@ public:
 
 void validate_SEntry(void);
 void validate_CMenu(void);
-
-// @FIXME
-struct SSaveGame;
 
 EXPORT void Front_GaugeOff(void);
 EXPORT void Front_ClearScreen(void);

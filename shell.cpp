@@ -1500,6 +1500,8 @@ void validate_SSaveGame(void)
 	VALIDATE(SSaveGame, mChecksum, 0x0);
 	VALIDATE(SSaveGame, field_4, 0x4);
 
+	VALIDATE(SSaveGame, mRestartPointName, 0xD);
+
 	VALIDATE(SSaveGame, field_3F, 0x3F);
 
 	VALIDATE(SSaveGame, mDifficulty, 0x54);

@@ -15,7 +15,8 @@ struct SSaveGame
 	// @FIXME: figure out proper size
 	char field_4[1];
 
-	u8 padAfter4[0x3F-0x4-1];
+	u8 padAfter4[0xD-0x4-1];
+	char mRestartPointName[50];
 
 	// @FIXME: figure proper size
 	char field_3F[1];
