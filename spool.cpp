@@ -141,7 +141,7 @@ i32 Spool_PSX(
 	if (IsEnviro)
 	{
 		print_if_false(EnviroList == 0, "EnviroList not NULL");
-		EnviroList = PSXRegion[openSpot].field_10;
+		EnviroList = PSXRegion[openSpot].pSuper;
 		gSpoolRegionRelatedOne = gSpoolRegionRelatedTwo;
 
 		gCommandPointRelated[0] = Spool_SkipPackets(PSXRegion[openSpot].pPSX);
@@ -462,9 +462,9 @@ void Spool_Init(void)
 		PSXRegion[i].Usable = 0;
 		PSXRegion[i].ppModels = 0;
 
-		delete[] PSXRegion[i].field_10;
+		delete[] PSXRegion[i].pSuper;
 
-		PSXRegion[i].field_10 = 0;
+		PSXRegion[i].pSuper = 0;
 		PSXRegion[i].pPSX = 0;
 		PSXRegion[i].pAnimFile = 0;
 		PSXRegion[i].pHierarchy = 0;
@@ -1075,7 +1075,7 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, Usable, 0xA);
 	VALIDATE(SPSXRegion, Protected, 0xB);
 	VALIDATE(SPSXRegion, pModelChecksums, 0xC);
-	VALIDATE(SPSXRegion, field_10, 0x10);
+	VALIDATE(SPSXRegion, pSuper, 0x10);
 	VALIDATE(SPSXRegion, ppModels, 0x14);
 	VALIDATE(SPSXRegion, pPSX, 0x18);
 	VALIDATE(SPSXRegion, pAnimFile, 0x1C);

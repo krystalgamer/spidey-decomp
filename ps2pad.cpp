@@ -57,10 +57,47 @@ void DCPad_Vibrate(i32,signed char,u8,u8)
     printf("DCPad_Vibrate(i32,signed char,u8,u8)");
 }
 
-// @SMALLTODO
-void Pad_Button(SButton *,i32)
+EXPORT i32 Pad_IdleTime;
+
+// @Ok
+// @Matching
+void Pad_Button(SButton* pBut, i32 state)
 {
-    printf("Pad_Button(SButton *,i32)");
+	pBut->TriggeredTime++;
+	if (!pBut->Pressed)
+	{
+		if (state)
+		{
+			pBut->Triggered = 1;
+			pBut->field_2 = pBut->TriggeredTime < 10;
+			pBut->TriggeredTime = 0;
+		}
+	}
+	else
+	{
+		pBut->field_2 = 0;
+	}
+
+	if ( state )
+	{
+		Pad_IdleTime = 0;
+		pBut->Pressed = 1;
+	}
+	else
+	{
+		pBut->Pressed = 0;
+	}
+
+	if ( pBut->Pressed )
+	{
+		pBut->PressedTime++;
+		pBut->ReleasedTime = 0;
+	}
+	else
+	{
+		pBut->PressedTime = 0;
+		pBut->ReleasedTime++;
+	}
 }
 
 // @SMALLTODO
@@ -105,4 +142,18 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_144, 0x144);
 	VALIDATE(SControl, field_148, 0x148);
 	VALIDATE(SControl, field_14C, 0x14C);
+}
+
+void validate_SButton(void)
+{
+	VALIDATE_SIZE(SButton, 0x10);
+
+	VALIDATE(SButton, Pressed, 0x0);
+	VALIDATE(SButton, Triggered, 0x1);
+	VALIDATE(SButton, field_2, 0x2);
+
+
+	VALIDATE(SButton, PressedTime, 0x4);
+	VALIDATE(SButton, ReleasedTime, 0x8);
+	VALIDATE(SButton, TriggeredTime, 0xC);
 }

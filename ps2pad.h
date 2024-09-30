@@ -17,6 +17,13 @@ struct SControl
 
 struct SButton
 {
+	u8 Pressed;
+	u8 Triggered;
+	u8 field_2;
+
+	i32 PressedTime;
+	i32 ReleasedTime;
+	i32 TriggeredTime;
 };
 
 EXPORT void Pad_SetDigitalMapping(SControl*, i32, i32, i32, i32);
@@ -36,6 +43,7 @@ EXPORT void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32);
 EXPORT void Pad_Update(void);
 
 void validate_SControl(void);
+void validate_SButton(void);
 EXPORT extern SControl gSControl;
 
 #endif

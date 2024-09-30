@@ -81,7 +81,7 @@ EXPORT void PCGfx_SetSkyColor(u32);
 EXPORT void PCGfx_UseTexture(i32,DCGfx_BlendingMode);
 EXPORT void PCPanel_DrawTexturedPoly(float,Texture const *,i32,i32,i32,i32,u8);
 EXPORT void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,float);
-EXPORT void createSuperItem(CItem *);
+EXPORT CSuper* createSuperItem(CItem *);
 EXPORT void setupFog(void);
 EXPORT void submitPoly(_DXVERT **,i32);
 

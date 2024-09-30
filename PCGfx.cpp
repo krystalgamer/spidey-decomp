@@ -7,6 +7,7 @@
 #include "mess.h"
 #include "ps2m3d.h"
 #include "pshell.h"
+#include "spool.h"
 
 #include <cmath>
 #include <cstring>
@@ -82,7 +83,70 @@ void PCGfx_ClipTriToNearPlane(_DXVERT **,_DXVERT *const *)
 // @MEDIUMTODO
 void PCGfx_DoModelPreview(void)
 {
+	i32 totalSomething = 0;
+	CSuper* SuperItem = 0;
+	CSuper* SuperItemNext = 0;
+
 	PShell_Initialise();
+	i32 freeIndex = 0;
+	for (; freeIndex < MAXPSX; freeIndex)
+	{
+		if (!PSXRegion[freeIndex].Filename[0])
+			break;
+	}
+
+	i32 v24[40];
+
+	for (i32 j = 0; j < freeIndex; j++)
+	{
+		i32 v8 = PSXRegion[j].pPSX[2];
+		v24[j] = v8;
+		totalSomething += v8;
+	}
+
+	if (totalSomething && freeIndex)
+	{
+		PCGfx_SetSkyColor(0xFF800080);
+
+		i32 v9;
+		for (v9 = 0; v9 < freeIndex; v9++)
+		{
+			if (v24[v9] > 0)
+			{
+				if (!PSXRegion[v9].IsSuper)
+				{
+					SuperItem = reinterpret_cast<CSuper*>(PSXRegion[v9].pSuper);
+					SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->field_20);
+					SuperItem->field_20 = 0;
+				}
+
+				SuperItem = createSuperItem(PSXRegion[v9].pSuper);
+			}
+		}
+
+		gMikeCamera[0].Position.vx = SuperItem->mPos.vx >> 12;
+		gMikeCamera[0].Position.vy = SuperItem->mPos.vy >> 12;
+		gMikeCamera[0].Position.vz = (SuperItem->mPos.vz >> 12) - 1;
+
+		gMikeCamera[0].Angles.vx = 0;
+		gMikeCamera[0].Angles.vy = 0;
+		gMikeCamera[0].Angles.vz = 0;
+		gMikeCamera[0].Style = 0;
+
+		i32 stop = 0;
+		while (!stop)
+		{
+		}
+
+		if (PSXRegion[v9].IsSuper)
+		{
+			delete SuperItem;
+		}
+		else
+		{
+			SuperItem->field_20 = SuperItemNext;
+		}
+	}
 }
 
 // @MEDIUMTODO
@@ -602,9 +666,10 @@ void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,float)
 }
 
 // @SMALLTODO
-void createSuperItem(CItem *)
+CSuper* createSuperItem(CItem *)
 {
     printf("createSuperItem(CItem *)");
+	return (CSuper*)0x30092024;
 }
 
 // @SMALLTODO
