@@ -8,6 +8,8 @@
 #include "ps2m3d.h"
 #include "pshell.h"
 #include "spool.h"
+#include "ps2pad.h"
+#include "PCInput.h"
 
 #include <cmath>
 #include <cstring>
@@ -80,16 +82,19 @@ void PCGfx_ClipTriToNearPlane(_DXVERT **,_DXVERT *const *)
     printf("PCGfx_ClipTriToNearPlane(_DXVERT **,_DXVERT *const *)");
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Validate
 void PCGfx_DoModelPreview(void)
 {
 	i32 totalSomething = 0;
 	CSuper* SuperItem = 0;
 	CSuper* SuperItemNext = 0;
+	u8 doModelSwap = 0;
+	DWORD modelTickUpdate = 0;
 
 	PShell_Initialise();
 	i32 freeIndex = 0;
-	for (; freeIndex < MAXPSX; freeIndex)
+	for (; freeIndex < MAXPSX; freeIndex++)
 	{
 		if (!PSXRegion[freeIndex].Filename[0])
 			break;
@@ -107,6 +112,7 @@ void PCGfx_DoModelPreview(void)
 	if (totalSomething && freeIndex)
 	{
 		PCGfx_SetSkyColor(0xFF800080);
+		i32 idx = 0;
 
 		i32 v9;
 		for (v9 = 0; v9 < freeIndex; v9++)
@@ -136,6 +142,132 @@ void PCGfx_DoModelPreview(void)
 		i32 stop = 0;
 		while (!stop)
 		{
+			Pad_Update();
+			if (gSControl[0].Left.Pressed)
+			{
+				gMikeCamera[0].Angles.vy -= 16;
+				gMikeCamera[0].Angles.vy &= 0xFFF;
+			}
+			else if (gSControl[0].Right.Pressed)
+			{
+				gMikeCamera[0].Angles.vy -= 16;
+				gMikeCamera[0].Angles.vy &= 0xFFF;
+			}
+
+			if (gSControl[0].Up.Pressed)
+			{
+				if (!PCINPUT_IsKeyPressed(0x42, 0) && !PCINPUT_IsKeyPressed(0x36, 0))
+				{
+					i32 v14 = gMikeCamera[0].Angles.vy & 0xFFF;
+					gMikeCamera[0].Position.vx += (32 * rcossin_tbl[v14].sin) >> 12;
+					gMikeCamera[0].Position.vz += (32 * rcossin_tbl[v14].cos) >> 12;
+					gMikeCamera[0].Position.vy -= (32 * rcossin_tbl[gMikeCamera[0].Angles.vx & 0xFFF].sin) >> 12;
+				}
+				else
+				{
+					gMikeCamera[0].Angles.vx += 16;
+					gMikeCamera[0].Angles.vx &= 0xFFF;
+				}
+			}
+			else if (gSControl[0].Down.Pressed)
+			{
+				if (!PCINPUT_IsKeyPressed(0x2Au, 0) && !PCINPUT_IsKeyPressed(0x36u, 0))
+				{
+					 gMikeCamera[0].Angles.vx = (gMikeCamera[0].Angles.vx - 16) & 0xFFF;
+				}
+				else
+				{
+					i32 v15 = gMikeCamera[0].Angles.vy & 0xFFF;
+					gMikeCamera[0].Position.vx -= (32 * rcossin_tbl[v15].sin) >> 12;
+					gMikeCamera[0].Position.vy += (32 * rcossin_tbl[gMikeCamera[0].Angles.vx & 0xFFF].sin) >> 12;
+					gMikeCamera[0].Position.vz -= (32 * rcossin_tbl[v15].cos) >> 12;
+				}
+			}
+
+			if (GetTickCount() - modelTickUpdate > 250)
+			{
+				if (gSControl[0].Square.Pressed)
+				{
+					u8 IsSuper = PSXRegion[v9].IsSuper;
+					if (idx && !IsSuper)
+					{
+						idx--;
+					}
+					else
+					{
+						do
+						{
+							if (--v9 < 0)
+								v9 = freeIndex - 1;
+						}
+						while(v24[v9] <= 0);
+
+						if (IsSuper)
+							idx = 0;
+						else
+							idx = v24[v9] - 1;
+					}
+
+					doModelSwap = 1;
+				}
+				else if (gSControl[0].Circle.Pressed)
+				{
+					idx = (idx + 1) % v24[v9];
+					if (!idx || PSXRegion[v9].IsSuper)
+					{
+						do
+						{
+							v9 = (v9 + 1) % freeIndex;
+						}
+						while (v24[v9] <= 0);
+					}
+					doModelSwap = 1;
+				}
+			}
+
+			
+			if (PCINPUT_IsKeyPressed(0x10, 0))
+			{
+				stop = 1;
+			}
+			else
+			{
+				if (doModelSwap)
+				{
+					if (PSXRegion[SuperItem->mRegion].IsSuper)
+					{
+						delete SuperItem;
+					}
+					else
+					{
+						SuperItem->field_20 = SuperItemNext;
+					}
+
+					if (PSXRegion[v9].IsSuper)
+					{
+						SuperItem = createSuperItem(&PSXRegion[v9].pSuper[idx]);
+					}
+					else
+					{
+						SuperItem = reinterpret_cast<CSuper*>(&PSXRegion[v9].pSuper[idx]);
+						SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->field_20);
+						SuperItem->field_20 = 0;
+					}
+
+					gMikeCamera[0].Position.vx = SuperItem->mPos.vx >> 12;
+					gMikeCamera[0].Position.vy = SuperItem->mPos.vy >> 12;
+					gMikeCamera[0].Position.vz = (SuperItem->mPos.vz >> 12) - 1;
+
+					gMikeCamera[0].Angles.vx = 0;
+					gMikeCamera[0].Angles.vy = 0;
+					gMikeCamera[0].Angles.vz = 0;
+
+					modelTickUpdate = GetTickCount();
+					doModelSwap = 0;
+				}
+
+				PCGfx_RenderModelPreview(SuperItem, PSXRegion[v9].Filename, idx);
+			}
 		}
 
 		if (PSXRegion[v9].IsSuper)
