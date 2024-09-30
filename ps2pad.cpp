@@ -1,14 +1,56 @@
 #include "ps2pad.h"
+#include "PCInput.h"
+#include "PCShell.h"
+
 #include "validate.h"
 
-SControl gSControl;
+SControl gSControl[NUM_CONTROLLERS];
+EXPORT i32 Pad_IdleTime;
 
 static int gPadActuator[255];
 
-// @SMALLTODO
-void Pad_Update(void)
+// @Ok
+// @Matching
+i32 Pad_Update(void)
 {
-	printf("void Pad_Update(void)");
+	Pad_IdleTime++;
+	u32 v3;
+	u32 v4;
+	PCINPUT_GetMappedStates(&v3, &v4);
+
+	if (PCSHELL_UpdateMouse())
+		Pad_IdleTime = 0;
+
+	for (i32 i = 0; i < NUM_CONTROLLERS; i++)
+	{
+		gSControl[i].field_16C = 65;
+		Pad_Button(&gSControl[i].Triangle, v3 & 0x80);
+		Pad_Button(&gSControl[i].Square, v3 & 0x40);
+		Pad_Button(&gSControl[i].Circle, v3 & 0x20);
+		Pad_Button(&gSControl[i].X, v3 & 0x10);
+		Pad_Button(&gSControl[i].LeftOne, v3 & 0x100);
+		Pad_Button(&gSControl[i].LeftTwo, 0);
+		Pad_Button(&gSControl[i].RightOne, v3 & 0x200);
+		Pad_Button(&gSControl[i].RightTwo, v3 & 0x400);
+		Pad_Button(&gSControl[i].Left, v3 & 4);
+		Pad_Button(&gSControl[i].Right, v3 & 8);
+		Pad_Button(&gSControl[i].Up, v3 & 1);
+		Pad_Button(&gSControl[i].Down, v3 & 2);
+		Pad_Button(&gSControl[i].AnalogueLeft, 0);
+		Pad_Button(&gSControl[i].AnalogueRight, 0);
+		Pad_Button(&gSControl[i].Start, v3 & 0x1000);
+		Pad_Button(&gSControl[i].Select, 0);
+		if ( !i )
+		{
+			Pad_Button(&gSControl[0].Crouch, v3 & 0x10);
+			Pad_Button(&gSControl[0].Jump, v3 & 0x80);
+			Pad_Button(&gSControl[0].SmartBomb, v3 & 0x40);
+			Pad_Button(&gSControl[0].SelectWeapon, v3 & 0x20);
+		}
+	}
+
+	DCPad_ExpireVibrations();
+	return 0;
 }
 
 // @NotOk
@@ -57,7 +99,6 @@ void DCPad_Vibrate(i32,signed char,u8,u8)
     printf("DCPad_Vibrate(i32,signed char,u8,u8)");
 }
 
-EXPORT i32 Pad_IdleTime;
 
 // @Ok
 // @Matching
@@ -138,10 +179,45 @@ void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32)
 
 void validate_SControl(void)
 {
+	VALIDATE_SIZE(SControl, 0x18C);
+
+	VALIDATE(SControl, Triangle, 0x0);
+	VALIDATE(SControl, Square, 0x10);
+	VALIDATE(SControl, Circle, 0x20);
+	VALIDATE(SControl, X, 0x30);
+
+	VALIDATE(SControl, LeftOne, 0x40);
+	VALIDATE(SControl, LeftTwo, 0x50);
+
+	VALIDATE(SControl, RightOne, 0x60);
+	VALIDATE(SControl, RightTwo, 0x70);
+
+	VALIDATE(SControl, Left, 0x80);
+	VALIDATE(SControl, Right, 0x90);
+	VALIDATE(SControl, Up, 0xA0);
+	VALIDATE(SControl, Down, 0xB0);
+
+	VALIDATE(SControl, AnalogueLeft, 0xC0);
+	VALIDATE(SControl, AnalogueRight, 0xD0);
+
+	VALIDATE(SControl, Start, 0xE0);
+	VALIDATE(SControl, Select, 0xF0);
+
+	VALIDATE(SControl, Crouch, 0x100);
+	VALIDATE(SControl, Jump, 0x110);
+	VALIDATE(SControl, SmartBomb, 0x120);
+	VALIDATE(SControl, SelectWeapon, 0x130);
+
+	VALIDATE(SControl, field_140, 0x140);
+	VALIDATE(SControl, field_144, 0x144);
+	VALIDATE(SControl, field_148, 0x148);
+
 	VALIDATE(SControl, field_140, 0x140);
 	VALIDATE(SControl, field_144, 0x144);
 	VALIDATE(SControl, field_148, 0x148);
 	VALIDATE(SControl, field_14C, 0x14C);
+
+	VALIDATE(SControl, field_16C, 0x16C);
 }
 
 void validate_SButton(void)

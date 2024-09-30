@@ -343,9 +343,9 @@ void Shell_LegalScreen(void)
 		Front_ClearScreen();
 
 		DrawSync();
-		Pad_ClearTriggers(&gSControl);
+		Pad_ClearTriggers(gSControl);
 		Pad_Update();
-		Pad_ClearTriggers(&gSControl);
+		Pad_ClearTriggers(gSControl);
 
 		Sprite2* v0 = new Sprite2("LegalPC.bmp", 1, 0, 0, 3);
 		u32 v3 = Vblanks + 180;
@@ -375,7 +375,7 @@ void Shell_LegalScreen(void)
 		Front_ClearScreen();
 
 		DrawSync();
-		Pad_ClearTriggers(&gSControl);
+		Pad_ClearTriggers(gSControl);
 	}
 }
 

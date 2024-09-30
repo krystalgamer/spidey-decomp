@@ -5,16 +5,6 @@
 
 #include "export.h"
 
-struct SControl
-{
-	u8 pad[0x140];
-
-	i32 field_140;
-	i32 field_144;
-	i32 field_148;
-	i32 field_14C;
-};
-
 struct SButton
 {
 	u8 Pressed;
@@ -24,6 +14,43 @@ struct SButton
 	i32 PressedTime;
 	i32 ReleasedTime;
 	i32 TriggeredTime;
+};
+
+struct SControl
+{
+	SButton Triangle;
+	SButton Square;
+	SButton Circle;
+	SButton X;
+	SButton LeftOne;
+	SButton LeftTwo;
+	SButton RightOne;
+	SButton RightTwo;
+	SButton Left;
+	SButton Right;
+	SButton Up;
+	SButton Down;
+
+	SButton AnalogueLeft;
+	SButton AnalogueRight;
+
+	SButton Start;
+	SButton Select;
+
+	SButton Crouch;
+	SButton Jump;
+	SButton SmartBomb;
+	SButton SelectWeapon;
+
+	i32 field_140;
+	i32 field_144;
+	i32 field_148;
+	i32 field_14C;
+	u8 padAfter14C[0x16C-0x14C-4];
+
+	i32 field_16C;
+
+	u8 padBottom[0x18C-0x16C-4];
 };
 
 EXPORT void Pad_SetDigitalMapping(SControl*, i32, i32, i32, i32);
@@ -40,10 +67,12 @@ EXPORT void Pad_ClearAllOne(i32);
 EXPORT void Pad_ClearTriggers(SControl *);
 EXPORT void Pad_InitAtStart(void);
 EXPORT void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32);
-EXPORT void Pad_Update(void);
+EXPORT i32 Pad_Update(void);
 
 void validate_SControl(void);
 void validate_SButton(void);
-EXPORT extern SControl gSControl;
+
+static const i32 NUM_CONTROLLERS = 1;
+EXPORT extern SControl gSControl[NUM_CONTROLLERS];
 
 #endif

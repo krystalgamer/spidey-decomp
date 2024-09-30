@@ -362,11 +362,11 @@ char Font::getCharIndex(char a2)
 
 		if (a2 == 165)
 		{
-			if (gSControl.field_14C <= 512)
+			if (gSControl[0].field_14C <= 512)
 			{
-				if (gSControl.field_14C != 512)
+				if (gSControl[0].field_14C != 512)
 				{
-					switch (gSControl.field_14C)
+					switch (gSControl[0].field_14C)
 					{
 						case 2:
 							return 1;
@@ -379,7 +379,7 @@ char Font::getCharIndex(char a2)
 					return 24;
 				}
 			}
-			else if (gSControl.field_14C == 1024)
+			else if (gSControl[0].field_14C == 1024)
 			{
 				return 23;
 			}
@@ -387,11 +387,11 @@ char Font::getCharIndex(char a2)
 
 		if (a2 == 167)
 		{
-			if (gSControl.field_148 <= 512)
+			if (gSControl[0].field_148 <= 512)
 			{
-				if (gSControl.field_148 != 512)
+				if (gSControl[0].field_148 != 512)
 				{
-					switch (gSControl.field_148)
+					switch (gSControl[0].field_148)
 					{
 						case 2:
 							return 1;
@@ -404,7 +404,7 @@ char Font::getCharIndex(char a2)
 					return 24;
 				}
 			}
-			else if (gSControl.field_148 == 1024)
+			else if (gSControl[0].field_148 == 1024)
 			{
 				return 23;
 			}
@@ -412,11 +412,11 @@ char Font::getCharIndex(char a2)
 
 		if (a2 == 166)
 		{
-			if (gSControl.field_144 <= 512)
+			if (gSControl[0].field_144 <= 512)
 			{
-				if (gSControl.field_144 != 512)
+				if (gSControl[0].field_144 != 512)
 				{
-					switch (gSControl.field_144)
+					switch (gSControl[0].field_144)
 					{
 						case 2:
 							return 1;
@@ -429,7 +429,7 @@ char Font::getCharIndex(char a2)
 					return 24;
 				}
 			}
-			else if (gSControl.field_144 == 1024)
+			else if (gSControl[0].field_144 == 1024)
 			{
 				return 23;
 			}
@@ -440,11 +440,11 @@ char Font::getCharIndex(char a2)
 			if (!DifficultyLevel)
 				return 0;
 
-			if (gSControl.field_140 <= 512)
+			if (gSControl[0].field_140 <= 512)
 			{
-				if (gSControl.field_140 != 512)
+				if (gSControl[0].field_140 != 512)
 				{
-					switch (gSControl.field_140)
+					switch (gSControl[0].field_140)
 					{
 						case 2:
 							return 1;
@@ -457,7 +457,7 @@ char Font::getCharIndex(char a2)
 					return 24;
 				}
 			}
-			else if (gSControl.field_140 == 1024)
+			else if (gSControl[0].field_140 == 1024)
 			{
 				return 23;
 			}
