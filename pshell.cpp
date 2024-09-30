@@ -1,11 +1,19 @@
 #include "pshell.h"
 #include "mess.h"
 #include "utils.h"
+#include "spool.h"
+#include "ps2lowsfx.h"
+#include "shell.h"
+#include "PCShell.h"
 
 #include <cstring>
 
 #include "validate.h"
 
+EXPORT u16 OTPushback[3];
+EXPORT u8 gPShellCleanup = 1;
+EXPORT i32 gShellFromGame;
+EXPORT i32 gShellInitialized;
 EXPORT i32 JoelJewCheatCode;
 
 SCheat gCheats[NUM_CHEATS] =
@@ -107,6 +115,36 @@ SCheat gCheats[NUM_CHEATS] =
 			"Toon Spidey",
 	},
 };
+
+// @Ok
+// @Matching
+void PShell_Initialise(void)
+{
+	if (gShellFromGame)
+		print_if_false(gShellInitialized == 0, "Shell initialised twice, fromgame");
+	else
+		print_if_false(gShellInitialized == 0, "Shell initialised twice, not fromgame");
+
+	gPShellCleanup = 0;
+
+	Spool_PSX("shell", 0);
+	Spool_PSX("icons", 0);
+	Spool_PSX("vmu", 0);
+	Spool_PSX("control", 0);
+	Mess_LoadFont("font_big.fnt", -1, -1, -1);
+	Mess_LoadFont("sp_fnt02.fnt", -1, -1, -1);
+	Mess_LoadFont("sp_fnt03.fnt", -1, -1, -1);
+	SFX_SpoolInLevelSFX("menu");
+	PShell_NormalFont();
+	Spool_AnimAccess("menubg", &gBackgroundAnimFrame);
+
+	OTPushback[0] = 1;
+	OTPushback[1] = -60;
+
+	PShell_MaybeUnlockStuff();
+	PCSHELL_Initialize();
+	gShellInitialized = 1;
+}
 
 // @MEDIUMTODO
 i32 ActivateCheat(i32)

@@ -82,7 +82,7 @@ void PCGfx_ClipTriToNearPlane(_DXVERT **,_DXVERT *const *)
 // @MEDIUMTODO
 void PCGfx_DoModelPreview(void)
 {
-    printf("PCGfx_DoModelPreview(void)");
+	PShell_Initialise();
 }
 
 // @MEDIUMTODO

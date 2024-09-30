@@ -294,6 +294,8 @@ EXPORT void Shell_StoryBoards(void);
 EXPORT void Shell_TitleScreen(void);
 EXPORT void Shell_VerySmallFont(void);
 
+EXPORT extern SAnimFrame* gBackgroundAnimFrame;
+
 void validate_CRudeWordHitterSpidey(void);
 void validate_CDummy(void);
 void validate_CWobblyGlow(void);

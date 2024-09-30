@@ -45,6 +45,7 @@ EXPORT void PShell_NormalFont(void);
 EXPORT void PShell_DefaultText(void);
 EXPORT void PShell_SmallFont(void);
 EXPORT void PShell_InstructionalText(void);
+EXPORT void PShell_Initialise(void);
 
 EXPORT i32 ActivateCheat(i32);
 EXPORT void DisplayScore(i32,i32,long,i32);

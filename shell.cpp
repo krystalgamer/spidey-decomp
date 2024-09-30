@@ -36,7 +36,7 @@ EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 EXPORT i32 gShellMysterioRelated;
 extern SPSXRegion PSXRegion[];
 
-EXPORT SAnimFrame* gBackgroundAnimFrame;
+SAnimFrame* gBackgroundAnimFrame;
 
 const i32 NUM_SAVE_GAME_SLOTS = 8;
 EXPORT SSaveGame gSaveGameSlots[NUM_SAVE_GAME_SLOTS];
