@@ -3,6 +3,15 @@
 
 int FAIL_VALIDATION = 0;
 
+void validate_i32(int cur, int expected, const char *name, int line)
+{
+	if (expected != cur)
+	{
+		FAIL_VALIDATION = 1;
+		printf("[!] Expected %d but got %d: %s:%d\n", expected, cur, name, line);
+	}
+}
+
 void validate_class(int cur, int expected, const char *cls, const char *member){
 
 	if (expected != cur){

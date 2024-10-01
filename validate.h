@@ -7,6 +7,9 @@
 #include <cstdio>
 #include "my_types.h"
 
+void validate_i32(int cur, int expected, const char *name, int line);
+#define VALIDATE_I32(x,y) validate_i32(x, y, __FILE__, __LINE__);
+
 void validate_class(int cur, int expected, const char *cls, const char *member);
 #define VALIDATE(cls, member, expected) validate_class(offsetof(cls, member), expected, #cls, #member);
 

@@ -133,5 +133,6 @@ void validate_PVRHeader(void);
 void validate_ClutPC(void);
 void validate_SPCTexPixelFormat(void);
 void validate_SPCTexContainer(void);
+void validate_DDPIXELFORMAT(void);
 
 #endif

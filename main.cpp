@@ -452,6 +452,7 @@ i32 validate(void)
 	validate_SCalcBuffer();
 	validate_SCheat();
 	validate_SButton();
+	validate_DDPIXELFORMAT();
 
 	puts("[*] Validation done!");
 
