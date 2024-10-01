@@ -7,6 +7,7 @@
 #include "spool.h"
 #include "exp.h"
 
+i32 gRunCinemaRelated;
 i32 gLevelStatus;
 EXPORT void* gTrigFile;
 EXPORT i16 **gTrigNodes;

@@ -18,6 +18,7 @@ extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
 
+volatile i32 gVlanksRelated;
 i32 DifficultyLevel;
 volatile u32 Vblanks;
 

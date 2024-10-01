@@ -7,6 +7,7 @@
 #include "vector.h"
 #include "ob.h"
 
+EXPORT extern volatile i32 gVlanksRelated;
 EXPORT extern i32 DifficultyLevel;
 EXPORT extern volatile u32 Vblanks;
 

@@ -9,6 +9,7 @@
 EXPORT extern i32 RestartNode;
 EXPORT extern i32 gReStartDeathRelated;
 EXPORT extern i32 gLevelStatus;
+EXPORT extern i32 gRunCinemaRelated;
 
 class CBody;
 

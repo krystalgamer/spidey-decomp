@@ -1,6 +1,7 @@
 #include "non_win32.h"
 
-// #define BOOT_GAME
+#define BOOT_GAME
+#define MODEL_PREVIEW
 
 #include "main.h"
 #include "ob.h"
@@ -82,10 +83,15 @@
 #include "db.h"
 #include "ps2m3d.h"
 #include "PCGfx.h"
+#include "ps2gamefmv.h"
+#include "init.h"
+#include "utils.h"
 
 extern int FAIL_VALIDATION;
 
 const i32 POLYBUFFERSIZE = 0x17000;
+
+EXPORT i32 gMainStuff[0x1000];
 
 // @Ok
 // @Matching
@@ -98,16 +104,39 @@ void CalcPolyBufferEnd(void)
 // @MEDIUMTODO
 void SpideyMain(void)
 {
-	while(1)
+	DXERR_printf("xxx main\n");
+	for (i32 i = 0; i < 0x1000; i++)
 	{
-		gWideScreen = 16;
-		DXPOLY_SetBackgroundColor(0xFF800080);
-		gWideScreen = 16;
-		PCGfx_BeginScene(1, -1);
-		gWideScreen = 16;
-		M3d_RenderCleanup();
-		gWideScreen = 16;
-		PCGfx_EndScene(1);
+		gMainStuff[i] = 0x4B415453;
+	}
+
+	gMainStuff[0] = 0x544C4148;
+
+	Init_AtStart(1);
+	PCTex_LoadPcIcons();
+	GameFMV_PlayMovie(0, 1, 1, 2.5f);
+	GameFMV_PlayMovie(1, 1, 1, 1.0f);
+	GameFMV_PlayMovie(2, 1, 1, 1.0f);
+	GameFMV_PlayMovie(3, 1, 1, 1.0f);
+
+	Init_Cleanup(0);
+	gRunCinemaRelated = 0;
+
+	while (gVlanksRelated)
+		;
+
+#ifndef MODEL_PREVIEW
+	if (gRenderTest & 8)
+#else
+	if(1)
+#endif
+	{
+		Spool_ClearAllPSXs();
+		PCGfx_DoModelPreview();
+		Init_Cleanup(0);
+	}
+	else
+	{
 	}
 }
 
