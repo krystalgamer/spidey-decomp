@@ -3,6 +3,7 @@
 #include "pkr.h"
 #include "SpideyDX.h"
 #include "validate.h"
+#include "my_debug.h"
 
 #include <cstring>
 
@@ -221,7 +222,7 @@ INLINE i32 nextFile(void)
 			i < MAX_OPEN_FILE_COUNT;
 			i++)
 	{
-		if (gOpenFiles[i].mBuf)
+		if (gOpenFiles[i].mBuf == 0)
 			return i;
 	}
 

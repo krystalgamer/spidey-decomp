@@ -5,6 +5,7 @@
 #include "ps2redbook.h"
 #include "ps2gamefmv.h"
 #include "mem.h"
+#include "my_debug.h"
 
 #include "pcdcFile.h"
 

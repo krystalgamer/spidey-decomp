@@ -336,6 +336,10 @@ SOURCE=.\music.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\my_debug.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mysterio.cpp
 # End Source File
 # Begin Source File

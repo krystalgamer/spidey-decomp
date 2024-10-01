@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "PCTex.h"
 #include "dcfileio.h"
+#include "my_debug.h"
 
 #include <cstring>
 
@@ -629,6 +630,7 @@ Font* FontManager::LoadFont(const char* pName)
 		return FontManager::GetFont(pName);
 
 	i32 v2 = FileIO_Open(pName);
+
 	print_if_false(v2 > 40, "unlikely font file size");
 	print_if_false(v2 != 0, "File not found");
 

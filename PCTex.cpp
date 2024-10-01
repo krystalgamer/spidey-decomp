@@ -152,7 +152,6 @@ void PCTEX_Init(void)
 					&& rLeadingBitCount == gPcTexContainer[containerIndex].field_1C
 					&& gLeadingBitCount == gPcTexContainer[containerIndex].field_20)
 				{
-					DXERR_printf("GOT HERE");
 					gPcTexContainer[containerIndex].field_24 |= 4;
 					memcpy(
 							&gPcTexContainer[containerIndex].field_28,
