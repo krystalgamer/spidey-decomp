@@ -12,7 +12,10 @@
 #include <cstring>
 #include <cstdlib>
 
-EXPORT u8 gSpoolLogFailedTextureAccess;
+// @FIXME
+// should be 0
+EXPORT u8 gSpoolLogFailedTextureAccess = 1;
+
 EXPORT i32 gRegionReloadRelated = -1;
 EXPORT u8 gReloading = 1;
 

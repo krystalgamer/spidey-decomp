@@ -100,16 +100,22 @@ void PCGfx_DoModelPreview(void)
 			break;
 	}
 
+
 	i32 v24[40];
 
 	for (i32 j = 0; j < freeIndex; j++)
 	{
+		// @FIXME
+		// remove
+		break;
+
 		i32 v8 = PSXRegion[j].pPSX[2];
 		v24[j] = v8;
 		totalSomething += v8;
 	}
 
-	if (totalSomething && freeIndex)
+	//if (totalSomething && freeIndex)
+	if (true)
 	{
 		PCGfx_SetSkyColor(0xFF800080);
 		i32 idx = 0;
@@ -117,6 +123,8 @@ void PCGfx_DoModelPreview(void)
 		i32 v9;
 		for (v9 = 0; v9 < freeIndex; v9++)
 		{
+			//@FIXME
+			break;
 			if (v24[v9] > 0)
 			{
 				if (!PSXRegion[v9].IsSuper)
@@ -130,9 +138,12 @@ void PCGfx_DoModelPreview(void)
 			}
 		}
 
+		//@FIXME
+		/*
 		gMikeCamera[0].Position.vx = SuperItem->mPos.vx >> 12;
 		gMikeCamera[0].Position.vy = SuperItem->mPos.vy >> 12;
 		gMikeCamera[0].Position.vz = (SuperItem->mPos.vz >> 12) - 1;
+		*/
 
 		gMikeCamera[0].Angles.vx = 0;
 		gMikeCamera[0].Angles.vy = 0;
@@ -232,6 +243,8 @@ void PCGfx_DoModelPreview(void)
 			}
 			else
 			{
+				// @FIXME
+				/*
 				if (doModelSwap)
 				{
 					if (PSXRegion[SuperItem->mRegion].IsSuper)
@@ -265,6 +278,7 @@ void PCGfx_DoModelPreview(void)
 					modelTickUpdate = GetTickCount();
 					doModelSwap = 0;
 				}
+				*/
 
 				PCGfx_RenderModelPreview(SuperItem, PSXRegion[v9].Filename, idx);
 			}
@@ -638,12 +652,18 @@ void PCGfx_RenderModelPreview(
 	Mess_DrawText(20, 45, v3, 0, 0x1000u);
 
 	CItem* pItem = static_cast<CItem*>(a1);
+	// @FIXME
+	sprintf(
+		v3,
+		"ITM: shit");
+	/*
 	sprintf(
 		v3,
 		"ITM: %i %i %i",
 		pItem->mPos.vx >> 12,
 		pItem->mPos.vy >> 12,
 		pItem->mPos.vz >> 12);
+		*/
 	Mess_DrawText(220, 45, v3, 0, 0x1000u);
 
 	PCGfx_EndScene(1);

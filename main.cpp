@@ -1,6 +1,6 @@
 #include "non_win32.h"
 
-#define BOOT_GAME
+// #define BOOT_GAME
 #define MODEL_PREVIEW
 
 #include "main.h"

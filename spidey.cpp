@@ -779,6 +779,9 @@ void spideyLog(char *,...)
 // understand ppModels
 void Spidey_CopyHeadModel(i32 Region)
 {
+	// @FIXME
+	return;
+
 	if (!gSpideyHeadModel)
 	{
 		u16 * ptr = static_cast<u16*>(PSXRegion[Region].ppModels[7]);
