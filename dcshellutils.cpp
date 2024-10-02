@@ -49,10 +49,35 @@ INLINE void DCSpriteDraw(
 	}
 }
 
-// @SMALLTODO
-void Sprite2::setData(void*)
+// @Ok
+// @Matching
+void Sprite2::setData(void* a2)
 {
-	printf("Sprite2::setData(void*)");
+	char* v4 = 0;
+	i32 v5;
+	i32 v6;
+	u16 missing;
+
+	Load8BitBMP_2(reinterpret_cast<char*>(a2), &v4, &v5, &v6, &missing);
+	print_if_false(
+		this->field_14 << this->field_1C == v5,
+		"data width %d does not match image width %d",
+		v5,
+		this->field_14 << this->field_1C);
+	print_if_false(
+		this->field_16 == v6,
+		"data height %d does not match image height %d",
+		v6,
+		this->field_16);
+
+	this->field_1E = missing;
+	SlicedImage2::setData(v4);
+	if (this->field_20)
+	{
+		Mem_Delete(this->field_20);
+	}
+
+	this->field_20 = reinterpret_cast<u8*>(v4);
 }
 
 // @Ok

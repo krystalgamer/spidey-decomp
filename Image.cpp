@@ -264,6 +264,8 @@ void validate_SlicedImage2(void)
 	VALIDATE(SlicedImage2, field_18, 0x18);
 	VALIDATE(SlicedImage2, field_1C, 0x1C);
 
+	VALIDATE(SlicedImage2, field_1E, 0x1E);
+
 	VALIDATE_VTABLE(SlicedImage2, UnknownSlicedImageVirtualFunc, 1);
 	VALIDATE_VTABLE(SlicedImage2, setData, 2);
 	VALIDATE_VTABLE(SlicedImage2, draw, 3);

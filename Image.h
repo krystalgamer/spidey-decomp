@@ -44,11 +44,12 @@ class SlicedImage2 : public Image
 		i16 field_16;
 		i32 field_18;
 		u8 field_1C;
+		u8 padAfter1C[1];
 
-		unsigned char padBottom[0x20-0x1C-1];
+		u16 field_1E;
 };
 
-EXPORT int Load8BitBMP_2(char *, char **, int *, int *, unsigned __int16 *);
+EXPORT int Load8BitBMP_2(char *, char **, i32 *, i32 *, u16*);
 EXPORT i32 GetBMPBitDepth(char *);
 EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
 EXPORT i32 LoadNBitBMP_(const char *,char **,i32 *,i32 *,u16 *,i32 *);
