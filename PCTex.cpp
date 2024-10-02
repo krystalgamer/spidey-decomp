@@ -998,7 +998,7 @@ void validate_ConvertPSXPaletteToPC(void)
 
 		ConvertPSXPaletteToPC(a1, a2, a3, a4);
 
-		if (!memcmp(a2, expected_a2, a3 * 2))
+		if (!memcmp(a2, expected_a2, 0x1000))
 		{
 			printf("MATCH: %s\n", fileName);
 		}
