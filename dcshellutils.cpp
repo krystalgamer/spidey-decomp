@@ -3,6 +3,7 @@
 #include "m3dinit.h"
 #include "SpideyDX.h"
 #include "PCGfx.h"
+#include "PCTex.h"
 
 i32 gDcSpriteRedAmount[256];
 i32 gDcSpriteGreenAmount[256];
@@ -54,10 +55,44 @@ void Sprite2::setData(void*)
 	printf("Sprite2::setData(void*)");
 }
 
-// @SMALLTODO
-Sprite2::Sprite2(const char*, i32, i32, i32, u32)
+// @Ok
+Sprite2::Sprite2(
+		const char* a2,
+		i32 a3,
+		i32 a4,
+		i32 a5,
+		u32 a6)
 {
-	printf("Sprite2::Sprite2(const char*, i32, i32, i32, u32)");
+	char* v18 = 0;
+	i32 v20;
+	i32 v19;
+	u16 v17;
+	i32 v21;
+	
+	this->field_18 = -1;
+	LoadNBitBMP_(a2, &v18, &v20, &v19, &v17, &v21);
+	if ( v21 == 8 )
+		this->field_1C = 1;
+	else
+		this->field_1C = 2;
+
+	this->field_16 = v19;
+	this->field_10 = a6;
+	this->field_14 = v20 >> this->field_1C;
+	this->field_20 = reinterpret_cast<u8*>(v18);
+
+	i32 Texture256;
+	if ( v21 == 8 )
+		Texture256 = PCTex_CreateTexture256(v20, v19, v18, 0, a6, a2, 0, 0);
+	else
+		Texture256 = PCTex_CreateTexture16(v20, v19, v18, 0, a2, 0, 0, 1u);
+	this->field_18 = Texture256;
+
+	if (a6 & 8)
+	{
+		Bitmap256* v14 = new Bitmap256(v18, gSlicedImageRelated, v20, v19, this->field_18);
+		PCTex_SetTextureUserData(this->field_18, v14);
+	}
 }
 
 // @BIGTODO
@@ -176,4 +211,6 @@ void SlicedImage2::draw(
 void validate_Sprite2(void)
 {
 	VALIDATE_SIZE(Sprite2, 0x24);
+
+	VALIDATE(Sprite2, field_20, 0x20);
 }

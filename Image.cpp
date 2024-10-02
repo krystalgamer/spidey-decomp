@@ -177,7 +177,7 @@ void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *)
 
 // @Ok
 i32 LoadNBitBMP_(
-		char* a1,
+		const char* a1,
 		char** a2,
 		i32* a3,
 		i32* a4,
