@@ -7,6 +7,7 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <cstdio>
 
 EXPORT i32 gPcTexPvrAndSoftRendererRelated;
 const i32 NUM_PCTEX_CONTAINERS = 5;
@@ -91,10 +92,82 @@ u8 CheckValidTexture(u32 index)
 	return 0;
 }
 
-// @MEDIUMTODO
-void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)
+// @Ok
+// @Matching: by testing
+u8 ConvertPSXPaletteToPC(u16* a1,
+		u16* a2,
+		u32 a3,
+		u32 a4)
 {
-    printf("ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32)");
+	if (a4 & 0x10)
+	{
+		u8 v4 = 0;
+		for (u32 i = 0; i < a3; ++i )
+		{
+			if ( a1[i] && a1[i] == 0x8000 )
+			v4 = 1;
+		}
+
+		if ( v4 )
+		{
+			for (u32 j = 0; j < a3; ++j )
+			{
+				u32 v7 = j;
+				u32 v8 = a1[j];
+				a2[v7] = ((int)(u8)(((int)(v8 & 0x7C00) >> 7) | ((int)(v8 & 0x7000) >> 12)) >> 3) | (4 * (((int)(v8 & 0x3E0) >> 2) | ((int)(v8 & 0x380) >> 7))) & 0x3E0 | (((u8)((-(u8)v8 | (u8)v8) >> 31) << 8) & 0x8000 | (((8 * (u16)v8) & 0xF8 | (v8 >> 2) & 7) << 7) & 0x7C00) & 0xFC1F;
+			}
+
+			return 1;
+		}
+		else
+		{
+			for (u32 k = 0; k < a3; ++k )
+			{
+				u32 v11 = k;
+				u32 v12 = a1[k];
+				a2[v11] = ((int)(unsigned __int8)(((int)(v12 & 0x7C00) >> 7) | ((int)(v12 & 0x7000) >> 12)) >> 3) | (((8 * (u16)v12) & 0xF8 | ((int)(v12 & 0x1C) >> 2) & 0xFF07) << 8) & 0xF800 | (8 * ((v12 >> 7) & 7 | ((int)(v12 & 0x3E0) >> 2) & 0xFFF8)) & 0x7E0;
+			}
+
+			return 0;
+		}
+	}
+	else
+	{
+		u32 v13 = a3;
+		u8 v14 = 0;
+		u8 v15 = 1;
+		while ( (--v13 & 0x80000000) == 0 )
+		{
+			if ( (a1[v13] & 0x8000) != 0 )
+				v14 = 1;
+			else
+				v15 = 0;
+		}
+		if ( v14 && !v15 && (a4 & 1) != 0 )
+		{
+			u32 v19;
+			for (u32 l = a3;
+			(--l & 0x80000000) == 0;
+			a2[l] = ((int)(u8)(((int)(v19 & 0x7C00) >> 7) | ((int)(v19 & 0x7000) >> 12)) >> 3) | (4 * (((int)(v19 & 0x3E0) >> 2) | ((int)(v19 & 0x380) >> 7))) & 0x3E0 | (((u8)((int)(-v19 | v19) >> 31) << 8) & 0x8000 | (((8 * (u16)v19) & 0xF8 | (v19 >> 2) & 7) << 7) & 0x7C00) & 0xFC1F )
+			{
+				v19 = a1[l];
+			}
+
+			return 1;
+		}
+		else
+		{
+			u32 v17;
+			for (u32 m = a3;
+			(--m & 0x80000000) == 0;
+			a2[m] = ((int)(u32)(((int)(v17 & 0x7C00) >> 7) | ((int)(v17 & 0x7000) >> 12)) >> 3) | (((8 * (u16)v17) & 0xF8 | ((int)(v17 & 0x1C) >> 2) & 0xFF07) << 8) & 0xF800 | (8 * ((v17 >> 7) & 7 | ((int)(v17 & 0x3E0) >> 2) & 0xFFF8)) & 0x7E0 )
+			{
+				v17 = a1[m];
+			}
+
+			return 0;
+		}
+	}
 }
 
 // @Ok
@@ -861,4 +934,78 @@ void validate_DDPIXELFORMAT(void)
 	VALIDATE(DDPIXELFORMAT, dwBBitMask, 0x18);
 	VALIDATE(DDPIXELFORMAT, dwRGBAlphaBitMask, 0x1C);
 #endif
+}
+
+void validate_ConvertPSXPaletteToPC(void)
+{
+	// done its purpsoe
+	return;
+
+	u16 a1[0x1000];
+	u16 a2[0x1000];
+	u16 expected_a2[0x1000];
+
+	for (i32 i = 0; i < 512; i++)
+	{
+		char fileName[256];
+		sprintf(fileName, "palettes/pal_%d.bin", i);
+		FILE *fp = fopen(fileName, "rb");
+
+		if (!fp)
+		{
+			printf("Failed to open %s\n", fileName);
+			continue;
+		}
+
+		u32 a3;
+		u32 a4;
+
+		if (!fread(&a3, 4, 1, fp))
+		{
+			printf("Error reading a3 for %s\n", fileName);
+			fclose(fp);
+			continue;
+		}
+
+		if (!fread(&a4, 4, 1, fp))
+		{
+			printf("Error reading a4 for %s\n", fileName);
+			fclose(fp);
+			continue;
+		}
+
+		for(i32 j = 0; j < 0x1000; j++)
+		{
+			a1[j] = 0;
+			a2[j] = 0;
+			expected_a2[j] = 0;
+		}
+
+		if (!fread(a1, a3 * 2, 1, fp))
+		{
+			printf("Error reading a1 for %s\n", fileName);
+			fclose(fp);
+			continue;
+		}
+
+		if (!fread(expected_a2, a3 * 2, 1, fp))
+		{
+			printf("Error reading expected a2 for %s\n", fileName);
+			fclose(fp);
+			continue;
+		}
+		fclose(fp);
+
+		ConvertPSXPaletteToPC(a1, a2, a3, a4);
+
+		if (!memcmp(a2, expected_a2, a3 * 2))
+		{
+			printf("MATCH: %s\n", fileName);
+		}
+		else
+		{
+			printf("MISMATCH: %s\n", fileName);
+		}
+
+	}
 }

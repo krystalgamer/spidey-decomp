@@ -453,6 +453,7 @@ i32 validate(void)
 	validate_SCheat();
 	validate_SButton();
 	validate_DDPIXELFORMAT();
+	validate_ConvertPSXPaletteToPC();
 
 	puts("[*] Validation done!");
 

@@ -92,7 +92,7 @@ EXPORT int countBits(unsigned int);
 EXPORT int PCTex_GetTextureSplitID(int, int);
 
 EXPORT u8 CheckValidTexture(u32);
-EXPORT void ConvertPSXPaletteToPC(u16 const *,u16 *,u32,u32);
+EXPORT u8 ConvertPSXPaletteToPC(u16 *,u16 *,u32,u32);
 EXPORT void PCTEX_Init(void);
 EXPORT void* PCTex_BufferPVR(const char *,char *);
 EXPORT i32 PCTex_CountActiveTextures(void);
@@ -134,5 +134,6 @@ void validate_ClutPC(void);
 void validate_SPCTexPixelFormat(void);
 void validate_SPCTexContainer(void);
 void validate_DDPIXELFORMAT(void);
+void validate_ConvertPSXPaletteToPC(void);
 
 #endif
