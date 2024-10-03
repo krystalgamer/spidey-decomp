@@ -6,6 +6,28 @@
 #include "export.h"
 #include "main.h"
 
+#pragma pack(push, 1)
+struct BMPHeader
+{
+	u16  type;             // Magic identifier: 0x4d42
+	u32  size;             // File size in bytes
+	u16  reserved1;        // Not used
+	u16  reserved2;        // Not used
+	u32  offset;           // Offset to image data in bytes from beginning of file (54 bytes)
+	u32  dib_header_size;  // DIB Header size in bytes (40 bytes)
+	i32  width_px;         // Width of the image
+	i32  height_px;        // Height of image
+	u16  num_planes;       // Number of color planes
+	u16  bits_per_pixel;   // Bits per pixel
+	u32  compression;      // Compression type
+	u32  image_size_bytes; // Image size in bytes
+	i32  x_resolution_ppm; // Pixels per meter
+	i32  y_resolution_ppm; // Pixels per meter
+	u32  num_colors;       // Number of colors  
+	u32  important_colors; // Important colors 
+};
+#pragma pack(pop)
+
 class Image : public CClass
 {
 	public:
@@ -49,13 +71,16 @@ class SlicedImage2 : public Image
 		u16 field_1E;
 };
 
-EXPORT int Load8BitBMP_2(char *, char **, i32 *, i32 *, u16*);
+EXPORT i32 Load8BitBMP_2(char *, char **, i32 *, i32 *, u16*);
+EXPORT i32 Load8BitBMP2(char *, char **, i32 *, i32 *, u16*, bool);
 EXPORT i32 GetBMPBitDepth(char *);
 EXPORT void Load4BitBMP_2(char *,char **,i32 *,i32 *,u16 *);
 EXPORT i32 LoadNBitBMP_(const char *,char **,i32 *,i32 *,u16 *,i32 *);
 
-EXPORT extern u16 gSlicedImageRelated[16];
+EXPORT extern u16 gSlicedImageRelated[256];
 
 void validate_Image(void);
 void validate_SlicedImage2(void);
+void validate_BmpHeader(void);
+void validate_Load8BitBMP2(void);
 #endif

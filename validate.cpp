@@ -1,6 +1,8 @@
 #include "validate.h"
 #include <cstdarg>
 
+#include <cstring>
+
 int FAIL_VALIDATION = 0;
 
 void validate_i32(int cur, int expected, const char *name, int line)
@@ -81,4 +83,41 @@ void validate_vtable_index(
 
 	fflush(stdout);
 #endif
+}
+
+i32 read_into(const char* fileName, void* dst, u32 size)
+{
+	FILE *fp = fopen(fileName, "rb");
+	if (!fp)
+	{
+		printf("Couldnt open ");
+		printf(fileName);
+		return 1;
+	}
+
+	if (!fread(dst, size, 1, fp))
+	{
+		printf("Couldnt read ");
+		printf(fileName);
+		puts("");
+
+		fclose(fp);
+		return 1;
+	}
+	
+	fclose(fp);
+	return 0;
+}
+
+i32 compare_buffs(const char* name, void* src, void* dst, u32 size)
+{
+	if(!memcmp(src, dst, 0x200))
+	{
+		return 0;
+	}
+
+	printf("Failed comparing buffer ");
+	printf(name);
+	puts("");
+	return 1;
 }

@@ -120,13 +120,6 @@ Sprite2::Sprite2(
 	}
 }
 
-// @BIGTODO
-void Load8BitBMP2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5, bool a6)
-{
-
-	printf("void Load8BitBMP2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5, bool a6)");
-}
-
 // @Ok
 // @Test
 // @Validate

@@ -454,6 +454,8 @@ i32 validate(void)
 	validate_SButton();
 	validate_DDPIXELFORMAT();
 	validate_ConvertPSXPaletteToPC();
+	validate_BmpHeader();
+	validate_Load8BitBMP2();
 
 	puts("[*] Validation done!");
 

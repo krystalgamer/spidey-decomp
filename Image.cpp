@@ -1,12 +1,13 @@
 #include "Image.h"
-#include "validate.h"
 #include "dcshellutils.h"
 #include "PCTex.h"
 #include "dcfileio.h"
 #include "mem.h"
 
+#include "validate.h"
 
-u16 gSlicedImageRelated[16];
+
+u16 gSlicedImageRelated[256];
 
 // @Ok
 void SlicedImage2::pack(void)
@@ -208,7 +209,7 @@ i32 LoadNBitBMP_(
 		}
 		else
 		{
-			Load8BitBMP2(reinterpret_cast<char*>(pBmp), a2, a3, a4, a5, 0);
+			Load8BitBMP_2(reinterpret_cast<char*>(pBmp), a2, a3, a4, a5);
 		}
 
 		Mem_Delete(pBmp);
@@ -247,11 +248,140 @@ int SlicedImage2::screenHeight(void)
 }
 
 // @Ok
-int Load8BitBMP_2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5)
+INLINE i32 Load8BitBMP_2(char *a1, char **a2, int *a3, int *a4, unsigned __int16 *a5)
 {
 	Load8BitBMP2(a1, a2, a3, a4, a5, false);
 	return 1;
 }
+
+// @Ok
+// @Validated
+i32 Load8BitBMP2(
+		char *pData,
+		char **data,
+		i32 *ww,
+		i32 *hh,
+		u16 *clut,
+		bool a6)
+{
+	*data = 0;
+
+	BMPHeader *pBmp = reinterpret_cast<BMPHeader*>(pData);
+	u16 height_px = pBmp->height_px;
+	u16 width_px = pBmp->width_px;
+	u16 bits_per_pixel = pBmp->bits_per_pixel;
+
+	if ((bits_per_pixel != 16) & (bits_per_pixel != 8))
+	{
+		error("\nNot 8 bits per pixel, is %d bits per pixel", bits_per_pixel);
+		return 0;
+	}
+
+	u16 num_colors = pBmp->num_colors;
+	if (!num_colors)
+		num_colors = 256;
+
+	
+	u16* pClut = PCTex_CreateClut(256);
+
+	u8* pPalette = reinterpret_cast<u8*>(&pBmp[1]);
+	char v18;
+
+	for (i32 i = 0; i < num_colors; i++)
+	{
+		u16 v22[3];
+
+		if (bits_per_pixel == 8)
+		{
+			v22[0] = pPalette[0];
+			v22[1] = pPalette[1];
+			v22[2] = pPalette[2];
+		}
+		else
+		{
+			char* pCPalette = reinterpret_cast<char*>(pPalette);
+			v22[0] = pCPalette[0];
+			v22[1] = pCPalette[1];
+			v22[2] = pCPalette[2];
+		}
+
+		if( v22[0] <= 0xF7 || v22[1] || v22[2] <= 0xF7)
+		{
+			i8 v25 = 0;
+			if (v22[0] < 8u && v22[1] < 8u && v22[2] < 8u && (v22[0] || v22[1] || v22[2]) )
+				v25 = 1;
+
+			i16 v26[3];
+			if ( v25 )
+			{
+				v26[0] = 1;
+				v26[1] = 1;
+				v26[2] = 1;
+			}
+			else
+			{
+				v26[0] = v22[0] >> 3;
+				v26[1] = v22[1] >> 3;
+				v26[2] = v22[2] >> 3;
+			}
+			if ( v26[0] || v26[1] || v26[2] )
+				pClut[i] = v26[0] + 32 * (v26[1] + 32 * (v26[2] + 32));
+			else
+				pClut[i] = 0x8000;
+		}
+		else
+		{
+			pClut[i] = 0;
+			v18 = i;
+		}
+
+		pPalette += 4;
+	}
+
+	for (i32 j = 0; j < 256; j++)
+	{
+		gSlicedImageRelated[j] = pClut[j];
+	}
+
+	i32 v19 = width_px % 4;
+	if (v19 > 0)
+		v19 = 4 - v19;
+
+	i32 rounded_width = v19 + width_px;
+	
+	char *dstData = reinterpret_cast<char*>(DCMem_New(rounded_width * height_px, 1, 1, 0, 1));
+	//char *dstData = reinterpret_cast<char*>(malloc(rounded_width * height_px));;
+	*data = dstData;
+	char* pPixel = reinterpret_cast<char*>(&reinterpret_cast<i32*>(&pBmp[1])[num_colors]);
+
+	char* pRow = &dstData[(height_px - 1) * rounded_width];
+
+	for (i32 k = 0; k < height_px; k++)
+	{
+		for (i32 m = 0; m < rounded_width - v19; m++)
+		{
+			*pRow++ = *pPixel++;
+		}
+
+		for (i32 l = 0; l < v19; l++)
+		{
+			*pRow++ = v18;
+			pPixel++;
+		}
+
+		pRow -= 2 * rounded_width;
+	}
+
+	
+	if (a6)
+		Mem_Delete(pData);
+
+	*ww = rounded_width;
+	*hh = height_px;
+	*clut = -1;
+	return 1;
+}
+
 
 void validate_SlicedImage2(void)
 {
@@ -282,4 +412,77 @@ void validate_Image(void)
 	VALIDATE(Image, field_A, 0xA);
 	VALIDATE(Image, field_B, 0xB);
 	VALIDATE(Image, field_C, 0xC);
+}
+
+void validate_BmpHeader(void)
+{
+	VALIDATE_SIZE(BMPHeader, 0x36);
+
+	VALIDATE(BMPHeader, type, 0x0);
+	VALIDATE(BMPHeader, size, 0x2);
+
+	VALIDATE(BMPHeader, width_px, 0x12);
+	VALIDATE(BMPHeader, height_px, 0x16);
+	VALIDATE(BMPHeader, num_planes, 0x1A);
+	VALIDATE(BMPHeader, bits_per_pixel, 0x1C);
+	VALIDATE(BMPHeader, image_size_bytes, 0x22);
+
+	VALIDATE(BMPHeader, num_colors, 0x2E);
+
+}
+void validate_Load8BitBMP2(void)
+{
+	return;
+
+	FILE *bmpFp = fopen("LegalPC.bmp", "rb");
+
+	if (!bmpFp)
+	{
+		puts("Couldnt open LegalPC.bmp");
+		return;
+	}
+
+	char legalpc[0x1E436];
+	if(!fread(legalpc, 0x1E436, 1, bmpFp))
+	{
+		puts("Couldnt read LegalPC.bmp");
+		fclose(bmpFp);
+		return;
+	}
+
+	fclose(bmpFp);
+
+	char* data = 0;
+	i32 width = 0;
+	i32 height = 0;
+	u16 clut = 0;
+	i32 ret = Load8BitBMP2(legalpc, &data, &width, &height, &clut, false);
+
+	VALIDATE_I32(ret, 1);
+	VALIDATE_I32(width, 0x200);
+	VALIDATE_I32(height, 0xF0);
+	VALIDATE_I32(clut, 0xFFFF);
+
+	puts("Finished basics");
+
+	u16 gSlicedExpected[0x100];
+	if (read_into("legalbmpgsliced.bin", gSlicedExpected, 0x200))
+		return;
+
+	if (compare_buffs("gsliced", gSlicedImageRelated, gSlicedExpected, 0x200))
+		return;
+
+	u8 expectedBmpData[0x1E000];
+
+	if (read_into("legalbmpdata.bin", expectedBmpData, sizeof(expectedBmpData)))
+		return;
+
+	if (compare_buffs("bmpdata", expectedBmpData, data, sizeof(expectedBmpData)))
+	{
+		FILE *fp = fopen("mylegal.bin", "wb");
+
+		fwrite(data, sizeof(expectedBmpData), 1, fp);
+		fclose(fp);
+		return;
+	}
 }

@@ -28,5 +28,8 @@ void validate_vtable_index(
 	validate_vtable_index(expected, get_thunk_address(0, &cls::member), #cls, #member);\
 }
 
+i32 read_into(const char* fileName, void* dst, u32 size);
+
+i32 compare_buffs(const char*, void*, void*, u32 size);
 
 #endif
