@@ -693,14 +693,17 @@ INLINE i32 PCTex_CreateTexturePVR(
 			 a5,
 			 a6,
 			 a7);
-	 if (!res)
-		 return -1;
 
-	gGlobalTextures[unusedId].pTextureData = pData;
-	gGlobalTextures[unusedId].field_60 = a3;
-	gGlobalTextures[unusedId].field_64 = 0x10000;
-	 
-	 return unusedId;
+	if (res)
+	{
+		gGlobalTextures[unusedId].pTextureData = pData;
+		gGlobalTextures[unusedId].field_60 = a3;
+		gGlobalTextures[unusedId].field_64 = 0x10000;
+
+		return unusedId;
+	}
+
+	 return -1;
 }
 
 // @MEDIUMTODO
