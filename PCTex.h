@@ -63,8 +63,8 @@ struct SPCTexture
 {
 	u16 mSizeOne;
 	u16 mSizeTwo;
-	float wScale;
-	float hScale;
+	float mWScale;
+	float mHScale;
 
 	float field_C;
 	float field_10;
@@ -78,7 +78,7 @@ struct SPCTexture
 	i32 mSplitCount;
 	i32 *mSplit;
 
-	void* pTextureData;
+	const void* pTextureData;
 	i32 field_60;
 	i32 field_64;
 };
@@ -91,7 +91,7 @@ EXPORT int countBits(unsigned int);
 EXPORT int PCTex_GetTextureSplitID(int, int);
 
 EXPORT u8 CheckValidTexture(u32);
-EXPORT u8 ConvertPSXPaletteToPC(u16 *,u16 *,u32,u32);
+EXPORT u8 ConvertPSXPaletteToPC(const u16 *,u16 *,u32,u32);
 EXPORT void PCTEX_Init(void);
 EXPORT void* PCTex_BufferPVR(const char *,char *);
 EXPORT i32 PCTex_CountActiveTextures(void);

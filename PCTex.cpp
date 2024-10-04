@@ -9,6 +9,50 @@
 #include <cstdlib>
 #include <cstdio>
 
+EXPORT ClutPC* gCreateTextureClut;
+EXPORT i32 gCreateTextureArr[39] =
+{
+  -1283256577,
+  172113780,
+  1137591542,
+  2142391957,
+  -1445641424,
+  695236112,
+  -1129278197,
+  1539171391,
+  479795307,
+  1987673227,
+  1785598936,
+  1045875925,
+  931998923,
+  -1221702477,
+  1581433793,
+  427335541,
+  492540533,
+  611311190,
+  -1097055801,
+  1123433078,
+  2009228913,
+  -1973573692,
+  -1103077669,
+  1811270644,
+  -483570628,
+  -1054392008,
+  -564620039,
+  1889915007,
+  -1038898882,
+  982550557,
+  959634683,
+  -1905232968,
+  -460927954,
+  -1696182241,
+  885363113,
+  1138070148,
+  -522681294,
+  -1169312655,
+  -465978652
+};
+
 EXPORT i32 gPcTexPvrAndSoftRendererRelated;
 const i32 NUM_PCTEX_CONTAINERS = 5;
 
@@ -81,7 +125,7 @@ EXPORT ClutPC* gClutPcRelated;
 EXPORT i32 gClutCount;
 
 // @Ok
-u8 CheckValidTexture(u32 index)
+INLINE u8 CheckValidTexture(u32 index)
 {
 	if (index < GLOBAL_TEXTURE_COUNT)
 	{
@@ -94,7 +138,7 @@ u8 CheckValidTexture(u32 index)
 
 // @Ok
 // @Matching: by testing
-u8 ConvertPSXPaletteToPC(u16* a1,
+u8 ConvertPSXPaletteToPC(const u16* a1,
 		u16* a2,
 		u32 a3,
 		u32 a4)
@@ -521,12 +565,12 @@ i32 PCTex_CreateTexture256(
 		}
 	}
 
-	void* pBmpBuf = DCMem_New(
+	u16* pBmpBuf = static_cast<u16*>(DCMem_New(
 			2 * rounded_width * rounded_height,
 			0,
 			1,
 			0,
-			1);
+			1));
 	print_if_false(pBmpBuf != 0, "Out of system memory.");
 
 	if (a1 != rounded_width || a2 != rounded_height)
@@ -545,13 +589,88 @@ i32 PCTex_CreateTexture256(
 	else
 	{
 		pClut = clutToClutPc(a4);
+		a4 = pClut->mClut;
 	}
 
-	return 69;
+	for (i32 i = 0; i < 0x27; i++)
+	{
+		if (gCreateTextureArr[i] == a8)
+		{
+			a5 &= 0xFFFFFFFE;
+			break;
+		}
+	}
+
+	u16 v46[256];
+	i32 v45 = ConvertPSXPaletteToPC(a4, v46, 0x100, a5);
+
+	for (i32 y = 0; y < a2; y++)
+	{
+		for (i32 x = 0; x < a1; x++)
+		{
+			pBmpBuf[x + y * rounded_width] = v46[
+				reinterpret_cast<const u8*>(a3)[x + y * a1]];
+		}
+	}
+
+	i32 textureHandleIndex;
+	if (!a7)
+	{
+		textureHandleIndex = PCTex_CreateTexturePVR(
+			rounded_width,
+			rounded_height,
+			(v45 == 0 ? 1 : 0) | 0x900,
+			pBmpBuf,
+			1u,
+			a6,
+			a8);
+		print_if_false(textureHandleIndex != -1, "Ouch %s", a6);
+	}
+	else
+	{
+		if (CheckValidTexture(a7))
+			PCTex_ReleaseSysTexture(a7, 0);
+
+		i32 res = PCTex_CreateTexturePVRInId(
+				a7,
+				rounded_width,
+				rounded_height,
+				(v45 == 0 ? 1 : 0) | 0x900,
+				pBmpBuf,
+				1u,
+				a6,
+				a8);
+
+		print_if_false(res != 0, "Ouch %s", a6);
+		textureHandleIndex = a7;
+	}
+
+	SPCTexture* v34 = &gGlobalTextures[textureHandleIndex];
+	v34->mSizeOne = a1;
+	v34->mSizeTwo = a2;
+	v34->field_60 = (int)a4;
+
+	float v40 = (float)(u16)a1;
+	float v38 = (float)rounded_width;
+	v34->pTextureData = a3;
+	v34->field_64 = 256;
+	v34->mWScale = v40 / v38;
+	float v41 = (float)(u16)a2;
+	float v43 = (float)rounded_height;
+
+	v34->mHScale = v41 / v43;
+	if (pClut)
+	{
+		print_if_false(pClut->mColorCount == 256, "Clut has wrong color count!");
+		++pClut->mRefs;
+		gCreateTextureClut = pClut;
+	}
+
+	return textureHandleIndex;
 }
 
 // @Ok
-i32 PCTex_CreateTexturePVR(
+INLINE i32 PCTex_CreateTexturePVR(
 		i32 a1,
 		i32 a2,
 		u32 a3,
@@ -812,7 +931,7 @@ void PCTex_UpdateForSoftwareRenderer(void)
 
 // @Ok
 // @Matching
-ClutPC* clutToClutPc(const u16* pClut)
+INLINE ClutPC* clutToClutPc(const u16* pClut)
 {
 	ClutPC* res = gClutPcRelated;
 	for (;
@@ -945,13 +1064,13 @@ void PCTex_SetTextureUserData(int index, Bitmap256* texture)
 // @Ok
 float PCTex_GetTextureWScale(int index)
 {
-	return gGlobalTextures[index].wScale;
+	return gGlobalTextures[index].mWScale;
 }
 
 // @Ok
 float PCTex_GetTextureHScale(int index)
 {
-	return gGlobalTextures[index].hScale;
+	return gGlobalTextures[index].mHScale;
 }
 
 // @Ok
@@ -988,8 +1107,8 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, mSizeOne, 0x0);
 	VALIDATE(SPCTexture, mSizeTwo, 0x2);
 
-	VALIDATE(SPCTexture, wScale, 0x4);
-	VALIDATE(SPCTexture, hScale, 0x8);
+	VALIDATE(SPCTexture, mWScale, 0x4);
+	VALIDATE(SPCTexture, mHScale, 0x8);
 
 	VALIDATE(SPCTexture, field_C, 0xC);
 	VALIDATE(SPCTexture, field_10, 0x10);
