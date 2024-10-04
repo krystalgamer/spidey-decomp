@@ -34,8 +34,7 @@ struct SPCTexContainer
 	i32 field_3C;
 	i32 field_40;
 	i32 field_44;
-
-	u8 padBottom[0x4C-0x44-4];
+	i32 field_48;
 };
 
 struct SPCTexPixelFormat
