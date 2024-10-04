@@ -98,7 +98,7 @@ EXPORT void* PCTex_BufferPVR(const char *,char *);
 EXPORT i32 PCTex_CountActiveTextures(void);
 EXPORT u16* PCTex_CreateClut(i32);
 EXPORT i32 PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32);
-EXPORT i32 PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32);
+EXPORT i32 PCTex_CreateTexture256(i32,i32,const void *,const u16 *,u32,const char *,i32,i32);
 EXPORT i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32,const char *,u32);
 EXPORT i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32, const void *,u32, const char*,u32);
 EXPORT i32 PCTex_FindUnusedTextureId(void);

@@ -402,10 +402,152 @@ i32 PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,
 }
 
 // @MEDIUMTODO
-i32 PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)
+i32 PCTex_CreateTexture256(
+		i32 a1,
+		i32 a2,
+		const void* a3,
+		const u16* a4,
+		u32 a5,
+		const char* a6,
+		i32 a7,
+		i32 a8)
 {
-    printf("PCTex_CreateTexture256(i32,i32,void const *,u16 const *,u32,char const *,i32,i32)");
-	return 0x31082024;
+	if (a1 <= 0 || a2 <= 0)
+		return 0;
+
+	i32 rounded_width;
+	if (a1 <= 8)
+	{
+		rounded_width = 8;
+	}
+	else if (a1 <= 16)
+	{
+		rounded_width = 16;
+	}
+	else if (a1 <= 32)
+	{
+		rounded_width = 32;
+	}
+	else if (a1 <= 64)
+	{
+		rounded_width = 64;
+	}
+	else if (a1 <= 128)
+	{
+		rounded_width = 128;
+	}
+	else if (a1 <= 256)
+	{
+		rounded_width = 256;
+	}
+	else if (a1 <= 512)
+	{
+		rounded_width = 512;
+	}
+	else
+	{
+		rounded_width = 1024;
+	}
+
+	i32 rounded_height;
+	if (a2 <= 8)
+	{
+		rounded_height = 8;
+	}
+	else if (a2 <= 16)
+	{
+		rounded_height = 16;
+	}
+	else if (a2 <= 32)
+	{
+		rounded_height = 32;
+	}
+	else if (a2 <= 64)
+	{
+		rounded_height = 64;
+	}
+	else if (a2 <= 128)
+	{
+		rounded_height = 128;
+	}
+	else if (a2 <= 256)
+	{
+		rounded_height = 256;
+	}
+	else if (a2 <= 512)
+	{
+		rounded_height = 512;
+	}
+	else
+	{
+		rounded_height = 1024;
+	}
+
+	if (gSquareOnly)
+	{
+		if (rounded_width > rounded_height)
+		{
+			rounded_height = rounded_width;
+		}
+		else
+		{
+			rounded_width = rounded_height;
+		}
+	}
+
+	i32 aspectRatio;
+	if (rounded_width > rounded_height)
+	{
+		aspectRatio = rounded_width / rounded_height;
+	}
+	else
+	{
+		aspectRatio = rounded_height / rounded_width;
+	}
+
+	if (gMaxTextureAspectRatio && aspectRatio > gMaxTextureAspectRatio)
+	{
+		if (rounded_width > rounded_height)
+		{
+			rounded_width = rounded_height * gMaxTextureAspectRatio;
+			if (rounded_width < a1)
+				rounded_width = a1;
+		}
+		else
+		{
+			rounded_height = rounded_width * gMaxTextureAspectRatio;
+			if (rounded_height < a2)
+				rounded_height = a2;
+		}
+	}
+
+	void* pBmpBuf = DCMem_New(
+			2 * rounded_width * rounded_height,
+			0,
+			1,
+			0,
+			1);
+	print_if_false(pBmpBuf != 0, "Out of system memory.");
+
+	if (a1 != rounded_width || a2 != rounded_height)
+		memset(
+				pBmpBuf,
+				0,
+				2 * rounded_width * rounded_height);
+
+
+	ClutPC* pClut;
+	if (!a4)
+	{
+		pClut = gClutPcRelated;
+		print_if_false(pClut != 0, "no palette!");
+	}
+	else
+	{
+		pClut = clutToClutPc(a4);
+	}
+
+	return 69;
 }
 
 // @Ok
