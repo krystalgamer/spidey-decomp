@@ -9,6 +9,9 @@
 #include <cstdlib>
 #include <cstdio>
 
+EXPORT i32 gPvrCountRelated;
+EXPORT i32 gPvrRelatedWidth;
+
 EXPORT ClutPC* gCreateTextureClut;
 EXPORT i32 gCreateTextureArr[39] =
 {
@@ -706,17 +709,19 @@ INLINE i32 PCTex_CreateTexturePVR(
 	 return -1;
 }
 
-// @MEDIUMTODO
+// @NotOk
+// Missing low graphics and other sliced stuff
 i32 PCTex_CreateTexturePVRInId(
 		i32 a1,
 		i32 a2,
 		i32 a3,
 		u32 a4,
-		const void* a5,
+		void* a5,
 		u32 a6,
 		const char * a7,
 		u32 a8)
 {
+	void *v83 = a5;
 	print_if_false( (a2 & (a2 - 1)) == 0 && a2 &&
 			(a3 & (a3 - 1)) == 0 && a3, "texture size must be powers of 2");
 
@@ -740,8 +745,126 @@ i32 PCTex_CreateTexturePVRInId(
 
 	gGlobalTextures[a1].mAlpha ^= v13;
 
+	if (!a7)
+		strncpy(gGlobalTextures[a1].field_28, a7, 0x1F);
+	else
+		gGlobalTextures[a1].field_28[0] = 0;
 
-	return 0x20082024;
+	gGlobalTextures[a1].field_48 = a8;
+
+	i32 v14;
+	if (!a4)
+	{
+		v14 = 0;
+	}
+	else if (a4 == 2)
+	{
+		v14 = 1;
+	}
+	else if (a4 == 1)
+	{
+		v14 = 2;
+	}
+	else
+	{
+		v14 = a4 == 7 ? 3 : -1;
+	}
+
+	if (v14 == 3 || gPcTexContainer[v14].field_28 & 1)
+	{
+		gGlobalTextures[a1].field_24 = gPcTexPvrAndSoftRendererRelated;
+	}
+	else
+	{
+		gGlobalTextures[a1].field_24 = v14;
+	}
+
+	i32 v84;
+	if (a6 & 0x200)
+		v84 = 2 * gPvrRelatedWidth;
+	else
+		v84 = 2 * a2;
+
+	if (a4 == 7)
+		v84 *= 2;
+
+	u32 v12 = a4 & 0xFF00;
+	if (v12 == 0x100 || v12 == 0x200 || v12 == 0xD00)
+	{
+		v83 = PVR_ConvertTwiddledToBMP(
+				a2,
+				a3,
+				reinterpret_cast<const u16*>(a5),
+				v12 == 512);
+	}
+	else if (v12 == 0x300 || v12 == 0x400)
+	{
+		v83 = PVR_ConvertVQToBMP(
+				a2,
+				a3,
+				reinterpret_cast<const u16*>(a5),
+				v12 == 1024);
+	}
+
+	gGlobalTextures[a1].mD3DTex = 0;
+
+	if (a2 <= gMaxTextureWidth && a3 <= gTextureHeight)
+	{
+		gPvrCountRelated++;
+		i32 v19 = gGlobalTextures[a1].field_24;
+		gGlobalTextures[a1].field_50 = gPvrCountRelated;
+
+		i32 v20;
+		if (gPcTexContainer[v19].field_4 == 32)
+		{
+			v20 = 4 * a2;
+		}
+		else
+		{
+			v20 = 2 * a2;
+		}
+
+		if (gLowGraphics)
+		{
+			// @FIXME: todo lol
+		}
+		else
+		{
+			downloadTexture(
+					&gGlobalTextures[a1], 
+					reinterpret_cast<u16*>(v83),
+					v84,
+					v14);
+		}
+
+		if (a6 & 0x200)
+		{
+			gGlobalTextures[a1].mFlags &= ~2;
+			gGlobalTextures[a1].mFlags |= 0x2006;
+
+			gGlobalTextures[a1].pTextureData = a5;
+
+			u16* mClut;
+			if (gCreateTextureClut)
+				mClut = gCreateTextureClut->mClut;
+			else
+				mClut = reinterpret_cast<u16*>(a4);
+
+			gGlobalTextures[a1].field_60 = reinterpret_cast<i32>(mClut);
+
+			if (gCreateTextureClut)
+				gGlobalTextures[a1].field_64 = gCreateTextureClut->mColorCount;
+			else
+				gGlobalTextures[a1].field_64 = 0x10000;
+		}
+
+
+	}
+
+	if (v12 == 256 || v12 == 512 || v12 == 768 || v12 == 1024 || v12 == 3328)
+		free(v83);
+
+	return 1;
 }
 
 // @Ok
@@ -1008,7 +1131,7 @@ INLINE i32 countLeadingZeroBits(u32 num)
 }
 
 // @MEDIUMTODO
-void downloadTexture(PCTexture *,u16 *,i32,i32)
+void downloadTexture(SPCTexture *,u16 *,i32,i32)
 {
     printf("downloadTexture(PCTexture *,u16 *,i32,i32)");
 }
@@ -1152,8 +1275,12 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, mD3DTex, 0x1C);
 	VALIDATE(SPCTexture, mFlags, 0x20);
 
+	VALIDATE(SPCTexture, field_24, 0x24);
+
 	VALIDATE(SPCTexture, field_28, 0x28);
 	VALIDATE(SPCTexture, field_48, 0x48);
+
+	VALIDATE(SPCTexture, field_50, 0x50);
 
 	VALIDATE(SPCTexture, mSplitCount, 0x54);
 	VALIDATE(SPCTexture, mSplit, 0x58);

@@ -8,9 +8,6 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
-// @FIXME
-#define PCTexture i32
-
 struct SPCTexContainer
 {
 	u8 padTop[4];
@@ -73,13 +70,15 @@ struct SPCTexture
 	i32 mAlpha;
 	IDirectDrawSurface7* mD3DTex;
 	i32 mFlags;
-	u8 padAfter20[4];
+	i32 field_24;
 
 
 	char field_28[0x1F];
 	i32 field_48;
 
-	u8 padAfter48[0x54-0x48-4];
+	u8 padAfter48[4];
+
+	i32 field_50;
 
 	i32 mSplitCount;
 	i32 *mSplit;
@@ -105,7 +104,7 @@ EXPORT u16* PCTex_CreateClut(i32);
 EXPORT i32 PCTex_CreateTexture16(i32,i32,void const *,u16 const *,char const *,i32,i32,u32);
 EXPORT i32 PCTex_CreateTexture256(i32,i32,const void *,const u16 *,u32,const char *,i32,i32);
 EXPORT i32 PCTex_CreateTexturePVR(i32,i32,u32,void *,u32,const char *,u32);
-EXPORT i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32, const void *,u32, const char*,u32);
+EXPORT i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32, void *,u32, const char*,u32);
 EXPORT i32 PCTex_FindUnusedTextureId(void);
 EXPORT void PCTex_FreePcIcons(void);
 EXPORT IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32);
@@ -128,7 +127,7 @@ EXPORT ClutPC* clutToClutPc(const u16*);
 EXPORT void copyBitmap(void const *,i32,void *,i32,i32,i32,i32);
 EXPORT void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool);
 EXPORT i32 countLeadingZeroBits(u32);
-EXPORT void downloadTexture(PCTexture *,u16 *,i32,i32);
+EXPORT void downloadTexture(SPCTexture *,u16 *,i32,i32);
 EXPORT HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT,void *);
 EXPORT void releaseClutPc(ClutPC *);
 EXPORT i32 shouldForceBlend(u16 *,i32,i32,i32);

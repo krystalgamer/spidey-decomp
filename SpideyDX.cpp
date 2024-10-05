@@ -25,6 +25,20 @@ i32 gBrightnessRelated = 4;
 EXPORT u8 gMissingCD;
 EXPORT i32 gActive;
 
+// @SMALLTODO
+u16* PVR_ConvertTwiddledToBMP(i32, i32, const u16*, bool)
+{
+	printf("u16* PVR_ConvertTwiddledToBMP(i32, i32, u16*, bool)");
+	return (u16*)0x05102024;
+}
+
+// @SMALLTODO
+u16* PVR_ConvertVQToBMP(i32, i32, const u16*, bool)
+{
+	printf("u16* PVR_ConvertVQToBMP(i32, i32, u16*, bool)");
+	return (u16*)0x05102024;
+}
+
 // @Ok
 EXPORT u8 isMMX(void)
 {
