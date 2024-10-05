@@ -73,7 +73,13 @@ struct SPCTexture
 	i32 mAlpha;
 	IDirectDrawSurface7* mD3DTex;
 	i32 mFlags;
-	u8 padAfterC[0x54-0x20-4];
+	u8 padAfter20[4];
+
+
+	char field_28[0x1F];
+	i32 field_48;
+
+	u8 padAfter48[0x54-0x48-4];
 
 	i32 mSplitCount;
 	i32 *mSplit;

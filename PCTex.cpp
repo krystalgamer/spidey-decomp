@@ -707,9 +707,40 @@ INLINE i32 PCTex_CreateTexturePVR(
 }
 
 // @MEDIUMTODO
-i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32,const void* ,u32,char const *,u32)
+i32 PCTex_CreateTexturePVRInId(
+		i32 a1,
+		i32 a2,
+		i32 a3,
+		u32 a4,
+		const void* a5,
+		u32 a6,
+		const char * a7,
+		u32 a8)
 {
-    printf("PCTex_CreateTexturePVRInId(i32,i32,i32,u32,void const *,u32,char const *,u32)");
+	print_if_false( (a2 & (a2 - 1)) == 0 && a2 &&
+			(a3 & (a3 - 1)) == 0 && a3, "texture size must be powers of 2");
+
+	if (a4 & 0x1000)
+		return 0;
+
+	print_if_false(!gGlobalTextures[a1].mD3DTex && !gGlobalTextures[a1].mSplit, "texture slot already used");
+
+	gGlobalTextures[a1].mHScale = 1.0f;
+	gGlobalTextures[a1].mWScale = 1.0f;
+	gGlobalTextures[a1].mSizeOne = a2;
+	gGlobalTextures[a1].mSizeTwo = a3;
+	gGlobalTextures[a1].mFlags = a6;
+	gGlobalTextures[a1].mTexture = 0;
+	gGlobalTextures[a1].field_C = 1.0f / (float)a2;
+	gGlobalTextures[a1].field_10 = 1.0f / (float)a3;
+
+	char v13 = 0;
+	if (!a4 || a4 == 2 || a4 == 7)
+		v13 = 1;
+
+	gGlobalTextures[a1].mAlpha ^= v13;
+
+
 	return 0x20082024;
 }
 
@@ -1120,6 +1151,10 @@ void validate_SPCTexture(void)
 	VALIDATE(SPCTexture, mAlpha, 0x18);
 	VALIDATE(SPCTexture, mD3DTex, 0x1C);
 	VALIDATE(SPCTexture, mFlags, 0x20);
+
+	VALIDATE(SPCTexture, field_28, 0x28);
+	VALIDATE(SPCTexture, field_48, 0x48);
+
 	VALIDATE(SPCTexture, mSplitCount, 0x54);
 	VALIDATE(SPCTexture, mSplit, 0x58);
 
