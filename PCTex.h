@@ -8,6 +8,10 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+EXPORT extern u32 gMaxTextureAspectRatio;
+EXPORT extern u32 gMaxTextureWidth;
+EXPORT extern u32 gTextureHeight;
+
 struct SPCTexContainer
 {
 	u8 padTop[4];

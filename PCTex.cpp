@@ -105,9 +105,10 @@ SPCTexContainer * const gPcTexContainer = reinterpret_cast<SPCTexContainer*>(&gP
 
 EXPORT i32 gNumPixelFormats;
 
-EXPORT u32 gMaxTextureAspectRatio;
-EXPORT u32 gMaxTextureWidth;
-EXPORT u32 gTextureHeight;
+u32 gMaxTextureAspectRatio;
+u32 gMaxTextureWidth;
+u32 gTextureHeight;
+
 EXPORT bool gSquareOnly;
 
 const i32 GLOBAL_TEXTURE_COUNT = 1024;

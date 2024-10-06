@@ -14,6 +14,9 @@
 #include <cmath>
 #include <cstring>
 
+EXPORT i32 gAnotherGameResolutionX = gGameResolutionX;
+EXPORT i32 gAnotherGameResolutionY = gGameResolutionY;
+
 EXPORT i8 gPcGfxBrightnessValues[256];
 
 EXPORT u8 gProcessTextureRelated;
@@ -474,9 +477,96 @@ void PCGfx_DrawTPoly3D(float,float,float,float,float,u32,float,float,float,float
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float)
+void PCGfx_DrawTexture2D(
+		i32 a1,
+		i32 x,
+		i32 a3,
+		float drawScale,
+		u32 color,
+		u32 a6,
+		float a7)
 {
-    printf("PCGfx_DrawTexture2D(i32,i32,i32,float,u32,u32,float)");
+	print_if_false(drawScale > 0.0f, "Improbable draw scale");
+	print_if_false(drawScale < 256.0f, "Improbable draw scale");
+
+	i32 textureWidth;
+	i32 textureHeight;
+
+	PCTex_GetTextureSize(a1, &textureWidth, &textureHeight);
+
+	if (textureWidth <= gMaxTextureWidth && textureHeight <= gTextureHeight)
+	{
+		i32 adjusted_width = ((float)textureWidth * drawScale);
+		i32 adjusted_height = ((float)textureHeight * drawScale);
+
+		if (adjusted_width && adjusted_height)
+		{
+			PCGfx_UseTexture(a1,
+					a6 & 4 ? DCGfx_BlendingMode_2 : DCGfx_BlendingMode_0);
+
+			float TextureWScale = PCTex_GetTextureWScale(a1);
+			float TextureHScale = PCTex_GetTextureHScale(a1);
+
+
+			i32 v25;
+			if (a6 & 2)
+			{
+				v25 = PCGfx_GetZLayerFurthest();
+				PCGfx_IncZLayerFurthest();
+			}
+			else if (a6 & 8)
+			{
+				v25 = PCGfx_GetZLayerNearest();
+				PCGfx_IncZLayerNearest();
+			}
+			else
+			{
+				v25 = a7;
+			}
+
+
+
+			/*
+			PCGfx_DrawQuad2D(
+					drawScale,
+					v31,
+					v32,
+					v33,
+					v46,
+					v45,
+					v34,
+					a8,
+					color,
+					v25,
+					0);
+			*/
+		}
+	}
+	else
+	{
+		i32 x_off = x;
+		i32 y_off = a3;
+
+		print_if_false(x_off == 0, "Split texture drawn with x != 0");
+		i32 splitCount = PCTex_GetTextureSplitCount(a1);
+
+		for (i32 i = 0; i < splitCount; i++)
+		{
+			i32 TextureSplitID = PCTex_GetTextureSplitID(a1, i);
+
+			i32 cur_width;
+			i32 cur_height;
+			PCTex_GetTextureSize(TextureSplitID, &cur_width, &cur_height);
+			PCGfx_DrawTexture2D(TextureSplitID, x_off, y_off, drawScale, color, a6, a7);
+
+			x_off += cur_width;
+			if (x_off >= textureWidth)
+			{
+				x_off = 0;
+				y_off = cur_height;
+			}
+		}
+	}
 }
 
 // @Ok
@@ -785,7 +875,7 @@ INLINE void PCGfx_SetSkyColor(u32 a1)
 
 // @Ok
 // @Matching
-void PCGfx_UseTexture(i32 a1, DCGfx_BlendingMode a2)
+INLINE void PCGfx_UseTexture(i32 a1, DCGfx_BlendingMode a2)
 {
 	i32 v2 = a1;
 	if ( a1 <= 2 )
