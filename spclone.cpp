@@ -119,10 +119,20 @@ void SpClone_CreateSpClone(u32 * a2,u32 * a3)
 	*a3 = reinterpret_cast<u32>(new CSpClone(v2, v3));
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void SpClone_RelocatableModuleClear(void)
 {
-    printf("SpClone_RelocatableModuleClear(void)");
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 327)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
 }
 
 // @Ok
