@@ -58,7 +58,7 @@ EXPORT void PShell_EndTrainingInit(void);
 EXPORT void PShell_EndTrainingUpdate(void);
 EXPORT void PShell_MaybeSaveGame(void);
 EXPORT void PShell_MaybeUnlockStuff(void);
-EXPORT void PShell_MoveTowards(i32,i32);
+EXPORT i32 PShell_MoveTowards(i32,i32);
 
 void validate_CExpandingBox(void);
 void validate_SCheat(void);

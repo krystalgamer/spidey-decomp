@@ -233,10 +233,20 @@ void PShell_MaybeUnlockStuff(void)
     printf("PShell_MaybeUnlockStuff(void)");
 }
 
-// @SMALLTODO
-void PShell_MoveTowards(i32,i32)
+// @Ok
+// @Matching
+i32 PShell_MoveTowards(
+		i32 a1,
+		i32 a2)
 {
-    printf("PShell_MoveTowards(i32,i32)");
+	i32 v2 = a2 - a1;
+	if (!v2)
+		return a1;
+
+	if ((v2 & 0xFFFFFFFC) == 0 )
+		return a1 + 1;
+
+	return a1 + (v2 >> 2);
 }
 
 // @Ok

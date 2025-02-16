@@ -741,7 +741,7 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 	}
 	else
 	{
-		if ( ppBody )
+		if (ppBody)
 			*ppBody = 0;
 		return -1;
 	}
@@ -750,6 +750,7 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 SLineInfo line_info;
 
 // @Ok
+// @Test
 i32 Utils_LineOfSight(
 		CVector* a1,
 		CVector* a2,
@@ -773,6 +774,7 @@ i32 Utils_LineOfSight(
 	return 1;
 }
 
+// @Ok
 int catan(int a1)
 {
 	 return (atan((double)a1 / 4096.0) * 651.0006103515625);
@@ -809,7 +811,7 @@ int Utils_CalcAim(CSVector* a1, CVector* a2, CVector* a3)
 		}
 	}
 
-	int v7 = M3dMaths_SquareRoot0(x*x + z*z);
+	i32 v7 = M3dMaths_SquareRoot0(x*x + z*z);
 	if (v7)
 	{
 		if (y > 0)
