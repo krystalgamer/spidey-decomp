@@ -3,6 +3,25 @@
 
 #include "validate.h"
 
+// @OK
+// @Test
+void CGPolyLine::SetStartAndEnd(
+		CVector *pStart,
+		CVector *pEnd)
+{
+
+	CVector segment = (*pEnd - *pStart) / this->mNumSegs;
+	CVector current = *pStart;
+
+	this->mStart = *pStart;
+
+	for (i32 i = 0; i < this->mNumSegs; i++)
+	{
+		current += segment;
+		this->mSegs[i].End = current;
+	}
+}
+
 // @Ok
 CGPolyLine::~CGPolyLine()
 {

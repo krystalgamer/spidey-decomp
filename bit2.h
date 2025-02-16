@@ -22,6 +22,7 @@ public:
 	EXPORT CGPolyLine(i32);
 	EXPORT ~CGPolyLine();
 	EXPORT void SetSemiTransparent(void);
+	EXPORT void SetStartAndEnd(CVector*, CVector*);
 
 	i32 mNumSegs;
 
