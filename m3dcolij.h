@@ -27,9 +27,7 @@ struct SLineInfo
 	MATRIX field_48;
 	CItem* field_68;
 
-	int field_6C;
-	int field_70;
-	int field_74;
+	CVector field_6C;
 	CSVector field_78;
 
 	int field_80;

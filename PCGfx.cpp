@@ -17,6 +17,9 @@
 EXPORT i32 gAnotherGameResolutionX = gGameResolutionX;
 EXPORT i32 gAnotherGameResolutionY = gGameResolutionY;
 
+EXPORT i32 gDrawTexture2DRelatedOne;
+EXPORT i32 gDrawTexture2DRelatedTwo;
+
 EXPORT i8 gPcGfxBrightnessValues[256];
 
 EXPORT u8 gProcessTextureRelated;
@@ -506,6 +509,22 @@ void PCGfx_DrawTexture2D(
 
 			float TextureWScale = PCTex_GetTextureWScale(a1);
 			float TextureHScale = PCTex_GetTextureHScale(a1);
+
+			i32 v36 = x;
+			i32 hateThiShit = a3;
+
+			if (x < gDrawTexture2DRelatedOne)
+			{
+				v36 = gDrawTexture2DRelatedOne;
+			}
+
+
+			if (a3 < gDrawTexture2DRelatedTwo)
+			{
+				hateThiShit = gDrawTexture2DRelatedTwo;
+			}
+
+
 
 
 			i32 v25;

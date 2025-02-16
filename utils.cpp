@@ -709,8 +709,10 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 	v7.field_28 = 0;
 	v7.field_2C = 0;
 
-	v7.field_70 = 0;
-	v7.field_74 = 0;
+	v7.field_6C.vx = 0;
+	v7.field_6C.vy = 0;
+	v7.field_6C.vz = 0;
+
 	v7.field_78.vx = 0;
 	v7.field_78.vy = 0;
 	v7.field_78.vz = 0;
@@ -731,11 +733,11 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 	v7.field_88 = 0;
 	M3dZone_LineToItem(&v7, 1);
 
-	if ( v7.field_68 )
+	if (v7.field_68)
 	{
 		if ( ppBody )
 			*ppBody = (v7.field_68->mFlags & 0x10) != 0 ? (CBody *)v7.field_68 : 0;
-		return v7.field_70;
+		return v7.field_6C.vy;
 	}
 	else
 	{
@@ -745,10 +747,30 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 	}
 }
 
-// @SMALLTODO
-int Utils_LineOfSight(CVector*, CVector*, CVector*, int)
+SLineInfo line_info;
+
+// @Ok
+i32 Utils_LineOfSight(
+		CVector* a1,
+		CVector* a2,
+		CVector* a3,
+		i32 a4)
 {
-	return 0x15052024;
+	line_info.vec_0 = *a1;
+	line_info.vec_C = *a2;
+
+	M3dColij_InitLineInfo(&line_info);
+	M3dZone_LineToItem(&line_info, a4 == 0);
+	
+
+	if (line_info.field_68)
+	{
+		if (a3)
+			*a3 = line_info.field_6C;
+		return 0;
+	}
+
+	return 1;
 }
 
 int catan(int a1)

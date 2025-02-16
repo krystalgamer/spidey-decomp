@@ -163,9 +163,11 @@ void CManipOb::Smash(void)
 	v4.field_24 = 0;
 	v4.field_28 = 0;
 	v4.field_2C = 0;
-	v4.field_6C = 0;
-	v4.field_70 = 0;
-	v4.field_74 = 0;
+
+	v4.field_6C.vx = 0;
+	v4.field_6C.vy = 0;
+	v4.field_6C.vz = 0;
+
 	v4.field_78.vx = 0;
 	v4.field_78.vy = (i16)0xF000;
 	v4.field_78.vz = 0;

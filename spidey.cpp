@@ -1453,9 +1453,10 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 	v21.field_28 = 0;
 	v21.field_2C = 0;
 
-	v21.field_6C = 0;
-	v21.field_70 = 0;
-	v21.field_74 = 0;
+	v21.field_6C.vx = 0;
+	v21.field_6C.vy = 0;
+	v21.field_6C.vz = 0;
+
 	v21.field_78.vx = 0;
 	v21.field_78.vy = 0;
 	v21.field_78.vz = 0;
