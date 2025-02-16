@@ -11,7 +11,6 @@
 EXPORT CCop* gCopGlobal;
 static unsigned char gAttackFlagsRelated;
 
-extern CVector gGlobalNormal;
 extern CPlayer *MechList;
 extern CBaddy *BaddyList;
 

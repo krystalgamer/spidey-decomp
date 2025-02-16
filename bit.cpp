@@ -9,6 +9,8 @@
 #include "ps2lowsfx.h"
 
 
+CVector gGlobalNormal;
+
 SAnimFrame* gAnimTable[0x1D];
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
@@ -30,7 +32,7 @@ i32 gTimerRelated;
 EXPORT CBit* NonRenderedBitList;
 EXPORT CBit* Linked2EndedBitListLeftover;
 EXPORT CBit* PolyLineList;
-EXPORT CBit* GPolyLineList;
+CBit* GPolyLineList;
 EXPORT CBit* QuadBitList;
 EXPORT CBit* GenPolyList;
 EXPORT CBit* GlassList;

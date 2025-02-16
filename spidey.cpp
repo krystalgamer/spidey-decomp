@@ -21,7 +21,6 @@ CItem* MiscellaneousRenderingList;
 
 u8 gSpideyPsxIndex;
 CPlayer* MechList;
-EXPORT CVector gGlobalNormal;
 extern i32 CurrentSuit;
 
 EXPORT i32* gPlayerAnimRelated[1];

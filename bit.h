@@ -370,6 +370,9 @@ class CWibbly : public CGouraudRibbon
 
 };
 
+EXPORT extern CBit* GPolyLineList;
+EXPORT extern CVector gGlobalNormal;
+
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);

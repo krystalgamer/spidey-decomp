@@ -13,10 +13,13 @@ struct SLineSeg
 	u8 r;
 	u8 g;
 	u8 b;
+	u8 code;
 };
 
 class CGPolyLine : public CBit {
 public:
+
+	EXPORT CGPolyLine(i32);
 
 	i32 mNumSegs;
 

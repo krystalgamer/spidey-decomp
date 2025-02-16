@@ -475,8 +475,6 @@ void Shell_VerySmallFont(void)
 // fill these
 EXPORT SpideyIconRelated SpideyIcons[8];
 
-extern CVector gGlobalNormal;
-
 
 const i32 NUM_LEVELS = 34;
 EXPORT u8 LevelIndexes[NUM_LEVELS];
