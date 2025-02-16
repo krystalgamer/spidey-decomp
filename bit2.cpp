@@ -4,6 +4,17 @@
 #include "validate.h"
 
 // @Ok
+void CGPolyLine::SetSemiTransparent(void)
+{
+	for (i32 i = 0; i < this->mNumSegs; i++)
+	{
+		this->mSegs[i].code |= 2;
+	}
+
+	this->mCode |= 2;
+}
+
+// @Ok
 // @Note: not matching because there's a single write for the r,g,b,code
 // it can match with that commented part but i don't want to do it that way
 CGPolyLine::CGPolyLine(i32 numsegs)

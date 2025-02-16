@@ -20,6 +20,7 @@ class CGPolyLine : public CBit {
 public:
 
 	EXPORT CGPolyLine(i32);
+	EXPORT void SetSemiTransparent(void);
 
 	i32 mNumSegs;
 
@@ -32,7 +33,6 @@ public:
 	u8 mCode;
 
 	unsigned char padAfter53[0x3];
-
 
 	u8 field_57;
 };
