@@ -194,7 +194,6 @@ void DisplayScore(
 		sprintf(v9, "%d", a3);
 		Mess_DrawText(a1, a2, v9, 0, 0x1000);
 	}
-
 }
 
 // @Ok

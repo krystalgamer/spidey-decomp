@@ -79,10 +79,18 @@ INLINE i32* CSpClone::GetNewCommandBlock(u32 a1)
 	return res;
 }
 
-// @SMALLTODO
-void CSpClone::KillCommandBlockByID(i32)
+// @Ok
+// @Matching
+void CSpClone::KillCommandBlockByID(i32 a2)
 {
-    printf("CSpClone::KillCommandBlockByID(i32)");
+	i32* i = this->field_34C;
+	while(i)
+	{
+		if (*i == a2)
+			this->KillCommandBlock(i);
+
+		i = reinterpret_cast<i32*>(i[i[1] - 1]);
+	}
 }
 
 // @MEDIUMTODO
