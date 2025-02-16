@@ -456,6 +456,10 @@ i32 validate(void)
 	validate_ConvertPSXPaletteToPC();
 	validate_BmpHeader();
 	validate_Load8BitBMP2();
+	validate_CWibbling3DExplosion();
+	validate_C3DExplosion();
+	validate_CGrenadeWave();
+	validate_CGrenadeExplosion();
 
 	puts("[*] Validation done!");
 

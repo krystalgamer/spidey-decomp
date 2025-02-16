@@ -9,6 +9,9 @@
 #include "exp.h"
 #include "spidey.h"
 #include "camera.h"
+#include "chunk.h"
+#include "ps2pad.h"
+#include "front.h"
 
 extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -257,11 +260,53 @@ void CChopperMissile::AI(void)
 	printf("void CChopperMissile::AI(void)");
 }
 
-// @SMALLTODO
-i32 CChopperMissile::Explode(void)
+// @Ok
+// @Matching
+void CChopperMissile::Explode(void)
 {
-	printf("i32 CChopperMissile::Explode(void)");
-	return 0x23072024;
+	if (this->field_11C)
+	{
+		Chunk_ChunkItemByChecksum(this->field_11C);
+	}
+
+	u32 v2 = Utils_Dist(&this->mPos, &MechList->mPos);
+
+	if (v2 < 0x19A)
+	{
+		SHitInfo v7;
+		v7.field_C.vx = 0;
+		v7.field_C.vy = 0;
+		v7.field_C.vz = 0;
+
+		v7.field_0 = 6;
+		v7.field_4 = 24;
+
+		if ( v2 < 0x118 )
+			v7.field_8 = 100;
+		else
+			v7.field_8 = 100 - 95 * (v2 - 280) / 130;
+
+		MechList->Hit(&v7);
+	}
+
+	if (v2 < 0x320 && gSaveGame.field_7B)
+	{
+		Pad_ActuatorOn(0, 0x3Cu, 1, 0x64u);
+	}
+
+	new CGrenadeWave(
+			&this->mPos,
+			0x80u,
+			0x60u,
+			0x10u,
+			512,
+			7);
+
+
+	this->field_F8->field_54 = 1;
+	this->field_F8->mProtected = 0;
+	this->field_F8 = 0;
+	this->Die();
 }
 
 // @BIGTODO
@@ -920,6 +965,8 @@ void validate_CChopperMissile(void)
 	VALIDATE(CChopperMissile, field_10C, 0x10C);
 
 	VALIDATE(CChopperMissile, field_110, 0x110);
+	VALIDATE(CChopperMissile, field_11C, 0x11C);
+
 	VALIDATE(CChopperMissile, field_120, 0x120);
 	VALIDATE(CChopperMissile, field_124, 0x124);
 

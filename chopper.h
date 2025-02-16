@@ -217,7 +217,7 @@ class CChopperMissile : public CBody
 		EXPORT virtual ~CChopperMissile(void);
 		EXPORT i32 GetFinalTargetNode(i32);
 		EXPORT void CommonInitialisation(void);
-		EXPORT i32 Explode(void);
+		EXPORT void Explode(void);
 
 
 		EXPORT virtual void AI(void);
@@ -233,7 +233,7 @@ class CChopperMissile : public CBody
 
 		i32 field_10C;
 		CVector field_110;
-		u8 padAfter110[4];
+		i32 field_11C;
 
 		i32 field_120;
 		Texture* field_124;

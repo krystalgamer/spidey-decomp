@@ -182,7 +182,9 @@ class CRibbon : public CNonRenderedBit
 class CSmokeTrail : public CRibbon
 {
 	public:
-		unsigned char pad[28];
+		unsigned char pad[24];
+
+		i32 field_54;
 
 		EXPORT CSmokeTrail(CVector*, i32, i32, i32, i32);
 };

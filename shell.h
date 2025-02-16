@@ -23,8 +23,10 @@ struct SSaveGame
 	u8 padAfter3F[0x54-0x3F-1];
 
 	i8 mDifficulty;
+	u8 padAfter54[0x7B-0x54-1];
 
-	u8 padBottom[0xBC-0x54-1];
+	u8 field_7B;
+	u8 padBottom[0xBC-0x7B-1];
 };
 
 class CWobblyGlow : public CGlow

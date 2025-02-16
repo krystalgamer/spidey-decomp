@@ -4,6 +4,132 @@
 
 #include "validate.h"
 
+// @SMALLTODO
+void C3DExplosion::AI(void)
+{
+    printf("C3DExplosion::AI(void)");
+}
+
+// @SMALLTODO
+C3DExplosion::C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)
+{
+    printf("C3DExplosion::C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+C3DExplosion::~C3DExplosion(void)
+{
+    printf("C3DExplosion::~C3DExplosion(void)");
+}
+
+// @SMALLTODO
+void CGlowFlash::ChooseRadii(void)
+{
+    printf("CGlowFlash::ChooseRadii(void)");
+}
+
+// @SMALLTODO
+CGlowFlash::~CGlowFlash(void)
+{
+    printf("CGlowFlash::~CGlowFlash(void)");
+}
+
+// @SMALLTODO
+CGrenadeExplosion::CGrenadeExplosion(CVector const *)
+{
+    printf("CGrenadeExplosion::CGrenadeExplosion(CVector const *)");
+}
+
+// @SMALLTODO
+void CGrenadeExplosion::Move(void)
+{
+    printf("CGrenadeExplosion::Move(void)");
+}
+
+// @SMALLTODO
+CGrenadeExplosion::~CGrenadeExplosion(void)
+{
+    printf("CGrenadeExplosion::~CGrenadeExplosion(void)");
+}
+
+// @SMALLTODO
+CGrenadeWave::CGrenadeWave(CVector const *,u8,u8,u8,i32,i32)
+{
+    printf("CGrenadeWave::CGrenadeWave(CVector const *,u8,u8,u8,i32,i32)");
+}
+
+// @SMALLTODO
+void CGrenadeWave::Move(void)
+{
+    printf("CGrenadeWave::Move(void)");
+}
+
+// @SMALLTODO
+CGrenadeWave::~CGrenadeWave(void)
+{
+    printf("CGrenadeWave::~CGrenadeWave(void)");
+}
+
+// @MEDIUMTODO
+CItemFrag::CItemFrag(u32 *,CVector *,CVector *,i32)
+{
+    printf("CItemFrag::CItemFrag(u32 *,CVector *,CVector *,i32)");
+}
+
+// @MEDIUMTODO
+void CItemFrag::Move(void)
+{
+    printf("CItemFrag::Move(void)");
+}
+
+// @SMALLTODO
+CItemFrag::~CItemFrag(void)
+{
+    printf("CItemFrag::~CItemFrag(void)");
+}
+
+// @SMALLTODO
+CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32)
+{
+    printf("CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void CRipple::Move(void)
+{
+    printf("CRipple::Move(void)");
+}
+
+// @SMALLTODO
+CRipple::~CRipple(void)
+{
+    printf("CRipple::~CRipple(void)");
+}
+
+// @SMALLTODO
+CWibbling3DExplosion::CWibbling3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)
+{
+    printf("CWibbling3DExplosion::CWibbling3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+CWibbling3DExplosion::~CWibbling3DExplosion(void)
+{
+    printf("CWibbling3DExplosion::~CWibbling3DExplosion(void)");
+}
+
+// @MEDIUMTODO
+void Exp_Big3DExplosion(CVector const *)
+{
+    printf("Exp_Big3DExplosion(CVector const *)");
+}
+
+// @SMALLTODO
+void GetRandomPosition(CVector const *,CVector *,i32)
+{
+    printf("GetRandomPosition(CVector const *,CVector *,i32)");
+}
+
 // @Ok
 void Exp_SmallExplosion(CVector* a1)
 {
@@ -48,7 +174,7 @@ CFlameExplosion::~CFlameExplosion(void)
 
 // @Ok
 CFlameExplosion::CFlameExplosion(
-		CVector* a2,
+		const CVector* a2,
 		i32 a3,
 		i32 a4,
 		i32 a5)
@@ -100,12 +226,6 @@ CGlowFlash::CGlowFlash(
 	this->field_E = a20;
 	print_if_false(a20 || this->field_5C, "CGlowFlash centrefaderate and lifetime both zero.");
 	this->ChooseRadii();
-}
-
-// @SMALLTODO
-void CGlowFlash::ChooseRadii(void)
-{
-	printf("CGlowFlash::ChooseRadii(void)");
 }
 
 // @SMALLTODO
@@ -192,4 +312,21 @@ void validate_CFlameExplosion(void)
 	VALIDATE(CFlameExplosion, field_3F, 0x3F);
 
 	VALIDATE(CFlameExplosion, field_40, 0x40);
+}
+
+void validate_CWibbling3DExplosion(void)
+{
+}
+
+void validate_C3DExplosion(void)
+{
+}
+
+void validate_CGrenadeWave(void)
+{
+	VALIDATE_SIZE(CGrenadeWave, 0x70);
+}
+
+void validate_CGrenadeExplosion(void)
+{
 }

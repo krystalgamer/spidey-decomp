@@ -1503,4 +1503,6 @@ void validate_SSaveGame(void)
 	VALIDATE(SSaveGame, field_3F, 0x3F);
 
 	VALIDATE(SSaveGame, mDifficulty, 0x54);
+
+	VALIDATE(SSaveGame, field_7B, 0x7B);
 }
