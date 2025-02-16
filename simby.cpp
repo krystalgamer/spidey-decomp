@@ -798,12 +798,13 @@ void Simby_CreateEmber(const unsigned int* a1, unsigned int*)
 	new CEmber(vec, vec->vy);
 }
 
-// @SMALLTODO
-// figure out the globals involved
+// @Ok
+// @Validate
 CSkidMark::CSkidMark(void)
 {
+	this->SetTexture(gAnimTable[25]->pTexture);
 	this->SetSemiTransparent();
-	this->SetTint(0x2F, 9, 44);
+	this->SetTint(0x2Fu, 9, 44);
 	this->mType = 18;
 }
 

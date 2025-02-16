@@ -2,6 +2,7 @@
 
 i32 gGlassShatterSound;
 
+// @Ok
 void Shatter_MaybeMakeGlassShatterSound(void)
 {
 	gGlassShatterSound = 0;

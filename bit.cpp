@@ -688,6 +688,12 @@ void CQuadBit::SetTexture(int a, int b){
 	
 }
 
+// @SMALLTODO
+void CQuadBit::SetTexture(Texture*)
+{
+	printf("void CQuadBit::SetTexture(Texture*)");
+}
+
 // @Ok
 CFT4Bit::~CFT4Bit()
 {

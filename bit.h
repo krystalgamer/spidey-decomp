@@ -104,6 +104,7 @@ public:
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32, i32);
 	EXPORT void SetTexture(int, int);
 	EXPORT void SetTexture(u32);
+	EXPORT void SetTexture(Texture*);
 };
 
 struct SCFT4BitTexture
