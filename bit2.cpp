@@ -43,13 +43,15 @@ void CPolyLine::SetSemiTransparent(void)
 void validate_CGPolyLine(void){
 	VALIDATE_SIZE(CGPolyLine, 0x58);
 
-	VALIDATE(CGPolyLine, field_40, 0x40);
-	VALIDATE(CGPolyLine, field_44, 0x44);
+	VALIDATE(CGPolyLine, mNumSegs, 0x3C);
 
-	VALIDATE(CGPolyLine, field_50, 0x50);
-	VALIDATE(CGPolyLine, field_51, 0x51);
-	VALIDATE(CGPolyLine, field_52, 0x52);
-	VALIDATE(CGPolyLine, field_53, 0x53);
+	VALIDATE(CGPolyLine, mSegs, 0x40);
+	VALIDATE(CGPolyLine, mStart, 0x44);
+
+	VALIDATE(CGPolyLine, mStartR, 0x50);
+	VALIDATE(CGPolyLine, mStartG, 0x51);
+	VALIDATE(CGPolyLine, mStartB, 0x52);
+	VALIDATE(CGPolyLine, mCode, 0x53);
 
 	VALIDATE(CGPolyLine, field_57, 0x57);
 }

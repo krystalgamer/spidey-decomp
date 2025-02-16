@@ -18,20 +18,20 @@ struct SLineSeg
 class CGPolyLine : public CBit {
 public:
 
-	unsigned char padTop[0x40-0x3C];
+	i32 mNumSegs;
 
-	int field_40;
-	CVector field_44;
+	SLineSeg* mSegs;
+	CVector mStart;
 	
-	unsigned char field_50;
-	unsigned char field_51;
-	unsigned char field_52;
-	unsigned char field_53;
+	u8 mStartR;
+	u8 mStartG;
+	u8 mStartB;
+	u8 mCode;
 
 	unsigned char padAfter53[0x3];
 
 
-	unsigned char field_57;
+	u8 field_57;
 };
 
 class CGLine : public CBit
