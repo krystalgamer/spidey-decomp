@@ -4,6 +4,14 @@
 #include "validate.h"
 
 // @Ok
+CGPolyLine::~CGPolyLine()
+{
+	Mem_Delete(this->mSegs);
+	this->DeleteFrom(&GPolyLineList);
+}
+
+// @Ok
+// @Test
 void CGPolyLine::SetSemiTransparent(void)
 {
 	for (i32 i = 0; i < this->mNumSegs; i++)

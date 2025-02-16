@@ -20,6 +20,7 @@ class CGPolyLine : public CBit {
 public:
 
 	EXPORT CGPolyLine(i32);
+	EXPORT ~CGPolyLine();
 	EXPORT void SetSemiTransparent(void);
 
 	i32 mNumSegs;
