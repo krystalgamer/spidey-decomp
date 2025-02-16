@@ -28,10 +28,10 @@ void CGlowFlash::ChooseRadii(void)
     printf("CGlowFlash::ChooseRadii(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CGlowFlash::~CGlowFlash(void)
 {
-    printf("CGlowFlash::~CGlowFlash(void)");
 }
 
 // @SMALLTODO
