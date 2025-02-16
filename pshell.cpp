@@ -154,10 +154,47 @@ i32 ActivateCheat(i32)
 	return 0;
 }
 
-// @SMALLTODO
-void DisplayScore(i32,i32,long,i32)
+// @Ok
+// @NotMatching - those ++ are weird man
+void DisplayScore(
+		i32 a1,
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("DisplayScore(i32,i32,long,i32)");
+	char v9[0x34];
+	if (!a4)
+	{
+		i32 v4 = a3 / 6 / 600;
+		i32 v5 = a3 / 6 % 600;
+
+		if ( v4 > 99 )
+			v4 = 99;
+
+		char* v6 = &v9[0];
+		if ( v4 > 9 )
+		{
+			v6 = &v9[1];
+			v9[0] = v4 / 10 + '0';
+		}
+
+		*v6 = v4 % 10 + '0';
+		char* v7 = v6 + 1;
+		*v7++ = 58;
+		*v7++ = (char)v5 / 100 + '0';
+		*v7++ = v5 % 100 / 10 + '0';
+		*v7++ = 46;
+
+		*v7 = v5 % 100 % 10 + '0';
+		v7[1] = 0;
+		Mess_DrawText(a1, a2, v9, 0, 0x1000);
+	}
+	else
+	{
+		sprintf(v9, "%d", a3);
+		Mess_DrawText(a1, a2, v9, 0, 0x1000);
+	}
+
 }
 
 // @Ok
