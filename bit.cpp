@@ -348,10 +348,17 @@ CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32)
 	printf("CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);");
 }
 
-// @SMALLTODO
-void CGlow::SetFringeWidth(u32, u32)
+// @Ok
+// @Matching
+void CGlow::SetFringeWidth(u32 Fringe, u32 Width)
 {
-	printf("CGlow::SetFringeWidth(u32, u32)");
+	print_if_false(Fringe < this->mNumFringes, "Bad Fringe sent to SetFringeWidth");
+
+	SFringeQuad* pFringe = &this->mpFringes[Fringe * this->mNumSections];
+	for (u32 i = 0; i < this->mNumSections; i++)
+	{
+		pFringe[i].Width = Width;
+	}
 }
 
 // @Ok
