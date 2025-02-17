@@ -220,8 +220,8 @@ class CGlow : public CBit
 		EXPORT void SetFringeWidth(u32, u32);
 		EXPORT void SetFringeRGB(u32, u8, u8, u8);
 
-		int* field_3C;
-		unsigned char padAfter3C[0x44-0x3C-4];
+		i32* mpSections;
+		void* mpFringes;
 
 		u32 mNumSections;
 		u32 mNumFringes;
@@ -230,8 +230,7 @@ class CGlow : public CBit
 		u8 padAfter50[0x54-0x50-2];
 
 		u16 field_54;
-
-		unsigned char padBottom[0x5C-0x54-2];
+		u32 mMask;
 };
 
 class CLinked2EndedBit : public CFT4Bit

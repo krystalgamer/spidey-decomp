@@ -402,7 +402,7 @@ CGlow::CGlow(u32 a1, u32 a2)
 // @Ok
 CGlow::~CGlow(void)
 {
-	Mem_Delete(static_cast<void*>(this->field_3C));
+	Mem_Delete(static_cast<void*>(this->mpSections));
 	this->DeleteFrom(reinterpret_cast<CBit**>(&GlowList));
 }
 
@@ -1115,13 +1115,16 @@ void validate_CGlow(void)
 {
 	VALIDATE_SIZE(CGlow, 0x5C);
 
-	VALIDATE(CGlow, field_3C, 0x3C);
+	VALIDATE(CGlow, mpSections, 0x3C);
+	VALIDATE(CGlow, mpFringes, 0x40);
+
 	VALIDATE(CGlow, mNumSections, 0x44);
 	VALIDATE(CGlow, mNumFringes, 0x48);
 	VALIDATE(CGlow, mCentreCodeBGR, 0x4C);
 	VALIDATE(CGlow, mStepAngle, 0x50);
 
 	VALIDATE(CGlow, field_54, 0x54);
+	VALIDATE(CGlow, mMask, 0x58);
 }
 
 void validate_CLinked2EndedBit(void)
