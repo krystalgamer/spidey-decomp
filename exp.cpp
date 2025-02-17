@@ -89,9 +89,27 @@ CItemFrag::~CItemFrag(void)
 }
 
 // @SMALLTODO
-CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32 a9) : CGlow(a9, 2)
+CRipple::CRipple(
+		const CVector* a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8,
+		i32 a9) : CGlow(a9, 2)
 {
-    printf("CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32)");
+	this->mPos = *a2;
+
+	this->field_5C[0] = a3;
+	this->field_5C[1] = a4;
+	this->field_5C[2] = a5;
+
+	this->field_60 = a7;
+	this->field_64 = 0;
+	this->field_68 = a6;
+
+	this->mSkipTriangles = 1;
 }
 
 // @SMALLTODO
@@ -333,4 +351,11 @@ void validate_CGrenadeExplosion(void)
 
 void validate_CRipple(void)
 {
+	VALIDATE_SIZE(CRipple, 0x6C);
+
+	VALIDATE(CRipple, field_5C, 0x5C);
+
+	VALIDATE(CRipple, field_60, 0x60);
+	VALIDATE(CRipple, field_64, 0x64);
+	VALIDATE(CRipple, field_68, 0x68);
 }

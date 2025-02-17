@@ -1065,7 +1065,7 @@ void INLINE CWobblyGlow::Move(void)
 void CShellMysterioHeadGlow::Move(void)
 {
 	CWobblyGlow::Move();
-	this->field_54 += this->field_A4;
+	this->mAngle += this->field_A4;
 }
 
 // @Ok

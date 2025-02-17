@@ -1161,8 +1161,9 @@ void validate_CGlow(void)
 	VALIDATE(CGlow, mNumFringes, 0x48);
 	VALIDATE(CGlow, mCentreCodeBGR, 0x4C);
 	VALIDATE(CGlow, mStepAngle, 0x50);
+	VALIDATE(CGlow, mSkipTriangles, 0x52);
 
-	VALIDATE(CGlow, field_54, 0x54);
+	VALIDATE(CGlow, mAngle, 0x54);
 	VALIDATE(CGlow, mMask, 0x58);
 }
 

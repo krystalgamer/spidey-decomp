@@ -8,7 +8,13 @@
 class CRipple : public CGlow
 {
 	public:
-		EXPORT CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32);
+		u8 field_5C[4];
+		i32 field_60;
+		i32 field_64;
+		i32 field_68;
+		
+
+		EXPORT CRipple(const CVector *,u8,u8,u8,i32,i32,i32,i32);
 		EXPORT ~CRipple(void);
 
 		EXPORT virtual void Move(void);

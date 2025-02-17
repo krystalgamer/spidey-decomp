@@ -239,9 +239,9 @@ class CGlow : public CBit
 		u32 mNumFringes;
 		u32 mCentreCodeBGR;
 		i16 mStepAngle;
-		u8 padAfter50[0x54-0x50-2];
+		u8 mSkipTriangles;
 
-		u16 field_54;
+		u16 mAngle;
 		u32 mMask;
 };
 
