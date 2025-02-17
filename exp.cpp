@@ -88,7 +88,7 @@ CItemFrag::~CItemFrag(void)
     printf("CItemFrag::~CItemFrag(void)");
 }
 
-// @SMALLTODO
+// @Ok
 CRipple::CRipple(
 		const CVector* a2,
 		u8 a3,
@@ -110,6 +110,15 @@ CRipple::CRipple(
 	this->field_68 = a6;
 
 	this->mSkipTriangles = 1;
+
+	this->SetCentreRGB(0, 0, 0);
+	this->SetRGB(0, 0, 0);
+	this->SetRadius(0);
+	this->SetFringeWidth(0, a8);
+	this->SetFringeWidth(1u, a8);
+	this->SetFringeRGB(0, this->field_5C[0], this->field_5C[1], this->field_5C[2]);
+	this->SetFringeRGB(1u, 0, 0, 0);
+	this->mAngle = Rnd(1024);
 }
 
 // @SMALLTODO
