@@ -354,10 +354,23 @@ void CGlow::SetFringeWidth(u32, u32)
 	printf("CGlow::SetFringeWidth(u32, u32)");
 }
 
-// @SMALLTODO
-void CGlow::SetFringeRGB(u32, u8, u8, u8)
+// @Ok
+// @CloseMatching - bruh lea vs add
+void CGlow::SetFringeRGB(
+		u32 Fringe,
+		u8 r,
+		u8 g,
+		u8 b)
 {
-	printf("void CGlow::SetFringeRGB(u32, u8, u8, u8)");
+	print_if_false(Fringe < this->mNumFringes, "Bad Fringe sent to SetFringeRGB");
+
+	u32 val = (((((0x3A << 8) | b) << 8) | g ) << 8) | r;
+
+	SFringeQuad* pFringe = &this->mpFringes[Fringe * this->mNumFringes];
+	for (u32 i = 0; i < this->mNumSections; i++)
+	{
+		pFringe[i].CodeBGR = val;
+	}
 }
 
 // @SMALLTODO
