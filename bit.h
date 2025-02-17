@@ -8,6 +8,12 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+struct SSection
+{
+	u32 Radius;
+	u32 PadBGR;
+};
+
 struct SAnimFrame
 {
 	char OffX;
@@ -220,7 +226,7 @@ class CGlow : public CBit
 		EXPORT void SetFringeWidth(u32, u32);
 		EXPORT void SetFringeRGB(u32, u8, u8, u8);
 
-		i32* mpSections;
+		SSection* mpSections;
 		void* mpFringes;
 
 		u32 mNumSections;
@@ -417,6 +423,7 @@ void validate_CTextBox(void);
 void validate_CFireyExplosion(void);
 void validate_CWibbly(void);
 void validate_SBitServerEntry(void);
+void validate_SSection(void);
 
 
 #endif

@@ -461,6 +461,7 @@ i32 validate(void)
 	validate_CGrenadeWave();
 	validate_CGrenadeExplosion();
 	validate_CRipple();
+	validate_SSection();
 
 	puts("[*] Validation done!");
 

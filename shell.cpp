@@ -1057,7 +1057,7 @@ void INLINE CWobblyGlow::Move(void)
 	{
 		this->mInc[8+i] += this->mInc[i];
 		int v3 = this->mInc[8+i];
-		this->field_3C[2*i] = this->mInnerRadius + this->mAmplitude * word_610C48[2 * (v3 & 0xFFF)] / 4096;
+		this->mpSections[i].Radius = this->mInnerRadius + this->mAmplitude * word_610C48[2 * (v3 & 0xFFF)] / 4096;
 	}
 }
 

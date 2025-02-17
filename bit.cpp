@@ -972,9 +972,9 @@ void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4
 // understand what 3C is
 void CGlow::SetRadius(int radius)
 {
-	for (int i = 0; i < this->mNumSections; i++)
+	for (u32 i = 0; i < this->mNumSections; i++)
 	{
-		this->field_3C[2*i] = radius;
+		this->mpSections[i].Radius = radius;
 	}
 }
 
@@ -991,13 +991,13 @@ void CSimpleTexturedRibbon::SetRGB(unsigned char r, unsigned char g, unsigned ch
 }
 
 // @Ok
-void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
+void CGlow::SetRGB(u8 r, u8 g, u8 b)
 {
-	int value = (r | (((b << 8) | g) << 8));
+	u32 value = (r | (((b << 8) | g) << 8));
 
 	for (u32 i = 0; i < this->mNumSections; i++)
 	{
-		this->field_3C[(2*i)+1] = value;
+		this->mpSections[i].PadBGR = value;
 	}
 }
 
@@ -1268,4 +1268,12 @@ void validate_SBitServerEntry(void)
 
 	VALIDATE(SBitServerEntry, field_0, 0x0);
 	VALIDATE(SBitServerEntry, field_4, 0x4);
+}
+
+void validate_SSection(void)
+{
+	VALIDATE_SIZE(SSection, 8);
+
+	VALIDATE(SSection, Radius, 0x0);
+	VALIDATE(SSection, PadBGR, 0x4);
 }
