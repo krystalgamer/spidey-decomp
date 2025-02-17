@@ -394,9 +394,28 @@ CSmokeTrail::CSmokeTrail(
 	printf("CSmokeTrail::CSmokeTrail(CVector*, i32, i32, i32, i32)");
 }
 
-// @SMALLTODO
-CGlow::CGlow(u32 a1, u32 a2)
+// @Ok
+// @Note: code works because sizeof(SFringeQuad) == sizeof(SSection), weird shit
+CGlow::CGlow(u32 NumPoints, u32 NumFringes)
 {
+	print_if_false(NumPoints != 0, "Bad NumPoints sent to CGlow");
+	this->mNumSections = 2 * NumPoints;
+	this->mStepAngle = 0x1000u / (2 * NumPoints);
+	this->mNumFringes = NumFringes;
+
+	// This shit weird
+	this->mpSections = static_cast<SSection*>(DCMem_New(sizeof(SSection) * (this->mNumSections + this->mNumSections * this->mNumFringes), 0, 1, 0, 1));
+
+	this->mpFringes = reinterpret_cast<SFringeQuad*>(&this->mpSections[this->mNumSections]);
+	for (u32 i = 0; i < this->mNumSections * this->mNumFringes; i++)
+	{
+		this->mpFringes[i].CodeBGR = 0x3A000000;
+	}
+
+	this->mCentreCodeBGR = 0x32000000;
+	this->mMask = -1;
+
+	this->AttachTo(reinterpret_cast<CBit**>(&GlowList));
 }
 
 // @Ok
@@ -1276,4 +1295,13 @@ void validate_SSection(void)
 
 	VALIDATE(SSection, Radius, 0x0);
 	VALIDATE(SSection, PadBGR, 0x4);
+}
+
+void validate_SFringeQuad(void)
+{
+	VALIDATE_SIZE(SFringeQuad, sizeof(SSection));
+	VALIDATE_SIZE(SFringeQuad, 8);
+
+	VALIDATE(SFringeQuad, Width, 0x0);
+	VALIDATE(SFringeQuad, CodeBGR, 0x4);
 }

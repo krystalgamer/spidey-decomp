@@ -8,6 +8,12 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+struct SFringeQuad
+{
+	u32 Width;
+	u32 CodeBGR;
+};
+
 struct SSection
 {
 	u32 Radius;
@@ -227,7 +233,7 @@ class CGlow : public CBit
 		EXPORT void SetFringeRGB(u32, u8, u8, u8);
 
 		SSection* mpSections;
-		void* mpFringes;
+		SFringeQuad* mpFringes;
 
 		u32 mNumSections;
 		u32 mNumFringes;
@@ -424,6 +430,7 @@ void validate_CFireyExplosion(void);
 void validate_CWibbly(void);
 void validate_SBitServerEntry(void);
 void validate_SSection(void);
+void validate_SFringeQuad(void);
 
 
 #endif

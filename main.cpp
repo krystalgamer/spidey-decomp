@@ -462,6 +462,7 @@ i32 validate(void)
 	validate_CGrenadeExplosion();
 	validate_CRipple();
 	validate_SSection();
+	validate_SFringeQuad();
 
 	puts("[*] Validation done!");
 
