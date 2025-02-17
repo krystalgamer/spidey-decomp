@@ -910,7 +910,7 @@ CSpecialDisplay::CSpecialDisplay(void)
 // @Ok
 void CGlow::SetCentreRGB(unsigned char a2, unsigned char a3, unsigned char a4)
 {
-	this->field_4C = 0x32000000 | (((a4 << 8) | a3) << 8) | a2;
+	this->mCentreCodeBGR = 0x32000000 | (((a4 << 8) | a3) << 8) | a2;
 }
 
 static CSVector gSparkTrajectory;
@@ -972,7 +972,7 @@ void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4
 // understand what 3C is
 void CGlow::SetRadius(int radius)
 {
-	for (int i = 0; i < this->field_44; i++)
+	for (int i = 0; i < this->mNumSections; i++)
 	{
 		this->field_3C[2*i] = radius;
 	}
@@ -995,7 +995,7 @@ void CGlow::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 {
 	int value = (r | (((b << 8) | g) << 8));
 
-	for (unsigned int i = 0; i < this->field_44; i++)
+	for (u32 i = 0; i < this->mNumSections; i++)
 	{
 		this->field_3C[(2*i)+1] = value;
 	}
@@ -1116,9 +1116,10 @@ void validate_CGlow(void)
 	VALIDATE_SIZE(CGlow, 0x5C);
 
 	VALIDATE(CGlow, field_3C, 0x3C);
-	VALIDATE(CGlow, field_44, 0x44);
-
-	VALIDATE(CGlow, field_4C, 0x4C);
+	VALIDATE(CGlow, mNumSections, 0x44);
+	VALIDATE(CGlow, mNumFringes, 0x48);
+	VALIDATE(CGlow, mCentreCodeBGR, 0x4C);
+	VALIDATE(CGlow, mStepAngle, 0x50);
 
 	VALIDATE(CGlow, field_54, 0x54);
 }

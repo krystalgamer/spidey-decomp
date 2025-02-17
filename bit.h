@@ -223,13 +223,13 @@ class CGlow : public CBit
 		int* field_3C;
 		unsigned char padAfter3C[0x44-0x3C-4];
 
-		unsigned int field_44;
-		unsigned char padAfter44[0x4C-0x44-4];
+		u32 mNumSections;
+		u32 mNumFringes;
+		u32 mCentreCodeBGR;
+		i16 mStepAngle;
+		u8 padAfter50[0x54-0x50-2];
 
-		int field_4C;
-		unsigned char padAfter4C[0x54-0x4C-4];
-
-		unsigned __int16 field_54;
+		u16 field_54;
 
 		unsigned char padBottom[0x5C-0x54-2];
 };

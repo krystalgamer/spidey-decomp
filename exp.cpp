@@ -330,3 +330,7 @@ void validate_CGrenadeWave(void)
 void validate_CGrenadeExplosion(void)
 {
 }
+
+void validate_CRipple(void)
+{
+}

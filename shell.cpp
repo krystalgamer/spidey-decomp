@@ -793,7 +793,7 @@ CWobblyGlow::CWobblyGlow(
 
 	this->mInnerRadius = InnerRadius;
 
-	for (i32 i = 0; i < this->field_44; i++)
+	for (u32 i = 0; i < this->mNumSections; i++)
 	{
 		this->mInc[i] = Rnd(4096);
 		this->mT[i] = Rnd(50) + 200;
@@ -1051,9 +1051,9 @@ static const __int16 *word_610C48 = (__int16*)0x610C48;
 
 // @NotOk
 // Global
-void __inline CWobblyGlow::Move(void)
+void INLINE CWobblyGlow::Move(void)
 {
-	for (unsigned int i = 0; i < this->field_44; i++)
+	for (u32 i = 0; i < this->mNumSections; i++)
 	{
 		this->mInc[8+i] += this->mInc[i];
 		int v3 = this->mInc[8+i];

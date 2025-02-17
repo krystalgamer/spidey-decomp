@@ -120,5 +120,6 @@ void validate_CWibbling3DExplosion(void);
 void validate_C3DExplosion(void);
 void validate_CGrenadeWave(void);
 void validate_CGrenadeExplosion(void);
+void validate_CRipple(void);
 
 #endif
