@@ -5,13 +5,13 @@
 
 #include "ob.h"
 
-class CRipple
+class CRipple : public CGlow
 {
 	public:
 		EXPORT CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32);
 		EXPORT ~CRipple(void);
 
-		EXPORT void CRipple::Move(void);
+		EXPORT virtual void Move(void);
 };
 
 class CGrenadeWave
@@ -39,7 +39,7 @@ class CGrenadeExplosion
 		EXPORT CGrenadeExplosion(const CVector*);
 		EXPORT ~CGrenadeExplosion(void);
 
-		EXPORT void CGrenadeExplosion::Move(void);
+		EXPORT void Move(void);
 };
 
 class C3DExplosion
@@ -47,7 +47,7 @@ class C3DExplosion
 	public:
 		EXPORT C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32);
 		EXPORT ~C3DExplosion(void);
-		EXPORT void C3DExplosion::AI(void);
+		EXPORT void AI(void);
 };
 
 class CFlameExplosion : public CNonRenderedBit

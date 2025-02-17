@@ -89,7 +89,7 @@ CItemFrag::~CItemFrag(void)
 }
 
 // @SMALLTODO
-CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32)
+CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32 a9) : CGlow(a9, 2)
 {
     printf("CRipple::CRipple(CVector const *,u8,u8,u8,i32,i32,i32,i32)");
 }
@@ -100,10 +100,10 @@ void CRipple::Move(void)
     printf("CRipple::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CRipple::~CRipple(void)
 {
-    printf("CRipple::~CRipple(void)");
 }
 
 // @SMALLTODO
