@@ -121,10 +121,32 @@ CRipple::CRipple(
 	this->mAngle = Rnd(1024);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CRipple::Move(void)
 {
-    printf("CRipple::Move(void)");
+	this->field_64 += this->field_68;
+
+	if (this->field_5C[0] >= this->field_60)
+		this->field_5C[0] -= this->field_60;
+	else
+		this->field_5C[0] = 0;
+
+	if (this->field_5C[1] >= this->field_60)
+		this->field_5C[1] -= this->field_60;
+	else
+		this->field_5C[1] = 0;
+
+	if (this->field_5C[2] >= this->field_60)
+		this->field_5C[2] -= this->field_60;
+	else
+		this->field_5C[2] = 0;
+
+	if ( !(this->field_5C[2] | (this->field_5C[1] | this->field_5C[0])) )
+		this->Die();
+
+	this->SetRadius( this->field_64);
+	this->SetFringeRGB(0, this->field_5C[0], this->field_5C[1], this->field_5C[2]);
 }
 
 // @Ok
