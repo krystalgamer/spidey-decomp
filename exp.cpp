@@ -1,6 +1,7 @@
 #include "exp.h"
 #include "utils.h"
 #include "mem.h"
+#include "bullet.h"
 
 #include "validate.h"
 
@@ -10,10 +11,48 @@ void C3DExplosion::AI(void)
     printf("C3DExplosion::AI(void)");
 }
 
-// @SMALLTODO
-C3DExplosion::C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)
+// @Ok
+// @Test
+C3DExplosion::C3DExplosion(
+		const CVector* a2,
+		char* a3,
+		i32 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		i32 a11,
+		i32 a12)
 {
-    printf("C3DExplosion::C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+	this->AttachTo(&BulletList);
+	this->InitItem(a3);
+	this->mModel = a4;
+	this->mPos = *a2;
+	this->mFlags |= 0x601u;
+	this->field_24 = 0x808080;
+
+	this->field_FC = a5;
+
+	this->field_28 = a6;
+	this->field_2A = (a8 * a6) >> 8;
+	this->field_2C = a6;
+
+	this->field_108 = a8;
+	this->field_104 = a7;
+	this->field_10C = a9;
+	this->field_110 = a10;
+
+	print_if_false(a10 != 0, "Zero faderate sent to C3DExplosion");
+	this->field_F8 = 0;
+	if (!a5)
+	{
+		this->mFlags &= ~1u;
+		this->field_F8 = 1;
+	}
+
+	this->mAccellorVel.vy = -4096 * (a11 + Rnd(a12));
 }
 
 // @SMALLTODO
@@ -369,6 +408,14 @@ void validate_CWibbling3DExplosion(void)
 
 void validate_C3DExplosion(void)
 {
+	VALIDATE_SIZE(C3DExplosion, 0x114);
+
+	VALIDATE(C3DExplosion, field_F8, 0xF8);
+	VALIDATE(C3DExplosion, field_FC, 0xFC);
+	VALIDATE(C3DExplosion, field_104, 0x104);
+	VALIDATE(C3DExplosion, field_108, 0x108);
+	VALIDATE(C3DExplosion, field_10C, 0x10C);
+	VALIDATE(C3DExplosion, field_110, 0x110);
 }
 
 void validate_CGrenadeWave(void)

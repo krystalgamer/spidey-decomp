@@ -48,12 +48,25 @@ class CGrenadeExplosion
 		EXPORT void Move(void);
 };
 
-class C3DExplosion
+class C3DExplosion : public CBody
 {
 	public:
-		EXPORT C3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32);
+		EXPORT C3DExplosion(const CVector *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32);
 		EXPORT ~C3DExplosion(void);
-		EXPORT void AI(void);
+		EXPORT virtual void AI(void);
+
+		u8 padTop[4];
+
+		u8 field_F8;
+		u8 padAfterF8[0x3];
+
+		i32 field_FC;
+		u8 padAfterFC[0x104-0xFC-4];
+
+		i32 field_104;
+		i32 field_108;
+		i32 field_10C;
+		i32 field_110;
 };
 
 class CFlameExplosion : public CNonRenderedBit
