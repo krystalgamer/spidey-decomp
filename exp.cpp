@@ -55,10 +55,11 @@ C3DExplosion::C3DExplosion(
 	this->mAccellorVel.vy = -4096 * (a11 + Rnd(a12));
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 C3DExplosion::~C3DExplosion(void)
 {
-    printf("C3DExplosion::~C3DExplosion(void)");
+	this->DeleteFrom(&BulletList);
 }
 
 // @SMALLTODO
