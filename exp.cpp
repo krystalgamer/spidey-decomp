@@ -5,6 +5,8 @@
 
 #include "validate.h"
 
+i32 g3DExplosions;
+
 // @Ok
 // @Matching
 void C3DExplosion::AI(void)
@@ -135,10 +137,17 @@ CGlowFlash::~CGlowFlash(void)
 {
 }
 
-// @SMALLTODO
-CGrenadeExplosion::CGrenadeExplosion(CVector const *)
+// @Ok
+// @Matching
+CGrenadeExplosion::CGrenadeExplosion(const CVector* a2)
 {
-    printf("CGrenadeExplosion::CGrenadeExplosion(CVector const *)");
+	Rnd(5);
+
+	C3DExplosion* pExp = new C3DExplosion(a2, "expgrnd", 0, 0, 300, 789, 256, 0, 13, 0, 0);
+	this->hExp = Mem_MakeHandle(pExp);
+
+	new C3DExplosion(a2, "expgrnd", 1, 0, 0, 500, 256, 0, 7, 0, 0);
+	++g3DExplosions;
 }
 
 // @SMALLTODO
@@ -490,6 +499,9 @@ void validate_CGrenadeWave(void)
 
 void validate_CGrenadeExplosion(void)
 {
+	VALIDATE_SIZE(CGrenadeExplosion, 0x4C);
+
+	VALIDATE(CGrenadeExplosion, hExp, 0x3C);
 }
 
 void validate_CRipple(void)
