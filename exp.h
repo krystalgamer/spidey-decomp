@@ -45,7 +45,7 @@ class CGrenadeExplosion : public CNonRenderedBit
 		EXPORT CGrenadeExplosion(const CVector*);
 		EXPORT ~CGrenadeExplosion(void);
 
-		EXPORT void Move(void);
+		EXPORT virtual void Move(void);
 
 		SHandle hExp;
 

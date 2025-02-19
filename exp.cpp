@@ -150,10 +150,14 @@ CGrenadeExplosion::CGrenadeExplosion(const CVector* a2)
 	++g3DExplosions;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGrenadeExplosion::Move(void)
 {
-    printf("CGrenadeExplosion::Move(void)");
+	if (!Mem_RecoverPointer(&this->hExp))
+	{
+		this->Die();
+	}
 }
 
 // @Ok
