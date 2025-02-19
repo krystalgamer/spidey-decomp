@@ -104,10 +104,29 @@ C3DExplosion::~C3DExplosion(void)
 	this->DeleteFrom(&BulletList);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGlowFlash::ChooseRadii(void)
 {
-    printf("CGlowFlash::ChooseRadii(void)");
+	for (u32 i = 0; i < this->mNumSections; i++)
+	{
+		if (i & 1)
+			this->mpSections[i].Radius = this->field_62 + Rnd(this->field_64);
+		else
+			this->mpSections[i].Radius = this->field_66 + Rnd(this->field_68);
+	}
+
+	if (this->field_62 >= this->field_6A)
+		this->field_62 -= this->field_6A;
+
+	if (this->field_64 >= this->field_6A)
+		this->field_64 -= this->field_6A;
+
+	if (this->field_66 >= this->field_6A)
+		this->field_66 -= this->field_6A;
+
+	if (this->field_68 >= this->field_6A)
+		this->field_68 -= this->field_6A;
 }
 
 // @Ok
