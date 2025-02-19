@@ -156,10 +156,11 @@ void CGrenadeExplosion::Move(void)
     printf("CGrenadeExplosion::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CGrenadeExplosion::~CGrenadeExplosion(void)
 {
-    printf("CGrenadeExplosion::~CGrenadeExplosion(void)");
+	--g3DExplosions;
 }
 
 // @SMALLTODO
