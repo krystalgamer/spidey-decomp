@@ -61,7 +61,7 @@ class C3DExplosion : public CBody
 		u8 padAfterF8[0x3];
 
 		i32 field_FC;
-		u8 padAfterFC[0x104-0xFC-4];
+		i32 field_100;
 
 		i32 field_104;
 		i32 field_108;

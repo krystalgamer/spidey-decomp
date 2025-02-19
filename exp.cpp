@@ -5,10 +5,52 @@
 
 #include "validate.h"
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void C3DExplosion::AI(void)
 {
-    printf("C3DExplosion::AI(void)");
+	i32 v4;
+	switch (this->field_F8)
+	{
+		case 0:
+			if (this->field_FC)
+			{
+				this->field_FC -= 1;
+			}
+			else
+			{
+				this->mFlags &= ~1u;
+				this->field_F8 = 1;
+			}
+			break;
+		case 1:
+			this->mPos.vy += this->mAccellorVel.vy;
+
+			this->field_28 += this->field_104;
+			this->field_2A = (this->field_28 * this->field_108) >> 8;
+			this->field_2C = this->field_28;
+			if (++this->field_100 >= this->field_10C)
+				this->field_F8 = 2;
+			break;
+		case 2:
+			this->mPos.vy += this->mAccellorVel.vy;
+
+			v4 = (this->field_24 & 0xFF) - this->field_110;
+			if (v4 <= 0)
+			{
+				v4 = 0;
+				this->Die();
+			}
+
+			this->field_24 = v4 | (v4 << 16) | (v4 << 8);
+			this->field_28 += this->field_104;
+			this->field_2A = (this->field_28 * this->field_108) >> 8;
+			this->field_2C = this->field_28;
+
+			break;
+		default:
+			print_if_false(0, "Bad C3DExplosion mode");
+	}
 }
 
 // @Ok
@@ -413,6 +455,9 @@ void validate_C3DExplosion(void)
 
 	VALIDATE(C3DExplosion, field_F8, 0xF8);
 	VALIDATE(C3DExplosion, field_FC, 0xFC);
+
+	VALIDATE(C3DExplosion, field_100, 0x100);
+
 	VALIDATE(C3DExplosion, field_104, 0x104);
 	VALIDATE(C3DExplosion, field_108, 0x108);
 	VALIDATE(C3DExplosion, field_10C, 0x10C);
