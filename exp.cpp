@@ -197,10 +197,10 @@ void CGrenadeWave::Move(void)
     printf("CGrenadeWave::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CGrenadeWave::~CGrenadeWave(void)
 {
-    printf("CGrenadeWave::~CGrenadeWave(void)");
 }
 
 // @MEDIUMTODO
