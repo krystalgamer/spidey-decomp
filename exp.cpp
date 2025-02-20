@@ -167,10 +167,28 @@ CGrenadeExplosion::~CGrenadeExplosion(void)
 	--g3DExplosions;
 }
 
-// @SMALLTODO
-CGrenadeWave::CGrenadeWave(CVector const *,u8,u8,u8,i32,i32)
+// @Ok
+// @Matching
+CGrenadeWave::CGrenadeWave(
+		const CVector *a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		i32 a6,
+		i32 a7)
+	: CRipple(a2, a3, a4, a5, 0, 0, 0, 6)
 {
-    printf("CGrenadeWave::CGrenadeWave(CVector const *,u8,u8,u8,i32,i32)");
+	this->field_6C = a6 / a7;
+
+	u8 v13 = a3;
+	if (a5 > a3)
+		v13 = a5;
+	if (a4 > v13)
+		v13 = a4;
+
+	this->field_60 = v13 / a7;
+
+	print_if_false(this->field_60 != 0, "Got a zero fade rate for CGrenadeWave");
 }
 
 // @SMALLTODO
@@ -500,6 +518,8 @@ void validate_C3DExplosion(void)
 void validate_CGrenadeWave(void)
 {
 	VALIDATE_SIZE(CGrenadeWave, 0x70);
+
+	VALIDATE(CGrenadeWave, field_6C, 0x6C);
 }
 
 void validate_CGrenadeExplosion(void)

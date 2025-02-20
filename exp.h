@@ -20,15 +20,15 @@ class CRipple : public CGlow
 		EXPORT virtual void Move(void);
 };
 
-class CGrenadeWave
+class CGrenadeWave : public CRipple
 {
 	public:
-		EXPORT CGrenadeWave(CVector const *,u8,u8,u8,i32,i32);
+		EXPORT CGrenadeWave(const CVector *,u8,u8,u8,i32,i32);
 		EXPORT ~CGrenadeWave(void);
 
 		EXPORT void Move(void);
 
-		u8 fullPad[0x70];
+		i32 field_6C;
 };
 
 class CWibbling3DExplosion
