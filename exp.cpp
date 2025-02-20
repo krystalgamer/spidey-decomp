@@ -191,10 +191,13 @@ CGrenadeWave::CGrenadeWave(
 	print_if_false(this->field_60 != 0, "Got a zero fade rate for CGrenadeWave");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGrenadeWave::Move(void)
 {
-    printf("CGrenadeWave::Move(void)");
+	CRipple::Move();
+	this->SetFringeWidth(0, this->field_6C + this->mpFringes->Width);
+	this->SetFringeWidth(1u, 50);
 }
 
 // @Ok
