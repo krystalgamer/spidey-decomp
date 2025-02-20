@@ -59,7 +59,7 @@ public:
 
 	i32 field_354;
 	i32 field_358;
-	u8 padAfter358[0x360-0x358-4];
+	i32 field_35C;
 
 	i32 field_360;
 	i32 field_364;

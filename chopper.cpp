@@ -12,6 +12,7 @@
 #include "chunk.h"
 #include "ps2pad.h"
 #include "front.h"
+#include <cmath>
 
 extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -187,11 +188,11 @@ i32 CChopper::DoArrivalAction(void)
 	return 0;
 }
 
-// @SMALLTODO
+// @Ok
 void CChopper::DoChopperPhysics(void)
 {
 	CVector v15 = this->mAccellorVel;
-	CVector v13 = { 5 };
+	CVector v13 = { 0 };
 	CVector v14 = { 0 };
 
 	for (i32 i = this->field_80; i; i++)
@@ -199,11 +200,29 @@ void CChopper::DoChopperPhysics(void)
 		this->mAccellorVel += this->gVec;
 		this->mAccellorVel %= this->field_78;
 		this->mAccellorVel.KillSmall();
+
+		this->field_330 += this->mAccellorVel;
+		this->AngleToTargetAngle();
+		this->SetHeight();
+		
+		this->mPos.vx = this->field_330.vx;
+		this->mPos.vz = this->field_330.vz;
 	}
 
-
-	this->SetHeight();
+	v13 = this->mAccellorVel - v15;
 	Utils_RotateWorldToObject(this, &v13, &v14);
+
+
+	if (abs(v14.vz) > 20480)
+		this->mAngles.vx = Utils_ShiftFilter(this->mAngles.vx, v14.vz > 0 ? 128 : -128, 5, 16);
+	else
+		this->mAngles.vx = Utils_ShiftFilter(this->mAngles.vx, 0, 1, 2);
+
+	if (abs(v14.vx) > 20480)
+		this->mAngles.vz = Utils_ShiftFilter(this->mAngles.vz, v14.vx > 0 ? -256 : 256, 5, 16);
+	else
+		this->mAngles.vz = Utils_ShiftFilter(this->mAngles.vz, 0, 1, 2);
+	this->field_35C = 0;
 }
 
 // @Ok
@@ -876,7 +895,7 @@ void INLINE CChopper::AdjustSineWaveAmplitude(int a2, int a3)
 // @Ok
 void INLINE CChopper::AngleToTargetAngle(void)
 {
-	int v1 = (this->field_360 & 0xFFF) - (this->mAngles.vy - 0xFFF);
+	i32 v1 = (this->field_360 & 0xFFF) - (this->mAngles.vy & 0xFFF);
 
 	if (v1 > 2048)
 	{
@@ -908,6 +927,8 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_354, 0x354);
 
 	VALIDATE(CChopper, field_358, 0x358);
+	VALIDATE(CChopper, field_35C, 0x35C);
+
 	VALIDATE(CChopper, field_360, 0x360);
 	VALIDATE(CChopper, field_364, 0x364);
 	VALIDATE(CChopper, field_368, 0x368);
