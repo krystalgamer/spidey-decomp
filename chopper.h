@@ -68,7 +68,8 @@ public:
 	u8 padAfter36C[0x374-0x36C-4];
 
 	i32 field_374;
-	u8 padAfter374[0x380-0x374-4];
+	i32 field_378;
+	u8 padAfter378[0x380-0x378-4];
 
 	i32 field_380;
 	i32 field_384;

@@ -193,10 +193,57 @@ void CChopper::DoChopperPhysics(void)
 	printf("void CChopper::DoChopperPhysics(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CChopper::SetHeight(void)
 {
-	printf("void CChopper::SetHeight(void)");
+	i32 v2;
+	switch(this->field_374)
+	{
+		case 0:
+			break;
+		case 2:
+			v2 = this->field_330.vy - (this->field_354 >> 12) * rcossin_tbl[this->field_378 & 0xFFF].sin;
+			if (this->mPos.vy != v2)
+			{
+				this->mPos.vy = Utils_ShiftFilter(this->mPos.vy, v2, 1, 12288);
+				break;
+			}
+			this->field_374 = 1;
+		case 1:
+			this->AdjustSineWaveAmplitude(0x10000, 182);
+			this->field_378 += 51;
+			this->mPos.vy = this->field_330.vy - (this->field_354 >> 12) * rcossin_tbl[this->field_378 & 0xFFF].sin;
+			break;
+		case 4:
+			this->field_378 = 1024;
+			this->field_374 = 3;
+		case 3:
+			this->AdjustSineWaveAmplitude(0x20000, 364);
+
+			this->mPos.vy = this->field_330.vy +
+				Utils_ShiftFilter(this->mPos.vy - this->field_330.vy,
+					-this->field_354,
+					1,
+					12288);
+			break;
+		case 5:
+			this->mPos.vy = this->field_330.vy + Utils_ShiftFilter(
+					this->mPos.vy - this->field_330.vy,
+					this->field_354,
+					1,
+					12288);
+			if (this->mPos.vy == this->field_330.vy + this->field_354)
+			{
+				this->field_378 = 3072;
+				this->field_374 = 2;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown height mode!");
+			break;
+	}
+
 }
 
 // @Ok
@@ -802,7 +849,7 @@ INLINE void CSniperTarget::BulletResult(bool result)
 }
 
 // @Ok
-void __inline CChopper::AdjustSineWaveAmplitude(int a2, int a3)
+void INLINE CChopper::AdjustSineWaveAmplitude(int a2, int a3)
 {
 	int tmp = this->field_354;
 	if (tmp != a2)
@@ -852,6 +899,7 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_36C, 0x36C);
 
 	VALIDATE(CChopper, field_374, 0x374);
+	VALIDATE(CChopper, field_378, 0x378);
 
 	VALIDATE(CChopper, field_380, 0x380);
 	VALIDATE(CChopper, field_384, 0x384);
