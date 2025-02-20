@@ -223,7 +223,7 @@ void CPowerUp::CreateBit(void)
 void CPowerUp::SetGravity(i32 a2, i32 a3)
 {
 	this->gVec.vy = a2;
-	this->field_79 = a3;
+	this->field_78.vy = a3;
 }
 
 // @Ok

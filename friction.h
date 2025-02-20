@@ -7,12 +7,14 @@
 #ifndef FRICTION_H
 #define FRICTION_H
 
+#include "export.h"
+
 class CFriction  
 {
 public:
-    unsigned char vx;
-    unsigned char vy;
-    unsigned char vz;
+    u8 vx;
+    u8 vy;
+    u8 vz;
 
 };
 

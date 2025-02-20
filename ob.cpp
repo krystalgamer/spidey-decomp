@@ -361,9 +361,9 @@ CBody::CBody()
 	this->gVec.vy = 0;
 	this->gVec.vz = 0;
 
-	this->field_78 = 0;
-	this->field_79 = 0;
-	this->field_7A = 0;
+	this->field_78.vx = 0;
+	this->field_78.vy = 0;
+	this->field_78.vz = 0;
 
 
 	this->csVector1.vx = 0;
@@ -394,9 +394,9 @@ CBody::CBody()
 	this->field_E8.vy = 0;
 	this->field_E8.vz = 0;
 
-	this->field_78 = 1;
-	this->field_79 = 1;
-	this->field_7A = 1;
+	this->field_78.vx = 1;
+	this->field_78.vy = 1;
+	this->field_78.vz = 1;
 
 	this->field_94 = 1;
 	this->field_95 = 1;
@@ -730,8 +730,6 @@ void validate_CBody(void){
 	VALIDATE(CBody, gVec, 0x6C);
 
 	VALIDATE(CBody, field_78, 0x78);
-	VALIDATE(CBody, field_79, 0x79);
-	VALIDATE(CBody, field_7A, 0x7A);
 
 
 	VALIDATE(CBody, field_7C, 0x7C);

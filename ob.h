@@ -90,10 +90,7 @@ public:
 	CVector mAccellorVel;
 	CVector gVec;
 
-	unsigned char field_78;
-	unsigned char field_79;
-	unsigned char field_7A;
-
+	CFriction field_78;
 
 	int field_7C;
 

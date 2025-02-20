@@ -190,7 +190,20 @@ i32 CChopper::DoArrivalAction(void)
 // @SMALLTODO
 void CChopper::DoChopperPhysics(void)
 {
-	printf("void CChopper::DoChopperPhysics(void)");
+	CVector v15 = this->mAccellorVel;
+	CVector v13 = { 5 };
+	CVector v14 = { 0 };
+
+	for (i32 i = this->field_80; i; i++)
+	{
+		this->mAccellorVel += this->gVec;
+		this->mAccellorVel %= this->field_78;
+		this->mAccellorVel.KillSmall();
+	}
+
+
+	this->SetHeight();
+	Utils_RotateWorldToObject(this, &v13, &v14);
 }
 
 // @Ok
@@ -685,9 +698,11 @@ CChopper::CChopper(i16* a2, i32 a3)
 	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))));
 
 	this->field_38 = 318;
-	this->field_78 = 3;
-	this->field_79 = 3;
-	this->field_7A = 3;
+
+	this->field_78.vx = 3;
+	this->field_78.vy = 3;
+	this->field_78.vz = 3;
+
 	this->mCBodyFlags &= ~0x10u;
 	this->field_DC = 0;
 	CBody::AttachTo(reinterpret_cast<CBody**>(&BaddyList));
@@ -859,7 +874,7 @@ void INLINE CChopper::AdjustSineWaveAmplitude(int a2, int a3)
 }
 
 // @Ok
-void CChopper::AngleToTargetAngle(void)
+void INLINE CChopper::AngleToTargetAngle(void)
 {
 	int v1 = (this->field_360 & 0xFFF) - (this->mAngles.vy - 0xFFF);
 

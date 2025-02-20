@@ -44,9 +44,10 @@ CManipOb::CManipOb(
 	this->field_38 = 401;
 
 	this->field_DE = a3;
-	this->field_78 = 12;
-	this->field_7A = 12;
-	this->field_79 = 12;
+
+	this->field_78.vx = 12;
+	this->field_78.vy = 12;
+	this->field_78.vz = 12;
 
 	u32* v6 = reinterpret_cast<u32*>(
 			(reinterpret_cast<u32>(
