@@ -218,10 +218,10 @@ void CItemFrag::Move(void)
     printf("CItemFrag::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CItemFrag::~CItemFrag(void)
 {
-    printf("CItemFrag::~CItemFrag(void)");
 }
 
 // @Ok

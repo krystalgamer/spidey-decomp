@@ -93,12 +93,13 @@ class CFlameExplosion : public CNonRenderedBit
 class CItemFrag : public CBit
 {
 	public:
-		unsigned char itemFragPad[0x7C];
 
 		EXPORT CItemFrag(u32 *,CVector *,CVector *,i32);
 		EXPORT ~CItemFrag(void);
 
-		EXPORT void Move(void);
+		EXPORT virtual void Move(void);
+
+		u8 itemFragPad[0x7C];
 
 };
 
