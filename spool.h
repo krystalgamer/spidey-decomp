@@ -29,6 +29,11 @@ struct AnimPacket
 	i32 mPsxOpenSpot;
 };
 
+struct SModel
+{
+	u16 Flags;
+};
+
 struct SPSXRegion {
 	// offset: 0000 (9 bytes)
 	char Filename[9];
@@ -44,7 +49,7 @@ struct SPSXRegion {
 	CItem* pSuper;
 
 	// offset: 0010 (36 bytes)
-	void **ppModels; // SMode
+	SModel **ppModels; // SMode
 
 	// offset: 0014
 	/*
@@ -138,6 +143,7 @@ void validate_SPSXRegion(void);
 void validate_TextureEntry(void);
 void validate_SAccess(void);
 void validate_AnimPacket(void);
+void validate_SModel(void);
 
 static const int MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];

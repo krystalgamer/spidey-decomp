@@ -783,7 +783,7 @@ void Spidey_CopyHeadModel(i32 Region)
 
 	if (!gSpideyHeadModel)
 	{
-		u16 * ptr = static_cast<u16*>(PSXRegion[Region].ppModels[7]);
+		u16 * ptr = reinterpret_cast<u16*>(PSXRegion[Region].ppModels[7]);
 		u16 size = ptr[1];
 
 		u16* result = static_cast<u16*>(DCMem_New(8 * size, 1, 1, 0, 1));

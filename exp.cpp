@@ -2,6 +2,9 @@
 #include "utils.h"
 #include "mem.h"
 #include "bullet.h"
+#include "spool.h"
+#include "crate.h"
+#include "shatter.h"
 
 #include "validate.h"
 
@@ -489,10 +492,37 @@ void CGlowFlash::Move(void)
 	this->Die();
 }
 
-// @SMALLTODO
+// @Ok
+// @Note: Just like Crate_Destroy there's some flag shenanigans that are
+// optimized out.
 void Exp_HitEnvItem(CItem* pItem, u32* pFace, i32 Damage)
 {
-	printf("Exp_HitEnvItem");
+	if (pItem && (pItem->mFlags & 1) == 0)
+	{
+		CItem* pScan = EnviroList;
+		while (pScan)
+		{
+			if (pScan == pItem)
+				break;
+			pScan = pScan->field_20;
+		}
+
+		if (!pScan)
+			return;
+
+		print_if_false(PSXRegion[pItem->mRegion].Usable != 0, "Eh? Env item spooled out??");
+		SModel* v4 = PSXRegion[pItem->mRegion].ppModels[pItem->mModel];
+
+		if (v4->Flags)
+		{
+			if (Damage == 0xFFFF)
+				Crate_Destroy(pItem);
+		}
+		else if (pFace)
+		{
+			Shatter_Face(pItem, pFace, 1, 1, 1, 1, 1);
+		}
+	}
 }
 
 // @Ok

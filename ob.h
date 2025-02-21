@@ -38,7 +38,7 @@ public:
 	CVector mPos;
 	CSVector mAngles;
 
-	unsigned short mModel;
+	u16 mModel;
 
 	unsigned char pad1[3];
 	u8 mRegion;

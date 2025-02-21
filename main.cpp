@@ -463,6 +463,7 @@ i32 validate(void)
 	validate_CRipple();
 	validate_SSection();
 	validate_SFringeQuad();
+	validate_SModel();
 
 	puts("[*] Validation done!");
 

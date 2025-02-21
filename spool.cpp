@@ -1120,3 +1120,9 @@ void validate_AnimPacket(void)
 	VALIDATE(AnimPacket, pNext, 0x4);
 	VALIDATE(AnimPacket, mPsxOpenSpot, 0x8);
 }
+
+void validate_SModel(void)
+{
+	VALIDATE_SIZE(SModel, 2);
+	VALIDATE(SModel, Flags, 0);
+}
