@@ -79,10 +79,52 @@ void CChopper::StartStrafeOnslaught(void)
 	printf("void CChopper::StartStrafeOnslaught(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Test
 void CChopper::Shoot(void)
 {
-	printf("void CChopper::Shoot(void)");
+	if (this->field_384)
+	{
+		if (!this->field_328)
+			this->field_328 = SFX_PlayPos(0x8008u, &this->mPos, 0);
+
+		switch (this->field_384)
+		{
+			case 1:
+				if ((gAttackRelated & 3) == 0)
+				{
+					CVector v8 = { 0 };
+					M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v8), this, 1);
+
+					CVector v7 = this->field_394 * this->field_3A0;
+					v7 += this->field_388;
+
+					v7 += (v7 - v8);
+
+					this->field_3A8 = v7;
+					M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v8), this, 1);
+
+					this->ShotCollision(&v8, &v7);
+
+					if (++this->field_3A0 > this->field_3A4)
+						this->field_384 = 0;
+				}
+
+				break;
+			case 2:
+				if ((gAttackRelated & 3) == 0)
+				{
+					CVector v8 = { 0 };
+					M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v8), this, 1);
+					this->ShotCollision(&v8, &this->field_3B8);
+					this->field_3C4 = 1;
+				}
+				break;
+			default:
+				print_if_false(0, "Unknown shooting mode!");
+				break;
+		}
+	}
 }
 
 // @Ok
@@ -694,18 +736,23 @@ CChopper::CChopper(i16* a2, i32 a3)
 	this->field_364 = 0;
 	this->field_368 = 0;
 	this->field_36C = 0;
-	this->field_388 = 0;
-	this->field_38C = 0;
-	this->field_390 = 0;
-	this->field_394 = 0;
-	this->field_398 = 0;
-	this->field_39C = 0;
-	this->field_3A8 = 0;
-	this->field_3AC = 0;
-	this->field_3B0 = 0;
-	this->field_3B8 = 0;
-	this->field_3BC = 0;
-	this->field_3C0 = 0;
+
+	this->field_388.vx = 0;
+	this->field_388.vy = 0;
+	this->field_388.vz = 0;
+
+	this->field_394.vx = 0;
+	this->field_394.vy = 0;
+	this->field_394.vz = 0;
+
+	this->field_3A8.vx = 0;
+	this->field_3A8.vy = 0;
+	this->field_3A8.vz = 0;
+
+	this->field_3B8.vx = 0;
+	this->field_3B8.vy = 0;
+	this->field_3B8.vz = 0;
+
 	this->field_3C8 = 0;
 	this->field_3CC = 0;
 	this->field_3D0 = 0;
@@ -941,18 +988,19 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_384, 0x384);
 
 	VALIDATE(CChopper, field_388, 0x388);
-	VALIDATE(CChopper, field_38C, 0x38C);
-	VALIDATE(CChopper, field_390, 0x390);
+
 	VALIDATE(CChopper, field_394, 0x394);
-	VALIDATE(CChopper, field_398, 0x398);
-	VALIDATE(CChopper, field_39C, 0x39C);
+
+	VALIDATE(CChopper, field_3A0, 0x3A0);
+	VALIDATE(CChopper, field_3A4, 0x3A4);
+
 	VALIDATE(CChopper, field_3A8, 0x3A8);
-	VALIDATE(CChopper, field_3AC, 0x3AC);
-	VALIDATE(CChopper, field_3B0, 0x3B0);
+
 	VALIDATE(CChopper, field_3B4, 0x3B4);
 	VALIDATE(CChopper, field_3B8, 0x3B8);
-	VALIDATE(CChopper, field_3BC, 0x3BC);
-	VALIDATE(CChopper, field_3C0, 0x3C0);
+
+	VALIDATE(CChopper, field_3C4, 0x3C4);
+
 	VALIDATE(CChopper, field_3C8, 0x3C8);
 	VALIDATE(CChopper, field_3CC, 0x3CC);
 	VALIDATE(CChopper, field_3D0, 0x3D0);

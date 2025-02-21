@@ -11,7 +11,6 @@
 #include "m3dcolij.h"
 #include "spidey.h"
 
-EXPORT i32 gAttackRelated;
 EXPORT u8 gActuatorRelated;
 EXPORT i32 gBossRelated;
 extern CPlayer* MechList;

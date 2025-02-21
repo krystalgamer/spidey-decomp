@@ -74,22 +74,19 @@ public:
 	i32 field_380;
 	i32 field_384;
 
-	i32 field_388;
-	i32 field_38C;
-	i32 field_390;
-	i32 field_394;
-	i32 field_398;
-	i32 field_39C;
-	u8 padAfter39C[0x8];
+	CVector field_388;
 
-	i32 field_3A8;
-	i32 field_3AC;
-	i32 field_3B0;
+	CVector field_394;
+
+	i32 field_3A0;
+	i32 field_3A4;
+
+	CVector field_3A8;
 	i32 field_3B4;
-	i32 field_3B8;
-	i32 field_3BC;
-	i32 field_3C0;
-	u8 padAfter3c0[0x4];
+	CVector field_3B8;
+
+	u8 field_3C4;
+	u8 padAfter3c4[0x3c8 - 0x3c4 - 1];
 
 	i32 field_3C8;
 	i32 field_3CC;

@@ -11,6 +11,7 @@
 CBody* ControlBaddyList;
 CBaddy* BaddyList;
 EXPORT CSVector gTrajectoryVector;
+i32 gAttackRelated;
 
 extern i16** gTrigNodes;
 
