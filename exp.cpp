@@ -311,10 +311,11 @@ CWibbling3DExplosion::CWibbling3DExplosion(
 	gWibblingExpCount++;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CWibbling3DExplosion::~CWibbling3DExplosion(void)
 {
-    printf("CWibbling3DExplosion::~CWibbling3DExplosion(void)");
+	gWibblingExpCount--;
 }
 
 // @MEDIUMTODO
