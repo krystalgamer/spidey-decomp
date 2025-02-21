@@ -318,10 +318,37 @@ CWibbling3DExplosion::~CWibbling3DExplosion(void)
 	gWibblingExpCount--;
 }
 
-// @MEDIUMTODO
-void Exp_Big3DExplosion(CVector const *)
+// @Ok
+void Exp_Big3DExplosion(const CVector *a1)
 {
-    printf("Exp_Big3DExplosion(CVector const *)");
+	CVector v12 = { 0 };
+
+	GetRandomPosition(a1, &v12, 5);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2048, 1750, 256, 0, 15, 2, 2);
+
+	GetRandomPosition(a1, &v12, 5);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2048, 1750, 256, 1, 27, 10, 10);
+
+	GetRandomPosition(a1, &v12, 5);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2048, 1500, 256, 1, 20, 10, 10);
+
+	GetRandomPosition(a1, &v12, 40);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 3500, 100, 256, 1, 7, 5, 1);
+
+	GetRandomPosition(a1, &v12, 50);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2500, 100, 256, 1, 7, 10, 5);
+
+	GetRandomPosition(a1, &v12, 55);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2000, 100, 256, 1, 9, 15, 5);
+
+	GetRandomPosition(a1, &v12, 60);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2250, 100, 256, 1, 8, 20, 5);
+
+	GetRandomPosition(a1, &v12, 65);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2500, 150, 256, 1, 7, 25, 5);
+
+	GetRandomPosition(a1, &v12, 50);
+	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 3000, 200, 256, 1, 7, 30, 2);
 }
 
 // @Ok

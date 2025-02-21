@@ -135,7 +135,7 @@ EXPORT void Exp_BigExplosion(CVector*);
 EXPORT void Exp_Frag(CVector*, i32, i32, i32, i32);
 EXPORT void Exp_SmallExplosion(CVector*);
 
-EXPORT void Exp_Big3DExplosion(CVector const *);
+EXPORT void Exp_Big3DExplosion(const CVector *);
 EXPORT void GetRandomPosition(const CVector *,CVector *,i32);
 
 
