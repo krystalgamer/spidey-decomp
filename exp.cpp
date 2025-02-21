@@ -463,10 +463,30 @@ CGlowFlash::CGlowFlash(
 	this->ChooseRadii();
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGlowFlash::Move(void)
 {
-	printf("CGlowFlash::Move(void)");
+	for (u32 i = 0; i < this->mNumSections; i++)
+	{
+		Bit_ReduceRGB(&this->mpSections[i].PadBGR, this->field_5E);
+		Bit_ReduceRGB(&this->mCentreCodeBGR, this->field_5C);
+	}
+
+	if (this->field_6C)
+		this->ChooseRadii();
+
+	if (this->field_E)
+	{
+		if (++this->field_C <= this->field_E)
+			return;
+	}
+	else if (0xFFFFFF & this->mCentreCodeBGR)
+	{
+		return;
+	}
+
+	this->Die();
 }
 
 // @SMALLTODO
