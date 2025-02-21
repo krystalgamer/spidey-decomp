@@ -102,7 +102,7 @@ C3DExplosion::C3DExplosion(
 
 // @Ok
 // @Matching
-C3DExplosion::~C3DExplosion(void)
+INLINE C3DExplosion::~C3DExplosion(void)
 {
 	this->DeleteFrom(&BulletList);
 }
@@ -294,7 +294,7 @@ CRipple::~CRipple(void)
 
 // @Ok
 // @Matching
-CWibbling3DExplosion::CWibbling3DExplosion(
+INLINE CWibbling3DExplosion::CWibbling3DExplosion(
 		const CVector * a2,
 		char * a3,
 		i32 a4,
@@ -324,10 +324,18 @@ void Exp_Big3DExplosion(CVector const *)
     printf("Exp_Big3DExplosion(CVector const *)");
 }
 
-// @SMALLTODO
-void GetRandomPosition(CVector const *,CVector *,i32)
+// @Ok
+// @Matching
+void INLINE GetRandomPosition(
+		const CVector *a1,
+		CVector *a2,
+		i32 a3)
 {
-    printf("GetRandomPosition(CVector const *,CVector *,i32)");
+	i32 v3 = 2 * a3 + 1;
+
+	a2->vx = a1->vx + ((Rnd(v3) - a3) << 12);
+	a2->vy = a1->vy + ((Rnd(v3) - a3) << 12);
+	a2->vz = a1->vz + ((Rnd(v3) - a3) << 12);
 }
 
 // @Ok
