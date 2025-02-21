@@ -152,10 +152,27 @@ void CChopper::FollowWaypoints(void)
 	printf("void CChopper::FollowWaypoints(void)");
 }
 
-// @SMALLTODO
+// @NotOk
+// @FIXME: the ApplyPose param, field_188
 void CChopper::AimGunPod(void)
 {
-	printf("void CChopper::AimGunPod(void)");
+	if (this->field_3A8.vx)
+	{
+		CVector v4 = { 0 };
+		M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v4), this, 0);
+
+		CSVector v3 = { 0 };
+
+		Utils_CalcAim(&v3, &v4, &this->field_3A8);
+		v3.vy = (v3.vy - this->mAngles.vy) & 0xFFF;
+
+		if (!this->field_188)
+			this->ApplyPose(reinterpret_cast<i16*>(0x548F48));
+
+		i16* ptr = static_cast<i16*>(this->field_188);
+		ptr[24] = v3.vx;
+		ptr[18] = v3.vy;
+	}
 }
 
 // @SMALLTODO
