@@ -6,6 +6,7 @@
 #include "validate.h"
 
 i32 g3DExplosions;
+i32 gWibblingExpCount;
 
 // @Ok
 // @Matching
@@ -291,10 +292,23 @@ CRipple::~CRipple(void)
 {
 }
 
-// @SMALLTODO
-CWibbling3DExplosion::CWibbling3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)
+// @Ok
+// @Matching
+CWibbling3DExplosion::CWibbling3DExplosion(
+		const CVector * a2,
+		char * a3,
+		i32 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		i32 a11,
+		i32 a12)
+	: C3DExplosion(a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)
 {
-    printf("CWibbling3DExplosion::CWibbling3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+	gWibblingExpCount++;
 }
 
 // @SMALLTODO
@@ -501,6 +515,7 @@ void validate_CFlameExplosion(void)
 
 void validate_CWibbling3DExplosion(void)
 {
+	VALIDATE_SIZE(CWibbling3DExplosion, 0x114);
 }
 
 void validate_C3DExplosion(void)

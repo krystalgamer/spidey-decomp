@@ -31,27 +31,6 @@ class CGrenadeWave : public CRipple
 		i32 field_6C;
 };
 
-class CWibbling3DExplosion
-{
-	public:
-		EXPORT CWibbling3DExplosion(CVector const *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32);
-		EXPORT ~CWibbling3DExplosion(void);
-};
-
-
-class CGrenadeExplosion : public CNonRenderedBit
-{
-	public:
-		EXPORT CGrenadeExplosion(const CVector*);
-		EXPORT ~CGrenadeExplosion(void);
-
-		EXPORT virtual void Move(void);
-
-		SHandle hExp;
-
-		u8 padBottom[0x4C-0x3C-sizeof(SHandle)];
-};
-
 class C3DExplosion : public CBody
 {
 	public:
@@ -71,6 +50,27 @@ class C3DExplosion : public CBody
 		i32 field_108;
 		i32 field_10C;
 		i32 field_110;
+};
+
+class CWibbling3DExplosion : public C3DExplosion
+{
+	public:
+		EXPORT CWibbling3DExplosion(const CVector *,char *,i32,i32,i32,i32,i32,i32,i32,i32,i32);
+		EXPORT ~CWibbling3DExplosion(void);
+};
+
+
+class CGrenadeExplosion : public CNonRenderedBit
+{
+	public:
+		EXPORT CGrenadeExplosion(const CVector*);
+		EXPORT ~CGrenadeExplosion(void);
+
+		EXPORT virtual void Move(void);
+
+		SHandle hExp;
+
+		u8 padBottom[0x4C-0x3C-sizeof(SHandle)];
 };
 
 class CFlameExplosion : public CNonRenderedBit
@@ -126,6 +126,7 @@ class CGlowFlash : public CGlow
 };
 
 EXPORT extern i32 g3DExplosions;
+EXPORT extern i32 gWibblingExpCount;
 
 EXPORT void Exp_HitEnvItem(CItem*, u32*, i32);
 EXPORT void Exp_GlowFlash(CVector*, i32, u8, u8, u8, i32, i32, i32);
