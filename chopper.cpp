@@ -33,10 +33,75 @@ CBulletFrag::~CBulletFrag(void)
 {
 }
 
-// @SMALLTODO
+// @Ok
+// @Test
 void CChopper::TrackSpidey(void)
 {
-	printf("void CChopper::TrackSpidey(void)");
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->MarkAIProcList(0, 256, 0);
+			this->SetHeightMode(4);
+
+			this->SetDesiredPosForTrackMode();
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_218 & 1)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			else if (this->GetToDesiredPos())
+			{
+				this->field_1F8 = 0;
+				this->SetHeightMode(5);
+				this->dumbAssPad++;
+			}
+			else
+			{
+				this->GetOutOfCameraPath();
+				this->field_35C |= 1;
+			}
+			break;
+		case 2:
+
+			this->field_35C |= 1;
+			if (this->field_218 & 1)
+			{
+				this->field_37C = 0;
+
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			else
+			{
+				this->field_1F8 += this->field_80;
+				if (this->field_1F8 > 30)
+				{
+					if (this->field_380)
+						this->StartStrafeOnslaught();
+					this->dumbAssPad++;
+				}
+			}
+
+
+			break;
+		case 3:
+			this->field_35C |= 1;
+
+			if (!this->field_384 || !this->field_380)
+			{
+				if (this->field_218 & 1)
+					this->field_31C.bothFlags = 2;
+
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
 }
 
 // @MEDIUMTODO
@@ -56,7 +121,7 @@ INLINE i32 CChopper::GetToDesiredPos(void)
 }
 
 // @Ok
-void CChopper::GetOutOfCameraPath(void)
+void INLINE CChopper::GetOutOfCameraPath(void)
 {
 	if (this->InCameraPath())
 	{
@@ -1181,6 +1246,7 @@ void validate_CChopper(void){
 
 	VALIDATE(CChopper, field_374, 0x374);
 	VALIDATE(CChopper, field_378, 0x378);
+	VALIDATE(CChopper, field_37C, 0x37C);
 
 	VALIDATE(CChopper, field_380, 0x380);
 	VALIDATE(CChopper, field_384, 0x384);
