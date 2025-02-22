@@ -13,6 +13,7 @@
 #include "ps2pad.h"
 #include "front.h"
 #include <cmath>
+#include "ai.h"
 
 extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
@@ -224,10 +225,50 @@ void CChopper::AI(void)
 	printf("void CChopper::AI(void)");
 }
 
-// @SMALLTODO
+// @Ok
 void CChopper::FollowWaypoints(void)
 {
-	printf("void CChopper::FollowWaypoints(void)");
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->MarkAIProcList(0, 256, 0);
+			this->field_218 &= 0xFFFFFFFE;
+			Trig_GetPosition(&this->field_33C, this->field_1F4);
+
+			this->SetHeightMode(4);
+			this->field_34C = this->field_33C.vy;
+			this->dumbAssPad++;
+
+			this->DoWaypointAction();
+
+			if (this->field_218 & 8)
+			{
+				this->SetTargetAngleFromPos(&this->field_33C);
+			}
+			else if (this->field_218 & 16)
+			{
+				new CAIProc_LookAt(this, MechList, 0, 0, 55, 200);
+			}
+		case 1:
+			if (this->GetToPos(&this->field_33C))
+			{
+				this->SetHeightMode(5);
+				if (!this->DoArrivalAction())
+				{
+					if (!this->GetNextWaypoint())
+						this->field_31C.bothFlags = 1;
+					this->dumbAssPad = 0;
+				}
+			}
+			else if ((this->field_218 & 0x10) == 0)
+			{
+				this->field_35C |= 1u;
+			}
+			break;
+		default:
+			print_if_false(0, "Unknown substate!");
+			break;
+	}
 }
 
 // @NotOk
@@ -271,7 +312,7 @@ INLINE void CChopper::SetTargetAngleFromPos(CVector* a2)
 }
 
 // @Ok
-i32 CChopper::GetToPos(CVector* a2)
+i32 INLINE CChopper::GetToPos(CVector* a2)
 {
 	if (Utils_CrapDist(this->field_330, *a2) < (2 * this->field_348))
 		return 1;
@@ -290,7 +331,7 @@ i32 CChopper::GetToPos(CVector* a2)
 }
 
 // @Ok
-i32 CChopper::DoWaypointAction(void)
+i32 INLINE CChopper::DoWaypointAction(void)
 {
 	i16 *ptr = gTrigNodes[this->field_1F4];
 	if ( ptr[0] == 1002 )
@@ -324,7 +365,7 @@ i32 CChopper::DoWaypointAction(void)
 }
 
 // @Ok
-i32 CChopper::DoArrivalAction(void)
+i32 INLINE CChopper::DoArrivalAction(void)
 {
 	i16* ptr = gTrigNodes[this->field_1F4];
 	if (ptr[0] == 1002 && ptr[1] == 7)
