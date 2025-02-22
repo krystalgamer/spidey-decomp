@@ -294,10 +294,20 @@ void CChopper::AimGunPod(void)
 	}
 }
 
-// @SMALLTODO
-void CChopper::RotateBlades(void)
+// @NotOk
+// @Note: fix ApplyPose and 188
+void INLINE CChopper::RotateBlades(void)
 {
-	printf("void CChopper::RotateBlades(void)");
+	if (!this->field_188)
+		this->ApplyPose(reinterpret_cast<i16*>(0x1A2BD8));
+
+	u16* ptr = static_cast<u16*>(this->field_188);
+
+	ptr[6] += 35 * this->field_80;
+	ptr[6] &= 0xFFF;
+
+	ptr[13] += 35 * this->field_80;
+	ptr[13] &= 0xFFF;
 }
 
 // @Ok
