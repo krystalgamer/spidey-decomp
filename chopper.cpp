@@ -213,10 +213,47 @@ void CChopper::ShotCollision(CVector *a2, CVector *a3)
 	new CMachineGunBullet(a2, a3, this);
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: vec assignement always differs dunno why
 void CChopper::SetDesiredPosForTrackMode(void)
 {
-	printf("void CChopper::SetDesiredPosForTrackMode(void)");
+	this->field_360 = this->field_358;
+	if (this->field_32C)
+	{
+		if (this->field_218 & 0x20)
+		{
+			this->field_360 -= 653;
+			if (!Rnd(16))
+				this->field_218 &= 0xFFFFFFDF;
+			}
+			else
+			{
+				this->field_360 += 653;
+				if (!Rnd(16))
+					this->field_218 |= 0x20u;
+			}
+	}
+
+	this->field_360 = Rnd(796) + this->field_360 - 398;
+	this->field_360 &= 0xFFFu;
+	this->field_370 = 800;
+	this->field_370 = Rnd(50) + this->field_370 - 25;
+
+	CSVector v14;
+	v14.vx = 0;
+	v14.vy = this->field_360;
+	v14.vz = 0;
+	Utils_GetVecFromMagDir(&this->field_364, 4096, &v14);
+
+	this->field_33C = (this->field_364 >> 12) * this->field_370;
+	this->field_33C.vy = 3276800;
+
+	this->field_33C.vy += (Rnd(614400) - 327680) + 20480;
+
+	this->field_34C = MechList->mPos.vy - this->field_33C.vy;
+
+	if (this->field_34C > this->field_350)
+		this->field_34C = this->field_350;
 }
 
 // @SMALLTODO
@@ -891,9 +928,9 @@ CChopper::CChopper(i16* a2, i32 a3)
 	this->field_33C.vy = 0;
 	this->field_33C.vz = 0;
 
-	this->field_364 = 0;
-	this->field_368 = 0;
-	this->field_36C = 0;
+	this->field_364.vx = 0;
+	this->field_364.vy = 0;
+	this->field_364.vz = 0;
 
 	this->field_388.vx = 0;
 	this->field_388.vy = 0;
@@ -1122,6 +1159,8 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_324, 0x324);
 	VALIDATE(CChopper, field_328, 0x328);
 
+	VALIDATE(CChopper, field_32C, 0x32C);
+
 	VALIDATE(CChopper, field_330, 0x330);
 
 	VALIDATE(CChopper, field_33C, 0x33C);
@@ -1129,6 +1168,7 @@ void validate_CChopper(void){
 	VALIDATE(CChopper, field_348, 0x348);
 	VALIDATE(CChopper, field_34C, 0x34C);
 
+	VALIDATE(CChopper, field_350, 0x350);
 	VALIDATE(CChopper, field_354, 0x354);
 
 	VALIDATE(CChopper, field_358, 0x358);
@@ -1136,8 +1176,8 @@ void validate_CChopper(void){
 
 	VALIDATE(CChopper, field_360, 0x360);
 	VALIDATE(CChopper, field_364, 0x364);
-	VALIDATE(CChopper, field_368, 0x368);
-	VALIDATE(CChopper, field_36C, 0x36C);
+
+	VALIDATE(CChopper, field_370, 0x370);
 
 	VALIDATE(CChopper, field_374, 0x374);
 	VALIDATE(CChopper, field_378, 0x378);

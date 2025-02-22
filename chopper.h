@@ -47,7 +47,9 @@ public:
 
 	u32 field_324;
 	u32 field_328;
-	u8 padAfter328[4];
+
+	u8 field_32C;
+	u8 padAfter32C[3];
 
 	CVector field_330;
 
@@ -55,17 +57,17 @@ public:
 	i32 field_348;
 	i32 field_34C;
 
-	u8 padAfter34C[0x354-0x34C-4];
+	i32 field_350;
 
 	i32 field_354;
 	i32 field_358;
 	i32 field_35C;
 
 	i32 field_360;
-	i32 field_364;
-	i32 field_368;
-	i32 field_36C;
-	u8 padAfter36C[0x374-0x36C-4];
+
+	CVector field_364;
+
+	i32 field_370;
 
 	i32 field_374;
 	i32 field_378;
