@@ -321,10 +321,70 @@ void CChopper::SetDesiredPosForTrackMode(void)
 		this->field_34C = this->field_350;
 }
 
-// @SMALLTODO
+// @NotOk
+// @FIXME: ApplyPose fix
 void CChopper::AI(void)
 {
-	printf("void CChopper::AI(void)");
+	if (this->pMessage)
+		this->CleanUpMessages(1, 0);
+
+	if ((gAttackRelated & 3) == 0)
+	{
+		if (!this->field_328)
+		{
+			SFX_Stop(this->field_328);
+			this->field_328 = 0;
+		}
+		else
+		{
+			SFX_ModifyPos(this->field_328, &this->mPos, 0);
+		}
+
+		if (this->field_324)
+			SFX_ModifyPos(this->field_324, &this->mPos, 0);
+		else
+			this->field_324 = SFX_PlayPos(0x8001u, &this->mPos, 0);
+	}
+
+	this->DoChopperPhysics();
+	this->RotateBlades();
+	this->AimGunPod();
+	this->ApplyPose(reinterpret_cast<i16*>(0x1A2BD8));
+
+	if (this->field_384)
+	{
+		this->Shoot();
+	}
+	else
+	{
+		this->field_3A8.vx = 0;
+		this->field_3A8.vy = 0;
+		this->field_3A8.vz = 0;
+	}
+
+	switch (this->field_31C.bothFlags)
+	{
+		case 0:
+			this->field_348 = 45;
+            this->field_31C.bothFlags = 2;
+			this->dumbAssPad = 0;
+			break;
+		case 1:
+			this->TrackSpidey();
+			break;
+		case 2:
+			this->FollowWaypoints();
+			break;
+		case 3:
+			this->WaitForTrigger();
+			break;
+		case 4:
+			this->FireMachineGunAtWaypointV();
+			break;
+		default:
+			print_if_false(0, "Unknown state!");
+			break;
+	}
 }
 
 // @Ok
