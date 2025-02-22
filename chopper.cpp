@@ -66,11 +66,20 @@ void CChopper::GetOutOfCameraPath(void)
 }
 
 
-// @SMALLTODO
-i32 CChopper::InCameraPath(void)
+// @Ok
+i32 INLINE CChopper::InCameraPath(void)
 {
-	printf("i32 CChopper::InCameraPath(void)");
-	return 0x23072024;
+	i32 v1 = this->field_360 - CameraList->field_23A;
+	if (v1 < -2048)
+	{
+		v1 += 4096;
+	}
+	else if (v1 > 2048)
+	{
+		v1 -= 4096;
+	}
+
+	return abs(v1) < 250;
 }
 
 // @Ok
