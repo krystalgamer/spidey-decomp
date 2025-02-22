@@ -73,10 +73,79 @@ i32 CChopper::InCameraPath(void)
 	return 0x23072024;
 }
 
-// @SMALLTODO
+// @Ok
+// @Test
 void CChopper::StartStrafeOnslaught(void)
 {
-	printf("void CChopper::StartStrafeOnslaught(void)");
+	if (MechList->field_8E8)
+	{
+		CVector v18;
+		v18.vx = 0;
+		v18.vy = (Vblanks & 1) != 0 ? 4096 : -4096;
+		v18.vz = 0;
+
+		gte_ldopv1(reinterpret_cast<VECTOR*>(&MechList->field_C84));
+		gte_ldopv2(reinterpret_cast<VECTOR*>(&v18));
+
+		gte_op12();
+		gte_stlvnl(reinterpret_cast<VECTOR*>(&v18));
+		VectorNormal(
+				reinterpret_cast<VECTOR*>(&v18),
+				reinterpret_cast<VECTOR*>(&v18));
+
+		v18 *= 400;
+		
+		this->field_388 = MechList->mPos - v18;
+		this->field_3A4 = Rnd(4) + 8;
+
+		v18 /= (this->field_3A4 >> 1);
+
+		this->field_394 = v18;
+	}
+	else
+	{
+		i32 v6 = this->field_360 - this->field_358;
+
+		if (v6 < -2048)
+		{
+			v6 += 4096;
+		}
+		else if (v6 > 2048)
+		{
+			v6 -= 4096;
+		}
+
+		
+		CSVector v13;
+
+		v13.vy = this->field_358 + (v6 < 0 ? -800 : 800);
+		v13.vx = 0;
+		v13.vz = 0;
+
+		CVector v17 = { 0 };
+		Utils_GetVecFromMagDir(&v17, 4096, &v13);
+
+		v17 >>= 12;
+		v17 *= 200;
+
+		CVector v16 = MechList->mPos;
+		if (!MechList->field_AD4)
+		{
+			i32 GroundHeight = Utils_GetGroundHeight(&MechList->mPos, 300, 300, 0);
+
+			if (GroundHeight != -1)
+				v16.vy = GroundHeight;
+		}
+
+		this->field_388 = v16 - v17;
+		this->field_3A4 = Rnd(4) + 8;
+
+		v17 /= (this->field_3A4 >> 1);
+		this->field_394 = v17;
+	}
+
+	this->field_3A0 = 0;
+	this->field_384 = 1;
 }
 
 // @Ok
