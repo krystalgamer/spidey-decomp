@@ -79,7 +79,7 @@ i32 INLINE CChopper::InCameraPath(void)
 		v1 -= 4096;
 	}
 
-	return abs(v1) < 250;
+	return my_abs(v1) < 250;
 }
 
 // @Ok
@@ -270,11 +270,23 @@ INLINE void CChopper::SetTargetAngleFromPos(CVector* a2)
 	this->field_360 = v4.vy;
 }
 
-// @SMALLTODO
-i32 CChopper::GetToPos(CVector*)
+// @Ok
+i32 CChopper::GetToPos(CVector* a2)
 {
-	printf("i32 CChopper::GetToPos(CVector*)");
-	return 0x23072024;
+	if (Utils_CrapDist(this->field_330, *a2) < (2 * this->field_348))
+		return 1;
+
+	CSVector v6 = { 0 };
+	Utils_CalcAim(&v6, &this->field_330, a2);
+
+	i32 v5;
+	if (my_abs(this->csVector1.vy) > 0x20)
+		v5 = 0;
+	else
+		v5 = this->field_348 * (32 - my_abs(this->csVector1.vy)) / 32;
+
+	Utils_GetVecFromMagDir(&this->mAccellorVel, v5, &v6);
+	return 0;
 }
 
 // @Ok
