@@ -7,6 +7,8 @@
 #include "exp.h"
 #include "ai.h"
 
+#include <cstring>
+
 
 EXPORT CCop* gCopGlobal;
 static unsigned char gAttackFlagsRelated;
@@ -16,10 +18,23 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
-// @SMALLTODO
-CCopLaserPing::CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8)
+// @Ok
+CCopLaserPing::CCopLaserPing(
+		CVector* a2,
+		CVector* a3,
+		CVector* a4,
+		u8 a5,
+		u8 a6,
+		u8 a7) 
 {
-	printf("CCopLaserPing::CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8)");
+	this->field_88 = *a2;
+	this->field_94 = *a3;
+	this->field_A0 = *a4;
+	this->field_84 = 0;
+	this->SetTexture(10, 1);
+	this->SetSemiTransparent();
+	this->SetTint(a5, a6, a7);
+	this->mType = 34;
 }
 
 // @Ok
@@ -691,4 +706,10 @@ void validate_CCopBulletTracer(void)
 void validate_CCopLaserPing(void)
 {
 	VALIDATE_SIZE(CCopLaserPing, 0xAC);
+
+	VALIDATE(CCopLaserPing, field_84, 0x84);
+
+	VALIDATE(CCopLaserPing, field_88, 0x88);
+	VALIDATE(CCopLaserPing, field_94, 0x94);
+	VALIDATE(CCopLaserPing, field_A0, 0xA0);
 }

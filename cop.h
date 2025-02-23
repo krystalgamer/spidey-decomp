@@ -108,7 +108,11 @@ class CCopLaserPing : public CQuadBit
 		EXPORT CCopLaserPing(CVector*, CVector*, CVector*, u8, u8, u8);
 		EXPORT virtual ~CCopLaserPing(void);
 		
-		u8 padBottom[0x28];
+		i32 field_84;
+
+		CVector field_88;
+		CVector field_94;
+		CVector field_A0;
 };
 
 
