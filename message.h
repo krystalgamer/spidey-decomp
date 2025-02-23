@@ -14,10 +14,11 @@ struct SMessageData
 class CMessage : public CClass
 {
 	public:
-		unsigned char pad[0x4];
 
+		CMessage* pPrev;
 		CMessage* mNext;
-		u8 padAfter8[0x10-0x8-4];
+		
+		CBaddy* pBaddy;
 
 		i32 field_10;
 		i32 field_14;
