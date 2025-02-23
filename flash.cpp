@@ -4,6 +4,7 @@ EXPORT i32 FadeCountdown;
 EXPORT i32 FlashCountdown;
 EXPORT i32 Fading;
 EXPORT u8 CurrentImportance;
+EXPORT i32 FlashSort;
 
 EXPORT u32 CurrentR;
 EXPORT u32 CurrentG;
@@ -14,6 +15,7 @@ EXPORT u32 dG;
 EXPORT u32 dB;
 
 // @Ok
+// @Matching
 i32 Flash_FadeFinished(void)
 {
 	return FadeCountdown == 0;
@@ -35,10 +37,28 @@ void Flash_Reset(void)
 	CurrentImportance = 0;
 }
 
-// @SMALLTODO
-void Flash_Screen(u8,u8,u8,i32,u8,i32)
+// @Ok
+void Flash_Screen(
+		u8 StartR,
+		u8 StartG,
+		u8 StartB,
+		i32 Frames,
+		u8 Importance,
+		i32 Sort)
 {
-    printf("Flash_Screen(u8,u8,u8,i32,u8,i32)");
+	if (Importance >= CurrentImportance && Frames)
+	{
+		CurrentR = StartR << 16;
+		CurrentG = StartG << 16;
+		CurrentB = StartB << 16;
+		FlashCountdown = Frames;
+		CurrentImportance = Importance;
+		dR = (StartR << 16) / Frames;
+		dG = (StartG << 16) / Frames;
+		dB = (StartB << 16) / Frames;
+		FlashSort = Sort;
+	}
+
 }
 
 // @Ok
