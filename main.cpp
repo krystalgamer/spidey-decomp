@@ -464,6 +464,7 @@ i32 validate(void)
 	validate_SSection();
 	validate_SFringeQuad();
 	validate_SModel();
+	validate_SMessageData();
 
 	puts("[*] Validation done!");
 

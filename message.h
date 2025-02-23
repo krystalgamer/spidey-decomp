@@ -9,7 +9,15 @@
 
 class CBaddy;
 struct SMessageData
-{};
+{
+	i32 field_0;
+
+	i32 mNumParams;
+	i32 mNumVects;
+
+	i32 mParams[2];
+	i32 *pVects[2];
+};
 
 class CMessage : public CClass
 {
@@ -24,7 +32,10 @@ class CMessage : public CClass
 		i32 field_14;
 
 		SHandle mHandle;
-		u8 padAfter18[0x44-0x18-8];
+		i32 mParams[2];
+		i32 mVects[2][3];
+
+		u8 padBottom[4];
 
 
 		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*);
@@ -32,5 +43,6 @@ class CMessage : public CClass
 };
 
 void validate_CMessage(void);
+void validate_SMessageData(void);
 
 #endif
