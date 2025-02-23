@@ -9,10 +9,23 @@ CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)
 	printf("CMessage::CMessage(CBaddy*, CBaddy*, int a4, SMessageData*)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CMessage::~CMessage(void)
 {
-    printf("CMessage::~CMessage(void)");
+	if (this->pPrev)
+	{
+		this->pPrev->mNext = this->mNext;
+	}
+	else
+	{
+		this->pBaddy->pMessage = this->mNext;
+	}
+
+	if (this->mNext)
+	{
+		this->mNext->pPrev = this->pPrev;
+	}
 }
 
 
