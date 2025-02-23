@@ -1,12 +1,14 @@
 #include "flash.h"
 
-EXPORT i32 gFadeStatus;
+EXPORT i32 FadeCountdown;
+EXPORT i32 FlashCountdown;
+EXPORT i32 Fading;
+EXPORT u8 CurrentImportance;
 
-// @NotOk
-// global
+// @Ok
 i32 Flash_FadeFinished(void)
 {
-	return gFadeStatus == 0;
+	return FadeCountdown == 0;
 }
 
 // @MEDIUMTODO
@@ -15,10 +17,14 @@ void Flash_Display(void)
     printf("Flash_Display(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Flash_Reset(void)
 {
-    printf("Flash_Reset(void)");
+	FlashCountdown = 0;
+	FadeCountdown = 0;
+	Fading = 0;
+	CurrentImportance = 0;
 }
 
 // @SMALLTODO
