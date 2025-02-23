@@ -6,6 +6,8 @@
 #include "spidey.h"
 #include "exp.h"
 #include "ai.h"
+#include "web.h"
+#include "web.h"
 
 #include <cstring>
 
@@ -522,10 +524,66 @@ void CCopBulletTracer::SetWidth(void)
 	this->mpRibbon2->mpPoints[4].Width = 0;
 }
 
-// @SMALLTODO
-CCopBulletTracer::CCopBulletTracer(CVector*, CVector*, CSuper*, SLineInfo*, u8, u8, u8)
+// @Ok
+// @AlmostMatching: last loop slight different but overall awesome
+CCopBulletTracer::CCopBulletTracer(
+		CVector* a2,
+		CVector* a3,
+		CSuper* pSuper,
+		SLineInfo* pLineInfo,
+		u8 a6,
+		u8 a7,
+		u8 a8)
 {
-	printf("CCopBulletTracer::CCopBulletTracer(CVector*, CVector*, CSuper*, SLineInfo*, u8, u8, u8)");
+	print_if_false(!pSuper || !pLineInfo, "pSuper and pLineInfo are both non-NULL in call to CCopBulletTracer");
+
+	if (pLineInfo)
+		CreateCopRicochet(pLineInfo, a6, a7, a8);
+
+	if (pSuper)
+	{
+		SHook v27;
+		v27.Part.vx = 0;
+		v27.Part.vy = 0;
+		v27.Part.vz = 0;
+
+		if (Web_CollideWithSuper(pSuper, a2, a3, &v27, 4096))
+		{
+			new CCopPing(pSuper, &v27);
+		}
+
+		SFX_PlayPos((Rnd(2) + 37) | 0x8000, &this->mPos, 0);
+	}
+
+	CVector v37 = *a2;
+	u32 v18 = Utils_Dist(&v37, a3);
+
+	if (v18 > 0x3E8)
+	{
+		v37 = *a3 + (((v37 - *a3) / v18) * 1000);
+	}
+
+	this->mpRibbon = new CGouraudRibbon(5, 0);
+	this->mpRibbon->mProtected = 1;
+	this->mpRibbon->SetRGB(a6, a7, a8);
+
+	this->mpRibbon2 = new CGouraudRibbon(5, 0);
+	this->mpRibbon2->mProtected = 1;
+	this->mpRibbon->SetRGB(255, 255, 255);
+
+	this->mMaxWidth = 3;
+
+	this->SetWidth();
+
+	CVector v40 = *a3 - v37;
+	for (i32 i = 0; i < 5; i++)
+	{
+		CVector fV = v37 + ((i * v40) / 4);
+
+		this->mpRibbon->mpPoints[i].Pos = fV;
+		this->mpRibbon2->mpPoints[i].Pos = this->mpRibbon->mpPoints[i].Pos;
+	}
+
 }
 
 // @Ok
@@ -659,6 +717,12 @@ void CCop::ClearAttackFlags(void)
 
 	this->field_390 = 0;
 	this->field_391 = 0;
+}
+
+// @MEDIUMTODO
+void CreateCopRicochet(SLineInfo *,u8,u8,u8)
+{
+    printf("CreateCopRicochet(SLineInfo *,u8,u8,u8)");
 }
 
 void validate_CCop(void){

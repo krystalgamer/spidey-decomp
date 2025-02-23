@@ -122,6 +122,7 @@ void validate_CCopBulletTracer(void);
 void validate_CCopLaserPing(void);
 
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
+EXPORT void CreateCopRicochet(SLineInfo *,u8,u8,u8);
 
 
 #endif

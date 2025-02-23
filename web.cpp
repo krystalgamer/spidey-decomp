@@ -20,6 +20,13 @@ EXPORT i32 gGetGroundDefaultValue;
 
 extern CBody* MiscList;
 
+// @MEDIUMTODO
+i32 Web_CollideWithSuper(CSuper *,CVector const *,CVector const *,SHook *,i32)
+{
+    printf("Web_CollideWithSuper(CSuper *,CVector const *,CVector const *,SHook *,i32)");
+	return 0x23022025;
+}
+
 // @Ok
 CDomeShockWave::CDomeShockWave(i32 a2)
 {

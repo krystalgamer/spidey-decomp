@@ -6,6 +6,7 @@
 #include "bit.h"
 #include "export.h"
 #include "spidey.h"
+#include "m3dutils.h"
 
 EXPORT extern i32 gFireDomes;
 EXPORT extern i32 gNumDomes;
@@ -134,6 +135,7 @@ class CDomeShockWave : public CNonRenderedBit
 };
 
 EXPORT int Web_GetGroundY(const CVector*);
+EXPORT i32 Web_CollideWithSuper(CSuper *,CVector const *,CVector const *,SHook *,i32);
 
 
 void validate_CImpactWeb(void);
