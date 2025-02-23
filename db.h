@@ -5,7 +5,7 @@
 
 #include "export.h"
 
-EXPORT extern i32 gDbRelated;
+EXPORT extern u32* pPoly;
 EXPORT extern u8* PolyBufferEnd;
 struct SDoubleBuffer
 {

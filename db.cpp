@@ -8,7 +8,7 @@
 SDoubleBuffer* pDoubleBuffer;
 SDoubleBuffer* pOtherBuffer;
 SDoubleBuffer DoubleBuffer[2];
-i32 gDbRelated;
+u32* pPoly;
 u8* PolyBufferEnd;
 
 // @Ok
@@ -65,7 +65,7 @@ void Db_DeleteOTsAndPolyBuffers(void)
 		DoubleBuffer[1].Polys = (u8*)0xFFFFFFFF;
 	}
 
-	gDbRelated = 1;
+	pPoly = reinterpret_cast<u32*>(1);
 }
 
 // @Ok
@@ -77,7 +77,7 @@ INLINE void Db_FlipClear(void)
 		&DoubleBuffer[0];
 
 	ClearOTagR();
-	gDbRelated = reinterpret_cast<i32>(pDoubleBuffer->Polys) & 0x7FFFFFFF;
+	pPoly = reinterpret_cast<u32*>(reinterpret_cast<u32>(pDoubleBuffer->Polys) & 0x7FFFFFFF);
 }
 
 // @SMALLTODO

@@ -57,7 +57,7 @@ void M3d_RenderBackground(void *)
 void M3d_RenderCleanup(void)
 {
 	SetDrawArea();
-	gDbRelated += 12;
+	pPoly += 3;
 
 	stubbed_printf(gRenderBuf);
 
