@@ -43,7 +43,7 @@ void ADXT_Init(void)
 
 // @Ok
 // @Matching
-i32 ADXT_GetStat(void)
+i32 ADXT_GetStat(i32)
 {
 	return PCMUSIC_GetStatus() ? 4 : 0;
 }

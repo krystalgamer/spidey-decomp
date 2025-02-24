@@ -1,7 +1,9 @@
 #include "ps2redbook.h"
+#include "stubs.h"
 
 
-static bool gXAAllowed;
+EXPORT i32 gADXT;
+EXPORT bool gXAAllowed;
 
 // @SMALLTODO
 void RedBook_MwErrFunc(void *,char *)
@@ -27,10 +29,11 @@ void Redbook_XASetVol(i32)
     printf("Redbook_XASetVol(i32)");
 }
 
-// @SMALLTODO
-void Redbook_XAStat(void)
+// @Ok
+// @Matching
+i32 Redbook_XAStat(void)
 {
-    printf("Redbook_XAStat(void)");
+	return ADXT_GetStat(gADXT);
 }
 
 // @SMALLTODO

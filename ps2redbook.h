@@ -18,6 +18,6 @@ EXPORT void RedBook_MwErrFunc(void *,char *);
 EXPORT void Redbook_XAExit(void);
 EXPORT void Redbook_XAPause(bool);
 EXPORT void Redbook_XASetVol(i32);
-EXPORT void Redbook_XAStat(void);
+EXPORT i32 Redbook_XAStat(void);
 
 #endif
