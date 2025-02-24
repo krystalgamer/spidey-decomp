@@ -22,6 +22,8 @@ EXPORT i32 gsExit(void);
 EXPORT i32 syCblCheck(void);
 EXPORT i32 syCblCheckBroadcast(void);
 
+EXPORT void ADXT_Finish(void);
+
 void validate_MEMORY_ALLOC(void);
 
 #endif

@@ -1,9 +1,17 @@
 #include "stubs.h"
+#include "PCMusic.h"
 #include "validate.h"
 
 #include <cstdlib>
 
 EXPORT MEMORY_ALLOC* gSysMemory;
+
+// @Ok
+// @Matching
+void ADXT_Finish(void)
+{
+	PCMUSIC_Finish();
+}
 
 // @Ok
 void *syMalloc(u32 size)
