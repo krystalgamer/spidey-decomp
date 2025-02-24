@@ -8,6 +8,13 @@ EXPORT MEMORY_ALLOC* gSysMemory;
 
 // @Ok
 // @Matching
+void ADXT_SetOutVol(i32, i32 a2)
+{
+	PCMUSIC_SetVolume(a2);
+}
+
+// @Ok
+// @Matching
 void ADXT_Pause(i32, i32 a2)
 {
 	PCMUSIC_Pause(a2);

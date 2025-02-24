@@ -29,6 +29,7 @@ EXPORT void ADXT_Init(void);
 EXPORT void ADXT_Stop(void);
 EXPORT i32 ADXT_Create(void);
 EXPORT void ADXT_Pause(i32, i32);
+EXPORT void ADXT_SetOutVol(i32, i32);
 
 void validate_MEMORY_ALLOC(void);
 
