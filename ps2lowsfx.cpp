@@ -1,6 +1,8 @@
 #include "ps2lowsfx.h"
 #include <cstring>
 
+#include "validate.h"
+
 
 EXPORT SSFXBank gSoundBank;
 // @FIXME: get proper size
@@ -178,17 +180,16 @@ i32 SFX_PlayPos(u32, CVector*, i32)
 	return 0x23072024;
 }
 
-static unsigned char gSfxStatus;
+u8 SFXPaused;
 
-// @NotOk
-// Global
+// @Ok
 void SFX_LevelStart(void)
 {
-	gSfxStatus = 0;
+	SFXPaused = 0;
 }
 
-static unsigned char gReverbType;
-void __inline SFX_SetReverbType(unsigned char reverb)
+static u8 gReverbType;
+void INLINE SFX_SetReverbType(unsigned char reverb)
 {
 	gReverbType = reverb != 0;
 }
@@ -213,4 +214,11 @@ void SFX_Play(u32, i16, i32)
 
 void validate_SSFXBank(void)
 {
+}
+
+void validate_SSfxEntry(void)
+{
+	VALIDATE_SIZE(SSfxEntry, 0x28);
+
+	VALIDATE(SSfxEntry, field_1A, 0x1A);
 }

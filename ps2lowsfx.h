@@ -7,6 +7,14 @@
 #include "export.h"
 #include "vector.h"
 
+
+struct SSfxEntry
+{
+	u8 padTop[0x1A];
+	u8 field_1A;
+	u8 padBottom[0x28-0x1A-1];
+};
+
 struct SSFXBank
 {
 };
@@ -44,5 +52,7 @@ EXPORT void playSFX(u32,u8,i16,i16,i32,u16);
 EXPORT void translateLevelSpecificAliasToIndex(u32);
 
 void validate_SSFXBank(void);
+void validate_SSfxEntry(void);
+
 #endif
 

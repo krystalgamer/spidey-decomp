@@ -6,7 +6,6 @@
 #include "export.h"
 #include "vector.h"
 
-
 EXPORT void Redbook_XAStop(void);
 EXPORT u8 Redbook_XAPlay(int, int, int);
 EXPORT u8 Redbook_XAPlayPos(int, int, CVector*, int);

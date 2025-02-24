@@ -465,6 +465,7 @@ i32 validate(void)
 	validate_SFringeQuad();
 	validate_SModel();
 	validate_SMessageData();
+	validate_SSfxEntry();
 
 	puts("[*] Validation done!");
 
