@@ -1,8 +1,14 @@
 #include "ps2lowsfx.h"
+#include "DXSound.h"
+#include "ps2redbook.h"
 #include <cstring>
 
 #include "validate.h"
 
+
+EXPORT u8 SFXPaused;
+#define LEN_SFX_ENTRIES 32
+EXPORT SSfxEntry gSfxEntries[LEN_SFX_ENTRIES];
 
 EXPORT SSFXBank gSoundBank;
 // @FIXME: get proper size
@@ -117,10 +123,22 @@ void SFX_ParseSFXFile(char *,u32 *,u16 *,i32,i32)
     printf("SFX_ParseSFXFile(char *,u32 *,u16 *,i32,i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void SFX_Pause(void)
 {
-    printf("SFX_Pause(void)");
+	if (!SFXPaused)
+	{
+		SFXPaused = 1;
+
+		for (i32 i = 0; i < LEN_SFX_ENTRIES; i++)
+		{
+			if (gSfxEntries[i].field_1A)
+				DXSOUND_SetVolume(i, 0);
+		}
+
+		Redbook_XAPause(true);
+	}
 }
 
 // @SMALLTODO
@@ -179,8 +197,6 @@ i32 SFX_PlayPos(u32, CVector*, i32)
 {
 	return 0x23072024;
 }
-
-u8 SFXPaused;
 
 // @Ok
 void SFX_LevelStart(void)

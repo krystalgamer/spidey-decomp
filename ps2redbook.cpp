@@ -6,6 +6,7 @@
 EXPORT i32 gADXT;
 EXPORT bool gXAAllowed;
 
+
 // @SMALLTODO
 void RedBook_MwErrFunc(void *,char *)
 {
