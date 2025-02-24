@@ -105,15 +105,42 @@ INLINE void CCop::CheckToShoot(i32 a2, i32 a3)
 	}
 }
 
-// @SMALLTODO
-i32 CCop::SetUpLaser(CGPolyLine**, CVector*, CVector*)
+// @Ok
+// @Matching
+void CCop::SetUpLaser(
+		CGPolyLine** a2,
+		CVector *a3,
+		CVector *a4)
 {
-	printf("i32 CCop::SetUpLaser(CGPolyLine**, CVector*, CVector*)");
-	return 0x25042024;
+	if (!*a2)
+	{
+		*a2 = new CGPolyLine(1);
+
+		(*a2)->mStartB = 80;
+		(*a2)->mSegs->r = 0;
+		(*a2)->mSegs->g = 0;
+		(*a2)->mStartG = 0;
+		(*a2)->mStartR = 0;
+
+		(*a2)->SetSemiTransparent();
+	}
+
+	u32 v6 = Utils_CrapDist(*a3, *a4);
+	if (v6 >= 1000)
+		(*a2)->mSegs->b = 0;
+	else
+	{
+		i32 tmp = 1000 - v6;
+		tmp *= 5;
+		tmp <<= 6;
+		(*a2)->mSegs->b = tmp >> 12;
+	}
+
+	(*a2)->SetStartAndEnd(a3, a4);
 }
 
 // @Ok
-INLINE i32 CCop::DrawBarrelFlash(
+INLINE void CCop::DrawBarrelFlash(
 		CVector *a2,
 		CVector *a3,
 		SLineInfo *a4,
@@ -122,7 +149,7 @@ INLINE i32 CCop::DrawBarrelFlash(
 		u8 a7)
 {
 	new CGlowFlash(a2, 5, a5, a6, a7, 32, 0, 0, 0, 0, 50, 20, 1, 20, 10, 40, 20, 10, 1);
-	return CCop::SetUpLaser(&this->field_380, a2, a3);
+	this->SetUpLaser(&this->field_380, a2, a3);
 }
 
 // @Ok

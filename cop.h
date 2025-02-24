@@ -32,8 +32,8 @@ public:
 	EXPORT void WarnOtherCops(void);
 	EXPORT i32 TryAddingCollidePointToPath(CVector *);
 	EXPORT void GetAttackPosition(CVector*);
-	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
-	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
+	EXPORT void DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
+	EXPORT void SetUpLaser(CGPolyLine**, CVector*, CVector*);
 	EXPORT void CheckToShoot(i32, i32);
 	EXPORT void Acknowledge(void);
 	EXPORT i32 WallHitCheck(CVector*, CVector*, i32);
