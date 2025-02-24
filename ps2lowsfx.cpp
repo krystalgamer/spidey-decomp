@@ -1,5 +1,5 @@
 #include "ps2lowsfx.h"
-#include "DXSound.h"
+#include "DXsound.h"
 #include "ps2redbook.h"
 #include <cstring>
 
@@ -111,10 +111,14 @@ void SFX_ModifyVol(u32,i32,i32)
     printf("SFX_ModifyVol(u32,i32,i32)");
 }
 
-// @SMALLTODO
+EXPORT u8 volatile gStubSfx;
+
+// @Ok
+// @Matching
 void SFX_Off(void)
 {
-    printf("SFX_Off(void)");
+	if (!gStubSfx)
+		stubbed_printf("Stubbed: SFX_Off( void )\n");
 }
 
 // @MEDIUMTODO
