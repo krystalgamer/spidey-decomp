@@ -8,6 +8,13 @@ EXPORT MEMORY_ALLOC* gSysMemory;
 
 // @Ok
 // @Matching
+void ADXT_Init(void)
+{
+	PCMUSIC_Init();
+}
+
+// @Ok
+// @Matching
 i32 ADXT_GetStat(void)
 {
 	return PCMUSIC_GetStatus() ? 4 : 0;
