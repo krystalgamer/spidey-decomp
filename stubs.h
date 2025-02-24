@@ -24,6 +24,7 @@ EXPORT i32 syCblCheckBroadcast(void);
 
 EXPORT void ADXT_Finish(void);
 EXPORT void ADXT_StartAfs(i32, i32, i32);
+EXPORT i32 ADXT_GetStat(void);
 
 void validate_MEMORY_ALLOC(void);
 

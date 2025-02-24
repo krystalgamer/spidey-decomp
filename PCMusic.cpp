@@ -31,9 +31,10 @@ void PCMUSIC_Finish(void)
 }
 
 // @SMALLTODO
-void PCMUSIC_GetStatus(void)
+i32 PCMUSIC_GetStatus(void)
 {
     printf("PCMUSIC_GetStatus(void)");
+	return 0x24022025;
 }
 
 // @SMALLTODO
