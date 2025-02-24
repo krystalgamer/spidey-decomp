@@ -8,6 +8,13 @@ EXPORT MEMORY_ALLOC* gSysMemory;
 
 // @Ok
 // @Matching
+void ADXT_Stop(void)
+{
+	PCMUSIC_Stop();
+}
+
+// @Ok
+// @Matching
 void ADXT_Init(void)
 {
 	PCMUSIC_Init();
