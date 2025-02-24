@@ -1,4 +1,5 @@
 #include "ps2redbook.h"
+#include "utils.h"
 #include "stubs.h"
 
 
@@ -36,10 +37,23 @@ i32 Redbook_XAStat(void)
 	return ADXT_GetStat(gADXT);
 }
 
-// @SMALLTODO
-u8 Redbook_XAPlayPos(int, int, CVector*, int)
+EXPORT i32 gPlayPosOne;
+EXPORT i32 gPlayPosTwo;
+EXPORT i32 gRedbookVblanks;
+
+// @Ok
+// @Matching
+u8 Redbook_XAPlayPos(i32 a1, i32 a2, CVector* a3, i32 a4)
 {
-	return static_cast<u8>(0x10062024);
+	if (Redbook_XAPlay(a1, a2, a4) )
+	{
+		gPlayPosOne = a1;
+		gPlayPosTwo = a2;
+		gRedbookVblanks = Vblanks;
+		return 1;
+	}
+
+	return 0;
 }
 
 // @SMALLTODO
