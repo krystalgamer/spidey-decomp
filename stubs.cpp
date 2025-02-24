@@ -8,6 +8,13 @@ EXPORT MEMORY_ALLOC* gSysMemory;
 
 // @Ok
 // @Matching
+void ADXT_StartAfs(i32, i32, i32 a3)
+{
+	PCMUSIC_Play(a3);
+}
+
+// @Ok
+// @Matching
 void ADXT_Finish(void)
 {
 	PCMUSIC_Finish();
