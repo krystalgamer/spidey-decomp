@@ -7,6 +7,12 @@
 
 typedef void (*relocFunc)(void);
 
+struct SRelocEntry
+{
+	char Name[16];
+	relocFunc Func;
+};
+
 struct SReloc
 {
 	relocFunc field_0;
@@ -32,5 +38,6 @@ EXPORT void Reloc_UnloadAll(void);
 
 void validate_reloc_mod(void);
 void validate_SReloc(void);
+void validate_SRelocEntry(void);
 
 #endif

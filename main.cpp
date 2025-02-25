@@ -469,6 +469,7 @@ i32 validate(void)
 	validate_SSfxEntry();
 	validate_reloc_mod();
 	validate_SReloc();
+	validate_SRelocEntry();
 
 	puts("[*] Validation done!");
 

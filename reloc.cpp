@@ -58,9 +58,27 @@ void NullFunc(void)
 }
 
 // @SMALLTODO
-void Reloc_Load(char *,i32)
+void Reloc_Load(char *pStr,i32)
 {
-    printf("Reloc_Load(char *,i32)");
+	u32 crc = Utils_GenerateCRC(pStr);
+	for (SReloc *pSearch = gRelocRoot; pSearch; pSearch = pSearch->pNext)
+	{
+		if (pSearch->mCRC == crc)
+			return;
+	}
+
+
+	SReloc *pReloc = static_cast<SReloc*>(DCMem_New(sizeof(SReloc), 0, 1, 0, 1));
+	pReloc->pNext = gRelocRoot;
+	pReloc->pPrev = 0;
+
+	if (gRelocRoot)
+		gRelocRoot->pPrev = pReloc;
+
+	gRelocRoot = pReloc;
+	pReloc->mCRC = crc;
+	pReloc->field_0 = NullFunc;
+
 }
 
 // @MEDIUMTODO
@@ -79,6 +97,14 @@ void validate_SReloc(void)
 	VALIDATE(SReloc, pNext, 0x2C);
 	VALIDATE(SReloc, pPrev, 0x30);
 
+}
+
+void validate_SRelocEntry(void)
+{
+	VALIDATE_SIZE(SRelocEntry, 0x14);
+
+	VALIDATE(SRelocEntry, Name, 0x0);
+	VALIDATE(SRelocEntry, Func, 0x10);
 }
 
 void validate_reloc_mod(void)
