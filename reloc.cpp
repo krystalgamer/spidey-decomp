@@ -1,5 +1,6 @@
 #include "reloc.h"
 #include "utils.h"
+#include "baddy.h"
 
 #include "validate.h"
 #include <cstring>
@@ -102,14 +103,65 @@ void Reloc_Load(char *pStr,i32)
 	}
 
 	print_if_false(used_index == -1, "failed to load module %s", pStr);
-
-
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void Reloc_UnloadAll(void)
 {
-    printf("Reloc_UnloadAll(void)");
+
+	CBaddy *pSearch = BaddyList;
+	while(pSearch)
+	{
+		CBaddy *pNext = reinterpret_cast<CBaddy*>(pSearch->field_20);
+		u16 type = pSearch->field_38;
+		if (type == 317 ||
+				type == 304 ||
+				type == 305 ||
+				type == 306 ||
+				type == 320 ||
+				type == 312 ||
+				type == 315)
+		{
+			delete pSearch;
+		}
+
+		pSearch = pNext;
+	}
+
+	Reloc_Unload(0xFDBCF4F8);
+	Reloc_Unload(0x2736FBF8);
+	Reloc_Unload(0xF84F55C0);
+	Reloc_Unload(0x1CBA85B9);
+	Reloc_Unload(0x2528AEEE);
+	Reloc_Unload(0xF4DCD5FD);
+	Reloc_Unload(0x1B982E4C);
+	Reloc_Unload(0xFF9CB2BA);
+	Reloc_Unload(0x1A96491C);
+	Reloc_Unload(0x88F1EEF3);
+	Reloc_Unload(0x9A44411D);
+	Reloc_Unload(0x22F82678);
+	Reloc_Unload(0x81070B0A);
+	Reloc_Unload(0x93B2A4E4);
+	Reloc_Unload(0x2B0EC381);
+
+	Reloc_Unload(Utils_GenerateCRC("blackcat"));
+	Reloc_Unload(Utils_GenerateCRC("carnage"));
+	Reloc_Unload(Utils_GenerateCRC("chopper"));
+	Reloc_Unload(Utils_GenerateCRC("docock"));
+	Reloc_Unload(Utils_GenerateCRC("l2a1lsc"));
+	Reloc_Unload(Utils_GenerateCRC("lizard"));
+	Reloc_Unload(Utils_GenerateCRC("lizman"));
+	Reloc_Unload(Utils_GenerateCRC("mj"));
+	Reloc_Unload(Utils_GenerateCRC("spclone"));
+	Reloc_Unload(Utils_GenerateCRC("submarin"));
+	Reloc_Unload(Utils_GenerateCRC("superock"));
+	Reloc_Unload(Utils_GenerateCRC("torch"));
+	Reloc_Unload(Utils_GenerateCRC("training"));
+	Reloc_Unload(Utils_GenerateCRC("turret"));
+	Reloc_Unload(Utils_GenerateCRC("venom"));
+
+	print_if_false(gRelocRoot == 0, "Not all code modules cleared!");
 }
 
 void validate_SReloc(void)
