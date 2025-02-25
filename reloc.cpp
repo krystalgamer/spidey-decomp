@@ -56,10 +56,11 @@ void Reloc_CallUserFunction(const char*, u32, const u32*, u32*)
 	printf("WASSSUP");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void NullFunc(void)
 {
-    printf("NullFunc(void)");
+	print_if_false(0, "relocatable function not loaded.");
 }
 
 // @Ok
