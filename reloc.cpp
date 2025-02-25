@@ -5,9 +5,10 @@
 #include "validate.h"
 #include <cstring>
 
-// @FIXME - dump entries here
 
 #define LEN_RELOC_TABLE 31
+
+// @FIXME - dump entries here
 EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE];
 EXPORT reloc_mod *gRelocRoot;
 
@@ -51,10 +52,22 @@ void Reloc_Unload(char* pStr)
 	Reloc_Unload(Utils_GenerateCRC(pStr));
 }
 
-// @MEDIUMTODO
-void Reloc_CallUserFunction(const char*, u32, const u32*, u32*)
+// @Ok
+// @Matching
+void Reloc_CallUserFunction(const char* pStr, u32 a2, const u32* a3, u32* a4)
 {
-	printf("WASSSUP");
+	u32 crc = Utils_GenerateCRC(pStr);
+
+	for (reloc_mod *pMod = gRelocRoot; pMod; pMod = pMod->pNext)
+	{
+		if (crc == pMod->mCRC && pMod->field_C[a2])
+		{
+			pMod->field_C[a2](a3, a4);
+			return;
+		}
+	}
+
+	print_if_false(0, "Bad user function call");
 }
 
 // @Ok

@@ -7,13 +7,15 @@
 
 typedef void (*relocFunc)(void);
 
+typedef void (*UserFunction)(const u32*, u32*);
+
 struct reloc_mod
 {
 	relocFunc field_0;
 	u8 padAfter0[4];
 
 	u32 mCRC;
-	u32 field_C[8];
+	UserFunction field_C[8];
 	reloc_mod *pNext;
 	reloc_mod *pPrev;
 };
