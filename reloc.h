@@ -7,26 +7,23 @@
 
 typedef void (*relocFunc)(void);
 
-struct SRelocEntry
-{
-	char Name[16];
-	relocFunc Func;
-};
-
-struct SReloc
+struct reloc_mod
 {
 	relocFunc field_0;
 	u8 padAfter0[4];
 
 	u32 mCRC;
 	u32 field_C[8];
-	SReloc *pNext;
-	SReloc *pPrev;
+	reloc_mod *pNext;
+	reloc_mod *pPrev;
 };
 
-struct reloc_mod
+struct SRelocEntry
 {
+	char Name[16];
+	void (*Func)(reloc_mod*);
 };
+
 
 EXPORT void Reloc_Unload(char*);
 EXPORT void Reloc_Unload(u32);
