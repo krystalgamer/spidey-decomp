@@ -1,10 +1,14 @@
 #include "reloc.h"
 #include "utils.h"
 
-// @BIGTODO
-void Reloc_Unload(unsigned int)
-{}
+#include "validate.h"
 
+// @BIGTODO
+void Reloc_Unload(u32)
+{
+}
+
+// @Ok
 void Reloc_Unload(char* pStr)
 {
 	Reloc_Unload(Utils_GenerateCRC(pStr));
@@ -32,4 +36,19 @@ void Reloc_Load(char *,i32)
 void Reloc_UnloadAll(void)
 {
     printf("Reloc_UnloadAll(void)");
+}
+
+void validate_SReloc(void)
+{
+	VALIDATE_SIZE(SReloc, 0x30);
+
+	VALIDATE(SReloc, field_0, 0x0);
+	VALIDATE(SReloc, mCRC, 0x8);
+	VALIDATE(SReloc, field_C, 0xC);
+	VALIDATE(SReloc, pNext, 0x2C);
+
+}
+
+void validate_reloc_mod(void)
+{
 }

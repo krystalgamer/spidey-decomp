@@ -86,6 +86,7 @@
 #include "ps2gamefmv.h"
 #include "init.h"
 #include "utils.h"
+#include "reloc.h"
 
 extern int FAIL_VALIDATION;
 
@@ -466,6 +467,8 @@ i32 validate(void)
 	validate_SModel();
 	validate_SMessageData();
 	validate_SSfxEntry();
+	validate_reloc_mod();
+	validate_SReloc();
 
 	puts("[*] Validation done!");
 
