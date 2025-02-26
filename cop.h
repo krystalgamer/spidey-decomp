@@ -10,6 +10,7 @@
 #include "weapons.h"
 #include "message.h"
 #include "bit2.h"
+#include "reloc.h"
 
 
 class CCop : public CBaddy {
@@ -123,6 +124,7 @@ void validate_CCopLaserPing(void);
 
 EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
 EXPORT void CreateCopRicochet(SLineInfo *,u8,u8,u8);
-
+EXPORT void Cop_RelocatableModuleInit(reloc_mod*);
+EXPORT void Cop_RelocatableModuleClear(void);
 
 #endif

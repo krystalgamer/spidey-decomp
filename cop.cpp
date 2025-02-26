@@ -20,6 +20,20 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
+// @SMALLTODO
+void Cop_RelocatableModuleClear(void)
+{
+	printf("void Cop_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Cop_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Cop_RelocatableModuleClear;
+	pMod->field_C[0] = Cop_CreateCop;
+}
+
 // @Ok
 CCopLaserPing::CCopLaserPing(
 		CVector* a2,
