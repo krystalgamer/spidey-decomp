@@ -6,6 +6,8 @@
 #include "baddy.h"
 #include "export.h"
 
+#include "reloc.h"
+
 class CTorch : public CBaddy {
 
 public:
@@ -39,4 +41,7 @@ public:
 
 void validate_CTorch(void);
 EXPORT void Torch_CreateTorch(const unsigned int *stack, unsigned int *result);
+EXPORT void Torch_RelocatableModuleInit(reloc_mod *);
+EXPORT void Torch_RelocatableModuleClear(void);
+
 #endif 

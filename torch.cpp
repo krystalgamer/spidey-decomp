@@ -6,6 +6,20 @@
 
 extern u8 submarinerDieRelated;
 
+// @SMALLTODO
+void Torch_RelocatableModuleClear(void)
+{
+	printf("void Torch_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Torch_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Torch_RelocatableModuleClear;
+	pMod->field_C[0] = Torch_CreateTorch;
+}
+
 // @Ok
 INLINE i32* CTorch::GetNewCommandBlock(u32 a1)
 {

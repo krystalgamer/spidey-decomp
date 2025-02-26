@@ -30,6 +30,8 @@
 #include "carnage.h"
 #include "submarin.h"
 #include "superock.h"
+#include "training.h"
+#include "torch.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -63,6 +65,8 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "carnage", Carnage_RelocatableModuleInit },
 	{ "submarin", Submariner_RelocatableModuleInit },
 	{ "superock", SuperDocOck_RelocatableModuleInit },
+	{ "training", Training_RelocatableModuleInit },
+	{ "torch", Torch_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;
