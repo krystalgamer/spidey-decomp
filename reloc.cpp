@@ -24,6 +24,7 @@
 #include "l6a3lsc.h"
 #include "mj.h"
 #include "simby.h"
+#include "spclone.h"
 #include "mysterio.h"
 #include "turret.h"
 #include "docock.h"
@@ -46,26 +47,33 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "scorpion", Scorpion_RelocatableModuleInit },
 	{ "jonah", Jonah_RelocatableModuleInit },
 	{ "blackcat", BlackCat_RelocatableModuleInit },
+
 	{ "hostage", Hostage_RelocatableModuleInit },
 	{ "cop", Cop_RelocatableModuleInit },
 	{ "chopper", Chopper_RelocatableModuleInit },
 	{ "rhino", Rhino_RelocatableModuleInit },
 	{ "venom", Venom_RelocatableModuleInit },
+
 	{ "lizman", LizMan_RelocatableModuleInit },
 	{ "l5a4lsc", 0 },
 	{ "l5a5lsc", L5A5LSC_RelocatableModuleInit },
 	{ "l5a6lsc", L5A6LSC_RelocatableModuleInit },
 	{ "l5a7lsc", L5A7LSC_RelocatableModuleInit },
+
 	{ "l6a1lsc", L6A1LSC_RelocatableModuleInit },
 	{ "l6a2lsc", L6A2LSC_RelocatableModuleInit },
 	{ "l6a3lsc", L6A3LSC_RelocatableModuleInit },
 	{ "mj", MJ_RelocatableModuleInit },
 	{ "simby", Simby_RelocatableModuleInit },
+
+	{ "spclone", SpClone_RelocatableModuleInit },
+
 	{ "mysterio", Mysterio_RelocatableModuleInit },
 	{ "turret", Turret_RelocatableModuleInit },
 	{ "docock", DocOck_RelocatableModuleInit },
 	{ "carnage", Carnage_RelocatableModuleInit },
 	{ "submarin", Submariner_RelocatableModuleInit },
+
 	{ "superock", SuperDocOck_RelocatableModuleInit },
 	{ "training", Training_RelocatableModuleInit },
 	{ "torch", Torch_RelocatableModuleInit },
