@@ -6,6 +6,9 @@
 #include <cstring>
 
 #include "thug.h"
+#include "l2a1lsc.h"
+#include "scorpion.h"
+#include "jonah.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -14,6 +17,9 @@
 EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 {
 	{ "thug", Thug_RelocatableModuleInit },
+	{ "l2a1lsc", L2A1LSC_RelocatableModuleInit },
+	{ "scorpion", Scorpion_RelocatableModuleInit },
+	{ "reloc", Jonah_RelocatableModuleInit },
 };
 EXPORT reloc_mod *gRelocRoot;
 

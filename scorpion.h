@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 
 class CScorpion : public CBaddy {
@@ -69,7 +70,10 @@ class CConstantLaser : public CNonRenderedBit
 		i32 field_60;
 };
 
-EXPORT void Scorpion_GetCurrentTarget(unsigned int*, unsigned int*);
+EXPORT void Scorpion_GetCurrentTarget(const u32*, u32*);
+EXPORT void Scorpion_RelocatableModuleClear(void);
+EXPORT void Scorpion_RelocatableModuleInit(reloc_mod*);
+EXPORT void Scorpion_CreateScorpion(const u32*, u32*);
 
 void validate_CScorpion(void);
 void validate_CConstantLaser(void);

@@ -11,6 +11,27 @@
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 
+// @SMALLTODO
+void Scorpion_CreateScorpion(const u32*, u32*)
+{
+	printf("void Scorpion_GetCurrentTarget(unsigned int* pScorp, unsigned int* pTarget)");
+}
+
+// @SMALLTODO
+void Scorpion_RelocatableModuleClear(void)
+{
+	printf("void Scorpion_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Scorpion_RelocatableModuleInit(reloc_mod* pMod)
+{
+	pMod->mClearFunc = Scorpion_RelocatableModuleClear;
+	pMod->field_C[0] = Scorpion_CreateScorpion;
+	pMod->field_C[1] = Scorpion_GetCurrentTarget;
+}
+
 // @Ok
 i32 CScorpion::ScorpPathCheck(
 		CVector* a2,
@@ -180,9 +201,10 @@ __inline void* CScorpion::GetCurrentTarget(void)
 }
 
 // @Ok
-void Scorpion_GetCurrentTarget(unsigned int* pScorp, unsigned int* pTarget)
+void Scorpion_GetCurrentTarget(const u32* pOne, u32* pTarget)
 {
-	*pTarget = reinterpret_cast<unsigned int>((*reinterpret_cast<CScorpion**>(pScorp))->GetCurrentTarget());
+	CScorpion *pScorp = reinterpret_cast<CScorpion*>(*pOne);
+	*pTarget = reinterpret_cast<u32>(pScorp->GetCurrentTarget());
 }
 
 
