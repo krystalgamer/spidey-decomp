@@ -24,5 +24,11 @@ class CL1A3Bomb : public CManipOb
 		u8 padBottom[0x12C-0x129-1];
 };
 
+EXPORT extern u32 gBombRelated;
+EXPORT extern u8 gBombDieRelatedOne;
+EXPORT extern u8 gBombDieRelatedTwo;
+EXPORT extern u32 gBombDieTimerRelated;
+EXPORT extern u32 gBombAIRelated;
+
 void validate_CL1A3Bomb(void);
 #endif
