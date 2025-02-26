@@ -10,6 +10,14 @@
 extern i32 DifficultyLevel; 
 extern CPlayer* MechList;
 
+// @Ok
+// @Matching
+void Hostage_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Hostage_RelocatableModuleClear;
+	pMod->field_C[0] = Hostage_CreateHostage;
+}
+
 // @MEDIUMTODO
 void CHostage::AI(void)
 {

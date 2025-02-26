@@ -6,6 +6,7 @@
 #include "export.h"
 #include "baddy.h"
 #include "mem.h"
+#include "reloc.h"
 
 
 class CHostage : public CBaddy {
@@ -35,5 +36,7 @@ public:
 
 void validate_CHostage(void);
 EXPORT void Hostage_CreateHostage(const unsigned int *, unsigned int *);
+EXPORT void Hostage_RelocatableModuleClear(void);
+EXPORT void Hostage_RelocatableModuleInit(reloc_mod *);
 
 #endif
