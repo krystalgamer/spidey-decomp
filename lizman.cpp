@@ -10,6 +10,26 @@
 #include "ps2funcs.h"
 #include "spidey.h"
 
+// @SMALLTODO
+void LizMan_CreateLizMan(const u32*, u32*)
+{
+	printf("void LizMan_CreateLizMan(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void LizMan_RelocatableModuleClear(void)
+{
+	printf("void LizMan_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void LizMan_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = LizMan_RelocatableModuleClear;
+	pMod->field_C[0] = LizMan_CreateLizMan;
+}
+
 // @MEDIUMTODO
 void CLizMan::CalculateJumpPositionArray(CVector*)
 {}

@@ -15,6 +15,7 @@
 #include "chopper.h"
 #include "rhino.h"
 #include "venom.h"
+#include "lizman.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -32,6 +33,7 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "chopper", Chopper_RelocatableModuleInit },
 	{ "rhino", Rhino_RelocatableModuleInit },
 	{ "venom", Venom_RelocatableModuleInit },
+	{ "lizman", LizMan_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;

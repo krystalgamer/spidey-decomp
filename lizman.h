@@ -6,6 +6,7 @@
 #include "export.h"
 #include "baddy.h"
 #include "mem.h"
+#include "reloc.h"
 
 class CMessage;
 
@@ -55,5 +56,8 @@ public:
 };
 
 void validate_CLizMan(void);
+EXPORT void LizMan_RelocatableModuleInit(reloc_mod *);
+EXPORT void LizMan_RelocatableModuleClear(void);
+EXPORT void LizMan_CreateLizMan(const u32*, u32*);
 
 #endif
