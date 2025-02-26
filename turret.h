@@ -6,6 +6,8 @@
 #include "export.h"
 #include "baddy.h"
 
+#include "reloc.h"
+
 
 class CTurret : public CBaddy {
 public:
@@ -39,5 +41,9 @@ class CTurretLaser : public CNonRenderedBit
 void validate_CTurret(void);
 void validate_CTurretBase(void);
 void validate_CTurretLaser(void);
+
+EXPORT void Turret_CreateTurret(const u32 *,u32 *);
+EXPORT void Turret_RelocatableModuleClear(void);
+EXPORT void Turret_RelocatableModuleInit(reloc_mod*);
 
 #endif

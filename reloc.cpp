@@ -24,6 +24,8 @@
 #include "l6a3lsc.h"
 #include "mj.h"
 #include "simby.h"
+#include "mysterio.h"
+#include "turret.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -51,6 +53,8 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "l6a3lsc", L6A3LSC_RelocatableModuleInit },
 	{ "mj", MJ_RelocatableModuleInit },
 	{ "simby", Simby_RelocatableModuleInit },
+	{ "mysterio", Mysterio_RelocatableModuleInit },
+	{ "turret", Turret_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;
