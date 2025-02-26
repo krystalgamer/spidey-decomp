@@ -11,6 +11,27 @@
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList;
 
+// @BIGTODO
+void Venom_DisplayProgressBar(const u32*, u32*)
+{
+	printf("void Venom_DisplayProgressBar(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void Venom_RelocatableModuleClear(void)
+{
+	printf("void Venom_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Venom_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Venom_RelocatableModuleClear;
+	pMod->field_C[0] = Venom_CreateVenom;
+	pMod->field_C[1] = Venom_DisplayProgressBar;
+}
+
 // @Ok
 INLINE i32* CVenom::GetNewCommandBlock(u32 a1)
 {

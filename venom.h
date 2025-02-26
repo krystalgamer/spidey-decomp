@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 
 class CVenom : public CBaddy {
@@ -106,7 +107,10 @@ void validate_CVenom(void);
 void validate_CVenomWrap(void);
 void validate_CVenomElectrified(void);
 EXPORT void Venom_CreateVenom(const unsigned int *stack, unsigned int *result);
+EXPORT void Venom_DisplayProgressBar(const u32*, u32*);
 
+EXPORT void Venom_RelocatableModuleInit(reloc_mod *);
+EXPORT void Venom_RelocatableModuleClear(void);
 
 
 #endif

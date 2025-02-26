@@ -20,6 +20,14 @@ extern CBaddy *BaddyList;
 extern i32 gBossRelated;
 extern CCamera *CameraList;
 
+// @Ok
+// @Matching
+void Rhino_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Rhino_RelocatableModuleClear;
+	pMod->field_C[0] = Rhino_CreateRhino;
+}
+
 // @MEDIUMTODO
 void CRhino::AI(void)
 {

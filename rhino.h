@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 class CRhino : public CBaddy {
 public:
@@ -75,6 +76,7 @@ void validate_CRhino(void);
 void validate_CRhinoNasalSteam(void);
 EXPORT void Rhino_CreateRhino(const unsigned int *stack, unsigned int *result);
 EXPORT void Rhino_RelocatableModuleClear(void);
+EXPORT void Rhino_RelocatableModuleInit(reloc_mod *);
 
 
 #endif
