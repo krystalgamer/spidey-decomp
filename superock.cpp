@@ -12,6 +12,27 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+// @SMALLTODO
+void SuperDocOck_DisplayProgressBars(const u32*, u32*)
+{
+	printf("void SuperDocOck_DisplayProgressBars(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void SuperDocOck_RelocatableModuleClear(void)
+{
+	printf("void SuperDocOck_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void SuperDocOck_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = SuperDocOck_RelocatableModuleClear;
+	pMod->field_C[0] = SuperDocOck_CreateSuperDocOck;
+	pMod->field_C[1] = SuperDocOck_DisplayProgressBars;
+}
+
 // @Ok
 INLINE i32* CSuperDocOck::GetNewCommandBlock(u32 a1)
 {

@@ -26,6 +26,10 @@
 #include "simby.h"
 #include "mysterio.h"
 #include "turret.h"
+#include "docock.h"
+#include "carnage.h"
+#include "submarin.h"
+#include "superock.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -55,6 +59,10 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "simby", Simby_RelocatableModuleInit },
 	{ "mysterio", Mysterio_RelocatableModuleInit },
 	{ "turret", Turret_RelocatableModuleInit },
+	{ "docock", DocOck_RelocatableModuleInit },
+	{ "carnage", Carnage_RelocatableModuleInit },
+	{ "submarin", Submariner_RelocatableModuleInit },
+	{ "superock", SuperDocOck_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;

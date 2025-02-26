@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 
 class CSuperDocOck : public CBaddy {
@@ -72,4 +73,7 @@ public:
 
 void validate_CSuperDocOck(void);
 EXPORT void SuperDocOck_CreateSuperDocOck(const unsigned int *stack, unsigned int *result);
+EXPORT void SuperDocOck_RelocatableModuleInit(reloc_mod *);
+EXPORT void SuperDocOck_RelocatableModuleClear(void);
+EXPORT void SuperDocOck_DisplayProgressBars(const u32*, u32*);
 #endif
