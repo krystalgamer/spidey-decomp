@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 class CLizard : public CBaddy {
 public:
@@ -17,4 +18,5 @@ public:
 void validate_CLizard(void);
 EXPORT void Lizard_CreateLizard(const unsigned int *, unsigned int *);
 EXPORT void Lizard_RelocatableModuleClear(void);
+EXPORT void Lizard_RelocatableModuleInit(reloc_mod *);
 #endif

@@ -33,6 +33,7 @@
 #include "training.h"
 #include "torch.h"
 #include "shell.h"
+#include "lizard.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -69,6 +70,7 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "training", Training_RelocatableModuleInit },
 	{ "torch", Torch_RelocatableModuleInit },
 	{ "shell", Shell_RelocatableModuleInit },
+	{ "lizard", Lizard_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;

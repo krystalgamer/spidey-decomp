@@ -3,6 +3,14 @@
 #include "ps2m3d.h"
 
 // @Ok
+// @Matching
+void Lizard_RelocatableModuleInit(reloc_mod *pMod)
+{
+  pMod->mClearFunc = Lizard_RelocatableModuleClear;
+  pMod->field_C[0] = Lizard_CreateLizard;
+}
+
+// @Ok
 CLizard::~CLizard(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
