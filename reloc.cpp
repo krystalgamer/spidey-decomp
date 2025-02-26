@@ -24,8 +24,8 @@ INLINE void Reloc_Unload(u32 crc)
 		{
 			if (pSearch->mCRC == crc)
 			{
-				if (pSearch->field_0)
-					pSearch->field_0();
+				if (pSearch->mClearFunc)
+					pSearch->mClearFunc();
 
 				if (pSearch->pPrev)
 					pSearch->pPrev->pNext = pSearch->pNext;
@@ -98,7 +98,7 @@ void Reloc_Load(char *pStr,i32)
 
 	gRelocRoot = pReloc;
 	pReloc->mCRC = crc;
-	pReloc->field_0 = NullFunc;
+	pReloc->mClearFunc = NullFunc;
 
 	i32 used_index = LEN_RELOC_TABLE;
 
@@ -181,7 +181,7 @@ void validate_SReloc(void)
 {
 	VALIDATE_SIZE(reloc_mod, 0x34);
 
-	VALIDATE(reloc_mod, field_0, 0x0);
+	VALIDATE(reloc_mod, mClearFunc, 0x0);
 	VALIDATE(reloc_mod, mCRC, 0x8);
 	VALIDATE(reloc_mod, field_C, 0xC);
 	VALIDATE(reloc_mod, pNext, 0x2C);

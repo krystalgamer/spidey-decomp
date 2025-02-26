@@ -32,9 +32,11 @@ void Thug_RelocatableModuleClear(void)
 	}
 }
 
-// @TODO
+// @Ok
+// @Matching
 void Thug_RelocatableModuleInit(reloc_mod* pMod)
 {
+	pMod->mClearFunc = Thug_RelocatableModuleClear;
 	pMod->field_C[0] = Thug_CreateThug;
 }
 

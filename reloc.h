@@ -5,13 +5,13 @@
 
 #include "export.h"
 
-typedef void (*relocFunc)(void);
+typedef void (*ClearFunc)(void);
 
 typedef void (*UserFunction)(const u32*, u32*);
 
 struct reloc_mod
 {
-	relocFunc field_0;
+	ClearFunc mClearFunc;
 	u8 padAfter0[4];
 
 	u32 mCRC;
