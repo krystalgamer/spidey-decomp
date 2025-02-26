@@ -7,6 +7,34 @@ int JoelJewtCheatCode = 0;
 extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
+// @SMALLTODO
+void Jonah_WhatShouldScorpDo(const u32*, u32*)
+{
+	printf("void Jonah_WhatShouldScorpDo(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void Jonah_ShouldPlead(const u32*, u32*)
+{
+	printf("void Jonah_ShouldPlead(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void Jonah_RelocatableModuleClear(void)
+{
+	printf("void Jonah_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Jonah_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Jonah_RelocatableModuleClear;
+	pMod->field_C[0] = Jonah_CreateJonah;
+	pMod->field_C[1] = Jonah_WhatShouldScorpDo;
+	pMod->field_C[2] = Jonah_ShouldPlead;
+}
+
 // @NotOk
 // globals
 CJonah::CJonah(void)
