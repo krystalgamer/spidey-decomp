@@ -5,6 +5,8 @@
 #include "export.h"
 #include "baddy.h"
 
+#include "reloc.h"
+
 
 class CMJ : public CBaddy {
 
@@ -18,4 +20,5 @@ public:
 void validate_CMJ(void);
 EXPORT void MJ_CreateMJ(const unsigned int *, unsigned int *);
 EXPORT void MJ_RelocatableModuleClear(void);
+EXPORT void MJ_RelocatableModuleInit(reloc_mod*);
 #endif

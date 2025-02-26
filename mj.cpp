@@ -5,6 +5,14 @@
 extern u8 submarinerDieRelated;
 
 // @Ok
+// @Matching
+void MJ_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = MJ_RelocatableModuleClear;
+	pMod->field_C[0] = MJ_CreateMJ;
+}
+
+// @Ok
 CMJ::~CMJ(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
