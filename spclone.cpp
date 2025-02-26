@@ -4,6 +4,14 @@
 extern CBaddy* BaddyList;
 extern u8 submarinerDieRelated;
 
+// @Ok
+// @Matching
+void SpClone_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = SpClone_RelocatableModuleClear;
+	pMod->field_C[0] = SpClone_CreateSpClone;
+}
+
 // @MEDIUMTODO
 void CSpClone::AI(void)
 {
@@ -111,7 +119,7 @@ CSpClone::~CSpClone(void)
 
 // @Ok
 // @Matching
-void SpClone_CreateSpClone(u32 * a2,u32 * a3)
+void SpClone_CreateSpClone(const u32 * a2,u32 * a3)
 {
 	i16* v2 = reinterpret_cast<i16*>(a2[0]);
 	i32 v3 = static_cast<i32>(a2[1]);

@@ -40,7 +40,8 @@ void Simby_RelocatableModuleClear(void)
     printf("Simby_RelocatableModuleClear(void)");
 }
 
-//Simby_TestDrop
+// @Ok
+// @Matching
 void Simby_RelocatableModuleInit(reloc_mod *pMod)
 {
 	pMod->mClearFunc = Simby_RelocatableModuleClear;
