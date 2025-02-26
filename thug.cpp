@@ -17,6 +17,28 @@ EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
 
 // @Ok
+// @Matching
+void Thug_RelocatableModuleClear(void)
+{
+	for (CBody* cur = BaddyList; cur; )
+	{
+		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		if (cur->field_38 == 304 || cur->field_38 == 312)
+		{
+			delete cur;
+		}
+
+		cur = next;
+	}
+}
+
+// @TODO
+void Thug_RelocatableModuleInit(reloc_mod* pMod)
+{
+	pMod->field_C[0] = Thug_CreateThug;
+}
+
+// @Ok
 // @Test
 void CThug::TakeHit(void)
 {
@@ -1021,7 +1043,7 @@ CThug::CThug(int *a2, int a3)
 }
 
 // @Ok
-void Thug_CreateTHug(const unsigned int *stack, unsigned int *result)
+void Thug_CreateThug(const unsigned int *stack, unsigned int *result)
 {
 	int* v2 = reinterpret_cast<int*>(*stack);
 	int v3 = static_cast<int>(stack[1]);

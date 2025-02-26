@@ -8,6 +8,7 @@
 #include "mem.h"
 #include "m3dutils.h"
 #include "bit2.h"
+#include "reloc.h"
 
 class CThug : public CBaddy {
 public:
@@ -113,6 +114,8 @@ class CThugPing : public CSimpleAnim
 void validate_CThug(void);
 void validate_CThugPing(void);
 
-EXPORT void Thug_CreateTHug(const unsigned int *stack, unsigned int *result);
+EXPORT void Thug_CreateThug(const unsigned int *stack, unsigned int *result);
+EXPORT void Thug_RelocatableModuleInit(reloc_mod*);
+EXPORT void Thug_RelocatableModuleClear(void);
 
 #endif
