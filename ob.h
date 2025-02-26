@@ -12,6 +12,9 @@
 EXPORT extern u8 gPsxItemsIndex;
 EXPORT extern u32 SuspendedDistance;
 
+EXPORT extern i32 gSuperItemRelated;
+EXPORT extern f32 gFloatSuperRelated;
+
 struct SHitInfo
 {
 	u8 field_0;

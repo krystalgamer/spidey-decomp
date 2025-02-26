@@ -7,6 +7,8 @@
 #include "baddy.h"
 #include "camera.h"
 
+#include "reloc.h"
+
 
 class CMystFoot : public CBaddy {};
 
@@ -147,5 +149,9 @@ void validate_CAngrySpark(void);
 void validate_CDamagedSoftSpotEffect(void);
 
 EXPORT void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result);
+EXPORT void Mysterio_RelocatableModuleInit(reloc_mod *);
+EXPORT void Mysterio_RelocatableModuleClear(void);
 
+EXPORT void Mysterio_FadePalettesUp(const u32*, u32*);
+EXPORT void Mysterio_FadePalettesDown(const u32*, u32*);
 #endif

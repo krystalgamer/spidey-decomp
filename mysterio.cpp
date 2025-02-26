@@ -16,6 +16,38 @@ EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
 // @SMALLTODO
+void Mysterio_FadePalettesUp(const u32*, u32*)
+{
+	printf("void Mysterio_FadePalettesUp(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void Mysterio_FadePalettesDown(const u32*, u32*)
+{
+	printf("void Mysterio_FadePalettesDown(const u32*, u32*)");
+}
+
+// @SMALLTODO
+void Mysterio_RelocatableModuleClear(void)
+{
+	printf("void Mysterio_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Mysterio_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Mysterio_RelocatableModuleClear;
+
+	pMod->field_C[0] = Mysterio_CreateMysterio;
+	pMod->field_C[1] = Mysterio_FadePalettesUp;
+	pMod->field_C[2] = Mysterio_FadePalettesDown;
+
+	gSuperItemRelated = 0;
+	gFloatSuperRelated = 1.0f;
+}
+
+// @SMALLTODO
 CDamagedSoftSpotEffect::CDamagedSoftSpotEffect(CBody*, i32)
 {
 	printf("CDamagedSoftSpotEffect::CDamagedSoftSpotEffect(CBody*, i32)");

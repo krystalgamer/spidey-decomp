@@ -15,6 +15,10 @@ CBody* EnvironmentalObjectList;
 CBody* SuspendedList;
 CItem* EnviroList;
 
+i32 gSuperItemRelated = 1;
+f32 gFloatSuperRelated = 1.0f;
+
+// @SMALLTODO
 void CBody::DeleteStuff(void)
 {
 	printf("CBody::DeleteStuff");
