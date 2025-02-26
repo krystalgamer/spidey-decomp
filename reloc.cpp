@@ -32,6 +32,7 @@
 #include "superock.h"
 #include "training.h"
 #include "torch.h"
+#include "shell.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -67,6 +68,7 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "superock", SuperDocOck_RelocatableModuleInit },
 	{ "training", Training_RelocatableModuleInit },
 	{ "torch", Torch_RelocatableModuleInit },
+	{ "shell", Shell_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;

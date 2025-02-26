@@ -5,6 +5,7 @@
 
 #include "ob.h"
 #include "export.h"
+#include "reloc.h"
 
 EXPORT extern CBody *MiscList;
 
@@ -273,7 +274,7 @@ EXPORT void Shell_ComicCollection(void);
 EXPORT void Shell_CostumeViewer(void);
 EXPORT void Shell_Difficulty(i32);
 EXPORT void Shell_DisplayGameInfo(i32,i32,SSaveGame *);
-EXPORT void Shell_DoShell(u32 const *,u32 *);
+EXPORT void Shell_DoShell(const u32 *,u32 *);
 EXPORT void Shell_DrawBackground(void);
 EXPORT void Shell_DrawTitleBar(i32,i32,const char *,i32,i32,i32,i32,i32);
 EXPORT void Shell_Gallery(EShellResult);
@@ -288,13 +289,15 @@ EXPORT void Shell_MovieViewer(void);
 EXPORT void Shell_Options(EShellResult);
 EXPORT void Shell_RollCredits(void);
 EXPORT void Shell_SFXMusic(void);
-EXPORT void Shell_SaveGame(u32 const *,u32 *);
+EXPORT void Shell_SaveGame(const u32 *,u32 *);
 EXPORT void Shell_ScreenAdjust(void);
 EXPORT void Shell_ShowRecord(char const *,char const *,STrainingMission *);
 EXPORT void Shell_Special(EShellResult);
 EXPORT void Shell_StoryBoards(void);
 EXPORT void Shell_TitleScreen(void);
 EXPORT void Shell_VerySmallFont(void);
+
+EXPORT void Shell_RelocatableModuleInit(reloc_mod *);
 
 EXPORT extern SAnimFrame* gBackgroundAnimFrame;
 

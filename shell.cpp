@@ -41,6 +41,21 @@ SAnimFrame* gBackgroundAnimFrame;
 const i32 NUM_SAVE_GAME_SLOTS = 8;
 EXPORT SSaveGame gSaveGameSlots[NUM_SAVE_GAME_SLOTS];
 
+// @SMALLTODO
+void Shell_RelocatableModuleClear(void)
+{
+	printf("void Shell_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Shell_RelocatableModuleInit(reloc_mod *pMod)
+{
+  pMod->mClearFunc = Shell_RelocatableModuleClear;
+  pMod->field_C[0] = Shell_DoShell;
+  pMod->field_C[1] = Shell_SaveGame;
+}
+
 // @Ok
 void Shell_AddGameSlots(CMenu* pMenu)
 {
@@ -267,7 +282,7 @@ void Shell_DisplayGameInfo(
 }
 
 // @MEDIUMTODO
-void Shell_DoShell(u32 const *,u32 *)
+void Shell_DoShell(const u32 *,u32 *)
 {
     printf("Shell_DoShell(u32 const *,u32 *)");
 }
@@ -428,7 +443,7 @@ void Shell_SFXMusic(void)
 }
 
 // @MEDIUMTODO
-void Shell_SaveGame(u32 const *,u32 *)
+void Shell_SaveGame(const u32 *,u32 *)
 {
     printf("Shell_SaveGame(u32 const *,u32 *)");
 }
