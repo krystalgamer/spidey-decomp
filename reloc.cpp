@@ -18,6 +18,7 @@
 #include "lizman.h"
 #include "l5a5lsc.h"
 #include "l5a6lsc.h"
+#include "l5a7lsc.h"
 
 #define LEN_RELOC_TABLE 31
 
@@ -39,6 +40,7 @@ EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 	{ "l5a4lsc", 0 },
 	{ "l5a5lsc", L5A5LSC_RelocatableModuleInit },
 	{ "l5a6lsc", L5A6LSC_RelocatableModuleInit },
+	{ "l5a7lsc", L5A7LSC_RelocatableModuleInit },
 };
 
 EXPORT reloc_mod *gRelocRoot;
