@@ -6,6 +6,7 @@
 #include "export.h"
 #include "baddy.h"
 #include "bit2.h"
+#include "reloc.h"
 
 
 class CChopper : public CBaddy {
@@ -247,8 +248,11 @@ void validate_CSearchlight(void);
 void validate_CMachineGunBullet(void);
 void validate_CChopperMissile(void);
 
-EXPORT void Chopper_CreateSearchlight(u32*, u32*);
-EXPORT void Chopper_CreateSniper(u32*, u32*);
-EXPORT void Chopper_CreateChopper(u32*, u32*);
+EXPORT void Chopper_CreateSearchlight(const u32*, u32*);
+EXPORT void Chopper_CreateSniper(const u32*, u32*);
+EXPORT void Chopper_CreateChopper(const u32*, u32*);
+
+EXPORT void Chopper_RelocatableModuleInit(reloc_mod *);
+EXPORT void Chopper_RelocatableModuleClear(void);
 
 #endif

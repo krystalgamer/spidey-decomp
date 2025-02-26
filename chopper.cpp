@@ -28,6 +28,22 @@ extern CPlayer* MechList;
 
 extern CCamera* CameraList;
 
+// @SMALLTODO
+void Chopper_RelocatableModuleClear(void)
+{
+	printf("void Chopper_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void Chopper_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Chopper_RelocatableModuleClear;
+	pMod->field_C[0] = Chopper_CreateChopper;
+	pMod->field_C[1] = Chopper_CreateSearchlight;
+	pMod->field_C[2] = Chopper_CreateSniper;
+}
+
 // @Ok
 CBulletFrag::~CBulletFrag(void)
 {
@@ -1110,7 +1126,7 @@ CChopper::CChopper(i16* a2, i32 a3)
 }
 
 // @Ok
-void Chopper_CreateChopper(u32* a1, u32* a2)
+void Chopper_CreateChopper(const u32* a1, u32* a2)
 {
 	i16* v3 = reinterpret_cast<i16*>(a1[0]);
 	i32 v4 = a1[1];
@@ -1120,7 +1136,7 @@ void Chopper_CreateChopper(u32* a1, u32* a2)
 
 
 // @Ok
-void Chopper_CreateSniper(u32* a1, u32* a2)
+void Chopper_CreateSniper(const u32* a1, u32* a2)
 {
 	i32 v3 = *a1;
 
@@ -1128,7 +1144,7 @@ void Chopper_CreateSniper(u32* a1, u32* a2)
 }
 
 // @Ok
-void Chopper_CreateSearchlight(u32* a1, u32* a2)
+void Chopper_CreateSearchlight(const u32* a1, u32* a2)
 {
 	i32 v3 = *a1;
 
