@@ -5,11 +5,16 @@
 #include "validate.h"
 #include <cstring>
 
+#include "thug.h"
 
 #define LEN_RELOC_TABLE 31
 
+
 // @FIXME - dump entries here
-EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE];
+EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
+{
+	{ "thug", Thug_RelocatableModuleInit },
+};
 EXPORT reloc_mod *gRelocRoot;
 
 // @Ok
