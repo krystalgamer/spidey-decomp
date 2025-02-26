@@ -2,6 +2,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 class CBlackCat : public CBaddy {
 public:
@@ -39,3 +40,4 @@ public:
 void validate_CBlackCat(void);
 EXPORT void BlackCat_CreateBlackCat(const unsigned int *stack, unsigned int *result);
 EXPORT void BlackCat_RelocatableModuleClear(void);
+EXPORT void BlackCat_RelocatableModuleInit(reloc_mod*);

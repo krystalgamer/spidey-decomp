@@ -6,6 +6,14 @@ extern u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
 // @Ok
+// @Matching
+void BlackCat_RelocatableModuleInit(reloc_mod* pMod)
+{
+	pMod->mClearFunc = BlackCat_RelocatableModuleClear;
+	pMod->field_C[0] = BlackCat_CreateBlackCat;
+}
+
+// @Ok
 void BlackCat_RelocatableModuleClear(void)
 {
 	for (CBody* cur = BaddyList; cur; )
