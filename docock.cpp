@@ -14,6 +14,20 @@ extern CBaddy* BaddyList;
 extern i32 gBossRelated;
 extern CBody* ControlBaddyList;
 
+// @SMALLTODO
+void DocOck_RelocatableModuleClear(void)
+{
+	printf("void DocOck_RelocatableModuleClear(void)");
+}
+
+// @Ok
+// @Matching
+void DocOck_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = DocOck_RelocatableModuleClear;
+	pMod->field_C[0] = DocOck_CreateDocOck;
+}
+
 // @Ok
 INLINE i32* CDocOc::GetNewCommandBlock(u32 a1)
 {

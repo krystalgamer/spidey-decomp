@@ -9,6 +9,12 @@ extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
 
 // @SMALLTODO
+void Carnage_RelocatableModuleInit(reloc_mod *)
+{
+	printf("void Carnage_RelocatableModuleInit(reloc_mod *)");
+}
+
+// @SMALLTODO
 CCarnageHitSpark::CCarnageHitSpark(CVector*)
 {
 	printf("CCarnageHitSpark::CCarnageHitSpark(CVector*);");

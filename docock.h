@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 class CDocOc : public CBaddy {
 
@@ -73,5 +74,7 @@ public:
 
 void validate_CDocOc(void);
 EXPORT void DocOck_CreateDocOck(const unsigned int *stack, unsigned int *result);
+EXPORT void DocOck_RelocatableModuleClear(void);
+EXPORT void DocOck_RelocatableModuleInit(reloc_mod *);
 
 #endif
