@@ -5,6 +5,14 @@
 EXPORT u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
+// @Ok
+// @Matching
+void Submariner_RelocatableModuleInit(reloc_mod *pMod)
+{
+  pMod->mClearFunc = Submariner_RelocatableModuleClear;
+  pMod->field_C[0] = Submariner_CreateSubmariner;
+}
+
 // @NotOk
 // fix the address for 3C
 CSubmariner::CSubmariner(i16 * a2, i32 a3)
@@ -33,7 +41,7 @@ CSubmariner::~CSubmariner(void)
 }
 
 // @Ok
-void Submariner_CreateSubmariner(u32 * a2,u32 * a3)
+void Submariner_CreateSubmariner(const u32 * a2,u32 * a3)
 {
 	i16* v2 = reinterpret_cast<i16*>(a2[0]);
 	i32 v3 = static_cast<i32>(a2[1]);

@@ -5,6 +5,7 @@
 
 #include "baddy.h"
 #include "export.h"
+#include "reloc.h"
 
 class CSubmariner : public CBaddy
 {
@@ -15,8 +16,9 @@ class CSubmariner : public CBaddy
 		EXPORT void AI(void) OVERRIDE;
 };
 
-EXPORT void Submariner_CreateSubmariner(u32 *,u32 *);
+EXPORT void Submariner_CreateSubmariner(const u32 *,u32 *);
 EXPORT void Submariner_RelocatableModuleClear(void);
+EXPORT void Submariner_RelocatableModuleInit(reloc_mod *);
 
 void validate_CSubmariner(void);
 
