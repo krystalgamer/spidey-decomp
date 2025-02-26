@@ -22,6 +22,36 @@ extern i16 **gTrigNodes;
 extern CBody *MiscList;
 extern CCamera* CameraList;
 
+// @Ok
+// @Matching
+void Simby_TestDrop(const u32 *, u32 *)
+{
+}
+
+// @SMALLTODO
+void Simby_CreateFlamingImpactWeb(const u32 *,u32 *)
+{
+    printf("Simby_CreateFlamingImpactWeb(u32 const *,u32 *)");
+}
+
+// @SMALLTODO
+void Simby_RelocatableModuleClear(void)
+{
+    printf("Simby_RelocatableModuleClear(void)");
+}
+
+//Simby_TestDrop
+void Simby_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Simby_RelocatableModuleClear;
+	pMod->field_C[0] = Simby_CreateSimby;
+	pMod->field_C[1] = Simby_CreateSimbyDroplet;
+	pMod->field_C[2] = Simby_CreateFlamingImpactWeb;
+	pMod->field_C[3] = Simby_TestDrop;
+	pMod->field_C[4] = Simby_CreatePunchOb;
+	pMod->field_C[5] = Simby_CreateEmber;
+}
+
 // @SMALLTODO
 CFlamingImpactWeb::CFlamingImpactWeb(CVector*, CSVector*, i32)
 {

@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "baddy.h"
+#include "reloc.h"
 
 class CPunchOb : public CBaddy {
 public:
@@ -219,5 +220,10 @@ EXPORT void Simby_CreateSimbyDroplet(const u32 *, u32 *);
 EXPORT void Simby_CreateSimbyPunchOb(const u32 *, u32 *);
 
 EXPORT void Simby_SplattyExplosion(CVector*, CVector*, i32);
+EXPORT void Simby_RelocatableModuleInit(reloc_mod*);
+EXPORT void Simby_RelocatableModuleClear(void);
+EXPORT void Simby_CreateFlamingImpactWeb(const u32 *,u32 *);
+EXPORT void Simby_CreatePunchOb(const u32 *stack, u32 *result);
+EXPORT void Simby_TestDrop(const u32 *, u32 *);
 
 #endif
