@@ -14,10 +14,21 @@ extern CBaddy* BaddyList;
 extern i32 gBossRelated;
 extern CBody* ControlBaddyList;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DocOck_RelocatableModuleClear(void)
 {
-	printf("void DocOck_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 308)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
