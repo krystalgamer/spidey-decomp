@@ -16,10 +16,21 @@ void LizMan_CreateLizMan(const u32*, u32*)
 	printf("void LizMan_CreateLizMan(const u32*, u32*)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void LizMan_RelocatableModuleClear(void)
 {
-	printf("void LizMan_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 317)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
