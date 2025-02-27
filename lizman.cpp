@@ -10,10 +10,20 @@
 #include "ps2funcs.h"
 #include "spidey.h"
 
-// @SMALLTODO
-void LizMan_CreateLizMan(const u32*, u32*)
+// @MEDIUMTODO
+CLizMan::CLizMan(i16 *,i32)
 {
-	printf("void LizMan_CreateLizMan(const u32*, u32*)");
+    printf("CLizMan::CLizMan(i16 *,i32)");
+}
+
+// @Ok
+// @Matching
+void LizMan_CreateLizMan(const u32* stack, u32* result)
+{
+	i16* v2 = reinterpret_cast<i16*>(stack[0]);
+	u32 v3 = stack[1];
+
+	*result = reinterpret_cast<u32>(new CLizMan(v2, v3));
 }
 
 // @Ok

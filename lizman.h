@@ -12,6 +12,8 @@ class CMessage;
 
 class CLizMan : public CBaddy {
 public:
+	EXPORT CLizMan(i16 *,i32);
+
 	EXPORT void PlaySingleAnim(__int16, int, int);
 	EXPORT void StandStill(void);
 	EXPORT void SwitchFromMatrixToEuler(void);
