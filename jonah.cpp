@@ -19,10 +19,21 @@ void Jonah_ShouldPlead(const u32*, u32*)
 	printf("void Jonah_ShouldPlead(const u32*, u32*)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Jonah_RelocatableModuleClear(void)
 {
-	printf("void Jonah_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 316)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
