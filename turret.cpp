@@ -16,10 +16,21 @@ void Turret_CreateTurret(const u32 *,u32 *)
     printf("Turret_CreateTurret(u32 const *,u32 *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Turret_RelocatableModuleClear(void)
 {
-    printf("Turret_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 325)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
