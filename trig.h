@@ -11,6 +11,9 @@ EXPORT extern i32 gReStartDeathRelated;
 EXPORT extern i32 gLevelStatus;
 EXPORT extern i32 gRunCinemaRelated;
 
+EXPORT extern i16 **gTrigNodes;
+EXPORT extern i32 NumNodes;
+
 class CBody;
 
 struct SLinkInfo

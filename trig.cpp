@@ -10,8 +10,8 @@
 i32 gRunCinemaRelated;
 i32 gLevelStatus;
 EXPORT void* gTrigFile;
-EXPORT i16 **gTrigNodes;
-EXPORT i32 NumNodes;
+i16 **gTrigNodes;
+i32 NumNodes;
 
 const i32 MAXPENDING = 16;
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
