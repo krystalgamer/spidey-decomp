@@ -278,10 +278,21 @@ CRhinoNasalSteam::~CRhinoNasalSteam(void)
 {
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Rhino_RelocatableModuleClear(void)
 {
-    printf("Rhino_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 307)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 
