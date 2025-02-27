@@ -20,10 +20,22 @@ extern CBaddy *BaddyList;
 
 EXPORT CCop* gCopList;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Cop_RelocatableModuleClear(void)
 {
-	printf("void Cop_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 320 ||
+				pSearch->field_38 == 306)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
