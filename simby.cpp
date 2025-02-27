@@ -34,10 +34,21 @@ void Simby_CreateFlamingImpactWeb(const u32 *,u32 *)
     printf("Simby_CreateFlamingImpactWeb(u32 const *,u32 *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Simby_RelocatableModuleClear(void)
 {
-    printf("Simby_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 324)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
