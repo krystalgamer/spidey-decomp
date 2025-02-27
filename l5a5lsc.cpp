@@ -3,7 +3,6 @@
 #include "spidey.h"
 #include "l1a3bomb.h"
 
-u32 gL5A5Related;
 EXPORT u32 gL5A5RelatedTwo;
 
 // @MEDIUMTODO
@@ -28,7 +27,7 @@ void L5A5LSC_RelocatableModuleInit(reloc_mod *pMod)
 	Spidey_SetUserFunction("l5a5lsc", 1u);
 
 	gBombDieRelatedTwo = 0;
-	gBombDieTimerRelated = gL5A5Related;
+	gBombDieTimerRelated = gTimerRelated;
 	gL5A5RelatedTwo = 0;
 }
 

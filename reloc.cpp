@@ -38,8 +38,6 @@
 
 #define LEN_RELOC_TABLE 31
 
-
-// @FIXME - dump entries here
 EXPORT SRelocEntry gRelocTable[LEN_RELOC_TABLE] =
 {
 	{ "thug", Thug_RelocatableModuleInit },

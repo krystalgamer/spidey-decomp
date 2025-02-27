@@ -1,6 +1,11 @@
 #include "l2a1lsc.h"
 #include "spidey.h"
 
+#include "l1a3bomb.h"
+#include "l5a5lsc.h"
+
+#define LEN_L2_TEXS 5
+EXPORT Texture *gL2a1Texs[LEN_L2_TEXS];
 
 // @MEDIUMTODO
 void L2A1LSC_DisplayProgressBar(u32 const *,u32 *)
@@ -24,8 +29,16 @@ void L2A1LSC_RelocatableModuleInit(reloc_mod *pMod)
 	Spidey_SetUserFunction("l2a1lsc", 1u);
 }
 
-// @SMALLTODO
+// @Ok
+// @Note: data ordering is all over the place
 void L2A1LSC_RelocatableModuleClear(void)
 {
-    printf("L2A1LSC_RelocatableModuleClear(void)");
+	gBombDieRelatedOne = 0;
+	gBombDieRelatedTwo = 0;
+	gBombDieTimerRelated = gTimerRelated;
+
+	for (i32 i = 0; i < LEN_L2_TEXS; i++)
+	{
+		gL2a1Texs[i] = 0;
+	}
 }

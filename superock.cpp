@@ -12,7 +12,7 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
-// @SMALLTODO
+// @MEDIUMTODO
 void SuperDocOck_DisplayProgressBars(const u32*, u32*)
 {
 	printf("void SuperDocOck_DisplayProgressBars(const u32*, u32*)");

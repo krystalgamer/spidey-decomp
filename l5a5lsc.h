@@ -7,7 +7,6 @@
 
 #include "reloc.h"
 
-EXPORT extern u32 gL5A5Related;
 
 EXPORT void L5A5LSC_DisplayProgressBar(u32 const *,u32 *);
 EXPORT void L5A5LSC_RelocatableModuleInit(reloc_mod *);
