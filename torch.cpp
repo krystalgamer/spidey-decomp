@@ -6,10 +6,21 @@
 
 extern u8 submarinerDieRelated;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Torch_RelocatableModuleClear(void)
 {
-	printf("void Torch_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 328)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
