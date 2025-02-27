@@ -28,10 +28,31 @@ extern CPlayer* MechList;
 
 extern CCamera* CameraList;
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Chopper_RelocatableModuleClear(void)
 {
-	printf("void Chopper_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 318)
+		{
+			delete pSearch;
+		}
+		else if (pSearch->field_38 == 322)
+		{
+			delete pSearch;
+		}
+		else if (pSearch->field_38 == 323)
+		{
+			delete pSearch;
+		}
+
+		pSearch = pNext;
+	}
 }
 
 // @Ok
