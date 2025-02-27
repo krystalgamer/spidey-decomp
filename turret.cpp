@@ -1,6 +1,11 @@
 #include "turret.h"
 #include "validate.h"
 
+// @SMALLTODO
+CTurret::CTurret(i16 *,i32)
+{
+    printf("CTurret::CTurret(i16 *,i32)");
+}
 
 // @Ok
 // @Matching
@@ -10,10 +15,14 @@ void Turret_RelocatableModuleInit(reloc_mod *pMod)
 	pMod->field_C[0] = Turret_CreateTurret;
 }
 
-// @SMALLTODO
-void Turret_CreateTurret(const u32 *,u32 *)
+// @Ok
+// @Matching
+void Turret_CreateTurret(const u32 *stack, u32 * result)
 {
-    printf("Turret_CreateTurret(u32 const *,u32 *)");
+	i16 *v2 = reinterpret_cast<i16*>(stack[0]);
+	i32 v3 = stack[1];
+
+	*result = reinterpret_cast<u32>(new CTurret(v2, v3));
 }
 
 // @Ok

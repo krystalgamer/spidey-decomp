@@ -11,6 +11,8 @@
 
 class CTurret : public CBaddy {
 public:
+	EXPORT CTurret(i16 *,i32);
+
 	EXPORT void TargetLockAbsolute(const CVector &);
 	EXPORT void TargetLockDynamic(CBody *a2);
 	EXPORT void ClearTargetLock(void);
