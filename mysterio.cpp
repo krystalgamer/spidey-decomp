@@ -52,10 +52,13 @@ void Mysterio_FadePalettesUp(const u32* a1, u32*)
 	gMystHandle = Mem_MakeHandle(new CFadePalettes(a1[0], a1[1], a1[2]));
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Mysterio_FadePalettesDown(const u32*, u32*)
 {
-	printf("void Mysterio_FadePalettesDown(const u32*, u32*)");
+	CFadePalettes *pFade = static_cast<CFadePalettes*>(Mem_RecoverPointer(&gMystHandle));
+	if (pFade)
+		pFade->FadeDown();
 }
 
 // @Ok
