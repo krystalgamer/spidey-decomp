@@ -8,6 +8,23 @@ extern const char *gObjFile;
 extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
 
+// @Ok
+// @Matching
+void Carnage_RelocatableModuleClear(void)
+{
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 314)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
+}
+
 // @SMALLTODO
 void Carnage_RelocatableModuleInit(reloc_mod *)
 {
