@@ -7,6 +7,7 @@
 #include "ps2redbook.h"
 #include "reloc.h"
 #include "spidey.h"
+#include "camera.h"
 
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
@@ -41,10 +42,24 @@ void Scorpion_CreateScorpion(const u32* stack, u32* result)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Scorpion_RelocatableModuleClear(void)
 {
-	printf("void Scorpion_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 310)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
+
+	if (CameraList)
+		CameraList->field_F9 = 0;
 }
 
 // @Ok
