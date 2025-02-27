@@ -1045,12 +1045,12 @@ CThug::CThug(int *a2, int a3)
 }
 
 // @Ok
-void Thug_CreateThug(const unsigned int *stack, unsigned int *result)
+void Thug_CreateThug(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i32* v2 = reinterpret_cast<i32*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CThug(v2, v3));
+	*result = reinterpret_cast<u32>(new CThug(v2, v3));
 }
 
 // @Ok

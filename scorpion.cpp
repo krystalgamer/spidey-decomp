@@ -11,10 +11,34 @@
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 
-// @SMALLTODO
-void Scorpion_CreateScorpion(const u32*, u32*)
+// @MEDIUMTODO
+CScorpion::CScorpion(i16 *,i32)
 {
-	printf("void Scorpion_GetCurrentTarget(unsigned int* pScorp, unsigned int* pTarget)");
+    printf("CScorpion::CScorpion(i16 *,i32)");
+}
+
+// @MEDIUMTODO
+CScorpion::CScorpion(void)
+{
+    printf("CScorpion::CScorpion(void)");
+}
+
+
+// @Ok
+// @Matching
+void Scorpion_CreateScorpion(const u32* stack, u32* result)
+{
+	u32 v2 = stack[1];
+	i16* v3 = reinterpret_cast<i16*>(stack[0]);
+
+	if (v2)
+	{
+		*result = reinterpret_cast<u32>(new CScorpion(v3, v2));
+	}
+	else
+	{
+		*result = reinterpret_cast<u32>(new CScorpion());
+	}
 }
 
 // @SMALLTODO

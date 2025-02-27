@@ -10,6 +10,9 @@
 
 class CScorpion : public CBaddy {
 	public:
+
+		EXPORT CScorpion(i16 *,i32);
+		EXPORT CScorpion(void);
 		EXPORT void NextRoom(void);
 		EXPORT void* GetCurrentTarget(void);
 		EXPORT CSuper* FindJonah(void);
