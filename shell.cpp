@@ -41,19 +41,19 @@ SAnimFrame* gBackgroundAnimFrame;
 const i32 NUM_SAVE_GAME_SLOTS = 8;
 EXPORT SSaveGame gSaveGameSlots[NUM_SAVE_GAME_SLOTS];
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Shell_RelocatableModuleClear(void)
 {
-	printf("void Shell_RelocatableModuleClear(void)");
 }
 
 // @Ok
 // @Matching
 void Shell_RelocatableModuleInit(reloc_mod *pMod)
 {
-  pMod->mClearFunc = Shell_RelocatableModuleClear;
-  pMod->field_C[0] = Shell_DoShell;
-  pMod->field_C[1] = Shell_SaveGame;
+	pMod->mClearFunc = Shell_RelocatableModuleClear;
+	pMod->field_C[0] = Shell_DoShell;
+	pMod->field_C[1] = Shell_SaveGame;
 }
 
 // @Ok
