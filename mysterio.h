@@ -116,6 +116,12 @@ class CMysterioHeadCircle : public CQuadBit
 class CFadePalettes : public CNonRenderedBit
 {
 	public:
+		EXPORT CFadePalettes(u8,u8,u8);
+
+		EXPORT void FadeDown(void);
+		EXPORT void Move(void);
+		EXPORT ~CFadePalettes(void);
+
 		unsigned char fullPad[0x424];
 };
 

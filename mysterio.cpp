@@ -15,10 +15,41 @@ EXPORT u8 gActuatorRelated;
 EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
-// @SMALLTODO
-void Mysterio_FadePalettesUp(const u32*, u32*)
+EXPORT SHandle gMystHandle;
+
+// @MEDIUMTODO
+CFadePalettes::CFadePalettes(u8,u8,u8)
 {
-	printf("void Mysterio_FadePalettesUp(const u32*, u32*)");
+    printf("CFadePalettes::CFadePalettes(u8,u8,u8)");
+}
+
+// @SMALLTODO
+void CFadePalettes::FadeDown(void)
+{
+    printf("CFadePalettes::FadeDown(void)");
+}
+
+// @MEDIUMTODO
+void CFadePalettes::Move(void)
+{
+    printf("CFadePalettes::Move(void)");
+}
+
+// @SMALLTODO
+CFadePalettes::~CFadePalettes(void)
+{
+    printf("CFadePalettes::~CFadePalettes(void)");
+}
+
+
+// @Ok
+// @Matching
+void Mysterio_FadePalettesUp(const u32* a1, u32*)
+{
+	void* v2 = Mem_RecoverPointer(&gMystHandle);
+	print_if_false(v2 == 0, "Tried to do two fade ups");
+
+	gMystHandle = Mem_MakeHandle(new CFadePalettes(a1[0], a1[1], a1[2]));
 }
 
 // @SMALLTODO
