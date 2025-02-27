@@ -11,16 +11,35 @@
 extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList;
 
+#define LEN_VENOM_TEXS 10
+EXPORT Texture* gVenomTexs[LEN_VENOM_TEXS];
+
 // @BIGTODO
 void Venom_DisplayProgressBar(const u32*, u32*)
 {
 	printf("void Venom_DisplayProgressBar(const u32*, u32*)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Venom_RelocatableModuleClear(void)
 {
-	printf("void Venom_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 313)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
+
+	for (i32 i = 0; i < LEN_VENOM_TEXS; i++)
+	{
+		gVenomTexs[i] = 0;
+	}
 }
 
 // @Ok
