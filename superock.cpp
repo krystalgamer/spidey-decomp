@@ -12,16 +12,35 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+#define LEN_SUPER_OCK_TEXS 15
+EXPORT Texture *gSuperDocTexs[15];
+
 // @MEDIUMTODO
 void SuperDocOck_DisplayProgressBars(const u32*, u32*)
 {
 	printf("void SuperDocOck_DisplayProgressBars(const u32*, u32*)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void SuperDocOck_RelocatableModuleClear(void)
 {
-	printf("void SuperDocOck_RelocatableModuleClear(void)");
+	CItem *pSearch = BaddyList;
+
+	while (pSearch)
+	{
+		CItem *pNext = pSearch->field_20;
+
+		if (pSearch->field_38 == 308)
+			delete pSearch;
+
+		pSearch = pNext;
+	}
+
+	for (i32 i = 0; i < LEN_SUPER_OCK_TEXS; i++)
+	{
+		gSuperDocTexs[i] = 0;
+	}
 }
 
 // @Ok

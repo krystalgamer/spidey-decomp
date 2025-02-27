@@ -9,8 +9,8 @@ extern CBaddy* BaddyList;
 // @Matching
 void Submariner_RelocatableModuleInit(reloc_mod *pMod)
 {
-  pMod->mClearFunc = Submariner_RelocatableModuleClear;
-  pMod->field_C[0] = Submariner_CreateSubmariner;
+	pMod->mClearFunc = Submariner_RelocatableModuleClear;
+	pMod->field_C[0] = Submariner_CreateSubmariner;
 }
 
 // @NotOk
