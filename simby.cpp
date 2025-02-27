@@ -28,10 +28,15 @@ void Simby_TestDrop(const u32 *, u32 *)
 {
 }
 
-// @SMALLTODO
-void Simby_CreateFlamingImpactWeb(const u32 *,u32 *)
+// @Ok
+// @Matching
+void Simby_CreateFlamingImpactWeb(const u32* stack,u32 *)
 {
-    printf("Simby_CreateFlamingImpactWeb(u32 const *,u32 *)");
+
+	CVector v6 = { stack[0], stack[1], stack[2] };
+	CSVector v5 = { stack[3], stack[4], stack[5] };
+
+	new CFlamingImpactWeb(&v6, &v5, stack[6]);
 }
 
 // @Ok
