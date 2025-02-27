@@ -122,7 +122,11 @@ class CFadePalettes : public CNonRenderedBit
 		EXPORT void Move(void);
 		EXPORT ~CFadePalettes(void);
 
-		unsigned char fullPad[0x424];
+		u8 padTop[0x45B-0x3D+1];
+
+		u8 field_45B;
+
+		u8 padBottom[0x460-0x45B-1];
 };
 
 class CAngrySpark : public CQuadBit

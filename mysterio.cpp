@@ -23,10 +23,15 @@ CFadePalettes::CFadePalettes(u8,u8,u8)
     printf("CFadePalettes::CFadePalettes(u8,u8,u8)");
 }
 
-// @SMALLTODO
-void CFadePalettes::FadeDown(void)
+// @Ok
+// @Matching
+INLINE void CFadePalettes::FadeDown(void)
 {
-    printf("CFadePalettes::FadeDown(void)");
+	if (this->field_45B != 1 && this->field_45B != 3)
+	{
+		this->field_C = 0;
+		this->field_45B = 1;
+	}
 }
 
 // @MEDIUMTODO
@@ -568,6 +573,8 @@ void validate_CMysterioHeadCircle(void)
 void validate_CFadePalettes(void)
 {
 	VALIDATE_SIZE(CFadePalettes, 0x460);
+
+	VALIDATE(CFadePalettes, field_45B, 0x45B);
 }
 
 void validate_CAngrySpark(void)
