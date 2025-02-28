@@ -470,6 +470,7 @@ i32 validate(void)
 	validate_reloc_mod();
 	validate_SReloc();
 	validate_SRelocEntry();
+	validate_SMovieDetails();
 
 	puts("[*] Validation done!");
 

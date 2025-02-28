@@ -1,6 +1,8 @@
 #include "ps2gamefmv.h"
 #include "PCMovie.h"
 
+#include "validate.h"
+
 EXPORT i32 GameFMV_Active;
 
 // @MEDIUMTODO
@@ -43,4 +45,18 @@ void GameFMV_StopFMV(void)
 		PCMOVIE_Stop();
 		GameFMV_Active = 0;
 	}
+}
+
+void validate_SMovieDetails(void)
+{
+	VALIDATE_SIZE(SMovieDetails, 0x18);
+
+	VALIDATE(SMovieDetails, name, 0x0);
+
+	VALIDATE(SMovieDetails, width, 0x4);
+	VALIDATE(SMovieDetails, height, 0x6);
+	VALIDATE(SMovieDetails, endframe, 0x8);
+
+	VALIDATE(SMovieDetails, field_10, 0x10);
+	VALIDATE(SMovieDetails, field_14, 0x14);
 }
