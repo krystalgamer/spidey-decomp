@@ -196,11 +196,24 @@ void PCMOVIE_OpenPKR(void)
 	}
 }
 
-// @SMALLTODO
-u8 PCMOVIE_Play(char *,i32)
+// @NotOk
+// @Note: make sure everything is properly inlined
+u8 PCMOVIE_Play(char *a1, i32 a2)
 {
-    printf("PCMOVIE_Play(char *,i32)");
-	return (u8)0x2802025;
+	PCMOVIE_Init();
+	PCMOVIE_Stop();
+
+	print_if_false(a2 != 0, "Request to play a non-full screen movie!");
+	if (!OpenMovieFile(a1, 1))
+		return 0;
+	if (CreateMovieSurface())
+	{
+		WinYield();
+		return 1;
+	}
+
+	CloseMovieFile();
+	return 0;
 }
 
 // @SMALLTODO
