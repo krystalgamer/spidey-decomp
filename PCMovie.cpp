@@ -149,8 +149,14 @@ void PCMOVIE_InitOnce(void)
 // @SMALLTODO
 u8 PCMOVIE_NextFrame(void)
 {
-	printf("u8 PCMOVIE_NextFrame(void)");
-	return (u8)0x28022025;
+	if (!gMovieBinkRelated)
+		return 0;
+
+	if (BinkWait(gMovieBinkRelated) || NextMovieFrame())
+		return 1;
+
+	PCMOVIE_Stop();
+	return 0;
 }
 
 // @Ok
