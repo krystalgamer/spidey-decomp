@@ -1520,4 +1520,6 @@ void validate_SSaveGame(void)
 	VALIDATE(SSaveGame, mDifficulty, 0x54);
 
 	VALIDATE(SSaveGame, field_7B, 0x7B);
+
+	VALIDATE(SSaveGame, field_88, 0x88);
 }

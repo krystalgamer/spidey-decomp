@@ -1,5 +1,10 @@
 #include "ps2gamefmv.h"
+#include "ps2redbook.h"
 #include "PCMovie.h"
+#include "spidey.h"
+#include "front.h"
+#include "ps2pad.h"
+#include "PCShell.h"
 
 #include "validate.h"
 
@@ -13,6 +18,10 @@ EXPORT u16 GameFMV_Width;
 EXPORT u16 GameFMV_Height;
 EXPORT i32 GameFMV_EndFrame;
 
+EXPORT i32 gGameFmvPad;
+
+EXPORT i16 gGameFmvVolume;
+
 
 #define NUM_MOVIES 27
 
@@ -20,10 +29,59 @@ EXPORT i32 GameFMV_EndFrame;
 // @FIXME
 SMovieDetails movieDetails[NUM_MOVIES];
 
-// @MEDIUMTODO
-void GameFMV_PlayMovie(u8, bool, bool, float)
+// @Ok
+// @Matching
+u8 GameFMV_PlayMovie(
+		u8 a1,
+		bool a2,
+		bool a3,
+		float a4)
 {
-	printf("void GameFMV_PlayMovie(u8, bool, book, float)");
+	Redbook_XAStop();
+	gSaveGame.field_88 |= 1 << a1;
+	if (MechList)
+		MechList->StopAlertMusic();
+
+	GameFMV_StopFMV();
+
+	gGameFmvPad = 0;
+
+	if (PCMOVIE_Play(movieDetails[a1].name, a3))
+	{
+		GameFMV_Active = 1;
+		Front_ClearScreen();
+
+		i32 v4 = gGameFmvVolume * a4;
+		if (v4 > 255)
+			v4 = 255;
+		PCMOVIE_SetVolume(v4);
+		Pad_ClearTriggers(gSControl);
+
+		while (PCMOVIE_NextFrame())
+		{
+			gGameFmvPad++;
+			if (Pad_Update() ||
+					a2 &&
+					gGameFmvPad >= 60 &&
+					PCSHELL_CheckTriggers(0x7000000, 1, 1))
+			{
+				gSControl[0].Start.Triggered = 0;
+				break;
+			}
+		}
+
+
+		PCMOVIE_Stop();
+		Pad_ActuatorOff(0, 0);
+		Pad_ActuatorOff(0, 1);
+		Pad_ClearTriggers(gSControl);
+		GameFMV_Active = 0;
+
+		Front_ClearScreen();
+		return 1;
+	}
+
+	return 0;
 }
 
 // @Ok
@@ -68,7 +126,7 @@ void GameFMV_SetStartTrack(u8 track)
 
 // @Ok
 // @Matching
-void GameFMV_StopFMV(void)
+INLINE void GameFMV_StopFMV(void)
 {
 	if (GameFMV_Active)
 	{

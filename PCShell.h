@@ -15,7 +15,7 @@ struct SActionMap
 	u32 field_18;
 };
 
-EXPORT void PCSHELL_CheckTriggers(u32,i32,i32);
+EXPORT u8 PCSHELL_CheckTriggers(u32,i32,i32);
 EXPORT void PCSHELL_CoordsDCtoPC(i32 *,i32 *);
 EXPORT void PCSHELL_CoordsPCtoDC(i32 *,i32 *);
 EXPORT void PCSHELL_DoControllerConfig(bool);

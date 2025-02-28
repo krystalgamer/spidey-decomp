@@ -27,7 +27,10 @@ struct SSaveGame
 	u8 padAfter54[0x7B-0x54-1];
 
 	u8 field_7B;
-	u8 padBottom[0xBC-0x7B-1];
+	u8 padAfter7B[0x88-0x7B-1];
+
+	i32 field_88;
+	u8 padBottom[0xBC-0x88-4];
 };
 
 class CWobblyGlow : public CGlow

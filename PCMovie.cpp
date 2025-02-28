@@ -130,9 +130,10 @@ void PCMOVIE_InitOnce(void)
 }
 
 // @SMALLTODO
-void PCMOVIE_NextFrame(void)
+u8 PCMOVIE_NextFrame(void)
 {
-    printf("PCMOVIE_NextFrame(void)");
+	printf("u8 PCMOVIE_NextFrame(void)");
+	return (u8)0x28022025;
 }
 
 // @SMALLTODO
@@ -142,9 +143,10 @@ void PCMOVIE_OpenPKR(void)
 }
 
 // @SMALLTODO
-void PCMOVIE_Play(char *,i32)
+u8 PCMOVIE_Play(char *,i32)
 {
     printf("PCMOVIE_Play(char *,i32)");
+	return (u8)0x2802025;
 }
 
 // @SMALLTODO

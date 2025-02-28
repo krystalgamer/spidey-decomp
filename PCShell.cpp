@@ -38,9 +38,10 @@ char* STR_JOY_CONFIG = "joystick configuration";
 EXPORT i32 gShellTitleBarRelated;
 
 // @MEDIUMTODO
-void PCSHELL_CheckTriggers(u32,i32,i32)
+u8 PCSHELL_CheckTriggers(u32,i32,i32)
 {
     printf("PCSHELL_CheckTriggers(uint,i32,i32)");
+	return (u8)0x28022025;
 }
 
 // @Ok

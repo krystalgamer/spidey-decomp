@@ -19,7 +19,7 @@ struct SMovieDetails
 };
 
 EXPORT int GameFMV_GetNumMovies(void);
-EXPORT void GameFMV_PlayMovie(u8, bool, bool, float);
+EXPORT u8 GameFMV_PlayMovie(u8, bool, bool, float);
 
 EXPORT void GameFMV_Init(void);
 EXPORT void GameFMV_SetStartTrack(u8);
