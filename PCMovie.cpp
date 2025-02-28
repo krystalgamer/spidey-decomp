@@ -136,10 +136,41 @@ u8 PCMOVIE_NextFrame(void)
 	return (u8)0x28022025;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCMOVIE_OpenPKR(void)
 {
-    printf("PCMOVIE_OpenPKR(void)");
+	char v2[512];
+	char v3[512];
+
+	if (!gMediaPkr)
+	{
+		const char *v0 = gMovieCurrentDirectory;
+		if (!gFoundMediaPkr)
+			v0 = gCdPath;
+
+		strcpy(v2, v0);
+		strcat(v2, "\\");
+		strcat(v2, "Media.pkr");
+
+		if (!PKR_Open(&gMediaPkr, v2, 1))
+		{
+			if (PKR_GetLastError(v3))
+			{
+				printf_fancy("PKR\t: %s\r\n", v3);
+			}
+		}
+		else
+		{
+			printf_fancy("PKR\t: Name       : %s\r\n", gMediaPkr->name);
+			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", gMediaPkr->mFooter.numDirs);
+			printf_fancy("PKR\t: N.O. Files : %i\r\n", gMediaPkr->mFooter.numFiles);
+		}
+	}
+	else
+	{
+		printf_fancy("PKR\t: PKR %s already open\r\n", gMediaPkr->name);
+	}
 }
 
 // @SMALLTODO
