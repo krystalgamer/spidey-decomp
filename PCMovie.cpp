@@ -146,7 +146,8 @@ void PCMOVIE_InitOnce(void)
 	}
 }
 
-// @SMALLTODO
+// @NotOk
+// @Note: validate inline
 u8 PCMOVIE_NextFrame(void)
 {
 	if (!gMovieBinkRelated)
@@ -216,10 +217,12 @@ u8 PCMOVIE_Play(char *a1, i32 a2)
 	return 0;
 }
 
-// @SMALLTODO
-void PCMOVIE_SetVolume(i32)
+// @Ok
+// @Matching
+void PCMOVIE_SetVolume(i32 a1)
 {
-    printf("PCMOVIE_SetVolume(i32)");
+	BinkSetVolume(gMovieBinkRelated, (a1 << 15) / 255);
+	BinkSetPan(gMovieBinkRelated, 0x8000);
 }
 
 // @SMALLTODO
