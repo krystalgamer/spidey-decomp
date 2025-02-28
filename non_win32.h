@@ -44,6 +44,7 @@ typedef u32 DWORD;
 #define WINAPI
 #define CALLBACK
 
+void CloseHandle(HANDLE);
 
 #else
 #define WINDOWS_LEAN_AND_MEAN

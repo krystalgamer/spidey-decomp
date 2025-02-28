@@ -3,6 +3,10 @@
 
 #ifndef _WIN32
 
+void CloseHandle(HANDLE)
+{
+}
+
 u32 GetTickCount()
 {
 	return 0x69696969;
