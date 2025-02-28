@@ -6,9 +6,9 @@
 #include "export.h"
 
 EXPORT void CloseMovieFile(void);
-EXPORT void CreateMovieSurface(void);
-EXPORT void NextMovieFrame(void);
-EXPORT void OpenMovieFile(char *,bool);
+EXPORT u8 CreateMovieSurface(void);
+EXPORT i32 NextMovieFrame(void);
+EXPORT u8 OpenMovieFile(char *,bool);
 EXPORT void PCMOVIE_ClosePKR(void);
 EXPORT void PCMOVIE_Init(void);
 EXPORT void PCMOVIE_InitOnce(void);

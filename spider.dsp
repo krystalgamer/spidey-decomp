@@ -336,6 +336,10 @@ SOURCE=.\music.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\my_bink.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\my_debug.cpp
 # End Source File
 # Begin Source File
@@ -857,6 +861,10 @@ SOURCE=.\mj.h
 # Begin Source File
 
 SOURCE=.\music.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\my_bink.h
 # End Source File
 # Begin Source File
 

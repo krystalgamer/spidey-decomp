@@ -1,6 +1,8 @@
 #include "PCMovie.h"
 #include "pkr.h"
 #include "non_win32.h"
+#include "SpideyDX.h"
+#include "my_bink.h"
 
 #include <cstring>
 
@@ -12,30 +14,45 @@ EXPORT u8 gFoundMediaPkr;
 EXPORT char gCdPath[0x100];
 EXPORT u8 gPcMovieInited;
 
+EXPORT i32 gMovieBinkRelated;
+EXPORT HANDLE gMovieFileHandle;
 
-
-// @SMALLTODO
+// @Ok
 void CloseMovieFile(void)
 {
-    printf("CloseMovieFile(void)");
+	if (gMovieBinkRelated)
+	{
+		BinkClose(gMovieBinkRelated);
+		if (gMovieFileHandle)
+		{
+			CloseHandle(gMovieFileHandle);
+			gMovieFileHandle = 0;
+			PKR_LockFile(gMediaPkr);
+		}
+
+		gMovieBinkRelated = 0;
+	}
 }
 
 // @SMALLTODO
-void CreateMovieSurface(void)
+u8 CreateMovieSurface(void)
 {
     printf("CreateMovieSurface(void)");
+	return (u8)0x28022025;
 }
 
 // @MEDIUMTODO
-void NextMovieFrame(void)
+i32 NextMovieFrame(void)
 {
     printf("NextMovieFrame(void)");
+	return 0x28022025;
 }
 
 // @MEDIUMTODO
-void OpenMovieFile(char *,bool)
+u8 OpenMovieFile(char *,bool)
 {
     printf("OpenMovieFile(char *,bool)");
+	return (u8)0x28022025;
 }
 
 // @Ok
