@@ -1,4 +1,5 @@
 #include "ps2gamefmv.h"
+#include "PCMovie.h"
 
 
 // @MEDIUMTODO
@@ -22,7 +23,7 @@ int PShell_GetNumCostumePSXs(void)
 // @SMALLTODO
 void GameFMV_Init(void)
 {
-    printf("GameFMV_Init(void)");
+	PCMOVIE_Init();
 }
 
 // @SMALLTODO
