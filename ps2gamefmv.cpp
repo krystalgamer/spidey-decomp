@@ -1,6 +1,7 @@
 #include "ps2gamefmv.h"
 #include "PCMovie.h"
 
+EXPORT i32 GameFMV_Active;
 
 // @MEDIUMTODO
 void GameFMV_PlayMovie(u8, bool, bool, float)
@@ -20,7 +21,8 @@ int PShell_GetNumCostumePSXs(void)
 	return 10;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void GameFMV_Init(void)
 {
 	PCMOVIE_Init();
@@ -32,8 +34,13 @@ void GameFMV_SetStartTrack(u8)
     printf("GameFMV_SetStartTrack(u8)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void GameFMV_StopFMV(void)
 {
-    printf("GameFMV_StopFMV(void)");
+	if (GameFMV_Active)
+	{
+		PCMOVIE_Stop();
+		GameFMV_Active = 0;
+	}
 }
