@@ -19,7 +19,8 @@ EXPORT i32 gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
 // @Ok
-void CloseMovieFile(void)
+// @Matching
+void INLINE CloseMovieFile(void)
 {
 	if (gMovieBinkRelated)
 	{
@@ -224,10 +225,11 @@ void PCMOVIE_SetVolume(i32 a1)
 	BinkSetPan(gMovieBinkRelated, 0x8000);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCMOVIE_Stop(void)
 {
-    printf("PCMOVIE_Stop(void)");
+	CloseMovieFile();
 }
 
 // @SMALLTODO
