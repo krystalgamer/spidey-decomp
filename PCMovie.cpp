@@ -19,10 +19,15 @@ EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
 EXPORT BINKSUMMARY g_BinkSummaryOne;
+EXPORT u32 g_CloneBinkSummaryOne;
+EXPORT u32 g_CloneBinkSummaryTwo;
+EXPORT u32 g_BinkDestx;
+EXPORT u32 g_BinkDesty;
 
 EXPORT LPDIRECTDRAW7 g_MovieDD7;
 EXPORT LPDIRECTDRAWSURFACE7 g_MovieDD7Surface;
 EXPORT i32 g_MoviePrimarySurfaceType;
+
 
 // @Ok
 // @Matching
@@ -63,6 +68,8 @@ INLINE u8 CreateMovieSurface(void)
 	D3D_ERROR_LOG_AND_QUIT(hr);
 
 	g_MoviePrimarySurfaceType = BinkDDSurfaceType(g_MovieDD7Surface);
+	if (g_MoviePrimarySurfaceType == -1 || !g_MoviePrimarySurfaceType)
+		DXERR_printf("Bink: Unsupported primary surface format %d.", g_MoviePrimarySurfaceType);
 
 #endif
 	return 1;
@@ -75,7 +82,7 @@ i32 NextMovieFrame(void)
 	return 0x28022025;
 }
 
-// @MEDIUMTODO
+// @Ok
 INLINE u8 OpenMovieFile(char *a1, bool)
 {
 	char v14[256];
@@ -102,7 +109,7 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 
 		i32 fileOffset = findFileOffsetPKR(a2, a3);
 		if (fileOffset == -1)
-			return 0;
+			goto open_movie_file_error;
 		PKR_UnlockFile(gMediaPkr);
 
 		HANDLE FileA = CreateFileA(FileName, 0x80000000, 1u, 0, 3u, 1u, 0);
@@ -111,7 +118,7 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 		{
 			PKR_LockFile(gMediaPkr);
 			gMovieFileHandle = 0;
-			return 0;
+			goto open_movie_file_error;
 		}
 
 		SetFilePointer(FileA, fileOffset, 0, 0);
@@ -134,13 +141,22 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 	gMovieBinkRelated = v5;
 
 	if (!gMovieBinkRelated)
-		return 0;
+		goto open_movie_file_error;
 
 	BinkSetVideoOnOff(v5, 1);
 	BinkGetSummary(gMovieBinkRelated, &g_BinkSummaryOne);
 
+	g_BinkDestx = 0;
+	g_BinkDesty = 0;
+
+	g_CloneBinkSummaryOne = g_BinkSummaryOne.Width;
+	g_CloneBinkSummaryTwo = g_BinkSummaryOne.Height;
 
 	return 1;
+
+open_movie_file_error:
+	DXERR_printf("\t\tUnable to open movie file %s\r\n", a1);
+	return 0;
 }
 
 // @Ok
@@ -164,7 +180,7 @@ void PCMOVIE_ClosePKR(void)
 
 // @Ok
 // @Matching
-void PCMOVIE_Init(void)
+INLINE void PCMOVIE_Init(void)
 {
 	if (!gPcMovieInited)
 	{
@@ -313,7 +329,7 @@ void PCMOVIE_SetVolume(i32 a1)
 
 // @Ok
 // @Matching
-void PCMOVIE_Stop(void)
+INLINE void PCMOVIE_Stop(void)
 {
 	CloseMovieFile();
 }
