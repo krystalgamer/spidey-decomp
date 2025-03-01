@@ -1,6 +1,21 @@
 #include "my_bink.h"
 #include "validate.h"
 
+void STDCALL BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32)
+{
+	printf("void BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32)");
+}
+
+void STDCALL BinkNextFrame(HBINK)
+{
+	printf("void STDCALL BinkNextFrame(HBINK)");
+}
+
+void STDCALL BinkDoFrame(HBINK)
+{
+	printf("void STDCALL BinkDoFrame(HBINK)");
+}
+
 void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*)
 {
 	printf("void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*)");
@@ -65,4 +80,12 @@ void validate_BINKSUMMARY(void)
 
 	VALIDATE(BINKSUMMARY, Width, 0x0);
 	VALIDATE(BINKSUMMARY, Height, 0x4);
+}
+
+void validate_BINK(void)
+{
+	VALIDATE(BINK, Width, 0x0);
+	VALIDATE(BINK, Height, 0x4);
+	VALIDATE(BINK, Frames, 0x8);
+	VALIDATE(BINK, FrameNum, 0xC);
 }

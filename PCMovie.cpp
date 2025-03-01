@@ -4,6 +4,7 @@
 #include "SpideyDX.h"
 #include "my_bink.h"
 #include "DXinit.h"
+#include "DXsound.h"
 
 #include <cstring>
 
@@ -47,8 +48,7 @@ void INLINE CloseMovieFile(void)
 	}
 }
 
-// @NotOk
-// @Note: Validate when inlined
+// @Ok
 INLINE u8 CreateMovieSurface(void)
 {
 #ifdef _WIN32
@@ -56,7 +56,7 @@ INLINE u8 CreateMovieSurface(void)
 	DDSURFACEDESC2 v12;
 	memset(&v12, 0, sizeof(v12));
 
-	v12.dwSize = 124;
+	v12.dwSize = sizeof(v12);
 	v12.dwFlags = 7;
 	v12.ddsCaps.dwCaps = 64;
 	v12.dwWidth = g_BinkSummaryOne.Width;
@@ -75,11 +75,65 @@ INLINE u8 CreateMovieSurface(void)
 	return 1;
 }
 
-// @MEDIUMTODO
-i32 NextMovieFrame(void)
+// @Ok
+// @Matching
+INLINE i32 NextMovieFrame(void)
 {
-    printf("NextMovieFrame(void)");
-	return 0x28022025;
+	if (!gMovieBinkRelated)
+		return 0;
+	BinkDoFrame(gMovieBinkRelated);
+
+	DDSURFACEDESC2 v6;
+	memset(&v6, 0, sizeof(v6));
+	v6.dwSize = sizeof(v6);
+
+	HRESULT v1 = g_MovieDD7Surface->Lock(
+			0,
+			&v6,
+			2081,
+			0);
+	if (v1 == DDERR_SURFACELOST)
+	{
+		v1 = g_MovieDD7Surface->Restore();
+	}
+
+	D3D_ERROR_LOG_AND_QUIT(v1);
+
+	BinkCopyToBuffer(
+		gMovieBinkRelated,
+		v6.lpSurface,
+		v6.lPitch,
+		g_BinkSummaryOne.Height,
+		g_BinkDestx,
+		g_BinkDesty,
+		g_MoviePrimarySurfaceType);
+
+	HRESULT v2 = g_MovieDD7Surface->Unlock(0);
+
+	D3D_ERROR_LOG_AND_QUIT(v2);
+
+
+	DDBLTFX v7;
+	memset(&v7, 0, sizeof(v7));
+	v7.dwSize = sizeof(v7);
+	HRESULT v4 = g_pDDS_Scene->Blt(
+			0,
+			g_MovieDD7Surface,
+			0,
+			0x1000000,
+			&v7);
+
+	D3D_ERROR_LOG_AND_QUIT(v4);
+
+	DXPOLY_Flip();
+
+	if (gMovieBinkRelated->FrameNum == gMovieBinkRelated->Frames)
+	{
+		return 0;
+	}
+
+	BinkNextFrame(gMovieBinkRelated);
+	return 1;
 }
 
 // @Ok
@@ -248,8 +302,8 @@ void PCMOVIE_InitOnce(void)
 	}
 }
 
-// @NotOk
-// @Note: validate inline
+// @Ok
+// @Matching
 u8 PCMOVIE_NextFrame(void)
 {
 	if (!gMovieBinkRelated)
@@ -299,8 +353,7 @@ void PCMOVIE_OpenPKR(void)
 	}
 }
 
-// @NotOk
-// @Note: make sure everything is properly inlined
+// @Ok
 u8 PCMOVIE_Play(char *a1, i32 a2)
 {
 	PCMOVIE_Init();
@@ -334,7 +387,7 @@ INLINE void PCMOVIE_Stop(void)
 	CloseMovieFile();
 }
 
-// @NotOk
+// @Ok
 // @Note: validate when inlined
 INLINE i32 findFileOffsetPKR(
 		char *a1,

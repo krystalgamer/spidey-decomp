@@ -473,6 +473,7 @@ i32 validate(void)
 	validate_SRelocEntry();
 	validate_SMovieDetails();
 	validate_BINKSUMMARY();
+	validate_BINK();
 
 	puts("[*] Validation done!");
 

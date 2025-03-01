@@ -7,7 +7,15 @@
 #include "export.h"
 #include "my_dx.h"
 
-typedef void* HBINK;
+struct BINK
+{
+	u32 Width;             // Width (1 based, 640 for example)
+	u32 Height;            // Height (1 based, 480 for example)
+	u32 Frames;            // Number of frames (1 based, 100 = 100 frames)
+	u32 FrameNum;          // Frame to *be* displayed (1 based)
+	u32 LastFrameNum;      // Last frame decompressed or skipped (1 based)
+};
+typedef BINK* HBINK;
 
 #define BINKFILEHANDLE        0x00800000L // Use when passing in a file handle
 #define BINKIOSIZE            0x01000000L // Set an io size (call BinkIOSize first)
@@ -49,6 +57,7 @@ struct BINKSUMMARY
 	u32 Highest1SecFrame;       // Highest 1 second start frame
 };
 
+EXPORT void STDCALL BinkDoFrame(HBINK);
 EXPORT i32 STDCALL BinkWait(HBINK);
 EXPORT void STDCALL BinkClose(HBINK);
 EXPORT void STDCALL BinkSetVolume(HBINK, i32);
@@ -60,7 +69,10 @@ EXPORT i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7);
 EXPORT HBINK STDCALL BinkOpen(void*, i32);
 EXPORT void STDCALL BinkSetVideoOnOff(HBINK, i32);
 EXPORT void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*);
+EXPORT void STDCALL BinkNextFrame(HBINK);
+EXPORT void STDCALL BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32);
 
 void validate_BINKSUMMARY(void);
+void validate_BINK(void);
 
 #endif
