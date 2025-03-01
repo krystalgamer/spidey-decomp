@@ -3,6 +3,7 @@
 #include "non_win32.h"
 #include "SpideyDX.h"
 #include "my_bink.h"
+#include "DXinit.h"
 
 #include <cstring>
 
@@ -74,16 +75,14 @@ void PCMOVIE_ClosePKR(void)
 	error("PKR\t: No PKR currently open.\r\n");
 }
 
-// @SMALLTODO
-// wait for DXINIT stuff
+// @Ok
+// @Matching
 void PCMOVIE_Init(void)
 {
 	if (!gPcMovieInited)
 	{
-		/*
-		BinkSetSoundSystem(BinkOpenDirectSound, dword_6B7920);
-		result = BinkSetIOSize(256);
-		*/
+		BinkSetSoundSystem(BinkOpenDirectSound, g_pDS);
+		BinkSetIOSize(256);
 		gPcMovieInited = 1;
 	}
 }
