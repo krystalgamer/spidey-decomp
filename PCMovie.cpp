@@ -232,8 +232,19 @@ void PCMOVIE_Stop(void)
 	CloseMovieFile();
 }
 
-// @SMALLTODO
-void findFileOffsetPKR(char *,char const *)
+// @NotOk
+// @Note: validate when inlined
+INLINE i32 findFileOffsetPKR(
+		char *a1,
+		const char *a2)
 {
-    printf("findFileOffsetPKR(char *,char const *)");
+	PKR_FILEINFO v3;
+	if (PKR_GetFileInfo(gMediaPkr, a1, a2, &v3))
+		return v3.fileOffset;
+
+	char v4[512];
+	if (PKR_GetLastError(v4))
+		printf_fancy("PKR\t: %s%s - %s\r\n", a1, a2, v4);
+
+	return -1;
 }

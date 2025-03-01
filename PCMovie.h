@@ -17,6 +17,6 @@ EXPORT void PCMOVIE_OpenPKR(void);
 EXPORT u8 PCMOVIE_Play(char *,i32);
 EXPORT void PCMOVIE_SetVolume(i32);
 EXPORT void PCMOVIE_Stop(void);
-EXPORT void findFileOffsetPKR(char *,char const *);
+EXPORT i32 findFileOffsetPKR(char *,char const *);
 
 #endif
