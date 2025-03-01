@@ -1,4 +1,21 @@
 #include "my_bink.h"
+#include "validate.h"
+
+void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*)
+{
+	printf("void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*)");
+}
+
+void STDCALL BinkSetVideoOnOff(HBINK, i32)
+{
+	printf("void STDCALL BinkSetVideoOnOff(HBINK, i32)");
+}
+
+HBINK STDCALL BinkOpen(void*, i32)
+{
+	printf("i32 STDCALL BinkOpen(const char*, i32)");
+	return reinterpret_cast<HBINK>(0x03012025);
+}
 
 i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7)
 {
@@ -21,23 +38,31 @@ void STDCALL BinkOpenDirectSound(void)
 	printf("void STDCALL BinkOpenDirectSound(void)");
 }
 
-void STDCALL BinkSetVolume(i32, i32)
+void STDCALL BinkSetVolume(HBINK, i32)
 {
 	printf("void BinkSetVolume(i32, i32)");
 }
 
-void STDCALL BinkSetPan(i32, i32)
+void STDCALL BinkSetPan(HBINK, i32)
 {
 	printf("void BinkSetPan(i32, i32)");
 }
 
-void STDCALL BinkClose(i32)
+void STDCALL BinkClose(HBINK)
 {
 	printf("void BinkClose(HANDLE)");
 }
 
-i32 STDCALL BinkWait(i32)
+i32 STDCALL BinkWait(HBINK)
 {
 	printf("i32 BinkWait(i32)");
 	return 0x28022024;
+}
+
+void validate_BINKSUMMARY(void)
+{
+	VALIDATE_SIZE(BINKSUMMARY, 0x7C);
+
+	VALIDATE(BINKSUMMARY, Width, 0x0);
+	VALIDATE(BINKSUMMARY, Height, 0x4);
 }

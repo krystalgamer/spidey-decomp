@@ -87,6 +87,7 @@
 #include "init.h"
 #include "utils.h"
 #include "reloc.h"
+#include "my_bink.h"
 
 extern int FAIL_VALIDATION;
 
@@ -471,6 +472,7 @@ i32 validate(void)
 	validate_SReloc();
 	validate_SRelocEntry();
 	validate_SMovieDetails();
+	validate_BINKSUMMARY();
 
 	puts("[*] Validation done!");
 

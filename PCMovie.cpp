@@ -15,11 +15,10 @@ EXPORT u8 gFoundMediaPkr;
 EXPORT char gCdPath[0x100];
 EXPORT u8 gPcMovieInited;
 
-EXPORT i32 gMovieBinkRelated;
+EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
-EXPORT DWORD g_BinkSummaryOne;
-EXPORT DWORD g_BinkSummaryTwo;
+EXPORT BINKSUMMARY g_BinkSummaryOne;
 
 EXPORT LPDIRECTDRAW7 g_MovieDD7;
 EXPORT LPDIRECTDRAWSURFACE7 g_MovieDD7Surface;
@@ -55,8 +54,8 @@ INLINE u8 CreateMovieSurface(void)
 	v12.dwSize = 124;
 	v12.dwFlags = 7;
 	v12.ddsCaps.dwCaps = 64;
-	v12.dwWidth = g_BinkSummaryOne;
-	v12.dwHeight = g_BinkSummaryTwo;
+	v12.dwWidth = g_BinkSummaryOne.Width;
+	v12.dwHeight = g_BinkSummaryOne.Height;
 
 	HRESULT hr = g_MovieDD7->CreateSurface(
 			&v12,
@@ -77,10 +76,71 @@ i32 NextMovieFrame(void)
 }
 
 // @MEDIUMTODO
-u8 OpenMovieFile(char *,bool)
+INLINE u8 OpenMovieFile(char *a1, bool)
 {
-    printf("OpenMovieFile(char *,bool)");
-	return (u8)0x28022025;
+	char v14[256];
+
+	strcpy(v14, "movie\\");
+	strcat(v14, a1);
+
+	DXERR_printf("\t\tMOVIE PLAYING %s\r\n", v14);
+	if (gMediaPkr)
+	{
+		char v10[32];
+		char a3[32];
+		char a2[32];
+		CHAR FileName[256];
+
+		strcpy(FileName, gMediaPkr->name);
+		strcpy(v10, v14);
+
+		strcpy(a3, strrchr(v14, '\\') + 1);
+
+		strrchr(v10, '\\')[1] = 0;
+		strcpy(a2, "data\\");
+		strcat(a2, v10);
+
+		i32 fileOffset = findFileOffsetPKR(a2, a3);
+		if (fileOffset == -1)
+			return 0;
+		PKR_UnlockFile(gMediaPkr);
+
+		HANDLE FileA = CreateFileA(FileName, 0x80000000, 1u, 0, 3u, 1u, 0);
+		gMovieFileHandle = FileA;
+		if (FileA == INVALID_HANDLE_VALUE)
+		{
+			PKR_LockFile(gMediaPkr);
+			gMovieFileHandle = 0;
+			return 0;
+		}
+
+		SetFilePointer(FileA, fileOffset, 0, 0);
+	}
+
+	HBINK v5;
+	if (gMovieFileHandle)
+	{
+		v5 = BinkOpen(
+				gMovieFileHandle,
+				BINKIOSIZE | BINKFILEHANDLE);
+	}
+	else
+	{
+		strcpy(v14, "data\\movie\\");
+		strcat(v14, a1);
+		v5 = BinkOpen(v14, BINKIOSIZE);
+	}
+
+	gMovieBinkRelated = v5;
+
+	if (!gMovieBinkRelated)
+		return 0;
+
+	BinkSetVideoOnOff(v5, 1);
+	BinkGetSummary(gMovieBinkRelated, &g_BinkSummaryOne);
+
+
+	return 1;
 }
 
 // @Ok
