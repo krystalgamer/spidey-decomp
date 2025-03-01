@@ -79,6 +79,8 @@ INLINE u8 CreateMovieSurface(void)
 // @Matching
 INLINE i32 NextMovieFrame(void)
 {
+#ifdef _WIN32
+	return 0;
 	if (!gMovieBinkRelated)
 		return 0;
 	BinkDoFrame(gMovieBinkRelated);
@@ -134,6 +136,9 @@ INLINE i32 NextMovieFrame(void)
 
 	BinkNextFrame(gMovieBinkRelated);
 	return 1;
+#else
+	return 0;
+#endif
 }
 
 // @Ok
@@ -166,6 +171,7 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 			goto open_movie_file_error;
 		PKR_UnlockFile(gMediaPkr);
 
+#ifdef _WIN32
 		HANDLE FileA = CreateFileA(FileName, 0x80000000, 1u, 0, 3u, 1u, 0);
 		gMovieFileHandle = FileA;
 		if (FileA == INVALID_HANDLE_VALUE)
@@ -176,6 +182,7 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 		}
 
 		SetFilePointer(FileA, fileOffset, 0, 0);
+#endif
 	}
 
 	HBINK v5;
