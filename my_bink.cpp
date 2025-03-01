@@ -1,5 +1,11 @@
 #include "my_bink.h"
 
+i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7)
+{
+	printf("void i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7)");
+	return 0x030102025;
+}
+
 void STDCALL BinkSetIOSize(i32)
 {
 	printf("void STDCALL BinkSetIOSize(i32)");

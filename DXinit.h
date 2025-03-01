@@ -87,10 +87,10 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 	if (x)\
 	{\
 		DISPLAY_DI_ERROR(x);\
-		if (FAILED(hr))\
+		if (FAILED(x))\
 		{\
 			DXINIT_ShutDown();\
-			exit(hr);\
+			exit(x);\
 		}\
 	}\
 }
@@ -99,10 +99,10 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 	if (x)\
 	{\
 		DISPLAY_DS_ERROR(x);\
-		if (FAILED(hr))\
+		if (FAILED(x))\
 		{\
 			DXINIT_ShutDown();\
-			exit(hr);\
+			exit(x);\
 		}\
 	}\
 }
@@ -111,10 +111,10 @@ EXPORT extern LPDIRECTSOUND8 g_pDS;
 	if (x)\
 	{\
 		DISPLAY_D3D_ERROR(x);\
-		if (FAILED(hr))\
+		if (FAILED(x))\
 		{\
 			DXINIT_ShutDown();\
-			exit(hr);\
+			exit(x);\
 		}\
 	}\
 }

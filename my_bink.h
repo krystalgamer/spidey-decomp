@@ -14,6 +14,7 @@ EXPORT void STDCALL BinkSetPan(i32, i32);
 EXPORT void STDCALL BinkSetSoundSystem(void (STDCALL *fptr)(void), LPDIRECTSOUND8);
 EXPORT void STDCALL BinkOpenDirectSound(void);
 EXPORT void STDCALL BinkSetIOSize(i32);
+EXPORT i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7);
 
 
 #endif

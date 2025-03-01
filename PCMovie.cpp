@@ -18,6 +18,13 @@ EXPORT u8 gPcMovieInited;
 EXPORT i32 gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
+EXPORT DWORD g_BinkSummaryOne;
+EXPORT DWORD g_BinkSummaryTwo;
+
+EXPORT LPDIRECTDRAW7 g_MovieDD7;
+EXPORT LPDIRECTDRAWSURFACE7 g_MovieDD7Surface;
+EXPORT i32 g_MoviePrimarySurfaceType;
+
 // @Ok
 // @Matching
 void INLINE CloseMovieFile(void)
@@ -36,11 +43,30 @@ void INLINE CloseMovieFile(void)
 	}
 }
 
-// @SMALLTODO
-u8 CreateMovieSurface(void)
+// @NotOk
+// @Note: Validate when inlined
+INLINE u8 CreateMovieSurface(void)
 {
-    printf("CreateMovieSurface(void)");
-	return (u8)0x28022025;
+#ifdef _WIN32
+
+	DDSURFACEDESC2 v12;
+	memset(&v12, 0, sizeof(v12));
+
+	v12.dwSize = 124;
+	v12.dwFlags = 7;
+	v12.ddsCaps.dwCaps = 64;
+	v12.dwWidth = g_BinkSummaryOne;
+	v12.dwHeight = g_BinkSummaryTwo;
+
+	HRESULT hr = g_MovieDD7->CreateSurface(
+			&v12,
+			&g_MovieDD7Surface, 0);
+	D3D_ERROR_LOG_AND_QUIT(hr);
+
+	g_MoviePrimarySurfaceType = BinkDDSurfaceType(g_MovieDD7Surface);
+
+#endif
+	return 1;
 }
 
 // @MEDIUMTODO
