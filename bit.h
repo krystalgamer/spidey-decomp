@@ -8,15 +8,19 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+class vector3d
+{
+	public:
+		f32 field_0[3];
+};
+
 class vector4d
 {
 	public:
 		f32 field_0[4];
 
+		EXPORT vector4d(vector3d*, f32);
 		EXPORT vector4d& operator=(const vector4d&);
-};
-struct vector3d
-{
 };
 
 struct SFringeQuad

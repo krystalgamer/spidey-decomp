@@ -41,6 +41,16 @@ EXPORT CBit* GLineList;
 EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
+INLINE vector4d::vector4d(vector3d* a1, f32 a2)
+{
+	this->field_0[0] = a1->field_0[0];
+	this->field_0[1] = a1->field_0[1];
+	this->field_0[2] = a1->field_0[2];
+
+	this->field_0[3] = a2;
+}
+
+// @Ok
 // @Matching
 vector4d& vector4d::operator=(const vector4d& other)
 {
@@ -1347,11 +1357,7 @@ void validate_vector4d(void)
 
 void validate_vector3d(void)
 {
-	/*
 	VALIDATE_SIZE(vector3d, 0xC);
 
-	VALIDATE(vector3d, x, 0x0);
-	VALIDATE(vector3d, y, 0x4);
-	VALIDATE(vector3d, z, 0x8);
-	*/
+	VALIDATE(vector3d, field_0, 0x0);
 }
