@@ -474,6 +474,7 @@ i32 validate(void)
 	validate_SMovieDetails();
 	validate_BINKSUMMARY();
 	validate_BINK();
+	validate_matrix4x4();
 
 	puts("[*] Validation done!");
 

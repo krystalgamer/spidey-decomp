@@ -1326,3 +1326,14 @@ void validate_SFringeQuad(void)
 	VALIDATE(SFringeQuad, Width, 0x0);
 	VALIDATE(SFringeQuad, CodeBGR, 0x4);
 }
+
+void validate_vector3d(void)
+{
+	/*
+	VALIDATE_SIZE(vector3d, 0xC);
+
+	VALIDATE(vector3d, x, 0x0);
+	VALIDATE(vector3d, y, 0x4);
+	VALIDATE(vector3d, z, 0x8);
+	*/
+}

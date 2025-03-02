@@ -5,7 +5,62 @@
 #include "m3dinit.h"
 #include "SpideyDX.h"
 
+#include "validate.h"
+
 i32 gWideScreen;
+
+
+// @Ok
+// @Matching
+matrix4x4::matrix4x4(
+			float a1,
+			float a2,
+			float a3,
+			float a4,
+			float a5,
+			float a6,
+			float a7,
+			float a8,
+			float a9,
+			float a10,
+			float a11,
+			float a12,
+			float a13,
+			float a14,
+			float a15,
+			float a16)
+{
+	this->field_0[0] = a1;
+	this->field_0[1] = a2;
+	this->field_0[2] = a3;
+	this->field_0[3] = a4;
+	this->field_0[4] = a5;
+	this->field_0[5] = a6;
+	this->field_0[6] = a7;
+	this->field_0[7] = a8;
+	this->field_0[8] = a9;
+	this->field_0[9] = a10;
+	this->field_0[10] = a11;
+	this->field_0[11] = a12;
+	this->field_0[12] = a13;
+	this->field_0[13] = a14;
+	this->field_0[14] = a15;
+	this->field_0[15] = a16;
+}
+
+/*
+EXPORT void __ml(matrix4x4 const *,matrix4x4 const *);
+
+EXPORT void matrix4x4::__vc(const(i32);
+EXPORT matrix4x4::matrix4x4(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float);
+
+EXPORT void uWibble(STexWibVertInfo *);
+EXPORT void vWibble(STexWibVertInfo *);
+
+EXPORT void vector4d::__vc(const(i32);
+*/
+
+
 // @FIXME
 char gRenderBuf[4] = { 0, 0, 0, 0 };
 
@@ -121,4 +176,11 @@ void M3d_RenderSetup(SCamera *,SViewport *,u32 *)
 void RenderSuperItem(CItem *,bool)
 {
     printf("RenderSuperItem(CItem *,bool)");
+}
+
+void validate_matrix4x4(void)
+{
+	VALIDATE_SIZE(matrix4x4, 64);
+
+	VALIDATE(matrix4x4, field_0, 0x0);
 }

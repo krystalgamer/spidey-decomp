@@ -8,7 +8,30 @@
 #include "camera.h"
 #include "dcmodel.h"
 
-struct matrix4x4;
+class matrix4x4
+{
+	
+	public:
+		float field_0[16];
+
+		EXPORT matrix4x4(
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float,
+				float);
+};
 
 EXPORT void M3d_BuildTransform(CSuper*);
 EXPORT void M3d_Render(void*);
@@ -23,5 +46,7 @@ EXPORT void RenderSuperItem(CItem *,bool);
 
 EXPORT extern i32 gWideScreen;
 EXPORT extern char gRenderBuf[4];
+
+void validate_matrix4x4(void);
 
 #endif

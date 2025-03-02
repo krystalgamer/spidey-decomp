@@ -8,6 +8,10 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+struct vector3d
+{
+};
+
 struct SFringeQuad
 {
 	u32 Width;
@@ -431,6 +435,7 @@ void validate_CWibbly(void);
 void validate_SBitServerEntry(void);
 void validate_SSection(void);
 void validate_SFringeQuad(void);
+void validate_vector3d(void);
 
 
 #endif
