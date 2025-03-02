@@ -8,6 +8,13 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+class vector4d
+{
+	public:
+		f32 field_0[4];
+
+		EXPORT vector4d& operator=(const vector4d&);
+};
 struct vector3d
 {
 };
@@ -436,6 +443,7 @@ void validate_SBitServerEntry(void);
 void validate_SSection(void);
 void validate_SFringeQuad(void);
 void validate_vector3d(void);
+void validate_vector4d(void);
 
 
 #endif

@@ -40,6 +40,18 @@ EXPORT CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
+// @Ok
+// @Matching
+vector4d& vector4d::operator=(const vector4d& other)
+{
+	this->field_0[0] = other.field_0[0];
+	this->field_0[1] = other.field_0[1];
+	this->field_0[2] = other.field_0[2];
+	this->field_0[3] = other.field_0[3];
+
+	return *this;
+}
+
 // @SMALLTODO
 void Bit_DeleteAll(void)
 {
@@ -1325,6 +1337,12 @@ void validate_SFringeQuad(void)
 
 	VALIDATE(SFringeQuad, Width, 0x0);
 	VALIDATE(SFringeQuad, CodeBGR, 0x4);
+}
+
+void validate_vector4d(void)
+{
+	VALIDATE_SIZE(vector4d, 0x10);
+	VALIDATE(vector4d, field_0, 0x0);
 }
 
 void validate_vector3d(void)

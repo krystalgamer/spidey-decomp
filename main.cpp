@@ -475,6 +475,8 @@ i32 validate(void)
 	validate_BINKSUMMARY();
 	validate_BINK();
 	validate_matrix4x4();
+	validate_vector3d();
+	validate_vector4d();
 
 	puts("[*] Validation done!");
 
