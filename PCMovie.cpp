@@ -80,7 +80,6 @@ INLINE u8 CreateMovieSurface(void)
 INLINE i32 NextMovieFrame(void)
 {
 #ifdef _WIN32
-	return 0;
 	if (!gMovieBinkRelated)
 		return 0;
 	BinkDoFrame(gMovieBinkRelated);
