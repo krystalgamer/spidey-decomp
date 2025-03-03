@@ -10,9 +10,10 @@
 i32 gWideScreen;
 
 
-INLINE i32 matrix4x4::operator[](i32) const
+// @Ok
+INLINE vector4d& matrix4x4::operator[](i32 index)
 {
-	return 0;
+	return this->field_0[index];
 }
 
 // @Ok
@@ -35,20 +36,26 @@ matrix4x4::matrix4x4(
 			float a15,
 			float a16)
 {
-	for (i32 i = 0; i < 4; i++)
-	{
-		vector3d vec(5 * i, 7 * i, 9*i);
-
-		vector3d vec2 = vec;
-
-		printf("vector3d %f\n", vec2.field_0[1]);
-		/*
-		this->field_0[i].field_0[0] = a1;
-		this->field_0[i].field_0[1] = a2;
-		this->field_0[i].field_0[2] = a3;
-		this->field_0[i].field_0[3] = a4;
-		*/
-	}
+	this->field_0[0].field_0[0] = a1;
+	this->field_0[0].field_0[1] = a2;
+	this->field_0[0].field_0[2] = a3;
+	this->field_0[0].field_0[3] = a4;
+	
+	this->field_0[1].field_0[0] = a5;
+	this->field_0[1].field_0[1] = a6;
+	this->field_0[1].field_0[2] = a7;
+	this->field_0[1].field_0[3] = a8;
+	
+	this->field_0[2].field_0[0] = a9;
+	this->field_0[2].field_0[1] = a10;
+	this->field_0[2].field_0[2] = a11;
+	this->field_0[2].field_0[3] = a12;
+	
+	this->field_0[3].field_0[0] = a13;
+	this->field_0[3].field_0[1] = a14;
+	this->field_0[3].field_0[2] = a15;
+	this->field_0[3].field_0[3] = a16;
+	
 }
 
 /*
@@ -185,5 +192,5 @@ void validate_matrix4x4(void)
 {
 	VALIDATE_SIZE(matrix4x4, 64);
 
-	//VALIDATE(matrix4x4, field_0, 0x0);
+	VALIDATE(matrix4x4, field_0, 0x0);
 }

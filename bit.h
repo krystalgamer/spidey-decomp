@@ -16,9 +16,15 @@ class vector3d
 		EXPORT vector3d(f32, f32, f32);
 };
 
-struct vector4d
+class vector4d
 {
+	public:
 		f32 field_0[4];
+
+		// @Ok
+		EXPORT vector4d(void)
+		{
+		}
 
 		EXPORT vector4d(const vector3d&, f32);
 		EXPORT vector4d& operator=(const vector4d&);
