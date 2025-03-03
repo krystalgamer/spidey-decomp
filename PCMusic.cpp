@@ -44,11 +44,8 @@ void MusicThreadProc(void *)
 	{
 		if (!BinkWait(gMusicBinkHandle))
 		{
-		if (!gMusicBinkHandle ||
-				(BinkDoFrame(gMusicBinkHandle), gMusicBinkHandle->FrameNum == gMusicBinkHandle->Frames) )
-			gPcMusicStatusFour = 1;
-		else
-			BinkNextFrame(gMusicBinkHandle);
+			if (!gMusicBinkHandle || !NextFrame())
+				gPcMusicStatusFour = 1;
 		}
 
 		Sleep(0x1Eu);
@@ -70,10 +67,18 @@ void MusicThreadProc(void *)
 	_endthread();
 }
 
-// @SMALLTODO
-void NextFrame(void)
+// @Ok
+INLINE i32 NextFrame(void)
 {
-    printf("NextFrame(void)");
+	if (!gMusicBinkHandle)
+		return 0;
+	BinkDoFrame(gMusicBinkHandle);
+
+	if (gMusicBinkHandle->FrameNum == gMusicBinkHandle->Frames)
+		return 0;
+
+	BinkNextFrame(gMusicBinkHandle);
+	return 1;
 }
 
 // @Ok

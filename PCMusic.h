@@ -7,7 +7,7 @@
 
 EXPORT void CloseMusicFile(void);
 EXPORT void MusicThreadProc(void *);
-EXPORT void NextFrame(void);
+EXPORT i32 NextFrame(void);
 EXPORT u8 OpenMusicFile(char *,bool);
 EXPORT void PCMUSIC_Finish(void);
 EXPORT i32 PCMUSIC_GetStatus(void);
