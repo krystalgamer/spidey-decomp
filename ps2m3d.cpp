@@ -10,6 +10,11 @@
 i32 gWideScreen;
 
 
+INLINE i32 matrix4x4::operator[](i32) const
+{
+	return 0;
+}
+
 // @Ok
 // @Matching
 matrix4x4::matrix4x4(
@@ -30,22 +35,20 @@ matrix4x4::matrix4x4(
 			float a15,
 			float a16)
 {
-	this->field_0[0] = a1;
-	this->field_0[1] = a2;
-	this->field_0[2] = a3;
-	this->field_0[3] = a4;
-	this->field_0[4] = a5;
-	this->field_0[5] = a6;
-	this->field_0[6] = a7;
-	this->field_0[7] = a8;
-	this->field_0[8] = a9;
-	this->field_0[9] = a10;
-	this->field_0[10] = a11;
-	this->field_0[11] = a12;
-	this->field_0[12] = a13;
-	this->field_0[13] = a14;
-	this->field_0[14] = a15;
-	this->field_0[15] = a16;
+	for (i32 i = 0; i < 4; i++)
+	{
+		vector3d vec(5 * i, 7 * i, 9*i);
+
+		vector3d vec2 = vec;
+
+		printf("vector3d %f\n", vec2.field_0[1]);
+		/*
+		this->field_0[i].field_0[0] = a1;
+		this->field_0[i].field_0[1] = a2;
+		this->field_0[i].field_0[2] = a3;
+		this->field_0[i].field_0[3] = a4;
+		*/
+	}
 }
 
 /*
@@ -182,5 +185,5 @@ void validate_matrix4x4(void)
 {
 	VALIDATE_SIZE(matrix4x4, 64);
 
-	VALIDATE(matrix4x4, field_0, 0x0);
+	//VALIDATE(matrix4x4, field_0, 0x0);
 }

@@ -10,9 +10,6 @@
 /*
 CVector::CVector(void)
 {
-	this->vx = 0;
-	this->vy = 0;
-	this->vz = 0;
 }
 */
 

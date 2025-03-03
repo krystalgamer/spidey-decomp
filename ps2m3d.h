@@ -12,7 +12,7 @@ class matrix4x4
 {
 	
 	public:
-		float field_0[16];
+		//vector4d field_0[4];
 
 		EXPORT matrix4x4(
 				float,
@@ -31,6 +31,8 @@ class matrix4x4
 				float,
 				float,
 				float);
+
+		EXPORT i32 operator[](i32) const;
 };
 
 EXPORT void M3d_BuildTransform(CSuper*);

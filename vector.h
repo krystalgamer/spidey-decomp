@@ -20,6 +20,7 @@ public:
 
 	//EXPORT CVector(void);
 
+	//EXPORT CVector(i32, i32, i32);
 	EXPORT void KillSmall();
 	EXPORT CVector* operator-=(const CVector& other);
 	EXPORT CVector* operator>>=(const int& other);

@@ -40,12 +40,19 @@ EXPORT CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
-// @Ok
-INLINE vector4d::vector4d(vector3d* a1, f32 a2)
+vector3d::vector3d(f32 a1, f32 a2, f32 a3)
 {
-	this->field_0[0] = a1->field_0[0];
-	this->field_0[1] = a1->field_0[1];
-	this->field_0[2] = a1->field_0[2];
+	this->field_0[0] = a1;
+	this->field_0[1] = a2;
+	this->field_0[2] = a3;
+}
+
+// @Ok
+INLINE vector4d::vector4d(const vector3d& a1, f32 a2)
+{
+	this->field_0[0] = a1.field_0[0];
+	this->field_0[1] = a1.field_0[1];
+	this->field_0[2] = a1.field_0[2];
 
 	this->field_0[3] = a2;
 }

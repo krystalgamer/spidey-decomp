@@ -12,14 +12,15 @@ class vector3d
 {
 	public:
 		f32 field_0[3];
+
+		EXPORT vector3d(f32, f32, f32);
 };
 
-class vector4d
+struct vector4d
 {
-	public:
 		f32 field_0[4];
 
-		EXPORT vector4d(vector3d*, f32);
+		EXPORT vector4d(const vector3d&, f32);
 		EXPORT vector4d& operator=(const vector4d&);
 };
 
