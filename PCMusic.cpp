@@ -76,9 +76,8 @@ void NextFrame(void)
     printf("NextFrame(void)");
 }
 
-// @NotOk
-// @Note: validate when inlined
-INLINE i32 OpenMusicFile(char *pName, bool a2)
+// @Ok
+INLINE u8 OpenMusicFile(char *pName, bool a2)
 {
 	char v2[256];
 
@@ -87,7 +86,7 @@ INLINE i32 OpenMusicFile(char *pName, bool a2)
 	DXERR_printf("\t\tMUSIC PLAYING %s\r\n", pName);
 
 	gMusicFileHandle = gdFsOpen(v2, 0);
-	gMusicBinkHandle = BinkOpen(gMusicFileHandle, BINKFILEHANDLE);
+	gMusicBinkHandle = BinkOpen(gMusicFileHandle, BINKFILEHANDLE | BINKIOSIZE);
 
 	if (!gMusicBinkHandle)
 		return 0;
@@ -123,7 +122,7 @@ i32 PCMUSIC_GetStatus(void)
 
 // @Ok
 // @Matching
-void PCMUSIC_Init(void)
+INLINE void PCMUSIC_Init(void)
 {
 	if (g_pDS)
 	{
@@ -170,10 +169,31 @@ void PCMUSIC_Pause(i32 a1)
 	}
 }
 
-// @SMALLTODO
-void PCMUSIC_Play(i32)
+// @Ok
+// @AlmostMatching: now sure why reg allocation is slightly diff
+u8 PCMUSIC_Play(i32 a1)
 {
-    printf("PCMUSIC_Play(i32)");
+	PCMUSIC_Init();
+	if (!g_pDS)
+		return 0;
+	PCMUSIC_Stop();
+
+	char* v2 = MUSICTRACKS_GetTrackName(a1);
+	if (!strcmp(v2, "blank.bik"))
+	{
+		DXERR_printf("\t\tMUSIC ATTEMPT TO PLAY BLANK TRACK!\r\n");
+		return 0;
+	}
+
+	if (!OpenMusicFile(v2, 1))
+		return 0;
+	
+	gPcMusicStatusFour = 0;
+	_beginthread(MusicThreadProc, 0, 0);
+	gPcMusicStatusThree = 1;
+	WinYield();
+
+	return 1;
 }
 
 // @Ok
