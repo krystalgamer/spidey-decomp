@@ -4,6 +4,10 @@
 #include "DXinit.h"
 
 EXPORT u8 gPcMusicInited;
+EXPORT volatile HBINK gMusicBinkHandle;
+EXPORT u8 gPcMusicStatusTwo;
+EXPORT u8 gPcMusicStatusThree;
+EXPORT u8 gPcMusicStatusFour;
 
 // @SMALLTODO
 void CloseMusicFile(void)
@@ -36,11 +40,19 @@ void PCMUSIC_Finish(void)
 	WinYield();
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 PCMUSIC_GetStatus(void)
 {
-    printf("PCMUSIC_GetStatus(void)");
-	return 0x24022025;
+	if (gMusicBinkHandle)
+	{
+		if (gPcMusicStatusTwo || gPcMusicStatusThree && !gPcMusicStatusFour)
+			return gMusicBinkHandle->FrameNum == gMusicBinkHandle->Frames;
+
+		return 0;
+	}
+
+	return 1;
 }
 
 // @Ok
