@@ -12,8 +12,8 @@ EXPORT u8 gPcMusicStatusFour;
 
 EXPORT HANDLE gMusicFileHandle;
 
-// @NotOk
-// @Note: validate when used
+// @Ok
+// @Matching
 INLINE void CloseMusicFile(void)
 {
 	if (gMusicBinkHandle)
@@ -109,8 +109,25 @@ void PCMUSIC_SetVolume(i32 vol)
 	}
 }
 
-// @SMALLTODO
-void PCMUSIC_Stop(void)
+// @Ok
+// @Matching
+INLINE void PCMUSIC_Stop(void)
 {
-    printf("PCMUSIC_Stop(void)");
+	if (gPcMusicStatusThree)
+	{
+		if (gPcMusicStatusTwo)
+		{
+			gPcMusicStatusTwo = 0;
+			gPcMusicStatusThree = 0;
+			gPcMusicStatusFour = 0;
+			CloseMusicFile();
+		}
+		else
+		{
+			gPcMusicStatusFour = 1;
+			do
+				Sleep(10);
+			while (gPcMusicStatusThree);
+		}
+	}
 }
