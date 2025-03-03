@@ -57,18 +57,6 @@ INLINE vector4d::vector4d(const vector3d& a1, f32 a2)
 	this->field_0[3] = a2;
 }
 
-// @Ok
-// @Matching
-vector4d& vector4d::operator=(const vector4d& other)
-{
-	this->field_0[0] = other.field_0[0];
-	this->field_0[1] = other.field_0[1];
-	this->field_0[2] = other.field_0[2];
-	this->field_0[3] = other.field_0[3];
-
-	return *this;
-}
-
 // @SMALLTODO
 void Bit_DeleteAll(void)
 {

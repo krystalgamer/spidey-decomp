@@ -11,6 +11,18 @@ i32 gWideScreen;
 
 
 // @Ok
+// @Matching
+vector4d& vector4d::operator=(const vector4d& other)
+{
+	this->field_0[0] = other.field_0[0];
+	this->field_0[1] = other.field_0[1];
+	this->field_0[2] = other.field_0[2];
+	this->field_0[3] = other.field_0[3];
+
+	return *this;
+}
+
+// @Ok
 INLINE vector4d& matrix4x4::operator[](i32 index)
 {
 	return this->field_0[index];
@@ -74,10 +86,24 @@ EXPORT void vector4d::__vc(const(i32);
 // @FIXME
 char gRenderBuf[4] = { 0, 0, 0, 0 };
 
-// @SMALLTODO
-void M3d_BuildTransform(CSuper* a)
+// @Ok
+// @Matching
+void M3d_BuildTransform(CSuper* pSuper)
 {
-	printf("void M3d_BuildTransform(CSuper* a)");
+	if ((pSuper->outlineRelated & 1) == 0 )
+	{
+		M3dMaths_RotMatrixYXZ(
+				reinterpret_cast<SVECTOR *>(&pSuper->mAngles),
+				&pSuper->mTransform);
+	}
+	if (pSuper->mFlags & 0x200)
+	{
+		M3dMaths_ScaleMatrix(pSuper, &pSuper->mTransform);
+	}
+
+	pSuper->mTransform.t[0] = pSuper->mPos.vx >> 12;
+	pSuper->mTransform.t[1] = pSuper->mPos.vy >> 12;
+	pSuper->mTransform.t[2] = pSuper->mPos.vz >> 12;
 }
 
 // @BIGTODO

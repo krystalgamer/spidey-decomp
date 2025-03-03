@@ -244,7 +244,7 @@ public:
 
 
 	unsigned char padVE[0x14-8];
-	MATRIX field_164;
+	MATRIX mTransform;
 
 	void *field_184;
 	void* field_188;

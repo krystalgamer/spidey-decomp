@@ -842,7 +842,7 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, gAnim, 0x148);	
 	VALIDATE(CSuper, csuperend, 0x14C);
 
-	VALIDATE(CSuper, field_164, 0x164);
+	VALIDATE(CSuper, mTransform, 0x164);
 
 	VALIDATE(CSuper, field_184, 0x184);
 	VALIDATE(CSuper, field_188, 0x188);
