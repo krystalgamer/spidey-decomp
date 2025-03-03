@@ -5,6 +5,15 @@
 
 EXPORT CHAR gMemorycardPath[688];
 
+// @FIXME
+EXPORT char* gMusicTracks[1] = { "lol" };
+
+// @Ok
+char* MUSICTRACKS_GetTrackName(i32 a1)
+{
+	return gMusicTracks[a1];
+}
+
 // @Ok
 // @Matching
 i32 buInit(i32, i32, void*, void (*a4)(void))

@@ -1,6 +1,11 @@
 #include "my_bink.h"
 #include "validate.h"
 
+void STDCALL BinkService(HBINK)
+{
+	printf("void STDCALL BinkService(HBINK)");
+}
+
 void STDCALL BinkPause(HBINK, i32)
 {
 	printf("void STDCALL BinkPause(HBINK, i32)");

@@ -72,6 +72,7 @@ EXPORT void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*);
 EXPORT void STDCALL BinkNextFrame(HBINK);
 EXPORT void STDCALL BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32);
 EXPORT void STDCALL BinkPause(HBINK, i32);
+EXPORT void STDCALL BinkService(HBINK);
 
 void validate_BINKSUMMARY(void);
 void validate_BINK(void);

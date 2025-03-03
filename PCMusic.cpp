@@ -3,10 +3,14 @@
 #include "my_bink.h"
 #include "DXinit.h"
 #include "pcdcFile.h"
+#include "pcdcBkup.h"
 
 #ifdef _WIN32
 #include "process.h"
 #else
+void _endthread(void)
+{
+}
 void _beginthread(void*, i32, i32)
 {
 }
@@ -32,10 +36,38 @@ INLINE void CloseMusicFile(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: because not using imported bink
 void MusicThreadProc(void *)
 {
-    printf("MusicThreadProc(void *)");
+	while (!gPcMusicStatusFour)
+	{
+		if (!BinkWait(gMusicBinkHandle))
+		{
+		if (!gMusicBinkHandle ||
+				(BinkDoFrame(gMusicBinkHandle), gMusicBinkHandle->FrameNum == gMusicBinkHandle->Frames) )
+			gPcMusicStatusFour = 1;
+		else
+			BinkNextFrame(gMusicBinkHandle);
+		}
+
+		Sleep(0x1Eu);
+		BinkService(gMusicBinkHandle);
+	}
+
+	DXERR_printf("\t\tMusicThread stopped...\r\n");
+	if (!gPcMusicStatusTwo)
+	{
+		if (gMusicBinkHandle)
+		{
+			BinkClose(gMusicBinkHandle);
+			gdFsClose(gMusicFileHandle);
+			gMusicBinkHandle = 0;
+		}
+	}
+	gPcMusicStatusFour = 0;
+	gPcMusicStatusThree = 0;
+	_endthread();
 }
 
 // @SMALLTODO
