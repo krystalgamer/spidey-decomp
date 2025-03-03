@@ -24,10 +24,11 @@ void OpenMusicFile(char *,bool)
     printf("OpenMusicFile(char *,bool)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCMUSIC_Finish(void)
 {
-    printf("PCMUSIC_Finish(void)");
+	WinYield();
 }
 
 // @SMALLTODO
