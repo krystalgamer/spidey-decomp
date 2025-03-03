@@ -2,6 +2,7 @@
 #include "SpideyDX.h"
 #include "my_bink.h"
 #include "DXinit.h"
+#include "pcdcFile.h"
 
 EXPORT u8 gPcMusicInited;
 EXPORT volatile HBINK gMusicBinkHandle;
@@ -9,10 +10,18 @@ EXPORT u8 gPcMusicStatusTwo;
 EXPORT u8 gPcMusicStatusThree;
 EXPORT u8 gPcMusicStatusFour;
 
-// @SMALLTODO
-void CloseMusicFile(void)
+EXPORT HANDLE gMusicFileHandle;
+
+// @NotOk
+// @Note: validate when used
+INLINE void CloseMusicFile(void)
 {
-    printf("CloseMusicFile(void)");
+	if (gMusicBinkHandle)
+	{
+		BinkClose(gMusicBinkHandle);
+		gdFsClose(gMusicFileHandle);
+		gMusicBinkHandle = 0;
+	}
 }
 
 // @SMALLTODO
