@@ -4,6 +4,14 @@
 #include "DXinit.h"
 #include "pcdcFile.h"
 
+#ifdef _WIN32
+#include "process.h"
+#else
+void _beginthread(void*, i32, i32)
+{
+}
+#endif
+
 EXPORT u8 gPcMusicInited;
 EXPORT volatile HBINK gMusicBinkHandle;
 EXPORT u8 gPcMusicStatusTwo;
@@ -80,10 +88,37 @@ void PCMUSIC_Init(void)
 	}
 }
 
-// @SMALLTODO
-void PCMUSIC_Pause(i32)
+// @Ok
+// @Matching
+void PCMUSIC_Pause(i32 a1)
 {
-    printf("PCMUSIC_Pause(i32)");
+	if (gMusicBinkHandle)
+	{
+		BinkPause(gMusicBinkHandle, a1);
+		if (gPcMusicStatusThree)
+		{
+			if ( a1 )
+			{
+				if (!gPcMusicStatusTwo)
+				{
+					gPcMusicStatusTwo = 1;
+					gPcMusicStatusFour = 1;
+					do
+						Sleep(0xA);
+					while (gPcMusicStatusThree);
+					gPcMusicStatusThree = 1;
+				}
+			}
+			else if (gPcMusicStatusTwo)
+			{
+				gPcMusicStatusTwo = 0;
+				gPcMusicStatusFour = 0;
+				_beginthread(MusicThreadProc, 0, 0);
+				WinYield();
+			}
+
+		}
+	}
 }
 
 // @SMALLTODO
