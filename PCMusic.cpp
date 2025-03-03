@@ -5,13 +5,15 @@
 #include "pcdcFile.h"
 #include "pcdcBkup.h"
 
+#include <cstring>
+
 #ifdef _WIN32
 #include "process.h"
 #else
 void _endthread(void)
 {
 }
-void _beginthread(void*, i32, i32)
+void _beginthread(void (*fptr)(void*), i32, i32)
 {
 }
 #endif
