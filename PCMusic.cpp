@@ -83,10 +83,21 @@ void PCMUSIC_Play(i32)
     printf("PCMUSIC_Play(i32)");
 }
 
-// @SMALLTODO
-void PCMUSIC_SetVolume(i32)
+// @Ok
+// @Matching
+void PCMUSIC_SetVolume(i32 vol)
 {
-    printf("PCMUSIC_SetVolume(i32)");
+	if (g_pDS)
+	{
+		if (vol < -179)
+			vol = -179;
+
+		f32 v1 = static_cast<f32>(vol);
+		BinkSetVolume(
+				gMusicBinkHandle,
+				static_cast<i32>(((v1 + 179.0) / 179.0 * 49152.0)));
+		BinkSetPan(gMusicBinkHandle, 0x8000);
+	}
 }
 
 // @SMALLTODO
