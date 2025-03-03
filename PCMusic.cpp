@@ -44,10 +44,27 @@ void NextFrame(void)
     printf("NextFrame(void)");
 }
 
-// @SMALLTODO
-void OpenMusicFile(char *,bool)
+// @NotOk
+// @Note: validate when inlined
+INLINE i32 OpenMusicFile(char *pName, bool a2)
 {
-    printf("OpenMusicFile(char *,bool)");
+	char v2[256];
+
+	strcpy(v2, "Voice\\");
+	strcat(v2, pName);
+	DXERR_printf("\t\tMUSIC PLAYING %s\r\n", pName);
+
+	gMusicFileHandle = gdFsOpen(v2, 0);
+	gMusicBinkHandle = BinkOpen(gMusicFileHandle, BINKFILEHANDLE);
+
+	if (!gMusicBinkHandle)
+		return 0;
+
+	if (a2)
+		BinkSetVideoOnOff(gMusicBinkHandle, 0);
+	else
+		BinkSetVideoOnOff(gMusicBinkHandle, 1);
+	return 1;
 }
 
 // @Ok
