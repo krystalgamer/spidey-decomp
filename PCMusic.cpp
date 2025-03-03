@@ -1,4 +1,9 @@
 #include "PCMusic.h"
+#include "SpideyDX.h"
+#include "my_bink.h"
+#include "DXinit.h"
+
+EXPORT u8 gPcMusicInited;
 
 // @SMALLTODO
 void CloseMusicFile(void)
@@ -38,10 +43,20 @@ i32 PCMUSIC_GetStatus(void)
 	return 0x24022025;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void PCMUSIC_Init(void)
 {
-    printf("PCMUSIC_Init(void)");
+	if (g_pDS)
+	{
+		if (!gPcMusicInited)
+		{
+			BinkSetSoundSystem(BinkOpenDirectSound, g_pDS);
+			BinkSetIOSize(256);
+
+			gPcMusicInited = 1;
+		}
+	}
 }
 
 // @SMALLTODO
