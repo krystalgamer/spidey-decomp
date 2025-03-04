@@ -338,7 +338,7 @@ EXPORT void PShell_Cleanup(void);
 EXPORT void PShell_Initialise(void);
 EXPORT void PShell_LowText(void);
 EXPORT i32 RecordsExist(u8,i8, i8);
-EXPORT i32 SameScore(const SScore const *,const SScore *);
+EXPORT i32 SameScore(const SScore *,const SScore *);
 EXPORT void Merge(SRecords *, const SRecords *);
 EXPORT void Merge(SScore *, const SScore *,i32);
 EXPORT i32 IsBetter(i32, i32, i32);
