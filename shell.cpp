@@ -16,10 +16,15 @@
 #include "pshell.h"
 #include "spidey.h"
 #include "ps2m3d.h"
+#include "init.h"
 
 #include <cstring>
 
 #include "validate.h"
+
+EXPORT i32 dword_6A7788[16];
+EXPORT void* gBiographies;
+EXPORT i32 gPshellArmorRealted;
 
 // @FIXME
 EXPORT SRecordRelated gChallenges[NUM_CHALLS];
@@ -489,7 +494,7 @@ void Shell_TitleScreen(void)
 }
 
 // @Ok
-void Shell_VerySmallFont(void)
+INLINE void Shell_VerySmallFont(void)
 {
 	Mess_SetScale(256);
 	Mess_SetCurrentFont("sp_fnt03.fnt");
@@ -1358,10 +1363,69 @@ INLINE i32 Shell_ContainsSubString(const char* hay, const char* needle)
 	return 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: no nullsub
 void PShell_Cleanup(void)
 {
-    printf("PShell_Cleanup(void)");
+	if ( gShellInitialized )
+	{
+		if (!gPshellArmorRealted)
+		{
+			PShell_BigFont();
+			Mess_UnloadFont();
+		}
+
+		PShell_SmallFont();
+		Mess_UnloadFont();
+
+		Shell_VerySmallFont();
+		Mess_UnloadFont();
+
+		PShell_NormalFont();
+
+		Spool_ClearPSX("control");
+		Spool_ClearPSX("icons");
+		Spool_ClearPSX("vmu");
+		Spool_ClearPSX("shell");
+		SFX_SpoolOutLevelSFX();
+
+		if (gBiographies)
+		{
+			Mem_Delete(gBiographies);
+			gBiographies = 0;
+		}
+
+		Pad_ClearAll();
+		Front_ClearScreen();
+
+		DrawSync();
+		Init_KillAll();
+		dword_6A7788[2] = 0;
+		dword_6A7788[3] = 0;
+		dword_6A7788[4] = 0;
+
+		dword_6A7788[5] = 0;
+		dword_6A7788[6] = 0;
+		dword_6A7788[7] = 0;
+		dword_6A7788[8] = 0;
+		dword_6A7788[9] = 0;
+		dword_6A7788[10] = 0;
+		dword_6A7788[11] = 0;
+		dword_6A7788[12] = 0;
+		dword_6A7788[13] = 0;
+		dword_6A7788[14] = 0;
+		dword_6A7788[15] = 0;
+		dword_6A7788[1] = 0;
+		dword_6A7788[0] = 0;
+
+		//nullsub_3(v0);
+
+		gPShellCleanup = 1;
+		OTPushback[0] = 1;
+
+		OTPushback[1] = 1;
+		gShellInitialized = 0;
+	}
 }
 
 // @Ok
