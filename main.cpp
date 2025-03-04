@@ -477,6 +477,7 @@ i32 validate(void)
 	validate_matrix4x4();
 	validate_vector3d();
 	validate_vector4d();
+	validate_SScore();
 
 	puts("[*] Validation done!");
 

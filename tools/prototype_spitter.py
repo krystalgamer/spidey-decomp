@@ -70,10 +70,8 @@ def does_func_exist(entry, base):
     name = entry[:entry.index('(')].strip()
     res = name in base
 
-    '''
     if res:
         print(f'Will remove {entry} {name}')
-    '''
 
     return res
 

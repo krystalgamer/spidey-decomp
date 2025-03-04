@@ -9,6 +9,15 @@
 
 EXPORT extern CBody *MiscList;
 
+struct SScore
+{
+	u8 field_0;
+	u8 field_1;
+	u8 field_2;
+	u8 field_3;
+	u8 field_4;
+};
+
 struct SSaveGame
 {
 	u32 mChecksum;
@@ -299,6 +308,11 @@ EXPORT void Shell_Special(EShellResult);
 EXPORT void Shell_StoryBoards(void);
 EXPORT void Shell_TitleScreen(void);
 EXPORT void Shell_VerySmallFont(void);
+EXPORT void PShell_Cleanup(void);
+EXPORT void PShell_Initialise(void);
+EXPORT void PShell_LowText(void);
+EXPORT void RecordsExist(u8,signed char,signed char);
+EXPORT void SameScore(SScore const *,SScore const *);
 
 EXPORT void Shell_RelocatableModuleInit(reloc_mod *);
 
@@ -321,5 +335,6 @@ void validate_CShellGoldFish(void);
 void validate_CShellMysterioHeadCircle(void);
 void validate_SpideyIconRelated(void);
 void validate_SSaveGame(void);
+void validate_SScore(void);
 
 #endif
