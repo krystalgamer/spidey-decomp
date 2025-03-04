@@ -1394,10 +1394,13 @@ void PShell_Initialise(void)
 	gShellInitialized = 1;
 }
 
-// @SMALLTODO
-void PShell_LowText(void)
+// @Ok
+// @Matching
+INLINE void PShell_LowText(void)
 {
-    printf("PShell_LowText(void)");
+	Mess_SetTextJustify(0);
+	Mess_SetRGB(0x45u, 0x3Cu, 0x6Bu, 0);
+	Mess_SetRGBBottom(0x28u, 35, 62);
 }
 
 // @SMALLTODO
