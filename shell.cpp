@@ -1416,9 +1416,72 @@ INLINE i32 IsBetter(
 }
 
 // @SMALLTODO
-void SameScore(SScore const *,SScore const *)
+INLINE void Merge(const SRecords *, const SRecords *)
 {
-    printf("SameScore(SScore const *,SScore const *)");
+    printf("Merge(SRecords *,SRecords const *)");
+}
+
+// @Ok
+// @Test
+void Merge(
+		SScore *a1,
+		const SScore *a2,
+		i32 a3)
+{
+
+	for (i32 i = 0; i < NUM_RECORDS_PER_CHALL; i++)
+	{
+		i32 v7 = 1;
+
+		for (i32 j = 0; j < NUM_RECORDS_PER_CHALL; j++)
+		{
+			if (SameScore(&a1[i], &a2[j]))
+			{
+				v7 = 0;
+			}
+		}
+
+		if (!a2[i].field_0)
+		{
+			v7 = 0;
+		}
+
+		if (v7)
+		{
+			i16 v11 = a2[i].field_3 + (a2[i].field_4 << 8);
+			for (i32 v10 = 0; v10 < NUM_RECORDS_PER_CHALL; v10++)
+			{
+				i16 calc = (a1[v10].field_3 + (a1[v10].field_4 << 8));
+				if (!a1[v10].field_0 ||
+						IsBetter(v11, calc, a3))
+				{
+					for (i32 k = 4; k > v10; k--)
+					{
+						memcpy(&a1[k], &a1[k - 1], sizeof(SScore));
+					}
+
+					memcpy(&a1[v10], &a2[i], sizeof(SScore));
+					break;
+				}
+			}
+			
+		}
+	}
+}
+
+// @Ok
+// @NotMatching: weeeeeeird codegen
+INLINE i32 SameScore(
+		const SScore *a1,
+		const SScore *a2)
+{
+	if ( !a1->field_0 && !a2->field_0)
+		return 1;
+	return a1->field_0 == a2->field_0
+		&& a1->field_1 == a2->field_1
+		&& a1->field_2 == a2->field_2
+		&& a1->field_3 == a2->field_3
+		&& a1->field_4 == a2->field_4;
 }
 
 void validate_CRudeWordHitterSpidey(void){
