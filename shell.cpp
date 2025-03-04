@@ -21,6 +21,9 @@
 
 #include "validate.h"
 
+// @FIXME
+EXPORT SRecordRelated gChallenges[NUM_CHALLS];
+
 EXPORT u16 OTPushback[3];
 EXPORT u8 gPShellCleanup = 1;
 EXPORT i32 gShellFromGame;
@@ -1415,10 +1418,16 @@ INLINE i32 IsBetter(
 	return a1 < a2;
 }
 
-// @SMALLTODO
-INLINE void Merge(const SRecords *, const SRecords *)
+// @NotOk
+// @Note: validate when inlined
+INLINE void Merge(SRecords *a1, const SRecords *a2)
 {
-    printf("Merge(SRecords *,SRecords const *)");
+	for (i32 i = 0; i < NUM_CHALLS; i++)
+	{
+		Merge(&a1->mScores[5*i],
+				&a2->mScores[5*i],
+				gChallenges[i].field_C);
+	}
 }
 
 // @Ok
