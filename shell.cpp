@@ -22,6 +22,9 @@
 
 #include "validate.h"
 
+// @FIXME
+EXPORT SRecords gGlobalRecords;
+
 EXPORT i32 dword_6A7788[16];
 EXPORT void* gBiographies;
 EXPORT i32 gPshellArmorRealted;
@@ -1467,10 +1470,26 @@ INLINE void PShell_LowText(void)
 	Mess_SetRGBBottom(0x28u, 35, 62);
 }
 
-// @SMALLTODO
-void RecordsExist(u8,signed char,signed char)
+// @NotOk
+// @Note: validate when inlined
+INLINE i32 RecordsExist(
+		u8 a1,
+		i8 a2,
+		i8 a3)
 {
-    printf("RecordsExist(u8,signed char,signed char)");
+	i32 v3 = -1;
+
+	for (i32 i = 0; i < NUM_CHALLS; i++)
+	{
+		if (a1 == gChallenges[i].field_6
+				&& a2 == gChallenges[i].field_8
+				&& a3 == gChallenges[i].field_9)
+		{
+			v3 = i;
+		}
+	}
+	print_if_false(v3 != -1, "Mission not found");
+	return gGlobalRecords.mScores[5*v3].field_0;
 }
 
 // @Ok
