@@ -18,6 +18,15 @@ struct SScore
 	u8 field_4;
 };
 
+#define NUM_CHALLS 23
+#define NUM_RECORDS_PER_CHALL 5
+struct SRecords
+{
+	u8 padTop[3];
+
+	SScore mScores[NUM_CHALLS * NUM_RECORDS_PER_CHALL];
+};
+
 struct SSaveGame
 {
 	u32 mChecksum;
@@ -312,7 +321,10 @@ EXPORT void PShell_Cleanup(void);
 EXPORT void PShell_Initialise(void);
 EXPORT void PShell_LowText(void);
 EXPORT void RecordsExist(u8,signed char,signed char);
-EXPORT void SameScore(SScore const *,SScore const *);
+EXPORT i32 SameScore(const SScore const *,const SScore *);
+EXPORT void Merge(SRecords *, const SRecords *);
+EXPORT void Merge(SScore *, const SScore *,i32);
+EXPORT i32 IsBetter(i32, i32, i32);
 
 EXPORT void Shell_RelocatableModuleInit(reloc_mod *);
 
@@ -336,5 +348,6 @@ void validate_CShellMysterioHeadCircle(void);
 void validate_SpideyIconRelated(void);
 void validate_SSaveGame(void);
 void validate_SScore(void);
+void validate_SRecords(void);
 
 #endif

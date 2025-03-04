@@ -17,6 +17,8 @@
 #include "spidey.h"
 #include "ps2m3d.h"
 
+#include <cstring>
+
 #include "validate.h"
 
 EXPORT u16 OTPushback[3];
@@ -1401,6 +1403,18 @@ void RecordsExist(u8,signed char,signed char)
     printf("RecordsExist(u8,signed char,signed char)");
 }
 
+// @Ok
+INLINE i32 IsBetter(
+		i32 a1,
+		i32 a2,
+		i32 a3)
+{
+	if (a3)
+		return a2 > a1;
+
+	return a1 < a2;
+}
+
 // @SMALLTODO
 void SameScore(SScore const *,SScore const *)
 {
@@ -1592,4 +1606,11 @@ void validate_SScore(void)
 	VALIDATE(SScore, field_2, 0x2);
 	VALIDATE(SScore, field_3, 0x3);
 	VALIDATE(SScore, field_4, 0x4);
+}
+
+void validate_SRecords(void)
+{
+	VALIDATE_SIZE(SRecords, 0x242);
+
+	VALIDATE(SRecords, mScores, 0x3);
 }
