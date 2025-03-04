@@ -1677,3 +1677,16 @@ void validate_SRecords(void)
 
 	VALIDATE(SRecords, mScores, 0x3);
 }
+
+void validate_SRecordRelated(void)
+{
+	VALIDATE_SIZE(SRecordRelated, 0x10);
+
+	VALIDATE(SRecordRelated, pName, 0x0);
+	VALIDATE(SRecordRelated, field_6, 0x6);
+
+	VALIDATE(SRecordRelated, field_8, 0x8);
+	VALIDATE(SRecordRelated, field_9, 0x9);
+
+	VALIDATE(SRecordRelated, field_C, 0xC);
+}

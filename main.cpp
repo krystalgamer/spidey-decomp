@@ -479,6 +479,7 @@ i32 validate(void)
 	validate_vector4d();
 	validate_SScore();
 	validate_SRecords();
+	validate_SRecordRelated();
 
 	puts("[*] Validation done!");
 

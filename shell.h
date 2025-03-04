@@ -9,6 +9,23 @@
 
 EXPORT extern CBody *MiscList;
 
+struct SRecordRelated
+{
+	char* pName;
+	u8 padAfter0[2];
+
+	u8 field_6;
+	u8 padAfter6[1];
+
+	i8 field_8;
+	i8 field_9;
+	u8 padAfter9[0xC-0x9-1];
+
+	i8 field_C;
+
+	u8 padBottom[0x10-0xC-1];
+};
+
 struct SScore
 {
 	u8 field_0;
@@ -349,5 +366,6 @@ void validate_SpideyIconRelated(void);
 void validate_SSaveGame(void);
 void validate_SScore(void);
 void validate_SRecords(void);
+void validate_SRecordRelated(void);
 
 #endif
