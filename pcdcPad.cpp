@@ -12,3 +12,9 @@ void pdExitPeripheral(void)
 {
 	PCINPUT_Shutdown();
 }
+
+// @Ok
+i32 pdTmrAlarm(i32, u8*)
+{
+	return 0;
+}
