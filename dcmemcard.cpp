@@ -108,10 +108,25 @@ void DCCard_InitCallback(void)
 	buSetCompleteCallback(DCCard_BupComplete);
 }
 
-// @SMALLTODO
-void DCCard_SadBeep(i32,u32)
+// @Ok
+// @AlmostMatching: diff reg allocation
+void DCCard_SadBeep(i32 a1, u32 a2)
 {
-    printf("DCCard_SadBeep(i32,u32)");
+	gAlarmTwo[0] = -1;
+	gAlarmTwo[1] = 64;
+	DCCard_StartBeep(a1);
+
+	u32 v2 = Vblanks;
+	u32 v3 = (a2 >> 1) + v2;
+	while (Vblanks < v3)
+	{
+		DCCard_StartBeep(a1);
+	}
+
+	while (Vblanks < v2 + a2)
+		;
+
+	DCCard_StopBeep(a1);
 }
 
 // @Ok
