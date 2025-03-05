@@ -7,7 +7,7 @@
 
 EXPORT i32 DCCard_BupComplete(i32,i32,i32,u32);
 EXPORT void DCCard_CurTime(void);
-EXPORT void DCCard_Exists(i32);
+EXPORT u8 DCCard_Exists(i32);
 EXPORT void DCCard_First(void);
 EXPORT void DCCard_HappyBeep(i32,u32);
 EXPORT void DCCard_InitCallback(void);

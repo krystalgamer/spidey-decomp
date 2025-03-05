@@ -1,6 +1,7 @@
 #include "dcmemcard.h"
 #include "pcdcBkup.h"
 #include "stubs.h"
+#include "utils.h"
 
 #include <cstring>
 
@@ -43,10 +44,23 @@ void DCCard_CurTime(void)
     printf("DCCard_CurTime(void)");
 }
 
-// @SMALLTODO
-void DCCard_Exists(i32)
+// @Ok
+// @Matching
+INLINE u8 DCCard_Exists(i32 a1)
 {
-    printf("DCCard_Exists(i32)");
+	u32 v0 = Vblanks;
+	i32 i;
+
+	for (i = buIsFormat(a1); i == -1; i = buIsFormat(a1))
+	{
+		if (Vblanks - v0 > 0x78)
+			break;
+	}
+
+	// @Note: got it to match! i == 0 would make it generate code with edx for some reason
+	if (i)
+		return 1;
+	return 0;
 }
 
 // @SMALLTODO
