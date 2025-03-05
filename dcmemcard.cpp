@@ -18,6 +18,8 @@ EXPORT u8 gCardInitTwo;
 
 EXPORT i32 gDcCardRelated;
 
+EXPORT SDCCardTime gCurTime;
+
 // @Ok
 // @Matching
 i32 DCCard_BupComplete(
@@ -44,10 +46,20 @@ i32 DCCard_BupComplete(
 	return 0;
 }
 
-// @SMALLTODO
-void DCCard_CurTime(void)
+// @Ok
+SDCCardTime* DCCard_CurTime(void)
 {
-    printf("DCCard_CurTime(void)");
+	SDCCardTime v1;
+	syRtcGetDate(&v1);
+
+	gCurTime.field_3 = v1.field_3;
+	gCurTime.field_0 = v1.field_0;
+	gCurTime.field_2 = v1.field_2;
+	gCurTime.field_6 = v1.field_6;
+	gCurTime.field_4 = v1.field_4;
+	gCurTime.field_5 = v1.field_5;
+
+	return &gCurTime;
 }
 
 // @Ok

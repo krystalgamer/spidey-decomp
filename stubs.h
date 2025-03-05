@@ -13,8 +13,9 @@ struct SDCCardTime
 	u8 field_3;
 	u8 field_4;
 	u8 field_5;
-	u8 field_6;
-	u8 field_7;
+	i16 field_6;
+
+	i32 field_8;
 };
 
 EXPORT i32 syRtcInit(void);

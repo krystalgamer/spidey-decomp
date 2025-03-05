@@ -4,9 +4,10 @@
 #pragma once
 
 #include "export.h"
+#include "stubs.h"
 
 EXPORT i32 DCCard_BupComplete(i32,i32,i32,u32);
-EXPORT void DCCard_CurTime(void);
+EXPORT SDCCardTime* DCCard_CurTime(void);
 EXPORT u8 DCCard_Exists(i32);
 EXPORT u32 DCCard_First(void);
 EXPORT void DCCard_HappyBeep(i32,u32);

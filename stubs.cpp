@@ -98,7 +98,7 @@ i32 syRtcGetDate(SDCCardTime*)
 
 void validate_SDCCardTime(void)
 {
-	VALIDATE_SIZE(SDCCardTime, 0x8);
+	VALIDATE_SIZE(SDCCardTime, 0xC);
 
 	VALIDATE(SDCCardTime, field_0, 0x0);
 
@@ -107,5 +107,6 @@ void validate_SDCCardTime(void)
 	VALIDATE(SDCCardTime, field_4, 0x4);
 	VALIDATE(SDCCardTime, field_5, 0x5);
 	VALIDATE(SDCCardTime, field_6, 0x6);
-	VALIDATE(SDCCardTime, field_7, 0x7);
+
+	VALIDATE(SDCCardTime, field_8, 0x8);
 }
