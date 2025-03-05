@@ -163,10 +163,20 @@ INLINE void DCCard_StopBeep(i32 a1)
 	pdTmrAlarm(gAlarmFirst[a1], v3);
 }
 
-// @SMALLTODO
-void DCCard_Wait(i32,i32)
+// @Ok
+// @Matching
+u8 DCCard_Wait(i32 a1,i32 a2)
 {
-    printf("DCCard_Wait(i32,i32)");
+	if (!gCardData[a1])
+		return 0;
+
+	u32 v3 = Vblanks;
+
+	do
+	{
+	} while(buStat(a1) == -1 && Vblanks - v3 < a2);
+
+	return buGetLastError(a1) == 0;
 }
 
 // @Ok

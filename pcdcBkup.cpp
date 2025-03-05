@@ -58,7 +58,7 @@ i32 buStat(i32)
 
 // @Ok
 // @Matching
-i32 buGetLasError(i32)
+i32 buGetLastError(i32)
 {
 	return 0;
 }

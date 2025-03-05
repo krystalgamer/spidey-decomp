@@ -11,4 +11,5 @@ EXPORT i32 buIsReady(i32);
 EXPORT char* MUSICTRACKS_GetTrackName(i32);
 EXPORT i32 buIsFormat(i32);
 EXPORT i32 buStat(i32);
+EXPORT i32 buGetLastError(i32);
 #endif

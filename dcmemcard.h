@@ -15,7 +15,7 @@ EXPORT void DCCard_InitCallback(void);
 EXPORT void DCCard_SadBeep(i32,u32);
 EXPORT void DCCard_StartBeep(i32);
 EXPORT void DCCard_StopBeep(i32);
-EXPORT void DCCard_Wait(i32,i32);
+EXPORT u8 DCCard_Wait(i32,i32);
 EXPORT void MemCardInit(i32);
 EXPORT void MemCardStop(void);
 
