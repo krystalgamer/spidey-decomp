@@ -55,3 +55,10 @@ i32 buStat(i32)
 {
 	return 0;
 }
+
+// @Ok
+// @Matching
+i32 buGetLasError(i32)
+{
+	return 0;
+}
