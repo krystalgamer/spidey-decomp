@@ -41,3 +41,10 @@ i32 buIsReady(i32)
 {
 	return 1;
 }
+
+// @Ok
+// @Matching
+i32 buIsFormat(i32)
+{
+	return 0;
+}
