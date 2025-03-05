@@ -77,10 +77,29 @@ u32 DCCard_First(void)
 	return 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: diff reg allocation
 void DCCard_HappyBeep(i32 a1, u32 a2)
 {
-    printf("DCCard_HappyBeep(i32,u32)");
+	gAlarmTwo[0] = -1;
+	gAlarmTwo[1] = 64;
+	DCCard_StartBeep(a1);
+
+	u32 v2 = Vblanks;
+	u32 v3 = v2 + (a2 >> 1);
+
+	while (Vblanks < v3)
+	{
+		--gAlarmTwo[1];
+		gAlarmTwo[0] = 2 * gAlarmTwo[1];
+
+		DCCard_StartBeep(a1);
+	}
+
+	while (Vblanks < v2 + a2)
+		;
+
+	DCCard_StopBeep(a1);
 }
 
 // @Ok
@@ -95,16 +114,16 @@ void DCCard_SadBeep(i32,u32)
     printf("DCCard_SadBeep(i32,u32)");
 }
 
-// @NotOk
-// @Note: validate when inlined
+// @Ok
+// @Matching
 INLINE void DCCard_StartBeep(i32 a1)
 {
 	if (gCardInitTwo)
 		pdTmrAlarm(gAlarmFirst[a1], gAlarmTwo);
 }
 
-// @NotOk
-// @Note: validate when inlined
+// @Ok
+// @Matching
 INLINE void DCCard_StopBeep(i32 a1)
 {
 	u8 v3[4];
