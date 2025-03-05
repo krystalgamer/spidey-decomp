@@ -59,14 +59,18 @@ INLINE u8 DCCard_Exists(i32 a1)
 
 	// @Note: got it to match! i == 0 would make it generate code with edx for some reason
 	if (i)
-		return 1;
-	return 0;
+		return 0;
+	return 1;
 }
 
-// @SMALLTODO
-void DCCard_First(void)
+// @Ok
+// @Matching
+u32 DCCard_First(void)
 {
-    printf("DCCard_First(void)");
+	// @Note: must be like this to match ffs
+	if (!DCCard_Exists(0))
+		return 0xFFFFFFFF;
+	return 0;
 }
 
 // @SMALLTODO
