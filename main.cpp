@@ -89,6 +89,7 @@
 #include "reloc.h"
 #include "my_bink.h"
 #include "pcdcMem.h"
+#include "dcmemcard.h"
 
 extern int FAIL_VALIDATION;
 
@@ -481,6 +482,7 @@ i32 validate(void)
 	validate_SScore();
 	validate_SRecords();
 	validate_SRecordRelated();
+	validate_SDCCardTime();
 
 	puts("[*] Validation done!");
 

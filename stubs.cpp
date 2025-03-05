@@ -69,19 +69,43 @@ i32 syRtcInit(void)
 }
 
 // @Ok
+// @Matching
 i32 gsExit(void)
 {
 	return 1;
 }
 
 // @Ok
+// @Matching
 i32 syCblCheck(void)
 {
 	return 1;
 }
 
 // @Ok
+// @Matching
 i32 syCblCheckBroadcast(void)
 {
 	return 0;
+}
+
+// @Ok
+// @Matching
+i32 syRtcGetDate(SDCCardTime*)
+{
+	return 0;
+}
+
+void validate_SDCCardTime(void)
+{
+	VALIDATE_SIZE(SDCCardTime, 0x8);
+
+	VALIDATE(SDCCardTime, field_0, 0x0);
+
+	VALIDATE(SDCCardTime, field_2, 0x2);
+	VALIDATE(SDCCardTime, field_3, 0x3);
+	VALIDATE(SDCCardTime, field_4, 0x4);
+	VALIDATE(SDCCardTime, field_5, 0x5);
+	VALIDATE(SDCCardTime, field_6, 0x6);
+	VALIDATE(SDCCardTime, field_7, 0x7);
 }

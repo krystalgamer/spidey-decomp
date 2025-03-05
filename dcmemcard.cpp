@@ -4,6 +4,8 @@
 #include "utils.h"
 #include "pcdcPad.h"
 
+#include "validate.h"
+
 #include <cstring>
 
 EXPORT u8 gAlarmTwo[2] = { 0xC, 0x80 };
