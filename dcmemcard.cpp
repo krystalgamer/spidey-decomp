@@ -174,7 +174,7 @@ u8 DCCard_Wait(i32 a1,i32 a2)
 
 	do
 	{
-	} while(buStat(a1) == -1 && Vblanks - v3 < a2);
+	} while(buStat(a1) == -1 && Vblanks - v3 < static_cast<u32>(a2));
 
 	return buGetLastError(a1) == 0;
 }
@@ -190,8 +190,15 @@ void MemCardInit(i32)
 	gCardInitTwo = 1;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void MemCardStop(void)
 {
-    printf("MemCardStop(void)");
+	DebugPrintfX("Shutting down backup subsystem");
+	gCardInit = 0;
+
+	do
+	{
+	}
+	while (buExit());
 }
