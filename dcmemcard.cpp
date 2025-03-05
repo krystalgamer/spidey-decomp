@@ -2,9 +2,14 @@
 #include "pcdcBkup.h"
 #include "stubs.h"
 #include "utils.h"
+#include "pcdcPad.h"
 
 #include <cstring>
 
+//@FIXME
+EXPORT u8 gAlarmTwo[1] = { 0 };
+
+EXPORT i32 gAlarmFirst[4] = { 1, 2, 7, 8 };
 
 EXPORT u8 gCardData[8];
 EXPORT u8 gCardInit;
@@ -91,10 +96,12 @@ void DCCard_SadBeep(i32,u32)
     printf("DCCard_SadBeep(i32,u32)");
 }
 
-// @SMALLTODO
-void DCCard_StartBeep(i32)
+// @NotOk
+// @Note: validate when inlined
+INLINE void DCCard_StartBeep(i32 a1)
 {
-    printf("DCCard_StartBeep(i32)");
+	if (gCardInitTwo)
+		pdTmrAlarm(gAlarmFirst[a1], gAlarmTwo);
 }
 
 // @SMALLTODO
