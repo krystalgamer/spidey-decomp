@@ -6,8 +6,7 @@
 
 #include <cstring>
 
-//@FIXME
-EXPORT u8 gAlarmTwo[1] = { 0 };
+EXPORT u8 gAlarmTwo[2] = { 0xC, 0x80 };
 
 EXPORT i32 gAlarmFirst[4] = { 1, 2, 7, 8 };
 
@@ -79,7 +78,7 @@ u32 DCCard_First(void)
 }
 
 // @SMALLTODO
-void DCCard_HappyBeep(i32,u32)
+void DCCard_HappyBeep(i32 a1, u32 a2)
 {
     printf("DCCard_HappyBeep(i32,u32)");
 }
