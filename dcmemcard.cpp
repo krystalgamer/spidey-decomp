@@ -104,10 +104,16 @@ INLINE void DCCard_StartBeep(i32 a1)
 		pdTmrAlarm(gAlarmFirst[a1], gAlarmTwo);
 }
 
-// @SMALLTODO
-void DCCard_StopBeep(i32)
+// @NotOk
+// @Note: validate when inlined
+INLINE void DCCard_StopBeep(i32 a1)
 {
-    printf("DCCard_StopBeep(i32)");
+	u8 v3[4];
+	v3[0] = 0;
+	v3[1] = 0;
+	v3[2] = 0;
+	v3[3] = 0;
+	pdTmrAlarm(gAlarmFirst[a1], v3);
 }
 
 // @SMALLTODO
