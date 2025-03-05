@@ -48,3 +48,10 @@ i32 buIsFormat(i32)
 {
 	return 0;
 }
+
+// @Ok
+// @Matching
+i32 buStat(i32)
+{
+	return 0;
+}
