@@ -88,6 +88,7 @@
 #include "utils.h"
 #include "reloc.h"
 #include "my_bink.h"
+#include "pcdcMem.h"
 
 extern int FAIL_VALIDATION;
 

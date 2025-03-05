@@ -7,6 +7,7 @@
 #include "Sbinit.h"
 #include "stubs.h"
 #include "PCGfx.h"
+#include "pcdcMem.h"
 
 #include <cstdlib>
 

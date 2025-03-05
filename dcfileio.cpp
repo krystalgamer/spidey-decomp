@@ -6,6 +6,7 @@
 #include "ps2gamefmv.h"
 #include "mem.h"
 #include "my_debug.h"
+#include "pcdcMem.h"
 
 #include "pcdcFile.h"
 

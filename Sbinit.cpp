@@ -3,6 +3,7 @@
 #include "stubs.h"
 #include "PCGfx.h"
 #include "pcdcPad.h"
+#include "pcdcMem.h"
 
 // @Ok
 INLINE void sbExitSystem(void)
