@@ -62,3 +62,10 @@ i32 buGetLastError(i32)
 {
 	return 0;
 }
+
+// @Ok
+// @Matching
+i32 buExit(void)
+{
+	return 0;
+}
