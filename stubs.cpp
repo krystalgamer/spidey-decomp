@@ -91,14 +91,14 @@ i32 syCblCheckBroadcast(void)
 
 // @Ok
 // @Matching
-i32 syRtcGetDate(SDCCardTime*)
+i32 syRtcGetDate(SDCCardFullTime*)
 {
 	return 0;
 }
 
 void validate_SDCCardTime(void)
 {
-	VALIDATE_SIZE(SDCCardTime, 0xC);
+	VALIDATE_SIZE(SDCCardTime, 0x8);
 
 	VALIDATE(SDCCardTime, field_0, 0x0);
 
@@ -107,6 +107,12 @@ void validate_SDCCardTime(void)
 	VALIDATE(SDCCardTime, field_4, 0x4);
 	VALIDATE(SDCCardTime, field_5, 0x5);
 	VALIDATE(SDCCardTime, field_6, 0x6);
+}
 
-	VALIDATE(SDCCardTime, field_8, 0x8);
+void validate_SDCCardFullTime(void)
+{
+	VALIDATE_SIZE(SDCCardFullTime, 0xC);
+
+	VALIDATE(SDCCardFullTime, mTime, 0x0);
+	VALIDATE(SDCCardFullTime, field_8, 0x8);
 }

@@ -487,6 +487,8 @@ i32 validate(void)
 	validate_SDCCardTime();
 	validate_SCardHead();
 	validate_SBackupFile();
+	validate_SSaveFile();
+	validate_SDCCardFullTime();
 
 	puts("[*] Validation done!");
 

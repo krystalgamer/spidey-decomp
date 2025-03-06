@@ -49,15 +49,16 @@ i32 DCCard_BupComplete(
 // @Ok
 SDCCardTime* DCCard_CurTime(void)
 {
-	SDCCardTime v1;
+	SDCCardFullTime v1;
 	syRtcGetDate(&v1);
 
-	gCurTime.field_3 = v1.field_3;
-	gCurTime.field_0 = v1.field_0;
-	gCurTime.field_2 = v1.field_2;
-	gCurTime.field_6 = v1.field_6;
-	gCurTime.field_4 = v1.field_4;
-	gCurTime.field_5 = v1.field_5;
+	gCurTime.field_0 = v1.mTime.field_0;
+	gCurTime.field_2 = v1.mTime.field_2;
+	gCurTime.field_3 = v1.mTime.field_3;
+	gCurTime.field_4 = v1.mTime.field_4;
+	gCurTime.field_5 = v1.mTime.field_5;
+	gCurTime.field_6 = v1.mTime.field_6;
+	gCurTime.field_7 = v1.mTime.field_7;
 
 	return &gCurTime;
 }

@@ -8,7 +8,24 @@
 
 struct SBackupFile
 {
-	u8 padTop[0x58];
+	char mName[16];
+	u8 padAfter10[2];
+
+	char mDesc[20];
+	u8 padAFter26[0x12-4];
+
+	char field_34[16];
+
+	i32 field_44;
+	i32 field_48;
+
+	i16 field_4C;
+	i16 field_4E;
+
+	i32 field_50;
+	i16 field_54;
+
+	u8 padAfter54[2];
 
 	SCardHead* pCardHead;
 	i32 mBackupSize;

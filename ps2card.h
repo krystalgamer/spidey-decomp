@@ -16,6 +16,14 @@ struct SCardHead
 	char Icon[3][128];
 };
 
+struct SSaveFile
+{
+	SCardHead mCardHead;
+
+	u8 padBottom[0xA24 - sizeof(SCardHead)];
+};
+
+
 EXPORT i32 Card_CheckStatus(i32,i32);
 EXPORT i32 Card_FormatCard(i32,i32);
 EXPORT i32 Card_GetFreeBlocks(i32,i32);
@@ -28,4 +36,6 @@ EXPORT void Card_Write(void);
 EXPORT extern i32 CardStatus;
 
 void validate_SCardHead(void);
+void validate_SSaveFile(void);
+
 #endif

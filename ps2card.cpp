@@ -2,6 +2,7 @@
 #include "dcmemcard.h"
 #include "pcdcBkup.h"
 #include "pcdcMem.h"
+#include "mem.h"
 
 #include "validate.h"
 #include <cstring>
@@ -152,7 +153,55 @@ void Card_Stop(void)
 // @MEDIUMTODO
 void Card_Write(void)
 {
-    printf("Card_Write(void)");
+	SBackupFile backupFile;
+	i16 Clut[16];
+
+	Card_SetHeader();
+
+	for (i32 i = 0;
+			i < 16;
+			i++)
+	{
+		i16 v1 = *reinterpret_cast<i16*>(&gCardClut[i*2]);
+		Clut[i] = ((v1 & 0x1E) << 7) | (v1 >> 11) & 0xF | (v1 >> 2) & 0xF0 | (15 * ((v1 >> 3) & 0x1000));
+	}
+
+	/*
+	 *
+	 * FILL ME
+	 * gPcIcon
+	 *
+	 * */
+
+
+	SSaveFile *pSaveFile = static_cast<SSaveFile*>(
+			DCMem_New(sizeof(SSaveFile), 0, 1, 0, 1));
+
+	// @FIXME
+	memcpy(pSaveFile, &Head, sizeof(SSaveFile));
+	memset(&backupFile, 0, sizeof(backupFile));
+	strcpy(backupFile.field_34, Head.Title);
+
+	/*
+	 *
+	 * FILL ME
+	 * loop
+	 *
+	 * */
+
+	strncpy(backupFile.mName, "SpiderMan Data", 0x10u);
+	strcpy(backupFile.mDesc, "SpiderMan Save File");
+	backupFile.field_4C = 1;
+	backupFile.field_4E = 8;
+	//backupFile.field_48 = (int)v20;
+	//backupFile.field_44 = (int)backupFile.field_60;
+	backupFile.field_54 = 0;
+	//backupFile.field_50 = (int)&v21;
+	backupFile.mBackupSize = sizeof(SSaveFile);
+	backupFile.pCardHead = &pSaveFile->mCardHead;
+
+	i32 fileSize = buCalcBackupFileSize(1, 0, sizeof(SSaveFile));
+
 }
 
 void validate_SCardHead(void)
@@ -168,4 +217,11 @@ void validate_SCardHead(void)
 	VALIDATE(SCardHead, reserve, 0x44);
 	VALIDATE(SCardHead, Clut, 0x60);
 	VALIDATE(SCardHead, Icon, 0x80);
+}
+
+void validate_SSaveFile(void)
+{
+	VALIDATE_SIZE(SSaveFile, 0xA24);
+
+	VALIDATE(SSaveFile, mCardHead, 0x0);
 }

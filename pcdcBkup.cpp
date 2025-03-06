@@ -117,6 +117,18 @@ void validate_SBackupFile(void)
 {
 	VALIDATE_SIZE(SBackupFile, 0x60);
 
+	VALIDATE(SBackupFile, mName, 0x0);
+	VALIDATE(SBackupFile, mDesc, 0x12);
+
+	VALIDATE(SBackupFile, field_34, 0x34);
+
+	VALIDATE(SBackupFile, field_44, 0x44);
+	VALIDATE(SBackupFile, field_48, 0x48);
+	VALIDATE(SBackupFile, field_4C, 0x4C);
+	VALIDATE(SBackupFile, field_4E, 0x4E);
+	VALIDATE(SBackupFile, field_50, 0x50);
+	VALIDATE(SBackupFile, field_54, 0x54);
+
 	VALIDATE(SBackupFile, pCardHead, 0x58);
 	VALIDATE(SBackupFile, mBackupSize, 0x5C);
 }
