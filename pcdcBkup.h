@@ -5,6 +5,7 @@
 
 #include "export.h"
 #include "ps2card.h"
+#include "stubs.h"
 
 struct SBackupFile
 {
@@ -16,8 +17,8 @@ struct SBackupFile
 
 	char field_34[16];
 
-	i32 field_44;
-	i32 field_48;
+	i16* field_44;
+	u8* field_48;
 
 	i16 field_4C;
 	i16 field_4E;
@@ -44,6 +45,8 @@ EXPORT i32 buCalcBackupFileSize(u32, u32, u32);
 EXPORT i32 buGetFileSize(i32, const char*);
 EXPORT i32 buLoadFile(i32, const char*, void*, i32);
 EXPORT i32 buAnalyzeBackupFileImage(SBackupFile*, void*);
+EXPORT i32 buMakeBackupFileImage(void*, SBackupFile*);
+EXPORT i32 buSaveFile(i32, const char*, void *, i32, SDCCardTime*);
 
 void validate_SBackupFile(void);
 

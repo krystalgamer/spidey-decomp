@@ -7,6 +7,7 @@
 #include "validate.h"
 #include <cstring>
 
+// @FIXME - not 0xA24
 EXPORT SCardHead Head;
 
 i32 CardStatus;
@@ -150,11 +151,16 @@ void Card_Stop(void)
 	MemCardStop();
 }
 
-// @MEDIUMTODO
-void Card_Write(void)
+// @NotOk
+// @Test
+// @Note: huge stack, code not matching in the loops
+i32 Card_Write(void)
 {
+	void *pBackfupFile = 0;
 	SBackupFile backupFile;
 	i16 Clut[16];
+
+	char v21[0x2000-0x5C];
 
 	Card_SetHeader();
 
@@ -166,12 +172,24 @@ void Card_Write(void)
 		Clut[i] = ((v1 & 0x1E) << 7) | (v1 >> 11) & 0xF | (v1 >> 2) & 0xF0 | (15 * ((v1 >> 3) & 0x1000));
 	}
 
-	/*
-	 *
-	 * FILL ME
-	 * gPcIcon
-	 *
-	 * */
+	u8 v20[1024];
+	for (i32 j = 0; j < 16; j++)
+	{
+		for (i32 k = 0; k < 8; k++)
+		{
+			u8 v11 = gCardIcon[8 * j + k];
+			u8 v12 = v11 & 0xF | (16 * v11);
+
+			i32 v13 = 32 * j + 2 * k;
+			v20[v13 + 16] = v12;
+			v20[v13] = v12;
+
+			u32 v14 = (16 * (v11 >> 4)) & 0xF0 | (v11 >> 4) & 0xFFFFFF0F;
+			v20[v13 + 17] = v14;
+			v20[v13 + 1] = v14;
+
+		}
+	}
 
 
 	SSaveFile *pSaveFile = static_cast<SSaveFile*>(
@@ -180,28 +198,73 @@ void Card_Write(void)
 	// @FIXME
 	memcpy(pSaveFile, &Head, sizeof(SSaveFile));
 	memset(&backupFile, 0, sizeof(backupFile));
-	strcpy(backupFile.field_34, Head.Title);
+	strcpy(
+			backupFile.field_34,
+			Head.Title);
 
-	/*
-	 *
-	 * FILL ME
-	 * loop
-	 *
-	 * */
+	for (i32 l = 0; l < 0x10; l++)
+	{
+		u8 v11 = backupFile.field_34[l];
+
+		if (v11 == ' ')
+			backupFile.field_34[l] = '_';
+		else if (v11 >= 'a')
+			backupFile.field_34[l] = v11 - ' ';
+	}
 
 	strncpy(backupFile.mName, "SpiderMan Data", 0x10u);
 	strcpy(backupFile.mDesc, "SpiderMan Save File");
 	backupFile.field_4C = 1;
 	backupFile.field_4E = 8;
-	//backupFile.field_48 = (int)v20;
-	//backupFile.field_44 = (int)backupFile.field_60;
+	backupFile.field_48 = v20;
+	backupFile.field_44 = Clut;
 	backupFile.field_54 = 0;
-	//backupFile.field_50 = (int)&v21;
+
+	// @FIXME - wtf
+	backupFile.field_50 = reinterpret_cast<i32>(&v21);
+
 	backupFile.mBackupSize = sizeof(SSaveFile);
 	backupFile.pCardHead = &pSaveFile->mCardHead;
 
 	i32 fileSize = buCalcBackupFileSize(1, 0, sizeof(SSaveFile));
+	
+	if (fileSize < 0)
+	{
+		DebugPrintfX("Card_Save: Invalid Block Size");
+	}
+	else
+	{
+		pBackfupFile = syMalloc(fileSize << 9);
 
+		if (!pBackfupFile)
+		{
+			DebugPrintfX("Out of system memory for save file buffer");
+		}
+		else
+		{
+			i32 backupSize = buMakeBackupFileImage(pBackfupFile, &backupFile);
+			SDCCardTime v17 = *DCCard_CurTime();
+
+			if (buSaveFile(gFirstCard, "SPIDRMAN.DAT", pBackfupFile, backupSize, &v17))
+			{
+				DebugPrintfX("Save Failed");
+			}
+			else if (DCCard_Wait(gFirstCard, 0x258u))
+			{
+				Mem_Delete(pSaveFile);
+				syFree(pBackfupFile);
+				DCCard_HappyBeep(gFirstCard, 0x1Eu);
+				return 0;
+			}
+		}
+	}
+
+	syFree(pBackfupFile);
+	if (pSaveFile)
+		Mem_Delete(pSaveFile);
+
+	DCCard_SadBeep(gFirstCard, 0x1Eu);
+	return 1;
 }
 
 void validate_SCardHead(void)

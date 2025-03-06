@@ -113,6 +113,20 @@ i32 buAnalyzeBackupFileImage(SBackupFile*, void*)
 	return 0x06032025;
 }
 
+// @SMALLTODO
+i32 buMakeBackupFileImage(void*, SBackupFile*)
+{
+	printf("i32 buMakeBackupFileImage(void*, SBackupFile*)");
+	return 0x06032025;
+}
+
+// @SMALLTODO
+i32 buSaveFile(i32, const char*, void *, i32, SDCCardTime*)
+{
+	printf("i32 buSaveFile(i32, i32, void *, i32, i32)");
+	return 0x06032025;
+}
+
 void validate_SBackupFile(void)
 {
 	VALIDATE_SIZE(SBackupFile, 0x60);

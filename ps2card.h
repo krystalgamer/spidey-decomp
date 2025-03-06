@@ -31,7 +31,7 @@ EXPORT void Card_Init(i32);
 EXPORT i32 Card_Load(void);
 EXPORT void Card_SetHeader(void);
 EXPORT void Card_Stop(void);
-EXPORT void Card_Write(void);
+EXPORT i32 Card_Write(void);
 
 EXPORT extern i32 CardStatus;
 
