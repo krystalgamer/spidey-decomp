@@ -1,5 +1,6 @@
 #include "ps2card.h"
 #include "dcmemcard.h"
+#include "pcdcBkup.h"
 
 i32 CardStatus;
 
@@ -26,10 +27,11 @@ i32 Card_FormatCard(i32,i32)
 	return 1;
 }
 
-// @SMALLTODO
-void Card_GetFreeBlocks(i32,i32)
+// @Ok
+// @Matching
+i32 Card_GetFreeBlocks(i32,i32)
 {
-    printf("Card_GetFreeBlocks(i32,i32)");
+	return buGetDiskFree(gFirstCard, 0) > buCalcBackupFileSize(1, 0, 0xA24u);
 }
 
 // @Ok

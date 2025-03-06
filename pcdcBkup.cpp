@@ -23,7 +23,7 @@ i32 buCalcBackupFileSize(
 
 // @Ok
 // @Matching
-i32 buGetDiskFree(void)
+i32 buGetDiskFree(i32, i32)
 {
 	return 0x7FFFFFFF;
 }

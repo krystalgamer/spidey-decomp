@@ -13,7 +13,7 @@ EXPORT i32 buIsFormat(i32);
 EXPORT i32 buStat(i32);
 EXPORT i32 buGetLastError(i32);
 EXPORT i32 buExit(void);
-EXPORT i32 buGetDiskFree(void);
+EXPORT i32 buGetDiskFree(i32, i32);
 EXPORT i32 buCalcBackupFileSize(u32, u32, u32);
 
 #endif
