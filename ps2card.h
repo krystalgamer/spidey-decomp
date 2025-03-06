@@ -13,7 +13,7 @@ struct SCardHead
 	char Title[64];
 	char reserve[28];
 	char Clut[32];
-	char Icon[128][3];
+	char Icon[3][128];
 };
 
 EXPORT i32 Card_CheckStatus(i32,i32);

@@ -3,12 +3,21 @@
 #include "pcdcBkup.h"
 
 #include "validate.h"
+#include <cstring>
+
+EXPORT SCardHead Head;
 
 i32 CardStatus;
 
 EXPORT u8 gFirstCard;
 
 EXPORT u8 gStubbedFormat = 0;
+
+// @FIXME
+EXPORT char gCardIcon[128];
+
+// @FIXME
+EXPORT char gCardClut[32];
 
 // @Ok
 // @Matching
@@ -48,10 +57,44 @@ void Card_Load(void)
     printf("Card_Load(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Card_SetHeader(void)
 {
-    printf("Card_SetHeader(void)");
+	Head.Magic[0] = 'S';
+	Head.Magic[1] = 'C';
+	Head.Type = 0x11;
+
+	Head.BlockEntry = 1;
+
+	for (i32 i = 0; i < sizeof(Head.Title); i++)
+	{
+		Head.Title[i] = 0;
+	}
+	strcpy(Head.Title, "SPIDRMAN.DAT");
+
+	for (i32 j = 0; j < sizeof(Head.reserve); j++)
+	{
+		Head.reserve[j] = 0;
+	}
+
+	for (i32 k = 0; k < sizeof(Head.Clut); k++)
+	{
+		Head.Clut[k] = gCardClut[k];
+	}
+
+	for (i32 l = 0; l < sizeof(Head.Icon) / 3; l++)
+	{
+		char v1 = gCardIcon[l];
+
+		Head.Icon[0][l] = v1;
+
+		if (Head.Type >= 18)
+			Head.Icon[1][l] = v1;
+		if (Head.Type >= 19)
+			Head.Icon[2][l] = v1;
+	}
+	
 }
 
 // @Ok
