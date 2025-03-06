@@ -6,7 +6,7 @@
 #include "export.h"
 
 EXPORT i32 Card_CheckStatus(i32,i32);
-EXPORT void Card_FormatCard(i32,i32);
+EXPORT i32 Card_FormatCard(i32,i32);
 EXPORT void Card_GetFreeBlocks(i32,i32);
 EXPORT void Card_Init(i32);
 EXPORT void Card_Load(void);

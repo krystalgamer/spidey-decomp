@@ -5,6 +5,8 @@ i32 CardStatus;
 
 EXPORT u8 gFirstCard;
 
+EXPORT u8 gStubbedFormat = 0;
+
 // @Ok
 // @Matching
 i32 Card_CheckStatus(i32 cnct,i32 slot)
@@ -15,10 +17,13 @@ i32 Card_CheckStatus(i32 cnct,i32 slot)
 	return CardStatus;
 }
 
-// @SMALLTODO
-void Card_FormatCard(i32,i32)
+// @Ok
+// @Matching
+i32 Card_FormatCard(i32,i32)
 {
-    printf("Card_FormatCard(i32,i32)");
+	if (!gStubbedFormat)
+		stubbed_printf("stubbed out: Card_FormatCard");
+	return 1;
 }
 
 // @SMALLTODO
