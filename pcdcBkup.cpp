@@ -10,6 +10,19 @@ EXPORT char* gMusicTracks[1] = { "lol" };
 
 // @Ok
 // @Matching
+i32 buCalcBackupFileSize(
+		u32,
+		u32,
+		u32 a3)
+{
+	i32 result = a3 >> 9;
+	if (a3 & 0x1FF)
+		++result;
+	return result;
+}
+
+// @Ok
+// @Matching
 i32 buGetDiskFree(void)
 {
 	return 0x7FFFFFFF;
