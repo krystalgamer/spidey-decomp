@@ -17,6 +17,7 @@ struct MEMORY_ALLOC
 EXPORT void syMallocFinish(void);
 EXPORT void syMallocInit(void);
 EXPORT void *syMalloc(u32);
+EXPORT void syFree(void*);
 
 EXPORT void addMemoryAlloc(MEMORY_ALLOC *);
 EXPORT void removeMemoryAlloc(MEMORY_ALLOC *);

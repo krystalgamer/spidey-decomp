@@ -52,27 +52,55 @@ void Card_Init(i32)
 	MemCardInit(1);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 Card_Load(void)
 {
+	SBackupFile v4;
+
+	i32 res = 2;
 	i32 fileSize = buGetFileSize(gFirstCard, "SPIDRMAN.DAT");
+
 	if (fileSize < 0)
 	{
 		DebugPrintfX("Card_Load: Invalid Block Size or File does not exist");
-		return 1;
+		res = 1;
+	}
+	else
+	{
+		void* v3 = syMalloc(fileSize << 9);
+		if (buLoadFile(gFirstCard, "SPIDRMAN.DAT", v3, fileSize))
+		{
+			DebugPrintfX("Error Loading File");
+		}
+		else if (!DCCard_Wait(gFirstCard, 0x4B0u))
+		{
+			DebugPrintfX("backup file operation started ok, but then failed");
+		}
+		else if(buAnalyzeBackupFileImage(&v4, v3))
+		{
+			DebugPrintfX("backup file analyze failed");
+		}
+		else if (v4.mBackupSize != 0xA24)
+		{
+			DebugPrintfX("backup file size is wrong %ld", v4.mBackupSize);
+		}
+		else
+		{
+			// @FIXME - bro wtf
+			memcpy(&Head, v4.pCardHead, 0xA24u);
+			Card_SetHeader();
+			syFree(v3);
+			DCCard_HappyBeep(gFirstCard, 0x1Eu);
+			return 0;
+		}
+
+		if (v3)
+			syFree(v3);
+		DCCard_SadBeep(gFirstCard, 0x1Eu);
 	}
 
-	void* v3 = syMalloc(fileSize << 9);
-	if (buLoadFile(gFirstCard, "SPIDRMAN.DAT", v3, fileSize))
-	{
-		DebugPrintfX("Error Loading File");
-	}
-	else if (!DCCard_Wait(gFirstCard, 0x4B0u))
-	{
-		DebugPrintfX("backup file operation started ok, but then failed");
-	}
-
-	return 2;
+	return res;
 }
 
 // @Ok
