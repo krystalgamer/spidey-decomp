@@ -1,10 +1,18 @@
 #include "ps2card.h"
 #include "dcmemcard.h"
 
-// @SMALLTODO
-void Card_CheckStatus(i32,i32)
+i32 CardStatus;
+
+EXPORT u8 gFirstCard;
+
+// @Ok
+// @Matching
+i32 Card_CheckStatus(i32 cnct,i32 slot)
 {
-    printf("Card_CheckStatus(i32,i32)");
+	gFirstCard = DCCard_First();
+	CardStatus = gFirstCard < 8 ? 1 : -1;
+
+	return CardStatus;
 }
 
 // @SMALLTODO
