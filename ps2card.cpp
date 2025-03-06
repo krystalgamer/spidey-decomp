@@ -1,6 +1,7 @@
 #include "ps2card.h"
 #include "dcmemcard.h"
 #include "pcdcBkup.h"
+#include "pcdcMem.h"
 
 #include "validate.h"
 #include <cstring>
@@ -52,9 +53,26 @@ void Card_Init(i32)
 }
 
 // @SMALLTODO
-void Card_Load(void)
+i32 Card_Load(void)
 {
-    printf("Card_Load(void)");
+	i32 fileSize = buGetFileSize(gFirstCard, "SPIDRMAN.DAT");
+	if (fileSize < 0)
+	{
+		DebugPrintfX("Card_Load: Invalid Block Size or File does not exist");
+		return 1;
+	}
+
+	void* v3 = syMalloc(fileSize << 9);
+	if (buLoadFile(gFirstCard, "SPIDRMAN.DAT", v3, fileSize))
+	{
+		DebugPrintfX("Error Loading File");
+	}
+	else if (!DCCard_Wait(gFirstCard, 0x4B0u))
+	{
+		DebugPrintfX("backup file operation started ok, but then failed");
+	}
+
+	return 2;
 }
 
 // @Ok

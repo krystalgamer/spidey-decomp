@@ -91,6 +91,7 @@
 #include "pcdcMem.h"
 #include "dcmemcard.h"
 #include "ps2card.h"
+#include "pcdcBkup.h"
 
 extern int FAIL_VALIDATION;
 
@@ -485,6 +486,7 @@ i32 validate(void)
 	validate_SRecordRelated();
 	validate_SDCCardTime();
 	validate_SCardHead();
+	validate_SBackupFile();
 
 	puts("[*] Validation done!");
 

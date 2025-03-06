@@ -1,6 +1,8 @@
 #include "pcdcBkup.h"
 #include "non_win32.h"
 
+#include "validate.h"
+
 #include <cstring>
 
 EXPORT CHAR gMemorycardPath[688];
@@ -88,4 +90,33 @@ i32 buGetLastError(i32)
 i32 buExit(void)
 {
 	return 0;
+}
+
+// @SMALLTODO
+i32 buGetFileSize(i32, const char*)
+{
+	printf("i32 buGetFileSize(i32, const char*)");
+	return 0x06032025;
+}
+
+// @SMALLTODO
+i32 buLoadFile(i32, const char*, void*, i32)
+{
+	printf("i32 buLoadFile(i32, const char*, void*, i32)");
+	return 0x06032025;
+}
+
+// @SMALLTODO
+i32 buAnalyzeBackupFileImage(SBackupFile*, void*)
+{
+	printf("i32 buAnalyzeBackupFileImage(SBackupFile*, void*)");
+	return 0x06032025;
+}
+
+void validate_SBackupFile(void)
+{
+	VALIDATE_SIZE(SBackupFile, 0x60);
+
+	VALIDATE(SBackupFile, pCardHead, 0x58);
+	VALIDATE(SBackupFile, mBackupSize, 0x5C);
 }
