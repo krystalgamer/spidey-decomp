@@ -9,6 +9,13 @@ EXPORT CHAR gMemorycardPath[688];
 EXPORT char* gMusicTracks[1] = { "lol" };
 
 // @Ok
+// @Matching
+i32 buGetDiskFree(void)
+{
+	return 0x7FFFFFFF;
+}
+
+// @Ok
 char* MUSICTRACKS_GetTrackName(i32 a1)
 {
 	return gMusicTracks[a1];
