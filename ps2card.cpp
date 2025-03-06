@@ -2,6 +2,8 @@
 #include "dcmemcard.h"
 #include "pcdcBkup.h"
 
+#include "validate.h"
+
 i32 CardStatus;
 
 EXPORT u8 gFirstCard;
@@ -62,4 +64,19 @@ void Card_Stop(void)
 void Card_Write(void)
 {
     printf("Card_Write(void)");
+}
+
+void validate_SCardHead(void)
+{
+	VALIDATE_SIZE(SCardHead, 0x200);
+
+	VALIDATE(SCardHead, Magic, 0x0);
+
+	VALIDATE(SCardHead, Type, 0x2);
+	VALIDATE(SCardHead, BlockEntry, 0x3);
+
+	VALIDATE(SCardHead, Title, 0x4);
+	VALIDATE(SCardHead, reserve, 0x44);
+	VALIDATE(SCardHead, Clut, 0x60);
+	VALIDATE(SCardHead, Icon, 0x80);
 }

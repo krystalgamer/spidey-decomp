@@ -90,6 +90,7 @@
 #include "my_bink.h"
 #include "pcdcMem.h"
 #include "dcmemcard.h"
+#include "ps2card.h"
 
 extern int FAIL_VALIDATION;
 
@@ -483,6 +484,7 @@ i32 validate(void)
 	validate_SRecords();
 	validate_SRecordRelated();
 	validate_SDCCardTime();
+	validate_SCardHead();
 
 	puts("[*] Validation done!");
 
