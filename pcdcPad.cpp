@@ -6,23 +6,23 @@
 
 
 
-EXPORT SPdPadSmall gPdPeriRelated;
+#define NUM_PADS 1
+EXPORT SPdPadSmall gPdPeriRelated[NUM_PADS];
 
-#define NUM_BIG_PAD 1
-EXPORT SPdPadBig gBigPad[NUM_BIG_PAD];
+EXPORT SPdPadBig gBigPad[NUM_PADS];
 
 // @Ok
 // @Matching
 void pdInitPeripheral(void)
 {
-	memset(&gPdPeriRelated, 0, sizeof(gPdPeriRelated));
+	memset(gPdPeriRelated, 0, sizeof(SPdPadSmall) * NUM_PADS);
 
-	for (i32 i = 0; i < NUM_BIG_PAD; i++)
+	for (i32 i = 0; i < NUM_PADS; i++)
 	{
 		SPdPadBig *pBig = &gBigPad[i];
-		gPdPeriRelated.pBig = pBig;
 
-		gPdPeriRelated.pBig->field_0 = 1;
+		gPdPeriRelated[i].pBig = pBig;
+		gPdPeriRelated[i].pBig->field_0 = 1;
 	}
 
 	PCINPUT_Initialize();
@@ -32,6 +32,13 @@ void pdInitPeripheral(void)
 void pdExitPeripheral(void)
 {
 	PCINPUT_Shutdown();
+}
+
+// @Ok
+// @Matching
+SPdPadSmall* pdGetPeripheral(u32 a1)
+{
+	return &gPdPeriRelated[a1 / 6];
 }
 
 // @Ok
