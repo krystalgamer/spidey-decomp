@@ -61,6 +61,13 @@ i32 pdVibMxStop(i32)
 
 // @Ok
 // @Matching
+i32 pdVibMxIsReady(void)
+{
+	return 1;
+}
+
+// @Ok
+// @Matching
 i32 pdTmrAlarm(i32, u8*)
 {
 	return 0;
