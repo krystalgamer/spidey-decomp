@@ -864,6 +864,10 @@ SOURCE=.\music.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\my_assert.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\my_bink.h
 # End Source File
 # Begin Source File
@@ -1101,6 +1105,10 @@ SOURCE=.\vector.h
 # Begin Source File
 
 SOURCE=.\venom.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\vram.h
 # End Source File
 # Begin Source File
 
