@@ -138,11 +138,19 @@ i32 buLoadFile(
 	return 0;
 }
 
-// @SMALLTODO
-i32 buAnalyzeBackupFileImage(SBackupFile*, void*)
+// @Ok
+// @AlmostMatching: ecx and edx are switched
+i32 buAnalyzeBackupFileImage(
+		SBackupFile* a1,
+		void* a2)
 {
-	printf("i32 buAnalyzeBackupFileImage(SBackupFile*, void*)");
-	return 0x06032025;
+
+	i32* pA2 = static_cast<i32*>(a2);
+	i32 v2 = pA2[0];
+
+	a1->mBackupSize = v2;
+	a1->pCardHead = reinterpret_cast<SCardHead*>(&pA2[1]);
+	return 0;
 }
 
 // @SMALLTODO
