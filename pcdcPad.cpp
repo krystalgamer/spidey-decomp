@@ -29,6 +29,7 @@ void pdInitPeripheral(void)
 }
 
 // @Ok
+// @Matching
 void pdExitPeripheral(void)
 {
 	PCINPUT_Shutdown();
@@ -42,6 +43,24 @@ SPdPadSmall* pdGetPeripheral(u32 a1)
 }
 
 // @Ok
+// @Matching
+i32 pdVibMxStart(void)
+{
+	if (PCINPUT_SetupForceFeedbackSineEffect(2000, 5.0f))
+		PCINPUT_StartForceFeedbackEffect();
+	return 0;
+}
+
+// @Ok
+// @Matching
+i32 pdVibMxStop(i32)
+{
+	PCINPUT_StopForceFeedbackEffect();
+	return 0;
+}
+
+// @Ok
+// @Matching
 i32 pdTmrAlarm(i32, u8*)
 {
 	return 0;
