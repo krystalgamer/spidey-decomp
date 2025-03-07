@@ -92,11 +92,28 @@ i32 buExit(void)
 	return 0;
 }
 
-// @SMALLTODO
-i32 buGetFileSize(i32, const char*)
+// @Ok
+// @Matching
+i32 buGetFileSize(
+		i32 a1,
+		const char* a2)
 {
-	printf("i32 buGetFileSize(i32, const char*)");
-	return 0x06032025;
+	char v6[260];
+	strcpy(v6, gMemorycardPath);
+	strcat(v6, a2);
+
+	FILE* v2 = fopen(v6, "rb");
+	if (v2)
+	{
+		fseek(v2, 0, 2);
+
+		i32 v4 = ftell(v2);
+		fclose(v2);
+		return buCalcBackupFileSize(0, 0, v4);
+	}
+
+	return -1;
+
 }
 
 // @SMALLTODO
