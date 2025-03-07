@@ -4,6 +4,7 @@
 #define MODEL_PREVIEW
 
 #include "main.h"
+#include "my_assert.h"
 #include "ob.h"
 #include "vector.h"
 #include "friction.h"
@@ -527,4 +528,9 @@ int main()
 #else
 	return validate();
 #endif
+}
+
+void DoAssert(u8, const char*)
+{
+	printf("eheheh");
 }
