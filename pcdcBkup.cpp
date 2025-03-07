@@ -166,11 +166,27 @@ i32 buMakeBackupFileImage(
 	return buCalcBackupFileSize(0, 0, a2->mBackupSize);
 }
 
-// @SMALLTODO
-i32 buSaveFile(i32, const char*, void *, i32, SDCCardTime*)
+// @Ok
+// @Matching
+i32 buSaveFile(
+		i32,
+		const char* a2,
+		void *a3,
+		i32 a4,
+		SDCCardTime* a5)
 {
-	printf("i32 buSaveFile(i32, i32, void *, i32, i32)");
-	return 0x06032025;
+	char v8[260];
+
+	strcpy(v8, gMemorycardPath);
+	strcat(v8, a2);
+
+	FILE *v5 = fopen(v8, "wb");
+	if (!v5)
+		return -248;
+
+	fwrite(a3, 0x200u, a4, v5);
+	fclose(v5);
+	return 0;
 }
 
 void validate_SBackupFile(void)
