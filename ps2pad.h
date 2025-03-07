@@ -74,5 +74,6 @@ void validate_SButton(void);
 
 static const i32 NUM_CONTROLLERS = 1;
 EXPORT extern SControl gSControl[NUM_CONTROLLERS];
+EXPORT extern i32 Pad_IdleTime;
 
 #endif

@@ -93,6 +93,7 @@
 #include "ps2card.h"
 #include "pcdcBkup.h"
 #include "pcdcPad.h"
+#include "vram.h"
 
 extern int FAIL_VALIDATION;
 
@@ -492,6 +493,7 @@ i32 validate(void)
 	validate_SDCCardFullTime();
 	validate_SPdPadBig();
 	validate_SPdPadSmall();
+	validate_tagSVRAMRect();
 
 	puts("[*] Validation done!");
 
