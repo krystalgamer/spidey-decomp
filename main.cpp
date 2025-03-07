@@ -92,6 +92,7 @@
 #include "dcmemcard.h"
 #include "ps2card.h"
 #include "pcdcBkup.h"
+#include "pcdcPad.h"
 
 extern int FAIL_VALIDATION;
 
@@ -489,6 +490,8 @@ i32 validate(void)
 	validate_SBackupFile();
 	validate_SSaveFile();
 	validate_SDCCardFullTime();
+	validate_SPdPadBig();
+	validate_SPdPadSmall();
 
 	puts("[*] Validation done!");
 
