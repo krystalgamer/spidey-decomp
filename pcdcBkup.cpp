@@ -139,14 +139,15 @@ i32 buLoadFile(
 }
 
 // @Ok
-// @AlmostMatching: ecx and edx are switched
+// @Matching
 i32 buAnalyzeBackupFileImage(
 		SBackupFile* a1,
 		void* a2)
 {
 
-	i32* pA2 = static_cast<i32*>(a2);
-	i32 v2 = pA2[0];
+	i32 *pA2 = reinterpret_cast<i32*>(a2);
+	i32 v2;
+	memcpy(&v2, pA2, 4);
 
 	a1->mBackupSize = v2;
 	a1->pCardHead = reinterpret_cast<SCardHead*>(&pA2[1]);
