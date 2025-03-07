@@ -153,11 +153,16 @@ i32 buAnalyzeBackupFileImage(
 	return 0;
 }
 
-// @SMALLTODO
-i32 buMakeBackupFileImage(void*, SBackupFile*)
+// @Ok
+// @Matching
+i32 buMakeBackupFileImage(
+		void* a1,
+		SBackupFile* a2)
 {
-	printf("i32 buMakeBackupFileImage(void*, SBackupFile*)");
-	return 0x06032025;
+	memcpy(a1, &a2->mBackupSize, 4);
+	memcpy(&static_cast<i32*>(a1)[1], a2->pCardHead->Magic, a2->mBackupSize);
+
+	return buCalcBackupFileSize(0, 0, a2->mBackupSize);
 }
 
 // @SMALLTODO
