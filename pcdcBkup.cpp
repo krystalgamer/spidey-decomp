@@ -12,13 +12,13 @@ EXPORT char* gMusicTracks[1] = { "lol" };
 
 // @Ok
 // @Matching
-i32 buCalcBackupFileSize(
+INLINE i32 buCalcBackupFileSize(
 		u32,
 		u32,
 		u32 a3)
 {
 	i32 result = a3 >> 9;
-	if (a3 & 0x1FF)
+	if ((a3 & 0x1FF) > 0)
 		++result;
 	return result;
 }
