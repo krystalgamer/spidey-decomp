@@ -116,11 +116,26 @@ i32 buGetFileSize(
 
 }
 
-// @SMALLTODO
-i32 buLoadFile(i32, const char*, void*, i32)
+// @Ok
+// @Matching
+i32 buLoadFile(
+		i32 a1,
+		const char* a2,
+		void* a3,
+		i32 a4)
 {
-	printf("i32 buLoadFile(i32, const char*, void*, i32)");
-	return 0x06032025;
+	char v7[260];
+
+	strcpy(v7, gMemorycardPath);
+	strcat(v7, a2);
+
+	FILE *v4 = fopen(v7, "rb");
+	if (!v4)
+		return -249;
+
+	fread(a3, 0x200u, a4, v4);
+	fclose(v4);
+	return 0;
 }
 
 // @SMALLTODO
