@@ -13,7 +13,6 @@ extern CBody *PowerUpList;
 extern CBody *SuspendedList;
 extern CBaddy *BaddyList;
 
-extern u32 gLineToItemRelated;
 extern SLineInfo gLineInfo;
 extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
@@ -680,10 +679,10 @@ CBody* Utils_CheckObjectCollision(
 
 		M3dColij_InitLineInfo(&gLineInfo);
 
-		gLineToItemRelated = 1;
+		LineOfSightCheck = 1;
 		M3dColij_LineToItem(EnvironmentalObjectList, &gLineInfo);
 		result = reinterpret_cast<CBody*>(gGetGroundRelated);
-		gLineToItemRelated = 0;
+		LineOfSightCheck = 0;
 	}
 
 	return result;

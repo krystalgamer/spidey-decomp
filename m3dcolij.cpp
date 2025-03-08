@@ -3,7 +3,14 @@
 #include "validate.h"
 #include "ob.h"
 
-EXPORT u32 gLineToItemRelated;
+i32 LineOfSightCheck;
+
+u32 M3dColij_OneMask;
+u32 M3dColij_ZeroMask;
+
+i32 BaddyCollisionCheck;
+i32 CameraCollisionCheck;
+i32 TriggerCollisionCheck;
 
 // @SMALLTODO
 void M3dColij_GetLineInfo(SLineInfo *)

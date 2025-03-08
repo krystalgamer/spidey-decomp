@@ -52,4 +52,12 @@ EXPORT void M3dColij_LineInfoFixup(SLineInfo *);
 EXPORT void M3dColij_LineToItemZoned(CItem **,SLineInfo *);
 EXPORT void NextInquiry(void);
 
+EXPORT extern i32 LineOfSightCheck;
+EXPORT extern u32 M3dColij_OneMask;
+EXPORT extern u32 M3dColij_ZeroMask;
+
+EXPORT extern i32 BaddyCollisionCheck;
+EXPORT extern i32 CameraCollisionCheck;
+EXPORT extern i32 TriggerCollisionCheck;
+
 #endif
