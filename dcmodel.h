@@ -22,7 +22,7 @@ class DCMaterial
 		void *field_10;
 		u8 padAfter10[0x34-0x10-4];
 
-		i32 field_34;
+		void *field_34;
 		i32 field_38;
 		u8 padAfter38[0x3F-0x38-4];
 

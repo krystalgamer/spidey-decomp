@@ -27,10 +27,15 @@ DCKeyFrame::~DCKeyFrame(void)
     printf("DCKeyFrame::~DCKeyFrame(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 DCMaterial::~DCMaterial(void)
 {
-    printf("DCMaterial::~DCMaterial(void)");
+	delete this->field_10;
+	delete this->field_34;
+
+	if (!this->field_3F && CheckValidTexture(this->field_38))
+		PCTex_ReleaseTexture(this->field_38, true);
 }
 
 // @MEDIUMTODO
