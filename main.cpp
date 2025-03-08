@@ -95,6 +95,7 @@
 #include "pcdcBkup.h"
 #include "pcdcPad.h"
 #include "vram.h"
+#include "m3dzone.h"
 
 extern int FAIL_VALIDATION;
 
@@ -495,6 +496,7 @@ i32 validate(void)
 	validate_SPdPadBig();
 	validate_SPdPadSmall();
 	validate_tagSVRAMRect();
+	validate_SZone();
 
 	puts("[*] Validation done!");
 
