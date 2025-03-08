@@ -498,6 +498,7 @@ i32 validate(void)
 	validate_tagSVRAMRect();
 	validate_SZone();
 	validate_DCSkaterModel();
+	validate_DCMaterial();
 
 	puts("[*] Validation done!");
 

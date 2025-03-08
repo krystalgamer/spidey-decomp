@@ -16,12 +16,25 @@ class DCKeyFrame
 class DCMaterial
 {
 	public:
+
+		u8 padTop[0x10];
+
+		void *field_10;
+		u8 padAfter10[0x34-0x10-4];
+
+		i32 field_34;
+		i32 field_38;
+		u8 padAfter38[0x3F-0x38-4];
+
+		u8 field_3F;
+
 		EXPORT DCMaterial::~DCMaterial(void);
 };
 
 class DCObject
 {
-	EXPORT ~DCObject(void);
+	public:
+		EXPORT ~DCObject(void);
 };
 
 class DCObjectList
@@ -46,7 +59,7 @@ class DCSkaterModel
 		i32 field_1C;
 		i32 field_20;
 		i32 field_24;
-		i32 field_28;
+		DCObject *field_28;
 
 		EXPORT DCSkaterModel(void);
 
@@ -68,5 +81,6 @@ EXPORT void DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32);
 EXPORT void PreComputeConvertedColors(float);
 
 void validate_DCSkaterModel(void);
+void validate_DCMaterial(void);
 
 #endif

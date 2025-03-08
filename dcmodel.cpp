@@ -1,4 +1,5 @@
 #include "dcmodel.h"
+#include "PCTex.h"
 
 #include "validate.h"
 
@@ -50,10 +51,25 @@ DCObjectList::~DCObjectList(void)
     printf("DCObjectList::~DCObjectList(void)");
 }
 
-// @SMALLTODO
+// @NotOk
+// @Note: validate when the rest is done
 void DCSkaterModel::ClearSkaterModel(void)
 {
-    printf("DCSkaterModel::ClearSkaterModel(void)");
+	if ( this->field_1C )
+	{
+		this->field_0 = 0;
+		this->field_4 = 0;
+		this->field_8 = 0;
+
+		this->field_18 = 0;
+		this->field_1C = 0;
+
+		delete this->field_28;
+		// missing shit here
+		this->field_28 = 0;
+		this->field_24 = 0;
+		this->field_20 = 0;
+	}
 }
 
 // @SMALLTODO
@@ -102,4 +118,16 @@ void validate_DCSkaterModel(void)
 	VALIDATE(DCSkaterModel, field_20, 0x20);
 	VALIDATE(DCSkaterModel, field_24, 0x24);
 	VALIDATE(DCSkaterModel, field_28, 0x28);
+}
+
+void validate_DCMaterial(void)
+{
+	VALIDATE_SIZE(DCMaterial, 0x40);
+
+	VALIDATE(DCMaterial, field_10, 0x10);
+
+	VALIDATE(DCMaterial, field_34, 0x34);
+	VALIDATE(DCMaterial, field_38, 0x38);
+
+	VALIDATE(DCMaterial, field_3F, 0x3F);
 }
