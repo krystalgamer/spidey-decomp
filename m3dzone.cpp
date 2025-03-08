@@ -2,21 +2,36 @@
 
 #include "validate.h"
 
+#define NUM_ZONES 1
+EXPORT SZone Zones[NUM_ZONES];
+
 // @SMALLTODO
 void M3dZone_LineToItem(SLineInfo *, i32)
 {
 	printf("void M3dZone_LineToItem(SLineInfo *, int)");
 }
 
-// @SMALLTODO
-void M3dZone_FreePSX(i32)
+// @Ok
+// @Matching
+INLINE void M3dZone_FreePSX(i32 EnvIndex)
 {
-    printf("M3dZone_FreePSX(i32)");
+	if (EnvIndex <= (NUM_ZONES-1))
+	{
+		Zones[EnvIndex].Flags = 0;
+
+		for (i32 i = 0; i < 20; i++)
+		{
+			for (i32 j = 0; j < 20; j++)
+			{
+				Zones[EnvIndex].Ptr[i][j] = 0;
+			}
+		}
+	}
 }
 
 // @Ok
 // @Matching
-INLINE void M3dZone_Init(void)
+void M3dZone_Init(void)
 {
 	M3dZone_FreePSX(0);
 }
