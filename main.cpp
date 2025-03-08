@@ -497,6 +497,7 @@ i32 validate(void)
 	validate_SPdPadSmall();
 	validate_tagSVRAMRect();
 	validate_SZone();
+	validate_DCSkaterModel();
 
 	puts("[*] Validation done!");
 

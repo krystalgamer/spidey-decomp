@@ -1,9 +1,18 @@
 #include "dcmodel.h"
 
+#include "validate.h"
+
 #include <cmath>
 
 EXPORT float gPreComputedColorRelated = -1.0f;
 EXPORT u8 gConvertedColors[256];
+
+// @Ok
+// @Matching
+DCSkaterModel::DCSkaterModel(void)
+{
+	this->field_28 = 0;
+}
 
 // @SMALLTODO
 void DCClearSkater(void)
@@ -75,4 +84,22 @@ void PreComputeConvertedColors(float a1)
 	}
 
 	gPreComputedColorRelated = a1;
+}
+
+void validate_DCSkaterModel(void)
+{
+	VALIDATE_SIZE(DCSkaterModel, 0x2C);
+
+	VALIDATE(DCSkaterModel, field_0, 0x0);
+
+	VALIDATE(DCSkaterModel, field_4, 0x4);
+
+	VALIDATE(DCSkaterModel, field_8, 0x8);
+
+	VALIDATE(DCSkaterModel, field_18, 0x18);
+	VALIDATE(DCSkaterModel, field_1C, 0x1C);
+
+	VALIDATE(DCSkaterModel, field_20, 0x20);
+	VALIDATE(DCSkaterModel, field_24, 0x24);
+	VALIDATE(DCSkaterModel, field_28, 0x28);
 }
