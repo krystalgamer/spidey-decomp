@@ -8,6 +8,9 @@
 EXPORT float gPreComputedColorRelated = -1.0f;
 EXPORT u8 gConvertedColors[256];
 
+EXPORT DCSkaterModel gSkaterModels[2];
+EXPORT DCSkaterModel gGlobalSkaterModel;
+
 // @Ok
 // @Matching
 DCSkaterModel::DCSkaterModel(void)
@@ -15,10 +18,15 @@ DCSkaterModel::DCSkaterModel(void)
 	this->field_28 = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DCClearSkater(void)
 {
-    printf("DCClearSkater(void)");
+	if (!gGlobalSkaterModel.field_1C)
+	{
+		gSkaterModels[0].ClearSkaterModel();
+		gSkaterModels[1].ClearSkaterModel();
+	}
 }
 
 // @SMALLTODO
@@ -56,9 +64,9 @@ DCObjectList::~DCObjectList(void)
     printf("DCObjectList::~DCObjectList(void)");
 }
 
-// @NotOk
-// @Note: validate when the rest is done
-void DCSkaterModel::ClearSkaterModel(void)
+// @Ok
+// @Matching
+INLINE void DCSkaterModel::ClearSkaterModel(void)
 {
 	if ( this->field_1C )
 	{
@@ -70,8 +78,10 @@ void DCSkaterModel::ClearSkaterModel(void)
 		this->field_1C = 0;
 
 		delete this->field_28;
-		// missing shit here
 		this->field_28 = 0;
+
+		delete[] this->field_24;
+
 		this->field_24 = 0;
 		this->field_20 = 0;
 	}

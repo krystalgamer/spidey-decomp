@@ -58,7 +58,7 @@ class DCSkaterModel
 		i32 field_18;
 		i32 field_1C;
 		i32 field_20;
-		i32 field_24;
+		DCMaterial *field_24;
 		DCObject *field_28;
 
 		EXPORT DCSkaterModel(void);
