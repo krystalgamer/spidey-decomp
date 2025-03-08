@@ -87,10 +87,13 @@ INLINE void DCSkaterModel::ClearSkaterModel(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Note: missing some SEH shit
 DCSkaterModel::~DCSkaterModel(void)
 {
-    printf("DCSkaterModel::~DCSkaterModel(void)");
+	delete[] this->field_24;
+
+	delete this->field_28;
 }
 
 // @SMALLTODO
