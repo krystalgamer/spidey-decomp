@@ -1,4 +1,6 @@
 #include "m3dzone.h"
+#include "my_assert.h"
+#include "spool.h"
 
 #include "validate.h"
 
@@ -36,10 +38,50 @@ void M3dZone_Init(void)
 	M3dZone_FreePSX(0);
 }
 
-// @SMALLTODO
-void M3dZone_SetZone(i32,u32 *)
+// @NotOk
+// @Validate: slightly different register allocation and code gen
+void M3dZone_SetZone(
+		i32 EnvIndex,
+		u32 *pPack)
 {
-    printf("M3dZone_SetZone(i32,u32 *)");
+	DoAssert(EnvIndex == 0, "EnvIndex not zero");
+
+	Zones[EnvIndex].xMin = *pPack;
+	Zones[EnvIndex].zMin = pPack[1];
+	Zones[EnvIndex].xMax = pPack[2];
+	Zones[EnvIndex].zMax = pPack[3];
+
+	Zones[EnvIndex].Width = reinterpret_cast<i16*>(pPack)[8];
+	Zones[EnvIndex].Height = reinterpret_cast<i16*>(pPack)[9];
+
+	Zones[EnvIndex].Flags = 1;
+	Zones[EnvIndex].ZoneWidth = (Zones[EnvIndex].xMax - Zones[EnvIndex].xMin) / Zones[EnvIndex].Width;
+
+	DoAssert(Zones[EnvIndex].Width <= 20, "ZONE WIDTH TOO LARGE");
+	DoAssert(Zones[EnvIndex].Height <= 20, "ZONE HEIGHT\tTOO LARGE");
+
+	u32* v14 = &pPack[5];
+
+	for (i32 i = 0; i < Zones[EnvIndex].Height; i++ )
+	{
+		for (i32 j = 0; j < Zones[EnvIndex].Width; j++ )
+		{
+			i32 v17 = v14[2];
+			u32 *v18 = &v14[3];
+
+			Zones[EnvIndex].Ptr[j][i] = reinterpret_cast<u32>(v18);
+
+			while (v17-- > 0)
+			{
+				// @FIXME - wtf is that 64
+				u32 *tmp = &reinterpret_cast<u32 *>(PSXRegion[EnvRegions[EnvIndex]].pSuper)[0x10 * *v18];
+				*v18 = *tmp;
+				++v18;
+
+			}
+			v14 = v18 + 1;
+		}
+	}
 }
 
 void validate_SZone(void)

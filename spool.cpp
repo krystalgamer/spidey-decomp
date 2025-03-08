@@ -37,7 +37,7 @@ EXPORT i32 gSpoolInitTwo;
 EXPORT i32 gSpoolColijEnvIndex;
 EXPORT i32 gNumAccesses;
 
-EXPORT i32 EnvRegions[2] = { -1, -1 };
+i32 EnvRegions[2] = { -1, -1 };
 
 const i32 MAXTEXTUREENTRIES = 512;
 EXPORT Texture* gSpoolTexturesRelated;

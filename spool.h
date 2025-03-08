@@ -147,5 +147,6 @@ void validate_SModel(void);
 
 static const int MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
+EXPORT extern i32 EnvRegions[2];
 
 #endif
