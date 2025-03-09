@@ -111,10 +111,11 @@ DCSkaterModel::~DCSkaterModel(void)
 	delete this->field_28;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 DCStrip::~DCStrip(void)
 {
-    printf("DCStrip::~DCStrip(void)");
+	delete this->field_8;
 }
 
 // @Ok
