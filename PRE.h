@@ -9,11 +9,17 @@
 class PREManager : CClass
 {
 	public:
-		EXPORT void* getFile(const char *,i32 *);
-		EXPORT i32 parsePRE(char *,char *,i32 *);
+
+		char *mPre[16];
+		char mPreName[16][16];
+
+		EXPORT char* getFile(const char *,i32 *);
+		EXPORT char* parsePRE(char *,char *,i32 *);
 };
 
 EXPORT extern PREManager* gPreManager;
 EXPORT extern i32 gPreFileSize;
 EXPORT extern void* gPreFileBuf;
+
+void validate_PREManager(void);
 #endif

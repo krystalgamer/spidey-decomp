@@ -49,7 +49,9 @@ DCMaterial::~DCMaterial(void)
 }
 
 // @MEDIUMTODO
-void DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)
+void DCModel_CreateFromSModel(
+		DCModelData *pDcModel,
+		SModel *,i32,i32 *,bool,i32)
 {
     printf("DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)");
 }
@@ -113,7 +115,7 @@ DCSkaterModel::~DCSkaterModel(void)
 {
 	delete[] this->field_24;
 
-	delete this->field_28;
+	delete reinterpret_cast<DCObjectList*>(this->field_28);
 }
 
 // @Ok

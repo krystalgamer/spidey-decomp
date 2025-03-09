@@ -96,6 +96,7 @@
 #include "pcdcPad.h"
 #include "vram.h"
 #include "m3dzone.h"
+#include "PRE.h"
 
 extern int FAIL_VALIDATION;
 
@@ -503,6 +504,7 @@ i32 validate(void)
 	validate_DCStrip();
 	validate_DCObjectList();
 	validate_DCKeyFrame();
+	validate_PREManager();
 
 	puts("[*] Validation done!");
 
