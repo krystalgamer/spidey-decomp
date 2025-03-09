@@ -44,6 +44,16 @@ class DCMaterial
 		EXPORT DCMaterial::~DCMaterial(void);
 };
 
+class DCObject;
+
+class DCObjectList
+{
+	public:
+		DCObject *pObject;
+
+		EXPORT ~DCObjectList(void);
+};
+
 class DCObject
 {
 	public:
@@ -58,7 +68,8 @@ class DCObject
 
 		void *field_E0;
 
-		DCObject *field_E4;
+		DCObjectList field_E4;
+
 		DCObject *field_E8;
 		u8 padAfterE8[0x128-0xE8-4];
 
@@ -69,13 +80,6 @@ class DCObject
 		DCStrip *field_134;
 
 		EXPORT ~DCObject(void);
-};
-
-class DCObjectList : DCObject
-{
-	public:
-
-		EXPORT ~DCObjectList(void);
 };
 
 class DCSkaterModel
@@ -94,7 +98,7 @@ class DCSkaterModel
 		i32 field_1C;
 		i32 field_20;
 		DCMaterial *field_24;
-		DCObject *field_28;
+		DCObjectList field_28;
 
 		EXPORT DCSkaterModel(void);
 

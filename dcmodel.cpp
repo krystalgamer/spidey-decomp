@@ -16,7 +16,7 @@ EXPORT DCSkaterModel gGlobalSkaterModel;
 // @Matching
 DCSkaterModel::DCSkaterModel(void)
 {
-	this->field_28 = 0;
+	this->field_28.pObject = 0;
 }
 
 // @Ok
@@ -56,14 +56,21 @@ void DCModel_CreateFromSModel(
     printf("DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)");
 }
 
-// @NotOk
-// @Note: SEH shit
+// @Ok
+// @Matching
+INLINE DCObjectList::~DCObjectList(void)
+{
+	delete this->pObject;
+}
+
+// @Ok
+// @Matching
 DCObject::~DCObject(void)
 {
 	delete this->field_4;
 
-	delete this->field_E4;
-	this->field_E4 = 0;
+	delete this->field_E4.pObject;
+	this->field_E4.pObject = 0;
 
 	delete this->field_E8;
 	this->field_E8 = 0;
@@ -75,15 +82,6 @@ DCObject::~DCObject(void)
 	delete this->field_12C;
 
 	this->field_E0 = 0;
-
-	DCObjectList* pObjList = reinterpret_cast<DCObjectList*>(this->field_E4);
-	delete pObjList;
-}
-
-// @Ok
-// @Matching
-INLINE DCObjectList::~DCObjectList(void)
-{
 }
 
 // @Ok
@@ -99,8 +97,8 @@ INLINE void DCSkaterModel::ClearSkaterModel(void)
 		this->field_18 = 0;
 		this->field_1C = 0;
 
-		delete this->field_28;
-		this->field_28 = 0;
+		delete this->field_28.pObject;
+		this->field_28.pObject = 0;
 
 		delete[] this->field_24;
 
@@ -114,8 +112,6 @@ INLINE void DCSkaterModel::ClearSkaterModel(void)
 DCSkaterModel::~DCSkaterModel(void)
 {
 	delete[] this->field_24;
-
-	delete reinterpret_cast<DCObjectList*>(this->field_28);
 }
 
 // @Ok
