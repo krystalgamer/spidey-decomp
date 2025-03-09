@@ -7,6 +7,16 @@
 
 EXPORT void DCClearSkater(void);
 
+
+class DCStrip
+{
+	public:
+		u8 padTop[8];
+		void* field_8;
+
+		EXPORT ~DCStrip(void);
+};
+
 class DCKeyFrame
 {
 	public:
@@ -40,10 +50,10 @@ class DCObject
 		void *field_4;
 		u8 padAfter4[0xD0-0x4-4];
 
-		void *field_D0;
+		u32 *field_D0;
 		u8 padAfterD0[0xE0-0xD0-4];
 
-		u32 *field_E0;
+		void *field_E0;
 
 		DCObject *field_E4;
 		DCObject *field_E8;
@@ -53,14 +63,15 @@ class DCObject
 		void *field_12C;
 		u8 padAfter12C[4];
 
-		void *field_134;
+		DCStrip *field_134;
 
 		EXPORT ~DCObject(void);
 };
 
-class DCObjectList
+class DCObjectList : DCObject
 {
 	public:
+
 		EXPORT ~DCObjectList(void);
 };
 
@@ -90,15 +101,6 @@ class DCSkaterModel
 };
 
 
-class DCStrip
-{
-	public:
-		u8 padTop[8];
-		void* field_8;
-
-		EXPORT ~DCStrip(void);
-};
-
 struct DCModelData;
 struct SModel;
 
@@ -109,5 +111,6 @@ void validate_DCSkaterModel(void);
 void validate_DCMaterial(void);
 void validate_DCObject(void);
 void validate_DCStrip(void);
+void validate_DCObjectList(void);
 
 #endif

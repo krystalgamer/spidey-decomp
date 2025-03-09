@@ -3,6 +3,7 @@
 
 #include "validate.h"
 
+#include "non_win32.h"
 #include <cmath>
 
 EXPORT float gPreComputedColorRelated = -1.0f;
@@ -52,7 +53,8 @@ void DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)
     printf("DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)");
 }
 
-// @SMALLTODO
+// @NotOk
+// @Note: SEH shit
 DCObject::~DCObject(void)
 {
 	delete this->field_4;
@@ -63,20 +65,27 @@ DCObject::~DCObject(void)
 	delete this->field_E8;
 	this->field_E8 = 0;
 
-	if (this->field_E0)
+	if (this->field_D0)
 	{
-		DCKeyFrame *pKey = reinterpret_cast<DCKeyFrame*>(this->field_E0[11]);
+		DCKeyFrame *pKey = reinterpret_cast<DCKeyFrame*>(this->field_D0[11]);
 		delete pKey;
 
 		delete this->field_E0;
 	}
 
+	delete this->field_128;
+	delete[] this->field_134;
+	delete this->field_12C;
+
+	this->field_E0 = 0;
+
+	DCObjectList* pObjList = reinterpret_cast<DCObjectList*>(this->field_E4);
+	delete pObjList;
 }
 
 // @SMALLTODO
-DCObjectList::~DCObjectList(void)
+INLINE DCObjectList::~DCObjectList(void)
 {
-    printf("DCObjectList::~DCObjectList(void)");
 }
 
 // @Ok
@@ -189,4 +198,9 @@ void validate_DCStrip(void)
 	VALIDATE_SIZE(DCStrip, 0xC);
 
 	VALIDATE(DCStrip, field_8, 0x8);
+}
+
+void validate_DCObjectList(void)
+{
+	VALIDATE_SIZE(DCObjectList, sizeof(DCObject));
 }
