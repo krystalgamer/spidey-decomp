@@ -48,8 +48,26 @@ INLINE char* PREManager::parsePRE(
 		char *filename,
 		i32 *size)
 {
-    printf("PREManager::getFile(char *,i32 *)");
-	return (void*)0x18092024;
+	char *v6 = pre + 4;
+	i32 v7 = 0;
+
+	i32 v13 = *reinterpret_cast<i32*>(pre);
+	while (v7 < v13)
+	{
+		i32 *v9 = reinterpret_cast<i32*>(&v6[(strlen(v6) + 4) & 0xFFFFFFFC]);
+		i32 v12 = v9[0];
+		char *v10 = reinterpret_cast<char*>(&v9[1]);
+		if (!strcmp(v6, filename))
+		{
+			*size = v12;
+			return v10;
+		}
+
+		v7++;
+		v6 = &v10[((v12 + 3) & 0xFFFFFFFC)];
+	}
+
+	return 0;
 }
 
 void validate_PREManager(void)
