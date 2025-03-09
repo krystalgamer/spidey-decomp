@@ -502,6 +502,7 @@ i32 validate(void)
 	validate_DCObject();
 	validate_DCStrip();
 	validate_DCObjectList();
+	validate_DCKeyFrame();
 
 	puts("[*] Validation done!");
 

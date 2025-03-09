@@ -30,10 +30,11 @@ void DCClearSkater(void)
 	}
 }
 
-// @SMALLTODO
-DCKeyFrame::~DCKeyFrame(void)
+// @Ok
+// @Matching
+INLINE DCKeyFrame::~DCKeyFrame(void)
 {
-    printf("DCKeyFrame::~DCKeyFrame(void)");
+	delete this->pNext;
 }
 
 // @Ok
@@ -65,13 +66,7 @@ DCObject::~DCObject(void)
 	delete this->field_E8;
 	this->field_E8 = 0;
 
-	if (this->field_D0)
-	{
-		DCKeyFrame *pKey = reinterpret_cast<DCKeyFrame*>(this->field_D0[11]);
-		delete pKey;
-
-		delete this->field_E0;
-	}
+	delete this->field_D0;
 
 	delete this->field_128;
 	delete[] this->field_134;
@@ -83,7 +78,8 @@ DCObject::~DCObject(void)
 	delete pObjList;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 INLINE DCObjectList::~DCObjectList(void)
 {
 }
@@ -203,4 +199,11 @@ void validate_DCStrip(void)
 void validate_DCObjectList(void)
 {
 	VALIDATE_SIZE(DCObjectList, sizeof(DCObject));
+}
+
+void validate_DCKeyFrame(void)
+{
+	VALIDATE_SIZE(DCKeyFrame, 0x30);
+
+	VALIDATE(DCKeyFrame, pNext, 0x2C);
 }

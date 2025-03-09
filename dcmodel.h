@@ -20,6 +20,9 @@ class DCStrip
 class DCKeyFrame
 {
 	public:
+		u8 padTop[44];
+
+		DCKeyFrame *pNext;
 		EXPORT ~DCKeyFrame(void);
 };
 
@@ -50,7 +53,7 @@ class DCObject
 		void *field_4;
 		u8 padAfter4[0xD0-0x4-4];
 
-		u32 *field_D0;
+		DCKeyFrame *field_D0;
 		u8 padAfterD0[0xE0-0xD0-4];
 
 		void *field_E0;
@@ -112,5 +115,6 @@ void validate_DCMaterial(void);
 void validate_DCObject(void);
 void validate_DCStrip(void);
 void validate_DCObjectList(void);
+void validate_DCKeyFrame(void);
 
 #endif
