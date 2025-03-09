@@ -43,9 +43,10 @@ class DCObject
 		void *field_D0;
 		u8 padAfterD0[0xE0-0xD0-4];
 
-		void *field_E0;
-		void *field_E4;
-		void *field_E8;
+		u32 *field_E0;
+
+		DCObject *field_E4;
+		DCObject *field_E8;
 		u8 padAfterE8[0x128-0xE8-4];
 
 		void *field_128;
@@ -91,7 +92,11 @@ class DCSkaterModel
 
 class DCStrip
 {
-	EXPORT ~DCStrip(void);
+	public:
+		u8 padTop[8];
+		void* field_8;
+
+		EXPORT ~DCStrip(void);
 };
 
 struct DCModelData;
@@ -103,5 +108,6 @@ EXPORT void PreComputeConvertedColors(float);
 void validate_DCSkaterModel(void);
 void validate_DCMaterial(void);
 void validate_DCObject(void);
+void validate_DCStrip(void);
 
 #endif

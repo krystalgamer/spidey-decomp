@@ -55,7 +55,22 @@ void DCModel_CreateFromSModel(DCModelData *,SModel *,i32,i32 *,bool,i32)
 // @SMALLTODO
 DCObject::~DCObject(void)
 {
-    printf("DCObject::~DCObject(void)");
+	delete this->field_4;
+
+	delete this->field_E4;
+	this->field_E4 = 0;
+
+	delete this->field_E8;
+	this->field_E8 = 0;
+
+	if (this->field_E0)
+	{
+		DCKeyFrame *pKey = reinterpret_cast<DCKeyFrame*>(this->field_E0[11]);
+		delete pKey;
+
+		delete this->field_E0;
+	}
+
 }
 
 // @SMALLTODO
@@ -166,4 +181,11 @@ void validate_DCObject(void)
 	VALIDATE(DCObject, field_12C, 0x12C);
 
 	VALIDATE(DCObject, field_134, 0x134);
+}
+
+void validate_DCStrip(void)
+{
+	VALIDATE_SIZE(DCStrip, 0xC);
+
+	VALIDATE(DCStrip, field_8, 0x8);
 }

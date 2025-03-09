@@ -500,6 +500,7 @@ i32 validate(void)
 	validate_DCSkaterModel();
 	validate_DCMaterial();
 	validate_DCObject();
+	validate_DCStrip();
 
 	puts("[*] Validation done!");
 
