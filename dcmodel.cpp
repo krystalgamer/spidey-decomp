@@ -87,7 +87,7 @@ INLINE void DCSkaterModel::ClearSkaterModel(void)
 	}
 }
 
-// @Ok
+// @NotOk
 // @Note: missing some SEH shit
 DCSkaterModel::~DCSkaterModel(void)
 {
@@ -148,4 +148,22 @@ void validate_DCMaterial(void)
 	VALIDATE(DCMaterial, field_38, 0x38);
 
 	VALIDATE(DCMaterial, field_3F, 0x3F);
+}
+
+void validate_DCObject(void)
+{
+	VALIDATE_SIZE(DCObject, 0x138);
+
+	VALIDATE(DCObject, field_4, 0x4);
+
+	VALIDATE(DCObject, field_D0, 0xD0);
+
+	VALIDATE(DCObject, field_E0, 0xE0);
+	VALIDATE(DCObject, field_E4, 0xE4);
+	VALIDATE(DCObject, field_E8, 0xE8);
+
+	VALIDATE(DCObject, field_128, 0x128);
+	VALIDATE(DCObject, field_12C, 0x12C);
+
+	VALIDATE(DCObject, field_134, 0x134);
 }

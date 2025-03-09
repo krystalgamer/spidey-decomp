@@ -499,6 +499,7 @@ i32 validate(void)
 	validate_SZone();
 	validate_DCSkaterModel();
 	validate_DCMaterial();
+	validate_DCObject();
 
 	puts("[*] Validation done!");
 

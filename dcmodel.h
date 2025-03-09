@@ -34,6 +34,26 @@ class DCMaterial
 class DCObject
 {
 	public:
+		u8 padTop[4];
+
+
+		void *field_4;
+		u8 padAfter4[0xD0-0x4-4];
+
+		void *field_D0;
+		u8 padAfterD0[0xE0-0xD0-4];
+
+		void *field_E0;
+		void *field_E4;
+		void *field_E8;
+		u8 padAfterE8[0x128-0xE8-4];
+
+		void *field_128;
+		void *field_12C;
+		u8 padAfter12C[4];
+
+		void *field_134;
+
 		EXPORT ~DCObject(void);
 };
 
@@ -82,5 +102,6 @@ EXPORT void PreComputeConvertedColors(float);
 
 void validate_DCSkaterModel(void);
 void validate_DCMaterial(void);
+void validate_DCObject(void);
 
 #endif
