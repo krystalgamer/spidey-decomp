@@ -41,6 +41,20 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
 
+// @Ok
+// @Matching
+u8 CCarnage::Grab(CVector*)
+{
+	if (this->field_E2 <= 0 || this->field_31C.bothFlags == 2048)
+		return 0;
+
+	this->field_2A8 |= 0x40;
+	this->field_31C.bothFlags = 0x2000;
+	this->dumbAssPad = 0;
+
+	return 1;
+}
+
 // @SMALLTODO
 CSonicRipple::CSonicRipple(
 		const CVector*,
@@ -470,6 +484,7 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_378, 0x378);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
+	VALIDATE_VTABLE(CCarnage, Grab, 10);
 	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 17);
 }
 
