@@ -42,12 +42,15 @@ EXPORT u8 gCurrentCostume;
 
 CBody *MiscList;
 
+// @FIXME
 EXPORT SSkinGooSource gVenomSkinGooSource;
 EXPORT SSkinGooParams gVenomSkinGooParams;
 
-EXPORT SSkinGooSource gCarnageSkinGooSource;
+// @FIXME
+EXPORT SSkinGooSource gCarnageSkinGooSourceShell;
 EXPORT SSkinGooParams gCarnageSkinGooParams;
 
+// @FIXME
 EXPORT SSkinGooSource gSuperDocOckSkinGooSource;
 EXPORT SSkinGooParams gSuperDocOckSkinGooParams;
 
@@ -933,7 +936,7 @@ void CShellCarnageElectrified::Move(void)
 
 	if (++this->field_44 > 0)
 	{
-		new CSkinGoo(pSuper, &gCarnageSkinGooSource, 19, &gCarnageSkinGooParams);
+		new CSkinGoo(pSuper, &gCarnageSkinGooSourceShell, 19, &gCarnageSkinGooParams);
 		this->field_44 = 0;
 	}
 
