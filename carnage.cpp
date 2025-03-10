@@ -41,6 +41,52 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
 
+// @SMALLTODO
+CSonicRipple::CSonicRipple(
+		const CVector*,
+		i32,
+		i32,
+		i32,
+		i32,
+		i32 a7,
+		i32,
+		i32,
+		i32,
+		u8,
+		u8,
+		u8,
+		i32,
+		i32)
+	: CGPolyLine(a7)
+{
+    printf("CSonicRipple::CSonicRipple(CVector const *,i32,i32,i32,i32,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
+}
+
+// @SMALLTODO
+void CSonicRipple::CalcPos(CVector *,i16,i32)
+{
+    printf("CSonicRipple::CalcPos(CVector *,i16,i32)");
+}
+
+// @MEDIUMTODO
+void CSonicRipple::Move(void)
+{
+    printf("CSonicRipple::Move(void)");
+}
+
+// @SMALLTODO
+CSonicRipple::~CSonicRipple(void)
+{
+    printf("CSonicRipple::~CSonicRipple(void)");
+}
+
+// @Ok
+// @Matching
+void CCarnage::MakeSonicRipple(CVector *a2)
+{
+	new CSonicRipple(a2, 0, 2048, 30, 6, 10, 2, 500, 6, 128, 128, 128, 5, 5);
+}
+
 // @Ok
 INLINE void CCarnage::PlayXA(
 		i32 a2,
@@ -424,6 +470,8 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_378, 0x378);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
+	VALIDATE_VTABLE(CCarnage, TugImpulse, 6);
+	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 18);
 }
 
 void validate_CSonicBubble(void)
@@ -444,4 +492,9 @@ void validate_CCarnageElectrified(void)
 void validate_CCarnageHitSpark(void)
 {
 	VALIDATE_SIZE(CCarnageHitSpark, 0x84);
+}
+
+void validate_CSonicRipple(void)
+{
+	VALIDATE_SIZE(CSonicRipple, 0x88);
 }

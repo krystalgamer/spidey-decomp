@@ -6,6 +6,19 @@
 #include "export.h"
 #include "baddy.h"
 #include "reloc.h"
+#include "bit2.h"
+
+class CSonicRipple : public CGPolyLine
+{
+	public:
+		EXPORT CSonicRipple(const CVector *,i32,i32,i32,i32,i32,i32,i32,i32,u8,u8,u8,i32,i32);
+		EXPORT void CalcPos(CVector *,i16,i32);
+
+		EXPORT virtual void Move(void);
+		EXPORT virtual ~CSonicRipple(void);
+
+		u8 fullPad[0x30];
+};
 
 class CCarnage : public CBaddy {
 public:
@@ -20,6 +33,7 @@ public:
 	EXPORT void DoPhysics(void);
 
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
+	EXPORT virtual void MakeSonicRipple(CVector*);
 
 	u8 carnageStartPad[0x8];
 
@@ -80,6 +94,7 @@ void validate_CCarnage(void);
 void validate_CSonicBubble(void);
 void validate_CCarnageElectrified(void);
 void validate_CCarnageHitSpark(void);
+void validate_CSonicRipple(void);
 
 EXPORT void CreateSonicBubbleVertexWobbler(void);
 EXPORT void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result);

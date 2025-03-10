@@ -505,6 +505,7 @@ i32 validate(void)
 	validate_DCObjectList();
 	validate_DCKeyFrame();
 	validate_PREManager();
+	validate_CSonicRipple();
 
 	puts("[*] Validation done!");
 
