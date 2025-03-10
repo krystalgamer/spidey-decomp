@@ -63,6 +63,9 @@ class CCarnageHitSpark : public CQuadBit
 {
 	public:
 		EXPORT CCarnageHitSpark(CVector*);
+
+		EXPORT virtual void Move(void);
+
 		EXPORT virtual ~CCarnageHitSpark(void);
 };
 

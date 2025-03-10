@@ -104,6 +104,33 @@ CCarnageHitSpark::CCarnageHitSpark(CVector*)
 }
 
 // @Ok
+// @Matching
+void CCarnageHitSpark::Move(void)
+{
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	this->mPosB.vx += this->mVel.vx;
+	this->mPosB.vy += this->mVel.vy;
+	this->mPosB.vz += this->mVel.vz;
+
+	this->mPosC.vx += this->mVel.vx;
+	this->mPosC.vy += this->mVel.vy;
+	this->mPosC.vz += this->mVel.vz;
+
+	this->mPosD.vx += this->mVel.vx;
+	this->mPosD.vy += this->mVel.vy;
+	this->mPosD.vz += this->mVel.vz;
+
+	if (++this->field_C > 0)
+		Bit_ReduceRGB(&this->mTint, 30);
+
+	if ((this->mTint & 0xFFFFFF) == 0)
+		this->Die();
+}
+
+// @Ok
 CCarnageHitSpark::~CCarnageHitSpark(void)
 {
 }
