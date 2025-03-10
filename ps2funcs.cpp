@@ -63,6 +63,12 @@ void validate_MATRIX(void){
 	VALIDATE(MATRIX, t, 0x14);
 }
 
+// @SMALLTODO
+void gte_op0(void)
+{
+	printf("void gte_op0(void)");
+}
+
 // @Ok
 void gte_SetRotMatrix(MATRIX* a1){
 
