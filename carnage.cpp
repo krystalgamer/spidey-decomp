@@ -8,6 +8,7 @@
 #include "ps2funcs.h"
 #include "utils.h"
 #include "my_assert.h"
+#include "ps2redbook.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -39,6 +40,16 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x51202, 0x0D291D41B, 0x6CF38ACE },
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
+
+// @Ok
+INLINE void CCarnage::PlayXA(
+		i32 a2,
+		i32 a3,
+		i32 a4)
+{
+	if (Rnd(100) <= a4)
+		Redbook_XAPlayPos(a2, a3, &this->mPos, 0);
+}
 
 // @Ok
 // @Matching
@@ -383,6 +394,7 @@ INLINE CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
 }
 
 // @Ok
+// @Matching
 CCarnageElectrified::~CCarnageElectrified(void)
 {
 }
