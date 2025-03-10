@@ -71,6 +71,7 @@ void validate_CCarnage(void);
 void validate_CSonicBubble(void);
 void validate_CCarnageElectrified(void);
 void validate_CCarnageHitSpark(void);
+
 EXPORT void CreateSonicBubbleVertexWobbler(void);
 EXPORT void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result);
 EXPORT void Carnage_RelocatableModuleInit(reloc_mod *);

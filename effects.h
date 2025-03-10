@@ -65,6 +65,10 @@ class CElectrify : public CSimpleTexturedRibbon
 
 struct SSkinGooSource
 {
+	u8 padTop[4];
+
+	u32 field_4;
+	u32 field_8;
 };
 
 struct SSkinGooSource2

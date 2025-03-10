@@ -3,10 +3,16 @@
 #include "trig.h"
 #include "panel.h"
 #include "spool.h"
+#include "effects.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
+
+#define NUM_CARNAGE_GOOS 19
+
+//@FIXME
+EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS];
 
 // @Ok
 // @Matching
@@ -25,9 +31,38 @@ void Carnage_RelocatableModuleClear(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void SetTheCarnageGooSourcesChecksums(void)
 {
+	for (i32 i = 0; i < NUM_CARNAGE_GOOS; i++)
+	{
+		if (gCarnageSkinGooSource[i].field_4 == 0x45F3EC38)
+		{
+			gCarnageSkinGooSource[i].field_4 = Spool_FindTextureChecksum("carnage_bit04_32");
+		}
+		else if (gCarnageSkinGooSource[i].field_4 == 0xD291D41B)
+		{
+			gCarnageSkinGooSource[i].field_4 = Spool_FindTextureChecksum("carnage_bit03_32");
+		}
+		else if (gCarnageSkinGooSource[i].field_4 == 0x6CF38ACE)
+		{
+			gCarnageSkinGooSource[i].field_4 = Spool_FindTextureChecksum("carnage_bit01_32");
+		}
+
+		if (gCarnageSkinGooSource[i].field_8 == 0x45F3EC38)
+		{
+			gCarnageSkinGooSource[i].field_8 = Spool_FindTextureChecksum("carnage_bit04_32");
+		}
+		else if (gCarnageSkinGooSource[i].field_8 == 0xD291D41B)
+		{
+			gCarnageSkinGooSource[i].field_8 = Spool_FindTextureChecksum("carnage_bit03_32");
+		}
+		else if (gCarnageSkinGooSource[i].field_8 == 0x6CF38ACE)
+		{
+			gCarnageSkinGooSource[i].field_8 = Spool_FindTextureChecksum("carnage_bit01_32");
+		}
+	}
 }
 
 // @Ok

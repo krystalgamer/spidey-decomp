@@ -358,6 +358,10 @@ void validate_CSkinGoo(void)
 
 void validate_SSkinGooSource(void)
 {
+	VALIDATE_SIZE(SSkinGooSource, 0xC);
+
+	VALIDATE(SSkinGooSource, field_4, 0x4);
+	VALIDATE(SSkinGooSource, field_8, 0x8);
 }
 
 void validate_SSkinGooSource2(void)
