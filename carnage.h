@@ -13,6 +13,7 @@ public:
 	EXPORT ~CCarnage(void);
 
 	EXPORT void PulseL8A5Node(void);
+	EXPORT void DieCarnage(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);

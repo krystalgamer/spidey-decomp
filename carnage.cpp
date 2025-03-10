@@ -41,6 +41,31 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 // @Ok
+INLINE void CCarnage::DieCarnage(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mAccellorVel.vz = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vx = 0;
+			this->field_218 &= 0xFFFFFFF8;
+
+			this->RunAnim(36, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->PulseL8A5Node();
+				this->dumbAssPad++;
+			}
+			break;
+	}
+}
+
+
+// @Ok
 INLINE void CCarnage::PulseL8A5Node(void)
 {
 	CVector v3 = { 0, 0, 0 };
