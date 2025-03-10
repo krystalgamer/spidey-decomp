@@ -360,6 +360,7 @@ void validate_SSkinGooSource(void)
 {
 	VALIDATE_SIZE(SSkinGooSource, 0xC);
 
+	VALIDATE(SSkinGooSource, field_0, 0x0);
 	VALIDATE(SSkinGooSource, field_4, 0x4);
 	VALIDATE(SSkinGooSource, field_8, 0x8);
 }
