@@ -41,6 +41,16 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 // @Ok
+// @Matching
+void CCarnage::CreateCombatImpactEffect(CVector* pVec, i32)
+{
+	for (i32 i = 0; i < 16; i++)
+	{
+		new CCarnageHitSpark(pVec);
+	}
+}
+
+// @Ok
 INLINE void CCarnage::DieCarnage(void)
 {
 	switch (this->dumbAssPad)
@@ -400,6 +410,8 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_370, 0x370);
 	VALIDATE(CCarnage, field_374, 0x374);
 	VALIDATE(CCarnage, field_378, 0x378);
+
+	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
 }
 
 void validate_CSonicBubble(void)

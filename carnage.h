@@ -18,6 +18,8 @@ public:
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
 
+	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
+
 	u8 carnageStartPad[0x8];
 
 	void* field_32C;
