@@ -196,7 +196,9 @@ void validate_DCStrip(void)
 
 void validate_DCObjectList(void)
 {
-	VALIDATE_SIZE(DCObjectList, sizeof(DCObject));
+	VALIDATE_SIZE(DCObjectList, 0x4);
+
+	VALIDATE(DCObjectList, pObject, 0x0);
 }
 
 void validate_DCKeyFrame(void)

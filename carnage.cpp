@@ -26,9 +26,18 @@ void Carnage_RelocatableModuleClear(void)
 }
 
 // @SMALLTODO
-void Carnage_RelocatableModuleInit(reloc_mod *)
+void SetTheCarnageGooSourcesChecksums(void)
 {
-	printf("void Carnage_RelocatableModuleInit(reloc_mod *)");
+}
+
+// @Ok
+// @Matching
+void Carnage_RelocatableModuleInit(reloc_mod *pMod)
+{
+	pMod->mClearFunc = Carnage_RelocatableModuleClear;
+	pMod->field_C[0] = Carnage_CreateCarnage;
+
+	SetTheCarnageGooSourcesChecksums();
 }
 
 // @SMALLTODO
@@ -96,7 +105,7 @@ void CreateSonicBubbleVertexWobbler(void)
 {}
 
 // @Ok
-void Carnage_Create_Carnage(const unsigned int *stack, unsigned int *result)
+void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result)
 {
 	int* v2 = reinterpret_cast<int*>(*stack);
 	int v3 = static_cast<int>(stack[1]);
