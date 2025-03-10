@@ -1062,6 +1062,9 @@ void validate_CBaddy(void){
 
 	VALIDATE_VTABLE(CBaddy, Shouldnt_DoPhysics_Be_Virtual, 11);
 	VALIDATE_VTABLE(CBaddy, GetClosest, 13);
+	VALIDATE_VTABLE(CBaddy, ExecuteCommand, 14);
+	VALIDATE_VTABLE(CBaddy, SetVariable, 15);
+	VALIDATE_VTABLE(CBaddy, GetVariable, 16);
 }
 
 

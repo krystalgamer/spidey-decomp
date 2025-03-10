@@ -74,10 +74,10 @@ void CSonicRipple::Move(void)
     printf("CSonicRipple::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSonicRipple::~CSonicRipple(void)
 {
-    printf("CSonicRipple::~CSonicRipple(void)");
 }
 
 // @Ok
@@ -470,8 +470,7 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_378, 0x378);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
-	VALIDATE_VTABLE(CCarnage, TugImpulse, 6);
-	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 18);
+	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 17);
 }
 
 void validate_CSonicBubble(void)
