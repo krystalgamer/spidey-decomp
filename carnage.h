@@ -9,8 +9,10 @@
 
 class CCarnage : public CBaddy {
 public:
-	EXPORT CCarnage(int*, int);
+	EXPORT CCarnage(i32*, i32);
 	EXPORT ~CCarnage(void);
+
+	EXPORT void PulseL8A5Node(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);

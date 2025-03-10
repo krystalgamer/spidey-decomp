@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "ps2funcs.h"
 #include "utils.h"
+#include "my_assert.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -38,6 +39,30 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x51202, 0x0D291D41B, 0x6CF38ACE },
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
+
+// @Ok
+INLINE void CCarnage::PulseL8A5Node(void)
+{
+	CVector v3 = { 0, 0, 0 };
+	v3.vx = 0;
+	v3.vy = 0;
+	v3.vz = 0;
+
+	for (i32 i = 1 ; i < NumNodes; i++)
+	{
+		if (*gTrigNodes[i] == 1)
+		{
+			Trig_GetPosition(&v3, i);
+			if (!(v3.vz | v3.vx | v3.vy))
+			{
+				Trig_SendPulseToNode(i);
+				return;
+			}
+		}
+	}
+
+	DoAssert(0, "Node not found");
+}
 
 // @Ok
 // @Matching
