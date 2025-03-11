@@ -62,18 +62,18 @@ void M3dColij_LineToItem(
 		CItem* pItem,
 		SLineInfo* pLine)
 {
-	if (pItem && pLine->field_44)
+	if (pItem && pLine->Length)
 	{
-		gte_SetRotMatrix(&pLine->field_48);
-		M3dAsm_LineColijPreprocessItems(pItem, 0, pLine, pLine->field_8A);
+		gte_SetRotMatrix(&pLine->WorldCst);
+		M3dAsm_LineColijPreprocessItems(pItem, 0, pLine, pLine->Inquiry);
 
 		CItem *curItem = pItem;
 
 		while (curItem)
 		{
-			if (curItem->field_6 != pLine->field_8A)
+			if (curItem->field_6 != pLine->Inquiry)
 			{
-				curItem->field_6 = pLine->field_8A;
+				curItem->field_6 = pLine->Inquiry;
 				M3dColij_LineToThisItem(curItem, pLine);
 			}
 
@@ -83,35 +83,55 @@ void M3dColij_LineToItem(
 	}
 }
 
+void validate_Vector(void)
+{
+	VALIDATE_SIZE(Vector, 0xC);
+
+	VALIDATE(Vector, vx, 0x0);
+	VALIDATE(Vector, vy, 0x4);
+	VALIDATE(Vector, vz, 0x8);
+}
+
 void validate_SLineInfo(void)
 {
 	VALIDATE_SIZE(SLineInfo, 0xA4);
 
-	VALIDATE(SLineInfo, vec_0, 0x0);
-	VALIDATE(SLineInfo, vec_C, 0xC);
+	VALIDATE(SLineInfo, StartCoords, 0x0);
+	VALIDATE(SLineInfo, EndCoords, 0xC);
 
 
-	VALIDATE(SLineInfo, field_18, 0x18);
-	VALIDATE(SLineInfo, field_1C, 0x1C);
-	VALIDATE(SLineInfo, field_20, 0x20);
-	VALIDATE(SLineInfo, field_24, 0x24);
-	VALIDATE(SLineInfo, field_28, 0x28);
-	VALIDATE(SLineInfo, field_2C, 0x2C);
+	VALIDATE(SLineInfo, MinCoords, 0x18);
 
+	VALIDATE(SLineInfo, MaxCoords, 0x24);
 
-	VALIDATE(SLineInfo, field_40, 0x40);
-	VALIDATE(SLineInfo, field_44, 0x44);
-	VALIDATE(SLineInfo, field_48, 0x48);
-	VALIDATE(SLineInfo, field_68, 0x68);
+	VALIDATE(SLineInfo, iLo, 0x30);
+	VALIDATE(SLineInfo, iHi, 0x34);
+	VALIDATE(SLineInfo, jLo, 0x38);
+	VALIDATE(SLineInfo, jHi, 0x3C);
 
-	VALIDATE(SLineInfo, field_6C, 0x6C);
+	VALIDATE(SLineInfo, Distance, 0x40);
+	VALIDATE(SLineInfo, Length, 0x44);
 
-	VALIDATE(SLineInfo, field_78, 0x78);
+	VALIDATE(SLineInfo, WorldCst, 0x48);
 
-	VALIDATE(SLineInfo, field_80, 0x80);
-	VALIDATE(SLineInfo, field_84, 0x84);
-	VALIDATE(SLineInfo, field_88, 0x88);
-	VALIDATE(SLineInfo, field_89, 0x89);
-	VALIDATE(SLineInfo, field_8A, 0x8A);
-	VALIDATE(SLineInfo, field_8C, 0x8C);
+	VALIDATE(SLineInfo, pItem, 0x68);
+
+	VALIDATE(SLineInfo, Position, 0x6C);
+
+	VALIDATE(SLineInfo, Normal, 0x78);
+
+	VALIDATE(SLineInfo, pFace, 0x80);
+	VALIDATE(SLineInfo, Model, 0x84);
+
+	VALIDATE(SLineInfo, RecordTriggerZoneHits, 0x88);
+	VALIDATE(SLineInfo, DropDown, 0x89);
+
+	VALIDATE(SLineInfo, Inquiry, 0x8A);
+	VALIDATE(SLineInfo, tNear, 0x8C);
+
+	VALIDATE(SLineInfo, tNumtrLo, 0x90);
+	VALIDATE(SLineInfo, tNumtrHi, 0x94);
+	VALIDATE(SLineInfo, tDenomLo, 0x98);
+	VALIDATE(SLineInfo, tDenomHi, 0x9C);
+	VALIDATE(SLineInfo, NormalOffset, 0xA0);
 }

@@ -74,18 +74,18 @@ void M3dZone_LineToItem(
 		if (Zones[i].Flags)
 		{
 			v2 = i;
-			vx = pInfo->vec_0.vx;
-			v4 = pInfo->vec_C.vx;
-			vz = pInfo->vec_0.vz;
+			vx = pInfo->StartCoords.vx;
+			v4 = pInfo->EndCoords.vx;
+			vz = pInfo->StartCoords.vz;
 
-			v6 = pInfo->vec_C.vz;
+			v6 = pInfo->EndCoords.vz;
 			xMin = Zones[i].xMin;
 			xMax = Zones[i].xMax;
 			v1 = Zones[i].zMin;
 			zMax = Zones[i].zMax;
 			v22 = xMin;
 			ZoneWidth = Zones[i].ZoneWidth;
-			if ( pInfo->vec_0.vx >= xMin || v4 >= xMin )
+			if ( pInfo->StartCoords.vx >= xMin || v4 >= xMin )
 			{
 				if (vx > xMax)
 				{

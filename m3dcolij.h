@@ -9,39 +9,67 @@
 #include "ps2funcs.h"
 
 class CBody;
+
+// @Note: meant for SLineInfo
+// but you know, it's the same as CVector, and would add just confusion
+struct Vector
+{
+	i32 vx;
+	i32 vy;
+	i32 vz;
+};
+
 struct SLineInfo
 {
-	CVector vec_0;
-	CVector vec_C;
+	CVector StartCoords;
+	CVector EndCoords;
 
-	int field_18;
-	int field_1C;
-	int field_20;
-	int field_24;
-	int field_28;
-	int field_2C;
-	unsigned char padAfter2C[0x40-0x2C-4];
+	CVector MinCoords;
+	CVector MaxCoords;
 
-	int field_40;
-	int field_44;
-	MATRIX field_48;
-	CItem* field_68;
+	// offset: 0030
+	i32 iLo;
+	// offset: 0034
+	i32 iHi;
+	// offset: 0038
+	i32 jLo;
+	// offset: 003C
+	i32 jHi;
 
-	CVector field_6C;
-	CSVector field_78;
+	i32 Distance;
+	i32 Length;
 
-	int field_80;
-	int field_84;
-	unsigned char field_88;
-	unsigned char field_89;
-	u16 field_8A;
-	int field_8C;
+	MATRIX WorldCst;
+	CItem* pItem;
 
-	u8 padBottom[0xA4-0x8C-4];
+	CVector Position; // should be Vector?
+	CSVector Normal; // should be SVector?
+
+	u32 *pFace;
+	i32 Model;
+
+	u8 RecordTriggerZoneHits;
+	u8 DropDown;
+
+	u16 Inquiry;
+	i32 tNear;
+
+	// offset: 0090
+	u32 tNumtrLo;
+	// offset: 0094
+	i32 tNumtrHi;
+	// offset: 0098
+	u32 tDenomLo;
+	// offset: 009C
+	i32 tDenomHi;
+	// offset: 00A0
+	u32 NormalOffset;
 };
 
 
 void validate_SLineInfo(void);
+void validate_Vector(void);
+
 EXPORT void M3dColij_InitLineInfo(SLineInfo *);
 EXPORT i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32);
 

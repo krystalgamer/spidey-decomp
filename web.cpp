@@ -140,13 +140,13 @@ CDome::~CDome(void)
 int Web_GetGroundY(const CVector* a1)
 {
 
-	gLineInfo.vec_0.vy = a1->vy;
-	gLineInfo.vec_0.vx = a1->vx;
-	gLineInfo.vec_0.vz = a1->vz;
+	gLineInfo.StartCoords.vy = a1->vy;
+	gLineInfo.StartCoords.vx = a1->vx;
+	gLineInfo.StartCoords.vz = a1->vz;
 
-	gLineInfo.vec_C.vx = a1->vx;
-	gLineInfo.vec_C.vy = a1->vy + 0x1388000;
-	gLineInfo.vec_C.vz = a1->vz;
+	gLineInfo.EndCoords.vx = a1->vx;
+	gLineInfo.EndCoords.vy = a1->vy + 0x1388000;
+	gLineInfo.EndCoords.vz = a1->vz;
 
 	M3dColij_InitLineInfo(&gLineInfo);
 	M3dZone_LineToItem(&gLineInfo, 1);
@@ -154,7 +154,7 @@ int Web_GetGroundY(const CVector* a1)
 	if (gGetGroundRelated)
 		return gGetGroundDefaultValue;
 
-	return gLineInfo.vec_C.vy;
+	return gLineInfo.EndCoords.vy;
 }
 
 // @BIGTODO

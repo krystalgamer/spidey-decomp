@@ -1445,20 +1445,21 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 
 	int v2 = 0;
 
-	v21.field_18 = 0;
-	v21.field_1C = 0;
-	v21.field_20 = 0;
-	v21.field_24 = 0;
-	v21.field_28 = 0;
-	v21.field_2C = 0;
+	v21.MinCoords.vx = 0;
+	v21.MinCoords.vy = 0;
+	v21.MinCoords.vz = 0;
 
-	v21.field_6C.vx = 0;
-	v21.field_6C.vy = 0;
-	v21.field_6C.vz = 0;
+	v21.MaxCoords.vx = 0;
+	v21.MaxCoords.vy = 0;
+	v21.MaxCoords.vz = 0;
 
-	v21.field_78.vx = 0;
-	v21.field_78.vy = 0;
-	v21.field_78.vz = 0;
+	v21.Position.vx = 0;
+	v21.Position.vy = 0;
+	v21.Position.vz = 0;
+
+	v21.Normal.vx = 0;
+	v21.Normal.vy = 0;
+	v21.Normal.vz = 0;
 
 	int i = 0;
 	do
@@ -1473,7 +1474,7 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 		int v10 = this->field_C7C * v7;
 		int v11 = this->field_C80 * v7;
 
-		v21.vec_0.vx = v9 + this->mPos.vx;
+		v21.StartCoords.vx = v9 + this->mPos.vx;
 		int v12 = (v10 >> 12) + ((this->field_C6C.vy * v8) >> 12);
 		v2 = a2;
 		int v13 = a2 * v12;
@@ -1481,20 +1482,20 @@ void CPlayer::TidyUpZipWebLandingPosition(int a2)
 		int z = this->mPos.vz;
 
 		int v16 = a2 * v14;
-		v21.vec_0.vy = v13 + y;
-		v21.vec_0.vz = v16 + z;
-		v21.vec_C.vx = this->mPos.vx - v9;
+		v21.StartCoords.vy = v13 + y;
+		v21.StartCoords.vz = v16 + z;
+		v21.EndCoords.vx = this->mPos.vx - v9;
 
 		int v17 = this->mPos.vy;
-		v21.vec_C.vy = v17 - v13;
-		v21.vec_C.vz = z - v16;
+		v21.EndCoords.vy = v17 - v13;
+		v21.EndCoords.vz = z - v16;
 		M3dColij_InitLineInfo(&v21);
 		M3dZone_LineToItem(&v21, 1);
-		if ( v21.field_68 )
+		if (v21.pItem)
 		{
-			int v18 = a2 * v21.field_78.vz;
-			int v19 = v17 + a2 * v21.field_78.vy;
-			this->mPos.vx += a2 * v21.field_78.vx;
+			int v18 = a2 * v21.Normal.vz;
+			int v19 = v17 + a2 * v21.Normal.vy;
+			this->mPos.vx += a2 * v21.Normal.vx;
 			this->mPos.vy = v19;
 			this->mPos.vz = z + v18;
 		}

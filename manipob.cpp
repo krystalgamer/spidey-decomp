@@ -152,26 +152,28 @@ void CManipOb::Smash(void)
 	v3.vz = 0;
 
 	SLineInfo v4;
-	v4.vec_0.vx = 0;
-	v4.vec_0.vy = 0;
-	v4.vec_0.vz = 0;
-	v4.vec_C.vx = 0;
-	v4.vec_C.vy = 0;
-	v4.vec_C.vz = 0;
-	v4.field_18 = 0;
-	v4.field_1C = 0;
-	v4.field_20 = 0;
-	v4.field_24 = 0;
-	v4.field_28 = 0;
-	v4.field_2C = 0;
+	v4.StartCoords.vx = 0;
+	v4.StartCoords.vy = 0;
+	v4.StartCoords.vz = 0;
+	v4.EndCoords.vx = 0;
+	v4.EndCoords.vy = 0;
+	v4.EndCoords.vz = 0;
 
-	v4.field_6C.vx = 0;
-	v4.field_6C.vy = 0;
-	v4.field_6C.vz = 0;
+	v4.MinCoords.vx = 0;
+	v4.MinCoords.vy = 0;
+	v4.MinCoords.vz = 0;
 
-	v4.field_78.vx = 0;
-	v4.field_78.vy = (i16)0xF000;
-	v4.field_78.vz = 0;
+	v4.MaxCoords.vx = 0;
+	v4.MaxCoords.vy = 0;
+	v4.MaxCoords.vz = 0;
+
+	v4.Position.vx = 0;
+	v4.Position.vy = 0;
+	v4.Position.vz = 0;
+
+	v4.Normal.vx = 0;
+	v4.Normal.vy = (i16)0xF000;
+	v4.Normal.vz = 0;
 
 	this->mAccellorVel.vx = 0;
 	this->mAccellorVel.vy = 0x20000;

@@ -291,10 +291,10 @@ CRhinoWallImpact::CRhinoWallImpact(SLineInfo* pLineInfo)
 	this->mCodeBGR &= ~0x200;
 
 	CVector v2;
-	v2 = pLineInfo->field_6C;
+	v2 = pLineInfo->Position;
 	v2.vy -= 204800;
 
-	this->OrientUsing(&v2, reinterpret_cast<SVECTOR*>(&pLineInfo->field_78), 100, 100);
+	this->OrientUsing(&v2, reinterpret_cast<SVECTOR*>(&pLineInfo->Normal), 100, 100);
 	this->mType = 26;
 }
 

@@ -674,8 +674,8 @@ CBody* Utils_CheckObjectCollision(
 
 	if (!result)
 	{
-		gLineInfo.vec_0 = *a1;
-		gLineInfo.vec_C = *a2;
+		gLineInfo.StartCoords = *a1;
+		gLineInfo.EndCoords = *a2;
 
 		M3dColij_InitLineInfo(&gLineInfo);
 
@@ -694,49 +694,50 @@ int Utils_GetGroundHeight(CVector* pos, i32 above, i32 below, CBody** ppBody)
 {
 	SLineInfo v7; // [esp+Ch] [ebp-A4h] BYREF
 
-	v7.vec_0.vx = 0;
-	v7.vec_0.vy = 0;
-	v7.vec_0.vz = 0;
-	v7.vec_C.vx = 0;
-	v7.vec_C.vy = 0;
-	v7.vec_C.vz = 0;
+	v7.StartCoords.vx = 0;
+	v7.StartCoords.vy = 0;
+	v7.StartCoords.vz = 0;
+	v7.EndCoords.vx = 0;
+	v7.EndCoords.vy = 0;
+	v7.EndCoords.vz = 0;
 
-	v7.field_18 = 0;
-	v7.field_1C = 0;
-	v7.field_20 = 0;
-	v7.field_24 = 0;
-	v7.field_28 = 0;
-	v7.field_2C = 0;
+	v7.MinCoords.vx = 0;
+	v7.MinCoords.vy = 0;
+	v7.MinCoords.vz = 0;
 
-	v7.field_6C.vx = 0;
-	v7.field_6C.vy = 0;
-	v7.field_6C.vz = 0;
+	v7.MaxCoords.vx = 0;
+	v7.MaxCoords.vy = 0;
+	v7.MaxCoords.vz = 0;
 
-	v7.field_78.vx = 0;
-	v7.field_78.vy = 0;
-	v7.field_78.vz = 0;
+	v7.Position.vx = 0;
+	v7.Position.vy = 0;
+	v7.Position.vz = 0;
+
+	v7.Normal.vx = 0;
+	v7.Normal.vy = 0;
+	v7.Normal.vz = 0;
 
 
-	v7.vec_0.vx = pos->vx;
-	v7.vec_0.vy = pos->vy - (above << 12);
-	v7.vec_0.vz = pos->vz;
+	v7.StartCoords.vx = pos->vx;
+	v7.StartCoords.vy = pos->vy - (above << 12);
+	v7.StartCoords.vz = pos->vz;
 
-	v7.vec_C.vx = v7.vec_0.vx;
-	v7.vec_C.vy = pos->vy + (below << 12);
-	v7.vec_C.vz = pos->vz;
+	v7.EndCoords.vx = v7.StartCoords.vx;
+	v7.EndCoords.vy = pos->vy + (below << 12);
+	v7.EndCoords.vz = pos->vz;
 	
 
 
 
 	M3dColij_InitLineInfo(&v7);
-	v7.field_88 = 0;
+	v7.RecordTriggerZoneHits = 0;
 	M3dZone_LineToItem(&v7, 1);
 
-	if (v7.field_68)
+	if (v7.pItem)
 	{
 		if ( ppBody )
-			*ppBody = (v7.field_68->mFlags & 0x10) != 0 ? (CBody *)v7.field_68 : 0;
-		return v7.field_6C.vy;
+			*ppBody = (v7.pItem->mFlags & 0x10) != 0 ? (CBody *)v7.pItem : 0;
+		return v7.Position.vy;
 	}
 	else
 	{
@@ -756,17 +757,17 @@ i32 Utils_LineOfSight(
 		CVector* a3,
 		i32 a4)
 {
-	line_info.vec_0 = *a1;
-	line_info.vec_C = *a2;
+	line_info.StartCoords = *a1;
+	line_info.EndCoords = *a2;
 
 	M3dColij_InitLineInfo(&line_info);
 	M3dZone_LineToItem(&line_info, a4 == 0);
 	
 
-	if (line_info.field_68)
+	if (line_info.pItem)
 	{
 		if (a3)
-			*a3 = line_info.field_6C;
+			*a3 = line_info.Position;
 		return 0;
 	}
 
