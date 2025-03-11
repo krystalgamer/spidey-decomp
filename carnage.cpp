@@ -14,7 +14,6 @@
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
-EXPORT u8 gObjFileRegion;
 
 const i32 gCarnageFour = 4;
 const i32 gCarnage200 = 0x200;
@@ -563,10 +562,7 @@ void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result)
 }
 
 // @Ok
-// @AlmostMatching: second param of Spool_GetModel is weird
-// orig is like xor reg + mov al
-// this one creates mov eax + and eax, 0xFF 
-// it works but meh
+// @Matching
 INLINE CSonicBubble::CSonicBubble(void)
 {
 	this->InitItem(gObjFile);

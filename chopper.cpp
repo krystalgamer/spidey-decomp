@@ -23,7 +23,6 @@ extern i32 DifficultyLevel;
 extern i16 **gTrigNodes;
 
 extern const char *gObjFile;
-extern u8 gObjFileRegion;
 extern CPlayer* MechList;
 
 extern CCamera* CameraList;

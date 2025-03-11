@@ -12,6 +12,7 @@ CBody* ControlBaddyList;
 CBaddy* BaddyList;
 EXPORT CSVector gTrajectoryVector;
 i32 gAttackRelated;
+u8 gObjFileRegion;
 
 // @FIXME - incorrect type
 i32 gBossRelated;

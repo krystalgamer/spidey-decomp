@@ -8,7 +8,6 @@
 #include "spool.h"
 
 
-extern u8 gObjFileRegion;
 extern CBody* EnvironmentalObjectList;
 
 #define LEN_VENOM_TEXS 10
