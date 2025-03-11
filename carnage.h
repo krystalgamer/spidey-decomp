@@ -29,6 +29,7 @@ public:
 	EXPORT void DieCarnage(void);
 	EXPORT void PlayXA(i32, i32, i32);
 	EXPORT void Laugh(void);
+	EXPORT void CheckSlideParams(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
@@ -40,11 +41,10 @@ public:
 	u8 carnageStartPad[0x8];
 
 	void* field_32C;
-	u8 padAfter32C[0x334-0x32C-4];
 
-	i32 field_334;
-	i32 field_338;
-	i32 field_33C;
+	i32 field_330;
+	CVector field_334;
+
 	u8 padAfter33c[0x344-0x33C-4];
 
 	void* field_344;

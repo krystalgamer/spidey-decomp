@@ -10,6 +10,7 @@
 #include "my_assert.h"
 #include "ps2redbook.h"
 #include "spidey.h"
+#include "m3dzone.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -44,6 +45,58 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
  
+// @Ok
+// @FIXME: The stack is 4 bytes shorter here because it seems
+// they put the pointer of 330 on the stack and then reuse it when making assignments later which is weird af
+void CCarnage::CheckSlideParams(void)
+{
+	CVector v5 = this->field_334 * this->field_330;
+	CVector v6 = this->mPos + v5;
+
+	SLineInfo v7;
+	v7.StartCoords.vx = 0;
+	v7.StartCoords.vy = 0;
+	v7.StartCoords.vz = 0;
+	v7.EndCoords.vx = 0;
+	v7.EndCoords.vy = 0;
+	v7.EndCoords.vz = 0;
+
+	v7.MinCoords.vx = 0;
+	v7.MinCoords.vy = 0;
+	v7.MinCoords.vz = 0;
+	v7.MaxCoords.vx = 0;
+	v7.MaxCoords.vy = 0;
+	v7.MaxCoords.vz = 0;
+	v7.Position.vx = 0;
+	v7.Position.vy = 0;
+	v7.Position.vz = 0;
+	v7.Normal.vx = 0;
+	v7.Normal.vy = 0;
+	v7.Normal.vz = 0;
+
+	v7.StartCoords = this->mPos;
+	v7.EndCoords = v6;
+	M3dColij_InitLineInfo(&v7);
+	M3dZone_LineToItem(&v7, 1);
+
+	if (v7.pItem)
+	{
+		if (v7.Distance - 256 <= 0)
+		{
+			this->field_330 = 0;
+
+			this->field_334.vx = 0;
+			this->field_334.vy = 0;
+			this->field_334.vz = 0;
+		}
+		else
+		{
+			this->field_330 = this->field_330 * (v7.Distance - 256) / v7.Length;
+		}
+	}
+
+}
+
 // @Ok
 // @AlmostMatching: mAccellorVel is out of order for some reason
 void CCarnage::Laugh(void)
@@ -400,9 +453,10 @@ CCarnage::~CCarnage(void)
 // globals
 CCarnage::CCarnage(int* a2, int a3)
 {
-	this->field_334 = 0;
-	this->field_338 = 0;
-	this->field_33C = 0;
+	this->field_334.vx = 0;
+	this->field_334.vy = 0;
+	this->field_334.vz = 0;
+
 	this->field_370 = 0;
 	this->field_374 = 0;
 	this->field_378 = 0;
@@ -508,10 +562,9 @@ void validate_CCarnage(void){
 
 	VALIDATE(CCarnage, field_32C, 0x32C);
 
-	VALIDATE(CCarnage, field_334, 0x334);
-	VALIDATE(CCarnage, field_338, 0x338);
+	VALIDATE(CCarnage, field_330, 0x330);
 
-	VALIDATE(CCarnage, field_33C, 0x33C);
+	VALIDATE(CCarnage, field_334, 0x334);
 
 	VALIDATE(CCarnage, field_344, 0x344);
 
