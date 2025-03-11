@@ -9,10 +9,13 @@
 #include "utils.h"
 #include "my_assert.h"
 #include "ps2redbook.h"
+#include "spidey.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
+
+const i32 gCarnageFour = 4;
 
 #define NUM_CARNAGE_GOOS 19
 
@@ -40,6 +43,43 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x51202, 0x0D291D41B, 0x6CF38ACE },
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
+ 
+// @Ok
+// @AlmostMatching: mAccellorVel is out of order for some reason
+void CCarnage::Laugh(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mAccellorVel.vz = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vx = 0;
+
+			this->field_218 &= 0xFFFFFFFE;
+			this->field_218 |= gCarnageFour;
+
+			if (this->field_12A != 4 || this->field_142)
+				this->RunAnim(4u, 0, -1);
+			this->dumbAssPad++;
+			break;
+		case 1:
+			if (this->field_142)
+			{
+				this->field_218 &= 0xFFFFFFFB;
+				if (MechList->field_E1C != 0x800000)
+				{
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					this->RunAnim(4u, 0, -1);
+				}
+			}
+
+			break;
+	}
+}
 
 // @Ok
 // @Matching

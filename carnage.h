@@ -28,6 +28,7 @@ public:
 	EXPORT void PulseL8A5Node(void);
 	EXPORT void DieCarnage(void);
 	EXPORT void PlayXA(i32, i32, i32);
+	EXPORT void Laugh(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
