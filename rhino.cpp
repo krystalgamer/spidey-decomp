@@ -17,7 +17,6 @@ extern CBody* EnvironmentalObjectList;
 extern CPlayer* MechList;
 extern i32 gAttackRelated;
 extern CBaddy *BaddyList;
-extern i32 gBossRelated;
 extern CCamera *CameraList;
 
 // @Ok

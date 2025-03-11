@@ -11,7 +11,6 @@
 
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
-extern i32 gBossRelated;
 extern CBody* ControlBaddyList;
 
 // @Ok

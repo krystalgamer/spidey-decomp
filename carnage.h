@@ -30,6 +30,7 @@ public:
 	EXPORT void PlayXA(i32, i32, i32);
 	EXPORT void Laugh(void);
 	EXPORT void CheckSlideParams(void);
+	EXPORT void Initialise(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
@@ -48,7 +49,9 @@ public:
 	u8 padAfter33c[0x344-0x33C-4];
 
 	void* field_344;
-	u8 padAfter344[0x354-0x344-4];
+
+	SHandle hBubble;
+	u8 padAfter350[0x354-0x350];
 
 	i32 field_354;
 	i32 field_358;

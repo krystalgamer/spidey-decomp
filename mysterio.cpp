@@ -12,7 +12,6 @@
 #include "spidey.h"
 
 EXPORT u8 gActuatorRelated;
-EXPORT i32 gBossRelated;
 extern CPlayer* MechList;
 
 EXPORT SHandle gMystHandle;

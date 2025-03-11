@@ -17,6 +17,7 @@ extern CBaddy *BaddyList;
 EXPORT u8 gObjFileRegion;
 
 const i32 gCarnageFour = 4;
+const i32 gCarnage200 = 0x200;
 
 #define NUM_CARNAGE_GOOS 19
 
@@ -44,6 +45,68 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x51202, 0x0D291D41B, 0x6CF38ACE },
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
+
+// @Ok
+// @AlmostMatching: CameraList seems to be volatile, but don't care enough to
+// get it match, it'd require a lot of re-write for little gain
+// also edi is saved later but overall it's gucci
+void CCarnage::Initialise(void)
+{
+	i32 GroundHeight;
+	CSonicBubble *pBubble;
+
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			GroundHeight = Utils_GetGroundHeight(&this->mPos, 0, 0x2000, 0);
+			if (GroundHeight != -1)
+				this->mPos.vy = GroundHeight - (this->field_21E << 12);
+
+			pBubble = new CSonicBubble();
+			pBubble->SetScale(0);
+
+			this->hBubble = Mem_MakeHandle(pBubble);
+			this->RunAnim(4u, 0, -1);
+			this->dumbAssPad++;
+		case 1:
+			if (this->field_44 & 1)
+			{
+				this->field_218 |= gCarnage200;
+				this->field_44 &= 0xFFFEu;
+			}
+
+			if (this->field_142)
+			{
+				if (this->field_218 & 0x200)
+				{
+					if (MechList)
+						MechList->ExitLookaroundMode();
+					CameraList->SetMode((ECameraMode)16);
+
+					DoAssert(1u, "bad value send to BossCamSpinRate");
+
+					CCamera *pCamera = CameraList;
+					pCamera->field_2A4 = 63;
+					DoAssert(1, "bad value send to BossCamStationaryRadius");
+
+					CCamera *pCamera2 = CameraList;
+					pCamera2->field_2A8 = 128;
+					pCamera2->SetTripodInterpolation(4, 8, 4);
+
+					// @FIXME
+					gBossRelated = reinterpret_cast<i32>(this);
+
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					this->RunAnim(4u, 0, -1);
+				}
+			}
+				break;
+	}
+}
  
 // @Ok
 // @FIXME: The stack is 4 bytes shorter here because it seems
@@ -499,26 +562,28 @@ void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result)
 	*result = reinterpret_cast<unsigned int>(new CCarnage(v2, v3));
 }
 
-
-// @NotOk
-// globals
-CSonicBubble::CSonicBubble(void)
+// @Ok
+// @AlmostMatching: second param of Spool_GetModel is weird
+// orig is like xor reg + mov al
+// this one creates mov eax + and eax, 0xFF 
+// it works but meh
+INLINE CSonicBubble::CSonicBubble(void)
 {
 	this->InitItem(gObjFile);
 
 	this->mModel = Spool_GetModel(0xE9DD4877, gObjFileRegion);
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->mCBodyFlags &= 0xFFFFFFEF;
 	this->field_DC = 0;
 }
 
 // @Ok
-void CSonicBubble::SetScale(int scale)
+INLINE void CSonicBubble::SetScale(i32 scale)
 {
-	this->field_28 = 0;
-	this->field_2A = 0;
-	this->field_2C = 0;
+	this->field_28 = scale;
+	this->field_2A = scale;
+	this->field_2C = scale;
 	this->mFlags |= 0x200;
 }
 
@@ -567,6 +632,7 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_334, 0x334);
 
 	VALIDATE(CCarnage, field_344, 0x344);
+	VALIDATE(CCarnage, hBubble, 0x348);
 
 	VALIDATE(CCarnage, field_354, 0x354);
 	VALIDATE(CCarnage, field_358, 0x358);

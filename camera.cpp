@@ -2,6 +2,7 @@
 #include "validate.h"
 #include "ps2funcs.h"
 #include "utils.h"
+#include "my_assert.h"
 
 SViewport gViewport;
 CCamera *CameraList;
@@ -244,9 +245,9 @@ void CCamera::SetFixedPosAnglesMode(
 // @Ok
 void CCamera::SetTripodInterpolation(i32 a2, i32 a3, i32 a4)
 {
-	print_if_false(a2 <= 16, "Bad tripod interpolation value");
-	print_if_false(a3 <= 16, "Bad tripod interpolation value");
-	print_if_false(a4 <= 16, "Bad tripod interpolation value");
+	DoAssert(a2 <= 16, "Bad tripod interpolation value");
+	DoAssert(a3 <= 16, "Bad tripod interpolation value");
+	DoAssert(a4 <= 16, "Bad tripod interpolation value");
 	this->field_130 = a2;
 	this->field_134 = a3;
 	this->field_138 = a4;

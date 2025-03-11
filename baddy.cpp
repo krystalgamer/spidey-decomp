@@ -13,6 +13,9 @@ CBaddy* BaddyList;
 EXPORT CSVector gTrajectoryVector;
 i32 gAttackRelated;
 
+// @FIXME - incorrect type
+i32 gBossRelated;
+
 extern i16** gTrigNodes;
 
 // @Ok
