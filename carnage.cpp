@@ -11,6 +11,7 @@
 #include "ps2redbook.h"
 #include "spidey.h"
 #include "m3dzone.h"
+#include "web.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -46,6 +47,78 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: for some reason registerArr assignements are out of order
+void CCarnage::TugWebTrapped(void)
+{
+	i32 v4;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_328 = 16;
+			this->RunAnim( 9u, 0, -1);
+			this->field_218 &= 0xFFFFFFF8;
+
+			this->mAccellorVel.vz = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vx = 0;
+
+			DoAssert(1u, "Bad register index");
+			this->registerArr[1] = 0;
+			this->dumbAssPad++;
+		case 1:
+			this->field_328 = 16;
+			if (this->field_142)
+				this->RunAnim(0xAu, 0, -1);
+			DoAssert(1u, "Bad register index");
+
+			v4 = this->registerArr[1] + this->field_80;
+
+			if (v4 > 60)
+			{
+				this->RunAnim(0xBu, 0, -1);
+				if (this->field_10C.field_0)
+				{
+					CTrapWebEffect *v5 = static_cast<CTrapWebEffect*>(Mem_RecoverPointer(&this->field_10C));
+					if (v5)
+						v5->Burst();
+					this->field_10C.field_0 = 0;
+				}
+				this->dumbAssPad++;
+			}
+			else
+			{
+				print_if_false(1u, "Bad register index");
+				this->registerArr[1] = v4;
+
+				if (this->field_218 & 0x80u)
+				{
+					this->field_218 &= 0xFFFFFF7F;
+					if (this->field_10C.field_0)
+					{
+						CTrapWebEffect *v7 = static_cast<CTrapWebEffect *>(
+								Mem_RecoverPointer(&this->field_10C));
+						if (v7)
+							v7->Burst();
+						this->field_10C.field_0 = 0;
+					}
+
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		case 2:
+			this->field_328 = 16;
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+	}
+}
 
 // @NotOk
 // @Note: validate when inlined
@@ -678,6 +751,8 @@ void CCarnage::DoPhysics(void)
 
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
+
+	VALIDATE(CCarnage, field_328, 0x328);
 
 	VALIDATE(CCarnage, field_32C, 0x32C);
 

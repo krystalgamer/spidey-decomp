@@ -160,6 +160,7 @@ int Web_GetGroundY(const CVector* a1)
 // @BIGTODO
 void CTrapWebEffect::Burst(void)
 {
+	printf("void CTrapWebEffect::Burst(void)");
 }
 
 // @Ok
