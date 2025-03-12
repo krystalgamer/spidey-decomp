@@ -49,6 +49,33 @@ EXPORT CVector gCarnageVector = { 0, 0, 0 };
 
 // @NotOk
 // @Note: validate when inlined
+INLINE i32 CCarnage::CalculateAngleDelta(void)
+{
+	CSVector v5;
+	v5.vx = 0;
+	v5.vy = 0;
+	v5.vz = 0;
+
+	Utils_CalcAim(&v5, &gCarnageVector, &this->mPos);
+	i32 v3 = v5.vy;
+
+	Utils_CalcAim(&v5, &gCarnageVector, &MechList->mPos);
+	i32 result = v5.vy - v3;
+
+	if (result > 2048)
+	{
+		result -= 4096;
+	}
+	else if (result < -2048)
+	{
+		result += 4096;
+	}
+
+	return result;
+}
+
+// @NotOk
+// @Note: validate when inlined
 INLINE void CCarnage::GetArenaPositionFromAngleOffset(
 		i32 a2,
 		CVector *a3)

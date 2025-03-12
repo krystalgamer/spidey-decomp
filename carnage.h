@@ -33,6 +33,7 @@ public:
 	EXPORT void Initialise(void);
 	EXPORT void SnapArenaPosition(CVector *);
 	EXPORT void GetArenaPositionFromAngleOffset(i32,CVector *);
+	EXPORT i32 CalculateAngleDelta(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
