@@ -8,6 +8,9 @@
 #include "m3dutils.h"
 #include "spool.h"
 
+// @Ok
+u8 gWhatIf;
+
 u32 SuspendedDistance;
 u8 gPsxItemsIndex;
 const char *gObjFile;

@@ -36,9 +36,10 @@ public:
 	EXPORT i32 CalculateAngleDelta(void);
 	EXPORT void TugWebTrapped(void);
 	EXPORT void GetTrapped(void);
+	EXPORT void DoPhysics(void);
+	EXPORT void TakeHit(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
-	EXPORT void DoPhysics(void);
 
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
@@ -58,7 +59,8 @@ public:
 	void* field_344;
 
 	SHandle hBubble;
-	u8 padAfter350[0x354-0x350];
+
+	i32 field_350;
 
 	i32 field_354;
 	i32 field_358;

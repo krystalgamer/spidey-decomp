@@ -17,6 +17,12 @@
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
 
+// @Ok
+EXPORT i32 gCarnageXa[4] = { 0x48, 5, 0x48, 5 };
+
+// @Ok
+EXPORT i32 gCarnageWhatIfXa[4] = { 0x11, 5, 0x11, 5};
+
 const i32 gCarnageFour = 4;
 const i32 gCarnage200 = 0x200;
 
@@ -48,6 +54,102 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @Matching
+void CCarnage::TakeHit(void)
+{
+	CTrapWebEffect *v4;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			v4 = static_cast<CTrapWebEffect *>(
+					Mem_RecoverPointer(&this->field_104));
+			if (v4)
+				v4->Burst();
+
+			this->field_104.field_0 = 0;
+
+			if (this->field_218 & 0x40)
+			{
+				this->RunAnim(0x20u, 0, -1);
+			}
+			else if (this->field_218 & 0x20)
+			{
+				this->RunAnim(0x1Cu, 0, -1);
+			}
+			else if (this->field_218 & 8)
+			{
+				this->RunAnim(0x1Bu, 0, -1);
+			}
+			else if (this->field_218 & 0x10)
+			{
+				this->RunAnim(0x1Au, 0, -1);
+			}
+			else
+			{
+				this->RunAnim(0x19u, 0, -1);
+			}
+			this->dumbAssPad++;
+		case 1:
+			if (this->field_330 >= this->field_80)
+			{
+				this->mPos += this->field_80 * this->field_334;
+				this->field_330 -= this->field_80;
+			}
+			else
+			{
+				this->mPos += (this->field_330 * this->field_334);
+
+				this->field_330 = 0;
+				if (this->field_12A == 32)
+					this->field_142 = 1;
+			}
+
+			if (this->field_142 && !this->field_330)
+			{
+				if (this->field_35C == 4)
+				{
+					if (Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+					{
+						this->field_31C.bothFlags = 4096;
+						this->dumbAssPad = 0;
+						break;
+					}
+
+					if (gWhatIf)
+					{
+						i32 v7 = Rnd(4);
+						v7 &= 0xFFFFFFFE;
+						this->PlayXA(
+							gCarnageWhatIfXa[v7],
+							gCarnageWhatIfXa[v7 + 1],
+							60);
+					}
+					else
+					{
+						i32 v8 = Rnd(4);
+						v8 &= 0xFFFFFFFE;
+						this->PlayXA(
+							gCarnageXa[v8],
+							gCarnageXa[v8 + 1],
+							60);
+
+					}
+				}
+
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+	}
+}
+
+// @MEDIUMTODO
+void CCarnage::DoPhysics(void)
+{
+    printf("CCarnage::DoPhysics(void)");
+}
 
 // @Ok
 // @AlmostMatching: On case 2, when assigning to registerArr the registers ecx and edx are swaped
@@ -826,10 +928,6 @@ CCarnageElectrified::~CCarnageElectrified(void)
 {
 }
 
-// @BIGTODO
-void CCarnage::DoPhysics(void)
-{}
-
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
 
@@ -843,6 +941,8 @@ void validate_CCarnage(void){
 
 	VALIDATE(CCarnage, field_344, 0x344);
 	VALIDATE(CCarnage, hBubble, 0x348);
+
+	VALIDATE(CCarnage, field_350, 0x350);
 
 	VALIDATE(CCarnage, field_354, 0x354);
 	VALIDATE(CCarnage, field_358, 0x358);

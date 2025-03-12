@@ -269,5 +269,6 @@ EXPORT extern CBody* EnvironmentalObjectList;
 EXPORT extern CBody* SuspendedList;
 
 EXPORT extern const char *gObjFile;
+EXPORT extern u8 gWhatIf;
 
 #endif
