@@ -31,6 +31,7 @@ public:
 	EXPORT void Laugh(void);
 	EXPORT void CheckSlideParams(void);
 	EXPORT void Initialise(void);
+	EXPORT void SnapArenaPosition(CVector *);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);

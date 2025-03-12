@@ -45,6 +45,17 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
 
+// @NotOk
+// @Note: validate when inlined
+INLINE void CCarnage::SnapArenaPosition(CVector *pVec)
+{
+	i32 GroundHeight = Utils_GetGroundHeight(pVec, 0, 0x2000, 0);
+	DoAssert(GroundHeight != -1, "Error");
+
+	if (GroundHeight != -1)
+		pVec->vy = GroundHeight - (this->field_21E << 12);
+}
+
 // @Ok
 // @AlmostMatching: CameraList seems to be volatile, but don't care enough to
 // get it match, it'd require a lot of re-write for little gain
