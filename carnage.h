@@ -35,6 +35,7 @@ public:
 	EXPORT void GetArenaPositionFromAngleOffset(i32,CVector *);
 	EXPORT i32 CalculateAngleDelta(void);
 	EXPORT void TugWebTrapped(void);
+	EXPORT void GetTrapped(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);

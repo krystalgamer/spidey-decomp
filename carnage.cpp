@@ -12,6 +12,7 @@
 #include "spidey.h"
 #include "m3dzone.h"
 #include "web.h"
+#include "ai.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -47,6 +48,86 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: On case 2, when assigning to registerArr the registers ecx and edx are swaped
+void CCarnage::GetTrapped(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_328 = 16;
+			new CAIProc_StateSwitchSendMessage(this, 14);
+
+			this->RunAnim(9u, 0, -1);
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			this->field_328 = 16;
+
+			if (this->field_142)
+			{
+				this->RunAnim(0xAu, 0, -1);
+				DoAssert(1u, "Bad register index");
+				this->registerArr[4] = 0;
+				this->field_1F8 = 2;
+				this->dumbAssPad++;
+			}
+			break;
+		case 2:
+			this->field_328 = 16;
+			if (this->field_12A != 10 &&
+					this->field_12A != 9 ||
+					this->field_142 )
+			{
+				this->RunAnim(0xAu, 0, -1);
+			}
+
+			if (--this->field_1F8 <= 0)
+			{
+				// @FIXME: assuming it's trap web effect because of other instances
+				CTrapWebEffect *v6 = static_cast<CTrapWebEffect *>(
+						Mem_RecoverPointer(&this->field_104));
+				if ( !v6
+					|| (DoAssert(1u, "Bad register index"), v6->field_44[15] == this->registerArr[4]) )
+				{
+					this->dumbAssPad++;
+				}
+				else
+				{
+					i32 v7 = v6->field_44[15];
+					DoAssert(1u, "Bad register index");
+					this->registerArr[4] = v7;
+					this->field_1F8 = 2;
+				}
+			}
+			break;
+		case 3:
+			this->field_328 = 16;
+			if (this->field_12A == 11)
+			{
+				this->RunAnim(0xBu, 0, -1);
+				CTrapWebEffect *v9 = static_cast<CTrapWebEffect *>(
+						Mem_RecoverPointer(&this->field_104));
+				if (v9)
+					v9->Burst();
+			}
+			else
+			{
+				if (this->field_142)
+				{
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+		default:
+			DoAssert(0, "Unknown substate!");
+			break;
+	}
+}
+
 
 // @Ok
 // @AlmostMatching: for some reason registerArr assignements are out of order

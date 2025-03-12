@@ -112,7 +112,7 @@ class CTrapWebEffect : public CNonRenderedBit
 		EXPORT void Burst(void);
 
 		SHandle field_3C;
-		void *field_44;
+		i32 *field_44;
 		u8 padAfter44[0x418-0x44-4];
 
 		u8 field_418;
