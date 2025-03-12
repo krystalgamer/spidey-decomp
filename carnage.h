@@ -32,6 +32,7 @@ public:
 	EXPORT void CheckSlideParams(void);
 	EXPORT void Initialise(void);
 	EXPORT void SnapArenaPosition(CVector *);
+	EXPORT void GetArenaPositionFromAngleOffset(i32,CVector *);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT void DoPhysics(void);
@@ -41,6 +42,7 @@ public:
 	EXPORT virtual void MakeSonicRipple(CVector*);
 
 	u8 carnageStartPad[0x8];
+
 
 	void* field_32C;
 

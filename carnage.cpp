@@ -45,8 +45,28 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
 
+EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
 // @NotOk
 // @Note: validate when inlined
+INLINE void CCarnage::GetArenaPositionFromAngleOffset(
+		i32 a2,
+		CVector *a3)
+{
+	CSVector v6;
+	v6.vx = 0;
+	v6.vy = 0;
+	v6.vz = 0;
+
+	Utils_CalcAim(&v6, &gCarnageVector, &this->mPos);
+	v6.vy = (v6.vy + a2) & 0xFFF;
+	Utils_GetVecFromMagDir(a3, 868, &v6);
+
+	this->SnapArenaPosition(a3);
+}
+
+// @Ok
+// @Matching: validate when inlined
 INLINE void CCarnage::SnapArenaPosition(CVector *pVec)
 {
 	i32 GroundHeight = Utils_GetGroundHeight(pVec, 0, 0x2000, 0);
