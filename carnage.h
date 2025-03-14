@@ -39,6 +39,7 @@ public:
 	EXPORT void DoPhysics(void);
 	EXPORT void TakeHit(void);
 	EXPORT void StretchJumpFlow(void);
+	EXPORT void DoubleAxeHandSlash(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
@@ -47,7 +48,7 @@ public:
 	EXPORT virtual void MakeSonicRipple(CVector*);
 	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 
-	u8 carnageStartPad[0x4];
+	i32 field_324;
 
 
 	i32 field_328;

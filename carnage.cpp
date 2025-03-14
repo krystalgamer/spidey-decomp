@@ -13,6 +13,7 @@
 #include "m3dzone.h"
 #include "web.h"
 #include "ai.h"
+#include "ps2lowsfx.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -28,6 +29,12 @@ EXPORT i32 gCarnageStretchJumpXaWhatIf[4] = { 0x11, 4, 0x11, 4};
 
 // @Ok
 EXPORT i32 gCarnageStretchJumpXa[4] = { 0x48, 4, 0x48, 4};
+
+// @Ok
+EXPORT i32 gCarnageDoubleAxeWhatIfXa[4] = { 0x10, 2, 0x10, 3 };
+
+// @Ok
+EXPORT i32 gCarnageDoubleAxeXa[4] = { 0x47, 2, 0x47, 3 };
 
 const i32 gCarnageFour = 4;
 const i32 gCarnage200 = 0x200;
@@ -62,6 +69,129 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: vectors different order
+void CCarnage::DoubleAxeHandSlash(void)
+{
+	i32 v13;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->mAccellorVel.vz = 0;
+			this->mAccellorVel.vy = 0;
+			this->mAccellorVel.vx = 0;
+
+			this->field_218 |= gCarnageFour;
+			this->field_218 &= 0xFFFFFFFE;
+
+			this->RunAnim(0x23u, 0, -1);
+
+			this->field_324 = 0;
+
+			if (gWhatIf)
+			{
+				i32 v10 = Rnd(4);
+				v10 &= 0xFFFFFFFE;
+
+				this->PlayXA(
+						gCarnageDoubleAxeWhatIfXa[v10],
+						gCarnageDoubleAxeWhatIfXa[v10 + 1],
+						60);
+			}
+			else
+			{
+				i32 v14 = Rnd(4);
+				v14 &= 0xFFFFFFFE;
+
+				this->PlayXA(
+						gCarnageDoubleAxeXa[v14],
+						gCarnageDoubleAxeXa[v14 + 1],
+						60);
+			}
+
+			this->field_194 |= 0x22000;
+			this->field_194 &= 0xFFFBBFFF;
+
+			DoAssert(1u, "Bad register index");
+			this->registerArr[1] = 0;
+
+			new CAIProc_MonitorAttack(this, 5, 243712, 6, 16);
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			this->field_194 |= 0x22000;
+			this->field_194 &= 0xFFFBBFFF;
+
+			if (this->field_288 & 0x10)
+			{
+				this->field_288 &= ~0x10;
+				v13 = 1;
+			}
+			else
+			{
+				v13 = 0;
+			}
+
+			if (v13)
+			{
+				DoAssert(1u, "Bad register index");
+				this->registerArr[1] = 1;
+
+				SHitInfo v17;
+				v17.field_C.vx = 0;
+				v17.field_C.vy = 0;
+				v17.field_C.vz = 0;
+
+				v17.field_0 = 14;
+				v17.field_4 = 11;
+
+				v17.field_C = (MechList->mPos - this->mPos) >> 12;
+				v17.field_C.vy = 0;
+
+				VectorNormal(
+						reinterpret_cast<VECTOR*>(&v17.field_C),
+						reinterpret_cast<VECTOR*>(&v17.field_C));
+
+				v17.field_8 = 30;
+
+				MechList->Hit(&v17);
+			}
+			else
+			{
+					if (this->field_128 >= 5)
+					{
+						if ((this->field_324 & 1) == 0)
+						{
+							this->field_324 |= 1;
+
+							SFX_PlayPos(
+									(Rnd(6) + 476) | 0x8000,
+									&this->mPos,
+									0);
+						}
+					}
+
+				if (this->field_142)
+				{
+					this->field_194 |= 0x44000u;
+					this->field_194 &= 0xFFFDDFFF;
+
+					this->field_218 &= 0xFFFFFFFB;
+					this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+
+
+
+			break;
+		default:
+			DoAssert(0, "Unknown state");
+			break;
+	}
+}
 
 // @Ok
 // @AlmostMatching: vector assignemnt and creation different order and rebased
@@ -1090,6 +1220,8 @@ CCarnageElectrified::~CCarnageElectrified(void)
 
 void validate_CCarnage(void){
 	VALIDATE_SIZE(CCarnage, 0x37C);
+
+	VALIDATE(CCarnage, field_324, 0x324);
 
 	VALIDATE(CCarnage, field_328, 0x328);
 
