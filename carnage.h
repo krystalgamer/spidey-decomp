@@ -44,6 +44,7 @@ public:
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual void MakeSonicRipple(CVector*);
+	EXPORT virtual u8 TugImpulse(CVector*, CVector*, CVector*);
 
 	u8 carnageStartPad[0x4];
 

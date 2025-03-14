@@ -53,7 +53,79 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 	{ 0x40701, 0x0D291D41B, 0x6CF38ACE },
 };
 
+// @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: diff assignet to vectors and ebx is not used by my code
+// @Test
+u8 CCarnage::TugImpulse(
+		CVector *a2,
+		CVector *a3,
+		CVector *a4)
+{
+	if (this->field_31C.bothFlags != 256)
+		return 0;
+
+	this->field_2A8 &= ~8u;
+
+	if (a4)
+	{
+		if (this->field_344)
+			Mem_Delete(this->field_344);
+
+		this->field_344 = a4;
+		this->field_330 = 666;
+
+		this->field_334 = gGlobalNormal;
+
+		CVector v19;
+		v19.vz = a4[7].vz - this->mPos.vz;
+		v19.vx = a4[7].vx - this->mPos.vx;
+		v19.vy = this->mPos.vy;
+
+		Utils_CalcAim(&this->mAngles, &this->mPos, &v19);
+	}
+	else
+	{
+		a3->vy = 0;
+		*a3 >>= 12;
+
+		VectorNormal(
+				reinterpret_cast<VECTOR*>(a3),
+				reinterpret_cast<VECTOR*>(a3));
+
+		this->field_334 = (*a3 * 1000) / 24;
+		this->field_330 = 24;
+
+		CVector v19 = (this->mPos + (*a3 * 1000));
+		i32 v16 = Utils_XZDist(&v19, &gGlobalNormal);
+		if (v16 < this->field_350 && v16 > 256)
+		{
+			CVector a1;
+			a1.vx = v19.vx >> 12;
+			a1.vy = 0;
+			a1.vz = v19.vz >> 12;
+
+			VectorNormal(
+					reinterpret_cast<VECTOR *>(&a1),
+					reinterpret_cast<VECTOR *>(&a1));
+
+			a1 *= Rnd(96) + 128;
+			a1.vy = v19.vy;
+
+			this->field_334 = (a1 -  this->mPos) / 24;
+		}
+		
+		Utils_CalcAim(&this->mAngles, &this->mPos, &v19);
+		this->CheckSlideParams();
+	}
+
+	this->field_31C.bothFlags = 512;
+	this->dumbAssPad = 0;
+
+	return 1;
+}
 
 // @Ok
 // @Matching
@@ -953,6 +1025,7 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_378, 0x378);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
+	VALIDATE_VTABLE(CCarnage, TugImpulse, 6);
 	VALIDATE_VTABLE(CCarnage, Grab, 10);
 	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 17);
 }
