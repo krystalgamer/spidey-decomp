@@ -6,6 +6,9 @@
 EXPORT i32 gADXT;
 EXPORT bool gXAAllowed;
 
+u8 gCarnageXaRelated = 1;
+u32 gCarnageXaRelatedTwo;
+
 
 // @SMALLTODO
 void RedBook_MwErrFunc(void *,char *)

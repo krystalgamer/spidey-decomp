@@ -20,4 +20,7 @@ EXPORT void Redbook_XASetVol(i32);
 EXPORT i32 Redbook_XAStat(void);
 EXPORT void Redbook_XAPause(bool);
 
+EXPORT extern u8 gCarnageXaRelated;
+EXPORT extern u32 gCarnageXaRelatedTwo;
+
 #endif

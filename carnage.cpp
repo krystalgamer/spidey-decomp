@@ -14,6 +14,7 @@
 #include "web.h"
 #include "ai.h"
 #include "ps2lowsfx.h"
+#include "ps2redbook.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -36,7 +37,23 @@ EXPORT i32 gCarnageDoubleAxeWhatIfXa[4] = { 0x10, 2, 0x10, 3 };
 // @Ok
 EXPORT i32 gCarnageDoubleAxeXa[4] = { 0x47, 2, 0x47, 3 };
 
+// @Ok
+EXPORT i32 gCarnageStretchAdvXa[20] = 
+{
+	0x47, 0, 0x47, 1, 0x47, 8, 0x47, 9, 0x47, 0xC, 0x48, 1, 0x48,
+	0x2, 0x48, 3, 0x48, 0x0D, 0x48, 0x0E
+};
+
+// @Ok
+EXPORT i32 gCarnageStretchAdvWhatIfXa[20] =
+{
+	0x10, 1, 0x10, 0, 0x10, 8, 0x10, 9, 0x10, 0x0C, 0x11, 1, 0x11,
+	2, 0x11, 3, 0x11, 0x0A, 0x11, 0x0B
+};
+
+const i32 gCarnageOne = 1;
 const i32 gCarnageFour = 4;
+const i32 gCarnage100 = 0x100;
 const i32 gCarnage200 = 0x200;
 const i32 gCarnage400 = 0x400;
 
@@ -69,6 +86,119 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+
+// @Ok
+// @AlmostMatching: mine has 4 more bytes on the stack
+// and SnapArenaPosition is inlined both times, while for the OG was only inlined once
+// @Test
+void CCarnage::StretchJumpAdvance(void)
+{
+	i32 v9;
+	i32 v6;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->GetArenaPositionFromAngleOffset(
+					this->CalculateAngleDelta() < 0 ? -190 : 190,
+					&this->field_240);
+
+			this->field_218 |= gCarnageOne;
+			this->RunAnim(6, 0, -1);
+			DoAssert(1u, "Bad register index");
+
+			this->registerArr[0] = 0;
+			this->dumbAssPad++;
+			break;
+		case 1:
+			DoAssert(1u, "Bad register index");
+			this->registerArr[1] += this->field_80;
+			DoAssert(1u, "Bad register index");
+
+			v9 = this->CalculateAngleDelta();
+
+			if ( ((this->mAccellorVel.vx >> 12) * (MechList->mAccellorVel.vx >> 12)
+					+ (this->mAccellorVel.vz >> 12) * (MechList->mAccellorVel.vz >> 12)) < 0
+				&& Utils_XZDist(&this->mPos, &MechList->mPos) < 768 )
+
+			{
+				v9 = 0;
+			}
+
+			v6 = my_abs(v9);
+
+			if (v6 >= 380 && v6 <= 1536)
+			{
+				DoAssert(1u, "Bad register index");
+				if (this->registerArr[0] <= 300)
+				{
+					this->GetArenaPositionFromAngleOffset(
+							v9 < 0 ? -190 : 190,
+							&this->field_240);
+
+					this->field_218 |= gCarnageOne;
+					if (this->field_142)
+						this->RunAnim(7, 0, -1);
+
+					if (gCarnageXaRelated && !gCarnageXaRelatedTwo)
+					{
+						if (gWhatIf)
+						{
+							i32 tmp = Rnd(20);
+							tmp &= 0xFFFFFFFE;
+
+							this->PlayXA(
+									gCarnageStretchAdvWhatIfXa[tmp],
+									gCarnageStretchAdvWhatIfXa[tmp + 1],
+									60);
+						}
+						else
+						{
+							i32 tmp = Rnd(20);
+							tmp &= 0xFFFFFFFE;
+
+							this->PlayXA(
+									gCarnageStretchAdvXa[tmp],
+									gCarnageStretchAdvXa[tmp + 1],
+									60);
+						}
+					}
+				}
+				else
+				{
+					this->mAccellorVel.vz = 0;
+					this->mAccellorVel.vy = 0;
+					this->mAccellorVel.vx = 0;
+					this->field_218 &= 0xFFFFFFFE;
+					this->RunAnim(8, 0, -1);
+
+					this->field_218 |= gCarnage100;
+					this->dumbAssPad++;
+				}
+			}
+			else
+			{
+				this->mAccellorVel.vz = 0;
+				this->mAccellorVel.vy = 0;
+				this->mAccellorVel.vx = 0;
+				this->field_218 &= ~1u;
+				this->RunAnim(8u, 0, -1);
+				this->dumbAssPad++;
+			}
+
+			break;
+		case 2:
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			DoAssert(0, "Unknown state");
+			break;
+	}
+}
 
 // @Ok
 // @AlmostMatching: vectors different order
@@ -639,7 +769,7 @@ INLINE void CCarnage::GetArenaPositionFromAngleOffset(
 }
 
 // @Ok
-// @Matching: validate when inlined
+// @Matching
 INLINE void CCarnage::SnapArenaPosition(CVector *pVec)
 {
 	i32 GroundHeight = Utils_GetGroundHeight(pVec, 0, 0x2000, 0);

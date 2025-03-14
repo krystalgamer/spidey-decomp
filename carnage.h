@@ -40,6 +40,7 @@ public:
 	EXPORT void TakeHit(void);
 	EXPORT void StretchJumpFlow(void);
 	EXPORT void DoubleAxeHandSlash(void);
+	EXPORT void StretchJumpAdvance(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
