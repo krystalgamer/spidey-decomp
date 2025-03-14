@@ -38,6 +38,7 @@ public:
 	EXPORT void GetTrapped(void);
 	EXPORT void DoPhysics(void);
 	EXPORT void TakeHit(void);
+	EXPORT void StretchJumpFlow(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
@@ -69,9 +70,8 @@ public:
 	unsigned char padAfter35C[0x10-4];
 
 	int field_36C;
-	int field_370;
-	int field_374;
-	int field_378;
+
+	CVector field_370;
 };
 
 class CSonicBubble : public CBody

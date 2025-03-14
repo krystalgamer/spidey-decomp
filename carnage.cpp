@@ -23,8 +23,15 @@ EXPORT i32 gCarnageXa[4] = { 0x48, 5, 0x48, 5 };
 // @Ok
 EXPORT i32 gCarnageWhatIfXa[4] = { 0x11, 5, 0x11, 5};
 
+// @Ok
+EXPORT i32 gCarnageStretchJumpXaWhatIf[4] = { 0x11, 4, 0x11, 4};
+
+// @Ok
+EXPORT i32 gCarnageStretchJumpXa[4] = { 0x48, 4, 0x48, 4};
+
 const i32 gCarnageFour = 4;
 const i32 gCarnage200 = 0x200;
+const i32 gCarnage400 = 0x400;
 
 #define NUM_CARNAGE_GOOS 19
 
@@ -55,6 +62,87 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: vector assignemnt and creation different order and rebased
+void CCarnage::StretchJumpFlow(void)
+{
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_328 = 16;
+			this->field_370 = this->mPos;
+			this->RunAnim(0x14u, 0, -1);
+
+			this->field_DC = 0;
+			this->mCBodyFlags &= 0xFFEFu;
+
+			if ((this->field_218 & 0x400) == 0)
+			{
+				this->field_218 |= gCarnage400;
+
+				if (gWhatIf)
+				{
+					i32 v11 = Rnd(4);
+					v11 &= 0xFFFFFFFE;
+					this->PlayXA(
+							gCarnageStretchJumpXaWhatIf[v11],
+							gCarnageStretchJumpXaWhatIf[v11 + 1],
+							100);
+				}
+				else
+				{
+					i32 v14 = Rnd(4);
+					v14 &= 0xFFFFFFFE;
+					this->PlayXA(
+							gCarnageStretchJumpXa[v14],
+							gCarnageStretchJumpXa[v14 + 1],
+							100);
+				}
+			}
+
+			this->dumbAssPad++;
+
+			break;
+		case 1:
+			this->field_328 = 16;
+			if (this->field_128 > 8)
+			{
+				if (this->field_128 <= 38)
+				{
+					CVector a3 = ((this->field_240 - this->field_370) >> 12);
+
+					i32 sin = rcossin_tbl[(((this->field_128 - 8) << 10) / 30) & 0xFFF].sin;
+					i32 v18 = (sin * sin) >> 12;
+
+					a3 *= v18;
+
+					this->mPos = this->field_370 + a3;
+				}
+				else
+				{
+					this->mPos = this->field_240;
+					this->field_218 &= 0xFFFFFFFD;
+					this->dumbAssPad = 2;
+				}
+			}
+			break;
+		case 2:
+			this->field_328 = 16;
+
+			if (this->field_142)
+			{
+				this->field_DC = 160;
+				this->mCBodyFlags |= 0x10u;
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+		default:
+			DoAssert(0, "Unknown state");
+			break;
+	}
+}
 
 // @Ok
 // @AlmostMatching: diff assignet to vectors and ebx is not used by my code
@@ -905,9 +993,9 @@ CCarnage::CCarnage(int* a2, int a3)
 	this->field_334.vy = 0;
 	this->field_334.vz = 0;
 
-	this->field_370 = 0;
-	this->field_374 = 0;
-	this->field_378 = 0;
+	this->field_370.vx = 0;
+	this->field_370.vy = 0;
+	this->field_370.vz = 0;
 
 
 	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
@@ -1021,11 +1109,9 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_35C, 0x35C);
 	VALIDATE(CCarnage, field_36C, 0x36C);
 	VALIDATE(CCarnage, field_370, 0x370);
-	VALIDATE(CCarnage, field_374, 0x374);
-	VALIDATE(CCarnage, field_378, 0x378);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
-	VALIDATE_VTABLE(CCarnage, TugImpulse, 6);
+	VALIDATE_VTABLE(CCarnage, TugImpulse, 7);
 	VALIDATE_VTABLE(CCarnage, Grab, 10);
 	VALIDATE_VTABLE(CCarnage, MakeSonicRipple, 17);
 }
