@@ -43,6 +43,7 @@ public:
 	EXPORT void StretchJumpAdvance(void);
 	EXPORT void DoMGSShadow(void);
 	EXPORT void DoSonicBubbleProcessing(void);
+	EXPORT void GetYankedBySpidey(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
@@ -62,7 +63,7 @@ public:
 
 	u8 padAfter33c[0x344-0x33C-4];
 
-	void* field_344;
+	CVector *field_344;
 
 	SHandle hBubble;
 

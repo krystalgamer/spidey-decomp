@@ -88,6 +88,126 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
 
+// @Ok
+// @AlmostMatching: different order assigning vectors and registerarr
+// but the cast of Utils_XZDist to u32 is even weirder since it's a i32 on DoSonicBubbleProcessing
+void CCarnage::GetYankedBySpidey(void)
+{
+	CVector mPoss;
+	i32 v21;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_328 = 16;
+			this->RunAnim(0x21u, 0, -1);
+			DoAssert(1u, "Bad register index");
+			this->registerArr[1] = 0;
+			this->dumbAssPad++;
+		case 1:
+			this->field_328 = 16;
+			if (this->field_142)
+				this->RunAnim(33, 0, -1);
+
+			mPoss = this->mPos;
+			if (this->field_344)
+			{
+				DoAssert(1u, "Bad register index");
+
+				u32 v4 = this->registerArr[1] + this->field_80 / 2;
+
+				if (v4 >= 7)
+				{
+					this->field_330 = 0;
+					i32 GroundHeight = Utils_GetGroundHeight(&this->field_344[7], 0, 0x2000, 0);
+					DoAssert(GroundHeight != -1, "Error");
+
+					this->mPos.vx = this->field_344[7].vx;
+					this->mPos.vy = GroundHeight - (this->field_21E << 12);
+					this->mPos.vz = this->field_344[7].vz;
+				}
+				else
+				{
+					DoAssert(1u, "Bad register index");
+					this->registerArr[1] = v4;
+					this->mPos = this->field_344[v4];
+				}
+			}
+			else
+			{
+				if (this->field_330 >= this->field_80)
+				{
+					this->mPos += this->field_80 * this->field_334;
+					this->field_330 -= this->field_80;
+				}
+				else
+				{
+					this->mPos += (this->field_330 * this->field_334);
+					this->field_330 = 0;
+				}
+			}
+			v21 = 0;
+
+			CVector v24 = { 0, 0, 0 };
+			if (M3dColij_LineToSphere(
+						&mPoss,
+						&this->mPos,
+						&v24,
+						MechList,
+						0,
+						4096))
+			{
+				SHitInfo v28;
+
+				v28.field_C.vx = 0;
+				v28.field_C.vy = 0;
+				v28.field_C.vz = 0;
+
+				v28.field_0 = 14;
+				v28.field_4 = 11;
+
+				v28.field_C = (this->mPos - mPoss) >> 12;
+				v28.field_C.vy = 0;
+
+				VectorNormal(
+						reinterpret_cast<VECTOR*>(&v28.field_C),
+						reinterpret_cast<VECTOR*>(&v28.field_C));
+				v28.field_8 = 30;
+
+				MechList->Hit(&v28);
+
+				v21 = 1;
+				this->mPos = mPoss;
+				this->field_330 = 0;
+			}
+
+
+
+			if (!this->field_330)
+			{
+				CTrapWebEffect *v18 = static_cast<CTrapWebEffect *>(
+						Mem_RecoverPointer(&this->field_10C));
+				if (v18)
+					v18->Burst();
+
+				// @FIXME - casts are weird wtf
+				if (this->field_35C == 4
+					&& static_cast<u32>(Utils_XZDist(&this->mPos, &gGlobalNormal)) < static_cast<u32>(this->field_350))
+				{
+					this->field_31C.bothFlags = 4096;
+					this->dumbAssPad = 0;
+				}
+				else
+				{
+					if (v21)
+						this->field_31C.bothFlags = 0x4000;
+					else
+						this->field_31C.bothFlags = 2;
+					this->dumbAssPad = 0;
+				}
+			}
+			break;
+	}
+}
 
 // @Ok
 // @AlmostMatching: SetScale inline has the OR first for some reason
