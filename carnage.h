@@ -44,6 +44,7 @@ public:
 	EXPORT void DoMGSShadow(void);
 	EXPORT void DoSonicBubbleProcessing(void);
 	EXPORT void GetYankedBySpidey(void);
+	EXPORT void BurnInBubble(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
@@ -61,7 +62,7 @@ public:
 	i32 field_330;
 	CVector field_334;
 
-	u8 padAfter33c[0x344-0x33C-4];
+	i32 field_340;
 
 	CVector *field_344;
 

@@ -52,6 +52,12 @@ EXPORT i32 gCarnageStretchAdvWhatIfXa[20] =
 	2, 0x11, 3, 0x11, 0x0A, 0x11, 0x0B
 };
 
+// @FIXME
+EXPORT i32 gCarnageBurnInBubbleWhatIfXa[32];
+
+// @FIXME
+EXPORT i32 gCarnageBurnInBubbleXa[32];
+
 const i32 gCarnageOne = 1;
 const i32 gCarnageFour = 4;
 const i32 gCarnage100 = 0x100;
@@ -87,6 +93,168 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @Ok
+// @AlmostMatching: if i fix the delta thingy with the XOR and shift bs it causes the stack to reduce to 8 instead of the
+// expected 0xC. Additionally, it doesn't generate a jump to LABEL_37 aka setting field_31C to 2 and dumbasspad to 0
+void CCarnage::BurnInBubble(void)
+{
+	this->field_340 = 30;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			this->field_328 = 16;
+			this->RunAnim(18, 0, -1);
+			DoAssert(1, "Bad register index");
+
+			if (gWhatIf)
+			{
+				i32 v6 = Rnd(32);
+				v6 &= 0xFFFFFFFE;
+
+				this->PlayXA(
+						gCarnageBurnInBubbleWhatIfXa[v6],
+						gCarnageBurnInBubbleWhatIfXa[v6 + 1],
+						100);
+			}
+			else
+			{
+				i32 v7 = Rnd(32);
+				v7 &= 0xFFFFFFFE;
+
+				this->PlayXA(
+						gCarnageBurnInBubbleXa[v7],
+						gCarnageBurnInBubbleXa[v7 + 1],
+						100);
+			}
+
+			if (!this->field_36C)
+			{
+				SendSignalToNode(ControlBaddyList, this->field_358);
+				this->field_36C = 1;
+			}
+			this->dumbAssPad++;
+
+
+			break;
+		case 1:
+			this->field_328 = 16;
+
+			if (this->field_142)
+			{
+				DoAssert(1u, "Bad register index");
+
+				if (this->registerArr[1] == 2)
+				{
+					this->RunAnim(0xFu, 0, -1);
+					this->dumbAssPad++;
+				}
+				else
+				{
+					DoAssert(1u, "Bad register index");
+					this->registerArr[1]++;
+					this->RunAnim(0x13u, 0, -1);
+
+				}
+			}
+			break;
+
+		case 2:
+			this->field_328 = 16;
+			if (this->field_142 && this->field_12A == 15)
+			{
+				this->RunAnim(0x10u, 0, -1);
+
+				i32 v18 = 2048;
+				do
+				{
+					CSVector v19 = { 0, 0, 0};
+
+					Utils_CalcAim(&v19, &gCarnageVector, &MechList->mPos);
+					v19.vy = (v19.vy + v18) & 0xFFF;
+
+					Utils_GetVecFromMagDir(&this->field_240, 768, &v19);
+					this->SnapArenaPosition(&this->field_240);
+
+					v18 += 256;
+				}
+				while (!Utils_LineOfSight(&this->mPos, &this->field_240, 0, 0));
+
+				this->field_218 |= gCarnageOne;
+				this->dumbAssPad++;
+			}
+			break;
+		case 3:
+			this->field_328 = 16;
+			if (this->field_142)
+				this->RunAnim(16, 0, -1);
+
+			if (static_cast<u32>(Utils_XZDist(&this->mPos, &this->field_240)) < 0x20u)
+			{
+				this->mAccellorVel.vz = 0;
+				this->mAccellorVel.vy = 0;
+				this->mAccellorVel.vx = 0;
+
+				this->field_218 &= ~1u;
+				this->RunAnim(0x11u, 0, -1);
+				this->dumbAssPad++;
+			}
+			break;
+		case 4:
+			this->field_328 = 16;
+
+			if (this->field_142)
+			{
+
+				if (this->field_12A == 17)
+				{
+					// @FIXME - what is this all shifting logic wtf
+					/*
+					i32 delta = this->CalculateAngleDelta();
+
+					i32 ecx = delta >= 0x600 ? 0 : 1;
+
+					i32 eax = ecx;
+					eax >>= 31;
+
+					i32 edx = eax;
+					edx ^= ecx;
+
+					edx -= eax;
+
+					if (!edx)
+						*/
+					if (this->CalculateAngleDelta() >= 0x600)
+					{
+						this->RunAnim(0x16u, 0, -1);
+					}
+					else
+					{
+						this->field_31C.bothFlags = 2;
+						this->dumbAssPad = 0;
+					}
+				}
+				else if (this->field_12A == 22)
+				{
+					this->RunAnim(0x17u, 0, -1);
+				}
+				else
+				{
+					this->RunAnim(0x18u, 0, -1);
+					this->dumbAssPad++;
+				}
+			}
+			break;
+		case 5:
+			this->field_328 = 16;
+			if (this->field_142)
+			{
+				this->field_31C.bothFlags = 2;
+				this->dumbAssPad = 0;
+			}
+			break;
+	}
+}
 
 // @Ok
 // @AlmostMatching: different order assigning vectors and registerarr
@@ -1623,7 +1791,11 @@ void validate_CCarnage(void){
 
 	VALIDATE(CCarnage, field_334, 0x334);
 
+	VALIDATE(CCarnage, field_340, 0x340);
+
 	VALIDATE(CCarnage, field_344, 0x344);
+
+
 	VALIDATE(CCarnage, hBubble, 0x348);
 
 	VALIDATE(CCarnage, field_350, 0x350);
