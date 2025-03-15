@@ -15,6 +15,7 @@
 #include "ai.h"
 #include "ps2lowsfx.h"
 #include "ps2redbook.h"
+#include "trig.h"
 
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
@@ -87,6 +88,147 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
 
+
+// @Ok
+// @AlmostMatching: SetScale inline has the OR first for some reason
+void CCarnage::DoSonicBubbleProcessing(void)
+{
+	CSonicBubble *v4;
+	switch (this->field_35C)
+	{
+		case 1:
+			this->field_354 += this->field_80;
+			if (this->field_354 > 240)
+			{
+				this->field_35C = 2;
+				this->field_354 = 0;
+				SendSignalToNode(ControlBaddyList, this->field_358);
+			}
+			break;
+		case 2:
+			v4 = static_cast<CSonicBubble *>(
+					Mem_RecoverPointer(&this->hBubble));
+
+			this->field_350 += 20 * this->field_80;
+			this->field_354 += this->field_80;
+
+			if (v4)
+			{
+				v4->SetScale((this->field_354 << 12) / 30);
+			}
+
+			if (this->field_354 > 30)
+			{
+				this->field_35C = 4;
+				this->field_354 = 0;
+				this->field_350 = 600;
+
+				if (v4)
+				{
+					v4->SetScale(4096);
+				}
+			}
+
+			break;
+		case 4:
+			if (this->field_354 > 300)
+			{
+				this->field_35C = 8;
+				this->field_354 = 0;
+
+				SendSignalToNode(
+						ControlBaddyList,
+						this->field_358);
+			}
+			else
+			{
+				if ((MechList->field_E0 & 2) != 0
+					&& Utils_XZDist(&MechList->mPos, &gGlobalNormal) < this->field_350)
+				{
+					SHitInfo v13;
+
+					v13.field_C.vx = 0;
+					v13.field_C.vy = 0;
+					v13.field_C.vz = 0;
+
+					v13.field_8 = 1;
+					v13.field_0 = 4;
+					if (MechList->field_E2 > 1)
+					{
+						v13.field_0 = 6;
+						v13.field_4 = 16;
+					}
+
+					MechList->Hit(&v13);
+				}
+			}
+			break;
+		case 8:
+			this->field_36C = 0;
+			v4 = static_cast<CSonicBubble*>(
+					Mem_RecoverPointer(&this->hBubble));
+
+			this->field_350 += -20 * this->field_80;
+			this->field_354 += this->field_80;
+
+			if (v4)
+			{
+				v4->SetScale(4096 - ((this->field_354 << 12) / 30));
+			}
+
+			if (this->field_354 > 30)
+			{
+				this->field_35C = 1;
+				this->field_354 = 0;
+				this->field_350 = 0;
+				if (v4)
+				{
+					v4->SetScale(0);
+				}
+			}
+			
+			break;
+		default:
+			DoAssert(0, "Error");
+			break;
+	}
+
+	i32 v12 = 0;
+	if (this->field_350)
+	{
+		if (this->field_31C.bothFlags != 2048
+				&& Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+		{
+			v12 = 1;
+			this->field_E2 -= 2 * this->field_80;
+
+			if (this->field_E2 <= 0)
+			{
+				this->field_E2 = 0;
+				this->field_31C.bothFlags = 2048;
+				this->dumbAssPad = 0;
+			}
+		}
+	}
+	
+	if (v12)
+	{
+		this->field_360 += this->field_80;
+		if (this->field_360 > Utils_GetValueFromDifficultyLevel(300, 300, 240, 120)
+				&& this->field_35C == 4)
+			this->field_354 = 301;
+	}
+	else
+	{
+		this->field_360 = 0;
+	}
+}
+
+// @MEDIUMTODO
+void CCarnage::DoMGSShadow(void)
+{
+	printf("void CCarnage::DoMGSShadow(void)");
+}
 
 // @Ok
 // @AlmostMatching: mine has 4 more bytes on the stack
@@ -1369,6 +1511,9 @@ void validate_CCarnage(void){
 	VALIDATE(CCarnage, field_354, 0x354);
 	VALIDATE(CCarnage, field_358, 0x358);
 	VALIDATE(CCarnage, field_35C, 0x35C);
+
+	VALIDATE(CCarnage, field_360, 0x360);
+
 	VALIDATE(CCarnage, field_36C, 0x36C);
 	VALIDATE(CCarnage, field_370, 0x370);
 

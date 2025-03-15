@@ -41,6 +41,8 @@ public:
 	EXPORT void StretchJumpFlow(void);
 	EXPORT void DoubleAxeHandSlash(void);
 	EXPORT void StretchJumpAdvance(void);
+	EXPORT void DoMGSShadow(void);
+	EXPORT void DoSonicBubbleProcessing(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
@@ -69,9 +71,11 @@ public:
 	i32 field_354;
 	i32 field_358;
 	i32 field_35C;
-	unsigned char padAfter35C[0x10-4];
 
-	int field_36C;
+	i32 field_360;
+	unsigned char padAfter360[0x8];
+
+	u8 field_36C;
 
 	CVector field_370;
 };
