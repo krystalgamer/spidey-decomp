@@ -18,14 +18,18 @@ EXPORT extern f32 gFloatSuperRelated;
 struct SHitInfo
 {
 	u8 field_0;
-	u8 padAfter0[3];
+	u8 padAfter0[1];
+
+	u16 field_2;
 
 	i32 field_4;
-	i16 field_8;
+	u16 field_8;
 	u8 padAfter8[2];
 
 	CVector field_C;
-	u8 bottomPad[4];
+
+	i16 field_18;
+	u16 field_1A;
 };
 
 static unsigned char * const Regions = (unsigned char*)0x006B2449;

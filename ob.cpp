@@ -857,7 +857,13 @@ void validate_SHitInfo(void)
 	VALIDATE_SIZE(SHitInfo, 0x1C);
 
 	VALIDATE(SHitInfo, field_0, 0x0);
+
+	VALIDATE(SHitInfo, field_2, 0x2);
+
 	VALIDATE(SHitInfo, field_4, 0x4);
 	VALIDATE(SHitInfo, field_8, 0x8);
 	VALIDATE(SHitInfo, field_C, 0xC);
+
+	VALIDATE(SHitInfo, field_18, 0x18);
+	VALIDATE(SHitInfo, field_1A, 0x1A);
 }

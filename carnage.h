@@ -48,6 +48,7 @@ public:
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
+	EXPORT virtual i32 Hit(SHitInfo*);
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
 	EXPORT virtual void MakeSonicRipple(CVector*);

@@ -81,8 +81,14 @@ EXPORT i32 gCarnageBurnInBubbleXa[32] =
 	0x4A, 0x0E, 0x4A, 0x0F
 };
 
+const u8 gCarnage10Two = 0x10;
+
 const i32 gCarnageOne = 1;
 const i32 gCarnageFour = 4;
+const i32 gCarnage8 = 0x8;
+const i32 gCarnage10 = 0x10;
+const i32 gCarnage20 = 0x20;
+const i32 gCarnage40 = 0x40;
 const i32 gCarnage100 = 0x100;
 const i32 gCarnage200 = 0x200;
 const i32 gCarnage400 = 0x400;
@@ -116,6 +122,140 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @NotOk
+// @Note: size is off by 1 (0x36B vs 0x36C) but had a couple bugs that i found, should validate
+// @Test
+i32 CCarnage::Hit(SHitInfo* pInfo)
+{
+	if (this->field_E2 <= 0)
+		return 0;
+
+	if (this->field_12A == 20)
+		return 0;
+	if (this->field_12A == 12 && this->field_128 >= 10)
+		return 0;
+
+	if (this->field_12A == 13)
+	{
+		if ((this->field_128 >= 8 && this->field_128 <= 18) ||
+				(this->field_128 >= 28 || this->field_128 <= 2))
+			return 0;
+	}
+	if ( this->field_12A == 34 )
+	{
+		if (this->field_128 >= 12 && this->field_128 <= 22)
+			return 0;
+	}
+	if ( this->field_12A == 35 )
+	{
+		if (this->field_128 >= 5 && this->field_128 <= 12)
+			return 0;
+	}
+
+	this->field_340 = 30;
+	this->mAccellorVel.vz = 0;
+	this->mAccellorVel.vy = 0;
+	this->mAccellorVel.vx = 0;
+	this->field_218 &= 0xFFFFFFF8;
+	this->field_218 &= 0xFFFFFF87;
+
+	i32 v9;
+	if (pInfo->field_0 & 2)
+		v9 = pInfo->field_4;
+	else
+		v9 = 0;
+
+	this->field_318 = v9;
+
+	this->field_E2 -= (pInfo->field_8 * Utils_GetValueFromDifficultyLevel(4096, 1024, 256, 256)) >> 12;
+
+	if (this->field_E2 <= 0)
+	{
+		this->field_31C.bothFlags = 2048;
+		this->dumbAssPad = 0;
+
+		return 1;
+	}
+
+	if (pInfo->field_0 & 8)
+	{
+		if (this->field_31C.bothFlags == 0x2000 && pInfo->field_4 == 2)
+		{
+			this->field_218 |= gCarnage40;
+		}
+		else
+		{
+			CSVector v20 = { 0, 0, 0 };
+
+			Utils_CalcAim(&v20, &this->mPos, &(this->mPos + (pInfo->field_C << 12)));
+
+			i32 v13 = v20.vy - this->mAngles.vy;
+
+			if (v13 < -2048)
+			{
+				v13 += 4096;
+			}
+			else if (v13 > 2048)
+			{
+				v13 -= 4906;
+			}
+
+			if (v13 < -256)
+			{
+				this->field_218 |= gCarnage8;
+			}
+			else if (v13 > 256)
+			{
+				this->field_218 |= gCarnage10;
+			}
+		}
+
+		if (pInfo->field_0 & 2)
+		{
+			if (pInfo->field_4 == 2 || pInfo->field_4 == 6)
+			{
+				this->field_328 = 60;
+				pInfo->field_0 |= gCarnage10Two;
+
+				pInfo->field_18 = 600;
+				pInfo->field_1A = 16;
+
+				VectorNormal(
+						reinterpret_cast<VECTOR *>(&pInfo->field_C),
+						reinterpret_cast<VECTOR *>(&pInfo->field_C));
+			}
+		}
+
+		if (pInfo->field_0 & 0x10)
+		{
+			this->field_334 = (pInfo->field_C * pInfo->field_18) / pInfo->field_1A;
+			this->field_330 = pInfo->field_1A;
+
+			if (*reinterpret_cast<i16*>(&pInfo[1]) > 128)
+			{
+				if ((this->field_218 & 0x40) == 0)
+				{
+					this->field_218 |= gCarnage20;
+
+					CVector v21 = this->mPos + (pInfo->field_C * 512);
+
+					CSVector v20 = { 0, 0, 0 };
+					Utils_CalcAim(&v20, &this->mPos, &v21);
+
+					this->mAngles.vy = (v20.vy - 2048) & 0xFFF;
+				}
+			}
+			this->CheckSlideParams();
+		}
+
+
+	}
+
+	this->field_31C.bothFlags = 1024;
+	this->dumbAssPad = 0;
+	return 1;
+}
 
 // @Ok
 // @AlmostMatching: if i fix the delta thingy with the XOR and shift bs it causes the stack to reduce to 8 instead of the
