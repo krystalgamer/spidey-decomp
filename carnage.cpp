@@ -85,6 +85,7 @@ const u8 gCarnage10Two = 0x10;
 
 const i32 gCarnageOne = 1;
 const i32 gCarnageFour = 4;
+const i32 gCarnage2 = 0x2;
 const i32 gCarnage8 = 0x8;
 const i32 gCarnage10 = 0x10;
 const i32 gCarnage20 = 0x20;
@@ -122,6 +123,195 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 
 // @Ok
 EXPORT CVector gCarnageVector = { 0, 0, 0 };
+
+// @MEDIUMTODO
+void CCarnage::GettingGrabbed(void)
+{
+    printf("CCarnage::GettingGrabbed(void)");
+}
+
+// @MEDIUMTODO
+void CCarnage::ThrowBlades(void)
+{
+    printf("CCarnage::ThrowBlades(void)");
+}
+
+// @MEDIUMTODO
+void CCarnage::AI(void)
+{
+    printf("CCarnage::AI(void)");
+}
+
+// @MEDIUMTODO
+void CCarnage::AxeHandSlash(void)
+{
+    printf("CCarnage::AxeHandSlash(void)");
+}
+
+// @Ok
+// @Note: insane that my code is more optimzeid with all the mAccelor vector assingments
+// @Test
+void CCarnage::SelectAttack(void)
+{
+	i32 v8,v9;
+	i32 v10, v11;
+	switch (this->dumbAssPad)
+	{
+		case 0:
+			if (this->field_35C == 4 &&
+					Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+			{
+				this->field_31C.bothFlags = 4096;
+				this->dumbAssPad = 0;
+				break;
+			}
+
+			if (!MechList->field_8E8 && !MechList->field_8E9)
+			{
+				v10 = this->CalculateAngleDelta();
+				v11 = my_abs(v10);
+
+				if (v11 < 380)
+				{
+					if (MechList->field_E1C == 0x800000)
+					{
+						this->field_31C.bothFlags = 0x4000;
+						this->dumbAssPad = 0;
+					}
+					else if (Utils_XZDist(&MechList->mPos, &gGlobalNormal) >= 700 || this->field_35C == 1 )
+					{
+						if (Utils_XZDist(&this->mPos, &MechList->mPos) < 180)
+							this->field_31C.bothFlags = 8;
+						else
+							this->field_31C.bothFlags = 4;
+
+						this->dumbAssPad = 0;
+					}
+					else
+					{
+						this->field_31C.bothFlags = 0x4000;
+						this->dumbAssPad = 0;
+					}
+
+
+
+					break;
+				}
+				else if (v11 < 1000)
+				{
+					if (this->field_218 & 0x100)
+					{
+						this->mAccellorVel.vz = 0;
+						this->mAccellorVel.vy = 0;
+						this->mAccellorVel.vx = 0;
+
+						this->field_218 &= 0xFFFFFEFE;
+						this->field_31C.bothFlags = 16;
+						this->dumbAssPad = 0;
+					}
+					else
+					{
+						this->GetArenaPositionFromAngleOffset(
+								v10 < 0 ? -190 : 190,
+								&this->field_240);
+						this->field_218 |= gCarnageOne;
+						if (this->field_12A != 2)
+							this->RunAnim(1, 0, -1);
+						this->dumbAssPad++;
+					}
+					break;
+				}
+				else if (v11 < 1536)
+				{
+					if ( (this->field_218 & 0x100) | Rnd(2))
+					{
+						this->mAccellorVel.vz = 0;
+						this->mAccellorVel.vy = 0;
+						this->mAccellorVel.vx = 0;
+
+						this->field_218 &= 0xFFFFFEFE;
+						this->field_31C.bothFlags = 16;
+					}
+					else
+					{
+						this->field_31C.bothFlags = 32;
+					}
+
+					this->dumbAssPad = 0;
+
+					break;
+				}
+				else
+				{
+					this->mAccellorVel.vz = 0;
+					this->mAccellorVel.vy = 0;
+					this->mAccellorVel.vx = 0;
+
+					this->GetArenaPositionFromAngleOffset(
+							2048,
+							&this->field_240);
+
+					this->field_218 |= gCarnage2;
+					this->field_218 &= 0xFFFFFFFE;
+
+					this->field_31C.bothFlags = 64;
+					this->dumbAssPad = 0;
+					break;
+				}
+			}
+			else
+			{
+				this->mAccellorVel.vz = 0;
+				this->mAccellorVel.vy = 0;
+				this->mAccellorVel.vx = 0;
+
+				this->field_218 &= 0xFFFFFFFE;
+				this->field_31C.bothFlags = 16;
+				this->dumbAssPad = 0;
+			}
+
+
+			break;
+		case 1:
+			v8 = this->CalculateAngleDelta();
+
+			if (this->field_142)
+				this->RunAnim(2, 0, -1);
+
+			v9 = my_abs(v8);
+			if (v9 >= 380 && v9 <= 1000)
+			{
+				this->GetArenaPositionFromAngleOffset(
+						v8 < 0 ? -190 : 190,
+						&this->field_240);
+				this->field_218 |= gCarnageOne;
+			}
+			else
+			{
+				this->dumbAssPad--;
+				this->field_218 &= 0xFFFFFFFE;
+			}
+
+			break;
+		case 2:
+
+			if (static_cast<u32>(Utils_XZDist(&this->mPos, &this->field_240)) < 0x40u)
+			{
+				this->mAccellorVel.vz = 0;
+				this->mAccellorVel.vy = 0;
+				this->mAccellorVel.vx = 0;
+
+				this->field_218 &= 0xFFFFFFFE;
+				this->dumbAssPad = 0;
+			}
+			else
+			{
+				if (this->field_142)
+					this->RunAnim(2u, 0, -1);
+			}
+			break;
+	}
+}
 
 // @NotOk
 // @Note: size is off by 1 (0x36B vs 0x36C) but had a couple bugs that i found, should validate
@@ -1971,6 +2161,9 @@ void validate_CCarnage(void){
 
 	VALIDATE(CCarnage, field_36C, 0x36C);
 	VALIDATE(CCarnage, field_370, 0x370);
+
+	VALIDATE_VTABLE(CCarnage, AI, 2);
+	VALIDATE_VTABLE(CCarnage, Hit, 3);
 
 	VALIDATE_VTABLE(CCarnage, CreateCombatImpactEffect, 6);
 	VALIDATE_VTABLE(CCarnage, TugImpulse, 7);

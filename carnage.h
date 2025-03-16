@@ -45,9 +45,14 @@ public:
 	EXPORT void DoSonicBubbleProcessing(void);
 	EXPORT void GetYankedBySpidey(void);
 	EXPORT void BurnInBubble(void);
+	EXPORT void SelectAttack(void);
+	EXPORT void AxeHandSlash(void);
+	EXPORT void ThrowBlades(void);
+	EXPORT void GettingGrabbed(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 
+	EXPORT virtual void AI(void);
 	EXPORT virtual i32 Hit(SHitInfo*);
 	EXPORT virtual u8 Grab(CVector*);
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
