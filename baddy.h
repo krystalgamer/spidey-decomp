@@ -70,7 +70,7 @@ public:
 	int field_1F0;
 	int field_1F4;
 	int field_1F8;
-	__int16 field_1FC;
+	u16 field_1FC;
 	__int16 field_1FE;
 	unsigned char pad[0x1];
 

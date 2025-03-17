@@ -7,6 +7,7 @@
 #include <cmath>
 #include "trig.h"
 #include "ai.h"
+#include "ps2lowsfx.h"
 
 CBody* ControlBaddyList;
 CBaddy* BaddyList;
@@ -174,10 +175,106 @@ void CBaddy::RunAppropriateAnim(void)
 	}
 }
 
-// @MEDIUMTODO
-int CBaddy::SmackSpidey(int, CVector*, int, int)
+// @Ok
+// @Test
+// @Note: offsets on the a3[v19] thingy are -4 somehow
+i32 CBaddy::SmackSpidey(
+		i32 a2,
+		CVector *a3,
+		i32 a4,
+		i32 a5)
 {
-	return 0x06062024;
+	SHook v21, v22;
+
+	v21.Part.vx = 0;
+	v21.Part.vy = 0;
+	v21.Part.vz = 0;
+	v22.Part.vx = 0;
+	v22.Part.vy = 0;
+	v22.Part.vz = 0;
+
+	i32 v19 = 0;
+
+	CVector firstVec;
+
+	if (!gNumDomes)
+	{
+		for (i32 i = 0; ; i++)
+		{
+			if (i >= 32)
+				return 0;
+
+			if (a2 & (1 << i))
+			{
+				v21.Offset = i;
+				v21.Part.vz = 0;
+				v21.Part.vy = 0;
+				v21.Part.vx = 0;
+
+				firstVec = a3[v19];
+
+				M3dUtils_GetDynamicHookPosition(
+						reinterpret_cast<VECTOR*>(&a3[v19++]),
+						this,
+						&v21);
+
+				if (a4)
+				{
+					CVector secondVec = { 0, 0, 0 };
+					secondVec = a3[v19 - 1];
+
+					secondVec += (secondVec - firstVec) >> 1;
+
+					if (Web_CollideWithSuper(MechList, &firstVec, &secondVec, &v22, 0x2000))
+						break;
+				}
+			}
+		}
+
+		this->CreateCombatImpactEffect(&a3[v19 - 1], 0);
+
+		if (this->field_1FC < 0xA)
+		{
+			SFX_PlayPos(0xFu, &MechList->mPos, 0);
+		}
+		else if (this->field_1FC < 0x14)
+		{
+			SFX_PlayPos(0x10u, &MechList->mPos, 0);
+		}
+		else
+		{
+			SFX_PlayPos(0x11u, &MechList->mPos, 0);
+		}
+
+		if (!a5)
+		{
+			SHitInfo v27;
+
+			v27.field_C.vx = 0;
+			v27.field_C.vy = 0;
+			v27.field_C.vz = 0;
+
+			v27.field_0 = 15;
+			v27.field_4 = 8;
+			v27.field_8 = this->field_1FC;
+			v27.field_1 = v22.Offset;
+
+			v27.field_C.vz = (MechList->mPos.vz - this->mPos.vz) >> 12;
+			v27.field_C.vx = (MechList->mPos.vx - this->mPos.vx) >> 12;
+			v27.field_C.vy = 0;
+
+			VectorNormal(
+					reinterpret_cast<VECTOR*>(&v27.field_C),
+					reinterpret_cast<VECTOR*>(&v27.field_C));
+
+			MechList->Hit(&v27);
+
+			if (MechList->field_E2 <= 0)
+				this->Victorious();
+		}
+		return 1;
+	}
+	return 0;
 }
 
 // @NotOk
