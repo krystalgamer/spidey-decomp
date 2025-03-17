@@ -18,7 +18,7 @@ public:
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void) OVERRIDE;
 	EXPORT void DoPhysics(void);
 
-	EXPORT unsigned __int16 GetVariable(unsigned __int16);
+	EXPORT i16 GetVariable(u16);
 
 	unsigned char padTop[0x330-0x324];
 

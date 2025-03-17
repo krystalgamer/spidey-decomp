@@ -247,7 +247,7 @@ void CSuperDocOck::HangAndGetBeaten(void)
 			v5 = Rnd(120) + 120;
 			print_if_false(1u, "Bad register index");
 
-			this->registerArr[1] = v5;
+			this->realRegisterArr[0] = v5;
 
 			this->mCBodyFlags |= 0x10;
 			this->field_DC = 100;
@@ -256,7 +256,7 @@ void CSuperDocOck::HangAndGetBeaten(void)
 			break;
 		case 1:
 			print_if_false(1u, "Bad register index");
-			i32 v2 = this->registerArr[1];
+			i32 v2 = this->realRegisterArr[0];
 			i32 v3 = this->field_80;
 
 			if ( v2 > v3 )
@@ -265,12 +265,12 @@ void CSuperDocOck::HangAndGetBeaten(void)
 				v4 = v2 - v3;
 
 				print_if_false(1u, "Bad register index");
-				this->registerArr[1] = v4;
+				this->realRegisterArr[0] = v4;
 			}
 			else
 			{
 				print_if_false(1u, "Bad register index");
-				this->registerArr[1] = 0;
+				this->realRegisterArr[0] = 0;
 				this->mCBodyFlags &= ~0x10u;
 				this->field_DC = 0;
 				this->field_364 = 0;

@@ -49,7 +49,7 @@ public:
 	EXPORT i32 GetNextWaypoint(void);
 	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT void GetWaypointNearTarget(CVector*, i32, i32, CVector*);
-	EXPORT u16 GetScriptValue(void);
+	EXPORT i16 GetScriptValue(void);
 
 	EXPORT virtual int PlayerIsVisible();
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
@@ -62,7 +62,7 @@ public:
 	EXPORT virtual CBaddy* GetClosest(int, int);
 	EXPORT virtual int ExecuteCommand(unsigned __int16);
 	EXPORT virtual void SetVariable(unsigned __int16);
-	EXPORT virtual u16 GetVariable(u16);
+	EXPORT virtual i16 GetVariable(u16);
 
 	u8 padAfter1A4[4];
 
@@ -83,24 +83,27 @@ public:
 	unsigned char fusdakjfasdPad[0x2];
 
 
-	unsigned char field_20F;
-	unsigned char field_210;
-	unsigned char field_211;
-	unsigned char field_212;
-	unsigned char field_213;
-	unsigned char padAfter213[1];
+	u8 field_20F;
+	u8 field_210;
+	u8 field_211;
+	u8 field_212;
+	u8 field_213;
+	u8 padAfter213[1];
 
 	__int16 field_216;
 	i32 field_218;
 	unsigned char padAFter218[0x1];
 	u8 field_21D;
 
-	__int16 field_21E;
+	i16 field_21E;
 
-	i16 registerArr[6];
-	unsigned char adsfPad[0x2C - 0x18 - 4 - 0xC];
+	//i16 registerArr[6];
+	i16 field_220;
+	i16 realRegisterArr[6];
 
-	int field_230;
+	u8 padAfter222[2];
+
+	i32 field_230;
 	unsigned char field_234;
 
 	unsigned char jasdkfasdkjfajsdfPad[4];

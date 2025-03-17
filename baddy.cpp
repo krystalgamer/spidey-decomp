@@ -8,6 +8,8 @@
 #include "trig.h"
 #include "ai.h"
 #include "ps2lowsfx.h"
+#include "my_assert.h"
+#include "spool.h"
 
 CBody* ControlBaddyList;
 CBaddy* BaddyList;
@@ -22,12 +24,12 @@ extern i16** gTrigNodes;
 
 // @Ok
 // @Matching
-u16 CBaddy::GetScriptValue(void)
+INLINE i16 CBaddy::GetScriptValue(void)
 {
 	u16 result = *this->field_24C;
 	this->field_24C++;
 
-	if (((result >> 8) & 0x80u) == 0 && (((result >> 8) & 0x20u)))
+	if ((result & 0x8000u) == 0 && ((result & 0x2000u)))
 		return this->GetVariable(result);
 
 	return result;
@@ -987,16 +989,126 @@ int CBaddy::ExecuteCommand(unsigned __int16)
 	return 0x21052025;
 }
 
-// @MEDIUMTODO
-void CBaddy::SetVariable(unsigned __int16)
+// @Ok
+// @AlmostMatching: for the case 2120 the code for GetScriptVariable was inlined differently
+// dunno why, already spent an un-godly amount of time matching others (cough cough 2121)
+void CBaddy::SetVariable(u16 a2)
 {
-	printf("test");
+	switch (a2)
+	{
+		case 0x2103:
+			this->field_1FC = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x2106:
+			this->field_1FE = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x2135:
+			{
+				u32 *v6 = reinterpret_cast<u32*>((reinterpret_cast<i32>(this->field_24C) + 3) & 0xFFFFFFFC);
+
+				this->field_23C = *v6;
+				this->field_24C = reinterpret_cast<i16*>(&v6[1]);
+			}
+			break;
+		case 0x212F:
+			{
+				u32 *v7 = reinterpret_cast<u32*>((reinterpret_cast<u32>(this->field_24C) + 3) & 0xFFFFFFFC);
+				u16 Model = Spool_GetModel(*v7, this->mRegion);
+				this->field_24C = reinterpret_cast<i16*>(&v7[1]);
+				this->mModel = Model;
+			}
+			break;
+		case 0x2140:
+			this->mPos.vx = this->GetScriptValue() << 12;
+			break;
+		case 0x2141:
+			this->mPos.vy = this->GetScriptValue() << 12;
+			break;
+		case 0x2142:
+			this->mPos.vz = this->GetScriptValue() << 12;
+			break;
+		case 0x2131:
+			if (*(this->field_24C++))
+				this->mFlags |= 8;
+			else
+				this->mFlags &= ~8;
+			break;
+		case 0x212E:
+			this->field_216 = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x212C:
+
+			this->field_210 = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x212D:
+			this->field_20F = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x2100:
+			this->field_E2 = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x2101:
+			this->field_DC = *this->field_24C;
+			this->field_24C++;
+			break;
+		case 0x2125:
+			{
+				u16 v20 = *this->field_24C;
+				this->field_24C++;
+				DoAssert(v20 < 6u, "Attribute index out of bounds");
+				this->attributeArr[v20] = *this->field_24C++;
+			}
+			break;
+		case 0x2120:
+			{
+				i16 v20 = *this->field_24C++;
+				i16 v21 = this->GetScriptValue();
+
+				DoAssert((u8)v20 < 6, "Bad register index");
+
+				this->realRegisterArr[v20 & 0xFF] = v21;
+			}
+			break;
+
+		case 0x2138:
+			this->field_24C = reinterpret_cast<i16*>((reinterpret_cast<i32>(this->field_24C) + 3 & 0xFFFFFFFC) + 4);
+			break;
+
+
+
+
+
+		case 0x2121:
+			{
+				// @Note: wow
+				i16 *tmp = this->field_24C;
+				i16 tmp2 = *tmp;
+				this->field_24C++;
+				this->csuperend = tmp2;
+			}
+			break;
+
+		case 0x2122:
+			this->field_21E = *this->field_24C;
+			this->field_24C++;
+			break;
+
+
+		default:
+			DoAssert(0, "Unknown script variable");
+			break;
+	}
 }
 
 // @MEDIUMTODO
-unsigned __int16 CBaddy::GetVariable(unsigned __int16)
+i16 CBaddy::GetVariable(u16 a2)
 {
-	return 0x696940;
+	return 696969;
 }
 
 // @BIGTODO
@@ -1102,7 +1214,9 @@ void validate_CBaddy(void){
 	VALIDATE(CBaddy, field_218, 0x218);
 	VALIDATE(CBaddy, field_21D, 0x21D);
 	VALIDATE(CBaddy, field_21E, 0x21E);
-	VALIDATE(CBaddy, registerArr, 0x220);
+
+	VALIDATE(CBaddy, field_220, 0x220);
+	VALIDATE(CBaddy, realRegisterArr, 0x222);
 
 	VALIDATE(CBaddy, field_230, 0x230);
 	VALIDATE(CBaddy, field_234, 0x234);

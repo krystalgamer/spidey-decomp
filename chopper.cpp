@@ -681,7 +681,7 @@ void CChopper::FireMachineGunAtWaypoint(u32 a2, u32 a3)
 {
 	Trig_GetPosition(&this->field_33C, a2);
 	print_if_false(1u, "Bad register index");
-	this->registerArr[1] = a3;
+	this->realRegisterArr[0] = a3;
 	this->field_31C.bothFlags = 4;
 	this->dumbAssPad = 0;
 }

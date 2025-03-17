@@ -146,9 +146,9 @@ void CPlatform::DoPhysics(void)
 }
 
 // @Ok
-u16 CPlatform::GetVariable(u16 a2)
+i16 CPlatform::GetVariable(u16 a2)
 {
-	if (a2 != (unsigned __int16)0x2200)
+	if (a2 != (u16)0x2200)
 	{
 		return CBaddy::GetVariable(a2);
 	}

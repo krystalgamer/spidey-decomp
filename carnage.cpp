@@ -497,7 +497,7 @@ void CCarnage::BurnInBubble(void)
 			{
 				DoAssert(1u, "Bad register index");
 
-				if (this->registerArr[1] == 2)
+				if (this->realRegisterArr[0] == 2)
 				{
 					this->RunAnim(0xFu, 0, -1);
 					this->dumbAssPad++;
@@ -505,7 +505,7 @@ void CCarnage::BurnInBubble(void)
 				else
 				{
 					DoAssert(1u, "Bad register index");
-					this->registerArr[1]++;
+					this->realRegisterArr[0]++;
 					this->RunAnim(0x13u, 0, -1);
 
 				}
@@ -622,7 +622,7 @@ void CCarnage::GetYankedBySpidey(void)
 			this->field_328 = 16;
 			this->RunAnim(0x21u, 0, -1);
 			DoAssert(1u, "Bad register index");
-			this->registerArr[1] = 0;
+			this->realRegisterArr[0] = 0;
 			this->dumbAssPad++;
 		case 1:
 			this->field_328 = 16;
@@ -634,7 +634,7 @@ void CCarnage::GetYankedBySpidey(void)
 			{
 				DoAssert(1u, "Bad register index");
 
-				u32 v4 = this->registerArr[1] + this->field_80 / 2;
+				u32 v4 = this->realRegisterArr[0] + this->field_80 / 2;
 
 				if (v4 >= 7)
 				{
@@ -649,7 +649,7 @@ void CCarnage::GetYankedBySpidey(void)
 				else
 				{
 					DoAssert(1u, "Bad register index");
-					this->registerArr[1] = v4;
+					this->realRegisterArr[0] = v4;
 					this->mPos = this->field_344[v4];
 				}
 			}
@@ -890,12 +890,12 @@ void CCarnage::StretchJumpAdvance(void)
 			this->RunAnim(6, 0, -1);
 			DoAssert(1u, "Bad register index");
 
-			this->registerArr[0] = 0;
+			this->realRegisterArr[0] = 0;
 			this->dumbAssPad++;
 			break;
 		case 1:
 			DoAssert(1u, "Bad register index");
-			this->registerArr[1] += this->field_80;
+			this->realRegisterArr[0] += this->field_80;
 			DoAssert(1u, "Bad register index");
 
 			v9 = this->CalculateAngleDelta();
@@ -913,7 +913,7 @@ void CCarnage::StretchJumpAdvance(void)
 			if (v6 >= 380 && v6 <= 1536)
 			{
 				DoAssert(1u, "Bad register index");
-				if (this->registerArr[0] <= 300)
+				if (this->realRegisterArr[0] <= 300)
 				{
 					this->GetArenaPositionFromAngleOffset(
 							v9 < 0 ? -190 : 190,
@@ -1027,7 +1027,7 @@ void CCarnage::DoubleAxeHandSlash(void)
 			this->field_194 &= 0xFFFBBFFF;
 
 			DoAssert(1u, "Bad register index");
-			this->registerArr[1] = 0;
+			this->realRegisterArr[0] = 0;
 
 			new CAIProc_MonitorAttack(this, 5, 243712, 6, 16);
 			this->dumbAssPad++;
@@ -1050,7 +1050,7 @@ void CCarnage::DoubleAxeHandSlash(void)
 			if (v13)
 			{
 				DoAssert(1u, "Bad register index");
-				this->registerArr[1] = 1;
+				this->realRegisterArr[0] = 1;
 
 				SHitInfo v17;
 				v17.field_C.vx = 0;
@@ -1375,7 +1375,7 @@ void CCarnage::GetTrapped(void)
 			{
 				this->RunAnim(0xAu, 0, -1);
 				DoAssert(1u, "Bad register index");
-				this->registerArr[4] = 0;
+				this->realRegisterArr[3] = 0;
 				this->field_1F8 = 2;
 				this->dumbAssPad++;
 			}
@@ -1395,7 +1395,7 @@ void CCarnage::GetTrapped(void)
 				CTrapWebEffect *v6 = static_cast<CTrapWebEffect *>(
 						Mem_RecoverPointer(&this->field_104));
 				if ( !v6
-					|| (DoAssert(1u, "Bad register index"), v6->field_44[15] == this->registerArr[4]) )
+					|| (DoAssert(1u, "Bad register index"), v6->field_44[15] == this->realRegisterArr[3]) )
 				{
 					this->dumbAssPad++;
 				}
@@ -1403,7 +1403,7 @@ void CCarnage::GetTrapped(void)
 				{
 					i32 v7 = v6->field_44[15];
 					DoAssert(1u, "Bad register index");
-					this->registerArr[4] = v7;
+					this->realRegisterArr[3] = v7;
 					this->field_1F8 = 2;
 				}
 			}
@@ -1451,7 +1451,7 @@ void CCarnage::TugWebTrapped(void)
 			this->mAccellorVel.vx = 0;
 
 			DoAssert(1u, "Bad register index");
-			this->registerArr[1] = 0;
+			this->realRegisterArr[0] = 0;
 			this->dumbAssPad++;
 		case 1:
 			this->field_328 = 16;
@@ -1459,7 +1459,7 @@ void CCarnage::TugWebTrapped(void)
 				this->RunAnim(0xAu, 0, -1);
 			DoAssert(1u, "Bad register index");
 
-			v4 = this->registerArr[1] + this->field_80;
+			v4 = this->realRegisterArr[0] + this->field_80;
 
 			if (v4 > 60)
 			{
@@ -1476,7 +1476,7 @@ void CCarnage::TugWebTrapped(void)
 			else
 			{
 				print_if_false(1u, "Bad register index");
-				this->registerArr[1] = v4;
+				this->realRegisterArr[0] = v4;
 
 				if (this->field_218 & 0x80u)
 				{
