@@ -4,9 +4,36 @@
 #include "validate.h"
 
 // @MEDIUMTODO
-void CChain::Move(void)
+void CChain::Move(CVector *pVec)
 {
-	printf("CChain::Move(void)");
+	this->field_4->field_18 = this->field_4->field_0;
+	this->field_4->field_0 = *pVec;
+
+	this->field_4->field_C = *pVec - this->field_4->field_18;
+
+	for (i32 i = 1; i < this->field_8; i++)
+	{
+		this->field_4[i].field_18 = this->field_4[i].field_0;
+
+		this->field_4[i].field_C = (this->field_4[i].field_C * this->field_20) >> 12;
+		this->field_4[i].field_C.vy = this->field_14;
+
+		this->field_4[i].field_0 += this->field_4[i].field_C;
+		if ( this->field_1C )
+		{
+			if (this->field_4[i].field_0.vy > this->field_18)
+			{
+				this->field_4[i].field_0.vy = this->field_18;
+				this->field_4[i].field_C.vy = 0;
+			}
+		}
+	}
+
+	for (i32 j = 1; j < this->field_8; j++)
+	{
+		CVector v12 = this->field_4[j].field_0 - this->field_4[j-1].field_0;
+	}
+
 }
 
 // @NotOk

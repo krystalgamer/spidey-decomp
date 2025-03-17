@@ -32,6 +32,8 @@ public:
 	EXPORT i32 operator!=(const CVector& other);
 	EXPORT void Zero(void);
 
+	EXPORT i32 LengthSquared(void);
+
 	EXPORT const CVector& operator=(const CVector& rhs) {
 
 		this->vx = rhs.vx;

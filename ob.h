@@ -18,9 +18,8 @@ EXPORT extern f32 gFloatSuperRelated;
 struct SHitInfo
 {
 	u8 field_0;
-	u8 padAfter0[1];
+	u8 padAfter0[3];
 
-	u16 field_2;
 
 	i32 field_4;
 	u16 field_8;

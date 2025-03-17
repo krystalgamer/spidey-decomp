@@ -15,6 +15,23 @@ CVector::CVector(void)
 
 // @Ok
 // @Matching
+i32 CVector::LengthSquared(void)
+{
+	CVector tmp = { 0, 0, 0 };
+
+	tmp.vx = this->vx >> 12;
+	tmp.vy = this->vy >> 12;
+	tmp.vz = this->vz >> 12;
+
+	gte_ldlvl(reinterpret_cast<VECTOR*>(&tmp));
+	gte_sqr0();
+	gte_stlvnl(reinterpret_cast<VECTOR*>(&tmp));
+
+	return tmp.vx + tmp.vy + tmp.vz;
+}
+
+// @Ok
+// @Matching
 i32 CVector::operator!=(const CVector& other)
 {
 	return this->vx != other.vx || this->vy != other.vy || this->vz != other.vz;

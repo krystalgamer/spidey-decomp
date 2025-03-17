@@ -22,7 +22,7 @@ class CChain : public CClass
 		EXPORT CChain(CVector*, i32, i32, i32, i32, i32);
 		EXPORT void SetGroundY(i32);
 		EXPORT virtual ~CChain(void);
-		EXPORT void Move(void);
+		EXPORT void Move(CVector*);
 
 		SChainData* field_4;
 		i32 field_8;
