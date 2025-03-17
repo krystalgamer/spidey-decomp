@@ -3,7 +3,11 @@
 
 #include "validate.h"
 
-// @MEDIUMTODO
+// @NotOk
+// @Test
+// @Note: offsets on the access of shifted pointer is wrong (not worth my effort)
+// stack is 8 bytes longer mostly due to to all the temp variables in the down for loop
+// if cleaned can be made better
 void CChain::Move(CVector *pVec)
 {
 	this->field_4->field_18 = this->field_4->field_0;
@@ -11,27 +15,75 @@ void CChain::Move(CVector *pVec)
 
 	this->field_4->field_C = *pVec - this->field_4->field_18;
 
+
+	SChainData *pData = &this->field_4[1];
 	for (i32 i = 1; i < this->field_8; i++)
 	{
-		this->field_4[i].field_18 = this->field_4[i].field_0;
+		pData->field_18 = pData->field_0;
 
-		this->field_4[i].field_C = (this->field_4[i].field_C * this->field_20) >> 12;
-		this->field_4[i].field_C.vy = this->field_14;
+		pData->field_C = (pData->field_C * this->field_20) >> 12;
+		pData->field_C.vy = this->field_14;
 
-		this->field_4[i].field_0 += this->field_4[i].field_C;
-		if ( this->field_1C )
+		pData->field_0 += pData->field_C;
+		if (this->field_1C)
 		{
-			if (this->field_4[i].field_0.vy > this->field_18)
+			if (pData->field_0.vy > this->field_18)
 			{
-				this->field_4[i].field_0.vy = this->field_18;
-				this->field_4[i].field_C.vy = 0;
+				pData->field_0.vy = this->field_18;
+				pData->field_C.vy = 0;
 			}
 		}
+
+		pData++;
 	}
 
+	SChainData *pPrev = &this->field_4[0];
+	SChainData *pCur = &this->field_4[1];
 	for (i32 j = 1; j < this->field_8; j++)
 	{
-		CVector v12 = this->field_4[j].field_0 - this->field_4[j-1].field_0;
+		if ((pCur->field_0 - pPrev->field_0).LengthSquared() > this->field_10 + 2)
+		{
+			i32 v13 = (pCur->field_0 - pPrev->field_0).Length();
+
+			i32 v14 = pPrev->field_0.vx + this->field_C * (pCur->field_0.vx - pPrev->field_0.vx) / v13 - pCur->field_0.vx;
+			i32 vz = pPrev->field_0.vz;
+			i32 pVecc = (pPrev->field_0.vy
+				+ this->field_C * (pCur->field_0.vy - pPrev->field_0.vy) / v13
+				- pCur->field_0.vy);
+			i32 v16 = pPrev->field_0.vz + this->field_C * (pCur->field_0.vz - vz) / v13 - pCur->field_0.vz;
+			i32 vx = pCur->field_0.vx;
+			i32 vy = pCur->field_0.vy;
+
+			if (pPrev->field_24)
+			{
+				pCur->field_0.vx = v14 + vx;
+				i32 v19 = pVecc;
+				pCur->field_0.vy = (int)pVecc + vy;
+				pCur->field_0.vz += v16;
+				i32 v20 = v14 + pCur->field_C.vx;
+				i32 v21 = pCur->field_C.vz;
+				pCur->field_C.vx = v20;
+				pCur->field_C.vy += (int)v19;
+				pCur->field_C.vz = v16 + v21;
+			}
+			else
+			{
+				pCur->field_0.vx = v14 + vx;
+				i32 v22 = pVecc;
+
+				pCur->field_0.vy = pVecc + vy;
+				pCur->field_0.vz += v16;
+				pCur->field_C.vx += v14;
+				pCur->field_C.vy += v22;
+				pCur->field_C.vz += v16;
+				pPrev->field_C.vx -= (v14 * this->field_24) >> 12;
+				pPrev->field_C.vy -= (v22 * this->field_24) >> 12;
+				pPrev->field_C.vz -= (v16 * this->field_24) >> 12;
+			}
+
+			pPrev++;
+			pCur++;
+		 }
 	}
 
 }
