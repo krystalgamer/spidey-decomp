@@ -58,7 +58,7 @@ CPlatform::CPlatform(i16 * a2,i32 a3)
 	this->mFlags &= 0xFFFD;
 	this->field_38 = 402;
 
-	this->field_24C = reinterpret_cast<i32>(this->SquirtAngles(this->SquirtPos(a2)));
+	this->field_24C = this->SquirtAngles(this->SquirtPos(a2));
 
 	this->field_340 = -1;
 	this->field_DE = a3;

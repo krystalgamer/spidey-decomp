@@ -21,6 +21,19 @@ i32 gBossRelated;
 extern i16** gTrigNodes;
 
 // @Ok
+// @Matching
+u16 CBaddy::GetScriptValue(void)
+{
+	u16 result = *this->field_24C;
+	this->field_24C++;
+
+	if (((result >> 8) & 0x80u) == 0 && (((result >> 8) & 0x20u)))
+		return this->GetVariable(result);
+
+	return result;
+}
+
+// @Ok
 void CBaddy::GetWaypointNearTarget(
 		CVector* a2,
 		i32 a3,

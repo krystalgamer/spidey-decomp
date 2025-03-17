@@ -49,6 +49,7 @@ public:
 	EXPORT i32 GetNextWaypoint(void);
 	EXPORT i32 AddPointToPath(CVector*, i32);
 	EXPORT void GetWaypointNearTarget(CVector*, i32, i32, CVector*);
+	EXPORT u16 GetScriptValue(void);
 
 	EXPORT virtual int PlayerIsVisible();
 	EXPORT virtual void CreateCombatImpactEffect(CVector*, i32);
@@ -61,7 +62,7 @@ public:
 	EXPORT virtual CBaddy* GetClosest(int, int);
 	EXPORT virtual int ExecuteCommand(unsigned __int16);
 	EXPORT virtual void SetVariable(unsigned __int16);
-	EXPORT virtual unsigned __int16 GetVariable(unsigned __int16);
+	EXPORT virtual u16 GetVariable(u16);
 
 	u8 padAfter1A4[4];
 
@@ -107,7 +108,7 @@ public:
 	int field_23C;
 
 	CVector field_240;
-	int field_24C;
+	i16 *field_24C;
 
 
 	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30 - 0xC];
