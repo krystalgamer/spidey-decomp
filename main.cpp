@@ -507,6 +507,7 @@ i32 validate(void)
 	validate_PREManager();
 	validate_CSonicRipple();
 	validate_Vector();
+	validate_SRhinoData();
 
 	puts("[*] Validation done!");
 

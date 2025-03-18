@@ -7,9 +7,18 @@
 #include "baddy.h"
 #include "reloc.h"
 
+struct SRhinoData
+{
+	u16 field_0;
+	u16 field_2;
+	u8 padAfter2[0x8-0x2-0x2];
+
+	i32 field_8;
+};
+
 class CRhino : public CBaddy {
 public:
-	EXPORT CRhino(int*, int);
+	EXPORT CRhino(i16*, i32);
 	EXPORT CRhino(void);
 	EXPORT virtual ~CRhino(void);
 
@@ -73,7 +82,9 @@ class CRhinoNasalSteam : public CFlatBit
 };
 
 void validate_CRhino(void);
+void validate_SRhinoData(void);
 void validate_CRhinoNasalSteam(void);
+
 EXPORT void Rhino_CreateRhino(const unsigned int *stack, unsigned int *result);
 EXPORT void Rhino_RelocatableModuleClear(void);
 EXPORT void Rhino_RelocatableModuleInit(reloc_mod *);

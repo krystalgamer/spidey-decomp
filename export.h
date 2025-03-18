@@ -7,8 +7,6 @@
 
 static int *Animations = (int*)0x006B245C;
 
-static int * const dword_5FCCF4 = (int*)0x5FCCF4;
-
 //static unsigned char * const submarinerDieRelated = (unsigned char*)0x0060CFC4;
 
 static unsigned __int16 * const word_6B2478 = (unsigned __int16*)0x6B2478;
