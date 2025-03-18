@@ -1001,32 +1001,29 @@ void CThug::SetHitDirectionFlag(CVector* pVector)
 	}
 }
 
-// @NotOk
-// Globals
-// also a little out of order with the v6 | 1 thing :(
-CThug::CThug(int *a2, int a3)
+// @Ok
+CThug::CThug(i16 *a2, i32 a3)
 {
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->field_3B8 = Trig_GetLevelId();
 
 	this->ShadowOn();
 	this->field_D0 = 50;
-	this->field_3B0 = *dword_5FCCF4;
+	this->field_3B0 = gAttackRelated;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
-	int v6 = this->field_2A8;
 	this->field_1F4 = a3;
 	this->field_DE = a3;
 
-	__int16 v7 = this->field_38;
 	this->field_230 = 0;
 	this->field_216 = 32;
-	this->field_2A8 = v6 | 1;
+	this->field_2A8 |= 1;
 
-	this->field_DC = v7 != 304 ? 150 : 96;
+
+	this->field_DC = this->field_38 != 304 ? 150 : 96;
 	this->field_D8 = 64;
-	this->field_380 = v7 != 304 ? 400 : 300;
+	this->field_380 = this->field_38 != 304 ? 400 : 300;
 	this->field_31C.bothFlags = 0;
 
 
@@ -1040,14 +1037,14 @@ CThug::CThug(int *a2, int a3)
 
 	this->field_1FC = 10;
 	this->field_394 = 2000;
-	this->ParseScript(reinterpret_cast<unsigned __int16*>(v5));
+	this->ParseScript(reinterpret_cast<u16*>(v5));
 	this->field_212 = 60;
 }
 
 // @Ok
 void Thug_CreateThug(const u32 *stack, u32 *result)
 {
-	i32* v2 = reinterpret_cast<i32*>(*stack);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
 	i32 v3 = static_cast<i32>(stack[1]);
 
 	*result = reinterpret_cast<u32>(new CThug(v2, v3));

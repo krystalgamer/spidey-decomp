@@ -13,7 +13,7 @@
 class CThug : public CBaddy {
 public:
 
-	EXPORT CThug(i32*, i32);
+	EXPORT CThug(i16*, i32);
 	EXPORT virtual ~CThug();
 
 	EXPORT void ClearAttackFlags(void);
