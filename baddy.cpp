@@ -296,7 +296,7 @@ i32 CBaddy::SmackSpidey(
 
 // @Ok
 // @Matching
-i32 CBaddy::DistanceToPlayer(i32 a2){
+INLINE i32 CBaddy::DistanceToPlayer(i32 a2){
 
 	if (this->field_208 && gAttackRelated - this->field_208 <= a2 )
 		return this->field_204;
@@ -807,24 +807,21 @@ int CBaddy::ShouldFall(int a2, int a3)
 	return 0;
 }
 
-// @NotOk
-// Globals
-int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
+// @Ok
+// @Matching
+i32 CBaddy::CheckSightCone(i32 a2, i32 a3, i32 a4, i32 a5, CBody *a6)
 {
-	CSVector v16;
-	v16.vx = 0;
-	v16.vy = 0;
-	v16.vz = 0;
-
+	CSVector v16 = { 0, 0, 0 };
 	if (!a3)
 		return 0;
 
-	int v12 = a6->mPos.vy - this->mPos.vy;
-	if (abs(v12) > (a3 << 12))
+
+	i32 v12 = a6->mPos.vy - this->mPos.vy;
+	if (my_abs(v12) > (a3 << 12))
 		return 0;
 
-	int v13;
-	if (a6 == globalSuper)
+	i32 v13;
+	if (a6 == MechList)
 	{
 		v13 = this->DistanceToPlayer(2);
 	}
@@ -840,7 +837,7 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 		return 0;
 
 	Utils_CalcAim(&v16, &this->mPos, &a6->mPos);
-	int v14 = v16.vy - this->mAngles.vy;
+	i32 v14 = v16.vy - this->mAngles.vy;
 	if (v14 < -2048)
 	{
 		v14 += 4096;
@@ -853,8 +850,7 @@ int CBaddy::CheckSightCone(int a2, int a3, int a4, int a5, CBody *a6)
 		}
 	}
 
-
-	return  abs(v14) <= (a2 >> 1);
+	return my_abs(v14) <= (a2 >> 1);
 }
 
 // @MEDIUMTODO
