@@ -1148,30 +1148,30 @@ CBaddy* FindBaddyOfType(i32 type)
 	return 0;
 }
 
-// @NotOk
-// @FIXME: proc list bro
-void CBaddy::MarkAIProcList(int a2, int a3, int a4)
+// @Ok
+// @Matching
+void CBaddy::MarkAIProcList(i32 a2, i32 a3, i32 a4)
 {
-	unsigned int *head = reinterpret_cast<u32*>(this->mAIProcList);
-	while (head)
+	CAIProc* it = this->mAIProcList;
+
+	while (it)
 	{
-		unsigned int *v5 = head;
-		head = reinterpret_cast<unsigned int*>(head[7]);
+		CAIProc *current = it;
+		it = it->mNext;
 
-		unsigned int v6;
-		if (a2 && !(v5[2] & 0x20000) || a3 && (v5[2] & 0xFF00) == a3)
+
+		if (a2 && (current->mAIProcType & AI_TYPE_UNK_20000) == 0 ||
+				a3 && (current->mAIProcType & 0xFF00) == a3)
 		{
-			v6 = v5[4] | 1;
+			current->field_10 |= 1;
 		}
-		else
+		else if (a4)
 		{
-			if (!a4 || (v5[2] & 0xFF00) != a4)
-				continue;
-
-			v6 = v5[4] | 4;
+			if ((current->mAIProcType & 0xFF00) == a4)
+			{
+				current->field_10 |= 4;
+			}
 		}
-
-		v5[4] = v6;
 	}
 }
 
