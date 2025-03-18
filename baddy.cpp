@@ -418,7 +418,9 @@ int CBaddy::PathCheckGuts(CVector*, CVector*, CVector*, int)
 	return 0x14141414;
 }
 
+// @FIXME
 static int * const dword_5FBEE0 = (int*)0x5FBEE0;;
+
 // @NotOk
 // Globals (rest is matching)
 int CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, int a5)
@@ -435,9 +437,10 @@ int CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, int a5)
 }
 
 
+// @FIXME
 static CBody** const dword_56E990 = (CBody**)0x56E990;
 
-// @Ok
+// @NotOk
 CBody* CBaddy::StruckGameObject(int a2, int a3)
 {
 	CBody *result;
@@ -492,7 +495,7 @@ void CBaddy::Neutralize(void)
 	this->field_2A8 &= 0xB7FFFFFB;
 }
 
-// @Ok
+// @NotOk
 int CBaddy::TugWeb(void)
 {
 	if ( (this->field_2A8 & 0x200) || this->field_E2 <= 0)
@@ -512,7 +515,7 @@ int CBaddy::TugWeb(void)
 }
 
 // @Ok
-void __inline CBaddy::GetLocalPos(CVector *a2, CVector *a3, CSVector *a4)
+INLINT void CBaddy::GetLocalPos(CVector *a2, CVector *a3, CSVector *a4)
 {
 	MATRIX v7;
 
@@ -564,7 +567,7 @@ int CBaddy::MakeSpriteRing(CVector* arg0)
 	return Bit_MakeSpriteRing(&mPos, 24, 8, 1, 512, 32, 16, 0);
 }
 
-// @Ok
+// @NotOk
 int CBaddy::SetHeight(int a2, int a3, int a4)
 {
 	int v5 = this->field_2A8;
@@ -573,6 +576,7 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 		return 1;
 	}
 
+	// @FIXME
 	int *v7 = &this->field_2A4;
 	if (this->field_2A4
 			|| a2
@@ -1128,7 +1132,8 @@ void CBaddy::Baddy_SendSignal(void)
 
 static CBaddy* gBaddylist;
 
-// @Ok
+// @NotOk
+// @FIXME
 CBaddy* FindBaddyOfType(int type)
 {
 	CBaddy *current = gBaddylist;
@@ -1149,7 +1154,8 @@ CBaddy* FindBaddyOfType(int type)
 	return NULL;
 }
 
-// @Ok
+// @NotOk
+// @FIXME: proc list bro
 void CBaddy::MarkAIProcList(int a2, int a3, int a4)
 {
 	unsigned int *head = reinterpret_cast<u32*>(this->mAIProcList);
