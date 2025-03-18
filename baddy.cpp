@@ -10,6 +10,8 @@
 #include "ps2lowsfx.h"
 #include "my_assert.h"
 #include "spool.h"
+#include "m3dcolij.h"
+
 
 CBody* ControlBaddyList;
 CBaddy* BaddyList;
@@ -418,21 +420,18 @@ int CBaddy::PathCheckGuts(CVector*, CVector*, CVector*, int)
 	return 0x14141414;
 }
 
-// @FIXME
-static int * const dword_5FBEE0 = (int*)0x5FBEE0;;
-
-// @NotOk
-// Globals (rest is matching)
-int CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, int a5)
+// @Ok
+// @Matching
+i32 CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, i32 a5)
 {
 
-	int v5 = *dword_5FBEE0;
+	i32 v5 = BaddyCollisionCheck;
 
-	if ( (this->field_2A8 & 0x2000))
-		*dword_5FBEE0 = 1;
+	if ((this->field_2A8 & 0x2000))
+		BaddyCollisionCheck = 1;
 
-	int result = this->PathCheckGuts(a2, a3, a4, a5);
-	*dword_5FBEE0 = v5;
+	i32 result = this->PathCheckGuts(a2, a3, a4, a5);
+	BaddyCollisionCheck = v5;
 	return result;
 }
 
@@ -515,7 +514,7 @@ int CBaddy::TugWeb(void)
 }
 
 // @Ok
-INLINT void CBaddy::GetLocalPos(CVector *a2, CVector *a3, CSVector *a4)
+INLINE void CBaddy::GetLocalPos(CVector *a2, CVector *a3, CSVector *a4)
 {
 	MATRIX v7;
 
