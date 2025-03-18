@@ -9,6 +9,11 @@ EXPORT bool gXAAllowed;
 u8 gCarnageXaRelated = 1;
 u32 gCarnageXaRelatedTwo;
 
+// @Ok
+i32 gRedbookXaRelatedOne;
+// @Ok
+i32 gRedbookXaRelatedTwo;
+
 
 // @SMALLTODO
 void RedBook_MwErrFunc(void *,char *)

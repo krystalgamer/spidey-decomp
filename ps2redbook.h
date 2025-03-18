@@ -22,5 +22,7 @@ EXPORT void Redbook_XAPause(bool);
 
 EXPORT extern u8 gCarnageXaRelated;
 EXPORT extern u32 gCarnageXaRelatedTwo;
+EXPORT extern i32 gRedbookXaRelatedOne;
+EXPORT extern i32 gRedbookXaRelatedTwo;
 
 #endif

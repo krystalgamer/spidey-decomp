@@ -324,23 +324,20 @@ i16* CBody::SquirtAngles(i16* p_info)
 
 // @Ok
 // @Matching
-void CBody::AttachXA(int a2, int a3)
+void CBody::AttachXA(i32 a2, i32 a3)
 {
 	this->field_98 = Vblanks;
 	this->field_9C = a2;
 	this->field_A0 = a3;
 }
 
-static int * const dword_681D1C = (int*)0x681D1C;
-static int * const dword_6612C0 = (int*)0x6612C0;
-
-// @NotOk
-// Replace dword_
+// @Ok
+// @Matching
 void CBody::StopMyXA(void)
 {
-	if ( (Vblanks - this->field_98) < 0x12C
-			&& *dword_681D1C == this->field_9C
-			&& *dword_6612C0 == this->field_A0)
+	if ((Vblanks - this->field_98) < 0x12C
+			&& gRedbookXaRelatedOne == this->field_9C
+			&& gRedbookXaRelatedTwo == this->field_A0)
 	{
 		Redbook_XAStop();
 	}
