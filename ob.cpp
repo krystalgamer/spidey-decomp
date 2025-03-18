@@ -7,6 +7,7 @@
 #include "ps2m3d.h"
 #include "m3dutils.h"
 #include "spool.h"
+#include "utils.h"
 
 // @Ok
 u8 gWhatIf;
@@ -321,13 +322,11 @@ i16* CBody::SquirtAngles(i16* p_info)
 	return p_info;
 }
 
-static int * const dword_6B4CA0 = (int*)0x6B4CA0;
-
-// @NotOk
-// replace dword_
+// @Ok
+// @Matching
 void CBody::AttachXA(int a2, int a3)
 {
-	this->field_98 = *dword_6B4CA0;
+	this->field_98 = Vblanks;
 	this->field_9C = a2;
 	this->field_A0 = a3;
 }
@@ -339,7 +338,7 @@ static int * const dword_6612C0 = (int*)0x6612C0;
 // Replace dword_
 void CBody::StopMyXA(void)
 {
-	if ( (unsigned int)(*dword_6B4CA0 - this->field_98) < 0x12C
+	if ( (Vblanks - this->field_98) < 0x12C
 			&& *dword_681D1C == this->field_9C
 			&& *dword_6612C0 == this->field_A0)
 	{
