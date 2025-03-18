@@ -559,21 +559,20 @@ int CBaddy::MakeSpriteRing(CVector* arg0)
 	return Bit_MakeSpriteRing(&mPos, 24, 8, 1, 512, 32, 16, 0);
 }
 
-// @NotOk
+// @Ok
+// @AlmostMatching: vector assingment is different
 int CBaddy::SetHeight(int a2, int a3, int a4)
 {
-	int v5 = this->field_2A8;
-	if (v5 & 0x8000)
+	if (this->field_2A8 & 0x8000)
 	{
 		return 1;
 	}
 
 	// @FIXME
-	int *v7 = &this->field_2A4;
 	if (this->field_2A4
 			|| a2
-			|| (v5 & 0x40000) != 0
-			|| (v5 & 0x8000000) != 0 && ((v5 & 0x20000000) != 0 || (this->field_2F0 & 4) != 0) )
+			|| (this->field_2A8 & 0x40000) != 0
+			|| (this->field_2A8 & 0x8000000) != 0 && ((this->field_2A8 & 0x20000000) != 0 || (this->field_2F0 & 4) != 0) )
 	{
 		unsigned char v9;
 
@@ -583,26 +582,24 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 		{
 			CVector v16;
 			v16.vx = this->mPos.vx;
-			v16.vy = (this->field_21E << 12) + this->mPos.vy;
+			v16.vy = this->mPos.vy + (this->field_21E << 12);
 			v16.vz = this->mPos.vz;
 
-			int height = Utils_GetGroundHeight(&v16, a3, a4, reinterpret_cast<CBody**>(&this->field_2A4));
+			i32 height = Utils_GetGroundHeight(&v16, a3, a4, &this->field_2A4);
 			if (height == -1)
 			{
 				return 0;
 			}
 
-			int v7Value = *v7;
-			if (v7Value)
+			if (this->field_2A4)
 			{
-				int v12 = *reinterpret_cast<int*>(v7Value + 0x64);
-				if (!v12)
+				if (this->field_2A4->mAccellorVel.vy == 0)
 				{
-					*v7 = v12;
+					this->field_2A4 = 0;
 				}
 				else
 				{
-					height += v12;
+					height += this->field_2A4->mAccellorVel.vy;
 				}
 			}
 
@@ -613,15 +610,12 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 		}
 	}
 
-	// label 21
-	int v13 = this->field_2A0 - (this->field_21E << 12);
-	int vy = this->mPos.vy;
+	i32 v13 = this->field_2A0 - (this->field_21E << 12);
 
-	if (v13 != vy)
+	if (v13 != this->mPos.vy)
 	{
-		int v15 = ((v13 - vy) >> 2) + vy;
-		this->mPos.vy = v15;
-		if ( abs(v15 - v13) <= (*v7 != 0 ? 122880 : 12888))
+		this->mPos.vy += ((v13 - this->mPos.vy) >> 2);
+		if (my_abs(this->mPos.vy - v13) <= (this->field_2A4 == 0 ? 12288 : 122880))
 		{
 			this->mPos.vy = v13;
 		}

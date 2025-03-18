@@ -128,7 +128,7 @@ public:
 	i32 field_29C;
 
 	int field_2A0;
-	int field_2A4;
+	CBody *field_2A4;
 	i32 field_2A8;
 	int field_2AC;
 	int field_2B0;
