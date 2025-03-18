@@ -422,7 +422,7 @@ int CBaddy::PathCheckGuts(CVector*, CVector*, CVector*, int)
 
 // @Ok
 // @Matching
-i32 CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, i32 a5)
+INLINE i32 CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, i32 a5)
 {
 
 	i32 v5 = BaddyCollisionCheck;
@@ -765,15 +765,16 @@ int CBaddy::BumpedIntoSpidey(int a2)
 
 
 // @Ok
-int CBaddy::PlayerIsVisible()
+// @AlmostMatching: vector assingment is different
+i32 CBaddy::PlayerIsVisible()
 {
-	if (!globalSuper->IsDead() &&
-			Utils_LineOfSight(&this->mPos, &globalSuper->mPos, 0, 0)
+	if (!MechList->IsDead() &&
+			Utils_LineOfSight(&this->mPos, &MechList->mPos, 0, 0)
 			)
 	{
-		if (!this->PathCheck( &this->mPos, &globalSuper->mPos, 0, 55))
+		if (!this->PathCheck( &this->mPos, &MechList->mPos, 0, 55))
 		{
-			this->field_1A8[0] = globalSuper->mPos;
+			this->field_1A8[0] = MechList->mPos;
 			this->field_2A8 |= 0x800;
 		}
 		return 1;
