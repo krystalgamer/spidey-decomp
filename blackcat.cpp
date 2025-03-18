@@ -91,7 +91,7 @@ CBlackCat::~CBlackCat(void)
 
 // @NotOk
 // globals
-CBlackCat::CBlackCat(int* a2, int a3)
+CBlackCat::CBlackCat(i16* a2, i32 a3)
 {
 	if (Trig_GetLevelId() != 2051)
 	{
@@ -107,27 +107,28 @@ CBlackCat::CBlackCat(int* a2, int a3)
 	this->field_21E = 100;
 	this->RunAnim(0xC, 0, -1);
 	this->mFlags |= 0x480;
+	// @FIXME
 	this->field_3C = 0x548728;
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_38 = 319;
 	this->field_31C.bothFlags = 1;
 
 	this->field_DE = a3;
 	this->field_DC = 0;
-	this->field_34C = reinterpret_cast<int>(v5);
+	this->field_34C = reinterpret_cast<i32>(v5);
 
 	if (submarinerDieRelated && Trig_GetLevelId() != 2051)
 		this->Die(0);
 }
 
 // @Ok
-void BlackCat_CreateBlackCat(const unsigned int *stack, unsigned int *result)
+void BlackCat_CreateBlackCat(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CBlackCat(v2, v3));
+	*result = reinterpret_cast<u32>(new CBlackCat(v2, v3));
 }
 
 
