@@ -16,7 +16,7 @@
 class CCop : public CBaddy {
 
 public:
-	EXPORT CCop(int*, int);
+	EXPORT CCop(i16*, i32);
 	EXPORT virtual ~CCop(void);
 
 	EXPORT void ClearAttackFlags(void);
