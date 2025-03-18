@@ -724,34 +724,28 @@ INLINE void CBaddy::CleanUpAIProcList(i32 a2)
 	}
 }
 
-// @NotOk
-// Gloabsl
-// and vz
-int CBaddy::BumpedIntoSpidey(int a2)
+// @Ok
+// @Matching
+i32 CBaddy::BumpedIntoSpidey(i32 a2)
 {
-	int v3 = this->field_208;
-	int v4;
+	i32 v4;
 
-	if (v3 && *dword_5FCCF4 <= 4)
+	if (this->field_208 && gAttackRelated - this->field_208 <= 4)
 	{
 		v4 = this->field_204;
 	}
 	else
 	{
-		this->field_208 = *dword_5FCCF4;
-		v4 = Utils_CrapXZDist(this->mPos, globalSuper->mPos);
+		this->field_208 = gAttackRelated;
+		v4 = Utils_CrapXZDist(this->mPos, MechList->mPos);
 		this->field_204 = v4;
 	}
 
 	if (v4 < a2)
 	{
-		__int16 vz = *reinterpret_cast<__int16*>(globalSuper + 0x754); // wrong
-		int twoOneE = this->field_21E;
+		i32 res = this->field_21E - MechList->field_EA8 - (MechList->mPos.vy >> 12) + (this->mPos.vy >> 12);
 
-		int res = twoOneE - vz - (globalSuper->mPos.vy >> 12) + (this->mPos.vy >> 12);
-		int shifted = res >> 31;
-
-		if ( (((shifted) ^ res) - shifted) < 200)
+		if (my_abs(res) < 200)
 			return 1;
 	}
 
