@@ -169,11 +169,11 @@ int CSwinger::IsOneTimeToDie(void)
 	return this->field_180 >= 4096;
 }
 
-// @NotOk
-// globals
-void CSwinger::SetSpideyAnimFrame(int a2)
+// @Ok
+// @Matching
+void CSwinger::SetSpideyAnimFrame(i32 a2)
 {
-	globalSuper->field_128 = (a2 * (this->field_180 - 2048)) >> 11;
+	MechList->field_128 = (a2 * (this->field_180 - 2048)) >> 11;
 }
 
 

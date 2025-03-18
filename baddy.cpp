@@ -568,13 +568,12 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 		return 1;
 	}
 
-	// @FIXME
 	if (this->field_2A4
 			|| a2
 			|| (this->field_2A8 & 0x40000) != 0
 			|| (this->field_2A8 & 0x8000000) != 0 && ((this->field_2A8 & 0x20000000) != 0 || (this->field_2F0 & 4) != 0) )
 	{
-		unsigned char v9;
+		u8 v9;
 
 		if (a2 || ( 
 					v9 = this->field_80, v9 += this->field_213,
