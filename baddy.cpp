@@ -1129,28 +1129,23 @@ void CBaddy::Baddy_SendSignal(void)
 		Trig_SendSignalToLinks(ptr);
 }
 
-static CBaddy* gBaddylist;
-
-// @NotOk
-// @FIXME
-CBaddy* FindBaddyOfType(int type)
+// @Ok
+// @Matching
+CBaddy* FindBaddyOfType(i32 type)
 {
-	CBaddy *current = gBaddylist;
+	CItem *current = BaddyList;
 
-	if (current)
+	while (current)
 	{
-		while (current)
+		if (current->field_38 == type)
 		{
-			if (current->field_38 == type)
-			{
-				return current;
-			}
-
-			current = reinterpret_cast<CBaddy*>(current->field_20);
+			return reinterpret_cast<CBaddy*>(current);
 		}
+
+		current = current->field_20;
 	}
 
-	return NULL;
+	return 0;
 }
 
 // @NotOk
