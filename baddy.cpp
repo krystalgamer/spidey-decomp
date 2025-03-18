@@ -294,22 +294,17 @@ i32 CBaddy::SmackSpidey(
 	return 0;
 }
 
-// @NotOk
-// Global
-int CBaddy::DistanceToPlayer(int a2){
-	int v3; // eax	
-	int result; // eax
-	v3 = this->field_208;
+// @Ok
+// @Matching
+i32 CBaddy::DistanceToPlayer(i32 a2){
 
-	int dwordRead = *dword_5FCCF4;
-
-	if ( v3 && dwordRead - v3 <= a2 )
+	if (this->field_208 && gAttackRelated - this->field_208 <= a2 )
 		return this->field_204;
 
-	this->field_208 = dwordRead;
-	result = Utils_CrapXZDist(this->mPos, globalSuper->mPos);
-	this->field_204 = result;
-	return result;
+	this->field_208 = gAttackRelated;
+	this->field_204 = Utils_CrapXZDist(this->mPos, MechList->mPos);
+
+	return this->field_204;
 }
 
 // @Ok
