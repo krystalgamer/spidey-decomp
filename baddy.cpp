@@ -436,23 +436,21 @@ i32 CBaddy::PathCheck(CVector* a2, CVector* a3, CVector* a4, i32 a5)
 }
 
 
-// @FIXME
-static CBody** const dword_56E990 = (CBody**)0x56E990;
-
-// @NotOk
-CBody* CBaddy::StruckGameObject(int a2, int a3)
+// @Ok
+// @Matching
+CBody* CBaddy::StruckGameObject(i32 a2, i32 a3)
 {
 	CBody *result;
 	  if ( !a2
 			|| (result = Utils_CheckObjectCollision(
 				&this->field_2FC,
 				&this->mPos,
-				globalSuper,
+				MechList,
 				this)) == 0 )
 	  {
-		  if (a3 && (result = Utils_CheckObjectCollision(&this->field_2FC, &this->mPos, *dword_56E990, this)))
+		  if (a3 && (result = Utils_CheckObjectCollision(&this->field_2FC, &this->mPos, BaddyList, this)))
 		  {
-			  print_if_false(result != this, "smoething's wrong in the state of denmark");
+			  DoAssert(result != this, "smoething's wrong in the state of denmark");
 			  return result;
 		  }
 
