@@ -22,7 +22,7 @@ EXPORT i16 gRhinoDazedData[LEN_RHINO_DAZED_DATA];
 EXPORT u32 gRhinoSound;
 extern i32 DifficultyLevel;
 
-extern u8 gActuatorRelated;
+u8 gActuatorRelated;
 extern CBody* EnvironmentalObjectList;
 extern CPlayer* MechList;
 extern i32 gAttackRelated;

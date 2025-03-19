@@ -10,8 +10,8 @@
 #include "m3dutils.h"
 #include "m3dcolij.h"
 #include "spidey.h"
+#include "front.h"
 
-EXPORT u8 gActuatorRelated;
 extern CPlayer* MechList;
 
 EXPORT SHandle gMystHandle;
@@ -227,6 +227,7 @@ CMysterio::CMysterio(void)
 	this->InitItem("mysterio");
 
 	this->mFlags |= 0x480;
+	// @FIXME
 	this->field_3C = 0x54E0F0;
 }
 
@@ -317,11 +318,11 @@ i32 INLINE CMysterio::PlayAndAttachXAPlease(
 }
 
 
-// @NotOk
-// globals
+// @Ok
+// @Matching
 void INLINE CMysterio::ShakePad(void)
 {
-	if (gActuatorRelated)
+	if (gSaveGame.field_7B)
 	{
 		if (Pad_GetActuatorTime(0, 0) <= 2)
 			Pad_ActuatorOn(0, 6, 0, 1);
