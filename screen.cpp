@@ -68,8 +68,8 @@ void screen_DrawCircularFade(void)
     printf("screen_DrawCircularFade(void)");
 }
 
-// @NotOk
-// Globals
+// @Ok
+// @Matching
 void Screen_TargetOn(bool value)
 {
 	gScreenTarget = value;

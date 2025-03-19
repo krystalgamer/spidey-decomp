@@ -22,6 +22,9 @@ CItem* EnviroList;
 i32 gSuperItemRelated = 1;
 f32 gFloatSuperRelated = 1.0f;
 
+// @FIXME - fill
+EXPORT SLight M3d_DefaultLight;
+
 // @SMALLTODO
 void CBody::DeleteStuff(void)
 {
@@ -64,7 +67,7 @@ void CItem::operator delete(void *ptr)
 
 /// @NotOk
 // missing 3C assignement need to understand what it is
-__inline CItem::CItem()
+INLINE CItem::CItem()
 {
 	this->mPos.vx = 0;
 	this->mPos.vy = 0;
@@ -81,7 +84,7 @@ __inline CItem::CItem()
 	this->field_2A = 0x1000;
 	this->field_2C = 0x1000;
 
-	///this->field_3C = ???;
+	this->field_3C = reinterpret_cast<i32>(&M3d_DefaultLight);
 }
 
 // @Ok
@@ -861,4 +864,15 @@ void validate_SHitInfo(void)
 
 	VALIDATE(SHitInfo, field_18, 0x18);
 	VALIDATE(SHitInfo, field_1A, 0x1A);
+}
+
+void validate_SLight(void)
+{
+	VALIDATE_SIZE(SLight, 0x34);
+
+	VALIDATE(SLight, LightMatrix, 0x0);
+
+	VALIDATE(SLight, ColorMatrix, 0x14);
+
+	VALIDATE(SLight, BackColor, 0x28);
 }

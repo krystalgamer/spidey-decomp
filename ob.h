@@ -15,6 +15,20 @@ EXPORT extern u32 SuspendedDistance;
 EXPORT extern i32 gSuperItemRelated;
 EXPORT extern f32 gFloatSuperRelated;
 
+struct SLight
+{
+	// offset: 0000 (18 bytes)
+	i16 LightMatrix[3][3];
+	// offset: 0012
+	u16 Pad1;
+	// offset: 0014 (18 bytes)
+	i16 ColorMatrix[3][3];
+	// offset: 0026
+	u16 Pad2;
+	// offset: 0028 (12 bytes)
+	i32 BackColor[3];
+};
+
 struct SHitInfo
 {
 	u8 field_0;
@@ -65,7 +79,7 @@ public:
 	unsigned char padAfter38[2];
 
 
-	int field_3C;
+	i32 field_3C;
 
 
 
@@ -266,6 +280,7 @@ void validate_CItem(void);
 void validate_CBody(void);
 void validate_CSuper(void);
 void validate_SHitInfo(void);
+void validate_SLight(void);
 
 EXPORT extern CItem* EnviroList;
 EXPORT extern CBody* EnvironmentalObjectList;
