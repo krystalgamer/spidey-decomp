@@ -84,7 +84,7 @@ INLINE CItem::CItem()
 	this->field_2A = 0x1000;
 	this->field_2C = 0x1000;
 
-	this->field_3C = reinterpret_cast<i32>(&M3d_DefaultLight);
+	this->mpLight = reinterpret_cast<i32>(&M3d_DefaultLight);
 }
 
 // @Ok
@@ -710,7 +710,7 @@ void validate_CItem(void){
 	VALIDATE(CItem, field_30, 0x30);
 	VALIDATE(CItem, field_34, 0x34);
 	VALIDATE(CItem, field_38, 0x38);
-	VALIDATE(CItem, field_3C, 0x3C);
+	VALIDATE(CItem, mpLight, 0x3C);
 
 }
 

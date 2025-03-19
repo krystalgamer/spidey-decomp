@@ -64,7 +64,7 @@ CJonah::CJonah(void)
 	}
 
 	this->mFlags |= 0x480;
-	this->field_3C = 0x552010;
+	this->mpLight = 0x552010;
 	this->field_38 = 316;
 
 }
@@ -90,7 +90,7 @@ CJonah::CJonah(int* a2, int a3)
 	}
 
 	this->mFlags |= 0x480;
-	this->field_3C = 0x552010;
+	this->mpLight = 0x552010;
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
 
 	this->field_1F4 = a3;

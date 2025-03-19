@@ -418,7 +418,7 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	this->InitItem("superock");
 	this->mFlags |= 0x480;
 	this->mCBodyFlags &= 0xFFEF;
-	this->field_3C = 0x557928;
+	this->mpLight = 0x557928;
 
 	this->field_E2 = 500;
 	this->field_DC = 0;

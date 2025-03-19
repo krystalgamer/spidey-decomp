@@ -2046,7 +2046,7 @@ CCarnage::CCarnage(int* a2, int a3)
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
 
 	this->mFlags |= 0x480;
-	this->field_3C = 0x548980;
+	this->mpLight = 0x548980;
 	this->field_194 = 278528;
 
 	this->field_38 = 314;

@@ -108,7 +108,7 @@ CBlackCat::CBlackCat(i16* a2, i32 a3)
 	this->RunAnim(0xC, 0, -1);
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->field_3C = 0x548728;
+	this->mpLight = 0x548728;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_38 = 319;

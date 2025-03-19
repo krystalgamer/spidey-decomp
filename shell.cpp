@@ -568,13 +568,13 @@ void Spidey_CIcon::SetIcon(i32 option)
 	{
 		this->mFlags |= 0x482;
 		// @FIXME
-		this->field_3C = 0x552A70;
+		this->mpLight = 0x552A70;
 		this->RunAnim(0, 0, -1);
 	}
 	else
 	{
 		this->mFlags &= 0xFB7D;
-		this->field_3C = 0;
+		this->mpLight = 0;
 	}
 
 	this->mPos.vy = SpideyIcons[option].field_10 << 12;
@@ -603,7 +603,7 @@ Spidey_CIcon::Spidey_CIcon(i32 a2, i32 a3, i32 a4)
 	this->mModel = 5;
 	this->mFlags &= 0xFB7D;
 
-	this->field_3C = 0;
+	this->mpLight = 0;
 	this->mFlags |= 0x200;
 	this->field_28 = 2048;
 	this->field_2A = 2048;
@@ -1122,7 +1122,8 @@ CRudeWordHitterSpidey::CRudeWordHitterSpidey(void)
 	this->InitItem("spidey");
 	this->mFlags |= 0x480;
 
-	this->field_3C = 0x552710; // <- global
+	// @FIXME
+	this->mpLight = 0x552710;
 
 	this->field_194 |= 0x420;
 

@@ -79,7 +79,7 @@ public:
 	unsigned char padAfter38[2];
 
 
-	i32 field_3C;
+	i32 mpLight;
 
 
 

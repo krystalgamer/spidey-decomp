@@ -228,7 +228,7 @@ CMysterio::CMysterio(void)
 
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->field_3C = 0x54E0F0;
+	this->mpLight = 0x54E0F0;
 }
 
 // @Ok

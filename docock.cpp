@@ -114,7 +114,7 @@ CDocOc::CDocOc(int *a2, int a3)
 
 	this->mFlags |= 0x480;
 	this->mCBodyFlags &= 0xFFEF;
-	this->field_3C = 0x549E80;
+	this->mpLight = 0x549E80;
 
 	this->field_E2 = 600;
 	this->field_DC = 0;

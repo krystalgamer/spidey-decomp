@@ -60,7 +60,7 @@ CLizard::CLizard(int* a2, __int16 a3)
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->field_3C = 0x0054B530;
+	this->mpLight = 0x0054B530;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 326;
