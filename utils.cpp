@@ -14,7 +14,6 @@ extern CBody *SuspendedList;
 extern CBaddy *BaddyList;
 
 extern SLineInfo gLineInfo;
-extern i32 gGetGroundRelated;
 extern i16 gRotMatrix[3][3];
 
 volatile i32 gVlanksRelated;
@@ -657,6 +656,7 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 }
 
 // @Ok
+// @AlmostMatching: different vector assingment
 CBody* Utils_CheckObjectCollision(
 		CVector* a1,
 		CVector* a2,
@@ -681,7 +681,7 @@ CBody* Utils_CheckObjectCollision(
 
 		LineOfSightCheck = 1;
 		M3dColij_LineToItem(EnvironmentalObjectList, &gLineInfo);
-		result = reinterpret_cast<CBody*>(gGetGroundRelated);
+		result = reinterpret_cast<CBody*>(gLineInfo.pItem);
 		LineOfSightCheck = 0;
 	}
 

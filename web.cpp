@@ -15,7 +15,6 @@ i32 gNumDomes;
 CBody* WebList;
 
 EXPORT SLineInfo gLineInfo;
-EXPORT i32 gGetGroundRelated;
 EXPORT i32 gGetGroundDefaultValue;
 
 extern CBody* MiscList;
@@ -135,14 +134,12 @@ CDome::~CDome(void)
 	gNumDomes--;
 }
 
-// @NotOk
-// Order assignemnt slightly different and make sure globals are properly set
+// @Ok
+// @AlmostMatching: vector assignment is different, this one doesn't use esi either
 int Web_GetGroundY(const CVector* a1)
 {
 
-	gLineInfo.StartCoords.vy = a1->vy;
-	gLineInfo.StartCoords.vx = a1->vx;
-	gLineInfo.StartCoords.vz = a1->vz;
+	gLineInfo.StartCoords = *a1;
 
 	gLineInfo.EndCoords.vx = a1->vx;
 	gLineInfo.EndCoords.vy = a1->vy + 0x1388000;
@@ -151,10 +148,10 @@ int Web_GetGroundY(const CVector* a1)
 	M3dColij_InitLineInfo(&gLineInfo);
 	M3dZone_LineToItem(&gLineInfo, 1);
 
-	if (gGetGroundRelated)
-		return gGetGroundDefaultValue;
+	if (!gLineInfo.pItem)
+		return gLineInfo.EndCoords.vy;
 
-	return gLineInfo.EndCoords.vy;
+	return gLineInfo.Position.vy;
 }
 
 // @BIGTODO
