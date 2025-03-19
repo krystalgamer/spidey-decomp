@@ -1092,16 +1092,18 @@ void CThug::ClearAttackFlags(void)
 	this->field_3BD = 0;
 }
 
-static i32 gThugTypeRelatedFirstFirst;
-static i32 gThugTypeRelatedFirstSecond;
-static u8 gThugTypeRelatedFirstThird;
+EXPORT i32 gThugTypeRelatedFirstFirst[2] = { 0x0D0D0100, 3 };
 
-static i32 gThugTypeRelatedSecondFirst;
-static i32 gThugTypeRelatedSecondSecond;
-static u8 gThugTypeRelatedSecondThird;
+// @FIXME - add data
+EXPORT u8 gThugTypeRelatedFirstThird[1];
 
-// @NotOk
-// globals
+EXPORT i32 gThugTypeRelatedSecondFirst[2] = { 0x6040504, 0 };
+
+// @FIXME - add data
+EXPORT u8 gThugTypeRelatedSecondThird[1];
+
+// @Ok
+// @Matching
 void CThug::SetThugType(int type)
 {
 	this->field_38 = type;
@@ -1111,9 +1113,9 @@ void CThug::SetThugType(int type)
 			this->InitItem("thug");
 			this->field_21E = 100;
 
-			this->field_294.Int = gThugTypeRelatedFirstFirst;
-			this->field_298.Int = gThugTypeRelatedFirstSecond;
-			M3dUtils_ReadHooksPacket(this, &gThugTypeRelatedFirstThird);
+			this->field_294.Int = gThugTypeRelatedFirstFirst[0];
+			this->field_298.Int = gThugTypeRelatedFirstFirst[1];
+			M3dUtils_ReadHooksPacket(this, gThugTypeRelatedFirstThird);
 
 			break;
 		case 312:
@@ -1122,9 +1124,10 @@ void CThug::SetThugType(int type)
 			else
 				this->InitItem("henchman");
 
-			this->field_294.Int = gThugTypeRelatedSecondFirst;
-			this->field_298.Int = gThugTypeRelatedSecondSecond;
-			M3dUtils_ReadHooksPacket(this, &gThugTypeRelatedSecondThird);
+			this->field_21E = 100;
+			this->field_294.Int = gThugTypeRelatedSecondFirst[0];
+			this->field_298.Int = gThugTypeRelatedSecondFirst[1];
+			M3dUtils_ReadHooksPacket(this, gThugTypeRelatedSecondThird);
 			break;
 		default:
 			print_if_false(0, "Unknown thug type!");

@@ -55,7 +55,9 @@ void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)
 
 // @SMALLTODO
 void M3dUtils_ReadHooksPacket(CSuper*, void*)
-{}
+{
+	printf("void M3dUtils_ReadHooksPacket(CSuper*, void*)");
+}
 
 void validate_SHook(void)
 {
