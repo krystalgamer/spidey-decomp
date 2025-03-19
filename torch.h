@@ -12,7 +12,7 @@ class CTorch : public CBaddy {
 
 public:
 
-	EXPORT CTorch(int* a2, int a3);
+	EXPORT CTorch(i16*, i32);
 	EXPORT ~CTorch(void);
 
 	EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);

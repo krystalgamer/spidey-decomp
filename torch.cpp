@@ -68,11 +68,10 @@ CTorch::~CTorch(void)
 }
 
 // @NotOk
-// Globals
-CTorch::CTorch(int* a2, int a3)
+CTorch::CTorch(i16* a2, i32 a3)
 {
 	this->InitItem("torch");
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->field_21E = 100;
 	this->field_330 = 2;
@@ -81,27 +80,29 @@ CTorch::CTorch(int* a2, int a3)
 	this->RunAnim(4, 0, -1);
 	this->mFlags |= 0x480;
 
+	// @FIXME
 	this->field_3C = 0x557FE8;
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
+
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_38 = 328;
 	this->field_31C.bothFlags = 1;
 
 	this->field_DE = a3;
 	this->field_DC = 0;
-	this->field_34C = reinterpret_cast<int>(v5);
+	this->field_34C = reinterpret_cast<i32>(v5);
 
 	if (submarinerDieRelated && Trig_GetLevelId() != 2051)
 		this->Die(0);
 }
 
 // @Ok
-void Torch_CreateTorch(const unsigned int *stack, unsigned int *result)
+void Torch_CreateTorch(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CTorch(v2, v3));
+	*result = reinterpret_cast<u32>(new CTorch(v2, v3));
 }
 
 // @Ok
