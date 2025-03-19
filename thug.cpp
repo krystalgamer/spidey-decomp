@@ -11,10 +11,11 @@
 #include "exp.h"
 #include <cmath>
 
-extern CBaddy *BaddyList;
-extern CPlayer* MechList;
 EXPORT CThug* gGlobalThug;
 EXPORT CThug* gThugList;
+
+// @FIXME
+EXPORT SStateFlags gThugStateFlags;
 
 // @Ok
 // @Matching
@@ -354,11 +355,11 @@ INLINE i32 CThug::AdjustPosPlaySound(i32 a2)
 	return SFX_PlayPos(a2, &v4, 0);
 }
 
-// @NotOk
-// globals flags :(
+
+// @Ok
 u8 CThug::Grab(CVector* a2)
 {
-	if ( (this->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 2)
+	if ( (this->CheckStateFlags(&gThugStateFlags, 17) & 2)
 		|| !this->AddPointToPath(a2, 0) )
 	{
 		return 0;
@@ -580,8 +581,7 @@ void CThug::Guard(void)
 	}
 }
 
-// @NotOk
-// stateflags
+// @Ok
 INLINE i32 CThug::CanAck(
 		i32 a2,
 		i32 a3,
@@ -590,7 +590,7 @@ INLINE i32 CThug::CanAck(
 {
 		if (!this->field_330
 			&& !this->field_33C
-			&& (this->CheckStateFlags(reinterpret_cast<SStateFlags*>(0x557CA0), 17) & 0x20))
+			&& (this->CheckStateFlags(&gThugStateFlags, 17) & 0x20))
 		{
 			this->mHandleTwo = Mem_MakeHandle(pThug);
 			this->field_398 = a3;

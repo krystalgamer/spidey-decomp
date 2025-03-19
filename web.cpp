@@ -136,7 +136,7 @@ CDome::~CDome(void)
 
 // @Ok
 // @AlmostMatching: vector assignment is different, this one doesn't use esi either
-int Web_GetGroundY(const CVector* a1)
+i32 Web_GetGroundY(const CVector* a1)
 {
 
 	gLineInfo.StartCoords = *a1;
