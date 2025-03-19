@@ -333,11 +333,10 @@ void INLINE CMysterio::ShakePad(void)
 
 extern CCamera *CameraList;
 
-// @NotOk
-// globals
+// @Ok
+// @Validate: when inlined
 i32 INLINE CMysterio::CheckforCameraShake(i32 a2)
 {
-
 	if (this->field_218 & 8 || this->field_218 < a2)
 		return 0;
 
@@ -375,10 +374,8 @@ void INLINE CMysterio::EnterP2(void)
 extern i32 DifficultyLevel;
 
 // @NotOk
-// globals
-// good candidate for tests
-// there's a strange assignemnt but can't tell if it's due to inline or comma operator
-i32 INLINE CMysterio::GetAttackRotSpeed(void)
+// @Validate: when inlined
+INLINE i32 CMysterio::GetAttackRotSpeed(void)
 {
 	if (!DifficultyLevel)
 	{
