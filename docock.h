@@ -27,10 +27,9 @@ public:
 	EXPORT void Initialise(void);
 	EXPORT void ResolveSwitches(void);
 
-	int field_324;
-	int field_328;
-	int field_32C;
-	int field_330;
+	i32 field_324;
+	CVector field_328;
+
 	CVector field_334[30];
 	unsigned char padAfter334[0xC];
 

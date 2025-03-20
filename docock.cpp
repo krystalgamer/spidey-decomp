@@ -97,21 +97,10 @@ CDocOc::~CDocOc(void)
 	}
 }
 
-// @NotOk
-// globals
-// also the loops starts at 338 not 334 (it offsets negatively for some reason...)
+// @Ok
+// @Matching
 CDocOc::CDocOc(i16 *a2, i32 a3)
 {
-	this->field_328 = 0;
-	this->field_32C = 0;
-	this->field_330 = 0;
-
-	memset(this->field_334, 0, sizeof(this->field_334));
-
-	this->field_50C.vx = 0;
-	this->field_50C.vy = 0;
-	this->field_50C.vz = 0;
-
 	u16 *LinksPointer = reinterpret_cast<u16*>(Trig_GetLinksPointer(a3));
 	print_if_false(*LinksPointer == 1, "Error");
 	Trig_GetPosition(&this->field_50C, LinksPointer[1]);
@@ -146,6 +135,8 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 		this->field_28 = 2048;
 		this->field_2A = 2048;
 		this->field_2C = 2048;
+
+		this->field_21E = 50;
 	}
 
 	Panel_CreateHealthBar(this, 308);
@@ -420,8 +411,7 @@ void validate_CDocOc(void){
 
 	VALIDATE(CDocOc, field_324, 0x324);
 	VALIDATE(CDocOc, field_328, 0x328);
-	VALIDATE(CDocOc, field_32C, 0x32C);
-	VALIDATE(CDocOc, field_330, 0x330);
+
 	VALIDATE(CDocOc, field_334, 0x334);
 
 	VALIDATE(CDocOc, field_4A8, 0x4A8);
