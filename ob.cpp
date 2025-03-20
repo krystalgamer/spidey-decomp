@@ -22,8 +22,18 @@ CItem* EnviroList;
 i32 gSuperItemRelated = 1;
 f32 gFloatSuperRelated = 1.0f;
 
-// @FIXME - fill
-EXPORT SLight M3d_DefaultLight;
+// @Ok
+EXPORT SLight M3d_DefaultLight =
+{
+  { { -2896, -2896, 0 }, { 3277, -2458, 0 }, { 1737, 3277, 1737 } },
+  0,
+  { { 2800, 1900, 1000 }, { 1900, 1900, 1500 }, { 1500, 2800, 1000 } },
+  0,
+  { 512, 512, 512 }
+};
+
+
+
 
 // @SMALLTODO
 void CBody::DeleteStuff(void)
