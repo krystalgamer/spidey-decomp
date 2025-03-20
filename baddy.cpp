@@ -237,7 +237,7 @@ i32 CBaddy::SmackSpidey(
 
 				if (a4)
 				{
-					CVector secondVec = { 0, 0, 0 };
+					CVector secondVec;
 					secondVec = a3[v19 - 1];
 
 					secondVec += (secondVec - firstVec) >> 1;

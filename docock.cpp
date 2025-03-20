@@ -9,6 +9,8 @@
 #include "spidey.h"
 #include "panel.h"
 
+#include <cstring>
+
 extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern CBody* ControlBaddyList;
@@ -98,28 +100,23 @@ CDocOc::~CDocOc(void)
 // @NotOk
 // globals
 // also the loops starts at 338 not 334 (it offsets negatively for some reason...)
-CDocOc::CDocOc(int *a2, int a3)
+CDocOc::CDocOc(i16 *a2, i32 a3)
 {
 	this->field_328 = 0;
 	this->field_32C = 0;
 	this->field_330 = 0;
 
-	for (int i = 0; i<30;i++)
-	{
-		this->field_334[i].vx = 0;
-		this->field_334[i].vy = 0;
-		this->field_334[i].vz = 0;
-	}
+	memset(this->field_334, 0, sizeof(this->field_334));
 
 	this->field_50C.vx = 0;
 	this->field_50C.vy = 0;
 	this->field_50C.vz = 0;
 
-	unsigned __int16 *LinksPointer = reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(a3));
+	u16 *LinksPointer = reinterpret_cast<u16*>(Trig_GetLinksPointer(a3));
 	print_if_false(*LinksPointer == 1, "Error");
 	Trig_GetPosition(&this->field_50C, LinksPointer[1]);
 
-	this->field_4A8 = reinterpret_cast<int>(
+	this->field_4A8 = reinterpret_cast<i32>(
 			this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2))));
 
 	this->InitItem("docock");
@@ -131,7 +128,7 @@ CDocOc::CDocOc(int *a2, int a3)
 
 	this->field_E2 = 600;
 	this->field_DC = 0;
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
 	this->field_DE = a3;
@@ -143,8 +140,7 @@ CDocOc::CDocOc(int *a2, int a3)
 	this->field_324 = 25;
 	this->field_21E = 100;
 
-	// @FIXME
-	if (*reinterpret_cast<unsigned char*>(0x0060CFC5))
+	if (gWhatIf)
 	{
 		this->mFlags |= 0x200;
 		this->field_28 = 2048;
@@ -158,12 +154,12 @@ CDocOc::CDocOc(int *a2, int a3)
 }
 
 // @Ok
-void DocOck_CreateDocOck(const unsigned int *stack, unsigned int *result)
+void DocOck_CreateDocOck(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CDocOc(v2, v3));
+	*result = reinterpret_cast<u32>(new CDocOc(v2, v3));
 }
 
 // @Ok

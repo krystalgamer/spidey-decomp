@@ -324,7 +324,7 @@ CWibbling3DExplosion::~CWibbling3DExplosion(void)
 // @Ok
 void Exp_Big3DExplosion(const CVector *a1)
 {
-	CVector v12 = { 0 };
+	CVector v12;
 
 	GetRandomPosition(a1, &v12, 5);
 	new CWibbling3DExplosion(&v12, "expgrnd", 1, 0, 2048, 1750, 256, 0, 15, 2, 2);

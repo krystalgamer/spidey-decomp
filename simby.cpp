@@ -33,8 +33,15 @@ void Simby_TestDrop(const u32 *, u32 *)
 void Simby_CreateFlamingImpactWeb(const u32* stack,u32 *)
 {
 
-	CVector v6 = { stack[0], stack[1], stack[2] };
-	CSVector v5 = { stack[3], stack[4], stack[5] };
+	CVector v6;
+	v6.vx = stack[0];
+	v6.vy = stack[1];
+	v6.vz = stack[2];
+
+	CSVector v5;
+	v5.vx = stack[3];
+	v5.vy = stack[4];
+	v5.vz = stack[5];
 
 	new CFlamingImpactWeb(&v6, &v5, stack[6]);
 }

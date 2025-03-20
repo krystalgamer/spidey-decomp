@@ -6,7 +6,9 @@ EXPORT i32 gHealthBarItemType;
 EXPORT i32 gHealthBarRelated;
 EXPORT i32 gHealthBarRelatedTwo;
 EXPORT Texture* gHealthBarTextures[5];
-EXPORT CVector gCompassPosition = {0, 0, 0};
+
+// @FIXME
+EXPORT CVector gCompassPosition;
 
 EXPORT u8 gCompassStatus;
 

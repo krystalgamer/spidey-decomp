@@ -10,7 +10,7 @@
 class CDocOc : public CBaddy {
 
 public:
-	EXPORT CDocOc(int*, int);
+	EXPORT CDocOc(i16*, i32);
 	EXPORT virtual ~CDocOc(void);
 
 	EXPORT void RenderClaws(void);

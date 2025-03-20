@@ -50,7 +50,7 @@ void L2A1LSC_MonitorTimer(const u32 *,u32 *)
 		{
 			if (*gTrigNodes[i] == 1)
 			{
-				CVector v18 = { 0 };
+				CVector v18;
 				Trig_GetPosition(&v18, i);
 
 				if (v18.vx >> 12 == -419 &&

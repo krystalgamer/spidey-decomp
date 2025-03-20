@@ -190,10 +190,7 @@ void CChopper::StartStrafeOnslaught(void)
 {
 	if (MechList->field_8E8)
 	{
-		CVector v18;
-		v18.vx = 0;
-		v18.vy = (Vblanks & 1) != 0 ? 4096 : -4096;
-		v18.vz = 0;
+		CVector v18(0, (Vblanks & 1) != 0 ? 4096 : -4096, 0);
 
 		gte_ldopv1(reinterpret_cast<VECTOR*>(&MechList->field_C84));
 		gte_ldopv2(reinterpret_cast<VECTOR*>(&v18));
@@ -233,7 +230,7 @@ void CChopper::StartStrafeOnslaught(void)
 		v13.vx = 0;
 		v13.vz = 0;
 
-		CVector v17 = { 0 };
+		CVector v17;
 		Utils_GetVecFromMagDir(&v17, 4096, &v13);
 
 		v17 >>= 12;
@@ -273,7 +270,7 @@ void CChopper::Shoot(void)
 			case 1:
 				if ((gAttackRelated & 3) == 0)
 				{
-					CVector v8 = { 0 };
+					CVector v8;
 					M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v8), this, 1);
 
 					CVector v7 = this->field_394 * this->field_3A0;
@@ -294,7 +291,7 @@ void CChopper::Shoot(void)
 			case 2:
 				if ((gAttackRelated & 3) == 0)
 				{
-					CVector v8 = { 0 };
+					CVector v8;
 					M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v8), this, 1);
 					this->ShotCollision(&v8, &this->field_3B8);
 					this->field_3C4 = 1;
@@ -475,7 +472,7 @@ void CChopper::AimGunPod(void)
 {
 	if (this->field_3A8.vx)
 	{
-		CVector v4 = { 0 };
+		CVector v4;
 		M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v4), this, 0);
 
 		CSVector v3 = { 0 };
@@ -590,8 +587,8 @@ i32 INLINE CChopper::DoArrivalAction(void)
 void CChopper::DoChopperPhysics(void)
 {
 	CVector v15 = this->mAccellorVel;
-	CVector v13 = { 0 };
-	CVector v14 = { 0 };
+	CVector v13;
+	CVector v14;
 
 	for (i32 i = this->field_80; i; i++)
 	{
@@ -690,9 +687,6 @@ void CChopper::FireMachineGunAtWaypoint(u32 a2, u32 a3)
 void CChopper::FireMissileAtWaypoint(u32 a2)
 {
 	CVector v10;
-	v10.vx = 0;
-	v10.vy = 0;
-	v10.vz = 0;
 
 	M3dUtils_GetHookPosition(
 			reinterpret_cast<VECTOR*>(&v10),
@@ -751,9 +745,6 @@ void CChopperMissile::Explode(void)
 	if (v2 < 0x19A)
 	{
 		SHitInfo v7;
-		v7.field_C.vx = 0;
-		v7.field_C.vy = 0;
-		v7.field_C.vz = 0;
 
 		v7.field_0 = 6;
 		v7.field_4 = 24;

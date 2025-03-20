@@ -17,7 +17,7 @@ CVector::CVector(void)
 // @Matching
 i32 CVector::LengthSquared(void)
 {
-	CVector tmp = { 0, 0, 0 };
+	CVector tmp;
 
 	tmp.vx = this->vx >> 12;
 	tmp.vy = this->vy >> 12;

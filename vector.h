@@ -18,7 +18,19 @@ public:
 	i32 vy;
 	i32 vz;
 
-	//EXPORT CVector(void);
+	EXPORT INLINE CVector(i32 x, i32 y, i32 z)
+	{
+		this->vx = x;
+		this->vy = y;
+		this->vz = z;
+	}
+
+	EXPORT INLINE CVector(void)
+	{
+		this->vx = 0;
+		this->vy = 0;
+		this->vz = 0;
+	}
 
 	//EXPORT CVector(i32, i32, i32);
 	EXPORT void KillSmall();

@@ -134,7 +134,7 @@ EXPORT SSkinGooSource gCarnageSkinGooSource[NUM_CARNAGE_GOOS] =
 };
 
 // @Ok
-EXPORT CVector gCarnageVector = { 0, 0, 0 };
+EXPORT CVector gCarnageVector;
 
 // @MEDIUMTODO
 void CCarnage::GettingGrabbed(void)
@@ -680,7 +680,7 @@ void CCarnage::GetYankedBySpidey(void)
 			}
 			v21 = 0;
 
-			CVector v24 = { 0, 0, 0 };
+			CVector v24;
 			if (M3dColij_LineToSphere(
 						&mPoss,
 						&this->mPos,
@@ -1833,10 +1833,7 @@ INLINE void CCarnage::DieCarnage(void)
 // @Ok
 INLINE void CCarnage::PulseL8A5Node(void)
 {
-	CVector v3 = { 0, 0, 0 };
-	v3.vx = 0;
-	v3.vy = 0;
-	v3.vz = 0;
+	CVector v3;
 
 	for (i32 i = 1 ; i < NumNodes; i++)
 	{
@@ -1926,7 +1923,7 @@ CCarnageHitSpark::CCarnageHitSpark(CVector* pVec)
 	v41.vy = -4096;
 	v41.vz = 0;
 
-	CVector v40 = { 0, 0, 0 };
+	CVector v40;
 
 	v40.vx = gMikeCamera[0].Position.vx - (this->mPosC.vx >> 12);
 	v40.vy = gMikeCamera[0].Position.vy - (this->mPosC.vy >> 12);
