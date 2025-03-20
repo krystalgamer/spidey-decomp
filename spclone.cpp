@@ -40,7 +40,7 @@ CSpClone::CSpClone(i16 * a2,i32 a3)
 	this->mFlags |= 0x480u;
 
 	// @FIXME figure this shit
-	this->mpLight = 0x555920;
+	this->mpLight = reinterpret_cast<SLight*>(0x555920);
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 

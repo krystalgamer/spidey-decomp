@@ -598,7 +598,7 @@ CRhino::CRhino(i16* a2, int a3)
 
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = 0x552080;
+	this->mpLight = reinterpret_cast<SLight*>(0x552080);
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_21E = 100;
@@ -645,7 +645,7 @@ CRhino::CRhino(void)
 	this->InitItem("rhino");
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = 0x552080;
+	this->mpLight = reinterpret_cast<SLight*>(0x552080);
 	this->field_38 = 307;
 }
 

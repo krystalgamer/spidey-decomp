@@ -23,7 +23,7 @@ CSubmariner::CSubmariner(i16 * a2, i32 a3)
 	this->mFlags |= 0x480u;
 
 	// @FIXME actual address
-	this->mpLight = 0x5573D0;
+	this->mpLight = reinterpret_cast<SLight*>(0x5573D0);
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 326;

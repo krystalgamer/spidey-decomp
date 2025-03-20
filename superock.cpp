@@ -418,7 +418,8 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	this->InitItem("superock");
 	this->mFlags |= 0x480;
 	this->mCBodyFlags &= 0xFFEF;
-	this->mpLight = 0x557928;
+	// @FIXME
+	this->mpLight = reinterpret_cast<SLight*>(0x557928);
 
 	this->field_E2 = 500;
 	this->field_DC = 0;
@@ -435,6 +436,7 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	this->field_31C.bothFlags = 1;
 	this->field_21E = 100;
 
+	// @FIXME
 	*reinterpret_cast<int*>(0x54E8D4) = 4096;
 	*reinterpret_cast<int*>(0x60F774) = 0xFFFFFF;
 	*reinterpret_cast<unsigned char*>(0x60F772) = 1;

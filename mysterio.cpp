@@ -228,7 +228,7 @@ CMysterio::CMysterio(void)
 
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = 0x54E0F0;
+	this->mpLight = reinterpret_cast<SLight*>(0x54E0F0);
 }
 
 // @Ok

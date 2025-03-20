@@ -81,7 +81,7 @@ CTorch::CTorch(i16* a2, i32 a3)
 	this->mFlags |= 0x480;
 
 	// @FIXME
-	this->mpLight = 0x557FE8;
+	this->mpLight = reinterpret_cast<SLight*>(0x557FE8);
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 

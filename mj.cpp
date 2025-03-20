@@ -59,7 +59,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = 0x0054D830;
+	this->mpLight = reinterpret_cast<SLight*>(0x0054D830);
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 303;

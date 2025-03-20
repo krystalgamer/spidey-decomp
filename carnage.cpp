@@ -2043,10 +2043,12 @@ CCarnage::CCarnage(int* a2, int a3)
 
 	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->InitItem("carnage");
+	// @FIXME
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
 
 	this->mFlags |= 0x480;
-	this->mpLight = 0x548980;
+	// @FIXME
+	this->mpLight = reinterpret_cast<SLight*>(0x548980);
 	this->field_194 = 278528;
 
 	this->field_38 = 314;

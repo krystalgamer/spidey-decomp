@@ -94,7 +94,7 @@ INLINE CItem::CItem()
 	this->field_2A = 0x1000;
 	this->field_2C = 0x1000;
 
-	this->mpLight = reinterpret_cast<i32>(&M3d_DefaultLight);
+	this->mpLight = &M3d_DefaultLight;
 }
 
 // @Ok

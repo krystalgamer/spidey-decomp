@@ -568,7 +568,7 @@ void Spidey_CIcon::SetIcon(i32 option)
 	{
 		this->mFlags |= 0x482;
 		// @FIXME
-		this->mpLight = 0x552A70;
+		this->mpLight = reinterpret_cast<SLight*>(0x552A70);
 		this->RunAnim(0, 0, -1);
 	}
 	else
@@ -1123,7 +1123,7 @@ CRudeWordHitterSpidey::CRudeWordHitterSpidey(void)
 	this->mFlags |= 0x480;
 
 	// @FIXME
-	this->mpLight = 0x552710;
+	this->mpLight = reinterpret_cast<SLight*>(0x552710);
 
 	this->field_194 |= 0x420;
 
