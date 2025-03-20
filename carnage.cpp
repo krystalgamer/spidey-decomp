@@ -20,6 +20,18 @@
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
 
+EXPORT SLight M3d_CarnageLight =
+{
+
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+  { 1200, 1200, 960 }
+};
+
+
 // @Ok
 EXPORT i32 gCarnageXa[4] = { 0x48, 5, 0x48, 5 };
 
@@ -2047,8 +2059,7 @@ CCarnage::CCarnage(int* a2, int a3)
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
 
 	this->mFlags |= 0x480;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x548980);
+	this->mpLight = &M3d_CarnageLight;
 	this->field_194 = 278528;
 
 	this->field_38 = 314;

@@ -7,6 +7,15 @@ int JoelJewtCheatCode = 0;
 extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
+EXPORT SLight M3d_JonahLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+  { 1200, 1200, 960 }
+};
+
 // @SMALLTODO
 void Jonah_WhatShouldScorpDo(const u32*, u32*)
 {
@@ -64,8 +73,7 @@ CJonah::CJonah(void)
 	}
 
 	this->mFlags |= 0x480;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x549E80);
+	this->mpLight = &M3d_JonahLight;
 	this->field_38 = 316;
 
 }
@@ -92,8 +100,8 @@ CJonah::CJonah(int* a2, int a3)
 
 	this->mFlags |= 0x480;
 
+	this->mpLight = &M3d_JonahLight;
 	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x549E80);
 	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
 
 	this->field_1F4 = a3;

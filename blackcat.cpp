@@ -5,6 +5,16 @@
 extern u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
+EXPORT SLight M3d_BlackCatLight =
+{
+  { { -2047, -2896, -2047 }, { 0, 0, 4096 }, { 0, 0, -4096 } },
+  0,
+  { { 1520, 2000, 1840 }, { 1440, 1920, 1760 }, { 1440, 1920, 1760 } },
+  0,
+  { 1760, 1600, 1600 }
+};
+
+
 // @Ok
 // @Matching
 void BlackCat_RelocatableModuleInit(reloc_mod* pMod)
@@ -107,8 +117,8 @@ CBlackCat::CBlackCat(i16* a2, i32 a3)
 	this->field_21E = 100;
 	this->RunAnim(0xC, 0, -1);
 	this->mFlags |= 0x480;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x548728);
+
+	this->mpLight = &M3d_BlackCatLight;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_38 = 319;

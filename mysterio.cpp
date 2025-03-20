@@ -12,7 +12,17 @@
 #include "spidey.h"
 #include "front.h"
 
-extern CPlayer* MechList;
+EXPORT SLight M3d_MysterioLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+  { 1800, 1800, 1440 }
+};
+
+
 
 EXPORT SHandle gMystHandle;
 
@@ -227,8 +237,7 @@ CMysterio::CMysterio(void)
 	this->InitItem("mysterio");
 
 	this->mFlags |= 0x480;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x54E0F0);
+	this->mpLight = &M3d_MysterioLight;
 }
 
 // @Ok

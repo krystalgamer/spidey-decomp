@@ -13,6 +13,18 @@ extern CPlayer* MechList;
 extern CBaddy* BaddyList;
 extern CBody* ControlBaddyList;
 
+EXPORT SLight M3d_DocOckLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+
+  { 1200, 1200, 960 }
+};
+
+
 // @Ok
 // @Matching
 void DocOck_RelocatableModuleClear(void)
@@ -115,8 +127,7 @@ CDocOc::CDocOc(int *a2, int a3)
 	this->mFlags |= 0x480;
 	this->mCBodyFlags &= 0xFFEF;
 
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x549E80);
+	this->mpLight = &M3d_DocOckLight;
 
 	this->field_E2 = 600;
 	this->field_DC = 0;
@@ -132,6 +143,7 @@ CDocOc::CDocOc(int *a2, int a3)
 	this->field_324 = 25;
 	this->field_21E = 100;
 
+	// @FIXME
 	if (*reinterpret_cast<unsigned char*>(0x0060CFC5))
 	{
 		this->mFlags |= 0x200;

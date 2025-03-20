@@ -12,6 +12,16 @@
 extern CBaddy* BaddyList;
 extern CPlayer* MechList;
 
+EXPORT SLight M3d_SuperOckLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+  { 1200, 1200, 960 }
+};
+
+
 #define LEN_SUPER_OCK_TEXS 15
 EXPORT Texture *gSuperDocTexs[15];
 
@@ -418,8 +428,8 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	this->InitItem("superock");
 	this->mFlags |= 0x480;
 	this->mCBodyFlags &= 0xFFEF;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x557928);
+
+	this->mpLight = &M3d_SuperOckLight;
 
 	this->field_E2 = 500;
 	this->field_DC = 0;

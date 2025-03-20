@@ -12,6 +12,17 @@
 
 EXPORT i32 gRhinoStrangeInitData[2] = { 0x201, 0 };
 
+EXPORT SLight M3d_RhinoLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+  { { 4800, 1560, 3072 }, { 4080, 2400, 2880 }, { 3600, 3840, 3072 } },
+  0,
+  { 1800, 1800, 1440 }
+};
+
+
+
 // @FIXME
 #define LEN_RHINO_DATA 0x17
 EXPORT SRhinoData gRhinoData[LEN_RHINO_DATA];
@@ -598,7 +609,7 @@ CRhino::CRhino(i16* a2, int a3)
 
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x552080);
+	this->mpLight = &M3d_RhinoLight;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_21E = 100;
@@ -645,7 +656,7 @@ CRhino::CRhino(void)
 	this->InitItem("rhino");
 	this->mFlags |= 0x480;
 	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x552080);
+	this->mpLight = &M3d_RhinoLight;
 	this->field_38 = 307;
 }
 

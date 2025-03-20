@@ -5,6 +5,15 @@
 EXPORT u8 submarinerDieRelated;
 extern CBaddy* BaddyList;
 
+EXPORT SLight M3d_SubmarinerLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+  { 1200, 1200, 960 }
+};
+
 // @Ok
 // @Matching
 void Submariner_RelocatableModuleInit(reloc_mod *pMod)
@@ -22,8 +31,7 @@ CSubmariner::CSubmariner(i16 * a2, i32 a3)
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480u;
 
-	// @FIXME actual address
-	this->mpLight = reinterpret_cast<SLight*>(0x5573D0);
+	this->mpLight = &M3d_SubmarinerLight;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 326;

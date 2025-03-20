@@ -22,6 +22,28 @@
 
 #include "validate.h"
 
+EXPORT SLight M3d_RudeSpideyLight =
+{
+  { { -2047, -2896, -2047 }, { 0, 0, 4096 }, { 0, 0, -4096 } },
+  0,
+  { { 1440, 1920, 1760 }, { 1440, 1920, 1760 }, { 1440, 1920, 1760 } },
+  0,
+  { 1600, 1600, 1600 }
+};
+
+EXPORT SLight M3d_SpideyCIconLight =
+{
+  { { -2047, -2896, -2047 }, { 0, 0, 4096 }, { 0, 0, -4096 } },
+
+  0,
+  { { 2048, 2048, 2048 }, { 2048, 2048, 2048 }, { 2048, 2048, 2048 } },
+  0,
+
+  { 2048, 2048, 2048 }
+};
+
+
+
 // @FIXME
 EXPORT SRecords gGlobalRecords;
 
@@ -567,8 +589,7 @@ void Spidey_CIcon::SetIcon(i32 option)
 	if (PSXRegion[this->mRegion].Filename[9])
 	{
 		this->mFlags |= 0x482;
-		// @FIXME
-		this->mpLight = reinterpret_cast<SLight*>(0x552A70);
+		this->mpLight = &M3d_SpideyCIconLight;
 		this->RunAnim(0, 0, -1);
 	}
 	else
@@ -1122,8 +1143,7 @@ CRudeWordHitterSpidey::CRudeWordHitterSpidey(void)
 	this->InitItem("spidey");
 	this->mFlags |= 0x480;
 
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x552710);
+	this->mpLight = &M3d_RudeSpideyLight;
 
 	this->field_194 |= 0x420;
 

@@ -2,6 +2,17 @@
 #include "validate.h"
 #include "ps2m3d.h"
 
+EXPORT SLight M3d_LizardLight =
+{
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+
+  0,
+  { 1200, 1200, 960 }
+};
+
+
 // @Ok
 // @Matching
 void Lizard_RelocatableModuleInit(reloc_mod *pMod)
@@ -59,8 +70,8 @@ CLizard::CLizard(int* a2, __int16 a3)
 
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
-	// @FIXME
-	this->mpLight = reinterpret_cast<SLight*>(0x0054B530);
+
+	this->mpLight = &M3d_LizardLight;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->field_38 = 326;
