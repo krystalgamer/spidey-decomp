@@ -11,7 +11,7 @@
 class CJonah : public CBaddy {
 public:
 	EXPORT CJonah(void);
-	EXPORT CJonah(int*, int);
+	EXPORT CJonah(i16*, i32);
 	EXPORT void GraspWaypoint(SLinkInfo* a2);
 	EXPORT int LinkedHidingPlaceStillExists(int);
 	EXPORT int StartRunningToNextRoom(void);

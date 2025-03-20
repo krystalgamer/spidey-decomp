@@ -7,6 +7,9 @@ int JoelJewtCheatCode = 0;
 extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
+EXPORT i32 gJonahSetup[2] = { 33686018, 258 };
+
+
 EXPORT SLight M3d_JonahLight =
 {
   { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
@@ -78,15 +81,15 @@ CJonah::CJonah(void)
 
 }
 
-// @NotOk
-// Globals
-CJonah::CJonah(int* a2, int a3)
+// @Ok
+// @AlmostMatching: array assingment after vtable
+CJonah::CJonah(i16* a2, i32 a3)
 {
 	this->field_34C = 0;
 	this->field_350 = 0;
 	this->field_354 = 0;
 
-	__int16 *v5 = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 
 	if (JoelJewtCheatCode)
@@ -101,8 +104,7 @@ CJonah::CJonah(int* a2, int a3)
 	this->mFlags |= 0x480;
 
 	this->mpLight = &M3d_JonahLight;
-	// @FIXME
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E990));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
 	this->field_DE = a3;
@@ -118,40 +120,32 @@ CJonah::CJonah(int* a2, int a3)
 	this->field_2A8 |= 0x2002001;
 	this->field_E2 = 120;
 
-	unsigned char * ptr = reinterpret_cast<unsigned char*>(0x552008);
-	this->field_294.Bytes[0] = ptr[0];
-	this->field_294.Bytes[1] = ptr[1];
-	this->field_294.Bytes[2] = ptr[2];
-	this->field_294.Bytes[3] = ptr[3];
-
-	this->field_298.Bytes[0] = ptr[4];
-	this->field_298.Bytes[1] = ptr[5];
-	this->field_298.Bytes[2] = ptr[6];
-	this->field_298.Bytes[3] = ptr[7];
+	this->field_294.Int = gJonahSetup[0];
+	this->field_298.Int = gJonahSetup[1];
 
 	this->mCBodyFlags &= 0xFFEF;
-	this->ParseScript(reinterpret_cast<unsigned __int16*>(v5));
+	this->ParseScript(reinterpret_cast<u16*>(v5));
 	Panel_CreateHealthBar(this, 316);
 }
 
 // @Ok
-void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result)
+void Jonah_CreateJonah(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
 	if (v2)
 	{
-		*result = reinterpret_cast<unsigned int>(new CJonah(v2, v3));
+		*result = reinterpret_cast<u32>(new CJonah(v2, v3));
 	}
 	else
 	{
-		*result = reinterpret_cast<unsigned int>(new CJonah());
+		*result = reinterpret_cast<u32>(new CJonah());
 	}
 }
 
 // @Ok
-void __inline CJonah::GraspWaypoint(SLinkInfo* a2)
+INLINE void CJonah::GraspWaypoint(SLinkInfo* a2)
 {
 	this->field_2F8 = a2->field_0;
 	this->field_1F4 = a2->field_8;
