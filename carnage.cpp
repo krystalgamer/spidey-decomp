@@ -2067,7 +2067,9 @@ CCarnage::CCarnage(i16 *a2, i32 a3)
 
 // @MEDIUMTODO
 void CreateSonicBubbleVertexWobbler(void)
-{}
+{
+	printf("void CreateSonicBubbleVertexWobbler(void)");
+}
 
 // @Ok
 void Carnage_CreateCarnage(const u32 *stack, u32 *result)

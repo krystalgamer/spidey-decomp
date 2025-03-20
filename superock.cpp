@@ -4,6 +4,7 @@
 #include "trig.h"
 #include "ps2lowsfx.h"
 #include "utils.h"
+#include "l1a3bomb.h"
 
 #include <cmath>
 
@@ -414,14 +415,10 @@ CSuperDocOck::~CSuperDocOck(void)
 	}
 }
 
-// @NotOk
-// globals
-CSuperDocOck::CSuperDocOck(int *a2, int a3)
+// @Ok
+// @AlmostMatching: global assingments slightly out of order
+CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 {
-	this->field_32C = 0;
-	this->field_330 = 0;
-	this->field_334 = 0;
-
 	this->field_344 = reinterpret_cast<int>(
 			this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2))));
 
@@ -433,7 +430,7 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 
 	this->field_E2 = 500;
 	this->field_DC = 0;
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_38 = 309;
 	this->field_1F4 = a3;
@@ -446,23 +443,22 @@ CSuperDocOck::CSuperDocOck(int *a2, int a3)
 	this->field_31C.bothFlags = 1;
 	this->field_21E = 100;
 
-	// @FIXME
-	*reinterpret_cast<int*>(0x54E8D4) = 4096;
-	*reinterpret_cast<int*>(0x60F774) = 0xFFFFFF;
-	*reinterpret_cast<unsigned char*>(0x60F772) = 1;
-	*reinterpret_cast<int*>(0x60F778) = gTimerRelated;
+	gBombRelated = 4096;
+	gBombAIRelated = 0xFFFFFF;
+	gBombDieRelatedTwo = 1;
+	gBombDieTimerRelated = gTimerRelated;
 
 	this->field_194 = 0xFFFE0000;
 	this->field_198 = 0x1FFF;
 }
 
 // @Ok
-void SuperDocOck_CreateSuperDocOck(const unsigned int *stack, unsigned int *result)
+void SuperDocOck_CreateSuperDocOck(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CSuperDocOck(v2, v3));
+	*result = reinterpret_cast<u32>(new CSuperDocOck(v2, v3));
 }
 
 // @Ok
@@ -520,8 +516,6 @@ void validate_CSuperDocOck(void){
 	VALIDATE_SIZE(CSuperDocOck, 0x414);
 
 	VALIDATE(CSuperDocOck, field_32C, 0x32C);
-	VALIDATE(CSuperDocOck, field_330, 0x330);
-	VALIDATE(CSuperDocOck, field_334, 0x334);
 
 	VALIDATE(CSuperDocOck, field_338, 0x338);
 

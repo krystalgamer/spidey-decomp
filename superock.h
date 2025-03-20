@@ -11,7 +11,7 @@
 class CSuperDocOck : public CBaddy {
 
 public:
-	EXPORT CSuperDocOck(int*, int);
+	EXPORT CSuperDocOck(i16*, i32);
 	EXPORT virtual ~CSuperDocOck(void);
 
 	EXPORT void DoPhysics(void);
@@ -34,9 +34,8 @@ public:
 
 	unsigned char padTop[0x32C-0x324];
 
-	i32 field_32C;
-	i32 field_330;
-	i32 field_334;
+	CVector field_32C;
+
 	u8 field_338;
 	unsigned char padAfter338[0x344-0x338-4];
 
