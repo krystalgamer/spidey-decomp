@@ -2037,23 +2037,13 @@ CCarnage::~CCarnage(void)
 		Mem_Delete(this->field_344);
 }
 
-// @NotOk
-// globals
-CCarnage::CCarnage(int* a2, int a3)
+// @Ok
+// @Matching
+CCarnage::CCarnage(i16 *a2, i32 a3)
 {
-	this->field_334.vx = 0;
-	this->field_334.vy = 0;
-	this->field_334.vz = 0;
-
-	this->field_370.vx = 0;
-	this->field_370.vy = 0;
-	this->field_370.vz = 0;
-
-
 	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->InitItem("carnage");
-	// @FIXME
-	this->AttachTo(reinterpret_cast<CBody**>(0x56E9900));
+	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->mFlags |= 0x480;
 	this->mpLight = &M3d_CarnageLight;
@@ -2068,8 +2058,8 @@ CCarnage::CCarnage(int* a2, int a3)
 	this->field_35C = 1;
 	this->field_354 = 241;
 
-	unsigned __int16 *LinksPointer = reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(a3));
-	print_if_false(*LinksPointer == 1, "Error");
+	u16 *LinksPointer = reinterpret_cast<u16*>(Trig_GetLinksPointer(a3));
+	DoAssert(*LinksPointer == 1, "Error");
 	this->field_358 = LinksPointer[1];
 	Panel_CreateHealthBar(this, 314);
 	CreateSonicBubbleVertexWobbler();
@@ -2080,12 +2070,12 @@ void CreateSonicBubbleVertexWobbler(void)
 {}
 
 // @Ok
-void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result)
+void Carnage_CreateCarnage(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CCarnage(v2, v3));
+	*result = reinterpret_cast<u32>(new CCarnage(v2, v3));
 }
 
 // @Ok

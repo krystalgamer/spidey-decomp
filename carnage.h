@@ -22,7 +22,7 @@ class CSonicRipple : public CGPolyLine
 
 class CCarnage : public CBaddy {
 public:
-	EXPORT CCarnage(i32*, i32);
+	EXPORT CCarnage(i16*, i32);
 	EXPORT ~CCarnage(void);
 
 	EXPORT void PulseL8A5Node(void);
