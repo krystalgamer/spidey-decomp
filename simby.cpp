@@ -32,7 +32,6 @@ void Simby_TestDrop(const u32 *, u32 *)
 // @Matching
 void Simby_CreateFlamingImpactWeb(const u32* stack,u32 *)
 {
-
 	CVector v6;
 	v6.vx = stack[0];
 	v6.vy = stack[1];

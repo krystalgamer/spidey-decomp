@@ -216,7 +216,7 @@ void CBody::UpdateShadow(void){
 
 
 // @Ok
-void __inline CBody::AttachTo(CBody** a1)
+INLINE void CBody::AttachTo(CBody** a1)
 {
 
 	CBody *v2 = *a1;
@@ -231,12 +231,12 @@ void __inline CBody::AttachTo(CBody** a1)
 
 }
 
-// @NotOk
-// remove constants
-void __inline CBody::DeleteFrom(CBody **a2)
+// @Ok
+// @Matching
+INLINE void CBody::DeleteFrom(CBody **a2)
 {
 
-	if(this->mCBodyFlags & 1 && a2 != reinterpret_cast<CBody**>(0x60DAB4))
+	if(this->mCBodyFlags & 1 && a2 != &SuspendedList)
 	{
 		this->UnSuspend();
 	}
