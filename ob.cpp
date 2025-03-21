@@ -79,16 +79,6 @@ void CItem::operator delete(void *ptr)
 // missing 3C assignement need to understand what it is
 INLINE CItem::CItem()
 {
-	this->mPos.vx = 0;
-	this->mPos.vy = 0;
-	this->mPos.vz = 0;
-
-
-	this->mAngles.vx = 0;
-	this->mAngles.vy = 0;
-	this->mAngles.vz = 0;
-
-	//this->field_2C = 0;
 
 	this->field_28 = 0x1000;
 	this->field_2A = 0x1000;

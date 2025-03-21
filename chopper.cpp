@@ -475,7 +475,7 @@ void CChopper::AimGunPod(void)
 		CVector v4;
 		M3dUtils_GetHookPosition(reinterpret_cast<VECTOR *>(&v4), this, 0);
 
-		CSVector v3 = { 0 };
+		CSVector v3;
 
 		Utils_CalcAim(&v3, &v4, &this->field_3A8);
 		v3.vy = (v3.vy - this->mAngles.vy) & 0xFFF;
@@ -522,7 +522,7 @@ i32 INLINE CChopper::GetToPos(CVector* a2)
 	if (Utils_CrapDist(this->field_330, *a2) < (2 * this->field_348))
 		return 1;
 
-	CSVector v6 = { 0 };
+	CSVector v6;
 	Utils_CalcAim(&v6, &this->field_330, a2);
 
 	i32 v5;

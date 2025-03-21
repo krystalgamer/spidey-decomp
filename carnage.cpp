@@ -388,7 +388,7 @@ i32 CCarnage::Hit(SHitInfo* pInfo)
 		}
 		else
 		{
-			CSVector v20 = { 0, 0, 0 };
+			CSVector v20;
 
 			Utils_CalcAim(&v20, &this->mPos, &(this->mPos + (pInfo->field_C << 12)));
 
@@ -442,7 +442,7 @@ i32 CCarnage::Hit(SHitInfo* pInfo)
 
 					CVector v21 = this->mPos + (pInfo->field_C * 512);
 
-					CSVector v20 = { 0, 0, 0 };
+					CSVector v20;
 					Utils_CalcAim(&v20, &this->mPos, &v21);
 
 					this->mAngles.vy = (v20.vy - 2048) & 0xFFF;
@@ -533,7 +533,7 @@ void CCarnage::BurnInBubble(void)
 				i32 v18 = 2048;
 				do
 				{
-					CSVector v19 = { 0, 0, 0};
+					CSVector v19;
 
 					Utils_CalcAim(&v19, &gCarnageVector, &MechList->mPos);
 					v19.vy = (v19.vy + v18) & 0xFFF;
@@ -1523,9 +1523,6 @@ void CCarnage::TugWebTrapped(void)
 INLINE i32 CCarnage::CalculateAngleDelta(void)
 {
 	CSVector v5;
-	v5.vx = 0;
-	v5.vy = 0;
-	v5.vz = 0;
 
 	Utils_CalcAim(&v5, &gCarnageVector, &this->mPos);
 	i32 v3 = v5.vy;
@@ -1552,9 +1549,6 @@ INLINE void CCarnage::GetArenaPositionFromAngleOffset(
 		CVector *a3)
 {
 	CSVector v6;
-	v6.vx = 0;
-	v6.vy = 0;
-	v6.vz = 0;
 
 	Utils_CalcAim(&v6, &gCarnageVector, &this->mPos);
 	v6.vy = (v6.vy + a2) & 0xFFF;

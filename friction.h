@@ -16,7 +16,7 @@ public:
     u8 vy;
     u8 vz;
 	
-	INLINE CFriction(void)
+	EXPORT INLINE CFriction(void)
 	{
 		this->vx = 0;
 		this->vy = 0;

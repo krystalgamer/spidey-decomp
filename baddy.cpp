@@ -798,7 +798,7 @@ int CBaddy::ShouldFall(int a2, int a3)
 // @Matching
 i32 CBaddy::CheckSightCone(i32 a2, i32 a3, i32 a4, i32 a5, CBody *a6)
 {
-	CSVector v16 = { 0, 0, 0 };
+	CSVector v16;
 	if (!a3)
 		return 0;
 

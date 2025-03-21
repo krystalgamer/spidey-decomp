@@ -78,6 +78,13 @@ public:
 	i16 vy;
 	i16 vz;
 
+	EXPORT INLINE CSVector(void)
+	{
+		this->vx = 0;
+		this->vy = 0;
+		this->vz = 0;
+	}
+
 	EXPORT CSVector* operator+=(const CSVector& other);
 	EXPORT void Mask(void);
 	EXPORT void KillSmall(void);
