@@ -88,7 +88,7 @@ public:
 
 	// @Ok
 	// Note: Guessed the name
-	EXPORT INLINE Set(i16 a1, i16 a2, i16 a3)
+	EXPORT INLINE void Set(i16 a1, i16 a2, i16 a3)
 	{
 		this->vx = a1;
 		this->vy = a2;
