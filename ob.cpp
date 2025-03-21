@@ -253,21 +253,21 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 		*a2 = reinterpret_cast<CBody*>(this->field_20);
 }
 
-// @NotOk
-// looks good, but I think the constants are fucking it up
-void __inline CBody::UnSuspend(void)
+// @Ok
+// @Matching
+INLINE void CBody::UnSuspend(void)
 {
 
 	if (this->mCBodyFlags & 1)
 	{
-		this->DeleteFrom(reinterpret_cast<CBody**>(0x60DAB4));
+		this->DeleteFrom(&SuspendedList);
 		this->AttachTo(this->field_40);
 		this->mCBodyFlags &= 0xFFFE;
 	}
 }
 
-// @NotOk
-// removed constants
+// @Ok
+// @Matching
 void CBody::Suspend(CBody **a2)
 {
 	print_if_false((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
@@ -278,7 +278,7 @@ void CBody::Suspend(CBody **a2)
 	this->field_40 = a2;
 	this->DeleteFrom(a2);
 
-	this->AttachTo(reinterpret_cast<CBody**>(0x60DAB4));
+	this->AttachTo(&SuspendedList);
 	this->mCBodyFlags |= 1;
 }
 
