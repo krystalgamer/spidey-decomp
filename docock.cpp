@@ -132,9 +132,9 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 	if (gWhatIf)
 	{
 		this->mFlags |= 0x200;
-		this->field_28 = 2048;
-		this->field_2A = 2048;
-		this->field_2C = 2048;
+		this->mScale.vx = 2048;
+		this->mScale.vy = 2048;
+		this->mScale.vz = 2048;
 
 		this->field_21E = 50;
 	}

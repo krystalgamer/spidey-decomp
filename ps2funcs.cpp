@@ -500,9 +500,9 @@ void M3dMaths_ScaleMatrix(CItem *a1, MATRIX *a2)
 	MATRIX v8;
 	memset((void*)&v8, 0, sizeof(v8));
 
-	v8.m[0][0] = a1->field_28;
-	v8.m[1][1] = a1->field_2A;
-	v8.m[2][2] = a1->field_2C;
+	v8.m[0][0] = a1->mScale.vx;
+	v8.m[1][1] = a1->mScale.vy;
+	v8.m[2][2] = a1->mScale.vz;
 
 	MulMatrix0(a2, &v8, &v7);
 

@@ -80,9 +80,9 @@ void CItem::operator delete(void *ptr)
 INLINE CItem::CItem()
 {
 
-	this->field_28 = 0x1000;
-	this->field_2A = 0x1000;
-	this->field_2C = 0x1000;
+	this->mScale.vx = 0x1000;
+	this->mScale.vy = 0x1000;
+	this->mScale.vz = 0x1000;
 
 	this->mpLight = &M3d_DefaultLight;
 }
@@ -703,9 +703,7 @@ void validate_CItem(void){
 
 
 	VALIDATE(CItem, field_24, 0x24);
-	VALIDATE(CItem, field_28, 0x28);
-	VALIDATE(CItem, field_2A, 0x2A);
-	VALIDATE(CItem, field_2C, 0x2C);
+	VALIDATE(CItem, mScale, 0x28);
 
 	VALIDATE(CItem, field_30, 0x30);
 	VALIDATE(CItem, field_34, 0x34);

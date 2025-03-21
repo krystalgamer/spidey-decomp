@@ -38,15 +38,17 @@ CSmokePuff::~CSmokePuff(void)
 }
 */
 
-// @Ok
+// @NotOk
 CBullet::~CBullet(void)
 {
 	--gBullets;
 
+	// @FIXME
 	delete reinterpret_cast<CItem*>(this->field_10C);
 
 	if (this->field_120)
 	{
+		// @FIXME
 		reinterpret_cast<u8*>(this->field_120)[58] = 0;
 		reinterpret_cast<u32*>(this->field_120)[21] = 1;
 	}
@@ -67,9 +69,9 @@ CBullet::CBullet(void)
 	this->InitItem("items");
 	gBullets++;
 
-	this->field_28 = 2048;
-	this->field_2A = 2048;
-	this->field_2C = 2048;
+	this->mScale.vx = 2048;
+	this->mScale.vy = 2048;
+	this->mScale.vz = 2048;
 
 	this->mFlags |= 0x200;
 	this->mCBodyFlags &= 0xFFFD;

@@ -68,11 +68,9 @@ public:
 	CItem *field_20;
 
 	i32 field_24;
-	__int16 field_28;
-	i16 field_2A;
-	__int16 field_2C;
+	CSVector mScale;
 
-	int field_30;
+	i32 field_30;
 
 	CItem *field_34;
 	unsigned __int16 field_38;

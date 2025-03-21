@@ -626,9 +626,9 @@ Spidey_CIcon::Spidey_CIcon(i32 a2, i32 a3, i32 a4)
 
 	this->mpLight = 0;
 	this->mFlags |= 0x200;
-	this->field_28 = 2048;
-	this->field_2A = 2048;
-	this->field_2C = 2048;
+	this->mScale.vx = 2048;
+	this->mScale.vy = 2048;
+	this->mScale.vz = 2048;
 }
 
 // @Ok
@@ -710,9 +710,10 @@ CShellGoldFish::CShellGoldFish(CDummy *pDummy)
 
 	this->mFlags |= 0x200;
 	this->csVector1.vy = 50;
-	this->field_2C = 10000;
-	this->field_2A = 10000;
-	this->field_28 = 10000;
+
+	this->mScale.vz = 10000;
+	this->mScale.vy = 10000;
+	this->mScale.vx = 10000;
 }
 
 // @MEDIUMTODO
@@ -1220,7 +1221,7 @@ CShellSymBurn::CShellSymBurn(CVector* pVector)
 	this->mPos = *pVector;
 	this->InitItem("fire");
 	this->mFlags |= 0x602;
-	this->field_2A = 0;
+	this->mScale.vy = 0;
 	this->field_24 = 0xFFFFFF;
 	this->AttachTo(&MiscList);
 }
@@ -1232,8 +1233,8 @@ SVECTOR gYAnglesRelated;
 void CShellSymBurn::AI(void)
 {
 	this->mAngles.vy = gYAnglesRelated.vy + 2048;
-	this->field_28 = 3000;
-	this->field_2C = 3000;
+	this->mScale.vx = 3000;
+	this->mScale.vz = 3000;
 
 	if (++this->field_1A4 > 60)
 	{
@@ -1241,13 +1242,13 @@ void CShellSymBurn::AI(void)
 		if (v3 < 0)
 			v3 = 0;
 
-		this->field_2A -= 75;
+		this->mScale.vy -= 75;
 		this->field_24 = v3 | ((v3 | (v3 << 8)) << 8);
 
-		if (this->field_2A < 0)
-			this->field_2A = 0;
+		if (this->mScale.vy < 0)
+			this->mScale.vy = 0;
 
-		if (!v3 || !this->field_2A)
+		if (!v3 || !this->mScale.vy)
 		{
 			this->Die();
 		}
@@ -1258,11 +1259,11 @@ void CShellSymBurn::AI(void)
 		if (v5 < 128)
 			v5 = 128;
 
-		this->field_2A += 800;
+		this->mScale.vy += 800;
 		this->field_24 = v5 | ((v5 | (v5 << 8)) << 8);
 
-		if (this->field_2A > 4096)
-			this->field_2A = 4096;
+		if (this->mScale.vy > 4096)
+			this->mScale.vy = 4096;
 	}
 
 	M3d_BuildTransform(this);

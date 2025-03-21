@@ -2090,14 +2090,11 @@ INLINE CSonicBubble::CSonicBubble(void)
 // @Ok
 INLINE void CSonicBubble::SetScale(i32 scale)
 {
-	this->field_28 = scale;
-	this->field_2A = scale;
-	this->field_2C = scale;
+	this->mScale.vx = scale;
+	this->mScale.vy = scale;
+	this->mScale.vz = scale;
 	this->mFlags |= 0x200;
 }
-
-
-extern CBaddy* BaddyList;
 
 // @NotOk
 // globals

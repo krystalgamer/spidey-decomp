@@ -114,8 +114,8 @@ void CSymBurn::AI(void)
 {
 	if ( CameraList )
 		this->mAngles.vy = CameraList->field_236 + 2048;
-	this->field_28 = 3000;
-	this->field_2C = 3000;
+	this->mScale.vx = 3000;
+	this->mScale.vz = 3000;
 
 	if ( ++this->field_1A4 > 60 )
 	{
@@ -124,11 +124,11 @@ void CSymBurn::AI(void)
 			v4 = 0;
 		this->field_24 = v4 | ((v4 | (v4 << 8)) << 8);
 
-		this->field_2A -= 75;
-		if ( this->field_2A < 0 )
-			this->field_2A = 0;
+		this->mScale.vy -= 75;
+		if ( this->mScale.vy < 0 )
+			this->mScale.vy = 0;
 
-		if ( !v4 || !this->field_2A )
+		if ( !v4 || !this->mScale.vy )
 		{
 			this->Die();
 		}
@@ -141,9 +141,9 @@ void CSymBurn::AI(void)
 
 		this->field_24 = v7 | ((v7 | (v7 << 8)) << 8);
 
-		this->field_2A += 800;
-		if ( this->field_2A > 4096 )
-			this->field_2A = 4096;
+		this->mScale.vy += 800;
+		if ( this->mScale.vy > 4096 )
+			this->mScale.vy = 4096;
 	}
 
 	M3d_BuildTransform(this);
@@ -165,7 +165,7 @@ CSymBurn::CSymBurn(CVector *a2)
 	this->mPos = *a2;
 	this->InitItem("fire");
 	this->mFlags |= 0x602u;
-	this->field_2A = 0;
+	this->mScale.vy = 0;
 	this->field_24= 0xFFFFFF;
 
 	this->AttachTo(&MiscList);
@@ -315,12 +315,12 @@ void CPunchOb::AI(void)
 					}
 					break;
 				case 1:
-					this->field_2C += 512;
+					this->mScale.vz += 512;
 
-					this->field_2A = this->field_2C;
-					this->field_28 = this->field_2C;
+					this->mScale.vy = this->mScale.vz;
+					this->mScale.vx = this->mScale.vz;
 
-					if (this->field_2C >= 6144)
+					if (this->mScale.vz >= 6144)
 					{
 						CTrapWebEffect *pTrap = reinterpret_cast<CTrapWebEffect*>(Mem_RecoverPointer(&this->field_104));
 
@@ -331,12 +331,12 @@ void CPunchOb::AI(void)
 					}
 					break;
 				case 2:
-					this->field_2C -= 256;
+					this->mScale.vz -= 256;
 
-					this->field_2A = this->field_2C;
-					this->field_28 = this->field_2C;
+					this->mScale.vy = this->mScale.vz;
+					this->mScale.vx = this->mScale.vz;
 
-					if (this->field_2C <= 4096)
+					if (this->mScale.vz <= 4096)
 					{
 						this->mFlags &= 0xFDFF;
 						this->field_31C.bothFlags = 0;

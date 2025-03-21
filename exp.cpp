@@ -32,9 +32,9 @@ void C3DExplosion::AI(void)
 		case 1:
 			this->mPos.vy += this->mAccellorVel.vy;
 
-			this->field_28 += this->field_104;
-			this->field_2A = (this->field_28 * this->field_108) >> 8;
-			this->field_2C = this->field_28;
+			this->mScale.vx += this->field_104;
+			this->mScale.vy = (this->mScale.vx * this->field_108) >> 8;
+			this->mScale.vz = this->mScale.vx;
 			if (++this->field_100 >= this->field_10C)
 				this->field_F8 = 2;
 			break;
@@ -49,9 +49,9 @@ void C3DExplosion::AI(void)
 			}
 
 			this->field_24 = v4 | (v4 << 16) | (v4 << 8);
-			this->field_28 += this->field_104;
-			this->field_2A = (this->field_28 * this->field_108) >> 8;
-			this->field_2C = this->field_28;
+			this->mScale.vx += this->field_104;
+			this->mScale.vy = (this->mScale.vx * this->field_108) >> 8;
+			this->mScale.vz = this->mScale.vx;
 
 			break;
 		default:
@@ -83,9 +83,9 @@ C3DExplosion::C3DExplosion(
 
 	this->field_FC = a5;
 
-	this->field_28 = a6;
-	this->field_2A = (a8 * a6) >> 8;
-	this->field_2C = a6;
+	this->mScale.vx = a6;
+	this->mScale.vy = (a8 * a6) >> 8;
+	this->mScale.vz = a6;
 
 	this->field_108 = a8;
 	this->field_104 = a7;

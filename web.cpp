@@ -104,7 +104,7 @@ CDome::CDome(
 		this->mModel = 1;
 		gFireDomes++;
 		this->mFlags |= 0x200;
-		this->field_2A = 0;
+		this->mScale.vy = 0;
 	}
 	else
 	{
