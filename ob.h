@@ -138,7 +138,7 @@ public:
 	__int16 field_C8;
 
 	
-	CQuadBit *bodyQuadBit;
+	CQuadBit *mpShadow;
 
 	unsigned __int16 field_D0;
 	unsigned __int16 field_D2;

@@ -87,8 +87,7 @@ INLINE CItem::CItem()
 }
 
 // @Ok
-// First part is for delete[]
-// second is for delete, nothing to do
+// @Matching
 INLINE CItem::~CItem()
 {
 }
@@ -150,14 +149,14 @@ void CBody::ShadowOn(void){
 
 // @NotOk
 // dessutrctor
-void __inline CBody::KillShadow(void){
+INLINE void CBody::KillShadow(void){
 
-  this->mCBodyFlags &= ~8u;
-  if ( this->bodyQuadBit )
-  {
-    //result = (**somethingWithVtableDestructor)(somethingWithVtableDestructor, 1);
-    this->bodyQuadBit = 0;
-  }
+	this->mCBodyFlags &= ~8u;
+	if (this->mpShadow)
+	{
+		delete this->mpShadow;
+		this->mpShadow = 0;
+	}
 }
 
 // @NotOk
@@ -168,15 +167,15 @@ void CBody::UpdateShadow(void){
 
 	if(flags & 8){
 
-		if(!this->bodyQuadBit){
+		if(!this->mpShadow){
 
 			CQuadBit *quad = new CQuadBit();
-			this->bodyQuadBit = quad;
+			this->mpShadow = quad;
 
 			quad->SetTexture(0, 0);
-			this->bodyQuadBit->SetSubtractiveTransparency();
-			this->bodyQuadBit->mFrigDeltaZ = 32;
-			this->bodyQuadBit->mProtected = 1;
+			this->mpShadow->SetSubtractiveTransparency();
+			this->mpShadow->mFrigDeltaZ = 32;
+			this->mpShadow->mProtected = 1;
 		}
 
 		SVector vec;
@@ -185,7 +184,7 @@ void CBody::UpdateShadow(void){
 		vec.vz = 0;
 
 		unsigned __int16 lastParam = this->field_D0;
-		this->bodyQuadBit->OrientUsing(&this->bodyVector, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
+		this->mpShadow->OrientUsing(&this->bodyVector, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
 
 
 		__int8 trans = ((this->field_D4 - this->field_D2) << 7) / this->field_D4;
@@ -194,7 +193,7 @@ void CBody::UpdateShadow(void){
 			trans = 0;
 		}
 
-		this->bodyQuadBit->SetTransparency(trans);
+		this->mpShadow->SetTransparency(trans);
 
 	}
 	else{
@@ -648,10 +647,10 @@ void CBody::EveryFrame(void)
 }
 
 // @Ok
+// @Matching
 INLINE CBody::~CBody(void)
 {
-	if (this->bodyQuadBit)
-		delete this->bodyQuadBit;
+	delete this->mpShadow;
 }
 
 // @Ok
@@ -762,7 +761,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_C8, 0xC8);
 
 
-	VALIDATE(CBody, bodyQuadBit, 0xCC);
+	VALIDATE(CBody, mpShadow, 0xCC);
 	VALIDATE(CBody, field_D0, 0xD0);
 	VALIDATE(CBody, field_D2, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
