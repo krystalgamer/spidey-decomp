@@ -106,7 +106,7 @@ class CBit
 		EXPORT void* operator new(size_t size);
 		EXPORT void operator delete(void*);
 		EXPORT void Die();
-		EXPORT CBit* AttachTo(CBit** to);
+		EXPORT void AttachTo(void*);
 		EXPORT void SetPos(const CVector &pos);
 		EXPORT void DeleteFrom(CBit **lst);
 };

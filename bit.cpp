@@ -588,22 +588,9 @@ CMotionBlur::CMotionBlur(
 }
 
 // @Ok
-CBit::CBit() {
-
-	this->mPos.vx = 0;
-	this->mPos.vy = 0;
-	this->mPos.vz = 0;
-
-	this->mVel.vx = 0;
-	this->mVel.vy = 0;
-	this->mVel.vz = 0;
-
-	this->mAcc.vx = 0;
-	this->mAcc.vy = 0;
-	this->mAcc.vz = 0;
-
-	//mFric is inited to 0 here but removed
-
+// @Matching
+INLINE CBit::CBit() 
+{
 	this->mFric.vx = 1;
 	this->mFric.vy = 1;
 	this->mFric.vz = 1;
@@ -657,20 +644,19 @@ void CBit::Die(void){
 }
 
 // @Ok
-CBit* CBit::AttachTo(CBit** to){
+INLINE void CBit::AttachTo(void* to){
 
 	CBit* tmp;
 	CBit* result;
-	tmp = *to;
+	tmp = *reinterpret_cast<CBit**>(to);
 
 	this->mPrevious = NULL;
 	this->mNext = tmp;
-	*to = this;
+	*reinterpret_cast<CBit**>(to) = this;
 
 	result = this->mNext;
 	if (result)
 		result->mPrevious = this;
-	return result;
 }
 
 // @Ok
@@ -988,7 +974,8 @@ void Bit_SetSparkTrajectoryCone(const CSVector *pVec)
 }
 
 // @Ok
-CFT4Bit::CFT4Bit(void)
+// @Matching
+INLINE CFT4Bit::CFT4Bit(void)
 {
 	this->mAnimSpeed = 0x80;
 	this->mScale = 400;
@@ -999,7 +986,7 @@ CFT4Bit::CFT4Bit(void)
 // @Validate: when inlined
 CLinked2EndedBit::CLinked2EndedBit(void)
 {
-	this->AttachTo(reinterpret_cast<CBit**>(&Linked2EndedBitListLeftover));
+	this->AttachTo(&Linked2EndedBitListLeftover);
 }
 
 // @Ok
@@ -1078,11 +1065,11 @@ void CFT4Bit::SetTransDecay(int decay)
 	this->mTransDecay = decay;
 }
 
-// @NotOk
-// Globals
+// @Ok
+// @Matching
 CFlatBit::CFlatBit(void)
 {
-	this->AttachTo(reinterpret_cast<CBit**>(0x56EA50));
+	this->AttachTo(reinterpret_cast<CBit**>(&FlatBitList));
 
 	this->mAngFric = 0x32;
 	this->field_5E = 1;
