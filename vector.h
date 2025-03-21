@@ -78,11 +78,21 @@ public:
 	i16 vy;
 	i16 vz;
 
+	// @Ok
 	EXPORT INLINE CSVector(void)
 	{
 		this->vx = 0;
 		this->vy = 0;
 		this->vz = 0;
+	}
+
+	// @Ok
+	// Note: Guessed the name
+	EXPORT INLINE Set(i16 a1, i16 a2, i16 a3)
+	{
+		this->vx = a1;
+		this->vy = a2;
+		this->vz = a3;
 	}
 
 	EXPORT CSVector* operator+=(const CSVector& other);

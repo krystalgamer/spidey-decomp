@@ -79,9 +79,7 @@ void CItem::operator delete(void *ptr)
 // @Matching
 INLINE CItem::CItem()
 {
-	this->mScale.vx = 0x1000;
-	this->mScale.vy = 0x1000;
-	this->mScale.vz = 0x1000;
+	this->mScale.Set(0x1000, 0x1000, 0x1000);
 
 	this->mpLight = &M3d_DefaultLight;
 }
@@ -344,67 +342,17 @@ void CBody::StopMyXA(void)
 	}
 }
 
-// @NotOk
-// field reassignement + missing vtable
-// need to understand whether the default constructor is called by default and then overriden
-CBody::CBody()
+// @Ok
+// @AlmostMatching: vtable is moved later than expected for some reason
+CBody::CBody(void)
 {
-	this->field_48 = 0;
-	this->field_4C = 0;
-	this->field_50 = 0;
-	this->field_54 = 0;
-	this->field_58 = 0;
-	this->field_5C = 0;
-
-	this->mAccellorVel.vx = 0;
-	this->mAccellorVel.vy = 0;
-	this->mAccellorVel.vz = 0;
-
-
-	this->gVec.vx = 0;
-	this->gVec.vy = 0;
-	this->gVec.vz = 0;
-
-	this->field_78.vx = 0;
-	this->field_78.vy = 0;
-	this->field_78.vz = 0;
-
-
-	this->csVector1.vx = 0;
-	this->csVector1.vy = 0;
-	this->csVector1.vz = 0;
-
-	this->field_8E.vx = 0;
-	this->field_8E.vy = 0;
-	this->field_8E.vz = 0;
-
-	this->field_94 = 0;
-	this->field_95 = 0;
-	this->field_96 = 0;
-
-	this->field_A8.vx = 0;
-	this->field_A8.vy = 0;
-	this->field_A8.vz = 0;
-
-	this->bodyVector.vx = 0;
-	this->bodyVector.vy = 0;
-	this->bodyVector.vz = 0;
-
-	this->field_C4 = 0;
-	this->field_C6 = 0;
-	this->field_C8 = 0;
-
-	this->field_E8.vx = 0;
-	this->field_E8.vy = 0;
-	this->field_E8.vz = 0;
-
 	this->field_78.vx = 1;
 	this->field_78.vy = 1;
 	this->field_78.vz = 1;
 
-	this->field_94 = 1;
-	this->field_95 = 1;
-	this->field_96 = 1;
+	this->field_94.vx = 1;
+	this->field_94.vy = 1;
+	this->field_94.vz = 1;
 	this->mCBodyFlags |= 0x16;
 
 	this->field_D8 = 10;
@@ -722,11 +670,8 @@ void validate_CBody(void){
 	VALIDATE(CBody, mAccellorVel, 0x60);
 
 	VALIDATE(CBody, field_48, 0x48);
-	VALIDATE(CBody, field_4C, 0x4C);
-	VALIDATE(CBody, field_50, 0x50);
+
 	VALIDATE(CBody, field_54, 0x54);
-	VALIDATE(CBody, field_58, 0x58);
-	VALIDATE(CBody, field_5C, 0x5C);
 
 	VALIDATE(CBody, mAccellorVel, 0x60);
 	VALIDATE(CBody, gVec, 0x6C);
@@ -744,8 +689,6 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_8E, 0x8E);
 
 	VALIDATE(CBody, field_94, 0x94);
-	VALIDATE(CBody, field_95, 0x95);
-	VALIDATE(CBody, field_96, 0x96);
 
 	VALIDATE(CBody, field_98, 0x98);
 	VALIDATE(CBody, field_9C, 0x9C);
@@ -757,8 +700,6 @@ void validate_CBody(void){
 	VALIDATE(CBody, bodyVector, 0xB8);
 
 	VALIDATE(CBody, field_C4, 0xC4);
-	VALIDATE(CBody, field_C6, 0xC6);
-	VALIDATE(CBody, field_C8, 0xC8);
 
 
 	VALIDATE(CBody, mpShadow, 0xCC);

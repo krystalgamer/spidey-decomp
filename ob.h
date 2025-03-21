@@ -99,12 +99,9 @@ public:
 	unsigned __int16 field_44;
 	unsigned __int16 mCBodyFlags;
 
-	int field_48;
-	int field_4C;
-	int field_50;
-	int field_54;
-	int field_58;
-	int field_5C;
+	CVector field_48;
+
+	CVector field_54;
 
 	CVector mAccellorVel;
 	CVector gVec;
@@ -120,9 +117,7 @@ public:
 	CSVector csVector1;
 	CSVector field_8E;
 
-	unsigned char field_94;
-	unsigned char field_95;
-	unsigned char field_96;
+	CFriction field_94;
 
 	int field_98;
 	int field_9C;
@@ -133,9 +128,7 @@ public:
 	unsigned char padAfterAC[0xB8-0xAC-2];
 
 	CVector bodyVector;
-	__int16 field_C4;
-	__int16 field_C6;
-	__int16 field_C8;
+	CSVector field_C4;
 
 	
 	CQuadBit *mpShadow;
@@ -188,7 +181,7 @@ public:
 	EXPORT void Suspend(CBody**);
 	EXPORT CBody* FindBodyByNode(i32, CBody*);
 
-	EXPORT CBody();
+	EXPORT CBody(void);
 	EXPORT ~CBody(void);
 };
 
