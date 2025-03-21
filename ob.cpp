@@ -75,11 +75,10 @@ void CItem::operator delete(void *ptr)
 }
 
 
-/// @NotOk
-// missing 3C assignement need to understand what it is
+// @Ok
+// @Matching
 INLINE CItem::CItem()
 {
-
 	this->mScale.vx = 0x1000;
 	this->mScale.vy = 0x1000;
 	this->mScale.vz = 0x1000;
