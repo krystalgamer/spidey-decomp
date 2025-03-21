@@ -15,6 +15,13 @@ public:
     u8 vx;
     u8 vy;
     u8 vz;
+	
+	INLINE CFriction(void)
+	{
+		this->vx = 0;
+		this->vy = 0;
+		this->vz = 0;
+	}
 
 };
 
