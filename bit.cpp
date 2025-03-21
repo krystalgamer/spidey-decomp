@@ -995,14 +995,11 @@ CFT4Bit::CFT4Bit(void)
 	this->mCodeBGR = 0x2C808080;
 }
 
-// @NotOk
-// globals
+// @Ok
+// @Validate: when inlined
 CLinked2EndedBit::CLinked2EndedBit(void)
 {
-	this->field_58.Zero();
-	this->field_64.Zero();
-
-	this->AttachTo(reinterpret_cast<CBit**>(0x56EB40));
+	this->AttachTo(reinterpret_cast<CBit**>(&Linked2EndedBitListLeftover));
 }
 
 // @Ok
