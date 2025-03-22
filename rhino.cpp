@@ -192,9 +192,9 @@ void CRhino::GetLaunched(void)
 			if (!this->field_1F8)
 			{
 				this->dumbAssPad++;
-				this->mAccellorVel.vx = 0;
-				this->mAccellorVel.vy = 0;
-				this->mAccellorVel.vz = 0;
+				this->mVel.vx = 0;
+				this->mVel.vy = 0;
+				this->mVel.vz = 0;
 			}
 
 			break;

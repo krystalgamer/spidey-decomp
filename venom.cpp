@@ -195,9 +195,9 @@ void INLINE CVenom::Lookaround(void)
 	{
 		case 0:
 			this->field_218 &= 0xFFFFFFF8;
-			this->mAccellorVel.vx = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vz = 0;
+			this->mVel.vx = 0;
+			this->mVel.vy = 0;
+			this->mVel.vz = 0;
 			this->RunAnim(8, 0, -1);
 			this->dumbAssPad++;
 			break;
@@ -221,9 +221,9 @@ void INLINE CVenom::TugWeb(void)
 	{
 		case 0:
 			this->field_218 &= 0xFFFFFFF8;
-			this->mAccellorVel.vz = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vx = 0;
+			this->mVel.vz = 0;
+			this->mVel.vy = 0;
+			this->mVel.vx = 0;
 			this->dumbAssPad++;
 		case 1:
 			if (this->field_218 & 0x200)
@@ -295,9 +295,9 @@ void CVenom::VenomDie(void)
 		case 0:
 			this->field_330 = 16;
 			this->field_218 &= 0xFFFFFFF8;
-			this->mAccellorVel.vx = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vz = 0;
+			this->mVel.vx = 0;
+			this->mVel.vy = 0;
+			this->mVel.vz = 0;
 
 			this->mCBodyFlags &= 0xFFEF;
 			this->mFlags &= 0xFFBE;

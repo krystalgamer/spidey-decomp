@@ -464,9 +464,9 @@ void CBaddy::Neutralize(void)
 	this->mAcc.vy = 0;
 	this->mAcc.vz = 0;
 
-	this->mAccellorVel.vz = 0;
-	this->mAccellorVel.vy = 0;
-	this->mAccellorVel.vx = 0;
+	this->mVel.vz = 0;
+	this->mVel.vy = 0;
+	this->mVel.vx = 0;
 
 	this->mAcc.vz = 0;
 	this->mAcc.vy = 0;
@@ -592,13 +592,13 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 
 			if (this->field_2A4)
 			{
-				if (this->field_2A4->mAccellorVel.vy == 0)
+				if (this->field_2A4->mVel.vy == 0)
 				{
 					this->field_2A4 = 0;
 				}
 				else
 				{
-					height += this->field_2A4->mAccellorVel.vy;
+					height += this->field_2A4->mVel.vy;
 				}
 			}
 

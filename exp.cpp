@@ -30,7 +30,7 @@ void C3DExplosion::AI(void)
 			}
 			break;
 		case 1:
-			this->mPos.vy += this->mAccellorVel.vy;
+			this->mPos.vy += this->mVel.vy;
 
 			this->mScale.vx += this->field_104;
 			this->mScale.vy = (this->mScale.vx * this->field_108) >> 8;
@@ -39,7 +39,7 @@ void C3DExplosion::AI(void)
 				this->field_F8 = 2;
 			break;
 		case 2:
-			this->mPos.vy += this->mAccellorVel.vy;
+			this->mPos.vy += this->mVel.vy;
 
 			v4 = (this->mRGB & 0xFF) - this->field_110;
 			if (v4 <= 0)
@@ -100,7 +100,7 @@ C3DExplosion::C3DExplosion(
 		this->field_F8 = 1;
 	}
 
-	this->mAccellorVel.vy = -4096 * (a11 + Rnd(a12));
+	this->mVel.vy = -4096 * (a11 + Rnd(a12));
 }
 
 // @Ok

@@ -180,7 +180,7 @@ void CSuperDocOck::DoPhysics(void)
 					v6 = 0;
 				else
 					v6 = (64 - v5) << 6;
-				Utils_GetVecFromMagDir(&this->mAccellorVel, (v6 * (this->field_374 >> 12)) >> 12, &v8);
+				Utils_GetVecFromMagDir(&this->mVel, (v6 * (this->field_374 >> 12)) >> 12, &v8);
 			}
 			else
 			{
@@ -204,7 +204,7 @@ void CSuperDocOck::DoPhysics(void)
 
 	for (i32 i = 0; i < this->field_80; i++)
 	{
-		this->mPos += this->mAccellorVel;
+		this->mPos += this->mVel;
 		this->mAngles += this->csVector1;
 	}
 
@@ -334,9 +334,9 @@ void CSuperDocOck::CreateExplosion(i32 a2, i32)
 		this->field_218 |= 0x40;
 	}
 
-	this->mAccellorVel.vz = 0;
-	this->mAccellorVel.vy = 0;
-	this->mAccellorVel.vx = 0;
+	this->mVel.vz = 0;
+	this->mVel.vy = 0;
+	this->mVel.vx = 0;
 	this->field_218 &= ~0x100;
 	this->field_31C.bothFlags = 0x2000;
 	this->dumbAssPad = 0;

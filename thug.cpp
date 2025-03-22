@@ -118,8 +118,8 @@ void CThug::BackpedalPlease(void)
 			if (this->AddPointToPath(&this->mPos, 0) && this->AddPointToPath(&v10, 0))
 			{
 
-				this->mAccellorVel = (this->mPos - MechList->mPos) >> 2;
-				this->mAccellorVel.vy = 0;
+				this->mVel = (this->mPos - MechList->mPos) >> 2;
+				this->mVel.vy = 0;
 			}
 
 			this->RunAppropriateHitAnim();
@@ -821,8 +821,8 @@ i32 CThug::GetLaunched(
 		return 0;
 
 	this->Neutralize();
-	this->mAccellorVel = *a2;
-	this->mAccellorVel.vy = 0;
+	this->mVel = *a2;
+	this->mVel.vy = 0;
 
 	if ( !a3 || v10 == 2 )
 	{

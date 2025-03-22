@@ -531,7 +531,7 @@ i32 INLINE CChopper::GetToPos(CVector* a2)
 	else
 		v5 = this->field_348 * (32 - my_abs(this->csVector1.vy)) / 32;
 
-	Utils_GetVecFromMagDir(&this->mAccellorVel, v5, &v6);
+	Utils_GetVecFromMagDir(&this->mVel, v5, &v6);
 	return 0;
 }
 
@@ -586,17 +586,17 @@ i32 INLINE CChopper::DoArrivalAction(void)
 // @Ok
 void CChopper::DoChopperPhysics(void)
 {
-	CVector v15 = this->mAccellorVel;
+	CVector v15 = this->mVel;
 	CVector v13;
 	CVector v14;
 
 	for (i32 i = this->field_80; i; i++)
 	{
-		this->mAccellorVel += this->mAcc;
-		this->mAccellorVel %= this->mFric;
-		this->mAccellorVel.KillSmall();
+		this->mVel += this->mAcc;
+		this->mVel %= this->mFric;
+		this->mVel.KillSmall();
 
-		this->field_330 += this->mAccellorVel;
+		this->field_330 += this->mVel;
 		this->AngleToTargetAngle();
 		this->SetHeight();
 		
@@ -604,7 +604,7 @@ void CChopper::DoChopperPhysics(void)
 		this->mPos.vz = this->field_330.vz;
 	}
 
-	v13 = this->mAccellorVel - v15;
+	v13 = this->mVel - v15;
 	Utils_RotateWorldToObject(this, &v13, &v14);
 
 

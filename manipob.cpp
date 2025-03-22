@@ -137,7 +137,7 @@ void CManipOb::Throw(CVector *a2)
 {
 	this->mFlags &= 0xF7FF;
 	this->field_10C |= 1;
-	this->mAccellorVel = *a2;
+	this->mVel = *a2;
 	this->mAcc.vy = 4096;
 	this->csVector1.vx = Rnd(32) + 64;
 }
@@ -175,9 +175,9 @@ void CManipOb::Smash(void)
 	v4.Normal.vy = (i16)0xF000;
 	v4.Normal.vz = 0;
 
-	this->mAccellorVel.vx = 0;
-	this->mAccellorVel.vy = 0x20000;
-	this->mAccellorVel.vz = 0x20000;
+	this->mVel.vx = 0;
+	this->mVel.vy = 0x20000;
+	this->mVel.vz = 0x20000;
 
 	this->Chunk(&v4, &v3);
 	this->TurnOffShadow();

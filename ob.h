@@ -102,7 +102,7 @@ public:
 
 	CVector field_54;
 
-	CVector mAccellorVel;
+	CVector mVel;
 	CVector mAcc;
 
 	CFriction mFric;

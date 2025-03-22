@@ -304,7 +304,7 @@ i32 CPlayer::CheckRunIntoWall(void)
 // @Ok
 i32 CPlayer::CheckStickToCeiling(void)
 {
-	if ( this->mAccellorVel.vy > 0
+	if ( this->mVel.vy > 0
 		|| !(this->field_E0 & 0x100)
 		|| !this->field_C18
 		|| !(reinterpret_cast<u8*>(this->field_E0C)[256])
@@ -383,12 +383,12 @@ void CPlayer::CollideWithObject(CBody* a2)
 			reinterpret_cast<VECTOR*>(&v8),
 			reinterpret_cast<VECTOR*>(&v8));
 
-	i32 v5 = v8.vz * (this->mAccellorVel.vz >> 6) + v8.vx * (this->mAccellorVel.vx >> 6);
+	i32 v5 = v8.vz * (this->mVel.vz >> 6) + v8.vx * (this->mVel.vx >> 6);
 	if (v5 <= 0)
 	{
 		v5 >>= 12;
-		this->mAccellorVel.vx -= (v5 * v8.vx) >> 6;
-		this->mAccellorVel.vz -= (v5 * v8.vz) >> 6;
+		this->mVel.vx -= (v5 * v8.vx) >> 6;
+		this->mVel.vz -= (v5 * v8.vz) >> 6;
 	}
 }
 

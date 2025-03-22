@@ -434,8 +434,8 @@ i32 CCop::GetLaunched(CVector* a2, i32 a3, i32 a4, i32 a5)
 		return 0;
 
 	this->Neutralize();
-	this->mAccellorVel = *a2;
-	this->mAccellorVel.vy = 0;
+	this->mVel = *a2;
+	this->mVel.vy = 0;
 	if (!a3 || v10 == 2)
 	{
 		new CAIProc_LookAt(this, 0, &v13, 0, 80, 200);

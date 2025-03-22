@@ -213,9 +213,9 @@ void CCarnage::SelectAttack(void)
 				{
 					if (this->field_218 & 0x100)
 					{
-						this->mAccellorVel.vz = 0;
-						this->mAccellorVel.vy = 0;
-						this->mAccellorVel.vx = 0;
+						this->mVel.vz = 0;
+						this->mVel.vy = 0;
+						this->mVel.vx = 0;
 
 						this->field_218 &= 0xFFFFFEFE;
 						this->field_31C.bothFlags = 16;
@@ -237,9 +237,9 @@ void CCarnage::SelectAttack(void)
 				{
 					if ( (this->field_218 & 0x100) | Rnd(2))
 					{
-						this->mAccellorVel.vz = 0;
-						this->mAccellorVel.vy = 0;
-						this->mAccellorVel.vx = 0;
+						this->mVel.vz = 0;
+						this->mVel.vy = 0;
+						this->mVel.vx = 0;
 
 						this->field_218 &= 0xFFFFFEFE;
 						this->field_31C.bothFlags = 16;
@@ -255,9 +255,9 @@ void CCarnage::SelectAttack(void)
 				}
 				else
 				{
-					this->mAccellorVel.vz = 0;
-					this->mAccellorVel.vy = 0;
-					this->mAccellorVel.vx = 0;
+					this->mVel.vz = 0;
+					this->mVel.vy = 0;
+					this->mVel.vx = 0;
 
 					this->GetArenaPositionFromAngleOffset(
 							2048,
@@ -273,9 +273,9 @@ void CCarnage::SelectAttack(void)
 			}
 			else
 			{
-				this->mAccellorVel.vz = 0;
-				this->mAccellorVel.vy = 0;
-				this->mAccellorVel.vx = 0;
+				this->mVel.vz = 0;
+				this->mVel.vy = 0;
+				this->mVel.vx = 0;
 
 				this->field_218 &= 0xFFFFFFFE;
 				this->field_31C.bothFlags = 16;
@@ -309,9 +309,9 @@ void CCarnage::SelectAttack(void)
 
 			if (static_cast<u32>(Utils_XZDist(&this->mPos, &this->field_240)) < 0x40u)
 			{
-				this->mAccellorVel.vz = 0;
-				this->mAccellorVel.vy = 0;
-				this->mAccellorVel.vx = 0;
+				this->mVel.vz = 0;
+				this->mVel.vy = 0;
+				this->mVel.vx = 0;
 
 				this->field_218 &= 0xFFFFFFFE;
 				this->dumbAssPad = 0;
@@ -356,9 +356,9 @@ i32 CCarnage::Hit(SHitInfo* pInfo)
 	}
 
 	this->field_340 = 30;
-	this->mAccellorVel.vz = 0;
-	this->mAccellorVel.vy = 0;
-	this->mAccellorVel.vx = 0;
+	this->mVel.vz = 0;
+	this->mVel.vy = 0;
+	this->mVel.vx = 0;
 	this->field_218 &= 0xFFFFFFF8;
 	this->field_218 &= 0xFFFFFF87;
 
@@ -556,9 +556,9 @@ void CCarnage::BurnInBubble(void)
 
 			if (static_cast<u32>(Utils_XZDist(&this->mPos, &this->field_240)) < 0x20u)
 			{
-				this->mAccellorVel.vz = 0;
-				this->mAccellorVel.vy = 0;
-				this->mAccellorVel.vx = 0;
+				this->mVel.vz = 0;
+				this->mVel.vy = 0;
+				this->mVel.vx = 0;
 
 				this->field_218 &= ~1u;
 				this->RunAnim(0x11u, 0, -1);
@@ -912,8 +912,8 @@ void CCarnage::StretchJumpAdvance(void)
 
 			v9 = this->CalculateAngleDelta();
 
-			if ( ((this->mAccellorVel.vx >> 12) * (MechList->mAccellorVel.vx >> 12)
-					+ (this->mAccellorVel.vz >> 12) * (MechList->mAccellorVel.vz >> 12)) < 0
+			if ( ((this->mVel.vx >> 12) * (MechList->mVel.vx >> 12)
+					+ (this->mVel.vz >> 12) * (MechList->mVel.vz >> 12)) < 0
 				&& Utils_XZDist(&this->mPos, &MechList->mPos) < 768 )
 
 			{
@@ -961,9 +961,9 @@ void CCarnage::StretchJumpAdvance(void)
 				}
 				else
 				{
-					this->mAccellorVel.vz = 0;
-					this->mAccellorVel.vy = 0;
-					this->mAccellorVel.vx = 0;
+					this->mVel.vz = 0;
+					this->mVel.vy = 0;
+					this->mVel.vx = 0;
 					this->field_218 &= 0xFFFFFFFE;
 					this->RunAnim(8, 0, -1);
 
@@ -973,9 +973,9 @@ void CCarnage::StretchJumpAdvance(void)
 			}
 			else
 			{
-				this->mAccellorVel.vz = 0;
-				this->mAccellorVel.vy = 0;
-				this->mAccellorVel.vx = 0;
+				this->mVel.vz = 0;
+				this->mVel.vy = 0;
+				this->mVel.vx = 0;
 				this->field_218 &= ~1u;
 				this->RunAnim(8u, 0, -1);
 				this->dumbAssPad++;
@@ -1003,9 +1003,9 @@ void CCarnage::DoubleAxeHandSlash(void)
 	switch (this->dumbAssPad)
 	{
 		case 0:
-			this->mAccellorVel.vz = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vx = 0;
+			this->mVel.vz = 0;
+			this->mVel.vy = 0;
+			this->mVel.vx = 0;
 
 			this->field_218 |= gCarnageFour;
 			this->field_218 &= 0xFFFFFFFE;
@@ -1458,9 +1458,9 @@ void CCarnage::TugWebTrapped(void)
 			this->RunAnim( 9u, 0, -1);
 			this->field_218 &= 0xFFFFFFF8;
 
-			this->mAccellorVel.vz = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vx = 0;
+			this->mVel.vz = 0;
+			this->mVel.vy = 0;
+			this->mVel.vx = 0;
 
 			DoAssert(1u, "Bad register index");
 			this->realRegisterArr[0] = 0;
@@ -1683,15 +1683,15 @@ void CCarnage::CheckSlideParams(void)
 }
 
 // @Ok
-// @AlmostMatching: mAccellorVel is out of order for some reason
+// @AlmostMatching: mVel is out of order for some reason
 void CCarnage::Laugh(void)
 {
 	switch (this->dumbAssPad)
 	{
 		case 0:
-			this->mAccellorVel.vz = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vx = 0;
+			this->mVel.vz = 0;
+			this->mVel.vy = 0;
+			this->mVel.vx = 0;
 
 			this->field_218 &= 0xFFFFFFFE;
 			this->field_218 |= gCarnageFour;
@@ -1805,9 +1805,9 @@ INLINE void CCarnage::DieCarnage(void)
 	switch (this->dumbAssPad)
 	{
 		case 0:
-			this->mAccellorVel.vz = 0;
-			this->mAccellorVel.vy = 0;
-			this->mAccellorVel.vx = 0;
+			this->mVel.vz = 0;
+			this->mVel.vy = 0;
+			this->mVel.vx = 0;
 			this->field_218 &= 0xFFFFFFF8;
 
 			this->RunAnim(36, 0, -1);

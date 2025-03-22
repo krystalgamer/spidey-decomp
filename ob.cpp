@@ -667,13 +667,12 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, mInputFlags, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
-	VALIDATE(CBody, mAccellorVel, 0x60);
 
 	VALIDATE(CBody, field_48, 0x48);
 
 	VALIDATE(CBody, field_54, 0x54);
 
-	VALIDATE(CBody, mAccellorVel, 0x60);
+	VALIDATE(CBody, mVel, 0x60);
 	VALIDATE(CBody, mAcc, 0x6C);
 
 	VALIDATE(CBody, mFric, 0x78);
