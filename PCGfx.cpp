@@ -136,8 +136,8 @@ void PCGfx_DoModelPreview(void)
 				if (!PSXRegion[v9].IsSuper)
 				{
 					SuperItem = reinterpret_cast<CSuper*>(PSXRegion[v9].pSuper);
-					SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->field_20);
-					SuperItem->field_20 = 0;
+					SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->mNextItem);
+					SuperItem->mNextItem = 0;
 				}
 
 				SuperItem = createSuperItem(PSXRegion[v9].pSuper);
@@ -259,7 +259,7 @@ void PCGfx_DoModelPreview(void)
 					}
 					else
 					{
-						SuperItem->field_20 = SuperItemNext;
+						SuperItem->mNextItem = SuperItemNext;
 					}
 
 					if (PSXRegion[v9].IsSuper)
@@ -269,8 +269,8 @@ void PCGfx_DoModelPreview(void)
 					else
 					{
 						SuperItem = reinterpret_cast<CSuper*>(&PSXRegion[v9].pSuper[idx]);
-						SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->field_20);
-						SuperItem->field_20 = 0;
+						SuperItemNext = reinterpret_cast<CSuper*>(SuperItem->mNextItem);
+						SuperItem->mNextItem = 0;
 					}
 
 					gMikeCamera[0].Position.vx = SuperItem->mPos.vx >> 12;
@@ -296,7 +296,7 @@ void PCGfx_DoModelPreview(void)
 		}
 		else
 		{
-			SuperItem->field_20 = SuperItemNext;
+			SuperItem->mNextItem = SuperItemNext;
 		}
 	}
 }

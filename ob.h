@@ -65,7 +65,7 @@ class CItem
 		u8 mRegion;
 
 
-		CItem *field_20;
+		CItem *mNextItem;
 
 		u32 mRGB;
 		CSVector mScale;

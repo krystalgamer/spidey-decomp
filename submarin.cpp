@@ -62,7 +62,7 @@ void Submariner_RelocatableModuleClear(void)
 {
 	for (CBody* cur = BaddyList; cur; )
 	{
-		CBody* next = reinterpret_cast<CBody*>(cur->field_20);
+		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
 		if (cur->field_38 == 319)
 		{
 			delete cur;

@@ -39,7 +39,7 @@ void Jonah_RelocatableModuleClear(void)
 
 	while (pSearch)
 	{
-		CItem *pNext = pSearch->field_20;
+		CItem *pNext = pSearch->mNextItem;
 
 		if (pSearch->field_38 == 316)
 			delete pSearch;
@@ -259,7 +259,7 @@ CBaddy* CJonah::FindScorp(void)
 {
 	if (!Mem_RecoverPointer(&this->field_35C))
 	{
-		for (CBaddy* cur = BaddyList; cur; cur = reinterpret_cast<CBaddy*>(cur->field_20))
+		for (CBaddy* cur = BaddyList; cur; cur = reinterpret_cast<CBaddy*>(cur->mNextItem))
 		{
 			if (cur->field_38 == 310)
 			{

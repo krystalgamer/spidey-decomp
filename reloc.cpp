@@ -196,7 +196,7 @@ void Reloc_UnloadAll(void)
 	CBaddy *pSearch = BaddyList;
 	while(pSearch)
 	{
-		CBaddy *pNext = reinterpret_cast<CBaddy*>(pSearch->field_20);
+		CBaddy *pNext = reinterpret_cast<CBaddy*>(pSearch->mNextItem);
 		u16 type = pSearch->field_38;
 		if (type == 317 ||
 				type == 304 ||

@@ -27,7 +27,7 @@ void Venom_RelocatableModuleClear(void)
 
 	while (pSearch)
 	{
-		CItem *pNext = pSearch->field_20;
+		CItem *pNext = pSearch->mNextItem;
 
 		if (pSearch->field_38 == 313)
 			delete pSearch;
@@ -262,7 +262,7 @@ void CVenom::AdjustWaterModel(void)
 
 		for (pBody = EnvironmentalObjectList;
 				pBody;
-				pBody = reinterpret_cast<CBody*>(pBody->field_20))
+				pBody = reinterpret_cast<CBody*>(pBody->mNextItem))
 		{
 			if (pBody->mRegion == gObjFileRegion && pBody->mModel == Model)
 			{

@@ -55,7 +55,7 @@ INLINE void DeleteList(CBody *pLst)
 
 	while (pCur)
 	{
-		CBody *pNext = reinterpret_cast<CBody*>(pCur->field_20);
+		CBody *pNext = reinterpret_cast<CBody*>(pCur->mNextItem);
 
 		if (pCur->mCBodyFlags & 0x20)
 		{

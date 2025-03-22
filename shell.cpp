@@ -638,9 +638,9 @@ INLINE void CallAI(CBody *pList)
 	if (pCur)
 	{
 		for (
-				CBody *pNext = reinterpret_cast<CBody*>(pCur->field_20);
+				CBody *pNext = reinterpret_cast<CBody*>(pCur->mNextItem);
 				;
-				pNext = reinterpret_cast<CBody*>(pNext->field_20))
+				pNext = reinterpret_cast<CBody*>(pNext->mNextItem))
 		{
 			if (pCur->mCBodyFlags & 0x40)
 			{

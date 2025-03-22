@@ -306,7 +306,7 @@ void Rhino_RelocatableModuleClear(void)
 
 	while (pSearch)
 	{
-		CItem *pNext = pSearch->field_20;
+		CItem *pNext = pSearch->mNextItem;
 
 		if (pSearch->field_38 == 307)
 			delete pSearch;
@@ -520,7 +520,7 @@ void CRhino::FuckUpSomeBarrels(void)
 	for (
 			CBody* cur = EnvironmentalObjectList;
 			cur && barrels < 2;
-			cur = reinterpret_cast<CBody*>(cur->field_20))
+			cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_38 == 401)
 		{

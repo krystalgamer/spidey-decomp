@@ -504,7 +504,7 @@ void Exp_HitEnvItem(CItem* pItem, u32* pFace, i32 Damage)
 		{
 			if (pScan == pItem)
 				break;
-			pScan = pScan->field_20;
+			pScan = pScan->mNextItem;
 		}
 
 		if (!pScan)

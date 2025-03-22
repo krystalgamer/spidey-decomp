@@ -46,7 +46,7 @@ CBody* CBody::FindBodyByNode(
 		i32 type,
 		CBody* pBody)
 {
-	for (CBody *cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for (CBody *cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == type)
 			return cur;
@@ -207,11 +207,11 @@ INLINE void CBody::AttachTo(CBody** a1)
 
 	CBody *v2 = *a1;
 	this->field_34 = 0;
-	this->field_20 = v2;
+	this->mNextItem = v2;
 
 	*a1 = this;
 
-	CItem *v3 = this->field_20;
+	CItem *v3 = this->mNextItem;
 	if (v3)
 		v3->field_34 = this;
 
@@ -227,16 +227,16 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 		this->UnSuspend();
 	}
 
-	CItem *v6 = this->field_20;
+	CItem *v6 = this->mNextItem;
 	if (v6)
 		v6->field_34 = this->field_34;
 
 	CItem *r = this->field_34;
 	if (r)
-		r->field_20 = this->field_20;
+		r->mNextItem = this->mNextItem;
 
 	if (*a2 == this)
-		*a2 = reinterpret_cast<CBody*>(this->field_20);
+		*a2 = reinterpret_cast<CBody*>(this->mNextItem);
 }
 
 // @Ok
@@ -645,7 +645,7 @@ void validate_CItem(void)
 	VALIDATE(CItem, mModel, 0x1A);
 	VALIDATE(CItem, mRegion, 0x1F);
 
-	VALIDATE(CItem, field_20, 0x20);
+	VALIDATE(CItem, mNextItem, 0x20);
 
 
 	VALIDATE(CItem, mRGB, 0x24);

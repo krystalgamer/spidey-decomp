@@ -53,7 +53,7 @@ void Simby_RelocatableModuleClear(void)
 
 	while (pSearch)
 	{
-		CItem *pNext = pSearch->field_20;
+		CItem *pNext = pSearch->mNextItem;
 
 		if (pSearch->field_38 == 324)
 			delete pSearch;

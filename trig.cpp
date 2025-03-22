@@ -164,7 +164,7 @@ void SendSuspendOrActivate(u16* pLinkInfo, i32 signalType)
 // @Ok
 void SendUnSuspend(CBody* pList, i32 NodeIndex)
 {
-	for (CBody* cur = pList; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for (CBody* cur = pList; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == NodeIndex)
 			cur->UnSuspend();
@@ -174,7 +174,7 @@ void SendUnSuspend(CBody* pList, i32 NodeIndex)
 // @Ok
 void SendSignalToNode(CBody* pBody, i32 NodeIndex)
 {
-	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == NodeIndex)
 			cur->field_44 |= 1;
@@ -184,7 +184,7 @@ void SendSignalToNode(CBody* pBody, i32 NodeIndex)
 // @Ok
 INLINE void SendSuspend(CBody** ppList, i32 NodeIndex)
 {
-	for (CBody* cur = *ppList; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for (CBody* cur = *ppList; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == NodeIndex)
 			cur->Suspend(ppList);
@@ -194,7 +194,7 @@ INLINE void SendSuspend(CBody** ppList, i32 NodeIndex)
 // @Ok
 void KillInList(i32 Node, CBody* pList, i32 How)
 {
-	for (CBody *cur = pList; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for (CBody *cur = pList; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == Node)
 		{

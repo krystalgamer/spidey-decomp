@@ -77,7 +77,7 @@ void M3dColij_LineToItem(
 				M3dColij_LineToThisItem(curItem, pLine);
 			}
 
-			curItem = reinterpret_cast<CItem*>(curItem->field_20);
+			curItem = reinterpret_cast<CItem*>(curItem->mNextItem);
 		}
 
 	}

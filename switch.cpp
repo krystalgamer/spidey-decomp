@@ -188,7 +188,7 @@ CSwitch* Switch_GetCSwitchObjectFromItem(CItem *pItem)
 {
 	print_if_false(pItem != 0, "Bad item");
 
-	for (CItem *cur = ControlBaddyList; cur; cur = reinterpret_cast<CItem*>(cur->field_20))
+	for (CItem *cur = ControlBaddyList; cur; cur = reinterpret_cast<CItem*>(cur->mNextItem))
 	{
 		if (cur->field_38 == 407)
 		{

@@ -48,7 +48,7 @@ void Backgrnd_On(unsigned __int16 a1)
 		{
 			if (cur->field_F8 != a1)
 			{
-				cur = reinterpret_cast<CSuper*>(cur->field_20);
+				cur = reinterpret_cast<CSuper*>(cur->mNextItem);
 			}
 			else
 			{
@@ -71,7 +71,7 @@ void Backgrnd_Off(unsigned __int16 a1)
 		{
 			if (cur->field_F8 != a1)
 			{
-				cur = reinterpret_cast<CSuper*>(cur->field_20);
+				cur = reinterpret_cast<CSuper*>(cur->mNextItem);
 			}
 			else
 			{

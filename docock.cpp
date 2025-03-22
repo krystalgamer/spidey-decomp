@@ -35,7 +35,7 @@ void DocOck_RelocatableModuleClear(void)
 
 	while (pSearch)
 	{
-		CItem *pNext = pSearch->field_20;
+		CItem *pNext = pSearch->mNextItem;
 
 		if (pSearch->field_38 == 308)
 			delete pSearch;
@@ -370,7 +370,7 @@ INLINE void CDocOc::ResolveSwitches(void)
 	i32 index = 0;
 	for (CBaddy* pBaddy = reinterpret_cast<CBaddy*>(ControlBaddyList);
 			pBaddy;
-			pBaddy = reinterpret_cast<CBaddy*>(pBaddy->field_20))
+			pBaddy = reinterpret_cast<CBaddy*>(pBaddy->mNextItem))
 	{
 		if (pBaddy->field_38 == 407)
 		{

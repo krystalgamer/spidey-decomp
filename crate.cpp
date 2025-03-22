@@ -47,7 +47,7 @@ void Crate_Destroy(CItem* pItem)
 			}
 		}
 
-		for (CItem* i = EnviroList; i; i = i->field_20)
+		for (CItem* i = EnviroList; i; i = i->mNextItem)
 		{
 			if (i != pItem)
 			{

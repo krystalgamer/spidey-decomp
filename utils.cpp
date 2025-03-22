@@ -255,7 +255,7 @@ i32 Utils_KillObjectsInBox(CVector const * min,CVector const * max,CBody * a3, b
 	i32 killed = 0;
 	for (CBody *cur = a3; cur; )
 	{
-		CBody *next = reinterpret_cast<CBody*>(cur->field_20);
+		CBody *next = reinterpret_cast<CBody*>(cur->mNextItem);
 
 		if (!cur->IsDead())
 		{
@@ -332,7 +332,7 @@ void Utils_SetBaddyVisibilityInBox(CVector const * min,CVector const * max,bool 
 	i32 maxvy = max->vy;
 	i32 maxvz = max->vz;
 
-	for(CItem *pItem = a5; pItem; pItem = pItem->field_20)
+	for(CItem *pItem = a5; pItem; pItem = pItem->mNextItem)
 	{
 		if (PSXRegion[pItem->mRegion].Usable)
 		{
@@ -402,7 +402,7 @@ void Utils_SetVisibilityInBox(CVector const * min,CVector const * max, bool visi
 	i32 maxvy = max->vy;
 	i32 maxvz = max->vz;
 
-	for(CItem *pItem = EnviroList; pItem; pItem = pItem->field_20)
+	for(CItem *pItem = EnviroList; pItem; pItem = pItem->mNextItem)
 	{
 		if (PSXRegion[pItem->mRegion].Usable)
 		{

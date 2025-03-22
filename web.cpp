@@ -177,7 +177,7 @@ void CSwinger::SetSpideyAnimFrame(i32 a2)
 // @Ok
 INLINE void CDomeShockWave::ResetHitFlags(CBody* body)
 {
-	for(CBody *cur = body; cur; cur = reinterpret_cast<CBody*>(cur->field_20))
+	for(CBody *cur = body; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 		cur->mCBodyFlags &= 0xFEFF;
 }
 
