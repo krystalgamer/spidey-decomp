@@ -72,7 +72,7 @@ class CItem
 
 		i32 field_30;
 
-		CItem *field_34;
+		CItem *mPreviousItem;
 		unsigned __int16 field_38;
 		unsigned char padAfter38[2];
 

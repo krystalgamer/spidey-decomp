@@ -206,14 +206,14 @@ INLINE void CBody::AttachTo(CBody** a1)
 {
 
 	CBody *v2 = *a1;
-	this->field_34 = 0;
+	this->mPreviousItem = 0;
 	this->mNextItem = v2;
 
 	*a1 = this;
 
 	CItem *v3 = this->mNextItem;
 	if (v3)
-		v3->field_34 = this;
+		v3->mPreviousItem = this;
 
 }
 
@@ -229,9 +229,9 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 
 	CItem *v6 = this->mNextItem;
 	if (v6)
-		v6->field_34 = this->field_34;
+		v6->mPreviousItem = this->mPreviousItem;
 
-	CItem *r = this->field_34;
+	CItem *r = this->mPreviousItem;
 	if (r)
 		r->mNextItem = this->mNextItem;
 
@@ -652,7 +652,7 @@ void validate_CItem(void)
 	VALIDATE(CItem, mScale, 0x28);
 
 	VALIDATE(CItem, field_30, 0x30);
-	VALIDATE(CItem, field_34, 0x34);
+	VALIDATE(CItem, mPreviousItem, 0x34);
 	VALIDATE(CItem, field_38, 0x38);
 	VALIDATE(CItem, mpLight, 0x3C);
 
