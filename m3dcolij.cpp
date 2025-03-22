@@ -71,9 +71,9 @@ void M3dColij_LineToItem(
 
 		while (curItem)
 		{
-			if (curItem->field_6 != pLine->Inquiry)
+			if (curItem->mInquiry != pLine->Inquiry)
 			{
-				curItem->field_6 = pLine->Inquiry;
+				curItem->mInquiry = pLine->Inquiry;
 				M3dColij_LineToThisItem(curItem, pLine);
 			}
 

@@ -52,42 +52,41 @@ static int *** const CItemRelatedList = (int***)0x006B2454;
 
 class CItem  
 {
-public: 
-	
-	unsigned short mFlags;
-	u16 field_6;
-	CVector mPos;
-	CSVector mAngles;
+	public: 
+		
+		u16 mFlags;
+		u16 mInquiry;
+		CVector mPos;
+		CSVector mAngles;
 
-	u16 mModel;
+		u16 mModel;
 
-	unsigned char pad1[3];
-	u8 mRegion;
-
-
-	CItem *field_20;
-
-	i32 field_24;
-	CSVector mScale;
-
-	i32 field_30;
-
-	CItem *field_34;
-	unsigned __int16 field_38;
-	unsigned char padAfter38[2];
+		unsigned char pad1[3];
+		u8 mRegion;
 
 
-	SLight *mpLight;
+		CItem *field_20;
+
+		i32 field_24;
+		CSVector mScale;
+
+		i32 field_30;
+
+		CItem *field_34;
+		unsigned __int16 field_38;
+		unsigned char padAfter38[2];
 
 
+		SLight *mpLight;
 
-	EXPORT void * operator new(size_t size);
-	EXPORT void operator delete(void*);
 
-	EXPORT CItem();
-	EXPORT virtual ~CItem();
+		EXPORT void * operator new(size_t size);
+		EXPORT void operator delete(void*);
 
-	EXPORT void InitItem(const char *);
+		EXPORT CItem();
+		EXPORT virtual ~CItem();
+
+		EXPORT void InitItem(const char *);
 };
 
 
