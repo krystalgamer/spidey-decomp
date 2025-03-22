@@ -33,9 +33,9 @@ void CHostage::DieHostage(void)
 		case 0:
 			this->mCBodyFlags &= ~0x10u;
 			this->MarkAIProcList(1, 0, 0);
-			this->gVec.vz = 0;
-			this->gVec.vy = 0;
-			this->gVec.vx = 0;
+			this->mAcc.vz = 0;
+			this->mAcc.vy = 0;
+			this->mAcc.vx = 0;
 			this->Neutralize();
 			this->mFlags |= 0x800;
 			this->field_30 = 128;

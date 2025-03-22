@@ -138,7 +138,7 @@ void CManipOb::Throw(CVector *a2)
 	this->mFlags &= 0xF7FF;
 	this->field_10C |= 1;
 	this->mAccellorVel = *a2;
-	this->gVec.vy = 4096;
+	this->mAcc.vy = 4096;
 	this->csVector1.vx = Rnd(32) + 64;
 }
 

@@ -303,7 +303,7 @@ void CAIProc_AccZ::Execute(void)
 	{
 		if (wait == 2)
 		{
-			this->pBaddy->gVec.vz = 0;
+			this->pBaddy->mAcc.vz = 0;
 		}
 	}
 	else
@@ -316,7 +316,7 @@ void CAIProc_AccZ::Execute(void)
 				if ( !this->field_24 )
 					this->pBaddy->field_2A8 &= 0xF7FFFFFF;
 
-				this->pBaddy->gVec.vz = 0;
+				this->pBaddy->mAcc.vz = 0;
 
 				if ( this->field_14 )
 				{
@@ -328,7 +328,7 @@ void CAIProc_AccZ::Execute(void)
 			}
 			else
 			{
-				this->pBaddy->gVec.vz = this->field_20;
+				this->pBaddy->mAcc.vz = this->field_20;
 			}
 		}	
 		else
@@ -339,7 +339,7 @@ void CAIProc_AccZ::Execute(void)
 				if ( !this->field_24 )
 					this->pBaddy->field_2A8 &= 0xF7FFFFFF;
 
-				this->pBaddy->gVec.vz = 0;
+				this->pBaddy->mAcc.vz = 0;
 				if ( this->field_14 )
 				{
 					this->pBaddy->field_288 |= this->field_14;
@@ -350,7 +350,7 @@ void CAIProc_AccZ::Execute(void)
 			}
 			else
 			{
-				this->pBaddy->gVec.vz = this->field_20;
+				this->pBaddy->mAcc.vz = this->field_20;
 			}
 		}
 	}

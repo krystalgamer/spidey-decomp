@@ -592,7 +592,7 @@ void CChopper::DoChopperPhysics(void)
 
 	for (i32 i = this->field_80; i; i++)
 	{
-		this->mAccellorVel += this->gVec;
+		this->mAccellorVel += this->mAcc;
 		this->mAccellorVel %= this->mFric;
 		this->mAccellorVel.KillSmall();
 

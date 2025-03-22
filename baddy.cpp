@@ -460,17 +460,17 @@ void CBaddy::Neutralize(void)
 {
 	this->MarkAIProcList(1, 0, 0);
 
-	this->gVec.vz = 0;
-	this->gVec.vy = 0;
-	this->gVec.vz = 0;
+	this->mAcc.vz = 0;
+	this->mAcc.vy = 0;
+	this->mAcc.vz = 0;
 
 	this->mAccellorVel.vz = 0;
 	this->mAccellorVel.vy = 0;
 	this->mAccellorVel.vx = 0;
 
-	this->gVec.vz = 0;
-	this->gVec.vy = 0;
-	this->gVec.vx = 0;
+	this->mAcc.vz = 0;
+	this->mAcc.vy = 0;
+	this->mAcc.vx = 0;
 
 	this->csVector1.vz = 0;
 	this->csVector1.vy = 0;

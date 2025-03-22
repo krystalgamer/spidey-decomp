@@ -220,10 +220,10 @@ void CPowerUp::CreateBit(void)
 }
 
 // @Ok
-void CPowerUp::SetGravity(i32 a2, i32 a3)
+void CPowerUp::SetGravity(i32 g, i32 fric)
 {
-	this->gVec.vy = a2;
-	this->mFric.vy = a3;
+	this->mAcc.vy = g;
+	this->mFric.vy = fric;
 }
 
 // @Ok
