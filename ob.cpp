@@ -634,8 +634,8 @@ CSuper::~CSuper(void)
 	this->field_11C = 0;
 }
 
-void validate_CItem(void){
-
+void validate_CItem(void)
+{
 	VALIDATE_SIZE(CItem, 0x40);
 
 	VALIDATE(CItem, mFlags, 0x4);
@@ -648,7 +648,7 @@ void validate_CItem(void){
 	VALIDATE(CItem, field_20, 0x20);
 
 
-	VALIDATE(CItem, field_24, 0x24);
+	VALIDATE(CItem, mRGB, 0x24);
 	VALIDATE(CItem, mScale, 0x28);
 
 	VALIDATE(CItem, field_30, 0x30);

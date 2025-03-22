@@ -67,7 +67,7 @@ class CItem
 
 		CItem *field_20;
 
-		i32 field_24;
+		u32 mRGB;
 		CSVector mScale;
 
 		i32 field_30;

@@ -41,14 +41,14 @@ void C3DExplosion::AI(void)
 		case 2:
 			this->mPos.vy += this->mAccellorVel.vy;
 
-			v4 = (this->field_24 & 0xFF) - this->field_110;
+			v4 = (this->mRGB & 0xFF) - this->field_110;
 			if (v4 <= 0)
 			{
 				v4 = 0;
 				this->Die();
 			}
 
-			this->field_24 = v4 | (v4 << 16) | (v4 << 8);
+			this->mRGB = v4 | (v4 << 16) | (v4 << 8);
 			this->mScale.vx += this->field_104;
 			this->mScale.vy = (this->mScale.vx * this->field_108) >> 8;
 			this->mScale.vz = this->mScale.vx;
@@ -79,7 +79,7 @@ C3DExplosion::C3DExplosion(
 	this->mModel = a4;
 	this->mPos = *a2;
 	this->mFlags |= 0x601u;
-	this->field_24 = 0x808080;
+	this->mRGB = 0x808080;
 
 	this->field_FC = a5;
 

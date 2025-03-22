@@ -74,7 +74,7 @@ void CSwitch::AI(void)
 		this->field_108->mFlags &= 0xFFFE;
 
 		u32 res;
-		u32 Int = this->field_108->field_24 & 0xFF;
+		u32 Int = this->field_108->mRGB & 0xFF;
 		if (Int < 0x80)
 		{
 			Int += this->field_80;
@@ -86,24 +86,24 @@ void CSwitch::AI(void)
 			res = 0x808080;
 		}
 
-		this->field_24 = res;
+		this->mRGB = res;
 	}
 
 	if (this->field_100 == 5)
 	{
 		u32 v18 = 4 * this->field_80;
-		u32 v19 = this->field_108->field_24 & 0xFF;
+		u32 v19 = this->field_108->mRGB & 0xFF;
 
 		if (v19 > v18)
 		{
 			u32 diff = v19 - v18;
-			this->field_108->field_24 = (((diff << 8) | diff) << 8) | diff;
+			this->field_108->mRGB = (((diff << 8) | diff) << 8) | diff;
 		}
 		else
 		{
 			this->field_108->mFlags |= 0x21;
 			reinterpret_cast<CBody*>(this->field_108)->Die();
-			this->field_108->field_24 = 0;
+			this->field_108->mRGB = 0;
 		}
 	}
 }

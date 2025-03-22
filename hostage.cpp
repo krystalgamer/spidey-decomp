@@ -49,7 +49,7 @@ void CHostage::DieHostage(void)
 			this->dumbAssPad++;
 		case 1:
 			this->field_328++;
-			this->field_24 = ((this->field_328 & 1) ? 0xC03030 : 0) + 0x3F0F0F;
+			this->mRGB = ((this->field_328 & 1) ? 0xC03030 : 0) + 0x3F0F0F;
 
 			if (this->field_328 > 7)
 			{
@@ -70,7 +70,7 @@ void CHostage::DieHostage(void)
 			diff *= 3;
 			diff = (diff << 10) >> 12;
 
-			this->field_24 = (((diff << 10) | (diff & 0xFFFFFFFC)) << 6) | (diff >> 2);
+			this->mRGB = (((diff << 10) | (diff & 0xFFFFFFFC)) << 6) | (diff >> 2);
 
 			break;
 		case 3:

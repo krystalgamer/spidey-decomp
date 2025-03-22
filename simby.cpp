@@ -119,10 +119,10 @@ void CSymBurn::AI(void)
 
 	if ( ++this->field_1A4 > 60 )
 	{
-		i32 v4 = (this->field_24 & 0xFF) - 4;
+		i32 v4 = (this->mRGB & 0xFF) - 4;
 		if ( v4 < 0 )
 			v4 = 0;
-		this->field_24 = v4 | ((v4 | (v4 << 8)) << 8);
+		this->mRGB = v4 | ((v4 | (v4 << 8)) << 8);
 
 		this->mScale.vy -= 75;
 		if ( this->mScale.vy < 0 )
@@ -135,11 +135,11 @@ void CSymBurn::AI(void)
 	}
 	else
 	{
-		i32 v7 = (this->field_24 & 0xFF) - 129;
+		i32 v7 = (this->mRGB & 0xFF) - 129;
 		if ( v7 < 128 )
 			v7 = 128;
 
-		this->field_24 = v7 | ((v7 | (v7 << 8)) << 8);
+		this->mRGB = v7 | ((v7 | (v7 << 8)) << 8);
 
 		this->mScale.vy += 800;
 		if ( this->mScale.vy > 4096 )
@@ -166,7 +166,7 @@ CSymBurn::CSymBurn(CVector *a2)
 	this->InitItem("fire");
 	this->mFlags |= 0x602u;
 	this->mScale.vy = 0;
-	this->field_24= 0xFFFFFF;
+	this->mRGB = 0xFFFFFF;
 
 	this->AttachTo(&MiscList);
 	(*reinterpret_cast<i32*>(0x60CF94)) += 1;
@@ -739,7 +739,7 @@ void CSimby::FlashUpdate(void)
 		this->field_24 = ((this->field_32A + this->field_24) & 0xFF) | (((this->field_32E + (this->field_24 >> 0x10)) << 16) & 0xFF0000) | ((((this->field_24 >> 8) + this->field_32C) << 8) & 0xFF00);
 		*/
 
-		this->field_24 = BYTE0(this->field_24 + this->field_32A) | ((BYTE1(this->field_24) + this->field_32C) << 8) | ((BYTE2(this->field_24) + this->field_32E) << 16) ;
+		this->mRGB = BYTE0(this->mRGB + this->field_32A) | ((BYTE1(this->mRGB) + this->field_32C) << 8) | ((BYTE2(this->mRGB) + this->field_32E) << 16) ;
 
 																							                            
 
@@ -755,7 +755,7 @@ void CSimby::FlashUpdate(void)
 				this->mFlags &= 0xFBFF;
 			}
 
-			this->field_24 = this->field_330;
+			this->mRGB = this->field_330;
 			this->field_330 = 0;
 		}
 	}

@@ -75,7 +75,7 @@ CDomePiece::CDomePiece(
 	this->mModel = a3;
 	this->AttachTo(&MiscList);
 	this->mFlags |= 0x400;
-	this->field_24 = 0;
+	this->mRGB = 0;
 	this->field_FC = 4;
 }
 

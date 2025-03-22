@@ -1091,7 +1091,7 @@ void __inline CDummy::FadeAway(void)
 	this->mFlags &= 0xFF7F;
 	this->mFlags |= 0x800;
 
-	this->field_24 = 0x202020;
+	this->mRGB = 0x202020;
 
 	this->OutlineOn();
 	this->SetOutlineSemiTransparent();
@@ -1222,7 +1222,7 @@ CShellSymBurn::CShellSymBurn(CVector* pVector)
 	this->InitItem("fire");
 	this->mFlags |= 0x602;
 	this->mScale.vy = 0;
-	this->field_24 = 0xFFFFFF;
+	this->mRGB = 0xFFFFFF;
 	this->AttachTo(&MiscList);
 }
 
@@ -1238,12 +1238,12 @@ void CShellSymBurn::AI(void)
 
 	if (++this->field_1A4 > 60)
 	{
-		i32 v3 = (this->field_24 & 0xFF) - 4;
+		i32 v3 = (this->mRGB & 0xFF) - 4;
 		if (v3 < 0)
 			v3 = 0;
 
 		this->mScale.vy -= 75;
-		this->field_24 = v3 | ((v3 | (v3 << 8)) << 8);
+		this->mRGB = v3 | ((v3 | (v3 << 8)) << 8);
 
 		if (this->mScale.vy < 0)
 			this->mScale.vy = 0;
@@ -1255,12 +1255,12 @@ void CShellSymBurn::AI(void)
 	}
 	else
 	{
-		i32 v5 = (this->field_24 & 0xFF) - 129;
+		i32 v5 = (this->mRGB & 0xFF) - 129;
 		if (v5 < 128)
 			v5 = 128;
 
 		this->mScale.vy += 800;
-		this->field_24 = v5 | ((v5 | (v5 << 8)) << 8);
+		this->mRGB = v5 | ((v5 | (v5 << 8)) << 8);
 
 		if (this->mScale.vy > 4096)
 			this->mScale.vy = 4096;

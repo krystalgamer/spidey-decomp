@@ -25,7 +25,7 @@ void CPowerUp::AI(void)
 
 	if (this->field_124)
 	{
-		this->field_24 = 0x101010;
+		this->mRGB = 0x101010;
 		this->mFlags |= 0xC00;
 		this->field_124 = 0;
 	}
@@ -45,7 +45,7 @@ void CPowerUp::AI(void)
 
 			u32 tmp = (255 * this->field_128 / 64);
 			tmp |= ((tmp << 8) | tmp) << 8;
-			this->field_24 = tmp;
+			this->mRGB = tmp;
 		}
 		else
 		{

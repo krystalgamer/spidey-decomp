@@ -670,7 +670,7 @@ int CBaddy::Die(int a2)
 				this->KillShadow();
 
 				this->mFlags |= 0x400;
-				this->field_24 = 0x404040;
+				this->mRGB = 0x404040;
 				this->field_1F8 = 0;
 				break;
 			case 2:
@@ -688,7 +688,7 @@ int CBaddy::Die(int a2)
 				v8 <<= 8;
 				v8 |= v9;
 
-				this->field_24 =  v8;
+				this->mRGB =  v8;
 				break;
 
 
