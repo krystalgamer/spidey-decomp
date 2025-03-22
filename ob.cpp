@@ -346,9 +346,9 @@ void CBody::StopMyXA(void)
 // @AlmostMatching: vtable is moved later than expected for some reason
 CBody::CBody(void)
 {
-	this->field_78.vx = 1;
-	this->field_78.vy = 1;
-	this->field_78.vz = 1;
+	this->mFric.vx = 1;
+	this->mFric.vy = 1;
+	this->mFric.vz = 1;
 
 	this->field_94.vx = 1;
 	this->field_94.vy = 1;
@@ -676,7 +676,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, mAccellorVel, 0x60);
 	VALIDATE(CBody, gVec, 0x6C);
 
-	VALIDATE(CBody, field_78, 0x78);
+	VALIDATE(CBody, mFric, 0x78);
 
 
 	VALIDATE(CBody, field_7C, 0x7C);

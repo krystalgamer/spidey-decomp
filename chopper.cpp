@@ -593,7 +593,7 @@ void CChopper::DoChopperPhysics(void)
 	for (i32 i = this->field_80; i; i++)
 	{
 		this->mAccellorVel += this->gVec;
-		this->mAccellorVel %= this->field_78;
+		this->mAccellorVel %= this->mFric;
 		this->mAccellorVel.KillSmall();
 
 		this->field_330 += this->mAccellorVel;
@@ -1112,9 +1112,9 @@ CChopper::CChopper(i16* a2, i32 a3)
 
 	this->mType = 318;
 
-	this->field_78.vx = 3;
-	this->field_78.vy = 3;
-	this->field_78.vz = 3;
+	this->mFric.vx = 3;
+	this->mFric.vy = 3;
+	this->mFric.vz = 3;
 
 	this->mCBodyFlags &= ~0x10u;
 	this->field_DC = 0;

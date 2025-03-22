@@ -105,7 +105,7 @@ public:
 	CVector mAccellorVel;
 	CVector gVec;
 
-	CFriction field_78;
+	CFriction mFric;
 
 	int field_7C;
 
