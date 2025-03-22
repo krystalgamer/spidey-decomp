@@ -526,10 +526,10 @@ i32 INLINE CChopper::GetToPos(CVector* a2)
 	Utils_CalcAim(&v6, &this->field_330, a2);
 
 	i32 v5;
-	if (my_abs(this->csVector1.vy) > 0x20)
+	if (my_abs(this->mAngVel.vy) > 0x20)
 		v5 = 0;
 	else
-		v5 = this->field_348 * (32 - my_abs(this->csVector1.vy)) / 32;
+		v5 = this->field_348 * (32 - my_abs(this->mAngVel.vy)) / 32;
 
 	Utils_GetVecFromMagDir(&this->mVel, v5, &v6);
 	return 0;
@@ -1301,8 +1301,8 @@ void INLINE CChopper::AngleToTargetAngle(void)
 	}
 
 
-	this->csVector1.vy = v1 >> 5;
-	this->mAngles.vy += this->csVector1.vy;
+	this->mAngVel.vy = v1 >> 5;
+	this->mAngles.vy += this->mAngVel.vy;
 }
 
 void validate_CChopper(void){

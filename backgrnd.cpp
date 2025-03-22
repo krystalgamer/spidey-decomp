@@ -10,7 +10,7 @@ EXPORT i16 gBackgroundIndex = 0;
 // @Matching
 void CBackground::AI(void)
 {
-	this->mAngles += this->csVector1;
+	this->mAngles += this->mAngVel;
 }
 
 // @Ok

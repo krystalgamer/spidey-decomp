@@ -709,7 +709,7 @@ CShellGoldFish::CShellGoldFish(CDummy *pDummy)
 	this->AttachTo(&MiscList);
 
 	this->mFlags |= 0x200;
-	this->csVector1.vy = 50;
+	this->mAngVel.vy = 50;
 
 	this->mScale.vz = 10000;
 	this->mScale.vy = 10000;

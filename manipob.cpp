@@ -129,7 +129,7 @@ void CManipOb::ThrowPos(CVector *a2, int a3)
 
 	this->mFlags &= 0xF7FF;
 	this->field_10C |= 1;
-	this->csVector1.vx = Rnd(32) + 64;
+	this->mAngVel.vx = Rnd(32) + 64;
 }
 
 // @Ok
@@ -139,7 +139,7 @@ void CManipOb::Throw(CVector *a2)
 	this->field_10C |= 1;
 	this->mVel = *a2;
 	this->mAcc.vy = 4096;
-	this->csVector1.vx = Rnd(32) + 64;
+	this->mAngVel.vx = Rnd(32) + 64;
 }
 
 // @NotOk

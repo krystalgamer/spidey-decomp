@@ -113,7 +113,7 @@ public:
 	int field_80;
 	int field_84;
 
-	CSVector csVector1;
+	CSVector mAngVel;
 	CSVector field_8E;
 
 	CFriction field_94;

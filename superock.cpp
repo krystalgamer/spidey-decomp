@@ -168,13 +168,13 @@ void CSuperDocOck::DoPhysics(void)
 				v8.vx = 0;
 				Utils_TurnTowards(
 					this->mAngles,
-					&this->csVector1,
+					&this->mAngVel,
 					&this->field_8E,
 					v8,
 					10);
 				v8.vx = vx;
 
-				i32 v5 = abs(this->csVector1.vy);
+				i32 v5 = abs(this->mAngVel.vy);
 				i32 v6;
 				if ( v5 >= 64 )
 					v6 = 0;
@@ -184,9 +184,9 @@ void CSuperDocOck::DoPhysics(void)
 			}
 			else
 			{
-				this->csVector1.vz = 0;
-				this->csVector1.vy = 0;
-				this->csVector1.vx = 0;
+				this->mAngVel.vz = 0;
+				this->mAngVel.vy = 0;
+				this->mAngVel.vx = 0;
 				this->field_8E.vz = 0;
 				this->field_8E.vy = 0;
 				this->field_8E.vx = 0;
@@ -194,18 +194,18 @@ void CSuperDocOck::DoPhysics(void)
 	}
 
 
-	i16 v7 = this->csVector1.vy + this->field_8E.vy;
+	i16 v7 = this->mAngVel.vy + this->field_8E.vy;
 
-	this->csVector1.vx += this->field_8E.vx;
-	this->csVector1.vx -= this->csVector1.vx >> 2;
+	this->mAngVel.vx += this->field_8E.vx;
+	this->mAngVel.vx -= this->mAngVel.vx >> 2;
 
-	this->csVector1.vy = v7 - (v7 >> 2);
-	this->csVector1.KillSmall();
+	this->mAngVel.vy = v7 - (v7 >> 2);
+	this->mAngVel.KillSmall();
 
 	for (i32 i = 0; i < this->field_80; i++)
 	{
 		this->mPos += this->mVel;
-		this->mAngles += this->csVector1;
+		this->mAngles += this->mAngVel;
 	}
 
 	this->mAngles.KillSmall();

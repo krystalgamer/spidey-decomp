@@ -383,7 +383,7 @@ int CBaddy::YawTowards(int a2, int a3){
 	if ( !v4 )
 	{
 		this->field_8E.vy = 0;
-		this->csVector1.vy = 0;
+		this->mAngVel.vy = 0;
 		return v4;
 	}
 
@@ -396,7 +396,7 @@ int CBaddy::YawTowards(int a2, int a3){
 
 	this->mAngles.vy = a2;
 	this->field_8E.vy = 0;
-	this->csVector1.vy = 0;
+	this->mAngVel.vy = 0;
 	return 0;
 }
 
@@ -472,9 +472,9 @@ void CBaddy::Neutralize(void)
 	this->mAcc.vy = 0;
 	this->mAcc.vx = 0;
 
-	this->csVector1.vz = 0;
-	this->csVector1.vy = 0;
-	this->csVector1.vx = 0;
+	this->mAngVel.vz = 0;
+	this->mAngVel.vy = 0;
+	this->mAngVel.vx = 0;
 
 	this->field_8E.vz = 0;
 	this->field_8E.vy = 0;

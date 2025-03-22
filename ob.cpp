@@ -683,7 +683,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_80, 0x80);
 	VALIDATE(CBody, field_84, 0x84);
 
-	VALIDATE(CBody, csVector1, 0x88);
+	VALIDATE(CBody, mAngVel, 0x88);
 
 	VALIDATE(CBody, field_8E, 0x8E);
 
