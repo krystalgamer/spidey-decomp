@@ -132,7 +132,7 @@ public:
 	u16 mShadowScale;
 
 	i16 mShadowDist;
-	unsigned __int16 field_D4;
+	i16 mShadowThreshold;
 
 	int field_D8;
 
