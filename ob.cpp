@@ -684,8 +684,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_84, 0x84);
 
 	VALIDATE(CBody, mAngVel, 0x88);
-
-	VALIDATE(CBody, field_8E, 0x8E);
+	VALIDATE(CBody, mAngAcc, 0x8E);
 
 	VALIDATE(CBody, mAngFric, 0x94);
 

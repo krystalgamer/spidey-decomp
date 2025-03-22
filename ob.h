@@ -114,7 +114,7 @@ public:
 	int field_84;
 
 	CSVector mAngVel;
-	CSVector field_8E;
+	CSVector mAngAcc;
 
 	CFriction mAngFric;
 

@@ -169,7 +169,7 @@ void CSuperDocOck::DoPhysics(void)
 				Utils_TurnTowards(
 					this->mAngles,
 					&this->mAngVel,
-					&this->field_8E,
+					&this->mAngAcc,
 					v8,
 					10);
 				v8.vx = vx;
@@ -187,16 +187,16 @@ void CSuperDocOck::DoPhysics(void)
 				this->mAngVel.vz = 0;
 				this->mAngVel.vy = 0;
 				this->mAngVel.vx = 0;
-				this->field_8E.vz = 0;
-				this->field_8E.vy = 0;
-				this->field_8E.vx = 0;
+				this->mAngAcc.vz = 0;
+				this->mAngAcc.vy = 0;
+				this->mAngAcc.vx = 0;
 			}
 	}
 
 
-	i16 v7 = this->mAngVel.vy + this->field_8E.vy;
+	i16 v7 = this->mAngVel.vy + this->mAngAcc.vy;
 
-	this->mAngVel.vx += this->field_8E.vx;
+	this->mAngVel.vx += this->mAngAcc.vx;
 	this->mAngVel.vx -= this->mAngVel.vx >> 2;
 
 	this->mAngVel.vy = v7 - (v7 >> 2);
