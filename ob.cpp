@@ -185,7 +185,7 @@ void CBody::UpdateShadow(void){
 		this->mpShadow->OrientUsing(&this->mShadowPos, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
 
 
-		__int8 trans = ((this->field_D4 - this->field_D2) << 7) / this->field_D4;
+		__int8 trans = ((this->field_D4 - this->mShadowDist) << 7) / this->field_D4;
 
 		if(trans < 0){
 			trans = 0;
@@ -700,7 +700,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, mpShadow, 0xCC);
 
 	VALIDATE(CBody, mShadowScale, 0xD0);
-	VALIDATE(CBody, field_D2, 0xD2);
+	VALIDATE(CBody, mShadowDist, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
 
 	VALIDATE(CBody, field_D8, 0xD8);

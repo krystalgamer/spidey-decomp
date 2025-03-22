@@ -131,7 +131,7 @@ public:
 	CQuadBit *mpShadow;
 	u16 mShadowScale;
 
-	unsigned __int16 field_D2;
+	i16 mShadowDist;
 	unsigned __int16 field_D4;
 
 	int field_D8;
