@@ -350,9 +350,9 @@ CBody::CBody(void)
 	this->mFric.vy = 1;
 	this->mFric.vz = 1;
 
-	this->field_94.vx = 1;
-	this->field_94.vy = 1;
-	this->field_94.vz = 1;
+	this->mAngFric.vx = 1;
+	this->mAngFric.vy = 1;
+	this->mAngFric.vz = 1;
 	this->mCBodyFlags |= 0x16;
 
 	this->field_D8 = 10;
@@ -687,7 +687,7 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, field_8E, 0x8E);
 
-	VALIDATE(CBody, field_94, 0x94);
+	VALIDATE(CBody, mAngFric, 0x94);
 
 	VALIDATE(CBody, field_98, 0x98);
 	VALIDATE(CBody, field_9C, 0x9C);
