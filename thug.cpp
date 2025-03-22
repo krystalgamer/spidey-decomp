@@ -1009,7 +1009,7 @@ CThug::CThug(i16 *a2, i32 a3)
 	this->field_3B8 = Trig_GetLevelId();
 
 	this->ShadowOn();
-	this->field_D0 = 50;
+	this->mShadowScale = 50;
 	this->field_3B0 = gAttackRelated;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 

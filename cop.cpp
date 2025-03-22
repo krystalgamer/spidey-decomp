@@ -685,7 +685,7 @@ CCop::CCop(i16* a2, i32 a3)
 {
 	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->ShadowOn();
-	this->field_D0 = 50;
+	this->mShadowScale = 50;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 

@@ -19,9 +19,9 @@ void CPowerUp::DoPhysics(void)
 void CPowerUp::AI(void)
 {
 	if ( (this->mFlags & 1) && this->field_101)
-		this->field_D0 = 0;
+		this->mShadowScale = 0;
 	else
-		this->field_D0 = 32;
+		this->mShadowScale = 32;
 
 	if (this->field_124)
 	{

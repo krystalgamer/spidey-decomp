@@ -129,8 +129,8 @@ public:
 	CVector mShadowPos;
 	CSVector mShadowNormal;
 	CQuadBit *mpShadow;
+	u16 mShadowScale;
 
-	unsigned __int16 field_D0;
 	unsigned __int16 field_D2;
 	unsigned __int16 field_D4;
 

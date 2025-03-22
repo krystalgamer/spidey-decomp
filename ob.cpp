@@ -181,7 +181,7 @@ void CBody::UpdateShadow(void){
 		vec.vy = -4096;
 		vec.vz = 0;
 
-		unsigned __int16 lastParam = this->field_D0;
+		u16 lastParam = this->mShadowScale;
 		this->mpShadow->OrientUsing(&this->mShadowPos, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
 
 
@@ -358,7 +358,7 @@ CBody::CBody(void)
 	this->field_D8 = 10;
 	this->field_A4 = 0;
 	this->field_DE = -1;
-	this->field_D0 = 32;
+	this->mShadowScale = 32;
 	this->field_D4 = 200;
 }
 
@@ -699,7 +699,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, mShadowNormal, 0xC4);
 	VALIDATE(CBody, mpShadow, 0xCC);
 
-	VALIDATE(CBody, field_D0, 0xD0);
+	VALIDATE(CBody, mShadowScale, 0xD0);
 	VALIDATE(CBody, field_D2, 0xD2);
 	VALIDATE(CBody, field_D4, 0xD4);
 

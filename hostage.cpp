@@ -330,7 +330,7 @@ CHostage::CHostage(int* a2, int a3)
 
 	int v6 = this->field_2A8 | 1;
 
-	this->field_D0 = 48;
+	this->mShadowScale = 48;
 	this->field_1F4 = a3;
 	this->field_DE = a3;
 	this->field_DC = 128;

@@ -42,7 +42,7 @@ CSpClone::CSpClone(i16 * a2,i32 a3)
 	i16 *v5 = this->SquirtAngles(this->SquirtPos(a2));
 
 	this->ShadowOn();
-	this->field_D0 = 48;
+	this->mShadowScale = 48;
 	this->field_21E = 100;
 	this->field_32C = 2;
 	this->field_330 = 2;
