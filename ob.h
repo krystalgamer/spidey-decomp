@@ -126,10 +126,8 @@ public:
 
 	unsigned char padAfterAC[0xB8-0xAC-2];
 
-	CVector bodyVector;
-	CSVector field_C4;
-
-	
+	CVector mShadowPos;
+	CSVector mShadowNormal;
 	CQuadBit *mpShadow;
 
 	unsigned __int16 field_D0;

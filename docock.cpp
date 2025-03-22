@@ -397,10 +397,10 @@ void CDocOc::Initialise(void)
 
 	this->field_31C.bothFlags = 0x10000;
 	this->dumbAssPad = 0;
-	this->bodyVector.vy = Utils_GetGroundHeight(&this->mPos, 0, 0x2000, 0);
-	if (this->bodyVector.vy != -1)
+	this->mShadowPos.vy = Utils_GetGroundHeight(&this->mPos, 0, 0x2000, 0);
+	if (this->mShadowPos.vy != -1)
 	{
-		this->mPos.vy = this->bodyVector.vy - (this->field_21E << 12);
+		this->mPos.vy = this->mShadowPos.vy - (this->field_21E << 12);
 	}
 
 	this->CalculateStage();
