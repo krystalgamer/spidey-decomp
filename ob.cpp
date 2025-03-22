@@ -665,7 +665,7 @@ void validate_CBody(void){
 	
 	VALIDATE(CBody, mppOriginalList, 0x40);
 
-	VALIDATE(CBody, field_44, 0x44);
+	VALIDATE(CBody, mInputFlags, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);
 	VALIDATE(CBody, mAccellorVel, 0x60);
 

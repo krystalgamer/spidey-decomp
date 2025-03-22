@@ -213,7 +213,7 @@ void CHostage::TellSomebodyToShootMe(void)
 
 INLINE void CHostage::CheckIfFreed(void)
 {
-	if (Utils_CrapDist(MechList->mPos, this->mPos) < 0xC8 || this->field_44 & 1)
+	if (Utils_CrapDist(MechList->mPos, this->mPos) < 0xC8 || this->mInputFlags & 1)
 	{
 		if (DifficultyLevel == 1 || DifficultyLevel == 0)
 			this->field_218 |= 1;

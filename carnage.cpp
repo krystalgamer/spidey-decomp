@@ -1591,10 +1591,10 @@ void CCarnage::Initialise(void)
 			this->RunAnim(4u, 0, -1);
 			this->dumbAssPad++;
 		case 1:
-			if (this->field_44 & 1)
+			if (this->mInputFlags & 1)
 			{
 				this->field_218 |= gCarnage200;
-				this->field_44 &= 0xFFFEu;
+				this->mInputFlags &= 0xFFFEu;
 			}
 
 			if (this->field_142)

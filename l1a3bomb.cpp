@@ -39,9 +39,9 @@ void CL1A3Bomb::AI(void)
 
 		return;
 	}
-	else if (this->field_44 & 1)
+	else if (this->mInputFlags & 1)
 	{
-		this->field_44 &= 0xFFFE;
+		this->mInputFlags &= 0xFFFE;
 
 		if (!this->field_128)
 		{

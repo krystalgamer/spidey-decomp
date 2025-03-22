@@ -45,10 +45,10 @@ void Lizard_RelocatableModuleClear(void)
 // @Ok
 void CLizard::AI(void)
 {
-	__int16 v2 = this->field_44;
+	__int16 v2 = this->mInputFlags;
 	if (v2 & 1)
 	{
-		this->field_44 = v2 & 0xFFFE;
+		this->mInputFlags = v2 & 0xFFFE;
 		this->CycleAnim(this->field_12A == 0 ? 5 : 0, 1);
 	}
 

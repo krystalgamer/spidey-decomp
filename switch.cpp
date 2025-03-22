@@ -25,9 +25,9 @@ void Switch_SetSwitchFaceFlags(CItem *)
 // @Test
 void CSwitch::AI(void)
 {
-	if (this->field_44 & 1)
+	if (this->mInputFlags & 1)
 	{
-		this->field_44 &= 0xFFFE;
+		this->mInputFlags &= ~1;
 		switch (this->field_100)
 		{
 			case 0:

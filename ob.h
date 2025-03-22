@@ -95,7 +95,7 @@ class CBody : public CItem {
 public:
 	CBody **mppOriginalList;
 
-	u16 field_44;
+	u16 mInputFlags;
 	u16 mCBodyFlags;
 
 	CVector field_48;

@@ -351,7 +351,7 @@ void CPunchOb::AI(void)
 			break;
 	}
 
-	if (this->field_44 & 1)
+	if (this->mInputFlags & 1)
 	{
 		SHitInfo v9;
 		v9.field_8 = this->field_E2;

@@ -182,10 +182,10 @@ void CTripWire::AI(void)
 		this->field_FE = 0;
 	}
 
-	if (this->field_44 & 1)
+	if (this->mInputFlags & 1)
 	{
 		this->field_FB = 1;
-		this->field_44 &= ~1;
+		this->mInputFlags &= ~1;
 	}
 
 	if (!v2)

@@ -177,7 +177,7 @@ void SendSignalToNode(CBody* pBody, i32 NodeIndex)
 	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
 		if (cur->field_DE == NodeIndex)
-			cur->field_44 |= 1;
+			cur->mInputFlags |= 1;
 	}
 }
 

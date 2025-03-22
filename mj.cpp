@@ -50,8 +50,8 @@ void CMJ::AI(void)
 		this->CleanUpMessages(1, 0);
 	}
 
-	if(this->field_44 & 1){
-		this->field_44 &= 0xFFFE;
+	if(this->mInputFlags & 1){
+		this->mInputFlags &= 0xFFFE;
 		this->CycleAnim(1 - this->field_12A, 1);
 	}
 
