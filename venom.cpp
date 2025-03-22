@@ -29,7 +29,7 @@ void Venom_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 313)
+		if (pSearch->mType == 313)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -159,7 +159,7 @@ unsigned char CVenom::TugImpulse(CVector *a2, CVector *a3, CVector *a4)
 CVenomElectrified::CVenomElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
-	print_if_false((pSuper->field_38 == 313), "Non venom sent to CVenomElectrified");
+	print_if_false((pSuper->mType == 313), "Non venom sent to CVenomElectrified");
 
 	this->field_3C = Mem_MakeHandle(pSuper);
 }

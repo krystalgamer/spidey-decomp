@@ -134,7 +134,7 @@ void CPowerUp::Die(void)
 {
 	if (!this->IsDead())
 	{
-		if (this->field_38 != 11 && this->field_100)
+		if (this->mType != 11 && this->field_100)
 		{
 			Trig_SendPulse(Trig_GetLinksPointer(this->field_106));
 		}
@@ -185,7 +185,7 @@ void CPowerUp::DeleteStuff(void)
 void CPowerUp::CreateBit(void)
 {
 	TotalBitUsage = 0; 
-	if (this->field_38 == 18)
+	if (this->mType == 18)
 	{
 		this->pPickupBit = new CFlatBit();
 

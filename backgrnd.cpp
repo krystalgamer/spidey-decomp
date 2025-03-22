@@ -23,7 +23,7 @@ CBackground::CBackground(
 	this->mModel = Spool_GetModel(checksum, this->mRegion);
 	this->mFlags &= ~2u;
 	this->mCBodyFlags &= ~2u;
-	this->field_38 = 502;
+	this->mType = 502;
 	this->AttachTo(reinterpret_cast<CBody**>(&BackgroundList));
 	this->field_F8 = gBackgroundIndex++;
 }

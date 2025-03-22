@@ -54,7 +54,7 @@ CSpClone::CSpClone(i16 * a2,i32 a3)
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
-	this->field_38 = 327;
+	this->mType = 327;
 	this->field_31C.bothFlags = 1;
 	this->field_DE = a3;
 	this->field_DC = 0;
@@ -144,7 +144,7 @@ void SpClone_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 327)
+		if (cur->mType == 327)
 		{
 			delete cur;
 		}

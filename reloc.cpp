@@ -197,7 +197,7 @@ void Reloc_UnloadAll(void)
 	while(pSearch)
 	{
 		CBaddy *pNext = reinterpret_cast<CBaddy*>(pSearch->mNextItem);
-		u16 type = pSearch->field_38;
+		u16 type = pSearch->mType;
 		if (type == 317 ||
 				type == 304 ||
 				type == 305 ||

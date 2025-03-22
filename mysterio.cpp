@@ -85,7 +85,7 @@ void Mysterio_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 311)
+		if (pSearch->mType == 311)
 			delete pSearch;
 
 		pSearch = pNext;

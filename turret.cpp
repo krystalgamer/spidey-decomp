@@ -35,7 +35,7 @@ void Turret_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 325)
+		if (pSearch->mType == 325)
 			delete pSearch;
 
 		pSearch = pNext;

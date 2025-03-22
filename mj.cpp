@@ -34,7 +34,7 @@ void MJ_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 319)
+		if (cur->mType == 319)
 		{
 			delete cur;
 		}
@@ -71,7 +71,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 	this->mpLight = &M3d_MJLight;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
-	this->field_38 = 303;
+	this->mType = 303;
 
 	this->field_DE = a3;
 	this->field_DC = 0;

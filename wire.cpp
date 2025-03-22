@@ -147,7 +147,7 @@ void CLaserFence::CommonInitialisation(bool a2)
 	this->field_118->SetEndPoints(&this->mPos, &this->field_F8);
 
 	this->field_118->mProtected = 1;
-	this->field_38 = 404;
+	this->mType = 404;
 
 	this->SetPushback(a2);
 }

@@ -24,7 +24,7 @@ void Thug_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 304 || cur->field_38 == 312)
+		if (cur->mType == 304 || cur->mType == 312)
 		{
 			delete cur;
 		}
@@ -55,7 +55,7 @@ void CThug::TakeHit(void)
 			if (this->field_318 == 1)
 			{
 				this->field_DC = 0;
-				this->RunAnim(this->field_38 != 304 ? 19 : 14, 0, -1);
+				this->RunAnim(this->mType != 304 ? 19 : 14, 0, -1);
 				this->dumbAssPad = 2;
 			}
 			else
@@ -77,8 +77,8 @@ void CThug::TakeHit(void)
 		case 2:
 			if ( this->field_142 )
 			{
-				this->field_DC = this->field_38 == 304 ? 96 : 150;
-				this->RunAnim(this->field_38 == 304 ? 15 : 20, 0, -1);
+				this->field_DC = this->mType == 304 ? 96 : 150;
+				this->RunAnim(this->mType == 304 ? 15 : 20, 0, -1);
 				this->dumbAssPad = 1;
 			}
 
@@ -236,7 +236,7 @@ void CThug::Caution(void)
 // @Ok
 void CThug::CreateCombatImpactEffect(CVector* a2, i32 a3)
 {
-	if ( this->field_38 == 304 )
+	if ( this->mType == 304 )
 	{
 		new CCombatImpactRing(a2, 0x12u, 18, 108, 384, 1792, 144);
 		new CCombatImpactRing(a2, 0x48u, 72, 144, 192, 896, 72);
@@ -402,7 +402,7 @@ INLINE i32 CThug::SpideyAnimUppercut(void)
 void CThug::PlaySounds(void)
 {
 	CVector v11;
-	if (this->field_38 == 304)
+	if (this->mType == 304)
 	{
 		switch ( this->field_12A )
 		{
@@ -508,7 +508,7 @@ void CThug::Guard(void)
 		case 0:
 			this->Neutralize();
 			this->mCBodyFlags |= 0x10;
-			if (this->field_38 != 304)
+			if (this->mType != 304)
 			{
 				this->RunAnim(this->field_298.Bytes[0], 0, -1);
 				this->field_1F8 = Rnd(5) + 8;
@@ -695,7 +695,7 @@ void CThug::Acknowledge(void)
 
 			if (this->field_398 < 0)
 			{
-				this->RunAnim(this->field_38 != 304 ? 39 : 32, 0, -1);
+				this->RunAnim(this->mType != 304 ? 39 : 32, 0, -1);
 				Redbook_XAPlayPos(this->field_39C, -this->field_398, &this->mPos, 20);
 			}
 
@@ -720,7 +720,7 @@ void CThug::Acknowledge(void)
 				if (this->field_398 > 0)
 				{
 					Redbook_XAPlayPos(this->field_39C, this->field_398, &this->mPos, 20);
-					this->RunAnim(this->field_38 != 304 ? 40 : 32, 0, -1);
+					this->RunAnim(this->mType != 304 ? 40 : 32, 0, -1);
 					this->dumbAssPad++;
 					return;
 				}
@@ -1021,9 +1021,9 @@ CThug::CThug(i16 *a2, i32 a3)
 	this->field_2A8 |= 1;
 
 
-	this->field_DC = this->field_38 != 304 ? 150 : 96;
+	this->field_DC = this->mType != 304 ? 150 : 96;
 	this->field_D8 = 64;
-	this->field_380 = this->field_38 != 304 ? 400 : 300;
+	this->field_380 = this->mType != 304 ? 400 : 300;
 	this->field_31C.bothFlags = 0;
 
 
@@ -1106,7 +1106,7 @@ EXPORT u8 gThugTypeRelatedSecondThird[1];
 // @Matching
 void CThug::SetThugType(int type)
 {
-	this->field_38 = type;
+	this->mType = type;
 	switch (type)
 	{
 		case 304:
@@ -1174,7 +1174,7 @@ INLINE void CThug::StandStill(void)
 	{
 		case 0:
 			this->Neutralize();
-			this->CycleAnim(this->field_38 != 304 ? 15 : 17, 1);
+			this->CycleAnim(this->mType != 304 ? 15 : 17, 1);
 			this->dumbAssPad++;
 
 			break;
@@ -1208,15 +1208,15 @@ INLINE void CThug::RunAppropriateHitAnim(void)
 	i32 anim;
 	if (this->field_218 & 0x10000)
 	{
-		anim = this->field_38 != 304 ? 38 : 43;
+		anim = this->mType != 304 ? 38 : 43;
 	}
 	else if (this->field_218 & 0x20000)
 	{
-		anim = this->field_38 != 304 ? 37 : 42;
+		anim = this->mType != 304 ? 37 : 42;
 	}
 	else
 	{
-		anim = this->field_38 != 304 ? 18 : 25;
+		anim = this->mType != 304 ? 18 : 25;
 	}
 
 	this->RunAnim(anim, 0, -1);

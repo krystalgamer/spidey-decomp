@@ -42,7 +42,7 @@ void SuperDocOck_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 308)
+		if (pSearch->mType == 308)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -432,7 +432,7 @@ CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 	this->field_DC = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
-	this->field_38 = 309;
+	this->mType = 309;
 	this->field_1F4 = a3;
 	this->field_DE = a3;
 

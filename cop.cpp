@@ -30,8 +30,8 @@ void Cop_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 320 ||
-				pSearch->field_38 == 306)
+		if (pSearch->mType == 320 ||
+				pSearch->mType == 306)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -696,11 +696,11 @@ CCop::CCop(i16* a2, i32 a3)
 	this->field_216 = 32;
 	this->field_D8 = 64;
 	this->field_31C.bothFlags = 0;
-	this->field_DC = this->field_38 != 306 ? 150 : 96;
+	this->field_DC = this->mType != 306 ? 150 : 96;
 
 	this->field_2A8 |= 1;
 
-	this->field_370 = this->field_38 != 306 ? 400 : 300;
+	this->field_370 = this->mType != 306 ? 400 : 300;
 	this->field_340 = gAttackRelated;
 	this->field_360 = 3500;
 	this->field_364 = 400;

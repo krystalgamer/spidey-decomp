@@ -333,7 +333,7 @@ void Effects_Electrify(CSuper* pSuper)
 	print_if_false(pSuper != 0, "NULL pSuper?");
 	Effects_UnElectrify(pSuper);
 
-	if (pSuper->field_38 == 50)
+	if (pSuper->mType == 50)
 	{
 		if (CurrentSuit != 4)
 		{

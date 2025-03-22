@@ -948,7 +948,7 @@ CBaddy* CBaddy::GetClosest(i32 baddyType, i32 inSight)
 
 	for ( CBaddy* i = BaddyList; i; i = reinterpret_cast<CBaddy*>(i->mNextItem))
 	{
-		if ( (!baddyType || i->field_38 == baddyType) && i != this )
+		if ( (!baddyType || i->mType == baddyType) && i != this )
 		{
 			i32 v9 = Utils_CrapXZDist(this->mPos, i->mPos);
 			if ( distance > v9
@@ -1114,7 +1114,7 @@ CBaddy* FindBaddyOfType(i32 type)
 
 	while (current)
 	{
-		if (current->field_38 == type)
+		if (current->mType == type)
 		{
 			return reinterpret_cast<CBaddy*>(current);
 		}

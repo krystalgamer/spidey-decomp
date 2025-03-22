@@ -705,7 +705,7 @@ CShellGoldFish::CShellGoldFish(CDummy *pDummy)
 	this->field_F8 = Mem_MakeHandle(reinterpret_cast<void*>(pDummy));
 
 	this->InitItem("goldfish");
-	this->field_38 = 506;
+	this->mType = 506;
 	this->AttachTo(&MiscList);
 
 	this->mFlags |= 0x200;
@@ -937,7 +937,7 @@ void CShellSuperDocOckElectrified::Move(void)
 CShellSuperDocOckElectrified::CShellSuperDocOckElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pointer");
-	print_if_false(pSuper->field_38 == 309, "Non SuperDocOck");
+	print_if_false(pSuper->mType == 309, "Non SuperDocOck");
 
 	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
 }
@@ -968,7 +968,7 @@ void CShellCarnageElectrified::Move(void)
 CShellCarnageElectrified::CShellCarnageElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CShellCarnageElectrified");
-	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CShellCarnageElectrified");
+	print_if_false(pSuper->mType == 314, "Non carnage sent to CShellCarnageElectrified");
 
 	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
 }
@@ -1000,7 +1000,7 @@ void CShellVenomElectrified::Move(void)
 CShellVenomElectrified::CShellVenomElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
-	print_if_false(pSuper->field_38 == 313, "Non venom sent to CShellVenomElectrified");
+	print_if_false(pSuper->mType == 313, "Non venom sent to CShellVenomElectrified");
 
 	this->field_3C = Mem_MakeHandle(reinterpret_cast<void*>(pSuper));
 }

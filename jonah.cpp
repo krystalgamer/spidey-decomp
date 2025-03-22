@@ -41,7 +41,7 @@ void Jonah_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 316)
+		if (pSearch->mType == 316)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -77,7 +77,7 @@ CJonah::CJonah(void)
 
 	this->mFlags |= 0x480;
 	this->mpLight = &M3d_JonahLight;
-	this->field_38 = 316;
+	this->mType = 316;
 
 }
 
@@ -108,7 +108,7 @@ CJonah::CJonah(i16* a2, i32 a3)
 
 	this->field_1F4 = a3;
 	this->field_DE = a3;
-	this->field_38 = 316;
+	this->mType = 316;
 	this->field_21E = 100;
 	this->field_DC = 100;
 
@@ -189,7 +189,7 @@ int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 
 			if (BodyByNode)
 			{
-				print_if_false(BodyByNode->field_38 == 401, "Hiding place is not a MANIPOB!");
+				print_if_false(BodyByNode->mType == 401, "Hiding place is not a MANIPOB!");
 				this->field_364 = Mem_MakeHandle(BodyByNode);
 				return 1;
 			}
@@ -261,7 +261,7 @@ CBaddy* CJonah::FindScorp(void)
 	{
 		for (CBaddy* cur = BaddyList; cur; cur = reinterpret_cast<CBaddy*>(cur->mNextItem))
 		{
-			if (cur->field_38 == 310)
+			if (cur->mType == 310)
 			{
 				this->field_35C = Mem_MakeHandle(cur);
 				return cur;
@@ -272,7 +272,7 @@ CBaddy* CJonah::FindScorp(void)
 	}
 
 	CBaddy *ret = reinterpret_cast<CBaddy*>(this->field_35C.field_0);
-	print_if_false(ret->field_38 == 310, "What the fuck? Scorp ptr isn't scorp.");
+	print_if_false(ret->mType == 310, "What the fuck? Scorp ptr isn't scorp.");
 	return ret;
 }
 

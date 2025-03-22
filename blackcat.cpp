@@ -29,7 +29,7 @@ void BlackCat_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 319)
+		if (cur->mType == 319)
 		{
 			delete cur;
 		}
@@ -121,7 +121,7 @@ CBlackCat::CBlackCat(i16* a2, i32 a3)
 	this->mpLight = &M3d_BlackCatLight;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
-	this->field_38 = 319;
+	this->mType = 319;
 	this->field_31C.bothFlags = 1;
 
 	this->field_DE = a3;

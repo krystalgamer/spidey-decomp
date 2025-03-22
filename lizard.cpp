@@ -33,7 +33,7 @@ void Lizard_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 319)
+		if (cur->mType == 319)
 		{
 			delete cur;
 		}
@@ -74,7 +74,7 @@ CLizard::CLizard(int* a2, __int16 a3)
 	this->mpLight = &M3d_LizardLight;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
-	this->field_38 = 326;
+	this->mType = 326;
 
 	this->field_DE = a3;
 	this->field_DC = 0;

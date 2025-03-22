@@ -37,15 +37,15 @@ void Chopper_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 318)
+		if (pSearch->mType == 318)
 		{
 			delete pSearch;
 		}
-		else if (pSearch->field_38 == 322)
+		else if (pSearch->mType == 322)
 		{
 			delete pSearch;
 		}
-		else if (pSearch->field_38 == 323)
+		else if (pSearch->mType == 323)
 		{
 			delete pSearch;
 		}
@@ -814,7 +814,7 @@ INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 // @Ok
 void CChopperMissile::CommonInitialisation(void)
 {
-	this->field_38 = 321;
+	this->mType = 321;
 
 	this->InitItem(gObjFile);
 	this->mFlags &= ~2u;
@@ -1054,7 +1054,7 @@ CSniperTarget::CSniperTarget(i32 a2)
 	this->field_14C = 0;
 	this->field_150 = 0;
 
-	this->field_38 = 323;
+	this->mType = 323;
 	Trig_GetPosition(&this->mPos, a2);
 
 	u16* LinksPointer = Trig_GetLinksPointer(a2);
@@ -1110,7 +1110,7 @@ CChopper::CChopper(i16* a2, i32 a3)
 
 	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))));
 
-	this->field_38 = 318;
+	this->mType = 318;
 
 	this->field_78.vx = 3;
 	this->field_78.vy = 3;
@@ -1201,7 +1201,7 @@ CSearchlight::CSearchlight(i32 a2)
 		this->field_138[i].vz = 0;
 	}
 
-	this->field_38 = 322;
+	this->mType = 322;
 	this->AttachTo(reinterpret_cast<CBody**>(&ControlBaddyList));
 
 	Trig_GetPosition(&this->mPos, a2);

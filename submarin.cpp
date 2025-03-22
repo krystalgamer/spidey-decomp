@@ -34,7 +34,7 @@ CSubmariner::CSubmariner(i16 * a2, i32 a3)
 	this->mpLight = &M3d_SubmarinerLight;
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
-	this->field_38 = 326;
+	this->mType = 326;
 	this->field_DE = a3;
 	this->field_DC = 0;
 
@@ -63,7 +63,7 @@ void Submariner_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 319)
+		if (cur->mType == 319)
 		{
 			delete cur;
 		}

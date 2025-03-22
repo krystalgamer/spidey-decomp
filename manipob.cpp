@@ -41,7 +41,7 @@ CManipOb::CManipOb(
 	this->AttachTo(&EnvironmentalObjectList);
 
 	this->mFlags = this->mFlags & 0x0FFFD | 0x10;
-	this->field_38 = 401;
+	this->mType = 401;
 
 	this->field_DE = a3;
 

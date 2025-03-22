@@ -37,7 +37,7 @@ void DocOck_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 308)
+		if (pSearch->mType == 308)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -121,7 +121,7 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 
 	this->field_1F4 = a3;
 	this->field_DE = a3;
-	this->field_38 = 308;
+	this->mType = 308;
 	this->field_31C.bothFlags = 1;
 
 	this->field_554 = 4;
@@ -372,7 +372,7 @@ INLINE void CDocOc::ResolveSwitches(void)
 			pBaddy;
 			pBaddy = reinterpret_cast<CBaddy*>(pBaddy->mNextItem))
 	{
-		if (pBaddy->field_38 == 407)
+		if (pBaddy->mType == 407)
 		{
 			this->field_4FC[index++] = pBaddy;
 		}

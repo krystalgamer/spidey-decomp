@@ -44,7 +44,7 @@ void CHostage::DieHostage(void)
 			this->mFlags |= 0x400;
 			this->field_328 = 0;
 
-			this->RunAnim(this->field_38 == 315 ? 10 : 3, 0, -1);
+			this->RunAnim(this->mType == 315 ? 10 : 3, 0, -1);
 			this->StopMyXA();
 			this->dumbAssPad++;
 		case 1:
@@ -96,9 +96,9 @@ EXPORT i32 gFemaleHostageTwo = 3;
 // @Ok
 void CHostage::SetHostageType(i32 a2)
 {
-	this->field_38 = a2;
+	this->mType = a2;
 
-	switch (this->field_38)
+	switch (this->mType)
 	{
 		case 305:
 			this->InitItem("hostage");
@@ -131,7 +131,7 @@ void Hostage_RelocatableModuleClear(void)
 	for (CBody* cur = BaddyList; cur; )
 	{
 		CBody* next = reinterpret_cast<CBody*>(cur->mNextItem);
-		if (cur->field_38 == 305)
+		if (cur->mType == 305)
 		{
 			delete cur;
 		}
@@ -168,7 +168,7 @@ void CHostage::BegMotherfucker(void)
 				this->field_230 = 65;
 			}
 
-			this->CycleAnim((this->field_38 == 315) + 5, 1);
+			this->CycleAnim((this->mType == 315) + 5, 1);
 			this->dumbAssPad++;
 			this->HostageXAPlay(7, Rnd(3) + 9, 50);
 

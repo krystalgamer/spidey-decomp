@@ -1855,7 +1855,7 @@ void Carnage_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 314)
+		if (pSearch->mType == 314)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -2043,7 +2043,7 @@ CCarnage::CCarnage(i16 *a2, i32 a3)
 	this->mpLight = &M3d_CarnageLight;
 	this->field_194 = 278528;
 
-	this->field_38 = 314;
+	this->mType = 314;
 	this->field_31C.bothFlags = 1;
 
 	this->field_E2 = 3000;
@@ -2113,7 +2113,7 @@ void CCarnage::Shouldnt_DoPhysics_Be_Virtual(void)
 INLINE CCarnageElectrified::CCarnageElectrified(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper sent to CVenomWrap");
-	print_if_false(pSuper->field_38 == 314, "Non carnage sent to CCarnageElectrified");
+	print_if_false(pSuper->mType == 314, "Non carnage sent to CCarnageElectrified");
 
 	this->field_3C = Mem_MakeHandle(pSuper);
 }

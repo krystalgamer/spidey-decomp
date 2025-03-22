@@ -190,7 +190,7 @@ CSwitch* Switch_GetCSwitchObjectFromItem(CItem *pItem)
 
 	for (CItem *cur = ControlBaddyList; cur; cur = reinterpret_cast<CItem*>(cur->mNextItem))
 	{
-		if (cur->field_38 == 407)
+		if (cur->mType == 407)
 		{
 			CSwitch* pSwitch = reinterpret_cast<CSwitch*>(cur);
 

@@ -308,7 +308,7 @@ void Rhino_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 307)
+		if (pSearch->mType == 307)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -522,7 +522,7 @@ void CRhino::FuckUpSomeBarrels(void)
 			cur && barrels < 2;
 			cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
-		if (cur->field_38 == 401)
+		if (cur->mType == 401)
 		{
 			if (Utils_CrapDist(this->mPos, cur->mPos) < 0x2BC && cur != MechList->mHeldObject)
 			{
@@ -626,7 +626,7 @@ CRhino::CRhino(i16* a2, int a3)
 	this->field_2A8 |= 0x200;
 	this->field_2A8 |= 0x2000000;
 
-	this->field_38 = 307;
+	this->mType = 307;
 	this->field_E2 = Utils_GetValueFromDifficultyLevel(1400, 1400, 1400, 1400);
 
 	this->field_294.Int = gRhinoStrangeInitData[0];
@@ -657,7 +657,7 @@ CRhino::CRhino(void)
 	this->mFlags |= 0x480;
 	// @FIXME
 	this->mpLight = &M3d_RhinoLight;
-	this->field_38 = 307;
+	this->mType = 307;
 }
 
 // @Ok

@@ -26,7 +26,7 @@ void Torch_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 328)
+		if (pSearch->mType == 328)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -94,7 +94,7 @@ CTorch::CTorch(i16* a2, i32 a3)
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
-	this->field_38 = 328;
+	this->mType = 328;
 	this->field_31C.bothFlags = 1;
 
 	this->field_DE = a3;

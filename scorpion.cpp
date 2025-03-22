@@ -52,7 +52,7 @@ void Scorpion_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 310)
+		if (pSearch->mType == 310)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -257,7 +257,7 @@ INLINE CSuper* CScorpion::FindJonah(void)
 
 	for (CSuper* cur = BaddyList; cur; cur = reinterpret_cast<CSuper*>(cur->mNextItem))
 	{
-		if (cur->field_38 == 316)
+		if (cur->mType == 316)
 		{
 			this->field_BEC = cur;
 			return this->field_BEC;

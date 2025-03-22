@@ -36,7 +36,7 @@ void LizMan_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 317)
+		if (pSearch->mType == 317)
 			delete pSearch;
 
 		pSearch = pNext;

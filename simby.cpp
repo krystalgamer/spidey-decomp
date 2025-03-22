@@ -55,7 +55,7 @@ void Simby_RelocatableModuleClear(void)
 	{
 		CItem *pNext = pSearch->mNextItem;
 
-		if (pSearch->field_38 == 324)
+		if (pSearch->mType == 324)
 			delete pSearch;
 
 		pSearch = pNext;
@@ -420,7 +420,7 @@ CPunchOb::CPunchOb(
 	this->mCBodyFlags |= 0x10;
 	this->field_DE = a3;
 
-	this->field_38 = 412;
+	this->mType = 412;
 	this->field_2A8 |= 2;
 	this->field_DC = 100;
 
@@ -693,7 +693,7 @@ CSimby::CSimby(void)
 	this->field_40C = 0;
 
 	this->InitItem("symbi_02");
-	this->field_38 = 324;
+	this->mType = 324;
 
 	int * dword_682C5C = reinterpret_cast<int*>(0x682C5C);
 	if (!*dword_682C5C)
