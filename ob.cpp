@@ -247,7 +247,7 @@ INLINE void CBody::UnSuspend(void)
 	if (this->mCBodyFlags & 1)
 	{
 		this->DeleteFrom(&SuspendedList);
-		this->AttachTo(this->field_40);
+		this->AttachTo(this->mppOriginalList);
 		this->mCBodyFlags &= 0xFFFE;
 	}
 }
@@ -261,7 +261,7 @@ void CBody::Suspend(CBody **a2)
 
 	this->DeleteStuff();
 
-	this->field_40 = a2;
+	this->mppOriginalList = a2;
 	this->DeleteFrom(a2);
 
 	this->AttachTo(&SuspendedList);
@@ -663,7 +663,7 @@ void validate_CBody(void){
 
 	VALIDATE_SIZE(CBody, 0xF4);
 	
-	VALIDATE(CBody, field_40, 0x40);
+	VALIDATE(CBody, mppOriginalList, 0x40);
 
 	VALIDATE(CBody, field_44, 0x44);
 	VALIDATE(CBody, mCBodyFlags, 0x46);

@@ -93,10 +93,10 @@ class CItem
 class CBody : public CItem {
 
 public:
-	CBody **field_40;
+	CBody **mppOriginalList;
 
-	unsigned __int16 field_44;
-	unsigned __int16 mCBodyFlags;
+	u16 field_44;
+	u16 mCBodyFlags;
 
 	CVector field_48;
 
