@@ -23,7 +23,7 @@ class CPowerUp : public CBody
 		EXPORT virtual void DeleteStuff(void);
 
 		u8 padTop[0xF8-0xF4];
-		u32 field_F8;
+		CGlow *mpGlow;
 		u8 padAfterF8[0x100-0xF8-4];
 
 		u8 field_100;

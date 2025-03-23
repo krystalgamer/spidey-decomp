@@ -175,10 +175,10 @@ void CPowerUp::DeleteStuff(void)
 		delete this->pPickupBit;
 	this->pPickupBit = 0;
 
-	CItem *unk = reinterpret_cast<CItem*>(this->field_F8);
-	if (unk)
-		delete unk;
-	this->field_F8 = 0;
+	if (this->mpGlow)
+		delete this->mpGlow;
+
+	this->mpGlow = 0;
 }
 
 // @Ok
@@ -237,7 +237,7 @@ void validate_CPowerUp(void)
 {
 	VALIDATE_SIZE(CPowerUp, 0x138);
 
-	VALIDATE(CPowerUp, field_F8, 0xF8);
+	VALIDATE(CPowerUp, mpGlow, 0xF8);
 
 	VALIDATE(CPowerUp, field_100, 0x100);
 	VALIDATE(CPowerUp, field_101, 0x101);
