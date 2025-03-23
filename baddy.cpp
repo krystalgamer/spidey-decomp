@@ -633,11 +633,11 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 void __inline CBaddy::SendDeathPulse(void)
 {
 
-	if (!this->field_211 && this->field_DE != (__int16)0xFFFF)
+	if (!this->field_211 && this->mNode != 0xFFFF)
 	{
 		this->field_211 = 1;
 		Trig_SendPulse(
-				reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->field_DE & 0xFFFF)));
+				reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->mNode & 0xFFFF)));
 	}
 }
 
@@ -894,7 +894,7 @@ CBaddy::CBaddy(void)
 
 	this->field_DC = 128;
 	this->field_F4 = 128;
-	this->field_DE = -1;
+	this->mNode = -1;
 	this->field_216 = 32;
 	this->field_D8 = 64;
 }
@@ -1101,7 +1101,7 @@ void CBaddy::DoPhysics(i32)
 void CBaddy::Baddy_SendSignal(void)
 {
 	unsigned __int16 *ptr = reinterpret_cast<unsigned __int16*>(
-			Trig_GetLinksPointer((unsigned __int16)this->field_DE));
+			Trig_GetLinksPointer(this->mNode));
 	if (ptr)
 		Trig_SendSignalToLinks(ptr);
 }

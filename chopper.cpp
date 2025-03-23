@@ -1121,7 +1121,7 @@ CChopper::CChopper(i16* a2, i32 a3)
 	CBody::AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->field_31C.bothFlags = 0;
 
 	this->field_380 = 1;

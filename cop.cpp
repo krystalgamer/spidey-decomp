@@ -691,7 +691,7 @@ CCop::CCop(i16* a2, i32 a3)
 
 	this->field_230 = 0;
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 
 	this->field_216 = 32;
 	this->field_D8 = 64;

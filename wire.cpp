@@ -81,7 +81,7 @@ CLaserFence::CLaserFence(i16* a2, i32 a3, bool a4)
 	this->mPos.vx = pPos->vx << 12;
 	this->mPos.vy = pPos->vy << 12;
 	this->mPos.vz = pPos->vz << 12;
-	this->field_DE = a3;
+	this->mNode = a3;
 
 	u16* LinksPointer = Trig_GetLinksPointer(a3);
 	print_if_false(*LinksPointer == 1, "LaserFence trigger has bad links");

@@ -418,7 +418,7 @@ CPunchOb::CPunchOb(
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->mCBodyFlags |= 0x10;
-	this->field_DE = a3;
+	this->mNode = a3;
 
 	this->mType = 412;
 	this->field_2A8 |= 2;
@@ -797,7 +797,7 @@ INLINE void CPunchOb::SendPulse(void)
 	if (!this->field_328)
 	{
 		this->field_328 = 1;
-		Trig_SendPulse(reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->field_DE)));
+		Trig_SendPulse(reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->mNode)));
 	}
 }
 

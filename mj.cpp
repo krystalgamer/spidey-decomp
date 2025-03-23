@@ -73,7 +73,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->mType = 303;
 
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->field_DC = 0;
 
 	if (submarinerDieRelated)

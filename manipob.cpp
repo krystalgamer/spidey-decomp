@@ -43,7 +43,7 @@ CManipOb::CManipOb(
 	this->mFlags = this->mFlags & 0x0FFFD | 0x10;
 	this->mType = 401;
 
-	this->field_DE = a3;
+	this->mNode = a3;
 
 	this->mFric.vx = 12;
 	this->mFric.vy = 12;
@@ -207,7 +207,7 @@ void __inline CManipOb::SendPulse(void)
 	if(!this->field_124)
 	{
 		this->field_124 = 1;
-		Trig_SendPulseToNode(reinterpret_cast<int>(Trig_GetLinksPointer(this->field_DE)));
+		Trig_SendPulseToNode(reinterpret_cast<i32>(Trig_GetLinksPointer(this->mNode)));
 	}
 }
 

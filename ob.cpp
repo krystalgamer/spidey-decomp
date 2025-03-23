@@ -46,7 +46,7 @@ CBody* CBody::FindBodyByNode(
 {
 	for (CBody *cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
 	{
-		if (cur->field_DE == type)
+		if (cur->mNode == type)
 			return cur;
 	}
 
@@ -355,7 +355,7 @@ CBody::CBody(void)
 
 	this->field_D8 = 10;
 	this->field_A4 = 0;
-	this->field_DE = -1;
+	this->mNode = 0xFFFF;
 	this->mShadowScale = 32;
 	this->mShadowThreshold = 200;
 }
@@ -705,7 +705,7 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, field_DC, 0xDC);
 
-	VALIDATE(CBody, field_DE, 0xDE);
+	VALIDATE(CBody, mNode, 0xDE);
 
 	VALIDATE(CBody, field_E0, 0xE0);
 	VALIDATE(CBody, field_E2, 0xE2);

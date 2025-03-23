@@ -385,7 +385,7 @@ void CSuperDocOck::Gloat(void)
 INLINE void CSuperDocOck::Initialise(void)
 {
 	this->field_39C = 455;
-	this->field_368 = this->field_DE;
+	this->field_368 = this->mNode;
 	this->field_31C.bothFlags = 0x10000;
 	this->dumbAssPad = 0;
 }
@@ -434,7 +434,7 @@ CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 
 	this->mType = 309;
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 
 	this->field_36C = 1024;
 	this->field_374 = 0x10000;

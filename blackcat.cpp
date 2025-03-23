@@ -124,7 +124,7 @@ CBlackCat::CBlackCat(i16* a2, i32 a3)
 	this->mType = 319;
 	this->field_31C.bothFlags = 1;
 
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->field_DC = 0;
 	this->field_34C = reinterpret_cast<i32>(v5);
 

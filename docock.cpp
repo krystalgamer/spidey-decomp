@@ -120,7 +120,7 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->mType = 308;
 	this->field_31C.bothFlags = 1;
 

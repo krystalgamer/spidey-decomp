@@ -107,7 +107,7 @@ CJonah::CJonah(i16* a2, i32 a3)
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->mType = 316;
 	this->field_21E = 100;
 	this->field_DC = 100;

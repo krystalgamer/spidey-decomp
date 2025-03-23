@@ -61,7 +61,7 @@ CPlatform::CPlatform(i16 * a2,i32 a3)
 	this->field_24C = this->SquirtAngles(this->SquirtPos(a2));
 
 	this->field_340 = -1;
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->attributeArr[0] = 32;
 	this->field_20C = 1;
 }

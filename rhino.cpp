@@ -614,7 +614,7 @@ CRhino::CRhino(i16* a2, int a3)
 
 	this->field_21E = 100;
 	this->field_1F4 = a3;
-	this->field_DE = a3;
+	this->mNode = a3;
 	this->field_DC = 175;
 
 	this->field_230 = 0;

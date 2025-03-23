@@ -221,7 +221,7 @@ INLINE void CSwitch::SwitchOn(void)
 // @Ok
 INLINE void CSwitch::SignalAttachedItems(void)
 {
-	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
+	Trig_SendPulse(Trig_GetLinksPointer(this->mNode));
 }
 
 // @Ok

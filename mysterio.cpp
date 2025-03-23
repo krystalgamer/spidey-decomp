@@ -430,7 +430,7 @@ void CMysterio::SummonAttack(void)
 			if (this->field_218 >= 58)
 			{
 				Trig_SendPulse(reinterpret_cast<u16*>(
-							Trig_GetLinksPointer(this->field_DE)));
+							Trig_GetLinksPointer(this->mNode)));
 				this->dumbAssPad++;
 			}
 			break;

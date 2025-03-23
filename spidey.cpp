@@ -941,7 +941,7 @@ void CPlayer::ExitLookaroundMode(void)
 
 		gGlobalThisCamera->PopMode();
 		this->PutCameraBehind(0);
-		this->field_DE4 = 0;
+		this->mNode = 0;
 		Screen_TargetOn(false);
 
 		__int16 *v3 = reinterpret_cast<__int16*>(this->field_188);

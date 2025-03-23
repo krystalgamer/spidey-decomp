@@ -138,7 +138,7 @@ public:
 
 	u16 field_DC;
 
-	unsigned __int16 field_DE;
+	u16 mNode;
 
 
 	i16 field_E0;

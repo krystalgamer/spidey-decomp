@@ -33,7 +33,7 @@ void CL1A3Bomb::AI(void)
 	{
 		if (!this->field_129)
 		{
-			Trig_SendSignalToLinks(Trig_GetLinksPointer(this->field_DE));
+			Trig_SendSignalToLinks(Trig_GetLinksPointer(this->mNode));
 			this->field_129 = 1;
 		}
 
@@ -72,7 +72,7 @@ CL1A3Bomb::CL1A3Bomb(
 // @Ok
 void CL1A3Bomb::Die(void)
 {
-	Trig_SendPulse(Trig_GetLinksPointer(this->field_DE));
+	Trig_SendPulse(Trig_GetLinksPointer(this->mNode));
 	gBombDieRelatedOne = 0;
 	gBombDieRelatedTwo = 0;
 	gBombDieTimerRelated = gTimerRelated;
