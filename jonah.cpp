@@ -118,7 +118,7 @@ CJonah::CJonah(i16* a2, i32 a3)
 	this->field_31C.bothFlags = 0;
 
 	this->field_2A8 |= 0x2002001;
-	this->field_E2 = 120;
+	this->mHealth = 120;
 
 	this->field_294.Int = gJonahSetup[0];
 	this->field_298.Int = gJonahSetup[1];

@@ -127,12 +127,12 @@ void Panel_CreateHealthBar(CBody* pBody, i32 a2)
 	{
 		gHealthBarOne = pBody;
 		gHealthBarItemType = a2;
-		gHealthBarRelated = pBody->field_E2;
+		gHealthBarRelated = pBody->mHealth;
 	}
 	else
 	{
 		gHealthBarTwo = pBody;
-		gHealthBarRelatedTwo = pBody->field_E2;
+		gHealthBarRelatedTwo = pBody->mHealth;
 	}
 
 	switch ( a2 )

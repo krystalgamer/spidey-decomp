@@ -194,7 +194,7 @@ void CPowerUp::CreateBit(void)
 		this->pPickupBit->SetTexture(pTexture);
 		this->pPickupBit->SetSemiTransparent();
 
-		switch (this->field_E2)
+		switch (this->mHealth)
 		{
 			case 0xA:
 				this->pPickupBit->SetTint(0x6Au, 212, 105);

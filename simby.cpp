@@ -354,7 +354,7 @@ void CPunchOb::AI(void)
 	if (this->mInputFlags & 1)
 	{
 		SHitInfo v9;
-		v9.field_8 = this->field_E2;
+		v9.field_8 = this->mHealth;
 		v9.field_C.vx = 0;
 		v9.field_C.vy = 0;
 		v9.field_C.vz = 0;
@@ -371,15 +371,15 @@ void Simby_SplattyExplosion(CVector*, CVector*, i32)
 // @Ok
 i32 CPunchOb::Hit(SHitInfo* pHitInfo)
 {
-	if (this->field_E2 <= 0)
+	if (this->mHealth <= 0)
 		return 0;
 
 	if (pHitInfo->field_0 & 2 && pHitInfo->field_4 == 7)
-		pHitInfo->field_8 = this->field_E2;
+		pHitInfo->field_8 = this->mHealth;
 
 	if (pHitInfo->field_0 & 4)
 	{
-		this->field_E2 -= pHitInfo->field_8;
+		this->mHealth -= pHitInfo->field_8;
 
 		i32 v7 = 8;
 
@@ -391,7 +391,7 @@ i32 CPunchOb::Hit(SHitInfo* pHitInfo)
 		Utils_GetVecFromMagDir(&v9, 4096, &this->mAngles);
 		v9 >>= 12;
 
-		if (this->field_E2 <= 0)
+		if (this->mHealth <= 0)
 		{
 			v7 = 16;
 			this->SendPulse();

@@ -205,7 +205,7 @@ void KillInList(i32 Node, CBody* pList, i32 How)
 					break;
 				case 1:
 					SHitInfo hitInfo;
-					hitInfo.field_8 = cur->field_E2;
+					hitInfo.field_8 = cur->mHealth;
 					hitInfo.field_C.vx = 0;
 					hitInfo.field_C.vy = 0;
 					hitInfo.field_C.vz = 0;

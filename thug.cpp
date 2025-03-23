@@ -853,7 +853,7 @@ u8 CThug::TugImpulse(CVector* a2, CVector* a3, CVector* a4)
 		return 0;
 	}
 
-	if (this->field_E2 <= 50)
+	if (this->mHealth <= 50)
 	{
 		if (Launched == 1)
 		{

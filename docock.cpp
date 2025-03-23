@@ -115,7 +115,7 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 
 	this->mpLight = &M3d_DocOckLight;
 
-	this->field_E2 = 600;
+	this->mHealth = 600;
 	this->mRMinor = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
@@ -179,7 +179,7 @@ void CDocOc::PlayIdleOrGloatAnim(void)
 		else
 		{
 			this->CalculateStage();
-			if (this->field_55C <= 600 && MechList->field_E2 > 0)
+			if (this->field_55C <= 600 && MechList->mHealth > 0)
 			{
 				if (this->field_550 == 1)
 					this->PlaySingleAnim(5, 0, -1);
@@ -301,11 +301,11 @@ void CDocOc::TakeHit(void)
 // @Ok
 INLINE void CDocOc::CalculateStage(void)
 {
-	if (this->field_E2 > 400)
+	if (this->mHealth > 400)
 	{
 		this->field_550 = 1;
 	}
-	else if (this->field_E2 > 200)
+	else if (this->mHealth > 200)
 	{
 		this->field_550 = 2;
 	}

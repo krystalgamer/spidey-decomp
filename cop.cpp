@@ -470,7 +470,7 @@ u8 CCop::TugImpulse(
 		return 0;
 	}
 
-	if ( this->field_E2 <= 50 )
+	if ( this->mHealth <= 50 )
 	{
 		if ( Launched == 1 )
 			this->field_2A8 |= 0x10;

@@ -93,7 +93,7 @@ INLINE i32* CSuperDocOck::GetNewCommandBlock(u32 a1)
 // @Ok
 i32 CSuperDocOck::Hit(SHitInfo* a2)
 {
-	if ( this->field_E2 < 0 )
+	if ( this->mHealth < 0 )
 		return 0;
 	if ( !this->mRMinor )
 		return 0;
@@ -101,9 +101,9 @@ i32 CSuperDocOck::Hit(SHitInfo* a2)
 		return 0;
 
 	this->field_218 &= 0xFFFFFF1F;
-	this->field_E2 -= a2->field_8;
+	this->mHealth -= a2->field_8;
 
-	if ( this->field_E2 <= 0 )
+	if ( this->mHealth <= 0 )
 	{
 		this->PlaySingleAnim(0x1Fu, 0, -1);
 		this->field_31C.bothFlags = 0x4000;
@@ -353,7 +353,7 @@ void CSuperDocOck::PlayIdleOrGloatAnim(void)
 			return;
 		}
 
-		if ( this->field_3E0 > 600 || MechList->field_E2 <= 0 )
+		if ( this->field_3E0 > 600 || MechList->mHealth <= 0 )
 		{
 			if ( this->field_3D4 == 1 )
 				this->PlaySingleAnim(35, 0, -1);
@@ -428,7 +428,7 @@ CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 
 	this->mpLight = &M3d_SuperOckLight;
 
-	this->field_E2 = 500;
+	this->mHealth = 500;
 	this->mRMinor = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 

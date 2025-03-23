@@ -330,7 +330,7 @@ void CCarnage::SelectAttack(void)
 // @Test
 i32 CCarnage::Hit(SHitInfo* pInfo)
 {
-	if (this->field_E2 <= 0)
+	if (this->mHealth <= 0)
 		return 0;
 
 	if (this->mAnim == 20)
@@ -370,9 +370,9 @@ i32 CCarnage::Hit(SHitInfo* pInfo)
 
 	this->field_318 = v9;
 
-	this->field_E2 -= (pInfo->field_8 * Utils_GetValueFromDifficultyLevel(4096, 1024, 256, 256)) >> 12;
+	this->mHealth -= (pInfo->field_8 * Utils_GetValueFromDifficultyLevel(4096, 1024, 256, 256)) >> 12;
 
-	if (this->field_E2 <= 0)
+	if (this->mHealth <= 0)
 	{
 		this->field_31C.bothFlags = 2048;
 		this->dumbAssPad = 0;
@@ -806,7 +806,7 @@ void CCarnage::DoSonicBubbleProcessing(void)
 
 					v13.field_8 = 1;
 					v13.field_0 = 4;
-					if (MechList->field_E2 > 1)
+					if (MechList->mHealth > 1)
 					{
 						v13.field_0 = 6;
 						v13.field_4 = 16;
@@ -853,11 +853,11 @@ void CCarnage::DoSonicBubbleProcessing(void)
 				&& Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
 		{
 			v12 = 1;
-			this->field_E2 -= 2 * this->field_80;
+			this->mHealth -= 2 * this->field_80;
 
-			if (this->field_E2 <= 0)
+			if (this->mHealth <= 0)
 			{
-				this->field_E2 = 0;
+				this->mHealth = 0;
 				this->field_31C.bothFlags = 2048;
 				this->dumbAssPad = 0;
 			}
@@ -1723,7 +1723,7 @@ void CCarnage::Laugh(void)
 // @Matching
 u8 CCarnage::Grab(CVector*)
 {
-	if (this->field_E2 <= 0 || this->field_31C.bothFlags == 2048)
+	if (this->mHealth <= 0 || this->field_31C.bothFlags == 2048)
 		return 0;
 
 	this->field_2A8 |= 0x40;
@@ -2046,7 +2046,7 @@ CCarnage::CCarnage(i16 *a2, i32 a3)
 	this->mType = 314;
 	this->field_31C.bothFlags = 1;
 
-	this->field_E2 = 3000;
+	this->mHealth = 3000;
 	this->mRMinor = 160;
 	this->field_21E = 100;
 	this->field_35C = 1;

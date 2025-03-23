@@ -385,7 +385,7 @@ void CRhino::HitWall(void)
 		case 1:
 			if (this->field_142)
 			{
-				if ( this->field_E2 <= 0 )
+				if ( this->mHealth <= 0 )
 				{
 					this->field_31C.bothFlags = 21;
 					this->dumbAssPad = 0;
@@ -627,7 +627,7 @@ CRhino::CRhino(i16* a2, int a3)
 	this->field_2A8 |= 0x2000000;
 
 	this->mType = 307;
-	this->field_E2 = Utils_GetValueFromDifficultyLevel(1400, 1400, 1400, 1400);
+	this->mHealth = Utils_GetValueFromDifficultyLevel(1400, 1400, 1400, 1400);
 
 	this->field_294.Int = gRhinoStrangeInitData[0];
 	this->field_298.Int = gRhinoStrangeInitData[1];

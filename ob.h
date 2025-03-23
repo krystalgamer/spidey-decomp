@@ -142,7 +142,7 @@ public:
 
 
 	i16 field_E0;
-	__int16 field_E2;
+	i16 mHealth;
 
 	u16 mPlayerDist;
 

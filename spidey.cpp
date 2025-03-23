@@ -814,7 +814,7 @@ void Spidey_FreeHeadModel(void)
 // @Ok
 u8 CPlayer::IncreaseWebbing(i32 amount)
 {
-	if (this->field_E2 <= 0)
+	if (this->mHealth <= 0)
 		return 0;
 
 	i32 v3 = 10;

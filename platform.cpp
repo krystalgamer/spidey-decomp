@@ -81,10 +81,10 @@ i32 CPlatform::Hit(SHitInfo* a2)
 	if (this->attributeArr[1])
 	{
 
-		if (this->field_E2 > 0)
+		if (this->mHealth > 0)
 		{
-			this->field_E2 -= a2->field_8;
-			if (this->field_E2 <= 0)
+			this->mHealth -= a2->field_8;
+			if (this->mHealth <= 0)
 			{
 				this->Die(0);
 				SFX_PlayPos(Rnd(2) + 1, &this->mPos, 0);

@@ -286,7 +286,7 @@ i32 CBaddy::SmackSpidey(
 
 			MechList->Hit(&v27);
 
-			if (MechList->field_E2 <= 0)
+			if (MechList->mHealth <= 0)
 				this->Victorious();
 		}
 		return 1;
@@ -309,7 +309,7 @@ INLINE i32 CBaddy::DistanceToPlayer(i32 a2){
 
 // @Ok
 int CBaddy::TrapWeb(void){
-	if((this->field_2A8 & 0x10000) || (this->field_E2 <= 0)){
+	if((this->field_2A8 & 0x10000) || (this->mHealth <= 0)){
 		return 0;
 	}
 
@@ -490,7 +490,7 @@ void CBaddy::Neutralize(void)
 // @NotOk
 int CBaddy::TugWeb(void)
 {
-	if ( (this->field_2A8 & 0x200) || this->field_E2 <= 0)
+	if ( (this->field_2A8 & 0x200) || this->mHealth <= 0)
 	{
 
 		CTrapWebEffect *trapWeb = reinterpret_cast<CTrapWebEffect*>(
@@ -1029,7 +1029,7 @@ void CBaddy::SetVariable(u16 a2)
 			this->field_24C++;
 			break;
 		case 0x2100:
-			this->field_E2 = *this->field_24C;
+			this->mHealth = *this->field_24C;
 			this->field_24C++;
 			break;
 		case 0x2101:
