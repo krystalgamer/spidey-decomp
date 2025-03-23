@@ -366,7 +366,7 @@ CBody::CBody(void)
 CSuper::CSuper()
 {
 	this->mFlags |= 2u;
-	this->gAnim = 1;
+	this->mNumFrames = 1;
 	this->field_142 = 1;
 	//this->cbody.citem.vtable = (int)&off_53BBE8;
 	this->mAnimSpeed = 0x10000;
@@ -422,13 +422,13 @@ void CSuper::UpdateFrame(void){
 	  this->field_80 = 2;
 	v1 = this->mAnimDir;
 	v2 = this->field_80 * this->mAnimSpeed / 2;
-	v3 = (unsigned __int16)this->field_146 | (this->field_128 << 16);
+	v3 = (unsigned __int16)this->mFrameFrac | (this->field_128 << 16);
 	if ( this->mAnimDir == 1 )
 	  v3 += v2;
 	if ( v1 == -1 )
 	  v3 -= v2;
 	v4 = v3;
-	this->field_146 = v3;
+	this->mFrameFrac = v3;
 	v5 = (unsigned __int8)this->field_140;
 	v6 = v4 >> 16;
 	this->field_128 = v6;
@@ -467,7 +467,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 	if (this->mAnim != anim)
 	{
 		this->field_128 = 0;
-		this->field_146 = 0;
+		this->mFrameFrac = 0;
 		this->mAnim = anim;
 
 		DoAssert(
@@ -545,7 +545,7 @@ void CSuper::RunAnim(
 	this->field_144 = v8;
 	this->mAnimDir = v9;
 	this->field_128 = v7;
-	this->field_146 = 0;
+	this->mFrameFrac = 0;
 	this->field_142 = (unsigned __int16)v7 == (unsigned __int16)v8;
 }
 
@@ -768,9 +768,9 @@ void validate_CSuper(void){
 
 
 	VALIDATE(CSuper, field_144, 0x144);	
-	VALIDATE(CSuper, field_146, 0x146);	
+	VALIDATE(CSuper, mFrameFrac, 0x146);	
 
-	VALIDATE(CSuper, gAnim, 0x148);	
+	VALIDATE(CSuper, mNumFrames, 0x148);	
 	VALIDATE(CSuper, mAnimSpeed, 0x14C);
 
 	VALIDATE(CSuper, mTransform, 0x164);
