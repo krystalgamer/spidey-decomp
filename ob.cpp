@@ -33,12 +33,10 @@ EXPORT SLight M3d_DefaultLight =
 };
 
 
-
-
-// @SMALLTODO
+// @Ok
+// @Matching
 void CBody::DeleteStuff(void)
 {
-	printf("CBody::DeleteStuff");
 }
 
 // @Ok
