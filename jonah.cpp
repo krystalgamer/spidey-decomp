@@ -110,7 +110,7 @@ CJonah::CJonah(i16* a2, i32 a3)
 	this->mNode = a3;
 	this->mType = 316;
 	this->field_21E = 100;
-	this->field_DC = 100;
+	this->mRMinor = 100;
 
 	this->field_230 = 0;
 	this->field_216 = 32;

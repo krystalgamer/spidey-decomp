@@ -277,7 +277,7 @@ void __inline CHostage::DisappearBitch(void)
 		case 1:
 			this->mCBodyFlags &= 0xFFEF;
 			this->field_2A8 |= 0x5000;
-			this->field_DC = 0;
+			this->mRMinor = 0;
 			this->Die(1);
 			this->dumbAssPad++;
 			break;
@@ -333,7 +333,7 @@ CHostage::CHostage(int* a2, int a3)
 	this->mShadowScale = 48;
 	this->field_1F4 = a3;
 	this->mNode = a3;
-	this->field_DC = 128;
+	this->mRMinor = 128;
 	this->field_230 = 0;
 	this->field_216 = 32;
 

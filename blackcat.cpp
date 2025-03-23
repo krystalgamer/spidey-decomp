@@ -125,7 +125,7 @@ CBlackCat::CBlackCat(i16* a2, i32 a3)
 	this->field_31C.bothFlags = 1;
 
 	this->mNode = a3;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	this->field_34C = reinterpret_cast<i32>(v5);
 
 	if (submarinerDieRelated && Trig_GetLevelId() != 2051)

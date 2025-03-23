@@ -54,7 +54,7 @@ void CThug::TakeHit(void)
 
 			if (this->field_318 == 1)
 			{
-				this->field_DC = 0;
+				this->mRMinor = 0;
 				this->RunAnim(this->mType != 304 ? 19 : 14, 0, -1);
 				this->dumbAssPad = 2;
 			}
@@ -77,7 +77,7 @@ void CThug::TakeHit(void)
 		case 2:
 			if ( this->field_142 )
 			{
-				this->field_DC = this->mType == 304 ? 96 : 150;
+				this->mRMinor = this->mType == 304 ? 96 : 150;
 				this->RunAnim(this->mType == 304 ? 15 : 20, 0, -1);
 				this->dumbAssPad = 1;
 			}
@@ -1021,7 +1021,7 @@ CThug::CThug(i16 *a2, i32 a3)
 	this->field_2A8 |= 1;
 
 
-	this->field_DC = this->mType != 304 ? 150 : 96;
+	this->mRMinor = this->mType != 304 ? 150 : 96;
 	this->mPushVal = 64;
 	this->field_380 = this->mType != 304 ? 400 : 300;
 	this->field_31C.bothFlags = 0;

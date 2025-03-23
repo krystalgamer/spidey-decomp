@@ -36,7 +36,7 @@ CSubmariner::CSubmariner(i16 * a2, i32 a3)
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->mType = 326;
 	this->mNode = a3;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 
 	if ( submarinerDieRelated )
 		this->Die(0);

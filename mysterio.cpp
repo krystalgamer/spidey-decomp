@@ -178,7 +178,7 @@ i32 CMysterio::MonitorAttack(
 					&v14,
 					MechList,
 					0,
-					((MechList->field_DC + a4) << 12) / MechList->field_DC))
+					((MechList->mRMinor + a4) << 12) / MechList->mRMinor))
 		{
 			res = 1;
 		}

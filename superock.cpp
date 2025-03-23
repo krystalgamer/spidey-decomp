@@ -95,7 +95,7 @@ i32 CSuperDocOck::Hit(SHitInfo* a2)
 {
 	if ( this->field_E2 < 0 )
 		return 0;
-	if ( !this->field_DC )
+	if ( !this->mRMinor )
 		return 0;
 	if ( this->field_31C.bothFlags != 1024 )
 		return 0;
@@ -261,7 +261,7 @@ void CSuperDocOck::HangAndGetBeaten(void)
 			this->realRegisterArr[0] = v5;
 
 			this->mCBodyFlags |= 0x10;
-			this->field_DC = 100;
+			this->mRMinor = 100;
 			this->dumbAssPad++;
 
 			break;
@@ -283,7 +283,7 @@ void CSuperDocOck::HangAndGetBeaten(void)
 				print_if_false(1u, "Bad register index");
 				this->realRegisterArr[0] = 0;
 				this->mCBodyFlags &= ~0x10u;
-				this->field_DC = 0;
+				this->mRMinor = 0;
 				this->field_364 = 0;
 				this->RunAnim(0x18u, 0, -1);
 				this->dumbAssPad = 0;
@@ -429,7 +429,7 @@ CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 	this->mpLight = &M3d_SuperOckLight;
 
 	this->field_E2 = 500;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->mType = 309;

@@ -696,7 +696,7 @@ CCop::CCop(i16* a2, i32 a3)
 	this->field_216 = 32;
 	this->mPushVal = 64;
 	this->field_31C.bothFlags = 0;
-	this->field_DC = this->mType != 306 ? 150 : 96;
+	this->mRMinor = this->mType != 306 ? 150 : 96;
 
 	this->field_2A8 |= 1;
 

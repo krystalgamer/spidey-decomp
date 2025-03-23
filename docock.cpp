@@ -116,7 +116,7 @@ CDocOc::CDocOc(i16 *a2, i32 a3)
 	this->mpLight = &M3d_DocOckLight;
 
 	this->field_E2 = 600;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;
@@ -335,14 +335,14 @@ void CDocOc::HangAndGetBeaten(void)
 	{
 		case 0:
 			this->mCBodyFlags |= 0x10;
-			this->field_DC = 100;
+			this->mRMinor = 100;
 			this->dumbAssPad = 1;
 			break;
 		case 1:
 			if (!this->field_4B8)
 			{
 				this->mCBodyFlags &= 0xFFEF;
-				this->field_DC = 0;
+				this->mRMinor = 0;
 
 				if (this->field_104.field_0)
 				{

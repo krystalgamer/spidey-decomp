@@ -821,7 +821,7 @@ void CChopperMissile::CommonInitialisation(void)
 	this->mCBodyFlags &= ~0x10u;
 
 	this->mModel = Spool_GetModel(0x8CEF63CD, gObjFileRegion);
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_F8 = new CSmokeTrail(&this->mPos, 6, 80, 80, 96);
@@ -1117,7 +1117,7 @@ CChopper::CChopper(i16* a2, i32 a3)
 	this->mFric.vz = 3;
 
 	this->mCBodyFlags &= ~0x10u;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	CBody::AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->field_1F4 = a3;

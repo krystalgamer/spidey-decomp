@@ -198,7 +198,7 @@ CCamera::CCamera(CBody* tripod)
 
 	this->mCBodyFlags &= ~2;
 	NumCameras++;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 	this->mMode = 3;
 }
 

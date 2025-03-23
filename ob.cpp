@@ -704,7 +704,7 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, mPushVal, 0xD8);
 
-	VALIDATE(CBody, field_DC, 0xDC);
+	VALIDATE(CBody, mRMinor, 0xDC);
 
 	VALIDATE(CBody, mNode, 0xDE);
 

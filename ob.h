@@ -136,7 +136,7 @@ public:
 
 	i32 mPushVal;
 
-	u16 field_DC;
+	u16 mRMinor;
 
 	u16 mNode;
 

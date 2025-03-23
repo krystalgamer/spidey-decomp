@@ -1129,7 +1129,7 @@ void CCarnage::StretchJumpFlow(void)
 			this->field_370 = this->mPos;
 			this->RunAnim(0x14u, 0, -1);
 
-			this->field_DC = 0;
+			this->mRMinor = 0;
 			this->mCBodyFlags &= 0xFFEFu;
 
 			if ((this->field_218 & 0x400) == 0)
@@ -1187,7 +1187,7 @@ void CCarnage::StretchJumpFlow(void)
 
 			if (this->field_142)
 			{
-				this->field_DC = 160;
+				this->mRMinor = 160;
 				this->mCBodyFlags |= 0x10u;
 				this->field_31C.bothFlags = 2;
 				this->dumbAssPad = 0;
@@ -2047,7 +2047,7 @@ CCarnage::CCarnage(i16 *a2, i32 a3)
 	this->field_31C.bothFlags = 1;
 
 	this->field_E2 = 3000;
-	this->field_DC = 160;
+	this->mRMinor = 160;
 	this->field_21E = 100;
 	this->field_35C = 1;
 	this->field_354 = 241;
@@ -2084,7 +2084,7 @@ INLINE CSonicBubble::CSonicBubble(void)
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 
 	this->mCBodyFlags &= 0xFFFFFFEF;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 }
 
 // @Ok

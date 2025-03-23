@@ -892,7 +892,7 @@ CBaddy::CBaddy(void)
 	this->field_21D = NumBaddies++;
 	this->mCBodyFlags |= 0x200;
 
-	this->field_DC = 128;
+	this->mRMinor = 128;
 	this->field_F4 = 128;
 	this->mNode = -1;
 	this->field_216 = 32;
@@ -1033,7 +1033,7 @@ void CBaddy::SetVariable(u16 a2)
 			this->field_24C++;
 			break;
 		case 0x2101:
-			this->field_DC = *this->field_24C;
+			this->mRMinor = *this->field_24C;
 			this->field_24C++;
 			break;
 		case 0x2125:

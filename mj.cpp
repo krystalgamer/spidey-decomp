@@ -74,7 +74,7 @@ CMJ::CMJ(int* a2, __int16 a3)
 	this->mType = 303;
 
 	this->mNode = a3;
-	this->field_DC = 0;
+	this->mRMinor = 0;
 
 	if (submarinerDieRelated)
 		this->Die(0);

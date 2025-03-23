@@ -422,7 +422,7 @@ CPunchOb::CPunchOb(
 
 	this->mType = 412;
 	this->field_2A8 |= 2;
-	this->field_DC = 100;
+	this->mRMinor = 100;
 
 	u16* v6 = reinterpret_cast<u16*>(
 			this->SquirtAngles(reinterpret_cast<i16*>(
