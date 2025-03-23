@@ -460,26 +460,27 @@ void CSuper::UpdateFrame(void){
 }
 
 
-// @NotOk
-// Revisit
-void CSuper::CycleAnim(i32 anim, i8 animdir){
-	if (this->mAnim != anim )
+// @Ok
+// @Matching
+void CSuper::CycleAnim(i32 anim, i8 animdir)
+{
+	if (this->mAnim != anim)
 	{
 		this->field_128 = 0;
 		this->field_146 = 0;
 		this->mAnim = anim;
-		int mRegion = (unsigned __int8)this->mRegion;
 
 		DoAssert(
-			(unsigned int)(unsigned __int16)anim < *(unsigned int *)Animations[17 * mRegion],
+			static_cast<u32>(anim & 0xFFFF) < PSXRegion[this->mRegion].pAnimFile[0],
 			"Bad anim sent to CycleAnim");
-		this->gAnim = *(__int16 *)(Animations[17 * (unsigned __int8)this->mRegion]
-			+ 8 * (unsigned __int16)this->mAnim
-			+ 8);
+
+		this->gAnim =
+			reinterpret_cast<u16*>(PSXRegion[this->mRegion].pAnimFile)[4 + (4 * this->mAnim)];
 
 
 		this->mAnimDir = animdir;
 	}
+
 	this->field_140 = 1;
 	this->field_142 = 0;
 }
