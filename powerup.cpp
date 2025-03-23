@@ -2,6 +2,7 @@
 #include "spool.h"
 #include "trig.h"
 #include "exp.h"
+#include "my_assert.h"
 
 #include "validate.h"
 
@@ -18,7 +19,7 @@ void CPowerUp::DoPhysics(void)
 // @Ok
 void CPowerUp::AI(void)
 {
-	if ( (this->mFlags & 1) && this->field_101)
+	if ( (this->mFlags & 1) && this->mIs3d)
 		this->mShadowScale = 0;
 	else
 		this->mShadowScale = 32;
@@ -69,11 +70,11 @@ void CPowerUp::AI(void)
 
 		this->DoPhysics();
 
-		if (!this->field_101)
+		if (!this->mIs3d)
 		{
 			if (!this->pPickupBit)
 				this->CreateBit();
-			print_if_false(this->pPickupBit != 0, "Non-3d pickup has no pickup bit");
+			DoAssert(this->pPickupBit != 0, "Non-3d pickup has no pickup bit");
 			this->pPickupBit->SetPos(this->mPos);
 		}
 	}
@@ -105,7 +106,7 @@ void CPowerUp::CheckAge(void)
 				this->field_102 = 0;
 		}
 
-		if (this->field_101)
+		if (this->mIs3d)
 		{
 			if (this->field_102)
 				this->mFlags &= 0xFFFE;
@@ -241,7 +242,7 @@ void validate_CPowerUp(void)
 	VALIDATE(CPowerUp, mpGlow, 0xF8);
 
 	VALIDATE(CPowerUp, mHasNode, 0x100);
-	VALIDATE(CPowerUp, field_101, 0x101);
+	VALIDATE(CPowerUp, mIs3d, 0x101);
 	VALIDATE(CPowerUp, field_102, 0x102);
 
 	VALIDATE(CPowerUp, mNodeIndex, 0x106);
