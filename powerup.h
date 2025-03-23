@@ -6,7 +6,7 @@
 #include "ob.h"
 #include "export.h"
 
-EXPORT extern i32 gPowerUpRelated;
+EXPORT extern i32 TTime;
 class CPowerUp : public CBody
 {
 	public:

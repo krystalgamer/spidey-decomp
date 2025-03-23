@@ -7,7 +7,7 @@
 
 extern i32 TotalBitUsage;
 CBody* PowerUpList;
-i32 gPowerUpRelated;
+i32 TTime;
 
 // @MEDIUMTODO
 void CPowerUp::DoPhysics(void)
@@ -92,14 +92,14 @@ void CPowerUp::CheckAge(void)
 
 		if (this->mLifetime < 0x3C && this->mLifetime > 0x1E)
 		{
-				if (gPowerUpRelated & 2)
+				if (TTime & 2)
 					this->field_102 = 1;
 				else
 					this->field_102 = 0;
 		}
 		if (this->mLifetime <= 0x1E)
 		{
-			if (gPowerUpRelated & 1)
+			if (TTime & 1)
 				this->field_102 = 1;
 			else
 				this->field_102 = 0;

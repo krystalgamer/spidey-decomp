@@ -419,7 +419,7 @@ void Shell_LegalScreen(void)
 				-1.0f);
 			if (gSceneRelated)
 				PCGfx_EndScene(1);
-			++gPowerUpRelated;
+			++TTime;
 			Pad_Update();
 
 			if (Vblanks > v3)

@@ -252,7 +252,7 @@ void Init_Cleanup(i32 a1)
 	v6.vy = 0x8000;
 	v6.vz = 0;
 	Physics_SetGravity(&v6);
-	gPowerUpRelated = 0;
+	TTime = 0;
 	Pad_ClearAll();
 
 	gInitBaddyRelated = 0;
