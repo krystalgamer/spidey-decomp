@@ -8,6 +8,7 @@
 #include "m3dutils.h"
 #include "spool.h"
 #include "utils.h"
+#include "my_assert.h"
 
 // @Ok
 u8 gWhatIf;
@@ -368,7 +369,7 @@ CSuper::CSuper()
 	this->gAnim = 1;
 	this->field_142 = 1;
 	//this->cbody.citem.vtable = (int)&off_53BBE8;
-	this->csuperend = 0x10000;
+	this->mAnimSpeed = 0x10000;
 	this->field_13E = 100;
 	this->field_13F = 94;
 }
@@ -419,10 +420,10 @@ void CSuper::UpdateFrame(void){
 
 	if ( !this->field_80 )
 	  this->field_80 = 2;
-	v1 = this->field_141;
-	v2 = this->field_80 * this->csuperend / 2;
+	v1 = this->mAnimDir;
+	v2 = this->field_80 * this->mAnimSpeed / 2;
 	v3 = (unsigned __int16)this->field_146 | (this->field_128 << 16);
-	if ( this->field_141 == 1 )
+	if ( this->mAnimDir == 1 )
 	  v3 += v2;
 	if ( v1 == -1 )
 	  v3 -= v2;
@@ -449,7 +450,7 @@ void CSuper::UpdateFrame(void){
 		  }
 		}
 	}
-	else if( (this->field_141 == 1 && (__int16)v6 >= this->field_144)
+	else if( (this->mAnimDir == 1 && (__int16)v6 >= this->field_144)
 		||
 		(v1 == -1 && (__int16)v6 <= this->field_144)
 		){
@@ -461,26 +462,26 @@ void CSuper::UpdateFrame(void){
 
 // @NotOk
 // Revisit
-void CSuper::CycleAnim(int a2, char a3){
-  if (this->mAnim != a2 )
-  {
-    this->field_128 = 0;
-	this->field_146 = 0;
-	this->mAnim = a2;
-    int mRegion = (unsigned __int8)this->mRegion;
+void CSuper::CycleAnim(i32 anim, i8 animdir){
+	if (this->mAnim != anim )
+	{
+		this->field_128 = 0;
+		this->field_146 = 0;
+		this->mAnim = anim;
+		int mRegion = (unsigned __int8)this->mRegion;
 
-	print_if_false(
-      (unsigned int)(unsigned __int16)a2 < *(unsigned int *)Animations[17 * mRegion],
-      "Bad anim sent to CycleAnim");
-    this->gAnim = *(__int16 *)(Animations[17 * (unsigned __int8)this->mRegion]
-                           + 8 * (unsigned __int16)this->mAnim
-                           + 8);
+		DoAssert(
+			(unsigned int)(unsigned __int16)anim < *(unsigned int *)Animations[17 * mRegion],
+			"Bad anim sent to CycleAnim");
+		this->gAnim = *(__int16 *)(Animations[17 * (unsigned __int8)this->mRegion]
+			+ 8 * (unsigned __int16)this->mAnim
+			+ 8);
 
-    
-    this->field_141 = a3;
-  }
-  this->field_140 = 1;
-  this->field_142 = 0;
+
+		this->mAnimDir = animdir;
+	}
+	this->field_140 = 1;
+	this->field_142 = 0;
 }
 
 
@@ -541,7 +542,7 @@ void CSuper::RunAnim(
 		v9 = (v8 >= v7) - 1;
 
 	this->field_144 = v8;
-	this->field_141 = v9;
+	this->mAnimDir = v9;
 	this->field_128 = v7;
 	this->field_146 = 0;
 	this->field_142 = (unsigned __int16)v7 == (unsigned __int16)v8;
@@ -583,7 +584,7 @@ void CBody::EveryFrame(void)
 		CSuper *super = reinterpret_cast<CSuper*>(this);
 		v6 = super->field_128;
 		v7 = super->mAnim;
-		v8 = super->field_141;
+		v8 = super->mAnimDir;
 		super->field_152 = v6;
 		super->field_150 = v6;
 		super->field_154 = v7;
@@ -757,7 +758,7 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_13F, 0x13F);
 
 	VALIDATE(CSuper, field_140, 0x140);
-	VALIDATE(CSuper, field_141, 0x141);
+	VALIDATE(CSuper, mAnimDir, 0x141);
 	VALIDATE(CSuper, field_142, 0x142);
 	VALIDATE(CSuper, field_143, 0x143);
 	VALIDATE(CSuper, field_150, 0x150);
@@ -769,7 +770,7 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_146, 0x146);	
 
 	VALIDATE(CSuper, gAnim, 0x148);	
-	VALIDATE(CSuper, csuperend, 0x14C);
+	VALIDATE(CSuper, mAnimSpeed, 0x14C);
 
 	VALIDATE(CSuper, mTransform, 0x164);
 

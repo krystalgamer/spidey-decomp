@@ -892,7 +892,7 @@ void CPlayer::SetIgnoreInputTimer(int a2)
 	this->field_E18 = a2;
 	if (a2)
 	{
-		this->field_E12 = this->csuperend;
+		this->field_E12 = this->mAnimSpeed;
 		if (this->field_8EA)
 		{
 			this->ExitLookaroundMode();

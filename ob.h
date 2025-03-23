@@ -230,7 +230,7 @@ public:
 
 	unsigned char field_140;
 
-	unsigned char field_141;
+	i8 mAnimDir;
 	unsigned char field_142;
 	unsigned char field_143;
 
@@ -241,7 +241,7 @@ public:
 
 	unsigned __int16 padAfte;
 
-	int csuperend;
+	i32 mAnimSpeed;
 
 
 	__int16 field_150;

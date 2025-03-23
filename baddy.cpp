@@ -1069,7 +1069,7 @@ void CBaddy::SetVariable(u16 a2)
 				i16 *tmp = this->field_24C;
 				i16 tmp2 = *tmp;
 				this->field_24C++;
-				this->csuperend = tmp2;
+				this->mAnimSpeed = tmp2;
 			}
 			break;
 

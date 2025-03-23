@@ -376,7 +376,7 @@ void CSuperDocOck::Gloat(void)
 {
 	if ( this->field_142 )
 	{
-		this->csuperend = 0x10000;
+		this->mAnimSpeed = 0x10000;
 		this->PlayIdleOrGloatAnim();
 	}
 }
