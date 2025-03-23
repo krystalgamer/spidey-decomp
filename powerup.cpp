@@ -94,21 +94,21 @@ void CPowerUp::CheckAge(void)
 		if (this->mLifetime < 0x3C && this->mLifetime > 0x1E)
 		{
 				if (TTime & 2)
-					this->field_102 = 1;
+					this->mDropping = 1;
 				else
-					this->field_102 = 0;
+					this->mDropping = 0;
 		}
 		if (this->mLifetime <= 0x1E)
 		{
 			if (TTime & 1)
-				this->field_102 = 1;
+				this->mDropping = 1;
 			else
-				this->field_102 = 0;
+				this->mDropping = 0;
 		}
 
 		if (this->mIs3d)
 		{
-			if (this->field_102)
+			if (this->mDropping)
 				this->mFlags &= 0xFFFE;
 			else
 				this->mFlags |= 1;
@@ -243,7 +243,7 @@ void validate_CPowerUp(void)
 
 	VALIDATE(CPowerUp, mHasNode, 0x100);
 	VALIDATE(CPowerUp, mIs3d, 0x101);
-	VALIDATE(CPowerUp, field_102, 0x102);
+	VALIDATE(CPowerUp, mDropping, 0x102);
 
 	VALIDATE(CPowerUp, mNodeIndex, 0x106);
 	VALIDATE(CPowerUp, field_108, 0x108);

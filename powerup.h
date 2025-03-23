@@ -28,7 +28,7 @@ class CPowerUp : public CBody
 
 		u8 mHasNode;
 		u8 mIs3d;
-		u8 field_102;
+		u8 mDropping;
 		u8 padAfter102[0x106-0x102-1];
 
 		u16 mNodeIndex;
