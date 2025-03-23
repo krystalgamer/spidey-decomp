@@ -82,22 +82,22 @@ void CPowerUp::AI(void)
 // @Ok
 void CPowerUp::CheckAge(void)
 {
-	if (this->field_12C != 0xFFFF)
+	if (this->mLifetime != 0xFFFF)
 	{
-		if (this->field_12C)
-			this->field_12C--;
+		if (this->mLifetime)
+			this->mLifetime--;
 
-		if (this->field_12C < 0x3C)
-			this->field_120 = this->field_12C * this->field_11E / 60;
+		if (this->mLifetime < 0x3C)
+			this->field_120 = this->mLifetime * this->field_11E / 60;
 
-		if (this->field_12C < 0x3C && this->field_12C > 0x1E)
+		if (this->mLifetime < 0x3C && this->mLifetime > 0x1E)
 		{
 				if (gPowerUpRelated & 2)
 					this->field_102 = 1;
 				else
 					this->field_102 = 0;
 		}
-		if (this->field_12C <= 0x1E)
+		if (this->mLifetime <= 0x1E)
 		{
 			if (gPowerUpRelated & 1)
 				this->field_102 = 1;
@@ -113,7 +113,7 @@ void CPowerUp::CheckAge(void)
 				this->mFlags |= 1;
 		}
 
-		if (!this->field_12C)
+		if (!this->mLifetime)
 		{
 			if (this->field_E4 <= 0x1F40)
 				Exp_GlowFlash(&this->mPos, 20, 0xFF, 0xFF, 0xFF, 4, 1, 20);
@@ -254,7 +254,7 @@ void validate_CPowerUp(void)
 	VALIDATE(CPowerUp, field_124, 0x124);
 	VALIDATE(CPowerUp, field_128, 0x128);
 
-	VALIDATE(CPowerUp, field_12C, 0x12C);
+	VALIDATE(CPowerUp, mLifetime, 0x12C);
 
 	VALIDATE_VTABLE(CPowerUp, DeleteStuff, 4);
 }

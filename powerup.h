@@ -46,7 +46,7 @@ class CPowerUp : public CBody
 		u8 padAfter124[0x128-0x124-1];
 
 		i32 field_128;
-		u16 field_12C;
+		u16 mLifetime;
 		u8 padAfter12C[2];
 		CFlatBit* pPickupBit;
 
