@@ -1174,7 +1174,7 @@ void CRudeWordHitterSpidey::AI(void)
 		}
 	}
 
-	if (this->field_142)
+	if (this->mAnimFinished)
 	{
 		if (!this->mAnim)
 		{

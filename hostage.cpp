@@ -241,7 +241,7 @@ void CHostage::WaitForPlayer(void)
 			break;
 		case 1:
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->CycleAnim(0, 1);
 				this->dumbAssPad  = 0;
@@ -299,7 +299,7 @@ void __inline CHostage::GetUp(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				if (this->GetNextWaypoint())
 				{

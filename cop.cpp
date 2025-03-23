@@ -102,7 +102,7 @@ void CCop::Acknowledge(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->field_31C.bothFlags = 28;
 				this->dumbAssPad = 0;
@@ -274,7 +274,7 @@ INLINE void CCop::StopShooting(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 28;
 				this->dumbAssPad = 0;

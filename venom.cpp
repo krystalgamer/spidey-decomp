@@ -202,7 +202,7 @@ void INLINE CVenom::Lookaround(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 32;
 				this->dumbAssPad = 0;
@@ -306,7 +306,7 @@ void CVenom::VenomDie(void)
 			break;
 		case 1:
 			this->field_330 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->RunAnim(0x29, 0, -1);
 				this->dumbAssPad++;
@@ -314,7 +314,7 @@ void CVenom::VenomDie(void)
 
 			break;
 		case 2:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				if (Trig_GetLevelId() == 1540)
 				{

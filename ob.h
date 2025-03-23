@@ -231,7 +231,7 @@ public:
 	unsigned char field_140;
 
 	i8 mAnimDir;
-	unsigned char field_142;
+	u8 mAnimFinished;
 	unsigned char field_143;
 
 

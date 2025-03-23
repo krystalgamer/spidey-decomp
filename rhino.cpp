@@ -383,7 +383,7 @@ void CRhino::HitWall(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				if ( this->mHealth <= 0 )
 				{
@@ -398,7 +398,7 @@ void CRhino::HitWall(void)
 			break;
 		case 2:
 
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				if ( this->mAnim == 18 )
 				{
@@ -463,7 +463,7 @@ void CRhino::Laugh(void)
 			break;
 		case 1:
 			this->RunTimer(&this->field_230);
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				if (!this->field_230)
 				{

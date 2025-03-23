@@ -288,7 +288,7 @@ void CPunchOb::AI(void)
 	if (this->pMessage)
 		this->CleanUpMessages(1, 0);
 
-	if (this->field_142)
+	if (this->mAnimFinished)
 		this->RunAnim(0, 0, -1);
 
 	M3d_BuildTransform(this);
@@ -503,7 +503,7 @@ void CSimby::Shoot(void)
 			}
 			break;
 		case 3:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 4;
 				this->field_324 = 450 - Rnd(150);

@@ -171,19 +171,19 @@ void CBaddy::RunAppropriateAnim(void)
 
 		if (v2 == v3
 				|| this->mAnim != v2
-				|| this->field_142)
+				|| this->mAnimFinished)
 		{
 			this->CycleAnim(this->field_294.Bytes[1], 1);
 		}
 	}
 	else if (this->field_2AC & 0x10000)
 	{
-		if (this->mAnim != this->field_294.Bytes[2] || this->field_142)
+		if (this->mAnim != this->field_294.Bytes[2] || this->mAnimFinished)
 				this->RunAnim(this->field_294.Bytes[2], 0, -1);
 	}
 	else if (this->field_2AC & 0x20000)
 	{
-		if (this->mAnim != this->field_294.Bytes[3] || this->field_142)
+		if (this->mAnim != this->field_294.Bytes[3] || this->mAnimFinished)
 				this->RunAnim(this->field_294.Bytes[3], 0, -1);
 	}
 	else

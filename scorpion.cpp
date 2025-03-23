@@ -144,7 +144,7 @@ void CScorpion::GetTrapped(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->CycleAnim(12, 1);
 
 			this->field_324 |= 2;
@@ -180,7 +180,7 @@ void CScorpion::GetTrapped(void)
 			break;
 		case 3:
 			this->field_324 |= 2;
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->RunAnim(0xD, 0, -1);
 				this->dumbAssPad++;
@@ -210,7 +210,7 @@ void CScorpion::GetTrapped(void)
 			}
 			break;
 		case 5:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 2;
 				this->dumbAssPad = 0;
@@ -427,7 +427,7 @@ void CScorpion::Gloat(void)
 			++this->dumbAssPad;
 			break;
 		case 2:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 				this->CycleAnim(this->field_298.Bytes[0], 1);
 			this->RunTimer(&this->field_1F8);
 			if ( !this->field_1F8 )
@@ -437,7 +437,7 @@ void CScorpion::Gloat(void)
 			}
 			break;
 		case 3:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				if ( this->field_C18 )
 				{

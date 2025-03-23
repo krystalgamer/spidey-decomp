@@ -368,7 +368,7 @@ void INLINE CMysterio::EnterP2(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 1;
 				this->dumbAssPad = 0;
@@ -435,7 +435,7 @@ void CMysterio::SummonAttack(void)
 			}
 			break;
 		case 2:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 1;
 				this->dumbAssPad = 0;
@@ -459,7 +459,7 @@ void CMysterio::LookMenacing(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->RunAnim(8, 0, -1);
 			}

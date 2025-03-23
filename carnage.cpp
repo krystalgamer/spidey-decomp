@@ -287,7 +287,7 @@ void CCarnage::SelectAttack(void)
 		case 1:
 			v8 = this->CalculateAngleDelta();
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->RunAnim(2, 0, -1);
 
 			v9 = my_abs(v8);
@@ -318,7 +318,7 @@ void CCarnage::SelectAttack(void)
 			}
 			else
 			{
-				if (this->field_142)
+				if (this->mAnimFinished)
 					this->RunAnim(2u, 0, -1);
 			}
 			break;
@@ -505,7 +505,7 @@ void CCarnage::BurnInBubble(void)
 		case 1:
 			this->field_328 = 16;
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				DoAssert(1u, "Bad register index");
 
@@ -526,7 +526,7 @@ void CCarnage::BurnInBubble(void)
 
 		case 2:
 			this->field_328 = 16;
-			if (this->field_142 && this->mAnim == 15)
+			if (this->mAnimFinished && this->mAnim == 15)
 			{
 				this->RunAnim(0x10u, 0, -1);
 
@@ -551,7 +551,7 @@ void CCarnage::BurnInBubble(void)
 			break;
 		case 3:
 			this->field_328 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->RunAnim(16, 0, -1);
 
 			if (static_cast<u32>(Utils_XZDist(&this->mPos, &this->field_240)) < 0x20u)
@@ -568,7 +568,7 @@ void CCarnage::BurnInBubble(void)
 		case 4:
 			this->field_328 = 16;
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 
 				if (this->mAnim == 17)
@@ -612,7 +612,7 @@ void CCarnage::BurnInBubble(void)
 			break;
 		case 5:
 			this->field_328 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 2;
 				this->dumbAssPad = 0;
@@ -638,7 +638,7 @@ void CCarnage::GetYankedBySpidey(void)
 			this->dumbAssPad++;
 		case 1:
 			this->field_328 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->RunAnim(33, 0, -1);
 
 			mPoss = this->mPos;
@@ -932,7 +932,7 @@ void CCarnage::StretchJumpAdvance(void)
 							&this->field_240);
 
 					this->field_218 |= gCarnageOne;
-					if (this->field_142)
+					if (this->mAnimFinished)
 						this->RunAnim(7, 0, -1);
 
 					if (gCarnageXaRelated && !gCarnageXaRelatedTwo)
@@ -983,7 +983,7 @@ void CCarnage::StretchJumpAdvance(void)
 
 			break;
 		case 2:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 2;
 				this->dumbAssPad = 0;
@@ -1098,7 +1098,7 @@ void CCarnage::DoubleAxeHandSlash(void)
 						}
 					}
 
-				if (this->field_142)
+				if (this->mAnimFinished)
 				{
 					this->field_194 |= 0x44000u;
 					this->field_194 &= 0xFFFDDFFF;
@@ -1185,7 +1185,7 @@ void CCarnage::StretchJumpFlow(void)
 		case 2:
 			this->field_328 = 16;
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->mRMinor = 160;
 				this->mCBodyFlags |= 0x10u;
@@ -1318,10 +1318,10 @@ void CCarnage::TakeHit(void)
 
 				this->field_330 = 0;
 				if (this->mAnim == 32)
-					this->field_142 = 1;
+					this->mAnimFinished = 1;
 			}
 
-			if (this->field_142 && !this->field_330)
+			if (this->mAnimFinished && !this->field_330)
 			{
 				if (this->field_35C == 4)
 				{
@@ -1383,7 +1383,7 @@ void CCarnage::GetTrapped(void)
 		case 1:
 			this->field_328 = 16;
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->RunAnim(0xAu, 0, -1);
 				DoAssert(1u, "Bad register index");
@@ -1396,7 +1396,7 @@ void CCarnage::GetTrapped(void)
 			this->field_328 = 16;
 			if (this->mAnim != 10 &&
 					this->mAnim != 9 ||
-					this->field_142 )
+					this->mAnimFinished )
 			{
 				this->RunAnim(0xAu, 0, -1);
 			}
@@ -1432,7 +1432,7 @@ void CCarnage::GetTrapped(void)
 			}
 			else
 			{
-				if (this->field_142)
+				if (this->mAnimFinished)
 				{
 					this->field_31C.bothFlags = 2;
 					this->dumbAssPad = 0;
@@ -1467,7 +1467,7 @@ void CCarnage::TugWebTrapped(void)
 			this->dumbAssPad++;
 		case 1:
 			this->field_328 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->RunAnim(0xAu, 0, -1);
 			DoAssert(1u, "Bad register index");
 
@@ -1509,7 +1509,7 @@ void CCarnage::TugWebTrapped(void)
 			break;
 		case 2:
 			this->field_328 = 16;
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 2;
 				this->dumbAssPad = 0;
@@ -1597,7 +1597,7 @@ void CCarnage::Initialise(void)
 				this->mInputFlags &= 0xFFFEu;
 			}
 
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				if (this->field_218 & 0x200)
 				{
@@ -1696,12 +1696,12 @@ void CCarnage::Laugh(void)
 			this->field_218 &= 0xFFFFFFFE;
 			this->field_218 |= gCarnageFour;
 
-			if (this->mAnim != 4 || this->field_142)
+			if (this->mAnim != 4 || this->mAnimFinished)
 				this->RunAnim(4u, 0, -1);
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_218 &= 0xFFFFFFFB;
 				if (MechList->field_E1C != 0x800000)
@@ -1814,7 +1814,7 @@ INLINE void CCarnage::DieCarnage(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->PulseL8A5Node();
 				this->dumbAssPad++;

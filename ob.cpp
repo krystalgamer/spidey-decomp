@@ -367,7 +367,7 @@ CSuper::CSuper()
 {
 	this->mFlags |= 2u;
 	this->mNumFrames = 1;
-	this->field_142 = 1;
+	this->mAnimFinished = 1;
 	//this->cbody.citem.vtable = (int)&off_53BBE8;
 	this->mAnimSpeed = 0x10000;
 	this->field_13E = 100;
@@ -455,7 +455,7 @@ void CSuper::UpdateFrame(void){
 		(v1 == -1 && (__int16)v6 <= this->field_144)
 		){
 		this->field_128 = this->field_144;
-		this->field_142 = 1;
+		this->mAnimFinished = 1;
 	}
 }
 
@@ -482,7 +482,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 	}
 
 	this->field_140 = 1;
-	this->field_142 = 0;
+	this->mAnimFinished = 0;
 }
 
 
@@ -546,7 +546,7 @@ void CSuper::RunAnim(
 	this->mAnimDir = v9;
 	this->field_128 = v7;
 	this->mFrameFrac = 0;
-	this->field_142 = (unsigned __int16)v7 == (unsigned __int16)v8;
+	this->mAnimFinished = (unsigned __int16)v7 == (unsigned __int16)v8;
 }
 
 // @NotOk
@@ -760,7 +760,7 @@ void validate_CSuper(void){
 
 	VALIDATE(CSuper, field_140, 0x140);
 	VALIDATE(CSuper, mAnimDir, 0x141);
-	VALIDATE(CSuper, field_142, 0x142);
+	VALIDATE(CSuper, mAnimFinished, 0x142);
 	VALIDATE(CSuper, field_143, 0x143);
 	VALIDATE(CSuper, field_150, 0x150);
 	VALIDATE(CSuper, field_152, 0x152);

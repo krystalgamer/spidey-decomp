@@ -239,7 +239,7 @@ void CJonah::TakeHit(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_318 = 0;
 				if (!this->StartRunningToNextRoom())

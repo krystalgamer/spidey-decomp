@@ -204,7 +204,7 @@ void CDocOc::PlayIdleOrGloatAnim(void)
 // @Ok
 INLINE void CDocOc::Gloat(void)
 {
-	if (this->field_142)
+	if (this->mAnimFinished)
 	{
 		this->field_31C.bothFlags = 2;
 		this->dumbAssPad = 0;
@@ -288,7 +288,7 @@ void CDocOc::TakeHit(void)
 
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->PlayIdleOrGloatAnim();
 				this->field_31C.bothFlags = 1024;
@@ -319,7 +319,7 @@ INLINE void CDocOc::CalculateStage(void)
 void CDocOc::HangAndGetBeaten(void)
 {
 
-	if (this->field_142)
+	if (this->mAnimFinished)
 	{
 		if (this->mAnim == 23 || this->mAnim == 32)
 		{

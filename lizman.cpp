@@ -149,7 +149,7 @@ void CLizMan::Acknowledge(void)
 			break;
 		case 1:
 
-			if(this->field_142)
+			if(this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 25;
 				this->dumbAssPad = 0;

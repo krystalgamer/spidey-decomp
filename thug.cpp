@@ -67,7 +67,7 @@ void CThug::TakeHit(void)
 
 			break;
 		case 1:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->field_318 = 0;
 				this->field_31C.bothFlags = 28;
@@ -75,7 +75,7 @@ void CThug::TakeHit(void)
 			}
 			break;
 		case 2:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->mRMinor = this->mType == 304 ? 96 : 150;
 				this->RunAnim(this->mType == 304 ? 15 : 20, 0, -1);
@@ -84,7 +84,7 @@ void CThug::TakeHit(void)
 
 			break;
 		case 3:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->field_31C.bothFlags = 28;
 				this->dumbAssPad = 0;
@@ -130,7 +130,7 @@ void CThug::BackpedalPlease(void)
 			this->DoPhysics(1);
 			if (this->field_1F8 <= 0)
 				this->Neutralize();
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->Neutralize();
 				this->field_31C.bothFlags = 28;
@@ -519,7 +519,7 @@ void CThug::Guard(void)
 			this->dumbAssPad++;
 			if (this->mAnim == 11)
 			{
-				this->field_142 = 1;
+				this->mAnimFinished = 1;
 				break;
 			}
 			else if (this->mAnim != 10)
@@ -530,7 +530,7 @@ void CThug::Guard(void)
 
 			this->RunAnim(0xA, this->field_128, -1);
 		case 1:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->CycleOrContinueAnim(11, -1, -1, -1);
 				this->field_230 = Rnd(30) + 20;
@@ -545,7 +545,7 @@ void CThug::Guard(void)
 			}
 			break;
 		case 3:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				this->CycleAnim(3, 1);
 				this->field_230 = Rnd(30) + 20;
@@ -557,7 +557,7 @@ void CThug::Guard(void)
 				this->dumbAssPad = 0;
 			break;
 		case 5:
-			if ( this->field_142 )
+			if ( this->mAnimFinished )
 			{
 				if ( --this->field_1F8 == 0 )
 				{
@@ -712,7 +712,7 @@ void CThug::Acknowledge(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 				this->CycleAnim(this->field_298.Bytes[0], 1);
 
 			if (!this->field_33C)
@@ -732,7 +732,7 @@ void CThug::Acknowledge(void)
 
 			break;
 		case 2:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_33C = 2000;
 				this->field_31C.bothFlags = 2;
@@ -1232,7 +1232,7 @@ INLINE void CThug::StopShooting(void)
 			this->dumbAssPad++;
 			break;
 		case 1:
-			if (this->field_142)
+			if (this->mAnimFinished)
 			{
 				this->field_31C.bothFlags = 28;
 				this->dumbAssPad = 0;
