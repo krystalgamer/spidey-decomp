@@ -1022,7 +1022,7 @@ CThug::CThug(i16 *a2, i32 a3)
 
 
 	this->field_DC = this->mType != 304 ? 150 : 96;
-	this->field_D8 = 64;
+	this->mPushVal = 64;
 	this->field_380 = this->mType != 304 ? 400 : 300;
 	this->field_31C.bothFlags = 0;
 

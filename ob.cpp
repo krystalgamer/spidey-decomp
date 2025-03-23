@@ -353,7 +353,7 @@ CBody::CBody(void)
 	this->mAngFric.vz = 1;
 	this->mCBodyFlags |= 0x16;
 
-	this->field_D8 = 10;
+	this->mPushVal = 10;
 	this->field_A4 = 0;
 	this->mNode = 0xFFFF;
 	this->mShadowScale = 32;
@@ -701,7 +701,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, mShadowDist, 0xD2);
 	VALIDATE(CBody, mShadowThreshold, 0xD4);
 
-	VALIDATE(CBody, field_D8, 0xD8);
+	VALIDATE(CBody, mPushVal, 0xD8);
 
 	VALIDATE(CBody, field_DC, 0xDC);
 

@@ -134,7 +134,7 @@ public:
 	i16 mShadowDist;
 	i16 mShadowThreshold;
 
-	int field_D8;
+	i32 mPushVal;
 
 	u16 field_DC;
 

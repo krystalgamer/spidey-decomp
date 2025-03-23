@@ -620,7 +620,7 @@ CRhino::CRhino(i16* a2, int a3)
 	this->field_230 = 0;
 	this->field_216 = 32;
 
-	this->field_D8 = 64;
+	this->mPushVal = 64;
 	this->field_31C.bothFlags = 0;
 	this->field_2A8 |= 1;
 	this->field_2A8 |= 0x200;

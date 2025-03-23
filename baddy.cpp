@@ -896,7 +896,7 @@ CBaddy::CBaddy(void)
 	this->field_F4 = 128;
 	this->mNode = -1;
 	this->field_216 = 32;
-	this->field_D8 = 64;
+	this->mPushVal = 64;
 }
 
 // @Ok

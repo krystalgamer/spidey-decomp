@@ -337,7 +337,7 @@ CHostage::CHostage(int* a2, int a3)
 	this->field_230 = 0;
 	this->field_216 = 32;
 
-	this->field_D8 = 64;
+	this->mPushVal = 64;
 	this->field_324 = 0;
 
 	this->field_2A8 = v6;
