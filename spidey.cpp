@@ -168,7 +168,7 @@ void CPlayer::CheckForwards(bool)
 // @Ok
 i32 CPlayer::CheckGroundGone(void)
 {
-	if (!(this->field_E0 & 2))
+	if (!(this->mCollision & 2))
 	{
 		if ( this->field_EA4 )
 			this->field_EA4--;
@@ -268,7 +268,7 @@ i32 CPlayer::CheckRunIntoWall(void)
 
 	u8 v3 = 1;
 
-	if (this->field_E0 & 1)
+	if (this->mCollision & 1)
 	{
 		if ( this->field_B84.vy <= 3400
 				&& this->field_B74
@@ -305,7 +305,7 @@ i32 CPlayer::CheckRunIntoWall(void)
 i32 CPlayer::CheckStickToCeiling(void)
 {
 	if ( this->mVel.vy > 0
-		|| !(this->field_E0 & 0x100)
+		|| !(this->mCollision & 0x100)
 		|| !this->field_C18
 		|| !(reinterpret_cast<u8*>(this->field_E0C)[256])
 		|| this->field_C28.vy <= 3400

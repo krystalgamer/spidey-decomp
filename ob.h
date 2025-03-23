@@ -141,7 +141,7 @@ public:
 	u16 mNode;
 
 
-	i16 field_E0;
+	u16 mCollision;
 	i16 mHealth;
 
 	u16 mPlayerDist;

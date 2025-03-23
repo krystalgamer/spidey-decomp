@@ -795,7 +795,7 @@ void CCarnage::DoSonicBubbleProcessing(void)
 			}
 			else
 			{
-				if ((MechList->field_E0 & 2) != 0
+				if ((MechList->mCollision & 2) != 0
 					&& Utils_XZDist(&MechList->mPos, &gGlobalNormal) < this->field_350)
 				{
 					SHitInfo v13;

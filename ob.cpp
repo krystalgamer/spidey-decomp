@@ -708,7 +708,7 @@ void validate_CBody(void){
 
 	VALIDATE(CBody, mNode, 0xDE);
 
-	VALIDATE(CBody, field_E0, 0xE0);
+	VALIDATE(CBody, mCollision, 0xE0);
 	VALIDATE(CBody, mHealth, 0xE2);
 
 	VALIDATE(CBody, mPlayerDist, 0xE4);
