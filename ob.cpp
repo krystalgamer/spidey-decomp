@@ -711,7 +711,7 @@ void validate_CBody(void){
 	VALIDATE(CBody, field_E0, 0xE0);
 	VALIDATE(CBody, field_E2, 0xE2);
 
-	VALIDATE(CBody, field_E4, 0xE4);
+	VALIDATE(CBody, mPlayerDist, 0xE4);
 
 	VALIDATE(CBody, field_E8, 0xE8);
 

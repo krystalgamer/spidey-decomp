@@ -144,7 +144,7 @@ public:
 	i16 field_E0;
 	__int16 field_E2;
 
-	u16 field_E4;
+	u16 mPlayerDist;
 
 	CVector field_E8;
 

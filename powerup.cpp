@@ -57,7 +57,7 @@ void CPowerUp::AI(void)
 
 	this->CheckAge();
 
-	if (this->field_E4 > 0x1F40)
+	if (this->mPlayerDist > 0x1F40)
 	{
 		this->DeleteStuff();
 	}
@@ -116,7 +116,7 @@ void CPowerUp::CheckAge(void)
 
 		if (!this->mLifetime)
 		{
-			if (this->field_E4 <= 0x1F40)
+			if (this->mPlayerDist <= 0x1F40)
 				Exp_GlowFlash(&this->mPos, 20, 0xFF, 0xFF, 0xFF, 4, 1, 20);
 			this->Die();
 		}
