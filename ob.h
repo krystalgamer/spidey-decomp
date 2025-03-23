@@ -218,7 +218,7 @@ public:
 
 
 	__int16 field_128;
-	unsigned __int16 field_12A;
+	u16 mAnim;
 
 	int outlineRelated;
 	void* field_130;

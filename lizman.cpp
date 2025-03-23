@@ -88,7 +88,8 @@ void CLizMan::Guard(void)
 			break;
 		case 1:
 
-			if (word_5FBC0C != 0xFFFF && this->field_12A != 5)
+			// @FIXME - word??
+			if (word_5FBC0C != 0xFFFF && this->mAnim != 5)
 			{
 				this->PlaySingleAnim(5, 0, -1);
 			}

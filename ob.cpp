@@ -462,18 +462,18 @@ void CSuper::UpdateFrame(void){
 // @NotOk
 // Revisit
 void CSuper::CycleAnim(int a2, char a3){
-  if (this->field_12A != a2 )
+  if (this->mAnim != a2 )
   {
     this->field_128 = 0;
 	this->field_146 = 0;
-	this->field_12A = a2;
+	this->mAnim = a2;
     int mRegion = (unsigned __int8)this->mRegion;
 
 	print_if_false(
       (unsigned int)(unsigned __int16)a2 < *(unsigned int *)Animations[17 * mRegion],
       "Bad anim sent to CycleAnim");
     this->gAnim = *(__int16 *)(Animations[17 * (unsigned __int8)this->mRegion]
-                           + 8 * (unsigned __int16)this->field_12A
+                           + 8 * (unsigned __int16)this->mAnim
                            + 8);
 
     
@@ -518,10 +518,10 @@ void CSuper::RunAnim(
 	char v9; // dl
 
 	mRegion = this->mRegion;
-	this->field_12A = a2;
+	this->mAnim = a2;
 
 	print_if_false((unsigned int)a2 < *(unsigned int *)Animations[17 * mRegion], "Bad anim sent to RunAnim");
-	v6 = *(unsigned __int16 *)(Animations[17 * (unsigned char)this->mRegion] + 8 * (unsigned __int16)this->field_12A + 8);
+	v6 = *(unsigned __int16 *)(Animations[17 * (unsigned char)this->mRegion] + 8 * (unsigned __int16)this->mAnim + 8);
 	v7 = a3;
 	this->gAnim = v6;
 	if ( a3 == -1 )
@@ -582,7 +582,7 @@ void CBody::EveryFrame(void)
 	{
 		CSuper *super = reinterpret_cast<CSuper*>(this);
 		v6 = super->field_128;
-		v7 = super->field_12A;
+		v7 = super->mAnim;
 		v8 = super->field_141;
 		super->field_152 = v6;
 		super->field_150 = v6;
@@ -746,17 +746,8 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, outlineB, 0x126);
 
 	VALIDATE(CSuper, field_128, 0x128);
-	VALIDATE(CSuper, field_12A, 0x12A);
-	VALIDATE(CSuper, field_141, 0x141);
-	VALIDATE(CSuper, field_143, 0x143);
-	VALIDATE(CSuper, field_150, 0x150);
-	VALIDATE(CSuper, field_152, 0x152);
-	VALIDATE(CSuper, field_154, 0x154);
+	VALIDATE(CSuper, mAnim, 0x12A);
 
-
-	VALIDATE(CSuper, field_128, 0x128);
-
-	VALIDATE(CSuper, field_12A, 0x12A);
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
 	VALIDATE(CSuper, field_130, 0x130);
@@ -768,6 +759,11 @@ void validate_CSuper(void){
 	VALIDATE(CSuper, field_140, 0x140);
 	VALIDATE(CSuper, field_141, 0x141);
 	VALIDATE(CSuper, field_142, 0x142);
+	VALIDATE(CSuper, field_143, 0x143);
+	VALIDATE(CSuper, field_150, 0x150);
+	VALIDATE(CSuper, field_152, 0x152);
+	VALIDATE(CSuper, field_154, 0x154);
+
 
 	VALIDATE(CSuper, field_144, 0x144);	
 	VALIDATE(CSuper, field_146, 0x146);	

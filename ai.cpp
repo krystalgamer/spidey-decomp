@@ -230,7 +230,7 @@ CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int
 {
 	this->AttachProc(MONITOR_ATTACK, pBaddy, a6);
 
-	this->field_20 = pBaddy->field_12A;
+	this->field_20 = pBaddy->mAnim;
 	this->field_24 = a3;
 	this->field_28 = a3 + a5 - 1;
 	this->field_2C = a4;
@@ -248,7 +248,7 @@ CAIProc_MonitorAttack::CAIProc_MonitorAttack(CBaddy* pBaddy, int a3, int a4, int
 // @Ok
 void CAIProc_MonitorAttack::Execute(void)
 {
-	if (this->pBaddy->field_12A != this->field_20)
+	if (this->pBaddy->mAnim != this->field_20)
 	{
 		this->field_10 |= 1;
 	}

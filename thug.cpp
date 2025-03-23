@@ -392,9 +392,9 @@ INLINE void CThug::SetAttacker(void)
 // @Ok
 INLINE i32 CThug::SpideyAnimUppercut(void)
 {
-	return MechList->field_12A == 106
-		|| MechList->field_12A == 113
-		|| MechList->field_12A == 284;
+	return MechList->mAnim == 106
+		|| MechList->mAnim == 113
+		|| MechList->mAnim == 284;
 }
 
 // @NotOk
@@ -404,7 +404,7 @@ void CThug::PlaySounds(void)
 	CVector v11;
 	if (this->mType == 304)
 	{
-		switch ( this->field_12A )
+		switch ( this->mAnim )
 		{
 			case 1u:
 				if ( this->field_128 == 27 || this->field_128 == 13 )
@@ -441,7 +441,7 @@ void CThug::PlaySounds(void)
 	}
 	else
 	{
-		switch ( this->field_12A )
+		switch ( this->mAnim )
 		{
 			case 5u:
 				if ( this->field_128 == 1 || this->field_128 == 21 )
@@ -493,10 +493,10 @@ void CThug::CycleOrContinueAnim(
 		i32 a4,
 		i32 a5)
 {
-	if ( this->field_12A != a2
-			&& this->field_12A != a3
-			&& this->field_12A != a4
-			&& this->field_12A != a5 )
+	if ( this->mAnim != a2
+			&& this->mAnim != a3
+			&& this->mAnim != a4
+			&& this->mAnim != a5 )
 		this->CycleAnim(a2, 1);
 }
 
@@ -517,12 +517,12 @@ void CThug::Guard(void)
 			}
 
 			this->dumbAssPad++;
-			if (this->field_12A == 11)
+			if (this->mAnim == 11)
 			{
 				this->field_142 = 1;
 				break;
 			}
-			else if (this->field_12A != 10)
+			else if (this->mAnim != 10)
 			{
 				this->RunAnim(0xAu, 0, -1);
 				break;

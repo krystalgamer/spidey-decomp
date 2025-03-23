@@ -1067,9 +1067,9 @@ void CDummy::SelectNewTrack(int a2)
 				v10 = Rnd(i);
 				v9++;
 			}
-			while (this->field_1B8[v10] == this->field_12A && v9 < 100);
+			while (this->field_1B8[v10] == this->mAnim && v9 < 100);
 
-			if (this->field_1B8[v10] != this->field_12A)
+			if (this->field_1B8[v10] != this->mAnim)
 				this->field_1B8 = &this->field_1B8[v10];
 		}
 
@@ -1176,7 +1176,7 @@ void CRudeWordHitterSpidey::AI(void)
 
 	if (this->field_142)
 	{
-		if (!this->field_12A)
+		if (!this->mAnim)
 		{
 			this->RunAnim(0x64, 0, -1);
 		}

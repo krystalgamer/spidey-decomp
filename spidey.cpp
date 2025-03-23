@@ -327,7 +327,7 @@ i32 CPlayer::CheckStickToCeiling(void)
 	this->mPos.vy += this->field_A8.vy * this->field_EA8;
 	this->mPos.vz += this->field_A8.vz * this->field_EA8;
 
-	if ( this->field_12A == 232 )
+	if ( this->mAnim == 232 )
 		this->PlaySingleAnim(234, 0, -1);
 	else
 		this->PlaySingleAnim(227, 0, -1);
@@ -941,7 +941,7 @@ void CPlayer::ExitLookaroundMode(void)
 
 		gGlobalThisCamera->PopMode();
 		this->PutCameraBehind(0);
-		this->mNode = 0;
+		this->field_DE4 = 0;
 		Screen_TargetOn(false);
 
 		__int16 *v3 = reinterpret_cast<__int16*>(this->field_188);

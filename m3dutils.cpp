@@ -14,7 +14,7 @@ void M3dUtils_InBetween(CSuper *a1)
 	int v3; // edi
 	int v4; // si
 
-	v1 = a1->field_12A;
+	v1 = a1->mAnim;
 	v2 = Animations[17 * a1->mRegion];
 	v3 = (*(unsigned int *)(v2 + 8 * v1 + 8) >> 16) + 1;
 	if (v3 != 1)

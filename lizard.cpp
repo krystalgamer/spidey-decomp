@@ -49,7 +49,7 @@ void CLizard::AI(void)
 	if (v2 & 1)
 	{
 		this->mInputFlags = v2 & 0xFFFE;
-		this->CycleAnim(this->field_12A == 0 ? 5 : 0, 1);
+		this->CycleAnim(this->mAnim == 0 ? 5 : 0, 1);
 	}
 
 	if (this->pMessage)

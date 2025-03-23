@@ -400,7 +400,7 @@ void CRhino::HitWall(void)
 
 			if ( this->field_142 )
 			{
-				if ( this->field_12A == 18 )
+				if ( this->mAnim == 18 )
 				{
 					this->mAngles.vy = (this->mAngles.vy - 2048) & 0xFFF;
 					this->PlaySingleAnim(0x15u, 0, -1);
@@ -542,7 +542,7 @@ void CRhino::StandStill(void)
 			this->Neutralize();
 			this->dumbAssPad++;
 		case 1:
-			if (this->field_12A)
+			if (this->mAnim)
 				this->PlaySingleAnim(0, 0, -1);
 			break;
 		default:

@@ -214,7 +214,7 @@ void CSuperDocOck::DoPhysics(void)
 // @Ok
 void CSuperDocOck::PlaySounds(void)
 {
-	switch (this->field_12A)
+	switch (this->mAnim)
 	{
 		case 1:
 			if (!(this->field_364 & 1) && this->field_128 >= 0)

@@ -393,9 +393,9 @@ void CCop::HelpOutBuddy(CMessage *pMessage)
 // @Ok
 INLINE i32 CCop::SpideyAnimUppercut(void)
 {
-	return MechList->field_12A == 106
-		|| MechList->field_12A == 113
-		|| MechList->field_12A == 284;
+	return MechList->mAnim == 106
+		|| MechList->mAnim == 113
+		|| MechList->mAnim == 284;
 }
 
 // @NotOk

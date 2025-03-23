@@ -173,7 +173,7 @@ void CScorpion::GetTrapped(void)
 			if (this->field_BD8 <= 0)
 			{
 				this->RunAnim(0xC,
-						this->field_12A == 12 ? this->field_128 : 0,
+						this->mAnim == 12 ? this->field_128 : 0,
 						-1);
 				this->dumbAssPad++;
 			}
@@ -432,7 +432,7 @@ void CScorpion::Gloat(void)
 			this->RunTimer(&this->field_1F8);
 			if ( !this->field_1F8 )
 			{
-				this->RunAnim(this->field_12A, this->field_128, -1);
+				this->RunAnim(this->mAnim, this->field_128, -1);
 				++this->dumbAssPad;
 			}
 			break;
@@ -477,7 +477,7 @@ void CScorpion::TakeHit(void)
 			this->field_230 = Utils_GetValueFromDifficultyLevel(40, 30, 21, 21);
 			this->dumbAssPad = 4;
 
-			if (this->field_12A != 10)
+			if (this->mAnim != 10)
 				this->RunAnim(0xA, 0, -1);
 
 			break;

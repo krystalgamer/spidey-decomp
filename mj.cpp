@@ -52,7 +52,7 @@ void CMJ::AI(void)
 
 	if(this->mInputFlags & 1){
 		this->mInputFlags &= 0xFFFE;
-		this->CycleAnim(1 - this->field_12A, 1);
+		this->CycleAnim(1 - this->mAnim, 1);
 	}
 
 	M3d_BuildTransform(this);

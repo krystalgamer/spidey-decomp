@@ -321,7 +321,7 @@ void CDocOc::HangAndGetBeaten(void)
 
 	if (this->field_142)
 	{
-		if (this->field_12A == 23 || this->field_12A == 32)
+		if (this->mAnim == 23 || this->mAnim == 32)
 		{
 			this->PlaySingleAnim(0x17, 0, -1);
 		}

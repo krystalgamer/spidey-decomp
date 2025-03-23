@@ -227,7 +227,7 @@ void CCarnage::SelectAttack(void)
 								v10 < 0 ? -190 : 190,
 								&this->field_240);
 						this->field_218 |= gCarnageOne;
-						if (this->field_12A != 2)
+						if (this->mAnim != 2)
 							this->RunAnim(1, 0, -1);
 						this->dumbAssPad++;
 					}
@@ -333,23 +333,23 @@ i32 CCarnage::Hit(SHitInfo* pInfo)
 	if (this->field_E2 <= 0)
 		return 0;
 
-	if (this->field_12A == 20)
+	if (this->mAnim == 20)
 		return 0;
-	if (this->field_12A == 12 && this->field_128 >= 10)
+	if (this->mAnim == 12 && this->field_128 >= 10)
 		return 0;
 
-	if (this->field_12A == 13)
+	if (this->mAnim == 13)
 	{
 		if ((this->field_128 >= 8 && this->field_128 <= 18) ||
 				(this->field_128 >= 28 || this->field_128 <= 2))
 			return 0;
 	}
-	if ( this->field_12A == 34 )
+	if ( this->mAnim == 34 )
 	{
 		if (this->field_128 >= 12 && this->field_128 <= 22)
 			return 0;
 	}
-	if ( this->field_12A == 35 )
+	if ( this->mAnim == 35 )
 	{
 		if (this->field_128 >= 5 && this->field_128 <= 12)
 			return 0;
@@ -526,7 +526,7 @@ void CCarnage::BurnInBubble(void)
 
 		case 2:
 			this->field_328 = 16;
-			if (this->field_142 && this->field_12A == 15)
+			if (this->field_142 && this->mAnim == 15)
 			{
 				this->RunAnim(0x10u, 0, -1);
 
@@ -571,7 +571,7 @@ void CCarnage::BurnInBubble(void)
 			if (this->field_142)
 			{
 
-				if (this->field_12A == 17)
+				if (this->mAnim == 17)
 				{
 					// @FIXME - what is this all shifting logic wtf
 					/*
@@ -599,7 +599,7 @@ void CCarnage::BurnInBubble(void)
 						this->dumbAssPad = 0;
 					}
 				}
-				else if (this->field_12A == 22)
+				else if (this->mAnim == 22)
 				{
 					this->RunAnim(0x17u, 0, -1);
 				}
@@ -1317,7 +1317,7 @@ void CCarnage::TakeHit(void)
 				this->mPos += (this->field_330 * this->field_334);
 
 				this->field_330 = 0;
-				if (this->field_12A == 32)
+				if (this->mAnim == 32)
 					this->field_142 = 1;
 			}
 
@@ -1394,8 +1394,8 @@ void CCarnage::GetTrapped(void)
 			break;
 		case 2:
 			this->field_328 = 16;
-			if (this->field_12A != 10 &&
-					this->field_12A != 9 ||
+			if (this->mAnim != 10 &&
+					this->mAnim != 9 ||
 					this->field_142 )
 			{
 				this->RunAnim(0xAu, 0, -1);
@@ -1422,7 +1422,7 @@ void CCarnage::GetTrapped(void)
 			break;
 		case 3:
 			this->field_328 = 16;
-			if (this->field_12A == 11)
+			if (this->mAnim == 11)
 			{
 				this->RunAnim(0xBu, 0, -1);
 				CTrapWebEffect *v9 = static_cast<CTrapWebEffect *>(
@@ -1696,7 +1696,7 @@ void CCarnage::Laugh(void)
 			this->field_218 &= 0xFFFFFFFE;
 			this->field_218 |= gCarnageFour;
 
-			if (this->field_12A != 4 || this->field_142)
+			if (this->mAnim != 4 || this->field_142)
 				this->RunAnim(4u, 0, -1);
 			this->dumbAssPad++;
 			break;
