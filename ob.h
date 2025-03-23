@@ -237,7 +237,7 @@ public:
 
 	__int16 field_144;
 	__int16 field_146;
-	__int16 gAnim;
+	i16 mNumFrames;
 
 	unsigned __int16 padAfte;
 

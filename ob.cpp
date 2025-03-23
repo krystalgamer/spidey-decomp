@@ -436,7 +436,7 @@ void CSuper::UpdateFrame(void){
 	if (v5) {
 		if ( --v5 == 0)
 		{
-		  v7 = this->gAnim;
+		  v7 = this->mNumFrames;
 		  if ( (__int16)v6 >= (int)v7 )
 		  {
 			  this->field_128 = v6 - v7;
@@ -474,7 +474,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 			static_cast<u32>(anim & 0xFFFF) < PSXRegion[this->mRegion].pAnimFile[0],
 			"Bad anim sent to CycleAnim");
 
-		this->gAnim =
+		this->mNumFrames =
 			reinterpret_cast<u16*>(PSXRegion[this->mRegion].pAnimFile)[4 + (4 * this->mAnim)];
 
 
@@ -525,7 +525,7 @@ void CSuper::RunAnim(
 	print_if_false((unsigned int)a2 < *(unsigned int *)Animations[17 * mRegion], "Bad anim sent to RunAnim");
 	v6 = *(unsigned __int16 *)(Animations[17 * (unsigned char)this->mRegion] + 8 * (unsigned __int16)this->mAnim + 8);
 	v7 = a3;
-	this->gAnim = v6;
+	this->mNumFrames = v6;
 	if ( a3 == -1 )
 		v7 = v6 - 1;
 	v8 = a4;
