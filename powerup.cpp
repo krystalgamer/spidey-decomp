@@ -134,9 +134,9 @@ void CPowerUp::Die(void)
 {
 	if (!this->IsDead())
 	{
-		if (this->mType != 11 && this->field_100)
+		if (this->mType != 11 && this->mHasNode)
 		{
-			Trig_SendPulse(Trig_GetLinksPointer(this->field_106));
+			Trig_SendPulse(Trig_GetLinksPointer(this->mNodeIndex));
 		}
 
 		if (this->field_108 != 0xFFFF)
@@ -165,8 +165,8 @@ CPowerUp::CPowerUp(
 	printf("CPowerUp");
 }
 
-// @NotOk
-// understand the type of F8
+// @Ok
+// @Matching
 void CPowerUp::DeleteStuff(void)
 {
 	this->KillShadow();
@@ -227,10 +227,11 @@ void CPowerUp::SetGravity(i32 g, i32 fric)
 }
 
 // @Ok
-void CPowerUp::SetNode(i32 a2)
+// @Matching
+void CPowerUp::SetNode(i32 NodeIndex)
 {
-	this->field_100 = 1;
-	this->field_106 = a2;
+	this->mHasNode = 1;
+	this->mNodeIndex = NodeIndex;
 }
 
 void validate_CPowerUp(void)
@@ -239,11 +240,11 @@ void validate_CPowerUp(void)
 
 	VALIDATE(CPowerUp, mpGlow, 0xF8);
 
-	VALIDATE(CPowerUp, field_100, 0x100);
+	VALIDATE(CPowerUp, mHasNode, 0x100);
 	VALIDATE(CPowerUp, field_101, 0x101);
 	VALIDATE(CPowerUp, field_102, 0x102);
 
-	VALIDATE(CPowerUp, field_106, 0x106);
+	VALIDATE(CPowerUp, mNodeIndex, 0x106);
 	VALIDATE(CPowerUp, field_108, 0x108);
 
 	VALIDATE(CPowerUp, field_10C, 0x10C);

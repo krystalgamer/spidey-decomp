@@ -26,12 +26,12 @@ class CPowerUp : public CBody
 		CGlow *mpGlow;
 		u8 padAfterF8[0x100-0xF8-4];
 
-		u8 field_100;
+		u8 mHasNode;
 		u8 field_101;
 		u8 field_102;
 		u8 padAfter102[0x106-0x102-1];
 
-		u16 field_106;
+		u16 mNodeIndex;
 		u16 field_108;
 		u8 padAfter108[0x10C-0x108-2];
 		i32 field_10C;
