@@ -13,6 +13,7 @@ class CManipOb : public CBody
 		EXPORT void CalculateThrowPositionArray(CVector*, int);
 		EXPORT void ThrowPos(CVector *, int);
 		EXPORT void Throw(CVector *);
+		EXPORT void CManipOb::GetAttachPoint(CVector *);
 
 		EXPORT void Chunk(SLineInfo*, CVector*);
 		EXPORT void TurnOffShadow(void);
@@ -38,9 +39,7 @@ class CManipOb : public CBody
 
 		i32 field_10C;
 
-		i32 field_110;
-		i32 field_114;
-		i32 field_118;
+		CVector field_110;
 
 		CItem *field_11C;
 		u32 field_120;

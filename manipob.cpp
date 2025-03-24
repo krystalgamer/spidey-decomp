@@ -10,6 +10,13 @@ static i16 * const word_610C48 = (i16*)0x610C48;
 extern const char *gObjFile;
 extern CBody* EnvironmentalObjectList;
 
+// @Ok
+// @Matching
+void CManipOb::GetAttachPoint(CVector *a2)
+{
+	*a2 = this->mPos + this->field_110;
+}
+
 // @SMALLTODO
 void CManipOb::Drop(CVector*)
 {
@@ -33,10 +40,6 @@ CManipOb::CManipOb(
 		i16* a2,
 		i32 a3)
 {
-	this->field_110 = 0;
-	this->field_114 = 0;
-	this->field_118 = 0;
-
 	this->InitItem(gObjFile);
 	this->AttachTo(&EnvironmentalObjectList);
 
@@ -237,8 +240,6 @@ void validate_CManipOb(void)
 	VALIDATE(CManipOb, field_10C, 0x10C);
 
 	VALIDATE(CManipOb, field_110, 0x110);
-	VALIDATE(CManipOb, field_114, 0x114);
-	VALIDATE(CManipOb, field_118, 0x118);
 
 	VALIDATE(CManipOb, field_11C, 0x11C);
 	VALIDATE(CManipOb, field_120, 0x120);
