@@ -59,7 +59,7 @@ void CL1A3Bomb::AI(void)
 
 // @Ok
 CL1A3Bomb::CL1A3Bomb(
-		u16* a2,
+		i16* a2,
 		i32 a3)
 	: CManipOb(a2, a3)
 {

@@ -426,7 +426,7 @@ CPunchOb::CPunchOb(
 
 	u16* v6 = reinterpret_cast<u16*>(
 			this->SquirtAngles(reinterpret_cast<i16*>(
-				this->SquirtPos(reinterpret_cast<i32*>(a2)))
+				this->SquirtPos(a2))
 			));
 	this->RunAnim(0, 0, -1);
 	this->ParseScript(v6);

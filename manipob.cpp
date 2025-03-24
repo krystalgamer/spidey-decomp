@@ -30,7 +30,7 @@ CManipOb::~CManipOb(void)
 
 // @Ok
 CManipOb::CManipOb(
-		u16* a2,
+		i16* a2,
 		i32 a3)
 {
 	this->field_110 = 0;
@@ -51,7 +51,7 @@ CManipOb::CManipOb(
 
 	u32* v6 = reinterpret_cast<u32*>(
 			(reinterpret_cast<u32>(
-								   this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))))) + 3)
+								   this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)))) + 3)
 			& 0xFFFFFFFC);
 
 	i32 *v8 = reinterpret_cast<i32*>(v6 + 1);
@@ -188,7 +188,9 @@ void CManipOb::Smash(void)
 
 // @BIGTODO
 void CManipOb::Chunk(SLineInfo*, CVector*)
-{}
+{
+	printf("void CManipOb::Chunk(SLineInfo*, CVector*)");
+}
 
 // @Ok
 INLINE void CManipOb::TurnOffShadow(void)
@@ -202,7 +204,7 @@ INLINE void CManipOb::TurnOffShadow(void)
 }
 
 // @Ok
-void __inline CManipOb::SendPulse(void)
+INLINE void CManipOb::SendPulse(void)
 {
 	if(!this->field_124)
 	{

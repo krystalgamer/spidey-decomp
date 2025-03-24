@@ -307,13 +307,6 @@ i16* CBody::SquirtPos(i16* p_info)
 	return reinterpret_cast<i16*>(walker);
 }
 
-// @FIXME
-// this should be deleted
-i16* CBody::SquirtPos(i32 *params)
-{
-	return this->SquirtPos(reinterpret_cast<i16*>(params));
-}
-
 // @Ok
 i16* CBody::SquirtAngles(i16* p_info)
 {

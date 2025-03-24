@@ -164,10 +164,6 @@ public:
 
 	EXPORT void InterleaveAI(void);
 
-	// @FIXME
-	// delete
-	EXPORT i16* SquirtPos(i32*);
-
 	EXPORT i16* SquirtPos(i16*);
 
 	EXPORT i16* SquirtAngles(i16*);

@@ -9,7 +9,7 @@
 class CL1A3Bomb : public CManipOb
 {
 	public:
-		EXPORT CL1A3Bomb(u16*, i32);
+		EXPORT CL1A3Bomb(i16*, i32);
 		EXPORT void DoPhysics(void);
 
 		EXPORT virtual void Die(void);
