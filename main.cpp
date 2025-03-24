@@ -509,6 +509,7 @@ i32 validate(void)
 	validate_Vector();
 	validate_SRhinoData();
 	validate_SLight();
+	validate_CManipObChunk();
 
 	puts("[*] Validation done!");
 

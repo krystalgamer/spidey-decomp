@@ -10,6 +10,30 @@ static i16 * const word_610C48 = (i16*)0x610C48;
 extern const char *gObjFile;
 extern CBody* EnvironmentalObjectList;
 
+// @SMALLTODO
+void CManipObChunk::AI(void)
+{
+    printf("CManipObChunk::AI(void)");
+}
+
+// @SMALLTODO
+CManipObChunk::CManipObChunk(u32,CVector *,CVector *)
+{
+    printf("CManipObChunk::CManipObChunk(u32,CVector *,CVector *)");
+}
+
+// @MEDIUMTODO
+void CManipObChunk::DoPhysics(void)
+{
+    printf("CManipObChunk::DoPhysics(void)");
+}
+
+// @SMALLTODO
+CManipObChunk::~CManipObChunk(void)
+{
+    printf("CManipObChunk::~CManipObChunk(void)");
+}
+
 // @Ok
 // @AlmostMatching: vector assingment not zero based
 u8 CManipOb::TugImpulse(
@@ -271,4 +295,9 @@ void validate_CManipOb(void)
 	VALIDATE(CManipOb, field_124, 0x124);
 
 	VALIDATE_VTABLE(CManipOb, Smash, 5);
+}
+
+void validate_CManipObChunk(void)
+{
+	VALIDATE_SIZE(CManipObChunk, 0x100);
 }

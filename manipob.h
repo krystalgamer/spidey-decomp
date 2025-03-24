@@ -49,6 +49,19 @@ class CManipOb : public CBody
 		u8 padAfter124[0x128-0x124-1];
 };
 
-void validate_CManipOb(void);
+class CManipObChunk : public CBody
+{
+	public:
+		EXPORT CManipObChunk(u32,CVector *,CVector *);
+		EXPORT ~CManipObChunk(void) OVERRIDE;
 
+		EXPORT void AI(void) OVERRIDE;
+		EXPORT void CManipObChunk::DoPhysics(void);
+
+		u8 fullPad[0xC];
+
+};
+
+void validate_CManipOb(void);
+void validate_CManipObChunk(void);
 #endif
