@@ -87,11 +87,9 @@ void CHostage::FollowWaypoints(void)
     printf("CHostage::FollowWaypoints(void)");
 }
 
-EXPORT i32 gMaleHostageOne = 0x3030404;
-EXPORT i32 gMaleHostageTwo = 4;
+EXPORT i32 gMaleHostageOne[2] = { 0x3030404, 4 };
 
-EXPORT i32 gFemaleHostageOne = 0x4040504;
-EXPORT i32 gFemaleHostageTwo = 3;
+EXPORT i32 gFemaleHostageOne[2] = { 0x4040504, 3 };
 
 // @Ok
 void CHostage::SetHostageType(i32 a2)
@@ -103,15 +101,14 @@ void CHostage::SetHostageType(i32 a2)
 		case 305:
 			this->InitItem("hostage");
 			this->field_21E = 100;
-			this->field_294.Int = gMaleHostageOne;
-			this->field_298.Int = gMaleHostageTwo;
+			this->field_294.Int = gMaleHostageOne[0];
+			this->field_298.Int = gMaleHostageOne[1];
 			break;
 		case 315:
 			this->InitItem("hostagef");
 			this->field_21E = 100;
-			this->field_294.Int = gFemaleHostageOne;
-			this->field_298.Int = gFemaleHostageTwo;
-			break;
+			this->field_294.Int = gFemaleHostageOne[0];
+			this->field_298.Int = gFemaleHostageOne[1];
 			break;
 		default:
 			print_if_false(0, "Unknown hostage type!");
@@ -319,16 +316,14 @@ void __inline CHostage::GetUp(void)
 	}
 }
 
-// @NotOk
-// globals
-CHostage::CHostage(int* a2, int a3)
+// @Ok
+// @Matching
+CHostage::CHostage(i16* a2, i32 a3)
 {
-	i16 *afterAngles = this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	i16 *afterAngles = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->AttachTo(reinterpret_cast<CBody**>(&BaddyList));
 	this->ShadowOn();
-
-	int v6 = this->field_2A8 | 1;
 
 	this->mShadowScale = 48;
 	this->field_1F4 = a3;
@@ -340,22 +335,22 @@ CHostage::CHostage(int* a2, int a3)
 	this->mPushVal = 64;
 	this->field_324 = 0;
 
-	this->field_2A8 = v6;
+	this->field_2A8 |= 1;
 
-	this->field_294.Int = gMaleHostageOne;
-	this->field_298.Int = gMaleHostageTwo;
+	this->field_294.Int = gMaleHostageOne[0];
+	this->field_298.Int = gMaleHostageOne[1];
 
 	this->mCBodyFlags &= 0xFFEF;
-	this->ParseScript(reinterpret_cast<unsigned __int16*>(afterAngles));
+	this->ParseScript(reinterpret_cast<u16*>(afterAngles));
 }
 
 // @Ok
-void Hostage_CreateHostage(const unsigned int *stack, unsigned int *result)
+void Hostage_CreateHostage(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CHostage(v2, v3));
+	*result = reinterpret_cast<u32>(new CHostage(v2, v3));
 }
 
 void validate_CHostage(void){

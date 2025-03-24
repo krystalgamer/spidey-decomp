@@ -1108,7 +1108,7 @@ CChopper::CChopper(i16* a2, i32 a3)
 	this->InitItem("chopper");
 	this->mFlags |= 4u;
 
-	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(reinterpret_cast<i32*>(a2))));
+	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->mType = 318;
 

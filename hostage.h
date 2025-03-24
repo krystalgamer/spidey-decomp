@@ -12,7 +12,7 @@
 class CHostage : public CBaddy {
 
 public:
-	EXPORT CHostage(i32*, i32);
+	EXPORT CHostage(i16*, i32);
 	EXPORT void GetUp(void);
 	EXPORT void DisappearBitch(void);
 	EXPORT void WaitForPlayer(void);
