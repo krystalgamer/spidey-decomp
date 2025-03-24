@@ -296,7 +296,7 @@ void CBody::InterleaveAI(void)
 i16* CBody::SquirtPos(i16* p_info)
 {
 	i32 *walker = reinterpret_cast<i32*>(p_info);
-	print_if_false(((i32)walker & 3) == 0, "Bad alignment");
+	DoAssert(((i32)walker & 3) == 0, "Bad alignment");
 
 	this->mPos.vx = *walker++ << 12;
 
@@ -365,21 +365,22 @@ CBody::CBody(void)
 	this->mShadowThreshold = 200;
 }
 
-// @NotOk
-// code is matching but make sure vtable is also
+// @Ok
+// @Matching
 CSuper::CSuper()
 {
 	this->mFlags |= 2u;
 	this->mNumFrames = 1;
 	this->mAnimFinished = 1;
-	//this->cbody.citem.vtable = (int)&off_53BBE8;
+
 	this->mAnimSpeed = 0x10000;
 	this->field_13E = 100;
 	this->field_13F = 94;
 }
 
 // @Ok
-void CSuper::OutlineOff(void){
+void CSuper::OutlineOff(void)
+{
 	this->outlineRelated &= 0xFFFFFFFB;
 }
 

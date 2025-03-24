@@ -4,6 +4,7 @@
 
 extern u8 submarinerDieRelated;
 
+// @Ok
 EXPORT SLight M3d_MJLight =
 {
   { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
@@ -58,9 +59,9 @@ void CMJ::AI(void)
 	M3d_BuildTransform(this);
 }
 
-// @NotOk
-// globals
-CMJ::CMJ(int* a2, __int16 a3)
+// @Ok
+// @Matching
+CMJ::CMJ(i16* a2, i32 a3)
 {
 	this->InitItem("mj");
 
@@ -81,12 +82,12 @@ CMJ::CMJ(int* a2, __int16 a3)
 }
 
 // @Ok
-void MJ_CreateMJ(const unsigned int *stack, unsigned int *result)
+void MJ_CreateMJ(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CMJ(v2, v3));
+	*result = reinterpret_cast<u32>(new CMJ(v2, v3));
 }
 
 void validate_CMJ(void){

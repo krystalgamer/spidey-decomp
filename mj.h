@@ -12,7 +12,7 @@ class CMJ : public CBaddy {
 
 public:
 	EXPORT void AI(void);
-	EXPORT CMJ(int*, __int16);
+	EXPORT CMJ(i16*, i32);
 	EXPORT ~CMJ(void) OVERRIDE;
 };
 
