@@ -17,10 +17,18 @@ void CManipOb::GetAttachPoint(CVector *a2)
 	*a2 = this->mPos + this->field_110;
 }
 
-// @SMALLTODO
-void CManipOb::Drop(CVector*)
+// @Ok
+// @AlmostMatching: vector assingment is zero based on the og for mVel
+void CManipOb::Drop(CVector *a2)
 {
-	printf("void CManipOb::Drop(CVector*)");
+	this->mFlags &= 0xF7FFu;
+	this->field_10C |= 1u;
+	this->field_10C &= 0xFFFFFFF7;
+
+	this->mVel = *a2;
+
+	this->mAcc.vy = 4096;
+	this->mAngVel.vx = Rnd(32) + 64;
 }
 
 // @Ok
