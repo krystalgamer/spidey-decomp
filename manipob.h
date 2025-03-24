@@ -58,7 +58,8 @@ class CManipObChunk : public CBody
 		EXPORT void AI(void) OVERRIDE;
 		EXPORT void CManipObChunk::DoPhysics(void);
 
-		u8 fullPad[0xC];
+		u8 padTop[0x8];
+		i32 field_FC;
 
 };
 

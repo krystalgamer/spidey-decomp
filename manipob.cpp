@@ -10,10 +10,19 @@ static i16 * const word_610C48 = (i16*)0x610C48;
 extern const char *gObjFile;
 extern CBody* EnvironmentalObjectList;
 
-// @SMALLTODO
+// @Ok
 void CManipObChunk::AI(void)
 {
-    printf("CManipObChunk::AI(void)");
+	this->field_FC -= this->field_80;
+
+	if (this->field_FC <= 0)
+	{
+		this->Die();
+	}
+	else
+	{
+		this->DoPhysics();
+	}
 }
 
 // @SMALLTODO
@@ -301,4 +310,6 @@ void validate_CManipOb(void)
 void validate_CManipObChunk(void)
 {
 	VALIDATE_SIZE(CManipObChunk, 0x100);
+
+	VALIDATE(CManipObChunk, field_FC, 0xFC);
 }
