@@ -561,18 +561,11 @@ void CSuper::RunAnim(
 	this->mAnimFinished = static_cast<u16>(from) == static_cast<u16>(to);
 }
 
-// @NotOk
-// timerRelated needs to be fixed and call to print_if_false looks wrong
+// @Ok
+// @AlmostMatching: add esp, 8 happens 2 instructions later after DoAssert dunno why
 void CBody::EveryFrame(void)
 {
-	int v3; // edx
-	int v4; // ecx
-	__int16 v6; // ax
-	__int16 v7; // cx
-	char v8; // dl
-	bool v9; // [esp-8h] [ebp-Ch]
-
-	if ( (this->mCBodyFlags & 4) != 0 )
+	if (this->mCBodyFlags & 4)
 	{
 		this->field_80 = 2;
 		this->mCBodyFlags &= 0xFFFB;
@@ -581,27 +574,27 @@ void CBody::EveryFrame(void)
 	}
 	else
 	{
-		v3 = this->field_7C;
-		v9 = gTimerRelated - v3 >= 0;
-		this->field_80 = gTimerRelated - v3;
-		print_if_false(v9, "Timing error");
-		v4 = this->field_80;
+		this->field_80 = gTimerRelated - this->field_7C;
+		DoAssert(
+				this->field_80 >= 0,
+				"Timing error");
+
 		this->field_7C = gTimerRelated;
-		if ( v4 > 6 )
-		this->field_80 = 6;
+		if (this->field_80 > 6)
+		{
+			this->field_80 = 6;
+		}
 	}
 
 	this->field_84 += this->field_80;
-	if ( (this->mFlags & 2) != 0 )
+
+	if (this->mFlags & 2)
 	{
-		CSuper *super = reinterpret_cast<CSuper*>(this);
-		v6 = super->field_128;
-		v7 = super->mAnim;
-		v8 = super->mAnimDir;
-		super->field_152 = v6;
-		super->field_150 = v6;
-		super->field_154 = v7;
-		super->field_143 = v8;
+		CSuper *pSuper = reinterpret_cast<CSuper*>(this);
+		pSuper->field_152 = pSuper->field_128;
+		pSuper->field_150 = pSuper->field_128;
+		pSuper->field_154 = pSuper->mAnim;
+		pSuper->field_143 = pSuper->mAnimDir;
 	}
 
 }
