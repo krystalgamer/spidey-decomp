@@ -28,10 +28,11 @@ void CManipObChunk::DoPhysics(void)
     printf("CManipObChunk::DoPhysics(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CManipObChunk::~CManipObChunk(void)
 {
-    printf("CManipObChunk::~CManipObChunk(void)");
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
 // @Ok
