@@ -123,15 +123,17 @@ void CItem::InitItem(const char * a1)
 
 // @Ok
 // has weird xor eax, eax at the top
-int __inline CBody::IsDead(void) const{
+INLINE i32 CBody::IsDead(void) const
+{
 	return (this->mCBodyFlags >> 6) & 1;
 }
 	
 
 
 // @Ok
-void CBody::Die(void){
-	int isDead = this->IsDead();
+void CBody::Die(void)
+{
+	i32 isDead = this->IsDead();
 	if(!isDead)
 	{
 		this->mCBodyFlags |= 0x40;
@@ -255,8 +257,8 @@ INLINE void CBody::UnSuspend(void)
 // @Matching
 void CBody::Suspend(CBody **a2)
 {
-	print_if_false((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
-	print_if_false(a2 != 0, "woops");
+	DoAssert((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
+	DoAssert(a2 != 0, "woops");
 
 	this->DeleteStuff();
 
@@ -400,7 +402,11 @@ void CSuper::SetOutlineSemiTransparent(){
 
 
 // @Ok
-void CSuper::SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4){
+void CSuper::SetOutlineRGB(
+		u8 a2,
+		u8 a3,
+		u8 a4)
+{
 	this->outlineR = a2;
 	this->outlineG = a3;
 	this->outlineB = a4;
@@ -453,7 +459,8 @@ void CSuper::UpdateFrame(void){
 	else if( (this->mAnimDir == 1 && (__int16)v6 >= this->field_144)
 		||
 		(v1 == -1 && (__int16)v6 <= this->field_144)
-		){
+		)
+	{
 		this->field_128 = this->field_144;
 		this->mAnimFinished = 1;
 	}
@@ -505,48 +512,53 @@ void CSuper::ApplyPose(__int16 *a2){
 }
 
 
-// @NotOk
-// slightly different register allocation
-// relies on global Animations
+// @Ok
+// @Matching
 void CSuper::RunAnim(
-		i32 a2,
-		i32 a3,
-		i32 a4)
+		i32 anim,
+		i32 from,
+		i32 to)
 {
-	int mRegion; // ecx
-	unsigned __int16 v6; // dx
-	int v7; // eax
-	int v8; // ecx
-	char v9; // dl
 
-	mRegion = this->mRegion;
-	this->mAnim = a2;
+	this->mAnim = anim;
+	DoAssert(
+			static_cast<u32>(anim & 0xFFFF) < PSXRegion[this->mRegion].pAnimFile[0],
+			"Bad anim sent to RunAnim");
+	u16 v6 = reinterpret_cast<u16*>(PSXRegion[this->mRegion].pAnimFile)[4 + (4 * this->mAnim)];
 
-	print_if_false((unsigned int)a2 < *(unsigned int *)Animations[17 * mRegion], "Bad anim sent to RunAnim");
-	v6 = *(unsigned __int16 *)(Animations[17 * (unsigned char)this->mRegion] + 8 * (unsigned __int16)this->mAnim + 8);
-	v7 = a3;
 	this->mNumFrames = v6;
-	if ( a3 == -1 )
-		v7 = v6 - 1;
-	v8 = a4;
-	if ( a4 == -1 )
-		v8 = v6 - 1;
-	if ( v7 < 0 || v7 >= v6 )
-		v7 = 0;
-	if ( v8 < 0 || v8 >= v6 )
-		v8 = 0;
+	if (from == -1)
+	{
+		from = v6 - 1;
+	}
+
+	if (to == -1)
+	{
+		to = v6 - 1;
+	}
+
+	if (from < 0 || from >= v6)
+		from = 0;
+	if (to < 0 || to >= v6)
+		to = 0;
+
 	this->field_140 = 0;
 
-	if ( v8 > v7 )
-		v9 = 1;
+	i32 res;
+	if (to > from)
+	{
+		res = 1;
+	}
 	else
-		v9 = (v8 >= v7) - 1;
+	{
+		res = (to >= from) ? 0 : -1;
+	}
 
-	this->field_144 = v8;
-	this->mAnimDir = v9;
-	this->field_128 = v7;
+	this->field_144 = to;
+	this->mAnimDir = res;
+	this->field_128 = from;
 	this->mFrameFrac = 0;
-	this->mAnimFinished = (unsigned __int16)v7 == (unsigned __int16)v8;
+	this->mAnimFinished = static_cast<u16>(from) == static_cast<u16>(to);
 }
 
 // @NotOk
