@@ -32,6 +32,13 @@ public:
 		this->vz = 0;
 	}
 
+	EXPORT INLINE Set(i32 a1, i32 a2, i32 a3)
+	{
+		this->vx = a1;
+		this->vy = a2;
+		this->vz = a3;
+	}
+
 	//EXPORT CVector(i32, i32, i32);
 	EXPORT void KillSmall();
 	EXPORT CVector* operator-=(const CVector& other);

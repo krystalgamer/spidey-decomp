@@ -128,6 +128,8 @@ public:
 	u32 field_7C;
 	u32 field_80;
 
+	EXPORT CQuadBit(void);
+
 	EXPORT void SetTint(unsigned char a2, unsigned char a3, unsigned char a4);
 	EXPORT void SetSemiTransparent();
 	EXPORT void SetOpaque();
@@ -423,6 +425,8 @@ EXPORT void Bit_UpdateQuickAnimLookups(void);
 EXPORT extern CTextBox* TextBoxList;
 
 EXPORT extern SAnimFrame* gAnimTable[0x1D];
+
+EXPORT extern i32 TotalBitUsage;
 
 void validate_CFlatBit(void);
 void validate_CFT4Bit(void);

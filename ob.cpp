@@ -146,8 +146,8 @@ void CBody::ShadowOn(void){
 }
 
 
-// @NotOk
-// dessutrctor
+// @Ok
+// @Matching
 INLINE void CBody::KillShadow(void){
 
 	this->mCBodyFlags &= ~8u;
@@ -158,37 +158,39 @@ INLINE void CBody::KillShadow(void){
 	}
 }
 
-// @NotOk
-// Inlined KillShadow and weird part where we store data but it's just xor eax, eax
-void CBody::UpdateShadow(void){
+// @Ok
+// @Matching
+void CBody::UpdateShadow(void)
+{
 
-	__int16 flags = this->mCBodyFlags;
-
-	if(flags & 8){
+	if(this->mCBodyFlags & 8){
 
 		if(!this->mpShadow){
 
-			CQuadBit *quad = new CQuadBit();
-			this->mpShadow = quad;
+			TotalBitUsage = 0;
+			this->mpShadow = new CQuadBit();;
+			TotalBitUsage = 1;
 
-			quad->SetTexture(0, 0);
+			this->mpShadow->SetTexture(0, 0);
 			this->mpShadow->SetSubtractiveTransparency();
 			this->mpShadow->mFrigDeltaZ = 32;
 			this->mpShadow->mProtected = 1;
 		}
 
-		SVector vec;
-		vec.vx = 0;
-		vec.vy = -4096;
-		vec.vz = 0;
+		CSVector vec;
+		vec.Set(0, -4096, 0);
 
-		u16 lastParam = this->mShadowScale;
-		this->mpShadow->OrientUsing(&this->mShadowPos, reinterpret_cast<SVECTOR*>(&vec), lastParam, lastParam);
+		this->mpShadow->OrientUsing(
+				&this->mShadowPos,
+				reinterpret_cast<SVECTOR*>(&vec),
+				this->mShadowScale,
+				this->mShadowScale);
 
 
-		__int8 trans = ((this->mShadowThreshold - this->mShadowDist) << 7) / this->mShadowThreshold;
+		i32 trans = ((this->mShadowThreshold - this->mShadowDist) << 7) / this->mShadowThreshold;
 
-		if(trans < 0){
+		if(trans < 0)
+		{
 			trans = 0;
 		}
 

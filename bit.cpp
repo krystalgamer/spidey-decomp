@@ -17,7 +17,7 @@ EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
 
 EXPORT volatile i32 BitCount = 0;
-EXPORT i32 TotalBitUsage = 0;
+i32 TotalBitUsage = 0;
 
 EXPORT CFlatBit *FlatBitList;
 EXPORT CSpecialDisplay *SpecialDisplayList;
@@ -39,6 +39,12 @@ EXPORT CBit* GlassList;
 EXPORT CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
+
+// @SMALLTODO
+CQuadBit::CQuadBit(void)
+{
+	printf("CQuadBit::CQuadBit(void)");
+}
 
 vector3d::vector3d(f32 a1, f32 a2, f32 a3)
 {
