@@ -9,7 +9,7 @@
 
 class CLizard : public CBaddy {
 public:
-	EXPORT CLizard(i32*, i16);
+	EXPORT CLizard(i16*, i32);
 	EXPORT ~CLizard(void);
 	EXPORT void AI(void);
 };

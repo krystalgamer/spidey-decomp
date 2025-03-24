@@ -60,13 +60,13 @@ void CLizard::AI(void)
 	M3d_BuildTransform(this);
 }
 
-// @NotOk
-// gloabal in 3C
-CLizard::CLizard(int* a2, __int16 a3)
+// @Ok
+// @Matching
+CLizard::CLizard(i16 *a2, i32 a3)
 {
 	this->InitItem("lizard");
 
-	this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2)));
+	this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 	this->CycleAnim(0, 1);
 	this->mFlags |= 0x480;
@@ -81,12 +81,12 @@ CLizard::CLizard(int* a2, __int16 a3)
 }
 
 // @Ok
-void Lizard_CreateLizard(const unsigned int *stack, unsigned int *result)
+void Lizard_CreateLizard(const u32 *stack, u32 *result)
 {
-	int* v2 = reinterpret_cast<int*>(*stack);
-	int v3 = static_cast<int>(stack[1]);
+	i16* v2 = reinterpret_cast<i16*>(*stack);
+	i32 v3 = static_cast<i32>(stack[1]);
 
-	*result = reinterpret_cast<unsigned int>(new CLizard(v2, v3));
+	*result = reinterpret_cast<u32>(new CLizard(v2, v3));
 }
 
 void validate_CLizard(void){
