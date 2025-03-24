@@ -13,7 +13,8 @@ class CManipOb : public CBody
 		EXPORT void CalculateThrowPositionArray(CVector*, int);
 		EXPORT void ThrowPos(CVector *, int);
 		EXPORT void Throw(CVector *);
-		EXPORT void CManipOb::GetAttachPoint(CVector *);
+		EXPORT void GetAttachPoint(CVector *);
+		EXPORT u8 TugImpulse(CVector *,CVector *);
 
 		EXPORT void Chunk(SLineInfo*, CVector*);
 		EXPORT void TurnOffShadow(void);

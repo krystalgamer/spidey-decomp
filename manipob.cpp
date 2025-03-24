@@ -11,6 +11,23 @@ extern const char *gObjFile;
 extern CBody* EnvironmentalObjectList;
 
 // @Ok
+// @AlmostMatching: vector assingment not zero based
+u8 CManipOb::TugImpulse(
+		CVector *a2,
+		CVector *a3)
+{
+	this->field_110 = *a2 - this->mPos;
+
+	this->mVel = *a3;
+	this->mAcc.vy = 4096;
+
+	this->mAngVel.vx = 64 - Rnd(128);
+	this->mAngVel.vy = 64 - Rnd(128);
+	this->field_10C |= 5;
+	return 1;
+}
+
+// @Ok
 // @Matching
 void CManipOb::GetAttachPoint(CVector *a2)
 {
