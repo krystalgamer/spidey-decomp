@@ -1,4 +1,9 @@
 #include "post.h"
+#include "bit.h"
+
+EXPORT i32 gWaterEffect;
+EXPORT i32 gPostTimerRelated;
+EXPORT u16 gPostWordRelated;
 
 // @SMALLTODO
 void Post_DoPauseDisplayListProcessing(void)
@@ -12,10 +17,19 @@ void Post_DoPausePaletteProcessing(void)
     printf("Post_DoPausePaletteProcessing(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Validate: when WaterEffect inlined
 void Post_PostProcessEffects(void)
 {
-    printf("Post_PostProcessEffects(void)");
+	if (gWaterEffect)
+	{
+		gPostTimerRelated = 48 * gTimerRelated;
+		Post_WaterEffect();
+	}
+	if (gPostWordRelated)
+	{
+		--gPostWordRelated;
+	}
 }
 
 // @MEDIUMTODO

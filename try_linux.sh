@@ -1,3 +1,5 @@
+set -e
+
 CXX=clang++ cmake -B out/clang
 CXX=g++ cmake -B out/gcc
 
