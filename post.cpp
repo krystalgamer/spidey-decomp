@@ -16,10 +16,12 @@ EXPORT i32 gPostSpideyLogoRelated;
 EXPORT u32 gPostPauseRelated;
 
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Post_DoPauseDisplayListProcessing(void)
 {
-    printf("Post_DoPauseDisplayListProcessing(void)");
+	if (gPaletteProcessingPaused)
+		Post_SpideyLogo();
 }
 
 // @Ok
@@ -47,7 +49,7 @@ void Post_PostProcessEffects(void)
 }
 
 // @MEDIUMTODO
-void Post_SpideyLogo(void)
+INLINE void Post_SpideyLogo(void)
 {
     printf("Post_SpideyLogo(void)");
 }
