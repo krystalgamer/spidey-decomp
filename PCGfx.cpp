@@ -50,9 +50,9 @@ EXPORT float gFlFoggingParamOne = 100000.0f;
 EXPORT float gFlFoggingParamTwo = 100005.0f;
 EXPORT u32 gU32FoggingParamThree;
 
-EXPORT u8 gBFoggingRelated;
+u8 gBFoggingRelated;
 
-EXPORT u32 gPcGfxSkyColor;
+u32 gPcGfxSkyColor;
 
 EXPORT i32 gEndSceneRelated = -1;
 EXPORT i32 gEndSceneRelatedTwo;

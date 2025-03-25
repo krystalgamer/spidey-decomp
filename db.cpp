@@ -2,6 +2,7 @@
 #include "mem.h"
 #include "main.h"
 #include "ps2funcs.h"
+#include "PCGfx.h"
 
 #include "validate.h"
 
@@ -82,7 +83,8 @@ INLINE void Db_FlipClear(void)
 	pPoly = reinterpret_cast<u32*>(reinterpret_cast<u32>(pDoubleBuffer->Polys) & 0x7FFFFFFF);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Db_Init(void)
 {
 	SetDefDrawEnv();
@@ -110,10 +112,37 @@ void Db_Init(void)
 	DrawOTag();
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Db_UpdateSky(void)
 {
-    printf("Db_UpdateSky(void)");
+	if (Db_SkyColor == 0x466973)
+	{
+		Db_SkyColor = 0x154070;
+	}
+
+	u32 v1 = 0;
+
+	if (Db_SkyColor == -1)
+	{
+		DoubleBuffer[0].Draw.isbg = 0;
+		DoubleBuffer[1].Draw.isbg = 0;
+	}
+	else
+	{
+		DoubleBuffer[0].Draw.isbg = 1;
+		setRGB0();
+		DoubleBuffer[1].Draw.isbg = 1;
+		setRGB0();
+
+		v1 = Db_SkyColor;
+	}
+
+	if (v1 != gPcGfxSkyColor)
+	{
+		gPcGfxSkyColor = v1;
+		gBFoggingRelated = 1;
+	}
 }
 
 void validate_SDoubleBuffer(void)
