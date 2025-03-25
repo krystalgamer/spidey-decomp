@@ -9,6 +9,8 @@ EXPORT i32 gPostTimerRelated;
 EXPORT i32 gPostWaterEffect;
 EXPORT u16 gPostWordRelated;
 
+EXPORT u8 gPaletteProcessingPaused;
+
 // @SMALLTODO
 void Post_DoPauseDisplayListProcessing(void)
 {
@@ -42,10 +44,12 @@ void Post_SpideyLogo(void)
     printf("Post_SpideyLogo(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Post_UndoPausePaletteProcessing(void)
 {
-    printf("Post_UndoPausePaletteProcessing(void)");
+	if (gPaletteProcessingPaused)
+		gPaletteProcessingPaused = 0;
 }
 
 // @Ok
