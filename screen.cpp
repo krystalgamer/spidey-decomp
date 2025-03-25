@@ -56,14 +56,37 @@ void Screen_StartCircularFadeIn(i32,i32 a2)
 	gCircularFadeRelatedFour = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Screen_UpdateFades(void)
 {
-    printf("Screen_UpdateFades(void)");
+	if (gCircularFadeRelatedThree)
+	{
+		gCircularFadeRelatedOne += gCircularFadeRelatedTwo >> 12;
+		gCircularFadeRelatedTwo += 3072;
+		if ( gCircularFadeRelatedOne >= 640 )
+		{
+			gCircularFadeRelatedThree = 0;
+			return;
+		}
+	}
+	else
+	{
+		if (!gCircularFadeRelatedFour)
+			return;
+		gCircularFadeRelatedOne -= gCircularFadeRelatedTwo >> 12;
+		if (gCircularFadeRelatedOne <= 0)
+		{
+			gCircularFadeRelatedFour = 0;
+			return;
+		}
+	}
+
+	screen_DrawCircularFade();
 }
 
 // @MEDIUMTODO
-void screen_DrawCircularFade(void)
+INLINE void screen_DrawCircularFade(void)
 {
     printf("screen_DrawCircularFade(void)");
 }
