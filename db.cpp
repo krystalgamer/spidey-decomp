@@ -91,10 +91,10 @@ void Db_Init(void)
 	SetDefDispEnv();
 
 	Db_DefaultScreenOffsets();
-	DoubleBuffer[0].field_18 = 1;
+	DoubleBuffer[0].Draw.isbg = 1;
 
 	setRGB0();
-	DoubleBuffer[1].field_18 = 1;
+	DoubleBuffer[1].Draw.isbg = 1;
 	setRGB0();
 
 	DoubleBuffer[0].OrderingTable = (u32*)0xFFFFFFFF;
@@ -120,7 +120,7 @@ void validate_SDoubleBuffer(void)
 {
 	VALIDATE_SIZE(SDoubleBuffer, 0x7C);
 
-	VALIDATE(SDoubleBuffer, field_18, 0x18);
+	VALIDATE(SDoubleBuffer, Draw.isbg, 0x18);
 
 	VALIDATE(SDoubleBuffer, field_64, 0x64);
 	VALIDATE(SDoubleBuffer, field_66, 0x66);

@@ -55,9 +55,8 @@ struct DRAWENV {
 
 struct SDoubleBuffer
 {
-	u8 pad[0x18];
-	u8 field_18;
-	u8 padAfter18[0x64-0x18-1];
+	struct DRAWENV Draw;
+	u8 padAfter5C[0x64-0x5C];
 
 	u16 field_64;
 	u16 field_66;
