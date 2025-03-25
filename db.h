@@ -7,6 +7,19 @@
 
 EXPORT extern u32* pPoly;
 EXPORT extern u8* PolyBufferEnd;
+
+// @Note: real name is RECT but don't want collisions with win32
+struct DB_RECT {
+	// offset: 0000
+	i16 x;
+	// offset: 0002
+	i16 y;
+	// offset: 0004
+	i16 w;
+	// offset: 0006
+	i16 h;
+};
+
 struct SDoubleBuffer
 {
 	u8 pad[0x18];
@@ -36,5 +49,6 @@ EXPORT void Db_Init(void);
 EXPORT void Db_UpdateSky(void);
 
 void validate_SDoubleBuffer(void);
+void validate_DB_RECT(void);
 
 #endif

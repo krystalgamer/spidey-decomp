@@ -128,3 +128,13 @@ void validate_SDoubleBuffer(void)
 	VALIDATE(SDoubleBuffer, OrderingTable, 0x70);
 	VALIDATE(SDoubleBuffer, Polys, 0x78);
 }
+
+void validate_DB_RECT(void)
+{
+	VALIDATE_SIZE(DB_RECT, 0x8);
+
+	VALIDATE(DB_RECT, x, 0x0);
+	VALIDATE(DB_RECT, y, 0x2);
+	VALIDATE(DB_RECT, w, 0x4);
+	VALIDATE(DB_RECT, h, 0x6);
+}

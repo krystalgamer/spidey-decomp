@@ -510,6 +510,7 @@ i32 validate(void)
 	validate_SRhinoData();
 	validate_SLight();
 	validate_CManipObChunk();
+	validate_DB_RECT();
 
 	puts("[*] Validation done!");
 
