@@ -11,6 +11,8 @@ SDoubleBuffer DoubleBuffer[2];
 u32* pPoly;
 u8* PolyBufferEnd;
 
+u32 Db_SkyColor;
+
 // @Ok
 // @Matching
 void Db_CreateOTsAndPolyBuffers(void)

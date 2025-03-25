@@ -3,6 +3,7 @@
 #include "PCGfx.h"
 #include "m3dinit.h"
 #include "SpideyDX.h"
+#include "db.h"
 
 EXPORT i32 gWaterEffect;
 EXPORT i32 gPostTimerRelated;
@@ -11,16 +12,23 @@ EXPORT u16 gPostWordRelated;
 
 EXPORT u8 gPaletteProcessingPaused;
 
+EXPORT i32 gPostSpideyLogoRelated;
+EXPORT u32 gPostPauseRelated;
+
+
 // @SMALLTODO
 void Post_DoPauseDisplayListProcessing(void)
 {
     printf("Post_DoPauseDisplayListProcessing(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Post_DoPausePaletteProcessing(void)
 {
-    printf("Post_DoPausePaletteProcessing(void)");
+	gPaletteProcessingPaused = 1;
+	gPostSpideyLogoRelated = 0;
+	gPostPauseRelated = Db_SkyColor;
 }
 
 // @Ok

@@ -26,6 +26,7 @@ struct SDoubleBuffer
 EXPORT extern SDoubleBuffer* pDoubleBuffer;
 EXPORT extern SDoubleBuffer* pOtherBuffer;
 EXPORT extern SDoubleBuffer DoubleBuffer[2];
+EXPORT extern u32 Db_SkyColor;
 
 EXPORT void Db_CreateOTsAndPolyBuffers(void);
 EXPORT void Db_DefaultScreenOffsets(void);
