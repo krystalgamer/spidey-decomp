@@ -138,3 +138,32 @@ void validate_DB_RECT(void)
 	VALIDATE(DB_RECT, w, 0x4);
 	VALIDATE(DB_RECT, h, 0x6);
 }
+
+void validate_DR_ENV(void)
+{
+	VALIDATE_SIZE(DR_ENV, 0x40);
+
+	VALIDATE(DR_ENV, tag, 0x0);
+
+	VALIDATE(DR_ENV, code, 0x4);
+}
+
+void validate_DRAWENV(void)
+{
+	VALIDATE_SIZE(DRAWENV, 0x5C);
+
+	VALIDATE(DRAWENV, clip, 0x0);
+
+	VALIDATE(DRAWENV, ofs, 0x8);
+	VALIDATE(DRAWENV, tw, 0xC);
+	VALIDATE(DRAWENV, tpage, 0x14);
+	VALIDATE(DRAWENV, dtd, 0x16);
+	VALIDATE(DRAWENV, dfe, 0x17);
+	VALIDATE(DRAWENV, isbg, 0x18);
+
+	VALIDATE(DRAWENV, r0, 0x19);
+	VALIDATE(DRAWENV, g0, 0x1A);
+	VALIDATE(DRAWENV, b0, 0x1B);
+
+	VALIDATE(DRAWENV, dr_env, 0x1C);
+}

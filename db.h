@@ -20,6 +20,39 @@ struct DB_RECT {
 	i16 h;
 };
 
+// size: 0x40
+struct DR_ENV {
+	// offset: 0000
+	u32 tag;
+	// offset: 0004 (60 bytes)
+	u32 code[15];
+};
+
+struct DRAWENV {
+	// offset: 0000 (8 bytes)
+	struct DB_RECT clip;
+	// offset: 0008 (4 bytes)
+	i16 ofs[2];
+	// offset: 000C (8 bytes)
+	struct DB_RECT tw;
+	// offset: 0014
+	u16 tpage;
+	// offset: 0016
+	u8 dtd;
+	// offset: 0017
+	u8 dfe;
+	// offset: 0018
+	u8 isbg;
+	// offset: 0019
+	u8 r0;
+	// offset: 001A
+	u8 g0;
+	// offset: 001B
+	u8 b0;
+	// offset: 001C (64 bytes)
+	struct DR_ENV dr_env;
+};
+
 struct SDoubleBuffer
 {
 	u8 pad[0x18];
@@ -50,5 +83,7 @@ EXPORT void Db_UpdateSky(void);
 
 void validate_SDoubleBuffer(void);
 void validate_DB_RECT(void);
+void validate_DR_ENV(void);
+void validate_DRAWENV(void);
 
 #endif

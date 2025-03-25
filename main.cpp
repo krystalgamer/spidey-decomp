@@ -511,6 +511,8 @@ i32 validate(void)
 	validate_SLight();
 	validate_CManipObChunk();
 	validate_DB_RECT();
+	validate_DR_ENV();
+	validate_DRAWENV();
 
 	puts("[*] Validation done!");
 
