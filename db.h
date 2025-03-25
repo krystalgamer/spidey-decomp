@@ -20,6 +20,21 @@ struct DB_RECT {
 	i16 h;
 };
 
+struct DISPENV {
+	// offset: 0000 (8 bytes)
+	struct DB_RECT disp;
+	// offset: 0008 (8 bytes)
+	struct DB_RECT screen;
+	// offset: 0010
+	u8 isinter;
+	// offset: 0011
+	u8 isrgb24;
+	// offset: 0012
+	u8 pad0;
+	// offset: 0013
+	u8 pad1;
+};
+
 // size: 0x40
 struct DR_ENV {
 	// offset: 0000
@@ -56,11 +71,8 @@ struct DRAWENV {
 struct SDoubleBuffer
 {
 	struct DRAWENV Draw;
-	u8 padAfter5C[0x64-0x5C];
 
-	u16 field_64;
-	u16 field_66;
-	u8 padAfter66[0x70-0x66-2];
+	struct DISPENV Disp;
 
 	u32* OrderingTable;
 	u8 padAfter70[4];
@@ -84,5 +96,6 @@ void validate_SDoubleBuffer(void);
 void validate_DB_RECT(void);
 void validate_DR_ENV(void);
 void validate_DRAWENV(void);
+void validate_DISPENV(void);
 
 #endif

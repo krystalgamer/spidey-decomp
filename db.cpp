@@ -35,10 +35,10 @@ void Db_CreateOTsAndPolyBuffers(void)
 // @Matching
 INLINE void Db_DefaultScreenOffsets(void)
 {
-	DoubleBuffer[0].field_64 = 0;
-	DoubleBuffer[1].field_64 = 0;
-	DoubleBuffer[0].field_66 = 0;
-	DoubleBuffer[1].field_66 = 0;
+	DoubleBuffer[0].Disp.screen.x = 0;
+	DoubleBuffer[1].Disp.screen.x = 0;
+	DoubleBuffer[0].Disp.screen.y = 0;
+	DoubleBuffer[1].Disp.screen.y = 0;
 }
 
 // @Ok
@@ -122,8 +122,8 @@ void validate_SDoubleBuffer(void)
 
 	VALIDATE(SDoubleBuffer, Draw.isbg, 0x18);
 
-	VALIDATE(SDoubleBuffer, field_64, 0x64);
-	VALIDATE(SDoubleBuffer, field_66, 0x66);
+	VALIDATE(SDoubleBuffer, Disp.screen.x, 0x64);
+	VALIDATE(SDoubleBuffer, Disp.screen.y, 0x66);
 
 	VALIDATE(SDoubleBuffer, OrderingTable, 0x70);
 	VALIDATE(SDoubleBuffer, Polys, 0x78);
@@ -166,4 +166,15 @@ void validate_DRAWENV(void)
 	VALIDATE(DRAWENV, b0, 0x1B);
 
 	VALIDATE(DRAWENV, dr_env, 0x1C);
+}
+
+void validate_DISPENV(void)
+{
+	VALIDATE_SIZE(DISPENV, 0x14);
+
+	VALIDATE(DISPENV, disp, 0x0);
+	VALIDATE(DISPENV, screen, 0x8);
+
+	VALIDATE(DISPENV, isinter, 0x10);
+	VALIDATE(DISPENV, isrgb24, 0x11);
 }

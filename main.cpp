@@ -513,6 +513,7 @@ i32 validate(void)
 	validate_DB_RECT();
 	validate_DR_ENV();
 	validate_DRAWENV();
+	validate_DISPENV();
 
 	puts("[*] Validation done!");
 
