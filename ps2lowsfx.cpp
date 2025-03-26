@@ -8,6 +8,9 @@
 #include "validate.h"
 
 // @Ok
+EXPORT u8 gSfxInited;
+
+// @Ok
 EXPORT i32 gVoiceIndex = 1;
 
 // @Ok
@@ -137,7 +140,7 @@ INLINE i32 SFX_AllocVoice(i32 a1, bool a2)
 // @Ok
 // @AlmostmAtching: something about amheapFree is making it not match
 // it dumps the result into the stack before pushing
-void SFX_CloseBank(SSFXBank *pBank)
+INLINE void SFX_CloseBank(SSFXBank *pBank)
 {
 	SFX_StopAll();
 
@@ -267,10 +270,20 @@ void SFX_SetVoiceVolume(u32,i16)
     printf("SFX_SetVoiceVolume(u32,i16)");
 }
 
-// @SMALLTODO
+// @Ok
+// @NotMatching: the null subs are weird are probably fucked the inlining
 void SFX_ShutDown(void)
 {
-    printf("SFX_ShutDown(void)");
+	if (gSfxInited)
+	{
+		SFX_CloseBank(&gSfxRelatedOutLevel);
+		SFX_CloseBank(&gSoundBank);
+
+		nullsub_3();
+		nullsub_3();
+
+		gSfxInited = 0;
+	}
 }
 
 // @SMALLTODO
