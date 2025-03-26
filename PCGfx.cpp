@@ -57,6 +57,13 @@ u32 gPcGfxSkyColor;
 EXPORT i32 gEndSceneRelated = -1;
 EXPORT i32 gEndSceneRelatedTwo;
 
+// @Ok
+// @Matching
+i32 amHeapFree(void)
+{
+	return 0;
+}
+
 // @NotOk
 // missing fog stuff
 void PCGfx_BeginScene(u32,i32)

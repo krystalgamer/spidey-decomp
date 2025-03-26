@@ -2,6 +2,7 @@
 #include "DXsound.h"
 #include "ps2redbook.h"
 #include "my_assert.h"
+#include "PCGfx.h"
 #include <cstring>
 
 #include "validate.h"
@@ -15,6 +16,10 @@ EXPORT SSfxEntry gSfxEntries[LEN_SFX_ENTRIES];
 
 // @Ok
 EXPORT SSFXBank gSoundBank;
+
+// @Ok
+EXPORT SSFXBank gSfxRelatedOutLevel;
+
 
 // @FIXME: get proper size
 EXPORT u32 gSfxArrayOne[256];
@@ -68,6 +73,21 @@ void SFX_CloseBank(SSFXBank *pBank)
 
 	if (pBank->field_4)
 	{
+		DXSOUND_Unload(pBank->field_8, 0);
+		
+		if (pBank == &gSoundBank && gSfxRelatedOutLevel.field_4)
+			SFX_CloseBank(&gSfxRelatedOutLevel);
+
+		DebugPrintfX("unloading sound bank %s.", pBank->field_8);
+
+		amHeapFree();
+		pBank->field_4 = 0;
+		pBank->field_0 = 0;
+		/*
+		if (*v )
+			Mem_AlignedDelete(*v1);
+		sub_18A1A0((int)v1, 0, 0x1Cu);
+		*/
 	}
 }
 
