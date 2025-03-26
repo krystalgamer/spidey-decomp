@@ -13,7 +13,9 @@ EXPORT u8 SFXPaused;
 #define LEN_SFX_ENTRIES 32
 EXPORT SSfxEntry gSfxEntries[LEN_SFX_ENTRIES];
 
+// @Ok
 EXPORT SSFXBank gSoundBank;
+
 // @FIXME: get proper size
 EXPORT u32 gSfxArrayOne[256];
 
@@ -60,9 +62,13 @@ void SFX_AllocVoice(i32,bool)
 }
 
 // @SMALLTODO
-void SFX_CloseBank(SSFXBank *)
+void SFX_CloseBank(SSFXBank *pBank)
 {
-    printf("SFX_CloseBank(SSFXBank *)");
+	SFX_StopAll();
+
+	if (pBank->field_4)
+	{
+	}
 }
 
 // @IGNOREME
@@ -273,6 +279,13 @@ void SFX_Play(u32, i16, i32)
 
 void validate_SSFXBank(void)
 {
+	VALIDATE_SIZE(SSFXBank, 0x19B0);
+
+	VALIDATE(SSFXBank, field_0, 0x0);
+	VALIDATE(SSFXBank, field_4, 0x4);
+	VALIDATE(SSFXBank, field_8, 0x8);
+
+	VALIDATE(SSFXBank, field_40, 0x40);
 }
 
 void validate_SSfxEntry(void)

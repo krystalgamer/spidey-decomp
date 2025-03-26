@@ -12,6 +12,13 @@ EXPORT SNewBlockHeader *FirstFreeBlock[2];
 
 EXPORT i32 dword_54D55C = 1;
 
+// @Ok
+// @Matching
+void Mem_AlignedDelete(void *p)
+{
+	Mem_Delete(p);
+}
+
 // @OK
 // @CM: Different register allocation
 // but code matches perfect :D

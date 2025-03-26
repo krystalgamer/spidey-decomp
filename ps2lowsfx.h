@@ -27,6 +27,22 @@ struct SSfxEntry
 
 struct SSFXBank
 {
+	// @Ok
+	SSFXBank(void)
+	{
+		this->field_0 = 0;
+		this->field_4 = 0;
+		this->field_8[0] = 0;
+
+		for (i32 i = 0; i < 0x1970; i++)
+			this->field_40[i] = 0;
+	}
+
+	i32 field_0;
+	i32 field_4;
+	char field_8[0x38];
+	
+	u8 field_40[0x1970];
 };
 
 EXPORT i32 SFX_PlayPos(u32, CVector*, i32);
