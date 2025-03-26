@@ -80,10 +80,10 @@ struct tagPOINT
 
 #endif
 
-// From SO: 42837863
-#define CONCAT(x, y, z, w, k) x##y##z##w##k
-#define EXPAND(x, y, z, w, k) CONCAT(x, y, z, w, k)
-#define PADDING(x) EXPAND(u8 pad_, __LINE__, [, x, ])
+// From SO: 42837863 - modified for PADDING
+#define CONCAT(x, y) x##y
+#define EXPAND(x, y) CONCAT(x, y)
+#define PADDING(x) EXPAND(u8 pad_, __LINE__)[(x)]
 
 #endif
 
