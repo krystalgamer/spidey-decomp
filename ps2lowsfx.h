@@ -39,7 +39,9 @@ struct SSfxEntry
 
 	i32 field_10;
 
-	PADDING(0x1A-0x10-4);
+	PADDING(0x16-0x10-4);
+	u16 field_16;
+	PADDING(0x1A-0x16-2);
 
 	u8 field_1A;
 	u8 field_1B;

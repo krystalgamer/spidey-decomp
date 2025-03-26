@@ -264,10 +264,26 @@ void SFX_Pause(void)
 	}
 }
 
-// @SMALLTODO
-void SFX_SetVoiceVolume(u32,i16)
+// @Ok
+// @Matching
+void SFX_SetVoiceVolume(u32 a1, i16 a2)
 {
-    printf("SFX_SetVoiceVolume(u32,i16)");
+	if (a1)
+	{
+		for (i32 i = 0; i < 32; i++)
+		{
+			if (a1 & (1<< i))
+			{
+				gSfxEntries[i].field_16 = a2;
+
+				SFX_ModifyVol(
+						1 << i,
+						gSfxEntries[i].field_16,
+						gSfxEntries[i].field_16);
+				break;
+			}
+		}
+	}
 }
 
 // @Ok
@@ -396,6 +412,8 @@ void validate_SSfxEntry(void)
 	VALIDATE(SSfxEntry, field_C, 0xC);
 
 	VALIDATE(SSfxEntry, field_10, 0x10);
+
+	VALIDATE(SSfxEntry, field_16, 0x16);
 
 	VALIDATE(SSfxEntry, field_1A, 0x1A);
 	VALIDATE(SSfxEntry, field_1B, 0x1B);
