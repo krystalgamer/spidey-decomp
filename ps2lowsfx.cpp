@@ -65,10 +65,17 @@ void SFX_CloseBank(SSFXBank *)
     printf("SFX_CloseBank(SSFXBank *)");
 }
 
-// @Ok
-// @AlmostMatching: didn't add the nullsubs
-void SFX_FreeVoice(i32 a1)
+// @IGNOREME
+// @Note: exists purely for matching purposes
+static void nullsub_3(void)
 {
+}
+
+// @Ok
+// @Matching
+INLINE void SFX_FreeVoice(i32 a1)
+{
+	nullsub_3();
 	SSfxEntry *pEntry = &gSfxEntries[a1];
 
 	pEntry->field_1A = 0;
@@ -78,6 +85,7 @@ void SFX_FreeVoice(i32 a1)
 	pEntry->field_24 = 0;
 
 	DoAssert(--gNumVoices >= 0, "voice deallocation error");
+	nullsub_3();
 }
 
 // @Ok
@@ -205,6 +213,7 @@ void translateLevelSpecificAliasToIndex(u32)
 }
 
 // @Ok
+// @Matching
 void SFX_StopAll(void)
 {
 	for (i32 i = 0; i < 24; i++)
@@ -237,10 +246,23 @@ void SFX_ReverbOff(void)
 	SFX_SetReverbType(0);
 }
 
-// @BIGTODO
-void SFX_Stop(u32)
+// @Ok
+// @Matching
+INLINE void SFX_Stop(u32 a1)
 {
-	printf("void SFX_Stop(unsigned int)");
+	u32 v2 = 0;
+	while (a1)
+	{
+		if (a1 & 1)
+		{
+			if (!gSfxEntries[v2].field_1A)
+				return;
+			SFX_KillVoice(v2);
+		}
+
+		a1 >>= 1;
+		++v2;
+	}
 }
 
 // @BIGTODO
