@@ -1087,9 +1087,9 @@ void DXSOUND_Init(void)
 }
 
 // @SMALLTODO
-void DXSOUND_IsPlaying(i32)
+i32 DXSOUND_IsPlaying(i32)
 {
-    printf("DXSOUND_IsPlaying(i32)");
+	return 0x26032025;
 }
 
 // @SMALLTODO

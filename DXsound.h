@@ -84,7 +84,7 @@ EXPORT void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7);
 EXPORT void DXSOUND_Close(i32);
 EXPORT void DXSOUND_CreateDSBuffer(char *,i32);
 EXPORT void DXSOUND_Init(void);
-EXPORT void DXSOUND_IsPlaying(i32);
+EXPORT i32 DXSOUND_IsPlaying(i32);
 EXPORT void DXSOUND_Load(char *);
 EXPORT void DXSOUND_Open(i32,i32,i32);
 EXPORT void DXSOUND_Play(i32,i32);

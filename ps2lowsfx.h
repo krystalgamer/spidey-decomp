@@ -32,7 +32,10 @@ struct SSfxRelated
 
 struct SSfxEntry
 {
-	PADDING(0x10);
+	i32 field_0;
+	i32 field_4;
+	i32 field_8;
+	i32 field_C;
 
 	i32 field_10;
 
@@ -79,7 +82,7 @@ EXPORT void CopyFilenameDefaultExtension(char *,i32,const char*,const char*);
 EXPORT void DCSFX_AdjustVol(i32);
 EXPORT void DCSetBootROMSoundMode(bool);
 EXPORT void PSXPitchToDCPitch(i32);
-EXPORT void SFX_AllocVoice(i32,bool);
+EXPORT i32 SFX_AllocVoice(i32,bool);
 EXPORT void SFX_CloseBank(SSFXBank *);
 EXPORT void SFX_FreeVoice(i32);
 EXPORT void SFX_Init(char *);

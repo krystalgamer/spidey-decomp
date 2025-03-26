@@ -8,6 +8,9 @@
 #include "validate.h"
 
 // @Ok
+EXPORT i32 gVoiceIndex = 1;
+
+// @Ok
 EXPORT SSfxRelated gSfxSomething;
 
 // @Ok
@@ -29,6 +32,12 @@ EXPORT u32 gSfxArrayOne[256];
 
 // @FIXME: get proper size
 EXPORT u16 gSfxArraAliasyOne[256];
+
+// @IGNOREME
+// @Note: exists purely for matching purposes
+static void nullsub_3(void)
+{
+}
 
 // @Ok
 INLINE void CopyFilenameDefaultExtension(
@@ -63,10 +72,66 @@ void PSXPitchToDCPitch(i32)
     printf("PSXPitchToDCPitch(i32)");
 }
 
-// @SMALLTODO
-void SFX_AllocVoice(i32,bool)
+// @NotOk
+// @Validate: when inlined
+INLINE i32 SFX_AllocVoice(i32 a1, bool a2)
 {
-    printf("SFX_AllocVoice(i32,bool)");
+	i32 v8 = gVoiceIndex;
+	i32 v9 = 0;
+	for (i32 i = gVoiceIndex; i < 32; i++)
+	{
+
+		if (!DXSOUND_IsPlaying(i))
+		{
+			SFX_KillVoice(i);
+			gVoiceIndex = i + 1;
+			if (i == 31)
+				gVoiceIndex = 1;
+			v9 = 1;
+			break;
+		}
+	}
+
+	if (!v9)
+	{
+		for (i32 j = 1; j < v8; j++)
+		{
+			if (!DXSOUND_IsPlaying(j))
+			{
+				SFX_KillVoice(j);
+				gVoiceIndex = j + 1;
+				if (j == 31)
+					gVoiceIndex = 1;
+				break;
+			}
+		}
+	}
+
+	i32 k;
+	for (k = 1; k < 32; ++k)
+	{
+		if (!gSfxEntries[k].field_1A && !gSfxEntries[k].field_1B )
+			break;
+	}
+
+	if (k < 32)
+	{
+		gSfxEntries[k].field_0 = a1;
+		gSfxEntries[k].field_1A = 1;
+		gSfxEntries[k].field_1B = a2;
+		gSfxEntries[k].field_4 = 0;
+		gSfxEntries[k].field_8 = 0;
+		gSfxEntries[k].field_C = 0;
+		gSfxEntries[k].field_10 = 0;
+		gSfxEntries[k].field_1C = 0;
+
+		DoAssert(gNumVoices++ <= 32, "voice allocation error"); 
+		return k;
+	}
+
+	error("SFX out of voices.");
+    nullsub_3();
+	return -1;
 }
 
 // @Ok
@@ -95,12 +160,6 @@ void SFX_CloseBank(SSFXBank *pBank)
 
 		memset(&gSfxSomething, 0, sizeof(gSfxSomething));
 	}
-}
-
-// @IGNOREME
-// @Note: exists purely for matching purposes
-static void nullsub_3(void)
-{
 }
 
 // @Ok
@@ -317,6 +376,11 @@ void validate_SSFXBank(void)
 void validate_SSfxEntry(void)
 {
 	VALIDATE_SIZE(SSfxEntry, 0x28);
+
+	VALIDATE(SSfxEntry, field_0, 0x0);
+	VALIDATE(SSfxEntry, field_4, 0x4);
+	VALIDATE(SSfxEntry, field_8, 0x8);
+	VALIDATE(SSfxEntry, field_C, 0xC);
 
 	VALIDATE(SSfxEntry, field_10, 0x10);
 
