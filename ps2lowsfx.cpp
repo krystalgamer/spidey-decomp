@@ -99,10 +99,15 @@ void SFX_InitAtStart(void)
     printf("SFX_InitAtStart(void)");
 }
 
-// @SMALLTODO
-void SFX_KillVoice(u32)
+// @Ok
+INLINE void SFX_KillVoice(u32 a1)
 {
-    printf("SFX_KillVoice(u32)");
+	if (gSfxEntries[a1].field_1A)
+	{
+		DXSOUND_Stop(a1);
+		DXSOUND_Close(a1);
+		SFX_FreeVoice(a1);
+	}
 }
 
 // @MEDIUMTODO
