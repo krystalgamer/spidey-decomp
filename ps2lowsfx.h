@@ -10,9 +10,19 @@
 
 struct SSfxEntry
 {
-	u8 padTop[0x1A];
+	PADDING(0x10);
+
+	i32 field_10;
+
+	PADDING(0x1A-0x10-4);
+
 	u8 field_1A;
-	u8 padBottom[0x28-0x1A-1];
+	u8 field_1B;
+	i32 field_1C;
+
+	PADDING(4);
+
+	i32 field_24;
 };
 
 struct SSFXBank

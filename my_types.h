@@ -28,7 +28,6 @@
 #ifndef _WIN32
 #define __int16 short
 #define __int8 char
-
 #endif
 
 typedef unsigned char u8;
@@ -80,6 +79,11 @@ struct tagPOINT
 
 
 #endif
+
+// From SO: 42837863
+#define CONCAT(x, y, z, w, k) x##y##z##w##k
+#define EXPAND(x, y, z, w, k) CONCAT(x, y, z, w, k)
+#define PADDING(x) EXPAND(u8 pad_, __LINE__, [, x, ])
 
 #endif
 

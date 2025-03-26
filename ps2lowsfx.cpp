@@ -1,10 +1,13 @@
 #include "ps2lowsfx.h"
 #include "DXsound.h"
 #include "ps2redbook.h"
+#include "my_assert.h"
 #include <cstring>
 
 #include "validate.h"
 
+// @Ok
+EXPORT i32 gNumVoices;
 
 EXPORT u8 SFXPaused;
 #define LEN_SFX_ENTRIES 32
@@ -27,7 +30,7 @@ INLINE void CopyFilenameDefaultExtension(
 	strncpy(dst, pFileName, len);
 
 	char *dot = strrchr(dst, 46);
-	if ( dot )
+	if (dot)
 		*dot = 0;
 	strcat(dst, pExtension);
 }
@@ -62,17 +65,26 @@ void SFX_CloseBank(SSFXBank *)
     printf("SFX_CloseBank(SSFXBank *)");
 }
 
-// @SMALLTODO
-void SFX_FreeVoice(i32)
+// @Ok
+// @AlmostMatching: didn't add the nullsubs
+void SFX_FreeVoice(i32 a1)
 {
-    printf("SFX_FreeVoice(i32)");
+	SSfxEntry *pEntry = &gSfxEntries[a1];
+
+	pEntry->field_1A = 0;
+	pEntry->field_1B = 0;
+	pEntry->field_10 = 0;
+	pEntry->field_1C = 0;
+	pEntry->field_24 = 0;
+
+	DoAssert(--gNumVoices >= 0, "voice deallocation error");
 }
 
 // @Ok
 void SFX_Init(char* pSfxBankName)
 {
 	char buf[56];
-	print_if_false(pSfxBankName && *pSfxBankName, "bad sfx bank filename");
+	DoAssert(pSfxBankName && *pSfxBankName, "bad sfx bank filename");
 
 	CopyFilenameDefaultExtension(buf, sizeof(buf), pSfxBankName, ".kat");
 	SFX_LoadBank(buf, &gSoundBank);
@@ -240,5 +252,11 @@ void validate_SSfxEntry(void)
 {
 	VALIDATE_SIZE(SSfxEntry, 0x28);
 
+	VALIDATE(SSfxEntry, field_10, 0x10);
+
 	VALIDATE(SSfxEntry, field_1A, 0x1A);
+	VALIDATE(SSfxEntry, field_1B, 0x1B);
+	VALIDATE(SSfxEntry, field_1C, 0x1C);
+
+	VALIDATE(SSfxEntry, field_24, 0x24);
 }
