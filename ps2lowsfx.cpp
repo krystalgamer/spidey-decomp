@@ -8,6 +8,9 @@
 #include "validate.h"
 
 // @Ok
+EXPORT SSfxRelated gSfxSomething;
+
+// @Ok
 EXPORT i32 gNumVoices;
 
 EXPORT u8 SFXPaused;
@@ -66,7 +69,9 @@ void SFX_AllocVoice(i32,bool)
     printf("SFX_AllocVoice(i32,bool)");
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostmAtching: something about amheapFree is making it not match
+// it dumps the result into the stack before pushing
 void SFX_CloseBank(SSFXBank *pBank)
 {
 	SFX_StopAll();
@@ -80,14 +85,15 @@ void SFX_CloseBank(SSFXBank *pBank)
 
 		DebugPrintfX("unloading sound bank %s.", pBank->field_8);
 
-		amHeapFree();
+		i32 res = amHeapFree(pBank->field_4);
+		DoAssert(!!res, "amHeapFree failed");
 		pBank->field_4 = 0;
 		pBank->field_0 = 0;
-		/*
-		if (*v )
-			Mem_AlignedDelete(*v1);
-		sub_18A1A0((int)v1, 0, 0x1Cu);
-		*/
+
+		if (gSfxSomething.field_0)
+			Mem_AlignedDelete(gSfxSomething.field_0);
+
+		memset(&gSfxSomething, 0, sizeof(gSfxSomething));
 	}
 }
 
@@ -240,7 +246,7 @@ void translateLevelSpecificAliasToIndex(u32)
 
 // @Ok
 // @Matching
-void SFX_StopAll(void)
+INLINE void SFX_StopAll(void)
 {
 	for (i32 i = 0; i < 24; i++)
 	{
@@ -319,4 +325,18 @@ void validate_SSfxEntry(void)
 	VALIDATE(SSfxEntry, field_1C, 0x1C);
 
 	VALIDATE(SSfxEntry, field_24, 0x24);
+}
+
+void validate_SSfxRelated(void)
+{
+	VALIDATE_SIZE(SSfxRelated, 0x1C);
+
+	VALIDATE(SSfxRelated, field_0, 0x0);
+	VALIDATE(SSfxRelated, field_4, 0x4);
+	VALIDATE(SSfxRelated, field_8, 0x8);
+	VALIDATE(SSfxRelated, field_C, 0xC);
+
+	VALIDATE(SSfxRelated, field_10, 0x10);
+	VALIDATE(SSfxRelated, field_14, 0x14);
+	VALIDATE(SSfxRelated, field_18, 0x18);
 }

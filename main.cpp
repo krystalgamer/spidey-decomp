@@ -514,6 +514,7 @@ i32 validate(void)
 	validate_DR_ENV();
 	validate_DRAWENV();
 	validate_DISPENV();
+	validate_SSfxRelated();
 
 	puts("[*] Validation done!");
 

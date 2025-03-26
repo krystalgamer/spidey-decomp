@@ -59,7 +59,7 @@ EXPORT i32 gEndSceneRelatedTwo;
 
 // @Ok
 // @Matching
-i32 amHeapFree(void)
+i32 amHeapFree(i32)
 {
 	return 0;
 }

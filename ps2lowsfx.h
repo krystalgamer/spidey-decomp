@@ -7,6 +7,28 @@
 #include "export.h"
 #include "vector.h"
 
+struct SSfxRelated
+{
+	SSfxRelated(void)
+	{
+		this->field_0 = 0;
+		this->field_8 = 0;
+		this->field_4 = 0;
+		this->field_10 = 0;
+		this->field_C = 0;
+		this->field_18 = 0;
+
+		this->field_14 = 0;
+	}
+
+	void *field_0;
+	i32 field_4;
+	i32 field_8;
+	i32 field_C;
+	i32 field_10;
+	i32 field_14;
+	i32 field_18;
+};
 
 struct SSfxEntry
 {
@@ -79,6 +101,7 @@ EXPORT void translateLevelSpecificAliasToIndex(u32);
 
 void validate_SSFXBank(void);
 void validate_SSfxEntry(void);
+void validate_SSfxRelated(void);
 
 #endif
 
