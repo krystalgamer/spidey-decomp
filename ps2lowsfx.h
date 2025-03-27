@@ -81,7 +81,7 @@ EXPORT void SFX_Play(u32, i16, i32);
 EXPORT void SFX_StopAll(void);
 
 EXPORT void CopyFilenameDefaultExtension(char *,i32,const char*,const char*);
-EXPORT void DCSFX_AdjustVol(i32);
+EXPORT i32 DCSFX_AdjustVol(i32);
 EXPORT void DCSetBootROMSoundMode(bool);
 EXPORT void PSXPitchToDCPitch(i32);
 EXPORT i32 SFX_AllocVoice(i32,bool);
