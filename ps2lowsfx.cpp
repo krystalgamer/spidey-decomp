@@ -445,10 +445,11 @@ void SFX_SpoolInLevelSFX(const char *p_name)
 	SFX_ParseSFXFile(v5, gParsePsxOne, gParsePsxTwo, 64, 0x40000000);
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: inlining diffs by 4 bytes due to 2 inlined functions diffing 2 bytes
 void SFX_SpoolOutLevelSFX(void)
 {
-    printf("SFX_SpoolOutLevelSFX(void)");
+	SFX_CloseBank(&gSfxRelatedOutLevel);
 }
 
 // @SMALLTODO
