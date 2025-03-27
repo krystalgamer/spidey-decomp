@@ -93,22 +93,17 @@ INLINE void CopyFilenameDefaultExtension(
 	strcat(dst, pExtension);
 }
 
-// @NotOk
-// @Validate: when inlined
+// @Ok
+// @Matching
 INLINE i32 DCSFX_AdjustVol(i32 a1)
 {
-	i32 v1 = my_abs(a1);
-	u8 v2 = 0;
+	DoAssert((a1 >= 0 || (a1 = -a1, a1 >= 0)) && a1 < 0x4000, "DCSFX_AdjustVol: bad volume");
 
-	if (v1 >= 0 && v1 < 0x4000)
-		v2 = 1;
-	DoAssert(v2, "DCSFX_AdjustVol: bad volume");
+	a1 >>= 5;
+	if (a1 > 255)
+		a1 = 255;
 
-	v1 >>= 5;
-	if (v1 > 255)
-		v1 = 255;
-
-	return 255 - gSfxVolArr[v1];
+	return 255 - gSfxVolArr[a1];
 }
 
 // @SMALLTODO
@@ -272,10 +267,67 @@ void SFX_ModifyPos(u32,const CVector *,i32)
     printf("SFX_ModifyPos(u32,CVector const *,i32)");
 }
 
-// @SMALLTODO
-void SFX_ModifyVol(u32,i32,i32)
+// @Ok
+// @Matching
+void SFX_ModifyVol(
+		u32 voice_id,
+		i32 vl,
+		i32 vr)
 {
-    printf("SFX_ModifyVol(u32,i32,i32)");
+	i32 v10 = 0;
+	while (voice_id)
+	{
+		if (voice_id & 1)
+		{
+			if (gSfxEntries[v10].field_1A)
+			{
+				if (vl > 0x3FFF)
+				{
+					vl = 0x3FFF;
+				}
+				else if (vl < -16383)
+				{
+					vl = -16383;
+				}
+
+				if (vr > 0x3FFF)
+				{
+					vr = 0x3FFF;
+				}
+				else if (vr < -16383)
+				{
+					vr = -16383;
+				}
+
+				i32 v6 = (vr + vl) >> 1;
+				i32 v7;
+				if (vl == vr)
+					v7 = 15;
+				else
+					v7 = 31 * vl / (vr + vl);
+
+				DoAssert(1u, "pan out of range");
+
+				DXSOUND_SetPan(v10, v7);
+				gSfxEntries[v10].field_16 = v6;
+
+				if (v6 > 0x3FFF)
+				{
+					v6 = 0x3FFF;
+				}
+				else if (v6 < -16383)
+				{
+					v6 = -16383;
+				}
+
+				i32 vol = DCSFX_AdjustVol(v6);
+				DXSOUND_SetVolume(v10, vol);
+			}
+		}
+
+		voice_id >>= 1;
+		v10++;
+	}
 }
 
 EXPORT u8 volatile gStubSfx;
