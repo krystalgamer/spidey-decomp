@@ -6,6 +6,13 @@
 
 // @Ok
 // @Matching
+i32 syCfgInit(void*)
+{
+	return 0;
+}
+
+// @Ok
+// @Matching
 void ADXT_SetOutVol(i32, i32 a2)
 {
 	PCMUSIC_SetVolume(a2);

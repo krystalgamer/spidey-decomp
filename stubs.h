@@ -30,6 +30,7 @@ EXPORT i32 gsExit(void);
 EXPORT i32 syCblCheck(void);
 EXPORT i32 syCblCheckBroadcast(void);
 EXPORT i32 syRtcGetDate(SDCCardFullTime*);
+EXPORT i32 syCfgInit(void*);
 
 EXPORT void ADXT_Finish(void);
 EXPORT void ADXT_StartAfs(i32, i32, i32);

@@ -3,9 +3,14 @@
 #include "ps2redbook.h"
 #include "my_assert.h"
 #include "PCGfx.h"
+#include "pcdcMem.h"
+#include "stubs.h"
 #include <cstring>
 
 #include "validate.h"
+
+// @Ok
+EXPORT bool gBootRomSoundMode;
 
 // @Ok
 u8 gSfxVolArr[256] =
@@ -107,9 +112,25 @@ INLINE i32 DCSFX_AdjustVol(i32 a1)
 }
 
 // @SMALLTODO
-void DCSetBootROMSoundMode(bool)
+void DCSetBootROMSoundMode(bool a1)
 {
-    printf("DCSetBootROMSoundMode(bool)");
+	if (a1 != gBootRomSoundMode)
+	{
+		gBootRomSoundMode = a1;
+		void *v1 = syMalloc(0x4000u);
+
+		i32 v2 = syCfgInit(v1);
+
+		DoAssert(v2 == 0, "Problem with configuration init.");
+		/*
+		v3 = sub_516020(a1 != 0);
+		DoAssert(v3 == 0, "Problem with syCfgGetSoundMode");
+
+		v4 = syRtcInit();
+		DoAssert(v4 == 0, "Problem with syCfgExit");
+		*/
+		syFree(v1);
+	}
 }
 
 // @SMALLTODO
