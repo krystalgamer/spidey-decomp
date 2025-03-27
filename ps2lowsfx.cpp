@@ -120,12 +120,13 @@ void DCSetBootROMSoundMode(bool a1)
 		void *v1 = syMalloc(0x4000u);
 
 		i32 v2 = syCfgInit(v1);
-
 		DoAssert(v2 == 0, "Problem with configuration init.");
-		/*
-		v3 = sub_516020(a1 != 0);
+
+		i32 v3 = syCfgSetSoundMode(a1 != false);
 		DoAssert(v3 == 0, "Problem with syCfgGetSoundMode");
 
+
+		/*
 		v4 = syRtcInit();
 		DoAssert(v4 == 0, "Problem with syCfgExit");
 		*/
