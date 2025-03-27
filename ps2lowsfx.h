@@ -102,7 +102,7 @@ EXPORT void SFX_SpoolInLevelSFX(const char *);
 EXPORT void SFX_SpoolOutLevelSFX(void);
 EXPORT void SFX_Unpause(void);
 EXPORT void playSFX(u32,u8,i16,i16,i32,u16);
-EXPORT void translateLevelSpecificAliasToIndex(u32);
+EXPORT u32 translateLevelSpecificAliasToIndex(u32);
 
 void validate_SSFXBank(void);
 void validate_SSfxEntry(void);

@@ -9,10 +9,10 @@
 
 #include "validate.h"
 
-// @FIXME
-u32 gParsePsxOne[1];
-// @FIXME
-u16 gParsePsxTwo[1];
+// @Ok
+u32 SFXLevelSpecificArray[192];
+// @Ok
+u16 SFXLevelSpecificAliasArray[64];
 
 // @Ok
 EXPORT bool gBootRomSoundMode;
@@ -442,7 +442,7 @@ void SFX_SpoolInLevelSFX(const char *p_name)
 	SFX_LoadBank(v5, &gSfxRelatedOutLevel);
 
 	CopyFilenameDefaultExtension(v5, sizeof(v5), p_name, ".sfx");
-	SFX_ParseSFXFile(v5, gParsePsxOne, gParsePsxTwo, 64, 0x40000000);
+	SFX_ParseSFXFile(v5, SFXLevelSpecificArray, SFXLevelSpecificAliasArray, 64, 0x40000000);
 }
 
 // @Ok
@@ -464,10 +464,21 @@ void playSFX(u32,u8,i16,i16,i32,u16)
     printf("playSFX(u32,u8,i16,i16,i32,u16)");
 }
 
-// @SMALLTODO
-void translateLevelSpecificAliasToIndex(u32)
+// @NotOk
+// @Validate: when inlined
+u32 translateLevelSpecificAliasToIndex(u32 alias)
 {
-    printf("translateLevelSpecificAliasToIndex(u32)");
+	for (i32 i = 0; i < 64; i++)
+	{
+
+		if (SFXLevelSpecificAliasArray[i] == 0xFFFF)
+			return 0xFFFFFFFF;
+
+		if (alias == SFXLevelSpecificAliasArray[i])
+			return i;
+	}
+
+	return 0xFFFFFFFF;
 }
 
 // @Ok
