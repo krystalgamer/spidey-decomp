@@ -9,6 +9,11 @@
 
 #include "validate.h"
 
+// @FIXME
+u32 gParsePsxOne[1];
+// @FIXME
+u16 gParsePsxTwo[1];
+
 // @Ok
 EXPORT bool gBootRomSoundMode;
 
@@ -92,7 +97,7 @@ INLINE void CopyFilenameDefaultExtension(
 {
 	strncpy(dst, pFileName, len);
 
-	char *dot = strrchr(dst, 46);
+	char *dot = strrchr(dst, '.');
 	if (dot)
 		*dot = 0;
 	strcat(dst, pExtension);
@@ -424,10 +429,20 @@ void SFX_ShutDown(void)
 	}
 }
 
-// @SMALLTODO
-void SFX_SpoolInLevelSFX(const char *)
+// @Ok
+// @AlmostMatching: SFX_CloseBank in the original doesn't inline SFX_Stop for some reason
+void SFX_SpoolInLevelSFX(const char *p_name)
 {
-    printf("SFX_SpoolInLevelSFX(char const *)");
+	DoAssert(p_name && *p_name, "bad level sfx bank filename");
+
+	SFX_CloseBank(&gSfxRelatedOutLevel);
+
+	char v5[56];
+	CopyFilenameDefaultExtension(v5, sizeof(v5), p_name, ".kat");
+	SFX_LoadBank(v5, &gSfxRelatedOutLevel);
+
+	CopyFilenameDefaultExtension(v5, sizeof(v5), p_name, ".sfx");
+	SFX_ParseSFXFile(v5, gParsePsxOne, gParsePsxTwo, 64, 0x40000000);
 }
 
 // @SMALLTODO
