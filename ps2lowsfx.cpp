@@ -5,7 +5,9 @@
 #include "PCGfx.h"
 #include "pcdcMem.h"
 #include "stubs.h"
+
 #include <cstring>
+#include <cmath>
 
 #include "validate.h"
 
@@ -139,10 +141,18 @@ void DCSetBootROMSoundMode(bool a1)
 	}
 }
 
-// @SMALLTODO
-void PSXPitchToDCPitch(i32)
+// @Ok
+// @AlmostMatching: after the log function there's an extra spill in memory that I cannot match
+// don't know if it's due to float consistency thingy, but can't repro this shit for some reason
+INLINE i32 PSXPitchToDCPitch(i32 a1)
 {
-    printf("PSXPitchToDCPitch(i32)");
+	if (a1 <= 0)
+		return 0;
+
+	f32 v16 = 1.442695f * logf(a1);
+	f32 v17 = (v16 - 10.0f) * 1200.0f;
+
+	return v17;
 }
 
 // @NotOk
@@ -466,7 +476,7 @@ void playSFX(u32,u8,i16,i16,i32,u16)
 
 // @NotOk
 // @Validate: when inlined
-u32 translateLevelSpecificAliasToIndex(u32 alias)
+INLINE u32 translateLevelSpecificAliasToIndex(u32 alias)
 {
 	for (i32 i = 0; i < 64; i++)
 	{
