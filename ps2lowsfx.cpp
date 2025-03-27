@@ -111,7 +111,8 @@ INLINE i32 DCSFX_AdjustVol(i32 a1)
 	return 255 - gSfxVolArr[a1];
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DCSetBootROMSoundMode(bool a1)
 {
 	if (a1 != gBootRomSoundMode)
