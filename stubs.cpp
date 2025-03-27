@@ -6,6 +6,13 @@
 
 // @Ok
 // @Matching
+i32 syCfgExit(void)
+{
+	return 0;
+}
+
+// @Ok
+// @Matching
 i32 syCfgSetSoundMode(i32)
 {
 	return 0;

@@ -126,10 +126,9 @@ void DCSetBootROMSoundMode(bool a1)
 		DoAssert(v3 == 0, "Problem with syCfgGetSoundMode");
 
 
-		/*
-		v4 = syRtcInit();
+		i32 v4 = syCfgExit();
 		DoAssert(v4 == 0, "Problem with syCfgExit");
-		*/
+
 		syFree(v1);
 	}
 }
