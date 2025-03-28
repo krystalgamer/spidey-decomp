@@ -7,11 +7,15 @@
 #include "stubs.h"
 #include "utils.h"
 #include "tweak.h"
+#include "spidey.h"
 
 #include <cstring>
 #include <cmath>
 
 #include "validate.h"
+
+// @Ok
+EXPORT i32 gSfxGlobal;
 
 // @Ok
 u32 SFXFalloffArray[32];
@@ -517,7 +521,44 @@ void SFX_SpoolOutLevelSFX(void)
 // @SMALLTODO
 void SFX_Unpause(void)
 {
-    printf("SFX_Unpause(void)");
+	if (SFXPaused)
+	{
+		SFXPaused = 0;
+		for (i32 i = 0; i < 32; i++)
+		{
+			if (gSfxEntries[i].field_1B)
+			{
+				i32 v5 = 0;
+				if (gSfxEntries[i].field_24 & 0x4000 || !gReverbType)
+					v5 = 1;
+
+				v6 = (gGameState[12] * ((gSfxEntries[i].field_18 * gSfxEntries[i].field_16) >> 12)) >> 14;
+				if (v6 > 0x3FF)
+				{
+					v6 = 0x3FFF;
+				}
+				else if (v6 < -16383)
+				{
+					v6 = -16383;
+				}
+
+				i32 v7 = DCSFX_AdjustVol(v6);
+				v8 = v5 == 0;
+				if (v5 == 0)
+					acDspSetMixerChannel(0, 15, 10);
+
+				DXSOUND_SetVolume(i, v9);
+				DXSOUND_SetPan(i, 15);
+				DXSOUND_SetPitch(i, gSfxEntries[i].field_20);
+				DXSOUND_Play(i, 1);
+			}
+		}
+
+		gSfxGlobal = 6666;
+		MechList->field_530 = 6666;
+		Redbook_XAPause(0);
+		nullsub_3();
+	}
 }
 
 // @MEDIUMTODO

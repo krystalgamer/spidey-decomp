@@ -26,9 +26,11 @@ class CPlayer : public CSuper
 		i32 field_350;
 		u8 padAfter350[0x528-0x350-4];
 
-		int field_528;
-		int field_52C;
-		unsigned char padAfter52C[0x538-0x52C-4];
+		i32 field_528;
+		i32 field_52C;
+		i32 field_530;
+
+		PADDING(0x538-0x530-4);
 
 		u32 field_538;
 		u8 padAfter538[0x54C-0x538-4];

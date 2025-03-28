@@ -86,6 +86,7 @@ EXPORT void setupFog(void);
 EXPORT void submitPoly(_DXVERT **,i32);
 
 EXPORT i32 amHeapFree(i32);
+EXPORT i32 acDspSetMixerChannel(i32, i32, i32, i32);
 
 EXPORT i32 STDCALL kmSetPALEXTCallback(void*, i32);
 EXPORT i32 STDCALL kmSetDisplayMode(i32, i32, i32, i32);
