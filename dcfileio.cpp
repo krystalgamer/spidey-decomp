@@ -7,7 +7,7 @@
 #include "mem.h"
 #include "my_debug.h"
 #include "pcdcMem.h"
-
+#include "my_assert.h"
 #include "pcdcFile.h"
 
 #include <cstring>
@@ -38,7 +38,7 @@ void DebugPrintfX(char *,...)
 // @Matching
 u8 FileIO_FileExists(const char* pFileName)
 {
-	print_if_false(gFileIOStatus == 0, "Previous file not finished loading");
+	DoAssert(gFileIOStatus == 0, "Previous file not finished loading");
 	HANDLE handle = gdFsOpen(pFileName, 0);
 	if (!handle)
 		return 0;
@@ -195,7 +195,28 @@ i32 FileIO_Open(const char* pName)
 }
 
 // @Ok
-void FileIO_Sync(void)
+// @Matching
+void* FileIO_Unk(const char* pName, i32 *size)
+{
+	DoAssert(gFileIOStatus == 0, "Previous file not finished loading");
+	FileIO_Sync();
+
+	i32 s = FileIO_Open(pName);
+	*size = s;
+
+	if (!s)
+	{
+		return 0;
+	}
+
+	void *buf = syMalloc(s);
+	DoAssert(!!buf, "Out of system memory.");
+	FileIO_Load(buf);
+	return buf;
+}
+
+// @Ok
+INLINE void FileIO_Sync(void)
 {
 	while (gFileIOStatus);
 }
