@@ -290,10 +290,18 @@ void SFX_Init(char* pSfxBankName)
 	SFX_ParseSFXFile(buf, gSfxArrayOne, gSfxArraAliasyOne, 64, 0);
 }
 
-// @SMALLTODO
+// @NotOk
+// @Note: this is fine, it's missing a bunch of stubbed calls that after spending too much time
+// looking into the DreamCast version I opted not to pursue further. If someone wants a challenge, enjoy.
 void SFX_InitAtStart(void)
 {
-    printf("SFX_InitAtStart(void)");
+	if (!gSfxInited)
+	{
+		memset(gSfxEntries, 0, sizeof(gSfxEntries));
+		memset(&gSfxSomething, 0, sizeof(gSfxSomething));
+		gSfxInited = 1;
+		gNumVoices = 0;
+	}
 }
 
 // @Ok
