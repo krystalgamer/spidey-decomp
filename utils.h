@@ -40,7 +40,7 @@ EXPORT void Pause(i32);
 EXPORT void Utils_CalcPerps(CVector *,CVector *,CVector *);
 EXPORT void Utils_CalcUnitFacingCamera(CVector const *,CVector const *,CVector *);
 EXPORT void Utils_CalcWallPerps(CVector * a1,CVector * a2,CVector * a3);
-EXPORT void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32);
+EXPORT u32 Utils_CalculateSpatialAttenuation(const CVector *,i32,i32);
 EXPORT i32 Utils_CanSee(CItem *,CItem *,i32,i32,i32);
 EXPORT u32 Utils_Dist(CVector const *,CVector const *);
 EXPORT void Utils_InitLoadIcons(void);

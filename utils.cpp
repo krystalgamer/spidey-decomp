@@ -147,9 +147,10 @@ void Utils_CalcWallPerps(CVector * a1,CVector * a2,CVector * a3)
 }
 
 // @SMALLTODO
-void Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)
+u32 Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)
 {
     printf("Utils_CalculateSpatialAttenuation(CVector const *,i32,i32)");
+	return 0x28032025;
 }
 
 // @Ok

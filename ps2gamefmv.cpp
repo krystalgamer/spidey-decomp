@@ -20,8 +20,6 @@ EXPORT i32 GameFMV_EndFrame;
 
 EXPORT i32 gGameFmvPad;
 
-EXPORT i16 gGameFmvVolume;
-
 
 #define NUM_MOVIES 27
 
@@ -51,7 +49,7 @@ u8 GameFMV_PlayMovie(
 		GameFMV_Active = 1;
 		Front_ClearScreen();
 
-		i32 v4 = gGameFmvVolume * a4;
+		i32 v4 = gGameState[11] * a4;
 		if (v4 > 255)
 			v4 = 255;
 		PCMOVIE_SetVolume(v4);

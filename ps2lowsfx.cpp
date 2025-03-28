@@ -299,7 +299,10 @@ void SFX_LoadBank(const char*,SSFXBank *)
 }
 
 // @SMALLTODO
-void SFX_ModifyPos(u32,const CVector *,i32)
+void SFX_ModifyPos(
+		u32 voice_id,
+		const CVector *pos,
+		i32 delta_dist)
 {
     printf("SFX_ModifyPos(u32,CVector const *,i32)");
 }
