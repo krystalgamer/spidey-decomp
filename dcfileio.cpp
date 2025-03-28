@@ -22,6 +22,12 @@ EXPORT void* gFileIoMemory;
 EXPORT volatile i32 gFileIOStatus;
 EXPORT u8 gFileIoInit;
 
+// @Ok
+// @Matching
+void FileIO_Continue(void)
+{
+}
+
 // @SMALLTODO
 void DebugPrintfX(char *,...)
 {
