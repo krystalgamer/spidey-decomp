@@ -216,6 +216,14 @@ void* FileIO_Unk(const char* pName, i32 *size)
 }
 
 // @Ok
+// @Matching
+void FileIO_Unk2(void *p)
+{
+	DoAssert(!!p, "Cannot free null pointer");
+	syFree(p);
+}
+
+// @Ok
 INLINE void FileIO_Sync(void)
 {
 	while (gFileIOStatus);

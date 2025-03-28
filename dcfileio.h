@@ -13,5 +13,6 @@ EXPORT void FileIO_Load(void *);
 EXPORT i32 FileIO_Open(const char *);
 EXPORT void* FileIO_Unk(const char*, i32 *);
 EXPORT void FileIO_Continue(void);
+EXPORT void FileIO_Unk2(void*);
 
 #endif
