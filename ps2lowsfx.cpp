@@ -99,6 +99,12 @@ static void nullsub_3(void)
 {
 }
 
+// @IGNOREME
+// @Note: exists purely for matching purposes
+static void nullsub_one_arg(i32)
+{
+}
+
 // @Ok
 INLINE void CopyFilenameDefaultExtension(
 		char* dst,
@@ -518,7 +524,8 @@ void SFX_SpoolOutLevelSFX(void)
 	SFX_CloseBank(&gSfxRelatedOutLevel);
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: same size and reg allocation, just shifted pointer diff offsets for gSfxEntries
 void SFX_Unpause(void)
 {
 	if (SFXPaused)
@@ -528,11 +535,14 @@ void SFX_Unpause(void)
 		{
 			if (gSfxEntries[i].field_1B)
 			{
-				i32 v5 = 0;
-				if (gSfxEntries[i].field_24 & 0x4000 || !gReverbType)
+				u8 v5;
+				if (!(gSfxEntries[i].field_24 & 0x4000) && gReverbType)
+					v5 = 0;
+				else
 					v5 = 1;
 
-				v6 = (gGameState[12] * ((gSfxEntries[i].field_18 * gSfxEntries[i].field_16) >> 12)) >> 14;
+
+				i32 v6 = (gGameState[12] * ((gSfxEntries[i].field_18 * gSfxEntries[i].field_16) >> 12)) >> 14;
 				if (v6 > 0x3FF)
 				{
 					v6 = 0x3FFF;
@@ -543,11 +553,10 @@ void SFX_Unpause(void)
 				}
 
 				i32 v7 = DCSFX_AdjustVol(v6);
-				v8 = v5 == 0;
 				if (v5 == 0)
-					acDspSetMixerChannel(0, 15, 10);
+					acDspSetMixerChannel(i, 0, 15, 10);
 
-				DXSOUND_SetVolume(i, v9);
+				DXSOUND_SetVolume(i, v7);
 				DXSOUND_SetPan(i, 15);
 				DXSOUND_SetPitch(i, gSfxEntries[i].field_20);
 				DXSOUND_Play(i, 1);
@@ -557,7 +566,7 @@ void SFX_Unpause(void)
 		gSfxGlobal = 6666;
 		MechList->field_530 = 6666;
 		Redbook_XAPause(0);
-		nullsub_3();
+		nullsub_one_arg(2);
 	}
 }
 
@@ -667,6 +676,7 @@ void validate_SSfxEntry(void)
 	VALIDATE(SSfxEntry, field_14, 0x14);
 
 	VALIDATE(SSfxEntry, field_16, 0x16);
+	VALIDATE(SSfxEntry, field_18, 0x18);
 
 	VALIDATE(SSfxEntry, field_1A, 0x1A);
 	VALIDATE(SSfxEntry, field_1B, 0x1B);

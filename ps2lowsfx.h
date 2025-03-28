@@ -42,7 +42,7 @@ struct SSfxEntry
 	u16 field_14;
 
 	u16 field_16;
-	PADDING(0x1A-0x16-2);
+	u16 field_18;
 
 	u8 field_1A;
 	u8 field_1B;
