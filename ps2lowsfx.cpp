@@ -5,11 +5,16 @@
 #include "PCGfx.h"
 #include "pcdcMem.h"
 #include "stubs.h"
+#include "utils.h"
+#include "tweak.h"
 
 #include <cstring>
 #include <cmath>
 
 #include "validate.h"
+
+// @Ok
+u32 SFXFalloffArray[32];
 
 // @Ok
 u32 SFXLevelSpecificArray[192];
@@ -298,13 +303,57 @@ void SFX_LoadBank(const char*,SSFXBank *)
     printf("SFX_LoadBank(char const *,SSFXBank *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: inline of PSXPitchToDCPitch not matching
 void SFX_ModifyPos(
 		u32 voice_id,
 		const CVector *pos,
 		i32 delta_dist)
 {
-    printf("SFX_ModifyPos(u32,CVector const *,i32)");
+	if (voice_id)
+	{
+		for (i32 i = 0; i < 32; i++)
+		{
+			if (voice_id & (1<<i))
+			{
+				u32 v11 = Utils_CalculateSpatialAttenuation(
+						pos,
+						(SFXFalloffArray[i] >> 2) & 0x3FFF,
+						(SFXFalloffArray[i] & 0xFFFF) << 1);
+
+				i32 v13 = v11 & 0xFFF;
+				v13 <<= 2;
+				v13 *= gGameState[12];
+				v13 >>= 14;
+
+				i32 v14 = (v11 >> 16) & 0xFFF;
+				v14 <<= 2;
+				v14 *= gGameState[12];
+				v14 >>= 14;
+
+				if (gBootRomSoundMode)
+				{
+					v14 = (v13 + v14) / 2;
+					v13 = v14;
+				}
+
+				SFX_ModifyVol(1 << i, v13, v14);
+				
+
+				if (delta_dist)
+				{
+					i32 v16 = gSfxEntries[i].field_14;
+					i32 v17 = v16 * delta_dist / 0x2000;
+					i32 v18 = v16 - v17;
+					if (v18 > v16 && v18 - v16 > v16 + (v16 >> 1))
+						v18 = v16 + (v16 >> 1);
+
+					gSfxEntries[i].field_20 = PSXPitchToDCPitch(v18);
+					DXSOUND_SetPitch(i, gSfxEntries[i].field_20);
+				}
+			}
+		}
+	}
 }
 
 // @Ok
@@ -574,11 +623,15 @@ void validate_SSfxEntry(void)
 
 	VALIDATE(SSfxEntry, field_10, 0x10);
 
+	VALIDATE(SSfxEntry, field_14, 0x14);
+
 	VALIDATE(SSfxEntry, field_16, 0x16);
 
 	VALIDATE(SSfxEntry, field_1A, 0x1A);
 	VALIDATE(SSfxEntry, field_1B, 0x1B);
 	VALIDATE(SSfxEntry, field_1C, 0x1C);
+
+	VALIDATE(SSfxEntry, field_20, 0x20);
 
 	VALIDATE(SSfxEntry, field_24, 0x24);
 }

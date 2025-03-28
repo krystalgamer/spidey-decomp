@@ -5,6 +5,7 @@
 #include "front.h"
 #include "ps2pad.h"
 #include "PCShell.h"
+#include "tweak.h"
 
 #include "validate.h"
 

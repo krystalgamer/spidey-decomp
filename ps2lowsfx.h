@@ -39,7 +39,8 @@ struct SSfxEntry
 
 	i32 field_10;
 
-	PADDING(0x16-0x10-4);
+	u16 field_14;
+
 	u16 field_16;
 	PADDING(0x1A-0x16-2);
 
@@ -47,7 +48,7 @@ struct SSfxEntry
 	u8 field_1B;
 	i32 field_1C;
 
-	PADDING(4);
+	i32 field_20;
 
 	i32 field_24;
 };
