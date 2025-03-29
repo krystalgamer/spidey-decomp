@@ -430,6 +430,7 @@ void validate_BmpHeader(void)
 	VALIDATE(BMPHeader, num_colors, 0x2E);
 
 }
+
 void validate_Load8BitBMP2(void)
 {
 	return;

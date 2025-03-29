@@ -87,11 +87,11 @@ EXPORT SSFXBank gSoundBank;
 EXPORT SSFXBank gSfxRelatedOutLevel;
 
 
-// @FIXME: get proper size
-EXPORT u32 gSfxArrayOne[256];
+// @Ok
+EXPORT u32 gSfxArrayOne[192];
 
-// @FIXME: get proper size
-EXPORT u16 gSfxArraAliasyOne[256];
+// @Ok
+EXPORT u16 gSfxArraAliasyOne[64];
 
 // @IGNOREME
 // @Note: exists purely for matching purposes
@@ -560,9 +560,62 @@ void SFX_Off(void)
 }
 
 // @MEDIUMTODO
-void SFX_ParseSFXFile(char *,u32 *,u16 *,i32,i32)
+void SFX_ParseSFXFile(
+		char *p_name,
+		u32 *array,
+		u16 *aliasArray,
+		i32 maxEntries,
+		i32 mask)
 {
-    printf("SFX_ParseSFXFile(char *,u32 *,u16 *,i32,i32)");
+	char v20[20];
+
+	DoAssert(p_name != 0, "Invalid SFX filename");
+	DoAssert(array != 0, "No sfx array to fill");
+	DoAssert(aliasArray != 0, "No sfx alias array to fill");
+
+	sprintf(v20, p_name);
+
+	u32 *pSfxFile = static_cast<u32*>(DCMem_New(0x800u, 0, 1, 0, 1));
+	i32 fileSize = FileIO_Open(v20);
+	DoAssert(fileSize <= 2048, "Bad size for .SFX file");
+
+	FileIO_Load(pSfxFile);
+	FileIO_Sync();
+
+	u32 curVal = *pSfxFile;
+	i32 arrayIndex = 0;
+	i32 aliasIndex = 0;
+
+	while (curVal != 0xFFFFFFFF)
+	{
+		if (arrayIndex >= 192)
+			break;
+
+		if ((curVal & 0xFF) == 0xFE)
+			*array = mask | 0x80000000;
+		else 
+			*array = mask;
+
+		array[arrayIndex] |= (curVal >> 8 & 0xFF) << 0x10 | 1 << ((curVal >> 0x10) & 0x1F);
+
+		u32 nextVal = pSfxFile[1];
+
+		array[arrayIndex+1] = curVal >> 0x18 | nextVal & 0xFFFF0000;
+		array[arrayIndex+2] = nextVal & 0xFFFF;
+
+		aliasArray[aliasIndex] = pSfxFile[2];
+
+		arrayIndex += 3;
+		aliasIndex++;
+
+		pSfxFile += 4;
+		curVal = *pSfxFile;
+	}
+
+	if (aliasIndex < maxEntries)
+		aliasArray[aliasIndex] = -1;
+
+	Mem_Delete(pSfxFile);
 }
 
 // @Ok
