@@ -315,7 +315,9 @@ INLINE void SFX_KillVoice(u32 a1)
 	}
 }
 
-// @MEDIUMTODO
+// @Ok
+// @AlmostMatching: KillVoice is not inlined here for some reason, tiny reg allocation diff
+// diffs come also from fileSize update but that's not used so idgaf
 void SFX_LoadBank(
 		const char *pName,
 		SSFXBank *pBank)
@@ -342,6 +344,7 @@ void SFX_LoadBank(
 	pBank->mNumAssets = static_cast<i32*>(fileBuf)[0];
 	DoAssert(pBank->mNumAssets < NUM_ASSETS_PER_BANK, "Too many assets in bank.");
 
+	u8 v17 = 0;
 	memcpy(
 			pBank->mAssets,
 			&static_cast<i32*>(fileBuf)[1],
@@ -364,10 +367,70 @@ void SFX_LoadBank(
 				"bogus bit depth");
 		if (pAsset->field_8 >= 0x20000 && pBank != &gSoundBank)
 		{
+			DoAssert(1, "all streaming samples must be at end of bank");
+
+			gSfxSomething.field_4 = pAsset->field_8;
+			gSfxSomething.field_4 &= 0xFFFFFFFC;
+			gSfxSomething.field_4 = pAsset->field_8;
+
+			i32 v13 = 4 - (pAsset->field_4 & 3);
+			gSfxSomething.field_C += 13;
+
+			if (!gSfxSomething.field_0)
+			{
+				gSfxSomething.field_0 = DCMem_New(gSfxSomething.field_4, 0, 1, 0, 1);
+				DoAssert(
+						!!gSfxSomething.field_0,
+						"could not allocate main mem stream buffer");
+				memcpy(
+						gSfxSomething.field_0,
+						&reinterpret_cast<u8*>(fileBuf)[gSfxSomething.field_C],
+						gSfxSomething.field_4);
+			}
+
+			gSfxSomething.field_10 = 0xC000;
+
+			switch (pAsset->field_14)
+			{
+				case 4:
+					gSfxSomething.field_14 = gSfxSomething.field_10;
+					break;
+				case 8:
+					gSfxSomething.field_14 = gSfxSomething.field_10 >> 1;
+					break;
+				case 16:
+					gSfxSomething.field_14 = gSfxSomething.field_10 >> 2;
+					break;
+				default:
+					DoAssert(0, "?");
+				break;
+			}
+
+			v17 = 1;
+			pAsset->field_8 = gSfxSomething.field_10 + v13;
+
+			fileSize += pAsset->field_8 - gSfxSomething.field_4;
+			fileSize += 3;
+			fileSize &= 0xFFFFFFFC;
 		}
-
-
 	}
+
+	u32 *v20;
+	if (!amHeapAlloc(&v20, fileSize, 32, 2, 0))
+		error("unable to allocate %d bytes of sound memory for %s", fileSize, pName);
+
+
+	i32 acRes = acG2Write(v20, fileBuf, fileSize);
+	DoAssert(!!acRes, "acG2Write failed");
+
+	if (v17)
+		gSfxSomething.field_C += reinterpret_cast<i32>(v20);
+
+	Mem_AlignedDelete(fileBuf);
+	pBank->field_4 = reinterpret_cast<i32>(v20);
+	strncpy(pBank->field_8, pName, 56);
+
+	DXSOUND_Load(pBank->field_8);
 }
 
 // @Ok
