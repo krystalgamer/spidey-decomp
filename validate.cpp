@@ -3,7 +3,7 @@
 
 #include <cstring>
 
-int FAIL_VALIDATION = 0;
+i32 FAIL_VALIDATION = 0;
 
 void validate_i32(int cur, int expected, const char *name, int line)
 {

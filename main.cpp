@@ -553,5 +553,5 @@ int main()
 
 void DoAssert(u8, const char*)
 {
-	printf("eheheh");
+	//printf("eheheh");
 }

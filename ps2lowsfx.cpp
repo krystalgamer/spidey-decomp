@@ -14,6 +14,8 @@
 
 #include "validate.h"
 
+#define VALIDATE_PARSESFX
+
 // @Ok
 EXPORT i32 gSfxGlobal;
 
@@ -88,7 +90,214 @@ EXPORT SSFXBank gSfxRelatedOutLevel;
 
 
 // @Ok
-EXPORT u32 gSfxArrayOne[192];
+EXPORT u32 gSfxArrayOne[192] =
+{
+  1u,
+  234881084u,
+  8192u,
+  2u,
+  234881084u,
+  8192u,
+  4u,
+  234881084u,
+  8192u,
+  8u,
+  234881084u,
+  8192u,
+
+  16u,
+  201326652u,
+  8192u,
+  32u,
+  201326652u,
+  8192u,
+
+  64u,
+  201326652u,
+  8192u,
+  128u,
+  201326655u,
+  8192u,
+  256u,
+  201326652u,
+  8192u,
+  512u,
+
+  201326652u,
+
+  8192u,
+  1024u,
+  201326652u,
+  8192u,
+  2048u,
+  201326652u,
+  8192u,
+  4096u,
+  201326652u,
+  8192u,
+  8192u,
+
+  201326652u,
+
+  8192u,
+  16384u,
+  201326652u,
+  8192u,
+  32768u,
+  201326652u,
+  8192u,
+  65537u,
+  201326652u,
+  8192u,
+
+  65538u,
+  201326652u,
+  8192u,
+  65540u,
+  201326652u,
+  8192u,
+  65544u,
+  201326652u,
+  8192u,
+  65552u,
+  201326652u,
+  8192u,
+  65568u,
+  201326652u,
+
+  8192u,
+  65600u,
+  201326652u,
+  8192u,
+  65664u,
+  201326652u,
+  8192u,
+  65792u,
+  201326652u,
+  8192u,
+
+  2147549696u,
+  201326652u,
+  8192u,
+  66560u,
+
+  201326652u,
+
+  8192u,
+  67584u,
+  201326652u,
+  8192u,
+  69632u,
+  201326652u,
+  8192u,
+  73728u,
+  201326652u,
+  8192u,
+
+  81920u,
+  268435516u,
+  8192u,
+  98304u,
+  201326652u,
+  8192u,
+  2147614721u,
+  201326652u,
+  8192u,
+  131074u,
+  201326652u,
+  8192u,
+  131076u,
+  201326652u,
+  8192u,
+  131080u,
+  201326652u,
+  8192u,
+  131088u,
+  201326652u,
+  8192u,
+  131104u,
+  201326652u,
+  8192u,
+  131136u,
+  201326652u,
+  8192u,
+  131200u,
+  201326652u,
+  8192u,
+  131328u,
+  234881084u,
+  8192u,
+  131584u,
+  234881084u,
+  8192u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u,
+  0u
+};
+
 
 // @Ok
 EXPORT u16 gSfxArraAliasyOne[64];
@@ -559,6 +768,8 @@ void SFX_Off(void)
 		stubbed_printf("Stubbed: SFX_Off( void )\n");
 }
 
+u8 testBuf[0x800];
+
 // @MEDIUMTODO
 void SFX_ParseSFXFile(
 		char *p_name,
@@ -575,12 +786,17 @@ void SFX_ParseSFXFile(
 
 	sprintf(v20, p_name);
 
+#ifndef VALIDATE_PARSESFX
 	u32 *pSfxFile = static_cast<u32*>(DCMem_New(0x800u, 0, 1, 0, 1));
 	i32 fileSize = FileIO_Open(v20);
 	DoAssert(fileSize <= 2048, "Bad size for .SFX file");
 
+
 	FileIO_Load(pSfxFile);
 	FileIO_Sync();
+#else
+	u32 *pSfxFile = reinterpret_cast<u32*>(testBuf);
+#endif
 
 	u32 curVal = *pSfxFile;
 	i32 arrayIndex = 0;
@@ -596,7 +812,7 @@ void SFX_ParseSFXFile(
 		else 
 			*array = mask;
 
-		array[arrayIndex] |= (curVal >> 8 & 0xFF) << 0x10 | 1 << ((curVal >> 0x10) & 0x1F);
+		array[arrayIndex] |= (curVal >> 8 & 0xFF) << 0x10 | 1 << ((curVal >> 0x10) & 0xFF);
 
 		u32 nextVal = pSfxFile[1];
 
@@ -615,7 +831,9 @@ void SFX_ParseSFXFile(
 	if (aliasIndex < maxEntries)
 		aliasArray[aliasIndex] = -1;
 
+#ifndef VALIDATE_PARSESFX
 	Mem_Delete(pSfxFile);
+#endif
 }
 
 // @Ok
@@ -824,6 +1042,191 @@ void SFX_Play(u32, i16, i32)
 	printf("void SFX_Play(u32, i16, i32)");
 }
 
+char* sfx_names[62] = {
+	"dem1.sfx",
+	"dem2.sfx",
+	"dem3.sfx",
+	"dem4.sfx",
+	"l1a1.sfx",
+	"l1a2.sfx",
+	"l1a3.sfx",
+	"l1a4.sfx",
+	"l2a1.sfx",
+	"l2a2.sfx",
+	"l3a1.sfx",
+	"l3a2.sfx",
+	"l3a3.sfx",
+	"l3a4.sfx",
+	"l3a5.sfx",
+	"l4a1.sfx",
+	"l5a1.sfx",
+	"l5a2.sfx",
+	"l5a3.sfx",
+	"l5a4.sfx",
+	"l5a5.sfx",
+	"l5a6.sfx",
+	"l5a7.sfx",
+	"l6a1.sfx",
+	"l6a2.sfx",
+	"l6a3.sfx",
+	"l6a4.sfx",
+	"l7a1.sfx",
+	"l7a2.sfx",
+	"l7a3.sfx",
+	"l7a4.sfx",
+	"l7a5.sfx",
+	"l8a1.sfx",
+	"l8a2.sfx",
+	"l8a3.sfx",
+	"l8a4.sfx",
+	"l8a5.sfx",
+	"l8a6.sfx",
+	"l9a1.sfx",
+	"l9a2.sfx",
+	"l9a3.sfx",
+	"l9a4.sfx",
+	"laa1.sfx",
+	"laa2.sfx",
+	"laa3.sfx",
+	"laa4.sfx",
+	"lba1.sfx",
+	"lba2.sfx",
+	"lba3.sfx",
+	"lba4.sfx",
+	"lca1.sfx",
+	"lca2.sfx",
+	"lca3.sfx",
+	"lca4.sfx",
+	"lda1.sfx",
+	"lda2.sfx",
+	"lda3.sfx",
+	"lfa1.sfx",
+	"lga1.sfx",
+	"lha1.sfx",
+	"menu.sfx",
+	"zArt.sfx",
+};
+
+u32 myAray[192];
+u16 myAliasAray[64];
+
+i32 validate_sfx(char *name, i32 mask)
+{
+
+	memset(testBuf, 0, 0x800);
+
+	FILE *fp = fopen(name, "rb");
+
+	if (!fp)
+	{
+		printf("Failed opening file for %s\n", name);
+		return 1;
+	}
+
+	fseek(fp, 0, SEEK_END);
+	i32 size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	if (!fread(testBuf, size, 1, fp))
+	{
+		printf("Failed reading file %s\n", name);
+		return 2;
+	}
+
+	fclose(fp);
+
+	memset(myAray, 0, 192*4);
+	memset(myAliasAray, 0, 64*2);
+
+
+	SFX_ParseSFXFile(name, myAray, myAliasAray, 64, mask);
+
+	u32 tmpArray[192];
+
+
+	char path[256];
+	path[0] = '\0';
+	strcpy(path, name);
+	strcat(path, "_array.bin");
+
+	fp = fopen(path, "rb");
+	if (!fp)
+	{
+		return 3;
+	}
+
+	if (!fread(tmpArray, 192*4, 1, fp))
+	{
+		return 4;
+	}
+
+	fclose(fp);
+
+
+	u16 tmpAlias[64];
+
+	path[0] = '\0';
+	strcpy(path, name);
+	strcat(path, "_alias.bin");
+
+	fp = fopen(path, "rb");
+	if (!fp)
+	{
+		return 5;
+	}
+
+	if (!fread(tmpAlias, 64*2, 1, fp))
+	{
+		return 6;
+	}
+
+	fclose(fp);
+
+	if (memcmp(tmpArray, myAray, 192*4))
+	{
+		FILE *fp_my = fopen("my_oops.bin", "wb");
+		fwrite(myAray, 192*4, 1, fp_my);
+		fclose(fp_my);
+		printf("SFX: Array validation failed for: %s\n", name);
+		return 6;
+	}
+
+	if (memcmp(tmpAlias, myAliasAray, 64*2))
+	{
+		printf("SFX: Alias validation failed for: %s\n", name);
+		return 7;
+	}
+
+
+	printf("Done for %s\n", name);
+
+	return 0;
+}
+
+extern i32 FAIL_VALIDATION;
+
+void validate_SFXParse(void)
+{
+	if (validate_sfx("spidey.sfx", 0))
+	{
+		puts("failed for spidey");
+		FAIL_VALIDATION = 1;
+		return;
+	}
+
+	for (i32 i = 0; i < sizeof(sfx_names) / sizeof (char*); i++)
+	{
+		if (validate_sfx(sfx_names[i], 0x40000000))
+		{
+			printf("failed for %s\n", sfx_names[i]);
+			FAIL_VALIDATION = 1;
+			return;
+		}
+	}
+
+
+}
+
 void validate_SSFXBank(void)
 {
 	VALIDATE_SIZE(SSFXBank, 0x19B0);
@@ -833,6 +1236,10 @@ void validate_SSFXBank(void)
 	VALIDATE(SSFXBank, field_8, 0x8);
 
 	VALIDATE(SSFXBank, mAssets, 0x40);
+
+#ifdef VALIDATE_PARSESFX
+	validate_SFXParse();
+#endif
 }
 
 void validate_SSfxEntry(void)
@@ -883,5 +1290,4 @@ void validate_SSfxAsset(void)
 	VALIDATE(SSfxAsset, field_C, 0xC);
 
 	VALIDATE(SSfxAsset, field_14, 0x14);
-
 }
