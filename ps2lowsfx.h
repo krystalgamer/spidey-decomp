@@ -13,7 +13,7 @@ struct SSfxAsset
 	PADDING(4);
 
 	i32 field_4;
-	i32 field_8;
+	u32 field_8;
 	i32 field_C;
 
 	PADDING(0x14-0xC-4);

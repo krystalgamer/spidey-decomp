@@ -346,6 +346,28 @@ void SFX_LoadBank(
 			pBank->mAssets,
 			&static_cast<i32*>(fileBuf)[1],
 			sizeof(SSfxAsset) * pBank->mNumAssets);
+
+	i32 mNumAssets = pBank->mNumAssets;
+	SSfxAsset *pAsset = &pBank->mAssets[pBank->mNumAssets];
+
+	while (--pAsset >= pBank->mAssets)
+	{
+
+		DoAssert(--mNumAssets >= 0, "too many streams in the bank");
+
+		DoAssert(
+				pAsset->field_C >= 0x63 && pAsset->field_C <= 0xF423F,
+				"bogus sample rate");
+
+		DoAssert(
+				pAsset->field_14 == 4 || pAsset->field_14 == 8 || pAsset->field_14 == 16,
+				"bogus bit depth");
+		if (pAsset->field_8 >= 0x20000 && pBank != &gSoundBank)
+		{
+		}
+
+
+	}
 }
 
 // @Ok

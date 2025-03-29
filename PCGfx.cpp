@@ -59,6 +59,13 @@ EXPORT i32 gEndSceneRelatedTwo;
 
 // @Ok
 // @Matching
+i32 amHeapAlloc(u32**, i32, i32, i32, i32)
+{
+	return 0;
+}
+
+// @Ok
+// @Matching
 i32 acDspSetMixerChannel(i32, i32, i32, i32)
 {
 	return 0;

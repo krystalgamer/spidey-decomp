@@ -94,6 +94,8 @@ EXPORT i32 STDCALL kmInitDevice(i32);
 EXPORT i32 STDCALL kmSetWaitVsyncCount(i32);
 EXPORT i32 STDCALL kmUnloadDevice(void);
 
+EXPORT i32 amHeapAlloc(u32**, i32, i32, i32, i32);
+
 EXPORT extern u8 gSceneRelated;
 EXPORT extern u32 gPcGfxSkyColor;
 EXPORT extern u8 gBFoggingRelated;
