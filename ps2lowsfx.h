@@ -10,7 +10,17 @@
 
 struct SSfxAsset
 {
-	PADDING(44);
+	PADDING(4);
+
+	i32 field_4;
+	i32 field_8;
+	i32 field_C;
+
+	PADDING(0x14-0xC-4);
+
+	i32 field_14;
+
+	PADDING(0x2C-0x14-4);
 };
 
 struct SSfxRelated
@@ -66,18 +76,18 @@ struct SSFXBank
 	// @Ok
 	SSFXBank(void)
 	{
-		this->field_0 = 0;
+		this->mNumAssets = 0;
 		this->field_4 = 0;
 		this->field_8[0] = 0;
 
-		memset(&this->field_40, 0, sizeof(SSfxAsset) * NUM_ASSETS_PER_BANK);
+		memset(&this->mAssets, 0, sizeof(SSfxAsset) * NUM_ASSETS_PER_BANK);
 	}
 
-	i32 field_0;
+	i32 mNumAssets;
 	i32 field_4;
 	char field_8[0x38];
 	
-	SSfxAsset field_40[NUM_ASSETS_PER_BANK];
+	SSfxAsset mAssets[NUM_ASSETS_PER_BANK];
 };
 
 EXPORT i32 SFX_PlayPos(u32, CVector*, i32);

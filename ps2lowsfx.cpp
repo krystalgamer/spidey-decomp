@@ -251,7 +251,7 @@ INLINE void SFX_CloseBank(SSFXBank *pBank)
 		i32 res = amHeapFree(pBank->field_4);
 		DoAssert(!!res, "amHeapFree failed");
 		pBank->field_4 = 0;
-		pBank->field_0 = 0;
+		pBank->mNumAssets = 0;
 
 		if (gSfxSomething.field_0)
 			Mem_AlignedDelete(gSfxSomething.field_0);
@@ -339,13 +339,13 @@ void SFX_LoadBank(
 	FileIO_Load(fileBuf);
 	FileIO_Sync();
 
-	pBank->field_0 = static_cast<i32*>(fileBuf)[0];
-	DoAssert(pBank->field_0 < NUM_ASSETS_PER_BANK, "Too many assets in bank.");
+	pBank->mNumAssets = static_cast<i32*>(fileBuf)[0];
+	DoAssert(pBank->mNumAssets < NUM_ASSETS_PER_BANK, "Too many assets in bank.");
 
 	memcpy(
-			pBank->field_40,
+			pBank->mAssets,
 			&static_cast<i32*>(fileBuf)[1],
-			sizeof(SSfxAsset) * pBank->field_0);
+			sizeof(SSfxAsset) * pBank->mNumAssets);
 }
 
 // @Ok
@@ -690,11 +690,11 @@ void validate_SSFXBank(void)
 {
 	VALIDATE_SIZE(SSFXBank, 0x19B0);
 
-	VALIDATE(SSFXBank, field_0, 0x0);
+	VALIDATE(SSFXBank, mNumAssets, 0x0);
 	VALIDATE(SSFXBank, field_4, 0x4);
 	VALIDATE(SSFXBank, field_8, 0x8);
 
-	VALIDATE(SSFXBank, field_40, 0x40);
+	VALIDATE(SSFXBank, mAssets, 0x40);
 }
 
 void validate_SSfxEntry(void)
@@ -739,4 +739,11 @@ void validate_SSfxRelated(void)
 void validate_SSfxAsset(void)
 {
 	VALIDATE_SIZE(SSfxAsset, 0x2C);
+
+	VALIDATE(SSfxAsset, field_4, 0x4);
+	VALIDATE(SSfxAsset, field_8, 0x8);
+	VALIDATE(SSfxAsset, field_C, 0xC);
+
+	VALIDATE(SSfxAsset, field_14, 0x14);
+
 }
