@@ -6,6 +6,12 @@
 
 #include "export.h"
 #include "vector.h"
+#include <cstring>
+
+struct SSfxAsset
+{
+	PADDING(44);
+};
 
 struct SSfxRelated
 {
@@ -53,6 +59,8 @@ struct SSfxEntry
 	i32 field_24;
 };
 
+#define NUM_ASSETS_PER_BANK 148
+
 struct SSFXBank
 {
 	// @Ok
@@ -62,15 +70,14 @@ struct SSFXBank
 		this->field_4 = 0;
 		this->field_8[0] = 0;
 
-		for (i32 i = 0; i < 0x1970; i++)
-			this->field_40[i] = 0;
+		memset(&this->field_40, 0, sizeof(SSfxAsset) * NUM_ASSETS_PER_BANK);
 	}
 
 	i32 field_0;
 	i32 field_4;
 	char field_8[0x38];
 	
-	u8 field_40[0x1970];
+	SSfxAsset field_40[NUM_ASSETS_PER_BANK];
 };
 
 EXPORT i32 SFX_PlayPos(u32, CVector*, i32);
@@ -108,6 +115,7 @@ EXPORT u32 translateLevelSpecificAliasToIndex(u32);
 void validate_SSFXBank(void);
 void validate_SSfxEntry(void);
 void validate_SSfxRelated(void);
+void validate_SSfxAsset(void);
 
 #endif
 

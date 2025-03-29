@@ -8,8 +8,8 @@
 #include "utils.h"
 #include "tweak.h"
 #include "spidey.h"
+#include "dcfileio.h"
 
-#include <cstring>
 #include <cmath>
 
 #include "validate.h"
@@ -316,9 +316,36 @@ INLINE void SFX_KillVoice(u32 a1)
 }
 
 // @MEDIUMTODO
-void SFX_LoadBank(const char*,SSFXBank *)
+void SFX_LoadBank(
+		const char *pName,
+		SSFXBank *pBank)
 {
-    printf("SFX_LoadBank(char const *,SSFXBank *)");
+	if (pBank->field_4 && !strcmp(pBank->field_8, pName))
+		return;
+
+	SFX_CloseBank(pBank);
+
+	if (!FileIO_FileExists(pName))
+	{
+		DebugPrintfX("could not find sound bank %s...", pName);
+		return;
+	}
+
+	DebugPrintfX("loading sound bank %s...", pName);
+	i32 fileSize = FileIO_Open(pName);
+	DoAssert(fileSize != 0, "couldn't find bank file");
+
+	void *fileBuf = DCMem_New(fileSize, 0, 1, 0, 1);
+	FileIO_Load(fileBuf);
+	FileIO_Sync();
+
+	pBank->field_0 = static_cast<i32*>(fileBuf)[0];
+	DoAssert(pBank->field_0 < NUM_ASSETS_PER_BANK, "Too many assets in bank.");
+
+	memcpy(
+			pBank->field_40,
+			&static_cast<i32*>(fileBuf)[1],
+			sizeof(SSfxAsset) * pBank->field_0);
 }
 
 // @Ok
@@ -707,4 +734,9 @@ void validate_SSfxRelated(void)
 	VALIDATE(SSfxRelated, field_10, 0x10);
 	VALIDATE(SSfxRelated, field_14, 0x14);
 	VALIDATE(SSfxRelated, field_18, 0x18);
+}
+
+void validate_SSfxAsset(void)
+{
+	VALIDATE_SIZE(SSfxAsset, 0x2C);
 }
