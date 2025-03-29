@@ -14,7 +14,7 @@
 
 #include "validate.h"
 
-#define VALIDATE_PARSESFX
+//#define VALIDATE_PARSESFX
 
 // @Ok
 EXPORT i32 gSfxGlobal;
@@ -31,7 +31,7 @@ u16 SFXLevelSpecificAliasArray[64];
 EXPORT bool gBootRomSoundMode;
 
 // @Ok
-u8 gSfxVolArr[256] =
+EXPORT u8 gSfxVolArr[256] =
 {
 
   0xFF, 0xFB, 0xF7, 0xF3, 0xEF, 0xEB, 0xE7, 0xE3, 0xDF, 0xDB, 
@@ -770,7 +770,8 @@ void SFX_Off(void)
 
 u8 testBuf[0x800];
 
-// @MEDIUMTODO
+// @Ok
+// @Validated
 void SFX_ParseSFXFile(
 		char *p_name,
 		u32 *array,
@@ -808,11 +809,12 @@ void SFX_ParseSFXFile(
 			break;
 
 		if ((curVal & 0xFF) == 0xFE)
-			*array = mask | 0x80000000;
+			array[arrayIndex] = mask | 0x80000000;
 		else 
-			*array = mask;
+			array[arrayIndex] = mask;
 
-		array[arrayIndex] |= (curVal >> 8 & 0xFF) << 0x10 | 1 << ((curVal >> 0x10) & 0xFF);
+		array[arrayIndex] |= (curVal & 0x0000FF00) << 8;
+		array[arrayIndex] |= 1 << ((curVal >> 0x10) & 0xFF);
 
 		u32 nextVal = pSfxFile[1];
 
@@ -1251,12 +1253,7 @@ void validate_SSfxEntry(void)
 	VALIDATE(SSfxEntry, field_8, 0x8);
 	VALIDATE(SSfxEntry, field_C, 0xC);
 
-	VALIDATE(SSfxEntry, field_10, 0x10);
-
-	VALIDATE(SSfxEntry, field_14, 0x14);
-
-	VALIDATE(SSfxEntry, field_16, 0x16);
-	VALIDATE(SSfxEntry, field_18, 0x18);
+	VALIDATE(SSfxEntry, field_18, 0x18)
 
 	VALIDATE(SSfxEntry, field_1A, 0x1A);
 	VALIDATE(SSfxEntry, field_1B, 0x1B);
