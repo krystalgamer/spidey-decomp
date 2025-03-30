@@ -974,8 +974,8 @@ u32 playSFX(u32,u8,i16,i16,i32,u16)
 	return 0x30032025;
 }
 
-// @NotOk
-// @Validate: when inlined
+// @Ok
+// @Matching
 INLINE u32 translateLevelSpecificAliasToIndex(u32 alias)
 {
 	for (i32 i = 0; i < 64; i++)
@@ -1118,10 +1118,54 @@ INLINE void SFX_Stop(u32 a1)
 	}
 }
 
-// @BIGTODO
-void SFX_Play(u32, i16, i32)
+// @Ok
+// @Validate
+// @AlmostMatching: similar to SFX_PlayPos, the args being pushed are weird too
+u32 SFX_Play(
+		u32 sound,
+		i16 vol,
+		i32 pitch_offset)
 {
-	printf("void SFX_Play(u32, i16, i32)");
+
+	u8 v4 = (sound >> 15) & 1;
+	u8 d4 = (sound >> 14) & 1;
+	u32 sfxIndex = sound & 0xFFFF3FFF;
+
+	if (!sound)
+		return 0;
+
+	u32 v9;
+	if (v4)
+	{
+		v9 = translateLevelSpecificAliasToIndex(sfxIndex);
+		if (v9 == 0xFFFFFFFF)
+			return 0;
+	}
+	else
+	{
+		DoAssert(sfxIndex < 0x40, "SFX index out of bounds");
+		v9 = sfxIndex - 1;
+	}
+
+	u32 *v10 = &SFXLevelSpecificArray[3 * v9];
+	if (!v4)
+		v10 = &gSfxArrayOne[3 * v9];
+
+
+	u32 v12 = v10[1] & 0xFFFF;
+	u32 firstValue = v10[0];
+    u32 v13 = (v10[1] >> 0x10) & 0xFFFF;
+
+	i32 realVol = (vol * gGameState[12]) >> 14;
+	gSfxPlayRelated = (100 * v13) >> 12;
+
+	return playSFX(
+			firstValue | (d4 ? 0x4000 : 0),
+			v12,
+			realVol,
+			realVol,
+			pitch_offset,
+			v13 & 0xFFFF);
 }
 
 char* sfx_names[62] = {
