@@ -16,6 +16,10 @@
 
 //#define VALIDATE_PARSESFX
 
+
+// @Ok
+EXPORT u32 gSfxPlayRelated;
+
 // @Ok
 EXPORT i32 gSfxGlobal;
 
@@ -964,9 +968,10 @@ void SFX_Unpause(void)
 }
 
 // @MEDIUMTODO
-void playSFX(u32,u8,i16,i16,i32,u16)
+u32 playSFX(u32,u8,i16,i16,i32,u16)
 {
     printf("playSFX(u32,u8,i16,i16,i32,u16)");
+	return 0x30032025;
 }
 
 // @NotOk
@@ -996,10 +1001,85 @@ INLINE void SFX_StopAll(void)
 	}
 }
 
-// @BIGTODO
-i32 SFX_PlayPos(u32, CVector*, i32)
+// @Ok
+// @AlmostMatching: the v10 assingment was originally optimized but i managed to make it a little better
+// also the last call to playSFX is not perfect matching but fine
+// @Validate
+u32 SFX_PlayPos(
+		u32 sound,
+		CVector *pos,
+		i32 pitch_offset)
 {
-	return 0x23072024;
+	if (!sound)
+		return 0;
+
+	u8 v4 = (sound >> 15) & 1;
+	u8 v5 = (sound >> 14) & 1;
+	u32 sfxIndex = sound & 0xFFFF3FFF;
+
+	u32 v9;
+	if (v4)
+	{
+		v9 = translateLevelSpecificAliasToIndex(sfxIndex);
+		if (v9 == 0xFFFFFFFF)
+			return 0;
+	}
+	else
+	{
+		DoAssert(sfxIndex < 0x40, "SFX index out of bounds");
+		v9 = sfxIndex - 1;
+	}
+
+	u32 *v10 = &SFXLevelSpecificArray[3 * v9];
+	if (!v4)
+		v10 = &gSfxArrayOne[3 * v9];
+
+	u32 soundTwo = v10[2];
+	u32 v11 = Utils_CalculateSpatialAttenuation(
+			pos,
+			soundTwo >> 2,
+			2 * soundTwo);
+
+	u32 v12 = v10[1];
+	u32 v13 = v12 >> 0x10;
+
+	i32 v14 = v11 & 0xFFF;
+	v14 <<= 2;
+	v14 *= gGameState[12];
+	v14 >>= 14;
+
+	i32 v15 = (v11 >> 16) & 0xFFF;
+	v15 <<= 2;
+	v15 *= gGameState[12];
+	v15 >>= 14;
+
+	if (gBootRomSoundMode)
+	{
+		v15 = (v14 + v15) / 2;
+		v14 = v15;
+	}
+
+	gSfxPlayRelated = (100 * v13) >> 12;
+
+	u32 result = playSFX(
+			v10[0] | (v5 ? 0x4000 : 0),
+			v12,
+			v14,
+			v15,
+			pitch_offset,
+			v13 & 0xFFFF);
+
+	for (i32 i = 0; i < 32; i++)
+	{
+		if (result & (1 << i))
+		{
+			SFXFalloffArray[i] = soundTwo | (v13 << 16);
+			break;
+		}
+	}
+
+
+	return result;
 }
 
 // @Ok

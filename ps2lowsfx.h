@@ -90,7 +90,7 @@ struct SSFXBank
 	SSfxAsset mAssets[NUM_ASSETS_PER_BANK];
 };
 
-EXPORT i32 SFX_PlayPos(u32, CVector*, i32);
+EXPORT u32 SFX_PlayPos(u32, CVector*, i32);
 EXPORT void SFX_LevelStart(void);
 EXPORT void SFX_SetReverbType(unsigned char);
 EXPORT void SFX_ReverbOff(void);
@@ -119,7 +119,7 @@ EXPORT void SFX_ShutDown(void);
 EXPORT void SFX_SpoolInLevelSFX(const char *);
 EXPORT void SFX_SpoolOutLevelSFX(void);
 EXPORT void SFX_Unpause(void);
-EXPORT void playSFX(u32,u8,i16,i16,i32,u16);
+EXPORT u32 playSFX(u32,u8,i16,i16,i32,u16);
 EXPORT u32 translateLevelSpecificAliasToIndex(u32);
 
 void validate_SSFXBank(void);
