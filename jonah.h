@@ -13,11 +13,12 @@ public:
 	EXPORT CJonah(void);
 	EXPORT CJonah(i16*, i32);
 	EXPORT void GraspWaypoint(SLinkInfo* a2);
-	EXPORT int LinkedHidingPlaceStillExists(int);
-	EXPORT int StartRunningToNextRoom(void);
+	EXPORT i32 LinkedHidingPlaceStillExists(i32);
+	EXPORT i32 StartRunningToNextRoom(void);
 	EXPORT void TakeHit(void);
 	EXPORT CBaddy* FindScorp(void);
-	EXPORT unsigned __int16 DistToScorp(void);
+	EXPORT u16 DistToScorp(void);
+	EXPORT u32 WhatShouldScorpDo(void);
 
 
 	int dumbAssPad;

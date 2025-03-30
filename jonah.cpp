@@ -3,13 +3,16 @@
 #include "panel.h"
 #include "utils.h"
 
+// @FIXME
 int JoelJewtCheatCode = 0;
 extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
+// @Ok
 EXPORT i32 gJonahSetup[2] = { 33686018, 258 };
 
 
+// @Ok
 EXPORT SLight M3d_JonahLight =
 {
   { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
@@ -20,9 +23,17 @@ EXPORT SLight M3d_JonahLight =
 };
 
 // @SMALLTODO
-void Jonah_WhatShouldScorpDo(const u32*, u32*)
+u32 CJonah::WhatShouldScorpDo(void)
 {
-	printf("void Jonah_WhatShouldScorpDo(const u32*, u32*)");
+	printf("void CJonah::WhatShouldScorpDo(void)");
+	return 0x30032025;
+}
+
+// @Ok
+void Jonah_WhatShouldScorpDo(const u32* stack, u32 *res)
+{
+	CJonah *pJonah = reinterpret_cast<CJonah*>(stack[0]);
+	*res = pJonah->WhatShouldScorpDo();
 }
 
 // @SMALLTODO
