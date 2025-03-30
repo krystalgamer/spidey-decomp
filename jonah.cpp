@@ -272,12 +272,13 @@ void CJonah::TakeHit(void)
 			}
 			break;
 		default:
-			print_if_false(0, "Unknown substate!");
+			DoAssert(0, "Unknown substate!");
 	}
 }
 
 // @Ok
-CBaddy* CJonah::FindScorp(void)
+// @Matching: the DoAssert part was the trickiest, had 2 deref twich
+INLINE CBaddy* CJonah::FindScorp(void)
 {
 	if (!Mem_RecoverPointer(&this->field_35C))
 	{
@@ -293,13 +294,12 @@ CBaddy* CJonah::FindScorp(void)
 		return 0;
 	}
 
-	CBaddy *ret = reinterpret_cast<CBaddy*>(this->field_35C.field_0);
-	print_if_false(ret->mType == 310, "What the fuck? Scorp ptr isn't scorp.");
-	return ret;
+	DoAssert(reinterpret_cast<CBaddy*>(this->field_35C.field_0)->mType == 310, "What the fuck? Scorp ptr isn't scorp.");
+	return reinterpret_cast<CBaddy*>(this->field_35C.field_0);
 }
 
 // @Ok
-unsigned __int16 CJonah::DistToScorp(void)
+u16 CJonah::DistToScorp(void)
 {
 	CBaddy* pScorp = this->FindScorp();
 	if (!pScorp)
