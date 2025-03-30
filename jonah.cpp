@@ -3,8 +3,9 @@
 #include "panel.h"
 #include "utils.h"
 
-// @FIXME
-int JoelJewtCheatCode = 0;
+// @Ok
+EXPORT i32 JoelJewtCheatCode;
+
 extern CBody* EnvironmentalObjectList;
 extern CBaddy* BaddyList;
 
@@ -89,10 +90,6 @@ void Jonah_RelocatableModuleInit(reloc_mod *pMod)
 // globals
 CJonah::CJonah(void)
 {
-	this->field_34C = 0;
-	this->field_350 = 0;
-	this->field_354 = 0;
-
 	if (JoelJewtCheatCode)
 	{
 		this->InitItem("jjjj");
@@ -112,10 +109,6 @@ CJonah::CJonah(void)
 // @AlmostMatching: array assingment after vtable
 CJonah::CJonah(i16* a2, i32 a3)
 {
-	this->field_34C = 0;
-	this->field_350 = 0;
-	this->field_354 = 0;
-
 	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
 
@@ -317,10 +310,6 @@ void validate_CJonah(void){
 	VALIDATE_SIZE(CJonah, 0x380);
 
 	VALIDATE(CJonah, field_330, 0x330);
-
-	VALIDATE(CJonah, field_34C, 0x34C);
-	VALIDATE(CJonah, field_350, 0x350);
-	VALIDATE(CJonah, field_354, 0x354);
 
 	VALIDATE(CJonah, field_35C, 0x35C);
 	VALIDATE(CJonah, field_364, 0x364);
