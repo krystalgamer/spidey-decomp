@@ -44,15 +44,18 @@ void Jonah_WhatShouldScorpDo(const u32* stack, u32 *res)
 }
 
 // @Ok
-void CJonah::ShouldPlead(void)
+// @Matching
+INLINE void CJonah::ShouldPlead(void)
 {
 	this->field_218 |= 0xCu;
 }
 
-// @SMALLTODO
-void Jonah_ShouldPlead(const u32*, u32*)
+// @Ok
+// @Matching
+void Jonah_ShouldPlead(const u32 *stack, u32*)
 {
-	printf("void Jonah_ShouldPlead(const u32*, u32*)");
+	CJonah *pJonah = reinterpret_cast<CJonah*>(stack[0]);
+	pJonah->ShouldPlead();
 }
 
 // @Ok
