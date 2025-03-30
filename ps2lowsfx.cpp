@@ -383,8 +383,8 @@ INLINE i32 PSXPitchToDCPitch(i32 a1)
 	return v17;
 }
 
-// @NotOk
-// @Validate: when inlined
+// @Ok
+// @AlmostMatching: only used once and code gen is slightly different
 INLINE i32 SFX_AllocVoice(i32 a1, bool a2)
 {
 	i32 v8 = gVoiceIndex;
@@ -419,9 +419,9 @@ INLINE i32 SFX_AllocVoice(i32 a1, bool a2)
 	}
 
 	i32 k;
-	for (k = 1; k < 32; ++k)
+	for (k = 1; k < 32; k++)
 	{
-		if (!gSfxEntries[k].field_1A && !gSfxEntries[k].field_1B )
+		if (!gSfxEntries[k].field_1A && !gSfxEntries[k].field_1B)
 			break;
 	}
 
@@ -967,11 +967,98 @@ void SFX_Unpause(void)
 	}
 }
 
-// @MEDIUMTODO
-u32 playSFX(u32,u8,i16,i16,i32,u16)
+// @Ok
+// @AlmostMatching: FreeVoice was not inlined in the OG...
+// diff by 1 byte, epilogue and prologue and diff but overall all good
+u32 playSFX(
+		u32 sfx,
+		u8 pitch,
+		i16 vl,
+		i16 vr,
+		i32 pitch_offset,
+		u16 volMod)
 {
-    printf("playSFX(u32,u8,i16,i16,i32,u16)");
-	return 0x30032025;
+	u16 assetIndex = (sfx >> 0x10) & 0x7F;
+
+	SSFXBank *pBank = &gSfxRelatedOutLevel;
+	if (!(sfx & 0x40000000))
+		pBank = &gSoundBank;
+
+	if (!pBank->field_4)
+		return -1;
+
+	DoAssert(
+			pBank->mAssets[assetIndex].field_C >= 0x63 && pBank->mAssets[assetIndex].field_C <= 0xF423F,
+			"bogus sample rate");
+
+	i32 waveFormat = pBank->mAssets[assetIndex].field_14;
+	if (waveFormat != 4 && waveFormat != 8 && waveFormat != 16)
+	{
+		error("invalid wave format.");
+		return -1;
+	}
+
+	i32 v14 = (vl + vr) >> 1;
+	if (v14 < -16383)
+	{
+		v14 = -16383;
+	}
+	else if (v14 > 0x3FFF)
+	{
+		v14 = 0x3FFF;
+	}
+
+	i32 vla;
+	if ( vl == vr )
+		vla = 15;
+	else
+		vla = 31 * vl / (vl + vr);
+
+	DoAssert(1, "pan out of range");
+
+	i32 v19 = SFX_AllocVoice(
+			assetIndex,
+			(sfx & 0x80000000) != 0);
+	if (v19 < 0)
+		return 0;
+
+	gSfxEntries[v19].field_18 = volMod;
+	gSfxEntries[v19].field_24 = sfx;
+	gSfxEntries[v19].field_16 = v14;
+	gSfxEntries[v19].field_14 = pitch;
+
+	i32 newPitch = PSXPitchToDCPitch((100 * (pitch - 60)) & 0xFF);
+	gSfxEntries[v19].field_20 = newPitch;
+	i32 newVol = DCSFX_AdjustVol(v14);
+	DXSOUND_Open(
+			v19,
+			assetIndex,
+			sfx & 0x40000000);
+	
+	if ((sfx & 0xA0000000) == 0xA0000000)
+	{
+		DXSOUND_SetVolume(v19, newVol);
+		DXSOUND_SetPan(v19, vla);
+
+		DXSOUND_SetPitch(v19, newPitch);
+		DXSOUND_Play(v19, 1);
+	}
+	else if (sfx & 0x80000000)
+	{
+		DXSOUND_SetVolume(v19, newVol);
+		DXSOUND_SetPan(v19, vla);
+		DXSOUND_SetPitch(v19, newPitch);
+		DXSOUND_Play(v19, 1);
+	}
+	else
+	{
+		DXSOUND_SetVolume(v19, newVol);
+		DXSOUND_SetPan(v19, vla);
+		DXSOUND_SetPitch(v19, newPitch);
+		DXSOUND_Play(v19, 0);
+	}
+
+	return 1 << v19;
 }
 
 // @Ok

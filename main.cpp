@@ -551,7 +551,8 @@ int main()
 #endif
 }
 
-void DoAssert(u8, const char*)
+void DoAssert(u8 cond, const char* str)
 {
-	//printf("eheheh");
+	if (!cond)
+		puts(str);
 }
