@@ -245,8 +245,8 @@ int __inline CJonah::StartRunningToNextRoom(void)
 	return 0;
 }
 
-// @NotOk
-// missing part findscorp
+// @Ok
+// @Matching
 void CJonah::TakeHit(void)
 {
 
@@ -257,6 +257,13 @@ void CJonah::TakeHit(void)
 			v3 = this->FindScorp();
 			if (v3)
 			{
+				new CAIProc_LookAt(
+						this,
+						v3,
+						0,
+						2,
+						80,
+						200);
 			}
 			this->dumbAssPad++;
 			break;
