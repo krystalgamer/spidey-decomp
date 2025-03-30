@@ -22,11 +22,10 @@ public:
 	EXPORT void ShouldPlead(void);
 
 
-	int dumbAssPad;
-	unsigned char padStart324[0x330-0x324-4];
+	PADDING(0x330-0x324);
 
-	int field_330;
-	unsigned char padAfter330[0x34C-0x330-4];
+	i32 field_330;
+	PADDING(0x34C-0x330-4);
 
 	CVector field_34C;
 

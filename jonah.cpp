@@ -2,6 +2,8 @@
 #include "validate.h"
 #include "panel.h"
 #include "utils.h"
+#include "ai.h"
+#include "my_assert.h"
 
 // @Ok
 EXPORT i32 JoelJewtCheatCode;
@@ -86,8 +88,7 @@ void Jonah_RelocatableModuleInit(reloc_mod *pMod)
 	pMod->field_C[2] = Jonah_ShouldPlead;
 }
 
-// @NotOk
-// globals
+// @Ok
 CJonah::CJonah(void)
 {
 	if (JoelJewtCheatCode)
@@ -165,10 +166,11 @@ void Jonah_CreateJonah(const u32 *stack, u32 *result)
 }
 
 // @Ok
+// @Matching
 INLINE void CJonah::GraspWaypoint(SLinkInfo* a2)
 {
-	this->field_2F8 = a2->field_0;
-	this->field_1F4 = a2->field_8;
+	this->field_2F8 = a2->field_8;
+	this->field_1F4 = a2->field_0;
 }
 
 // @Ok
@@ -309,6 +311,7 @@ unsigned __int16 CJonah::DistToScorp(void)
 void validate_CJonah(void){
 	VALIDATE_SIZE(CJonah, 0x380);
 
+	VALIDATE(CJonah, dumbAssPad, 0x320);
 	VALIDATE(CJonah, field_330, 0x330);
 
 	VALIDATE(CJonah, field_35C, 0x35C);
