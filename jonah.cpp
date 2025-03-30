@@ -22,14 +22,21 @@ EXPORT SLight M3d_JonahLight =
   { 1200, 1200, 960 }
 };
 
-// @SMALLTODO
-u32 CJonah::WhatShouldScorpDo(void)
+// @Ok
+// @Matching
+INLINE u32 CJonah::WhatShouldScorpDo(void)
 {
-	printf("void CJonah::WhatShouldScorpDo(void)");
-	return 0x30032025;
+	i32 v = this->field_31C.bothFlags;
+	if (v != 5)
+	{
+		return v != 8;
+	}
+
+	return 2;
 }
 
 // @Ok
+// @Matching
 void Jonah_WhatShouldScorpDo(const u32* stack, u32 *res)
 {
 	CJonah *pJonah = reinterpret_cast<CJonah*>(stack[0]);
