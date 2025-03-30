@@ -19,6 +19,7 @@ public:
 	EXPORT CBaddy* FindScorp(void);
 	EXPORT u16 DistToScorp(void);
 	EXPORT u32 WhatShouldScorpDo(void);
+	EXPORT void ShouldPlead(void);
 
 
 	int dumbAssPad;

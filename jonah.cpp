@@ -43,6 +43,12 @@ void Jonah_WhatShouldScorpDo(const u32* stack, u32 *res)
 	*res = pJonah->WhatShouldScorpDo();
 }
 
+// @Ok
+void CJonah::ShouldPlead(void)
+{
+	this->field_218 |= 0xCu;
+}
+
 // @SMALLTODO
 void Jonah_ShouldPlead(const u32*, u32*)
 {
