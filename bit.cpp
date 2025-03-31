@@ -107,23 +107,31 @@ INLINE vector4d::vector4d(const vector3d& a1, f32 a2)
 }
 
 // @Ok
+// @Matching
 INLINE void DeleteBitList(CBit *pBitList)
 {
-	if (pBitList)
+	if (!pBitList)
 	{
-		CBit *pNext = pBitList->mNext;
-		while (1)
+		return;
+	}
+
+	CBit* pCurr = pBitList;
+	CBit* pNext = pCurr->mNext;
+	while (pCurr)
+	{
+		if (!pCurr->mProtected)
 		{
-			if (!pBitList->mProtected)
-				delete pBitList;
-
-			pBitList = pNext;
-
-			if (!pBitList)
-				break;
-
-			pNext = pNext->mNext;
+			delete pCurr;
 		}
+
+		pCurr = pNext;
+
+		if (!pNext)
+		{
+			break;
+		}
+
+		pNext = pNext->mNext;
 	}
 }
 
