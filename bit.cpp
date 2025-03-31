@@ -844,10 +844,22 @@ void CQuadBit::SetTexture(int a, int b){
 	
 }
 
-// @SMALLTODO
-void CQuadBit::SetTexture(Texture*)
+// @Ok
+// @Matching: the assingments are weird bro
+void CQuadBit::SetTexture(Texture *pTex)
 {
-	printf("void CQuadBit::SetTexture(Texture*)");
+	this->mpTexture = pTex;
+	if (this->mpTexture->field_12 & 0xF0)
+		this->mCodeBGR |= 0x20u;
+
+	// @FIXME
+	this->field_74 = *reinterpret_cast<u32*>(&pTex->u0);
+	// @FIXME
+	this->field_78 = *reinterpret_cast<u32*>(&pTex->u1);
+	// @FIXME
+	this->field_7C = *reinterpret_cast<u32*>(&pTex->u2);
+
+	this->field_80 = this->mpTexture->TexWin;
 }
 
 // @Ok
