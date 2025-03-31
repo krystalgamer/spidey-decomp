@@ -7,6 +7,7 @@
 #include "spool.h"
 #include "utils.h"
 #include "ps2lowsfx.h"
+#include "my_assert.h"
 
 
 CVector gGlobalNormal;
@@ -642,15 +643,17 @@ void CBit::operator delete(void* ptr)
 	Mem_Delete(ptr);
 }
 
-// @NotOk
-// revisit, there's a weird mem_delete
+// @Ok
+// @Matching
 CBit::~CBit()
 {
+	--BitCount;
 }
 
 // @Ok
-void CBit::Die(void){
-	print_if_false(this->mProtected == 0, "A protected bit die");
+void CBit::Die(void)
+{
+	DoAssert(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
 }
 
