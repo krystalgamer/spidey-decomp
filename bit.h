@@ -119,9 +119,12 @@ public:
 	CVector mPosD;
 	Texture* mpTexture;
 	u32 mCodeBGR;
-	unsigned pad;
+
+	u32 field_68;
+
 	u32 mTint;
-	u8 padAfter6C[4];
+
+	u32 field_70;
 
 	u32 field_74;
 	u32 field_78;

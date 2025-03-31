@@ -40,10 +40,15 @@ EXPORT CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: CFriction::Set was not inlined and attachto seems different too
 CQuadBit::CQuadBit(void)
 {
-	printf("CQuadBit::CQuadBit(void)");
+	this->AttachTo(&QuadBitList);
+	this->mCodeBGR = 0x1C0001;
+	this->field_68 = 0x2030001;
+	this->mTint = 0x808080;
+	this->field_70 = 0;
 }
 
 vector3d::vector3d(f32 a1, f32 a2, f32 a3)
@@ -650,6 +655,7 @@ void CBit::Die(void){
 }
 
 // @Ok
+// @Matching
 INLINE void CBit::AttachTo(void* to){
 
 	CBit* tmp;
@@ -1123,7 +1129,12 @@ void validate_CQuadBit(void)
 	VALIDATE(CQuadBit, mPosD, 0x54);
 	VALIDATE(CQuadBit, mpTexture, 0x60);
 	VALIDATE(CQuadBit, mCodeBGR, 0x64);
+
+	VALIDATE(CQuadBit, field_68, 0x68);
+
 	VALIDATE(CQuadBit, mTint, 0x6C);
+
+	VALIDATE(CQuadBit, field_70, 0x70);
 
 	VALIDATE(CQuadBit, field_74, 0x74);
 	VALIDATE(CQuadBit, field_78, 0x78);
