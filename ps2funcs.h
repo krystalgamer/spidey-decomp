@@ -49,10 +49,18 @@ typedef struct {		/* long word type 3D vector */
 	long	vz, pad;
 } VECTOR;
 	
-typedef struct {		/* short word type 3D vector */	
-	short	vx, vy;
-	short	vz, pad;
-} SVECTOR;
+struct SVECTOR {		/* short word type 3D vector */	
+	i16	vx, vy;
+	i16	vz, pad;
+
+	EXPORT INLINE SVECTOR(void)
+	{
+		this->vx = 0;
+		this->vy = 0;
+		this->vz = 0;
+	}
+
+};
 	       
 typedef struct {		/* color type vector */	
   unsigned char	r, g, b, cd;

@@ -348,13 +348,55 @@ CTextBox::~CTextBox(void)
 	this->DeleteFrom(reinterpret_cast<CBit**>(&TextBoxList));
 }
 
-// @SMALLTODO
+// @Ok
+// @Note: Constructor got different inline and some oeprations are at different order, but don't care
+// @Test
 CChunkBit::CChunkBit(
 		CSVector *a,
 		CSVector *b,
 		CSVector *c)
 {
-	printf("CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)");
+	this->mType = 6;
+
+	this->mPosA.vx = a->vx;
+	this->mPosA.vy = a->vy;
+	this->mPosA.vz = a->vz;
+
+	this->mPosB.vx = b->vx;
+	this->mPosB.vy = b->vy;
+	this->mPosB.vz = b->vz;
+
+	this->mPosC.vx = c->vx;
+	this->mPosC.vy = c->vy;
+	this->mPosC.vz = c->vz;
+
+
+	i32 v8 = b->vz - a->vz;
+	i32 v10 = c->vz - a->vz;
+
+	i32 v11 = b->vy - a->vy;
+	i32 v13 = c->vy - a->vy;
+
+	i32 v14 = b->vx - a->vx;
+	i32 v15 = c->vx - a->vx;
+
+	CVector v18;
+	v18.vx = v13 * v8 - v10 * v11;
+	v18.vy = v10 * v14 - v15 * v8;
+	v18.vz = v15 * v11 - v13 * v14;
+
+	v18 >>= 12;
+	VectorNormal(
+			reinterpret_cast<VECTOR*>(&v18),
+			reinterpret_cast<VECTOR*>(&v18));
+	
+	i32 v16 = Rnd(96);
+	this->mPosD.vx = (v18.vx * (v16 + 128)) >> 12;
+
+	this->mPosD.vy = (v18.vy * (v16 + 128)) >> 12;
+	this->mPosD.vz = (v18.vz * (v16 + 128)) >> 12;
+
+	this->AttachTo(&ChunkBitList);
 }
 
 // @Ok
