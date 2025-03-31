@@ -916,6 +916,18 @@ void CQuadBit::SetTexture(Texture *pTex)
 }
 
 // @Ok
+// @Matching
+CNonRenderedBit::CNonRenderedBit(void)
+{
+	this->AttachTo(&NonRenderedBitList);
+}
+
+// @SMALLTODO
+CNonRenderedBit::~CNonRenderedBit(void)
+{
+}
+
+// @Ok
 CFT4Bit::~CFT4Bit()
 {
 	if (this->mDeleteAnimOnDestruction)

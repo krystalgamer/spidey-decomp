@@ -209,6 +209,8 @@ public:
 
 class CNonRenderedBit : public CBit {
 	public:
+		EXPORT CNonRenderedBit(void);
+		EXPORT virtual ~CNonRenderedBit(void) OVERRIDE;
 };
 
 class CSpecialDisplay : public CBit
