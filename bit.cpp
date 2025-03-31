@@ -70,12 +70,28 @@ INLINE vector4d::vector4d(const vector3d& a1, f32 a2)
 }
 
 // @Ok
-void DeleteBitList(CBit*)
+INLINE void DeleteBitList(CBit *pBitList)
 {
+	if (pBitList)
+	{
+		CBit *pNext = pBitList->mNext;
+		while (1)
+		{
+			if (!pBitList->mProtected)
+				delete pBitList;
+
+			pBitList = pNext;
+
+			if (!pBitList)
+				break;
+
+			pNext = pNext->mNext;
+		}
+	}
 }
 
 // @Ok
-// @Matching
+// @AlmostMatching: my inlining stops at ChunkBitList while OG stops at GlowList
 void Bit_DeleteAll(void)
 {
 	DeleteBitList(NonRenderedBitList);
