@@ -577,25 +577,25 @@ void CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)
 	printf("CQuadBit::OrientUsing(CVector *, SVECTOR *, i32, i32, i32)");
 }
 
-// @NotOk
-// @Test
-// remove reinterpret cast, understand whta devs did
+// @Ok
+// @Matching: wtf is that cast
 void CQuadBit::SetTexture(u32 checksum)
 {
 	Texture *pTexture = Spool_FindTextureEntry(checksum);
 	this->mpTexture = pTexture;
 
-	if (pTexture)
+	if (this->mpTexture)
 	{
-		if (pTexture->field_12 & 0xF0)
+		if (this->mpTexture->field_12 & 0xF0)
 			this->mCodeBGR |= 0x20;
 
 		// @FIXME
-		u32* arr = reinterpret_cast<u32*>(pTexture);
-		this->field_74 = arr[0];
-		this->field_74 = arr[1];
-		this->field_74 = arr[2];
-		this->field_80 = pTexture->TexWin;
+		this->field_74 = *reinterpret_cast<u32*>(&this->mpTexture->u0);
+		// @FIXME
+		this->field_78 = *reinterpret_cast<u32*>(&this->mpTexture->u1);
+		// @FIXME
+		this->field_7C = *reinterpret_cast<u32*>(&this->mpTexture->u2);
+		this->field_80 = this->mpTexture->TexWin;
 	}
 }
 
@@ -853,11 +853,11 @@ void CQuadBit::SetTexture(Texture *pTex)
 		this->mCodeBGR |= 0x20u;
 
 	// @FIXME
-	this->field_74 = *reinterpret_cast<u32*>(&pTex->u0);
+	this->field_74 = *reinterpret_cast<u32*>(&this->mpTexture->u0);
 	// @FIXME
-	this->field_78 = *reinterpret_cast<u32*>(&pTex->u1);
+	this->field_78 = *reinterpret_cast<u32*>(&this->mpTexture->u1);
 	// @FIXME
-	this->field_7C = *reinterpret_cast<u32*>(&pTex->u2);
+	this->field_7C = *reinterpret_cast<u32*>(&this->mpTexture->u2);
 
 	this->field_80 = this->mpTexture->TexWin;
 }
