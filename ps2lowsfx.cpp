@@ -14,7 +14,7 @@
 
 #include "validate.h"
 
-//#define VALIDATE_PARSESFX
+// #define VALIDATE_PARSESFX
 
 
 // @Ok
@@ -775,6 +775,7 @@ void SFX_Off(void)
 u8 testBuf[0x800];
 
 // @Ok
+// @Matching
 // @Validated
 void SFX_ParseSFXFile(
 		char *p_name,
@@ -803,35 +804,35 @@ void SFX_ParseSFXFile(
 	u32 *pSfxFile = reinterpret_cast<u32*>(testBuf);
 #endif
 
-	u32 curVal = *pSfxFile;
+	i32 sfxIndex = 0;
 	i32 arrayIndex = 0;
 	i32 aliasIndex = 0;
 
-	while (curVal != 0xFFFFFFFF)
-	{
-		if (arrayIndex >= 192)
-			break;
+	u32 cur = pSfxFile[sfxIndex];
+	u32 *p = &pSfxFile[sfxIndex+1];
 
-		if ((curVal & 0xFF) == 0xFE)
-			array[arrayIndex] = mask | 0x80000000;
+	while (cur != 0xFFFFFFFF && arrayIndex < 192)
+	{
+
+		if ((cur & 0xFF) == 0xFE)
+			array[arrayIndex] = mask | (1 << 31);
 		else 
 			array[arrayIndex] = mask;
 
-		array[arrayIndex] |= (curVal & 0x0000FF00) << 8;
-		array[arrayIndex] |= 1 << ((curVal >> 0x10) & 0xFF);
+		array[arrayIndex++] |= ((cur & 0x0000FF00) << 8) | 1 << ((cur / 65536) & 0xFF);
 
-		u32 nextVal = pSfxFile[1];
+		array[arrayIndex] = (cur & 0xFF000000) >> 0x18;
 
-		array[arrayIndex+1] = curVal >> 0x18 | nextVal & 0xFFFF0000;
-		array[arrayIndex+2] = nextVal & 0xFFFF;
+		u32 nextVal = p[sfxIndex++];
 
-		aliasArray[aliasIndex] = pSfxFile[2];
+		array[arrayIndex++] |= (nextVal & 0xFFFF0000);
+		array[arrayIndex++] = nextVal & 0xFFFF;
 
-		arrayIndex += 3;
-		aliasIndex++;
+		aliasArray[aliasIndex++] = p[sfxIndex++];
 
-		pSfxFile += 4;
-		curVal = *pSfxFile;
+		sfxIndex++;
+
+		cur = p[sfxIndex++];
 	}
 
 	if (aliasIndex < maxEntries)
@@ -1325,7 +1326,6 @@ u16 myAliasAray[64];
 
 i32 validate_sfx(char *name, i32 mask)
 {
-
 	memset(testBuf, 0, 0x800);
 
 	FILE *fp = fopen(name, "rb");
