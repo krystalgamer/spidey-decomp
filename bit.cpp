@@ -349,7 +349,10 @@ CTextBox::~CTextBox(void)
 }
 
 // @SMALLTODO
-CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)
+CChunkBit::CChunkBit(
+		CSVector *a,
+		CSVector *b,
+		CSVector *c)
 {
 	printf("CChunkBit::CChunkBit(CSVector*, CSVector*, CSVector*)");
 }
@@ -1075,8 +1078,8 @@ void CTexturedRibbon::SetOuterRGBi(int index, unsigned char a3, unsigned char a4
 }
 */
 
-// @NotOk
-// understand what 3C is
+// @Ok
+// @Matching
 void CGlow::SetRadius(int radius)
 {
 	for (u32 i = 0; i < this->mNumSections; i++)
@@ -1347,6 +1350,20 @@ void validate_CBitServer(void)
 
 void validate_CChunkBit(void)
 {
+	// @FIXME
+	VALIDATE_SIZE(CChunkBit, 0x94);
+
+	VALIDATE(CChunkBit, mPosA, 0x3C);
+	VALIDATE(CChunkBit, mPosB, 0x44);
+	VALIDATE(CChunkBit, mPosC, 0x4C);
+	VALIDATE(CChunkBit, mPosD, 0x54);
+
+	VALIDATE(CChunkBit, mWorldPosA, 0x5C);
+	VALIDATE(CChunkBit, mWorldPosB, 0x68);
+	VALIDATE(CChunkBit, mWorldPosC, 0x74);
+	VALIDATE(CChunkBit, mWorldPosD, 0x80);
+
+	VALIDATE(CChunkBit, mAngles, 0x8C);
 }
 
 void validate_CTextBox(void)

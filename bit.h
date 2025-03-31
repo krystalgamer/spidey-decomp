@@ -354,6 +354,18 @@ class CChunkBit : public CBit
 	public:
 		EXPORT CChunkBit(CSVector*, CSVector*, CSVector*);
 		EXPORT virtual ~CChunkBit(void);
+
+		SVECTOR mPosA;
+		SVECTOR mPosB;
+		SVECTOR mPosC;
+		SVECTOR mPosD;
+
+		CVector mWorldPosA;
+		CVector mWorldPosB;
+		CVector mWorldPosC;
+		CVector mWorldPosD;
+
+		CSVector mAngles;
 };
 
 class CTextBox : public CBit
