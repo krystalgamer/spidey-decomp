@@ -9,6 +9,43 @@
 #include "ps2lowsfx.h"
 #include "my_assert.h"
 
+// @Ok
+char *gAnimNames[29] =
+{
+	"SHADOW  ",
+	"SMOKE   ",
+	"ribbon  ",
+	"Buttons ",
+	"WebKnot ",
+	"Reticle ",
+	"WebSplat",
+	"Sp      ",
+	"HITSPRIT",
+	"ImpactWb",
+	"HitPing ",
+	"Compass ",
+	"WebCart ",
+	"LoadIcon",
+	"Misc",
+
+	"menubox ",
+	"fireimp",
+	"costarm",
+	"cost99",
+	"costbag",
+	"costblk",
+	"costcapt",
+
+	"costscar",
+	"xtri",
+
+	"symdrop",
+	"trail",
+	"slime",
+	"splats",
+	"fire_rock03"
+};
+
 
 CVector gGlobalNormal;
 
