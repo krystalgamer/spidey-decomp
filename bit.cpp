@@ -555,10 +555,14 @@ CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)
 	printf("CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)");
 }
 
-// @SMALLTODO
-void CRibbon::SetScale(i32)
+// @Ok
+// @Matching
+void CRibbon::SetScale(i32 Scale)
 {
-	printf("void CRibbon:SetScale(i32)");
+	for (i32 i = 0; i < this->mNumBits; i++)
+	{
+		this->mBits[i]->SetScale(Scale);
+	}
 }
 
 // @SMALLTODO
@@ -913,7 +917,9 @@ void CFT4Bit::SetAnimSpeed(short s){
 }
 
 // @Ok
-void CFT4Bit::SetScale(unsigned short s){
+// @Matching
+INLINE void CFT4Bit::SetScale(u16 s)
+{
 	this->mScale = s;
 }
 

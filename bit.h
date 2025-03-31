@@ -161,7 +161,7 @@ class CFT4Bit : public CBit
 		EXPORT CFT4Bit(void);
 		EXPORT virtual ~CFT4Bit();
 		EXPORT void SetAnimSpeed(short);
-		EXPORT void SetScale(unsigned short);
+		EXPORT void SetScale(u16);
 		EXPORT void SetSemiTransparent();
 		EXPORT void SetTransparency(unsigned char t);
 		EXPORT void SetAnim(int);
