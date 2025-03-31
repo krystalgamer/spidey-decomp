@@ -795,7 +795,7 @@ void CBit::operator delete(void* ptr)
 
 // @Ok
 // @Matching
-CBit::~CBit()
+INLINE CBit::~CBit()
 {
 	--BitCount;
 }
@@ -922,9 +922,11 @@ CNonRenderedBit::CNonRenderedBit(void)
 	this->AttachTo(&NonRenderedBitList);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CNonRenderedBit::~CNonRenderedBit(void)
 {
+	this->DeleteFrom(&NonRenderedBitList);
 }
 
 // @Ok
