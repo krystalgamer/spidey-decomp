@@ -69,10 +69,46 @@ INLINE vector4d::vector4d(const vector3d& a1, f32 a2)
 	this->field_0[3] = a2;
 }
 
-// @SMALLTODO
+// @Ok
+void DeleteBitList(CBit*)
+{
+}
+
+// @Ok
+// @Matching
 void Bit_DeleteAll(void)
 {
-	printf("void Bit_DeleteAll(void)");
+	DeleteBitList(NonRenderedBitList);
+	DeleteBitList(TextBoxList);
+	DeleteBitList(FlatBitList);
+	DeleteBitList(Linked2EndedBitListLeftover);
+	DeleteBitList(PixelList);
+	DeleteBitList(PolyLineList);
+	DeleteBitList(GPolyLineList);
+	DeleteBitList(QuadBitList);
+	DeleteBitList(GenPolyList);
+	DeleteBitList(ChunkBitList);
+	DeleteBitList(GlowList);
+	DeleteBitList(GlassList);
+	DeleteBitList(GLineList);
+	DeleteBitList(SpecialDisplayList);
+
+	DoAssert(NonRenderedBitList == 0, "NonRenderedBitList  Leftover protected bits!");
+	DoAssert(TextBoxList == 0, "TextBoxList  Leftover protected bits!");
+	DoAssert(FlatBitList == 0, "FlatBitList  Leftover protected bits!");
+	DoAssert(Linked2EndedBitListLeftover == 0, "Linked2EndedBitListLeftover protected bits!");
+	DoAssert(PixelList == 0, "PixelList  Leftover protected bits!");
+	DoAssert(PolyLineList == 0, "PolyLineList  Leftover protected bits!");
+	DoAssert(GPolyLineList == 0, "GPolyLineList  Leftover protected bits!");
+	DoAssert(QuadBitList == 0, "QuadBitList  Leftover protected bits!");
+	DoAssert(GenPolyList == 0, "GenPolyList  Leftover protected bits!");
+	DoAssert(ChunkBitList == 0, "ChunkBitList  Leftover protected bits!");
+	DoAssert(GlowList == 0, "GlowList  Leftover protected bits!");
+	DoAssert(GlassList == 0, "GlassList  Leftover protected bits!");
+	DoAssert(GLineList == 0, "GLineList  Leftover protected bits!");
+	DoAssert(SpecialDisplayList == 0, "SpecialDisplayList  Leftover protected bits!");
+
+	DoAssert(BitCount == 0, "Still some bits left");
 }
 
 // @MEDIUMTODO
