@@ -441,7 +441,8 @@ EXPORT void DeleteBitList(CBit*);
 
 EXPORT extern CTextBox* TextBoxList;
 
-EXPORT extern SAnimFrame* gAnimTable[0x1D];
+#define NUM_ANIM_ENTRIES 0x1D
+EXPORT extern SAnimFrame* gAnimTable[NUM_ANIM_ENTRIES];
 
 EXPORT extern i32 TotalBitUsage;
 

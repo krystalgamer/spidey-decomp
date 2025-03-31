@@ -10,7 +10,7 @@
 #include "my_assert.h"
 
 // @Ok
-char *gAnimNames[29] =
+EXPORT char *gAnimNames[29] =
 {
 	"SHADOW  ",
 	"SMOKE   ",
@@ -1237,10 +1237,22 @@ CFlatBit::CFlatBit(void)
 	this->mPostScale = 0x10001000;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Bit_UpdateQuickAnimLookups(void)
 {
-	printf("void Bit_UpdateQuickAnimLookups(void)");
+	for (i32 i = 0; i < NUM_ANIM_ENTRIES; i++)
+	{
+		if (gAnimTable[i])
+		{
+			DoAssert(gAnimTable[i]->pTexture != 0, "Anim has no texture, don't know the region!");
+			Spool_RemoveAccess(
+					reinterpret_cast<void**>(&gAnimTable[i]),
+					gAnimTable[i]->pTexture->mRegion);
+		}
+
+		Spool_AnimAccess(gAnimNames[i], &gAnimTable[i]);
+	}
 }
 
 void validate_CFlatBit(void){
