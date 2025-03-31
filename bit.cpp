@@ -566,6 +566,7 @@ void CRibbon::SetScale(i32 Scale)
 }
 
 // @Ok
+// @Matching
 CRibbon::~CRibbon(void)
 {
 	for (i32 i = 0; i < this->mNumBits; i++)
@@ -924,7 +925,7 @@ CNonRenderedBit::CNonRenderedBit(void)
 
 // @Ok
 // @Matching
-CNonRenderedBit::~CNonRenderedBit(void)
+INLINE CNonRenderedBit::~CNonRenderedBit(void)
 {
 	this->DeleteFrom(&NonRenderedBitList);
 }
