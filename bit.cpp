@@ -565,6 +565,18 @@ void CRibbon::SetScale(i32 Scale)
 	}
 }
 
+// @Ok
+CRibbon::~CRibbon(void)
+{
+	for (i32 i = 0; i < this->mNumBits; i++)
+	{
+		delete this->mBits[i];
+	}
+
+	Mem_Delete(this->mBits);
+	Mem_Delete(this->mPoints);
+}
+
 // @SMALLTODO
 CRibbon::CRibbon(CVector*, i32, i32, i32, i32, i32, i32)
 {
@@ -1366,6 +1378,7 @@ void validate_CRibbon(void)
 
 	VALIDATE(CRibbon, mNumBits, 0x3C);
 
+	VALIDATE(CRibbon, mPoints, 0x4C);
 	VALIDATE(CRibbon, mBits, 0x50);
 }
 
