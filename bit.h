@@ -211,23 +211,6 @@ class CNonRenderedBit : public CBit {
 	public:
 };
 
-class CRibbon : public CNonRenderedBit
-{
-	public:
-		EXPORT CRibbon(CVector*, i32, i32, i32, i32, i32, i32);
-		EXPORT void SetScale(i32);
-};
-
-class CSmokeTrail : public CRibbon
-{
-	public:
-		unsigned char pad[24];
-
-		i32 field_54;
-
-		EXPORT CSmokeTrail(CVector*, i32, i32, i32, i32);
-};
-
 class CSpecialDisplay : public CBit
 {
 	public:
@@ -285,6 +268,28 @@ class CRibbonBit : public CLinked2EndedBit
 	public:
 		EXPORT virtual void Move(void);
 };
+
+class CRibbon : public CNonRenderedBit
+{
+	public:
+		EXPORT CRibbon(CVector*, i32, i32, i32, i32, i32, i32);
+		EXPORT void SetScale(i32);
+
+		i32 mNumBits;
+
+		PADDING(0x50-0x3C-4);
+
+		CRibbonBit **mBits;
+};
+
+class CSmokeTrail : public CRibbon
+{
+	public:
+		i32 field_54;
+
+		EXPORT CSmokeTrail(CVector*, i32, i32, i32, i32);
+};
+
 
 /*
 class CTexturedRibbon : public CSpecialDisplay

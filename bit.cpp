@@ -1354,6 +1354,15 @@ void validate_CLinked2EndedBit(void)
 	VALIDATE(CLinked2EndedBit, field_64, 0x64);
 }
 
+void validate_CRibbon(void)
+{
+	VALIDATE_SIZE(CRibbon, 0x54);
+
+	VALIDATE(CRibbon, mNumBits, 0x3C);
+
+	VALIDATE(CRibbon, mBits, 0x50);
+}
+
 void validate_CRibbonBit(void)
 {
 	VALIDATE_SIZE(CRibbonBit, 0x70);

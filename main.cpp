@@ -516,6 +516,7 @@ i32 validate(void)
 	validate_DISPENV();
 	validate_SSfxRelated();
 	validate_SSfxAsset();
+	validate_CRibbon();
 
 	puts("[*] Validation done!");
 
