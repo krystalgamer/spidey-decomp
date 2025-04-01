@@ -1,6 +1,7 @@
 #include "effects.h"
 #include "spool.h"
 #include "utils.h"
+#include "my_assert.h"
 
 #include "validate.h"
 
@@ -169,7 +170,7 @@ CChunkSmoke::CChunkSmoke(
 	this->SetAnim(0xEu);
 
 	this->field_52 = 0;
-	print_if_false(this->field_51 != 0, "Woops");
+	DoAssert(this->mNumFrames != 0, "Woops");
 
 	this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
 	this->mVel.vy = Rnd(5) << 12;

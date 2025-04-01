@@ -175,7 +175,7 @@ class CFT4Bit : public CBit
 		SAnimFrame *mpPSXFrame;
 		u8 mBitFlags;
 
-		unsigned char field_51;
+		u8 mNumFrames;
 		i8 field_52;
 		unsigned char field_53;
 

@@ -707,10 +707,10 @@ void CRhinoNasalSteam::Move(void)
 		v4 >>= 8;
 		this->field_52 = v4;
 
-		if ( (char)v4 >= (int)this->field_51)
+		if ( (char)v4 >= (int)this->mNumFrames)
 		{
 			this->mAnimSpeed = 0;
-			this->field_52 = this->field_51 - 1;
+			this->field_52 = this->mNumFrames - 1;
 		}
 
 		int index = this->field_52;

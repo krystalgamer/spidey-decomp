@@ -872,10 +872,10 @@ void CShellRhinoNasalSteam::Move(void)
 
 		this->field_52 = v3;
 
-		if (this->field_52 >= this->field_51)
+		if (this->field_52 >= this->mNumFrames)
 		{
 			this->mAnimSpeed = 0;
-			this->field_52 = this->field_51 - 1;
+			this->field_52 = this->mNumFrames - 1;
 		}
 
 		this->mpPSXFrame = &this->mpPSXAnim[this->field_52];

@@ -770,7 +770,7 @@ void CMotionBlur::Move(void)
 
 	if ( ++this->field_C & 1)
 	{
-		if ( ++this->field_52 >= this->field_51 )
+		if ( ++this->field_52 >= this->mNumFrames )
 			this->field_52 = 0;
 	}
 
@@ -985,7 +985,8 @@ CFT4Bit::~CFT4Bit()
 
 
 // @Ok
-void CFT4Bit::SetAnimSpeed(short s){
+void CFT4Bit::SetAnimSpeed(short s)
+{
 	this->mAnimSpeed = s;
 }
 
@@ -1011,19 +1012,18 @@ void CFT4Bit::SetTransparency(unsigned char t){
 
 static const unsigned int maxANimTableEntry = 0x1D;
 
-// @NotOk
-INLINE void CFT4Bit::SetAnim(i32 a2){
-
-	char v5; // cl
+// @Ok
+// @Matching
+INLINE void CFT4Bit::SetAnim(i32 a2)
+{
 
 	DoAssert(a2 >= 0 && !(static_cast<u32>(a2) >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
 	DoAssert(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
 	// @FIXME
 	this->mpPSXAnim = gAnimTable[a2];
-	//v5 = *(char *)(v4 - 4);
+	this->mNumFrames = *reinterpret_cast<u8*>(&this->mpPSXAnim[-1].pTexture);
 	this->field_53 = 0;
-	//this->field_51 = v5;
 	this->field_52 = 0;
 	this->mpPSXFrame = this->mpPSXAnim;
 }
@@ -1063,7 +1063,7 @@ void CFT4Bit::SetTexture(Texture* pTexture)
 	this->mpPSXAnim->pTexture = pTexture;
 	this->mpPSXFrame = this->mpPSXAnim;
 
-	this->field_51 = 1;
+	this->mNumFrames = 1;
 }
 
 // @Ok
@@ -1096,7 +1096,7 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 	this->mpPSXAnim->pTexture = pTexture;
 	this->mpPSXFrame = this->mpPSXAnim;
 
-	this->field_51 = 1;
+	this->mNumFrames = 1;
 }
 
 // @Ok
@@ -1290,7 +1290,7 @@ void Bit_ReduceRGB(unsigned int*, int)
 // @Ok
 void CFT4Bit::SetFrame(int a2)
 {
-	print_if_false(a2 >= 0 && a2 < this->field_51, "Bad frame sent to SetFrame");
+	print_if_false(a2 >= 0 && a2 < this->mNumFrames, "Bad frame sent to SetFrame");
 	print_if_false(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
 
 	this->field_52 = a2;
@@ -1354,7 +1354,7 @@ void validate_CFT4Bit(void){
 
 	VALIDATE(CFT4Bit, mBitFlags, 0x50);
 
-	VALIDATE(CFT4Bit, field_51, 0x51);
+	VALIDATE(CFT4Bit, mNumFrames, 0x51);
 	VALIDATE(CFT4Bit, field_52, 0x52);
 	VALIDATE(CFT4Bit, field_53, 0x53);
 
