@@ -586,10 +586,47 @@ CRibbon::~CRibbon(void)
 	Mem_Delete(this->mPoints);
 }
 
-// @SMALLTODO
-CRibbon::CRibbon(CVector*, i32, i32, i32, i32, i32, i32)
+// @Ok
+// @AlmostMatching: some weird inlines, but overall good
+// @Test
+CRibbon::CRibbon(
+		CVector *pos,
+		i32 numbits,
+		i32 pointsperbit,
+		i32 middleanimindex,
+		i32 endanimindex,
+		i32 scale,
+		i32 semitrans)
 {
-	printf("CRibbon::CRibbon(CVector*, i32, i32, i32, i32, i32, i32)");
+	this->mNumBits = numbits;
+	this->mPointsPerBit = pointsperbit - 1;
+	this->mNumPoints = numbits * (pointsperbit - 1) + 1;
+
+	this->mPoints = static_cast<CVector*>(
+			DCMem_New(sizeof(CVector) * this->mNumPoints, 0, 1, 0, 1));
+
+	for (i32 j = 0; j < this->mNumPoints; j++)
+	{
+		this->mPoints[j] = *pos;
+	}
+
+	this->mBits = static_cast<CRibbonBit**>(
+			DCMem_New(sizeof(CRibbonBit*) * numbits, 0, 1, 0, 1));
+
+	for (i32 i = this->mNumBits - 1; i >= 0; i--)
+	{
+		this->mBits[i] = new CRibbonBit();
+
+		this->mBits[i]->mProtected = 1;
+		this->mBits[i]->SetAnim(middleanimindex);
+		this->mBits[i]->SetScale(scale);
+
+		if (semitrans)
+			this->mBits[i]->SetSemiTransparent();
+	}
+
+	this->mBits[0]->mBitFlags |= 0x10u;
+	this->mBits[0]->SetAnim(endanimindex);
 }
 
 // @SMALLTODO
@@ -768,13 +805,14 @@ INLINE CBit::CBit()
 	BitCount++;
 }
 
+// @NotOk
 /*
  * With optimizations the >>=2 expression is removed
  * taking a look at THPS2 it shows it's due
  * to it storing the result in a global variable. For some reason
  * both PC and MAC remove the store
  */
-void* CBit::operator new(size_t size) {
+INLINE void* CBit::operator new(size_t size) {
 
 	void *result;
 	if (TotalBitUsage == 0)
@@ -926,7 +964,7 @@ void CQuadBit::SetTexture(Texture *pTex)
 
 // @Ok
 // @Matching
-CNonRenderedBit::CNonRenderedBit(void)
+INLINE CNonRenderedBit::CNonRenderedBit(void)
 {
 	this->AttachTo(&NonRenderedBitList);
 }
@@ -960,7 +998,8 @@ INLINE void CFT4Bit::SetScale(u16 s)
 
 
 // @Ok
-void CFT4Bit::SetSemiTransparent(){
+INLINE void CFT4Bit::SetSemiTransparent()
+{
 	this->mCodeBGR |= 0x2000000;
 }
 
@@ -973,12 +1012,12 @@ void CFT4Bit::SetTransparency(unsigned char t){
 static const unsigned int maxANimTableEntry = 0x1D;
 
 // @Ok
-void CFT4Bit::SetAnim(int a2){
+INLINE void CFT4Bit::SetAnim(i32 a2){
 
 	char v5; // cl
 
-	print_if_false(a2 >= 0 && !((unsigned int)a2 >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
-	print_if_false(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
+	DoAssert(a2 >= 0 && !((unsigned int)a2 >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
+	DoAssert(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
 	// @FIXME
 	int v4 = reinterpret_cast<i32>(gAnimTable[a2]);
@@ -1186,7 +1225,7 @@ INLINE CFT4Bit::CFT4Bit(void)
 
 // @Ok
 // @Validate: when inlined
-CLinked2EndedBit::CLinked2EndedBit(void)
+INLINE CLinked2EndedBit::CLinked2EndedBit(void)
 {
 	this->AttachTo(&Linked2EndedBitListLeftover);
 }
