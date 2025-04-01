@@ -864,21 +864,21 @@ void CShellRhinoNasalSteam::Move(void)
 {
 	if (this->mAnimSpeed)
 	{
-		i16 v3 = (this->field_52 << 8) | this->field_53;
+		i16 v3 = (this->mFrame << 8) | this->mFrameFrac;
 		v3 += this->mAnimSpeed;
 
-		this->field_53 = v3;
+		this->mFrameFrac = v3;
 		v3 >>= 8;
 
-		this->field_52 = v3;
+		this->mFrame = v3;
 
-		if (this->field_52 >= this->mNumFrames)
+		if (this->mFrame >= this->mNumFrames)
 		{
 			this->mAnimSpeed = 0;
-			this->field_52 = this->mNumFrames - 1;
+			this->mFrame = this->mNumFrames - 1;
 		}
 
-		this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
+		this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 	}
 
 	this->mPos += this->mVel;

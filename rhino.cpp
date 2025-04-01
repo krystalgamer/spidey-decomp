@@ -700,20 +700,20 @@ void CRhinoNasalSteam::Move(void)
 
 	if (mAnimSpeed)
 	{
-		unsigned __int16 v3 = (this->field_52 << 8) | this->field_53;
+		unsigned __int16 v3 = (this->mFrame << 8) | this->mFrameFrac;
 		unsigned __int16 v4 = mAnimSpeed + v3;
 
-		this->field_53 = v4;
+		this->mFrameFrac = v4;
 		v4 >>= 8;
-		this->field_52 = v4;
+		this->mFrame = v4;
 
 		if ( (char)v4 >= (int)this->mNumFrames)
 		{
 			this->mAnimSpeed = 0;
-			this->field_52 = this->mNumFrames - 1;
+			this->mFrame = this->mNumFrames - 1;
 		}
 
-		int index = this->field_52;
+		int index = this->mFrame;
 		this->mpPSXFrame = &this->mpPSXAnim[index];
 	}
 

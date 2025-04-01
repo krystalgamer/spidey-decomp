@@ -169,10 +169,10 @@ CChunkSmoke::CChunkSmoke(
 
 	this->SetAnim(0xEu);
 
-	this->field_52 = 0;
+	this->mFrame = 0;
 	DoAssert(this->mNumFrames != 0, "Woops");
 
-	this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
+	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 	this->mVel.vy = Rnd(5) << 12;
 }
 

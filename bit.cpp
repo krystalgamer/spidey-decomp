@@ -770,11 +770,11 @@ void CMotionBlur::Move(void)
 
 	if ( ++this->field_C & 1)
 	{
-		if ( ++this->field_52 >= this->mNumFrames )
-			this->field_52 = 0;
+		if ( ++this->mFrame >= this->mNumFrames )
+			this->mFrame = 0;
 	}
 
-	this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
+	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 }
 
 // @Ok
@@ -1020,11 +1020,10 @@ INLINE void CFT4Bit::SetAnim(i32 a2)
 	DoAssert(a2 >= 0 && !(static_cast<u32>(a2) >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
 	DoAssert(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
-	// @FIXME
 	this->mpPSXAnim = gAnimTable[a2];
 	this->mNumFrames = *reinterpret_cast<u8*>(&this->mpPSXAnim[-1].pTexture);
-	this->field_53 = 0;
-	this->field_52 = 0;
+	this->mFrameFrac = 0;
+	this->mFrame = 0;
 	this->mpPSXFrame = this->mpPSXAnim;
 }
 
@@ -1293,8 +1292,8 @@ void CFT4Bit::SetFrame(int a2)
 	print_if_false(a2 >= 0 && a2 < this->mNumFrames, "Bad frame sent to SetFrame");
 	print_if_false(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
 
-	this->field_52 = a2;
-	this->field_53 = 0;
+	this->mFrame = a2;
+	this->mFrameFrac = 0;
 
 	this->mpPSXFrame = &this->mpPSXAnim[(char)a2];
 }
@@ -1355,8 +1354,8 @@ void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mBitFlags, 0x50);
 
 	VALIDATE(CFT4Bit, mNumFrames, 0x51);
-	VALIDATE(CFT4Bit, field_52, 0x52);
-	VALIDATE(CFT4Bit, field_53, 0x53);
+	VALIDATE(CFT4Bit, mFrame, 0x52);
+	VALIDATE(CFT4Bit, mFrameFrac, 0x53);
 
 	VALIDATE(CFT4Bit, mAnimSpeed, 0x54);
 	VALIDATE(CFT4Bit, mScale, 0x56);

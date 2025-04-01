@@ -176,8 +176,8 @@ class CFT4Bit : public CBit
 		u8 mBitFlags;
 
 		u8 mNumFrames;
-		i8 field_52;
-		unsigned char field_53;
+		i8 mFrame;
+		u8 mFrameFrac;
 
 		short mAnimSpeed;
 		short mScale;
