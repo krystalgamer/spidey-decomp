@@ -171,7 +171,7 @@ CChunkSmoke::CChunkSmoke(
 	this->field_52 = 0;
 	print_if_false(this->field_51 != 0, "Woops");
 
-	this->field_4C = &this->mPSXAnim[this->field_52];
+	this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
 	this->mVel.vy = Rnd(5) << 12;
 }
 

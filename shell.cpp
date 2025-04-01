@@ -878,7 +878,7 @@ void CShellRhinoNasalSteam::Move(void)
 			this->field_52 = this->field_51 - 1;
 		}
 
-		this->field_4C = &this->mPSXAnim[this->field_52];
+		this->mpPSXFrame = &this->mpPSXAnim[this->field_52];
 	}
 
 	this->mPos += this->mVel;

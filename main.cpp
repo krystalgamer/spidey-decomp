@@ -340,7 +340,6 @@ i32 validate(void)
 	validate_CAIProc();
 	validate_CAIProc_LookAt();
 	validate_Texture();
-	validate_SCFT4BitTexture();
 	validate_CRhinoNasalSteam();
 	validate_CAIProc_RotY();
 	validate_CAIProc_Fall();

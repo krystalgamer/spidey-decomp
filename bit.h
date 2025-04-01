@@ -46,8 +46,8 @@ struct SAnimFrame
 {
 	char OffX;
 	char OffY;
-	unsigned char Width;
-	unsigned char Height;
+	u8 Width;
+	u8 Height;
 	Texture *pTexture;
 };
 
@@ -146,15 +146,6 @@ public:
 	EXPORT void SetTexture(Texture*);
 };
 
-struct SCFT4BitTexture
-{
-	unsigned char field_0;
-	unsigned char field_1;
-	unsigned char field_2;
-	unsigned char field_3;
-	Texture *field_4;
-};
-
 class CFT4Bit : public CBit
 {
 	public:
@@ -180,8 +171,8 @@ class CFT4Bit : public CBit
 		unsigned char mDeleteAnimOnDestruction;
 		unsigned char padAfterDeleteAnim[0x3];
 
-		SCFT4BitTexture *mPSXAnim;
-		SCFT4BitTexture *field_4C;
+		SAnimFrame *mpPSXAnim;
+		SAnimFrame *mpPSXFrame;
 		u8 mBitFlags;
 
 		unsigned char field_51;
@@ -469,7 +460,6 @@ void validate_CRibbonBit(void);
 //void validate_CTexturedRibbon(void);
 void validate_CSimpleTexturedRibbon(void);
 void validate_CSimpleAnim(void);
-void validate_SCFT4BitTexture(void);
 void validate_CMotionBlur(void);
 void validate_CSpecialDisplay(void);
 void validate_SFlatBitVelocity(void);

@@ -714,7 +714,7 @@ void CRhinoNasalSteam::Move(void)
 		}
 
 		int index = this->field_52;
-		this->field_4C = &this->mPSXAnim[index];
+		this->mpPSXFrame = &this->mpPSXAnim[index];
 	}
 
 	this->mPos += this->mVel;
