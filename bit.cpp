@@ -557,10 +557,40 @@ CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
 	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");
 }
 
-// @SMALLTODO
-CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)
+// @Ok
+// @Note: mine setups SEH frame (maybe because it's exported)
+// also last if assingment is diff
+CSimpleAnim::CSimpleAnim(
+		CVector *a2,
+		i32 a3,
+		u16 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7)
 {
-	printf("CSimpleAnim::CSimpleAnim(CVector*, i32, u16, i32, i32, i32)");
+	this->mPos = *a2;
+	this->SetAnim(a3);
+	this->mScale = a4;
+
+	if (a5)
+		this->SetSemiTransparent();
+
+
+	this->mDie = a6;
+	if (a7 == -1)
+	{
+		this->mDieFrame = this->mNumFrames - 1;
+	}
+	else
+	{
+		this->mDieFrame = a7;
+	}
+}
+
+// @Ok
+// @Matching
+INLINE CSimpleAnim::~CSimpleAnim(void)
+{
 }
 
 // @Ok
@@ -714,7 +744,7 @@ CGlow::CGlow(
 }
 
 // @Ok
-CFlatBit::~CFlatBit(void)
+INLINE CFlatBit::~CFlatBit(void)
 {
 	this->DeleteFrom(reinterpret_cast<CBit**>(&FlatBitList));
 }
@@ -977,7 +1007,7 @@ INLINE CNonRenderedBit::~CNonRenderedBit(void)
 }
 
 // @Ok
-CFT4Bit::~CFT4Bit()
+INLINE CFT4Bit::~CFT4Bit()
 {
 	if (this->mDeleteAnimOnDestruction)
 		Mem_Delete(reinterpret_cast<void*>(this->mpPSXAnim));
@@ -1306,7 +1336,7 @@ void CFT4Bit::SetTransDecay(int decay)
 
 // @Ok
 // @Matching
-CFlatBit::CFlatBit(void)
+INLINE CFlatBit::CFlatBit(void)
 {
 	this->AttachTo(reinterpret_cast<CBit**>(&FlatBitList));
 

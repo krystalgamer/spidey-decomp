@@ -188,7 +188,7 @@ class CFlatBit : public CFT4Bit {
 public:
 
 	EXPORT CFlatBit(void);
-	EXPORT ~CFlatBit(void);
+	EXPORT virtual ~CFlatBit(void) OVERRIDE;
 	i16 field_58;
 	i16 field_5A;
 	unsigned char padAfter5A[0x2];
@@ -302,6 +302,7 @@ class CSimpleAnim : public CFlatBit
 {
 	public:
 		EXPORT CSimpleAnim(CVector*, i32, u16, i32, i32, i32);
+		EXPORT virtual ~CSimpleAnim(void) OVERRIDE;
 
 		i32 mDie;
 		i32 mDieFrame;
