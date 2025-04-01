@@ -166,10 +166,10 @@ class CFT4Bit : public CBit
 
 		u16 mTransDecay;
 		u16 field_3E;
-		unsigned int mCodeBGR;
+		u32 mCodeBGR;
 
-		unsigned char mDeleteAnimOnDestruction;
-		unsigned char padAfterDeleteAnim[0x3];
+		u8 mDeleteAnimOnDestruction;
+		PADDING(0x3);
 
 		SAnimFrame *mpPSXAnim;
 		SAnimFrame *mpPSXFrame;
@@ -179,8 +179,8 @@ class CFT4Bit : public CBit
 		i8 mFrame;
 		u8 mFrameFrac;
 
-		short mAnimSpeed;
-		short mScale;
+		i16 mAnimSpeed;
+		i16 mScale;
 };
 
 class CFlatBit : public CFT4Bit {
@@ -302,6 +302,9 @@ class CSimpleAnim : public CFlatBit
 {
 	public:
 		EXPORT CSimpleAnim(CVector*, i32, u16, i32, i32, i32);
+
+		i32 mDie;
+		i32 mDieFrame;
 };
 
 class CMotionBlur : public CFlatBit

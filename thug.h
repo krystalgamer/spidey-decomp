@@ -106,7 +106,6 @@ class CThugPing : public CSimpleAnim
 		EXPORT void Move(void);
 		EXPORT void SetPosition(void);
 
-		unsigned char padTop[8];
 		SHandle field_70;
 		SHook field_78;
 };

@@ -1073,7 +1073,7 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 	int v6; // edx
 	int v7; // ecx
 
-	print_if_false(this->mpPSXAnim == 0, "mpPSXAnim already set?");
+	DoAssert(this->mpPSXAnim == 0, "mpPSXAnim already set?");
 
 	Texture *pTexture = Spool_FindTextureEntry(Checksum);
 	print_if_false(pTexture != 0, "Bad checksum sent to SetTexture");
@@ -1468,6 +1468,10 @@ void validate_CSimpleTexturedRibbon(void)
 
 void validate_CSimpleAnim(void)
 {
+	VALIDATE_SIZE(CSimpleAnim, 0x70);
+
+	VALIDATE(CSimpleAnim, mDie, 0x68);
+	VALIDATE(CSimpleAnim, mDieFrame, 0x6C);
 }
 
 void validate_CNonRenderedBit(void)
