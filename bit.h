@@ -163,6 +163,7 @@ class CFT4Bit : public CBit
 		EXPORT void SetTexture(unsigned int);
 		EXPORT int Fade(int);
 		EXPORT void SetTransDecay(int);
+		EXPORT void IncFrame(void);
 
 		u16 mTransDecay;
 		u16 field_3E;
@@ -303,6 +304,7 @@ class CSimpleAnim : public CFlatBit
 	public:
 		EXPORT CSimpleAnim(CVector*, i32, u16, i32, i32, i32);
 		EXPORT virtual ~CSimpleAnim(void) OVERRIDE;
+		EXPORT virtual void Move(void) OVERRIDE;
 
 		i32 mDie;
 		i32 mDieFrame;

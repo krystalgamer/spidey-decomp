@@ -558,6 +558,34 @@ CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
 }
 
 // @Ok
+void CSimpleAnim::Move(void)
+{
+	this->IncFrame();
+
+	if (this->mDie)
+	{
+		if (this->mFrame >= this->mDieFrame)
+		{
+			this->Die();
+		}
+	}
+	else
+	{
+		if (this->mFrame >= this->mNumFrames)
+		{
+			if (this->mDieFrame == -2)
+			{
+				this->SetFrame(this->mNumFrames - 1);
+			}
+			else
+			{
+				this->SetFrame(0);
+			}
+		}
+	}
+}
+
+// @Ok
 // @Note: mine setups SEH frame (maybe because it's exported)
 // also last if assingment is diff
 CSimpleAnim::CSimpleAnim(
@@ -1004,6 +1032,11 @@ INLINE CNonRenderedBit::CNonRenderedBit(void)
 INLINE CNonRenderedBit::~CNonRenderedBit(void)
 {
 	this->DeleteFrom(&NonRenderedBitList);
+}
+
+// @SMALLTODO
+void CFT4Bit::IncFrame(void)
+{
 }
 
 // @Ok
