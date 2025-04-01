@@ -557,7 +557,8 @@ CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
 	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");
 }
 
-// @NotOk
+// @Ok
+// @Matching
 void CSimpleAnim::Move(void)
 {
 	this->IncFrame();
@@ -1035,13 +1036,13 @@ INLINE CNonRenderedBit::~CNonRenderedBit(void)
 }
 
 // @Ok
-// @AlmostMatching: missing a mov ax, cx
+// @Matching
 INLINE void CFT4Bit::IncFrame(void)
 {
 	i16 val = ((this->mFrame << 8) | this->mFrameFrac) + this->mAnimSpeed;
 
-	this->mFrameFrac = val;
 	this->mFrame = val >> 8;
+	this->mFrameFrac = val;
 
 	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 }
