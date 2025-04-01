@@ -557,7 +557,7 @@ CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
 	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");
 }
 
-// @Ok
+// @NotOk
 void CSimpleAnim::Move(void)
 {
 	this->IncFrame();
@@ -906,7 +906,7 @@ INLINE CBit::~CBit()
 }
 
 // @Ok
-void CBit::Die(void)
+INLINE void CBit::Die(void)
 {
 	DoAssert(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
@@ -1034,9 +1034,16 @@ INLINE CNonRenderedBit::~CNonRenderedBit(void)
 	this->DeleteFrom(&NonRenderedBitList);
 }
 
-// @SMALLTODO
-void CFT4Bit::IncFrame(void)
+// @Ok
+// @AlmostMatching: missing a mov ax, cx
+INLINE void CFT4Bit::IncFrame(void)
 {
+	i16 val = ((this->mFrame << 8) | this->mFrameFrac) + this->mAnimSpeed;
+
+	this->mFrameFrac = val;
+	this->mFrame = val >> 8;
+
+	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 }
 
 // @Ok
@@ -1350,15 +1357,15 @@ void Bit_ReduceRGB(unsigned int*, int)
 }
 
 // @Ok
-void CFT4Bit::SetFrame(int a2)
+INLINE void CFT4Bit::SetFrame(i32 a2)
 {
-	print_if_false(a2 >= 0 && a2 < this->mNumFrames, "Bad frame sent to SetFrame");
-	print_if_false(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
+	DoAssert(a2 >= 0 && a2 < this->mNumFrames, "Bad frame sent to SetFrame");
+	DoAssert(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
 
 	this->mFrame = a2;
 	this->mFrameFrac = 0;
 
-	this->mpPSXFrame = &this->mpPSXAnim[(char)a2];
+	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 }
 
 // @Ok
