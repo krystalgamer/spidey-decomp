@@ -1314,6 +1314,8 @@ void validate_CFT4Bit(void){
 	VALIDATE(CFT4Bit, mPSXAnim, 0x48);
 	VALIDATE(CFT4Bit, field_4C, 0x4C);
 
+	VALIDATE(CFT4Bit, mBitFlags, 0x50);
+
 	VALIDATE(CFT4Bit, field_51, 0x51);
 	VALIDATE(CFT4Bit, field_52, 0x52);
 	VALIDATE(CFT4Bit, field_53, 0x53);
@@ -1400,6 +1402,8 @@ void validate_CRibbon(void)
 	VALIDATE_SIZE(CRibbon, 0x54);
 
 	VALIDATE(CRibbon, mNumBits, 0x3C);
+	VALIDATE(CRibbon, mPointsPerBit, 0x40);
+	VALIDATE(CRibbon, mNumPoints, 0x44);
 
 	VALIDATE(CRibbon, mPoints, 0x4C);
 	VALIDATE(CRibbon, mBits, 0x50);

@@ -182,7 +182,7 @@ class CFT4Bit : public CBit
 
 		SCFT4BitTexture *mPSXAnim;
 		SCFT4BitTexture *field_4C;
-		unsigned char padAfteranimRelated5[0x1];
+		u8 mBitFlags;
 
 		unsigned char field_51;
 		i8 field_52;
@@ -279,11 +279,12 @@ class CRibbon : public CNonRenderedBit
 		EXPORT void SetScale(i32);
 
 		i32 mNumBits;
+		i32 mPointsPerBit;
+		i32 mNumPoints;
 
-		PADDING(0x50-0x3C-8);
+		PADDING(4);
 
 		CVector *mPoints;
-
 		CRibbonBit **mBits;
 };
 
