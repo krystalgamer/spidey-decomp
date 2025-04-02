@@ -1447,7 +1447,8 @@ CGlassBit::CGlassBit(
 	this->mLifetime = Rnd(30) + 30;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGlassBit::Move(void)
 {
 	this->mPosA += this->mVel;
@@ -1458,6 +1459,37 @@ void CGlassBit::Move(void)
 
 	if (this->mPosA.vy > this->mGroundY)
 	{
+		if (this->mAge < 2)
+		{
+			this->mPosA.vy = this->mGroundY - (Rnd(50) << 12);
+			this->mPosB.vy = this->mGroundY - (Rnd(50) << 12);
+			this->mPosC.vy = this->mGroundY - (Rnd(50) << 12);
+
+			this->mVel.vy = -this->mVel.vy;
+			this->mVel.vy >>= 2;
+			this->mAge++;
+		}
+		else
+		{
+			this->mVel.vy = 0;
+		}
+
+		this->mVel.vx >>= 1;
+		this->mVel.vz >>= 1;
+	}
+
+	if (this->mAge >= 2 || Rnd(5))
+	{
+		this->mR = this->mDefaultR;
+		this->mG = this->mDefaultG;
+		this->mB = this->mDefaultB;
+	}
+
+	else
+	{
+		this->mB = 64;
+		this->mR = 48;
+		this->mG = 48;
 	}
 
 	if (this->mLifetime)
@@ -1467,10 +1499,42 @@ void CGlassBit::Move(void)
 
 	if (!this->mLifetime)
 	{
-		// @TODO
+		i32 newR;
+		if (this->mDefaultR > this->mFadeRate)
+		{
+			newR = this->mDefaultR - this->mFadeRate;
+		}
+		else
+		{
+			newR = 0;
+		}
+		this->mDefaultR = newR;
+
+		i32 newG;
+		if (this->mDefaultG > this->mFadeRate)
+		{
+			newG = this->mDefaultG - this->mFadeRate;
+		}
+		else
+		{
+			newG = 0;
+		}
+		this->mDefaultG = newG;
+
+		i32 newB;
+		if (this->mDefaultB > this->mFadeRate)
+		{
+			newB = this->mDefaultB - this->mFadeRate;
+		}
+		else
+		{
+			newB = 0;
+		}
+		this->mDefaultB = newB;
+
 	}
 
-	if ( !(this->mDefaultB | this->mDefaultR | this->mDefaultG) )
+	if (!(this->mDefaultB | this->mDefaultR | this->mDefaultG))
 	{
 		this->Die();
 	}
