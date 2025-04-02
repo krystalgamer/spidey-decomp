@@ -808,14 +808,32 @@ CSmokeTrail::~CSmokeTrail(void)
 {
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSmokeTrail::CSmokeTrail(
-		CVector* a2,
-		i32 a3,
-		i32, i32, i32)
-	: CRibbon(a2, a3, 2, 2, 2, 400, 1)
+		CVector* pos,
+		i32 numbits,
+		i32 r,
+		i32 g,
+		i32 b)
+	: CRibbon(pos, numbits, 2, 2, 2, 400, 1)
 {
-	printf("CSmokeTrail::CSmokeTrail(CVector*, i32, i32, i32, i32)");
+
+	i32 v12 = r / this->mNumBits;
+	i32 v13 = g / this->mNumBits;
+	i32 v14 = b / this->mNumBits;
+
+	for (i32 i = 0; i < this->mNumBits; i++)
+	{
+		i32 tmp = (this->mNumBits - 1 - i);
+		this->mBits[i]->SetTint(
+				r - tmp * v12, 
+				g - tmp * v13, 
+				b - tmp * v14);
+
+		this->mBits[i]->SetTransDecay(8);
+	}
+
 }
 
 // @Ok
@@ -1489,7 +1507,7 @@ INLINE void CFT4Bit::SetFrame(i32 a2)
 }
 
 // @Ok
-void CFT4Bit::SetTransDecay(int decay)
+INLINE void CFT4Bit::SetTransDecay(i32 decay)
 {
 	this->mTransDecay = decay;
 }
