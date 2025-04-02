@@ -597,10 +597,34 @@ void CGlow::SetFringeRGB(
 	}
 }
 
-// @SMALLTODO
-CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)
+// @Ok
+// @AlmostMatching: diff vector assingment and mFrame is assinged later for some reason
+// also mScale is out of order
+CCombatImpactRing::CCombatImpactRing(
+		CVector *a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8)
 {
-	printf("CCombatImpactRing::CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32)");
+	this->mPos = *a2;
+
+	this->field_58 = Rnd(4096);
+	this->mScale = a6;
+
+	this->field_68 = a7;
+	this->field_6C = a8;
+	this->mPostScale = 0xA001000;
+	this->field_70 = gTimerRelated;
+
+	this->SetTint(a3, a4, a5);
+
+	this->mFrigDeltaZ = 64;
+
+	this->SetAnim(8);
+	this->SetSemiTransparent();
 }
 
 // @Ok
@@ -1145,10 +1169,9 @@ INLINE void CFT4Bit::SetAnim(i32 a2)
 }
 
 // @Ok
-void CFT4Bit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
+INLINE void CFT4Bit::SetTint(u8 r, u8 g, u8 b)
 {
-	int tmp = this->mCodeBGR & 0xFF000000;
-	this->mCodeBGR = a2 | tmp | (((a4 << 8) | a3) << 8);
+	this->mCodeBGR = (this->mCodeBGR & 0xFF000000) | (b << 0x10) | (g << 8) | r;
 }
 
 // @Ok
@@ -1761,6 +1784,10 @@ void validate_SFlatBitVelocity(void)
 void validate_CCombatImpactRing(void)
 {
 	VALIDATE_SIZE(CCombatImpactRing, 0x74);
+
+	VALIDATE(CCombatImpactRing, field_68, 0x68);
+	VALIDATE(CCombatImpactRing, field_6C, 0x6C);
+	VALIDATE(CCombatImpactRing, field_70, 0x70);
 }
 
 void validate_SRibbonPoint(void)
