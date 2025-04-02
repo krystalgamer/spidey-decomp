@@ -80,31 +80,48 @@ EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
 // @Matching
+void Bit_RemoveDeadBits(void)
+{
+	RemoveDeadBits(NonRenderedBitList);
+	RemoveDeadBits(TextBoxList);
+	RemoveDeadBits(FlatBitList);
+	RemoveDeadBits(Linked2EndedBitListLeftover);
+
+	RemoveDeadBits(PixelList);
+	RemoveDeadBits(PolyLineList);
+
+	RemoveDeadBits(GPolyLineList);
+
+	RemoveDeadBits(QuadBitList);
+	RemoveDeadBits(GenPolyList);
+	RemoveDeadBits(ChunkBitList);
+
+	RemoveDeadBits(GlowList);
+	RemoveDeadBits(GlassList);
+	RemoveDeadBits(GLineList);
+	RemoveDeadBits(SpecialDisplayList);
+}
+
+// @Ok
+// @Matching
 INLINE void RemoveDeadBits(CBit *pBit)
 {
-	if (!pBit)
-	{
-		return;
-	}
-
-	CBit* pCurr = pBit;
-	CBit* pNext = pCurr->mNext;
-	while (pCurr)
-	{
-		if (pCurr->mDead)
-		{
-			delete pCurr;
-		}
-
-		pCurr = pNext;
-
-		if (!pNext)
-		{
-			break;
-		}
-
-		pNext = pNext->mNext;
-	}
+	if (pBit)
+ 	{
+ 		CBit *pNext = pBit->mNext;
+ 		while (1)
+ 		{
+ 			if (!pBit->mProtected)
+ 				delete pBit;
+ 
+ 			pBit = pNext;
+ 
+ 			if (!pBit)
+ 				break;
+ 
+ 			pNext = pNext->mNext;
+ 		}
+ 	}
 }
 
 // @Ok

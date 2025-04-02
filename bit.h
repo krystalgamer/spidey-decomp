@@ -470,6 +470,7 @@ EXPORT void Bit_Init(void);
 EXPORT void Bit_DeleteAll(void);
 EXPORT void Bit_UpdateQuickAnimLookups(void);
 EXPORT void RemoveDeadBits(CBit *);
+EXPORT void Bit_RemoveDeadBits(void);
 
 EXPORT void DeleteBitList(CBit*);
 
