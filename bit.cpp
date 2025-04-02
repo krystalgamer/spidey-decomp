@@ -79,6 +79,35 @@ EXPORT CBit* GLineList;
 EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
+// @Matching
+INLINE void RemoveDeadBits(CBit *pBit)
+{
+	if (!pBit)
+	{
+		return;
+	}
+
+	CBit* pCurr = pBit;
+	CBit* pNext = pCurr->mNext;
+	while (pCurr)
+	{
+		if (pCurr->mDead)
+		{
+			delete pCurr;
+		}
+
+		pCurr = pNext;
+
+		if (!pNext)
+		{
+			break;
+		}
+
+		pNext = pNext->mNext;
+	}
+}
+
+// @Ok
 // @AlmostMatching: CFriction::Set was not inlined and attachto seems different too
 CQuadBit::CQuadBit(void)
 {

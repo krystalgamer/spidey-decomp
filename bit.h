@@ -469,6 +469,7 @@ EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
 EXPORT void Bit_DeleteAll(void);
 EXPORT void Bit_UpdateQuickAnimLookups(void);
+EXPORT void RemoveDeadBits(CBit *);
 
 EXPORT void DeleteBitList(CBit*);
 
