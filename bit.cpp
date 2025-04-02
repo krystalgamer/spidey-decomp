@@ -1427,7 +1427,7 @@ INLINE CFlatBit::CFlatBit(void)
 {
 	this->AttachTo(reinterpret_cast<CBit**>(&FlatBitList));
 
-	this->mAngFric = 0x32;
+	this->mAngFric = 0x20;
 	this->field_5E = 1;
 	this->mPostScale = 0x10001000;
 }
