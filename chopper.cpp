@@ -771,7 +771,7 @@ void CChopperMissile::Explode(void)
 			7);
 
 
-	this->field_F8->field_54 = 1;
+	this->field_F8->mFadeAway = 1;
 	this->field_F8->mProtected = 0;
 	this->field_F8 = 0;
 	this->Die();

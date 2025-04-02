@@ -778,6 +778,12 @@ CRibbon::CRibbon(
 	this->mBits[0]->SetAnim(endanimindex);
 }
 
+// @Ok
+// @Matching
+CSmokeTrail::~CSmokeTrail(void)
+{
+}
+
 // @SMALLTODO
 CSmokeTrail::CSmokeTrail(
 		CVector* a2,
@@ -1710,7 +1716,7 @@ void validate_CSmokeTrail(void)
 {
 	VALIDATE_SIZE(CSmokeTrail, 0x58);
 
-	VALIDATE(CSmokeTrail, field_54, 0x54);
+	VALIDATE(CSmokeTrail, mFadeAway, 0x54);
 }
 
 void validate_CGlow(void)

@@ -284,9 +284,12 @@ class CRibbon : public CNonRenderedBit
 class CSmokeTrail : public CRibbon
 {
 	public:
-		i32 field_54;
 
 		EXPORT CSmokeTrail(CVector*, i32, i32, i32, i32);
+		EXPORT virtual void Move(void) OVERRIDE;
+		EXPORT virtual ~CSmokeTrail(void) OVERRIDE;
+
+		i32 mFadeAway;
 };
 
 
