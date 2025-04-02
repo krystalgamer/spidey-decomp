@@ -1404,10 +1404,47 @@ void Bit_UpdateQuickAnimLookups(void)
 	}
 }
 
-// @SMALLTODO
-CGlassBit::CGlassBit(CVector const *,CVector const *,i32,u8,u8,u8,i32,i32,i32)
+// @Ok
+// @AlmostMatching: 1 byte diff in CFriction::Set
+CGlassBit::CGlassBit(
+		const CVector *Pos,
+		const CVector *Vel,
+		i32 GroundY,
+		u8 r,
+		u8 g,
+		u8 b,
+		i32 dx,
+		i32 dy,
+		i32 dz)
 {
-	printf("CGlassBit::CGlassBit(CVector const *,CVector const *,i32,u8,u8,u8,i32,i32,i32)");
+	this->AttachTo(&GlassList);
+
+	this->mPos = *Pos;
+
+	this->mPosA.vx = Pos->vx + ((Rnd(2 * dx + 1) - dx) << 12);
+	this->mPosA.vy = Pos->vy + ((Rnd(2 * dy + 1) - dy) << 12);
+	this->mPosA.vz = Pos->vz + ((Rnd(2 * dz + 1) - dz) << 12);
+	this->mPosB.vx = Pos->vx + ((Rnd(2 * dx + 1) - dx) << 12);
+	this->mPosB.vy = Pos->vy + ((Rnd(2 * dy + 1) - dy) << 12);
+	this->mPosB.vz = Pos->vz + ((Rnd(2 * dz + 1) - dz) << 12);
+	this->mPosC.vx = Pos->vx + ((Rnd(2 * dx + 1) - dx) << 12);
+	this->mPosC.vy = Pos->vy + ((Rnd(2 * dy + 1) - dy) << 12);
+	this->mPosC.vz = Pos->vz + ((Rnd(2 * dz + 1) - dz) << 12);
+
+	this->mVel = *Vel;
+
+	this->mGroundY = GroundY;
+	
+	this->mDefaultR = r >> 2;
+	this->mDefaultG = g >> 2;
+	this->mDefaultB = b >> 2;
+
+	this->mR = r >> 2;
+	this->mG = g >> 2;
+	this->mB = b >> 2;
+
+	this->mFadeRate = 4;
+	this->mLifetime = Rnd(30) + 30;
 }
 
 // @SMALLTODO
