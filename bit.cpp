@@ -780,6 +780,30 @@ CRibbon::CRibbon(
 
 // @Ok
 // @Matching
+void CSmokeTrail::Move(void)
+{
+	if (this->mFadeAway)
+	{
+		i32 v2 = 1;
+
+		for (i32 i = 0; i < this->mNumBits; i++)
+		{
+			if (!this->mBits[i]->Fade(0))
+			{
+				v2 = 0;
+			}
+		}
+
+		if (v2)
+		{
+			this->Die();
+		}
+	}
+}
+
+
+// @Ok
+// @Matching
 CSmokeTrail::~CSmokeTrail(void)
 {
 }
