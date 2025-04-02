@@ -1453,10 +1453,11 @@ void CGlassBit::Move(void)
 	printf("void CGlassBit::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CGlassBit::~CGlassBit(void)
 {
-	printf("CGlassBit::~CGlassBit(void)");
+	this->DeleteFrom(&GlassList);
 }
 
 void validate_CFlatBit(void){
