@@ -53,7 +53,8 @@ struct SAnimFrame
 
 
 EXPORT extern u32 SparkSize;
-EXPORT extern i32 gTimerRelated;
+// @FIXME - is it really volatile?
+EXPORT extern volatile i32 gTimerRelated;
 
 struct SRibbonPoint {
 	// offset: 0000 (12 bytes)
@@ -321,7 +322,8 @@ class CCombatImpactRing : public CFlatBit
 {
 	public:
 		EXPORT CCombatImpactRing(CVector*, u8, u8, u8, i32, i32, i32);
-		EXPORT virtual ~CCombatImpactRing(void);
+		EXPORT virtual ~CCombatImpactRing(void) OVERRIDE;
+		EXPORT virtual void Move(void) OVERRIDE;
 
 		i32 field_68;
 		i32 field_6C;

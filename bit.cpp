@@ -65,7 +65,8 @@ EXPORT CPixel* PixelList;
 
 u32 SparkSize = 1;
 
-i32 gTimerRelated;
+// @FIXME - is it really?
+volatile i32 gTimerRelated;
 
 EXPORT CBit* NonRenderedBitList;
 EXPORT CBit* Linked2EndedBitListLeftover;
@@ -594,6 +595,25 @@ void CGlow::SetFringeRGB(
 	for (u32 i = 0; i < this->mNumSections; i++)
 	{
 		pFringe[i].CodeBGR = val;
+	}
+}
+
+// @Ok
+// @Matching
+void CCombatImpactRing::Move(void)
+{
+	if (this->mScale == this->field_68)
+	{
+		this->Die();
+	}
+	else
+	{
+		i32 v1 = gTimerRelated - this->field_70;
+		this->field_70 = gTimerRelated;
+		this->mScale += this->field_6C * v1;
+
+		if (this->mScale > this->field_68)
+			this->mScale = this->field_68;
 	}
 }
 
