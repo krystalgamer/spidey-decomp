@@ -544,15 +544,15 @@ void CCopBulletTracer::Move(void)
 	if (this->mMaxWidth)
 		this->mMaxWidth = mMaxWidth - 1;
 
-	this->mpRibbon->mpPoints[this->field_C].r = 0;
-	this->mpRibbon->mpPoints[this->field_C].g = 0;
-	this->mpRibbon->mpPoints[this->field_C].b = 0;
-	this->mpRibbon2->mpPoints[this->field_C].r = 0;
-	this->mpRibbon2->mpPoints[this->field_C].g = 0;
-	this->mpRibbon2->mpPoints[this->field_C].b = 0;
+	this->mpRibbon->mpPoints[this->mAge].r = 0;
+	this->mpRibbon->mpPoints[this->mAge].g = 0;
+	this->mpRibbon->mpPoints[this->mAge].b = 0;
+	this->mpRibbon2->mpPoints[this->mAge].r = 0;
+	this->mpRibbon2->mpPoints[this->mAge].g = 0;
+	this->mpRibbon2->mpPoints[this->mAge].b = 0;
 
-	if ( this->field_C < 4 )
-		this->field_C++;
+	if ( this->mAge < 4 )
+		this->mAge++;
 	else
 		this->Die();
 }

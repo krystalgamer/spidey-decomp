@@ -719,7 +719,7 @@ void CRhinoNasalSteam::Move(void)
 
 	this->mPos += this->mVel;
 
-	bool v7 = ++this->field_C <= 30;
+	bool v7 = ++this->mAge <= 30;
 	this->mVel.vy -= 1024;
 
 	if (!v7 )
@@ -728,8 +728,8 @@ void CRhinoNasalSteam::Move(void)
 	}
 	else
 	{
-		this->SetTransparency(64 - 2 * (this->field_C & 0xFF));
-		this->SetScale(Rnd(4) + 4 * (this->field_C + 32));
+		this->SetTransparency(64 - 2 * (this->mAge & 0xFF));
+		this->SetScale(Rnd(4) + 4 * (this->mAge + 32));
 	}
 }
 

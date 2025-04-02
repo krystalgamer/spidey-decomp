@@ -38,7 +38,7 @@ INLINE void CFadePalettes::FadeDown(void)
 {
 	if (this->field_45B != 1 && this->field_45B != 3)
 	{
-		this->field_C = 0;
+		this->mAge = 0;
 		this->field_45B = 1;
 	}
 }

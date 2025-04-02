@@ -1002,7 +1002,7 @@ void CSniperSplat::Move(void)
 			this->field_84 = 1;
 			break;
 		case 1:
-			if (++this->field_C > 30)
+			if (++this->mAge > 30)
 				this->field_84 = 2;
 			break;
 		case 2:
@@ -1258,7 +1258,7 @@ void CBulletFrag::Move()
 
   this->field_58 += this->field_5A;
 
-  if (++this->field_C > (i32)(u16)this->mLifetime)
+  if (++this->mAge > (i32)(u16)this->mLifetime)
 	  this->Die();
 }
 

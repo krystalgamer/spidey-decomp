@@ -177,9 +177,9 @@ void CSimbyDroplet::Move(void)
 {
 	this->mPos.vy += this->mVel.vy;
 	this->mVel.vy += this->field_6A;
-	this->field_C++;
+	this->mAge++;
 
-	if (this->mPos.vy > this->field_6C || this->field_C > 60)
+	if (this->mPos.vy > this->field_6C || this->mAge > 60)
 	{
 		Trig_SendPulse(reinterpret_cast<u16*>(&gTrigNodes[this->field_68][3]));
 		this->Die();
@@ -864,7 +864,7 @@ CSkidMark::CSkidMark(void)
 // @Ok
 void CSkidMark::Move(void)
 {
-	if (++this->field_C > 40)
+	if (++this->mAge > 40)
 	{
 		Bit_ReduceRGB(&this->mTint, 2);
 		if (!(0xFFFFFF & this->mTint))

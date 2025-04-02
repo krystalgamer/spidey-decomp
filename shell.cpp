@@ -884,14 +884,14 @@ void CShellRhinoNasalSteam::Move(void)
 	this->mPos += this->mVel;
 
 	this->mVel.vy -= 1024;
-	if (++this->field_C > 30)
+	if (++this->mAge > 30)
 	{
 		this->Die();
 	}
 	else
 	{
-		this->SetTransparency(64 - 2 * (0xFF & this->field_C));
-		this->SetScale(Rnd(4) + 4 *(this->field_C + 32));
+		this->SetTransparency(64 - 2 * (0xFF & this->mAge));
+		this->SetScale(Rnd(4) + 4 *(this->mAge + 32));
 	}
 }
 

@@ -2006,7 +2006,7 @@ void CCarnageHitSpark::Move(void)
 	this->mPosD.vy += this->mVel.vy;
 	this->mPosD.vz += this->mVel.vz;
 
-	if (++this->field_C > 0)
+	if (++this->mAge > 0)
 		Bit_ReduceRGB(&this->mTint, 30);
 
 	if ((this->mTint & 0xFFFFFF) == 0)

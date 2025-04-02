@@ -88,7 +88,7 @@ class CBit
 		CBit* mPrevious;
 		CBit* mNext;
 
-		__int16 field_C;
+		i16 mAge;
 		u16 mLifetime;
 
 		CVector mPos;

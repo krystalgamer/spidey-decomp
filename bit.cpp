@@ -827,7 +827,7 @@ void CMotionBlur::Move(void)
 		return;
 	}
 
-	if ( ++this->field_C & 1)
+	if ( ++this->mAge & 1)
 	{
 		if ( ++this->mFrame >= this->mNumFrames )
 			this->mFrame = 0;
@@ -1450,7 +1450,30 @@ CGlassBit::CGlassBit(
 // @SMALLTODO
 void CGlassBit::Move(void)
 {
-	printf("void CGlassBit::Move(void)");
+	this->mPosA += this->mVel;
+	this->mPosB += this->mVel;
+	this->mPosC += this->mVel;
+
+	this->mVel.vy += 10000;
+
+	if (this->mPosA.vy > this->mGroundY)
+	{
+	}
+
+	if (this->mLifetime)
+	{
+		this->mLifetime--;
+	}
+
+	if (!this->mLifetime)
+	{
+		// @TODO
+	}
+
+	if ( !(this->mDefaultB | this->mDefaultR | this->mDefaultG) )
+	{
+		this->Die();
+	}
 }
 
 // @Ok
@@ -1518,6 +1541,7 @@ void validate_CBit(void)
 	VALIDATE(CBit, mPrevious, 0x4);
 	VALIDATE(CBit, mNext, 0x8);
 
+	VALIDATE(CBit, mAge, 0xC);
 	VALIDATE(CBit, mLifetime, 0xE);
 
 	VALIDATE(CBit, mPos, 0x10);

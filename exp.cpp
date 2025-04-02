@@ -481,7 +481,7 @@ void CGlowFlash::Move(void)
 
 	if (this->mLifetime)
 	{
-		if (++this->field_C <= this->mLifetime)
+		if (++this->mAge <= this->mLifetime)
 			return;
 	}
 	else if (0xFFFFFF & this->mCentreCodeBGR)

@@ -121,7 +121,7 @@ void CChunkSmoke::Move(void)
 	this->field_5A -= this->field_5A >> 3;
 	this->mScale += (this->field_7C - this->mScale) >> 1;
 
-	if (++this->field_C > this->field_74)
+	if (++this->mAge > this->field_74)
 	{
 		this->mPos.vy -= this->mVel.vy;
 
@@ -267,7 +267,7 @@ CFootprint::CFootprint(CVector* pVector, i32 a3)
 // @Ok
 void CRhinoWallImpact::Move(void)
 {
-	if (++this->field_C >= 200)
+	if (++this->mAge >= 200)
 	{
 		Bit_ReduceRGB(&this->mTint, 1);
 		if (!(0xFFFFFF & this->mTint))
