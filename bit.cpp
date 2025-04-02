@@ -346,7 +346,7 @@ CWibbly::~CWibbly(void)
 CFireyExplosion::CFireyExplosion(CVector* pPos)
 {
 	this->mPos = *pPos;
-	this->field_E = 50;
+	this->mLifetime = 50;
 	SFX_PlayPos(1, &this->mPos, 0);
 }
 
@@ -381,7 +381,7 @@ CTextBox::CTextBox(
 	this->mFric.vy = pFric->vy;
 	this->mFric.vz = pFric->vz;
 
-	this->field_E = a6;
+	this->mLifetime = a6;
 
 	this->field_3C = gTimerRelated;
 
@@ -1462,7 +1462,7 @@ void validate_CBit(void)
 	VALIDATE(CBit, mPrevious, 0x4);
 	VALIDATE(CBit, mNext, 0x8);
 
-	VALIDATE(CBit, field_E, 0xE);
+	VALIDATE(CBit, mLifetime, 0xE);
 
 	VALIDATE(CBit, mPos, 0x10);
 	VALIDATE(CBit, mVel, 0x1C);

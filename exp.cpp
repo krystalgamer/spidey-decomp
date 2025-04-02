@@ -418,7 +418,7 @@ CFlameExplosion::CFlameExplosion(
 		i32 a5)
 {
 	this->mPos = *a2;
-	this->field_E = a3;
+	this->mLifetime = a3;
 
 	this->field_3E = a5;
 	this->field_3F = a4;
@@ -461,7 +461,7 @@ CGlowFlash::CGlowFlash(
 	this->field_6A = a19;
 	this->field_66 = a17;
 	this->field_68 = a18;
-	this->field_E = a20;
+	this->mLifetime = a20;
 	print_if_false(a20 || this->field_5C, "CGlowFlash centrefaderate and lifetime both zero.");
 	this->ChooseRadii();
 }
@@ -479,9 +479,9 @@ void CGlowFlash::Move(void)
 	if (this->field_6C)
 		this->ChooseRadii();
 
-	if (this->field_E)
+	if (this->mLifetime)
 	{
-		if (++this->field_C <= this->field_E)
+		if (++this->field_C <= this->mLifetime)
 			return;
 	}
 	else if (0xFFFFFF & this->mCentreCodeBGR)

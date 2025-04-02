@@ -68,7 +68,7 @@ void CBouncingRock::Move(void)
 	if (this->field_6C >= 5)
 		this->Die();
 
-	if (this->field_E > 0x3C)
+	if (this->mLifetime > 0x3C)
 		this->Die();
 
 }

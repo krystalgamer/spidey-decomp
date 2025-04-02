@@ -990,7 +990,7 @@ CBulletFrag::CBulletFrag(CVector* a2)
 		this->field_5A *= -1;
 
 	this->mPostScale = 0xC001000;
-	this->field_E = Rnd(10) + 10;
+	this->mLifetime = Rnd(10) + 10;
 }
 
 // @Ok
@@ -1258,7 +1258,7 @@ void CBulletFrag::Move()
 
   this->field_58 += this->field_5A;
 
-  if ( ++this->field_C > (i32)(u16)this->field_E )
+  if (++this->field_C > (i32)(u16)this->mLifetime)
 	  this->Die();
 }
 
