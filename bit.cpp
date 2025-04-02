@@ -1404,6 +1404,24 @@ void Bit_UpdateQuickAnimLookups(void)
 	}
 }
 
+// @SMALLTODO
+CGlassBit::CGlassBit(CVector const *,CVector const *,i32,u8,u8,u8,i32,i32,i32)
+{
+	printf("CGlassBit::CGlassBit(CVector const *,CVector const *,i32,u8,u8,u8,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void CGlassBit::Move(void)
+{
+	printf("void CGlassBit::Move(void)");
+}
+
+// @SMALLTODO
+CGlassBit::~CGlassBit(void)
+{
+	printf("CGlassBit::~CGlassBit(void)");
+}
+
 void validate_CFlatBit(void){
 	VALIDATE(CFlatBit, field_58, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
@@ -1686,4 +1704,25 @@ void validate_vector3d(void)
 	VALIDATE_SIZE(vector3d, 0xC);
 
 	VALIDATE(vector3d, field_0, 0x0);
+}
+
+void validate_CGlassBit(void)
+{
+	VALIDATE_SIZE(CGlassBit, 0x6C);
+
+	VALIDATE(CGlassBit, mPosA, 0x3C);
+	VALIDATE(CGlassBit, mPosB, 0x48);
+	VALIDATE(CGlassBit, mPosC, 0x54);
+
+	VALIDATE(CGlassBit, mGroundY, 0x60);
+
+	VALIDATE(CGlassBit, mDefaultR, 0x64);
+	VALIDATE(CGlassBit, mDefaultG, 0x65);
+	VALIDATE(CGlassBit, mDefaultB, 0x66);
+
+	VALIDATE(CGlassBit, mR, 0x67);
+	VALIDATE(CGlassBit, mG, 0x68);
+	VALIDATE(CGlassBit, mB, 0x69);
+
+	VALIDATE(CGlassBit, mFadeRate, 0x6A);
 }

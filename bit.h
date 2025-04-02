@@ -427,7 +427,32 @@ class CWibbly : public CGouraudRibbon
 		i32 field_88;
 		u8 padBottom[0x98-0x88-4];
 
+};
 
+class CGlassBit : public CBit
+{
+	public:
+		EXPORT CGlassBit(CVector const *,CVector const *,i32,u8,u8,u8,i32,i32,i32);
+		EXPORT virtual void Move(void) OVERRIDE;
+		EXPORT virtual ~CGlassBit(void) OVERRIDE;
+
+		CVector mPosA;
+		CVector mPosB;
+		CVector mPosC;
+
+		i32 mGroundY;
+
+		u8 mDefaultR;
+		u8 mDefaultG;
+		u8 mDefaultB;
+
+		u8 mR;
+		u8 mG;
+		u8 mB;
+
+		u8 mFadeRate;
+
+		PADDING(1);
 };
 
 EXPORT extern CBit* GPolyLineList;
@@ -484,6 +509,7 @@ void validate_SSection(void);
 void validate_SFringeQuad(void);
 void validate_vector3d(void);
 void validate_vector4d(void);
+void validate_CGlassBit(void);
 
 
 #endif
