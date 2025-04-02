@@ -112,7 +112,7 @@ INLINE void RemoveDeadBits(CBit *pBit)
  		CBit *pNext = pBit->mNext;
  		while (1)
  		{
- 			if (!pBit->mProtected)
+ 			if (pBit->mDead)
  				delete pBit;
  
  			pBit = pNext;
