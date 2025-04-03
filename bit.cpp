@@ -595,20 +595,39 @@ void CFrag::Move(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: inlines different and also the mVel assignement
 CFrag::CFrag(
-		CVector*,
-		u8,
-		u8,
-		u8,
-		i32,
-		u16,
-		i32,
-		i32,
-		i32,
-		i32)
+		CVector *a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		i32 a6,
+		u16 a7,
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		i32 a11)
 {
-	printf("CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);");
+	this->mPos = *a2;
+
+	this->SetAnim(a6);
+
+	if (a8)
+	{
+		this->SetSemiTransparent();
+	}
+
+	this->SetTint(a3, a4, a5);
+	this->mScale = a7;
+
+	this->mVel.vx = (Rnd(2 * a9 + 1) - a9) << 12;
+	this->mVel.vy = -4096 * Rnd(a9);
+	this->mVel.vz = (Rnd(2 * a9 + 1) - a9) << 12;
+	this->mAcc.vy = a10;
+	this->mFric.Set(3,3,3);
+
+	this->mLifetime = Rnd(a11);
 }
 
 // @Ok
@@ -1041,9 +1060,8 @@ CMotionBlur::CMotionBlur(
 // @Matching
 INLINE CBit::CBit() 
 {
-	this->mFric.vx = 1;
-	this->mFric.vy = 1;
-	this->mFric.vz = 1;
+	this->mFric.Set(1,1,1);
+
 	BitCount++;
 }
 
