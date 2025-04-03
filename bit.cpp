@@ -560,8 +560,29 @@ CPixel::CPixel(void)
 	this->AttachTo(reinterpret_cast<CBit**>(&PixelList));
 }
 
+// @Ok
+// @Matching
+CFrag::~CFrag(void)
+{
+}
+
 // @SMALLTODO
-CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32)
+void CFrag::Move(void)
+{
+}
+
+// @SMALLTODO
+CFrag::CFrag(
+		CVector*,
+		u8,
+		u8,
+		u8,
+		i32,
+		u16,
+		i32,
+		i32,
+		i32,
+		i32)
 {
 	printf("CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);");
 }
@@ -570,7 +591,7 @@ CFrag::CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32)
 // @Matching
 void CGlow::SetFringeWidth(u32 Fringe, u32 Width)
 {
-	print_if_false(Fringe < this->mNumFringes, "Bad Fringe sent to SetFringeWidth");
+	DoAssert(Fringe < this->mNumFringes, "Bad Fringe sent to SetFringeWidth");
 
 	SFringeQuad* pFringe = &this->mpFringes[Fringe * this->mNumSections];
 	for (u32 i = 0; i < this->mNumSections; i++)

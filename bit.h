@@ -337,6 +337,8 @@ class CFrag : public CFlatBit
 {
 	public:
 		EXPORT CFrag(CVector*, u8, u8, u8, i32, u16, i32, i32, i32, i32);
+		EXPORT virtual ~CFrag(void) OVERRIDE;
+		EXPORT virtual void Move(void) OVERRIDE;
 };
 
 class CPixel : public CBit
