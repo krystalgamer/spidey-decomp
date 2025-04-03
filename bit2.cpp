@@ -194,10 +194,10 @@ void CSmokeGenerator::Move(void)
     printf("CSmokeGenerator::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSmokeGenerator::~CSmokeGenerator(void)
 {
-    printf("CSmokeGenerator::~CSmokeGenerator(void)");
 }
 
 void validate_CGPolyLine(void){
