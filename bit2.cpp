@@ -1,5 +1,6 @@
 #include "bit2.h"
 #include "mem.h"
+#include "my_assert.h"
 
 #include "validate.h"
 
@@ -80,10 +81,27 @@ CGPolyLine::CGPolyLine(i32 numsegs)
 	this->mCode = 80;
 }
 
-// @SMALLTODO
-CPolyLine::CPolyLine(i32)
+// @Ok
+// @AlmostMatching: diff reg allocation for the reg for the loop
+CPolyLine::CPolyLine(i32 numsegs)
 {
-	printf("CPolyLine::CPolyLine(i32)");
+	DoAssert(numsegs > 0 && numsegs < 100, "Bad numsegs sent to polyline constructor");
+
+	this->mSegs = static_cast<SLineSeg *>(
+			DCMem_New(sizeof(SLineSeg) * numsegs, 0, 1, 0, 1));
+
+	for (i32 i = 0; i < numsegs; i++)
+	{
+		SLineSeg *pSeg = &this->mSegs[i];
+		// @FIXME - affects portability, but it's how the devs did it
+		*reinterpret_cast<u32*>(&pSeg->r) = 0x40FFFFFF;
+
+		pSeg->End = gGlobalNormal;
+	}
+
+
+	this->mNumSegs = numsegs;
+	this->AttachTo(&PolyLineList);
 }
 
 // @Ok
