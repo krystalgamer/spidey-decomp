@@ -60,6 +60,8 @@ class CPolyLine : public CBit
 {
 	public:
 		EXPORT CPolyLine(i32);
+		EXPORT virtual ~CPolyLine(void) OVERRIDE;
+
 		EXPORT void SetSemiTransparent(void);
 		unsigned char topPad[4];
 

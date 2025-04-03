@@ -70,7 +70,7 @@ volatile i32 gTimerRelated;
 
 EXPORT CBit* NonRenderedBitList;
 EXPORT CBit* Linked2EndedBitListLeftover;
-EXPORT CBit* PolyLineList;
+CBit* PolyLineList;
 CBit* GPolyLineList;
 EXPORT CBit* QuadBitList;
 EXPORT CBit* GenPolyList;

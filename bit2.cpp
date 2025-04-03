@@ -127,6 +127,14 @@ void CPolyLine::SetSemiTransparent(void)
 	}
 }
 
+// @Ok
+// @Matching
+CPolyLine::~CPolyLine(void)
+{
+	Mem_Delete(this->mSegs);
+	this->DeleteFrom(&PolyLineList);
+}
+
 void validate_CGPolyLine(void){
 	VALIDATE_SIZE(CGPolyLine, 0x58);
 

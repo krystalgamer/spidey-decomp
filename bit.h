@@ -524,5 +524,6 @@ void validate_CGlassBit(void);
 
 
 EXPORT extern CBit* GLineList;
+EXPORT extern CBit* PolyLineList;
 
 #endif
