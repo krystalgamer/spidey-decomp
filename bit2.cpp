@@ -103,6 +103,14 @@ CGLine::~CGLine(void)
 }
 
 // @Ok
+// @Matching
+void CGLine::SetRGB0(u8 a2, u8 a3, u8 a4)
+{
+	this->mCodeBGR0 = (this->mCodeBGR0 & 0xFF000000) | (a4 << 16) | (a3 << 8) | a2;
+}
+
+// @Ok
+// @Matching
 void CGLine::SetRGB1(u8 a2, u8 a3, u8 a4)
 {
 	this->mPadBGR1 = a2 | (a4 << 16) | (a3 << 8);
