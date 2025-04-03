@@ -96,7 +96,14 @@ CGLine::CGLine(void)
 }
 
 // @Ok
-void CGLine::SetRGB1(unsigned char a2, unsigned char a3, unsigned char a4)
+// @Matching
+CGLine::~CGLine(void)
+{
+	this->DeleteFrom(&GLineList);
+}
+
+// @Ok
+void CGLine::SetRGB1(u8 a2, u8 a3, u8 a4)
 {
 	this->mPadBGR1 = a2 | (a4 << 16) | (a3 << 8);
 }

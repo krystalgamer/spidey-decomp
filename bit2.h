@@ -44,6 +44,7 @@ class CGLine : public CBit
 	public:
 		EXPORT void SetRGB1(unsigned char, unsigned char, unsigned char);
 		EXPORT CGLine(void);
+		EXPORT virtual ~CGLine(void);
 
 		u32 mCodeBGR0;
 		u32 mPadBGR1;
