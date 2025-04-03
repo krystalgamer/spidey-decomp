@@ -1256,7 +1256,7 @@ void CBulletFrag::Move()
   this->mPos.vz += this->mVel.vz;
   this->mVel.vy += 0x7390;
 
-  this->field_58 += this->field_5A;
+  this->mAngle += this->field_5A;
 
   if (++this->mAge > (i32)(u16)this->mLifetime)
 	  this->Die();

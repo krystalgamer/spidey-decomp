@@ -688,7 +688,7 @@ CRhinoNasalSteam::CRhinoNasalSteam(CVector* a2, CVector* a3)
 	this->SetTransparency(64);
 	this->SetAnimSpeed(128);
 	this->SetScale(128);
-	this->field_58 = Rnd(4096);
+	this->mAngle = Rnd(4096);
 }
 
 // @Ok

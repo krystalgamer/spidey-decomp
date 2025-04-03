@@ -191,7 +191,8 @@ CSmokeGenerator::CSmokeGenerator(
 // @SMALLTODO
 void CSmokeGenerator::Move(void)
 {
-    printf("CSmokeGenerator::Move(void)");
+	if (++this->mAge == this->mLifetime && this->mLifetime != 0xFFFF )
+		this->Die();
 }
 
 // @Ok

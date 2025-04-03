@@ -694,7 +694,7 @@ CCombatImpactRing::CCombatImpactRing(
 {
 	this->mPos = *a2;
 
-	this->field_58 = Rnd(4096);
+	this->mAngle = Rnd(4096);
 	this->mScale = a6;
 
 	this->field_68 = a7;
@@ -1747,7 +1747,7 @@ CGlassBit::~CGlassBit(void)
 }
 
 void validate_CFlatBit(void){
-	VALIDATE(CFlatBit, field_58, 0x58);
+	VALIDATE(CFlatBit, mAngle, 0x58);
 	VALIDATE(CFlatBit, field_5A, 0x5A);
 	VALIDATE(CFlatBit, field_5E, 0x5E);
 	VALIDATE(CFlatBit, mPostScale, 0x60);

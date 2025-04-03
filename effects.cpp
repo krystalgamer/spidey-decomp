@@ -63,7 +63,7 @@ void CBouncingRock::Move(void)
 	}
 
 	this->mVel.vy += 29584;
-	this->field_58 += this->field_5A;
+	this->mAngle += this->field_5A;
 
 	if (this->field_6C >= 5)
 		this->Die();
@@ -117,7 +117,7 @@ CBouncingRock::CBouncingRock(
 // @Ok
 void CChunkSmoke::Move(void)
 {
-	this->field_58 += this->field_5A;
+	this->mAngle += this->field_5A;
 	this->field_5A -= this->field_5A >> 3;
 	this->mScale += (this->field_7C - this->mScale) >> 1;
 
@@ -156,7 +156,7 @@ CChunkSmoke::CChunkSmoke(
 	this->mScale = 0;
 
 	this->field_7C = Rnd(1000) + 1000;
-	this->field_58 = Rnd(4096);
+	this->mAngle = Rnd(4096);
 	this->field_5A = 150;
 
 	if ( a4 < 0 )

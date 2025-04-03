@@ -666,10 +666,10 @@ CCopPing::CCopPing(CSuper* pHost, SHook* pHook)
 
 	this->SetFrame(1);
 	this->SetTint(128, 128, 128);
-	this->field_58 = Rnd(1024);
+	this->mAngle = Rnd(1024);
 
 	if (Rnd(2))
-		this->field_58 *= -1;
+		this->mAngle *= -1;
 
 	this->mScale = 400;
 	this->SetPosition();

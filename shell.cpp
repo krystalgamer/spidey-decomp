@@ -908,7 +908,7 @@ CShellRhinoNasalSteam::CShellRhinoNasalSteam(
 	this->SetTransparency(0x40);
 	this->SetAnimSpeed(128);
 	this->SetScale(128);
-	this->field_58 = Rnd(4096);
+	this->mAngle = Rnd(4096);
 }
 
 // @Ok

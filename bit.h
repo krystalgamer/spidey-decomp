@@ -191,11 +191,11 @@ public:
 
 	EXPORT CFlatBit(void);
 	EXPORT virtual ~CFlatBit(void) OVERRIDE;
-	i16 field_58;
+	i16 mAngle;
 	i16 field_5A;
 	unsigned char padAfter5A[0x2];
 	unsigned short field_5E;
-	unsigned int mPostScale;
+	u32 mPostScale;
 	unsigned char pad1;
 	unsigned char mAngFric;
 };
