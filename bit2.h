@@ -70,9 +70,32 @@ class CPolyLine : public CBit
 		CVector mStart;
 };
 
+class CSmokeGenerator : public CNonRenderedBit
+{
+	public:
+		EXPORT CSmokeGenerator(const CVector *,i32,i32,u8,u8,u8,i32,i32,i32,i32);
+		EXPORT virtual void Move(void) OVERRIDE;
+		EXPORT virtual ~CSmokeGenerator(void) OVERRIDE;
+
+		i32 mPuffs;
+
+		u8 mR;
+		u8 mG;
+		u8 mB;
+
+		PADDING(1);
+
+		i32 mVBase;
+		i32 mVRandom;
+
+		i32 mScaleBase;
+		i32 mScaleRandom;
+};
+
 void validate_CGPolyLine(void);
 void validate_CPolyLine(void);
 void validate_CGLine(void);
 void validate_SLineSeg(void);
+void validate_CSmokeGenerator(void);
 
 #endif

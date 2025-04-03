@@ -517,6 +517,7 @@ i32 validate(void)
 	validate_SSfxAsset();
 	validate_CRibbon();
 	validate_CGlassBit();
+	validate_CSmokeGenerator();
 
 	puts("[*] Validation done!");
 

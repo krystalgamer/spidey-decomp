@@ -154,6 +154,24 @@ CPolyLine::~CPolyLine(void)
 	this->DeleteFrom(&PolyLineList);
 }
 
+// @SMALLTODO
+CSmokeGenerator::CSmokeGenerator(CVector const *,i32,i32,u8,u8,u8,i32,i32,i32,i32)
+{
+    printf("CSmokeGenerator::CSmokeGenerator(CVector const *,i32,i32,u8,u8,u8,i32,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void CSmokeGenerator::Move(void)
+{
+    printf("CSmokeGenerator::Move(void)");
+}
+
+// @SMALLTODO
+CSmokeGenerator::~CSmokeGenerator(void)
+{
+    printf("CSmokeGenerator::~CSmokeGenerator(void)");
+}
+
 void validate_CGPolyLine(void){
 	VALIDATE_SIZE(CGPolyLine, 0x58);
 
@@ -201,4 +219,22 @@ void validate_SLineSeg(void)
 	VALIDATE(SLineSeg, g, 0xD);
 	VALIDATE(SLineSeg, b, 0xE);
 	VALIDATE(SLineSeg, code, 0xF);
+}
+
+void validate_CSmokeGenerator(void)
+{
+	VALIDATE_SIZE(CSmokeGenerator, 0x54);
+
+	VALIDATE(CSmokeGenerator, mPuffs, 0x3C);
+
+	VALIDATE(CSmokeGenerator, mR, 0x40);
+	VALIDATE(CSmokeGenerator, mG, 0x41);
+	VALIDATE(CSmokeGenerator, mB, 0x42);
+
+	VALIDATE(CSmokeGenerator, mVBase, 0x44);
+	VALIDATE(CSmokeGenerator, mVRandom, 0x48);
+
+
+	VALIDATE(CSmokeGenerator, mScaleBase, 0x4C);
+	VALIDATE(CSmokeGenerator, mScaleRandom, 0x50);
 }
