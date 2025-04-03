@@ -2,6 +2,7 @@
 #include "ob.h"
 #include "mem.h"
 #include "my_assert.h"
+#include "utils.h"
 
 #include "validate.h"
 
@@ -188,11 +189,34 @@ CSmokeGenerator::CSmokeGenerator(
 	this->mFrigDeltaZ = 100;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CSmokeGenerator::Move(void)
 {
-	if (++this->mAge == this->mLifetime && this->mLifetime != 0xFFFF )
+	CVector v8;
+
+	for (i32 i = 0; i < this->mPuffs; i++)
+	{
+		v8.vy = -4096 * (this->mVBase + Rnd(this->mVRandom));
+
+		CMotionBlur *pBlur = new CMotionBlur(
+				&this->mPos,
+				&v8,
+				1,
+				this->mScaleBase + Rnd(this->mScaleRandom),
+				0,
+				10);
+
+		pBlur->mFrigDeltaZ = this->mFrigDeltaZ;
+		pBlur->mAngle = Rnd(4096);
+		
+		pBlur->SetTint(this->mR, this->mG, this->mB);
+	}
+
+	if (++this->mAge == this->mLifetime && this->mLifetime != 0xFFFF)
+	{
 		this->Die();
+	}
 }
 
 // @Ok
