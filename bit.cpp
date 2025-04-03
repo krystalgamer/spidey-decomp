@@ -47,7 +47,6 @@ EXPORT char *gAnimNames[29] =
 };
 
 
-CVector gGlobalNormal;
 
 SAnimFrame* gAnimTable[0x1D];
 EXPORT CChunkBit* ChunkBitList;

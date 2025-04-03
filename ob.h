@@ -273,4 +273,6 @@ EXPORT extern CBody* SuspendedList;
 EXPORT extern const char *gObjFile;
 EXPORT extern u8 gWhatIf;
 
+EXPORT extern CVector ZeroVector;
+
 #endif

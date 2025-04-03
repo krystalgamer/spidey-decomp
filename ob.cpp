@@ -11,6 +11,9 @@
 #include "my_assert.h"
 
 // @Ok
+CVector ZeroVector;
+
+// @Ok
 u8 gWhatIf;
 
 u32 SuspendedDistance;

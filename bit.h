@@ -465,7 +465,6 @@ class CGlassBit : public CBit
 };
 
 EXPORT extern CBit* GPolyLineList;
-EXPORT extern CVector gGlobalNormal;
 
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);

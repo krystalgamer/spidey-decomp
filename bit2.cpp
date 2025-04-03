@@ -1,4 +1,5 @@
 #include "bit2.h"
+#include "ob.h"
 #include "mem.h"
 #include "my_assert.h"
 
@@ -67,7 +68,7 @@ CGPolyLine::CGPolyLine(i32 numsegs)
 		this->mSegs[i].b = 0xFF;
 		this->mSegs[i].code = 0x50;
 
-		this->mSegs[i].End = gGlobalNormal;
+		this->mSegs[i].End = ZeroVector;
 
 
 	}
@@ -96,7 +97,7 @@ CPolyLine::CPolyLine(i32 numsegs)
 		// @FIXME - affects portability, but it's how the devs did it
 		*reinterpret_cast<u32*>(&pSeg->r) = 0x40FFFFFF;
 
-		pSeg->End = gGlobalNormal;
+		pSeg->End = ZeroVector;
 	}
 
 

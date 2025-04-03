@@ -652,7 +652,7 @@ CCopBulletTracer::~CCopBulletTracer(void)
 
 // @Ok
 CCopPing::CCopPing(CSuper* pHost, SHook* pHook)
-	: CSimpleAnim(&gGlobalNormal, 10, 0, 1, 0, -1)
+	: CSimpleAnim(&ZeroVector, 10, 0, 1, 0, -1)
 {
 	this->field_78.Part.vx = 0;
 	this->field_78.Part.vy = 0;

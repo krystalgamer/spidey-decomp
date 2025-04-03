@@ -829,7 +829,7 @@ CShellEmber::CShellEmber(
 
 // @Ok
 CShellMysterioHeadGlow::CShellMysterioHeadGlow(void)
-	: CWobblyGlow(&gGlobalNormal, 150, 120, 90, 255, 255, 255, 0x80u, 0, 0xFFu)
+	: CWobblyGlow(&ZeroVector, 150, 120, 90, 255, 255, 255, 0x80u, 0, 0xFFu)
 {
 }
 

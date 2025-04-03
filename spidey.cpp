@@ -856,7 +856,7 @@ void CPlayer::SetStartOrientation(CSVector* pVector)
 
 	M3dMaths_RotMatrixYXZ(&a1, &a2);
 	MulMatrix(&this->mTransform, &a2);
-	this->OrientToNormal(0, &gGlobalNormal);
+	this->OrientToNormal(0, &ZeroVector);
 }
 
 // @NotOk

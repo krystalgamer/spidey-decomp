@@ -171,7 +171,7 @@ void CCarnage::SelectAttack(void)
 	{
 		case 0:
 			if (this->field_35C == 4 &&
-					Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+					Utils_XZDist(&this->mPos, &ZeroVector) < this->field_350)
 			{
 				this->field_31C.bothFlags = 4096;
 				this->dumbAssPad = 0;
@@ -190,7 +190,7 @@ void CCarnage::SelectAttack(void)
 						this->field_31C.bothFlags = 0x4000;
 						this->dumbAssPad = 0;
 					}
-					else if (Utils_XZDist(&MechList->mPos, &gGlobalNormal) >= 700 || this->field_35C == 1 )
+					else if (Utils_XZDist(&MechList->mPos, &ZeroVector) >= 700 || this->field_35C == 1 )
 					{
 						if (Utils_XZDist(&this->mPos, &MechList->mPos) < 180)
 							this->field_31C.bothFlags = 8;
@@ -724,7 +724,7 @@ void CCarnage::GetYankedBySpidey(void)
 
 				// @FIXME - casts are weird wtf
 				if (this->field_35C == 4
-					&& static_cast<u32>(Utils_XZDist(&this->mPos, &gGlobalNormal)) < static_cast<u32>(this->field_350))
+					&& static_cast<u32>(Utils_XZDist(&this->mPos, &ZeroVector)) < static_cast<u32>(this->field_350))
 				{
 					this->field_31C.bothFlags = 4096;
 					this->dumbAssPad = 0;
@@ -796,7 +796,7 @@ void CCarnage::DoSonicBubbleProcessing(void)
 			else
 			{
 				if ((MechList->mCollision & 2) != 0
-					&& Utils_XZDist(&MechList->mPos, &gGlobalNormal) < this->field_350)
+					&& Utils_XZDist(&MechList->mPos, &ZeroVector) < this->field_350)
 				{
 					SHitInfo v13;
 
@@ -850,7 +850,7 @@ void CCarnage::DoSonicBubbleProcessing(void)
 	if (this->field_350)
 	{
 		if (this->field_31C.bothFlags != 2048
-				&& Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+				&& Utils_XZDist(&this->mPos, &ZeroVector) < this->field_350)
 		{
 			v12 = 1;
 			this->mHealth -= 2 * this->field_80;
@@ -1220,7 +1220,7 @@ u8 CCarnage::TugImpulse(
 		this->field_344 = a4;
 		this->field_330 = 666;
 
-		this->field_334 = gGlobalNormal;
+		this->field_334 = ZeroVector;
 
 		CVector v19;
 		v19.vz = a4[7].vz - this->mPos.vz;
@@ -1242,7 +1242,7 @@ u8 CCarnage::TugImpulse(
 		this->field_330 = 24;
 
 		CVector v19 = (this->mPos + (*a3 * 1000));
-		i32 v16 = Utils_XZDist(&v19, &gGlobalNormal);
+		i32 v16 = Utils_XZDist(&v19, &ZeroVector);
 		if (v16 < this->field_350 && v16 > 256)
 		{
 			CVector a1;
@@ -1325,7 +1325,7 @@ void CCarnage::TakeHit(void)
 			{
 				if (this->field_35C == 4)
 				{
-					if (Utils_XZDist(&this->mPos, &gGlobalNormal) < this->field_350)
+					if (Utils_XZDist(&this->mPos, &ZeroVector) < this->field_350)
 					{
 						this->field_31C.bothFlags = 4096;
 						this->dumbAssPad = 0;
