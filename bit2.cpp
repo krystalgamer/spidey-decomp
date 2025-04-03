@@ -116,14 +116,14 @@ void CGLine::SetRGB1(u8 a2, u8 a3, u8 a4)
 	this->mPadBGR1 = a2 | (a4 << 16) | (a3 << 8);
 }
 
-// @NotOk
-// figure out what the ptr is
+// @Ok
+// @Matching: man, the pointer thingy is needed
 void CPolyLine::SetSemiTransparent(void)
 {
-	for (int i = 0; i < this->mNumSegs; i++)
+	for (i32 i = 0; i < this->mNumSegs; i++)
 	{
-		unsigned char * ptr = reinterpret_cast<unsigned char*>(this->mSegs);
-		ptr[0x10*i] |= 2;
+		SLineSeg *pSeg = &this->mSegs[i];
+		pSeg->code |= 2;
 	}
 }
 
