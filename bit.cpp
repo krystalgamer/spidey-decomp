@@ -566,9 +566,33 @@ CFrag::~CFrag(void)
 {
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CFrag::Move(void)
 {
+
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	this->mVel.vx += this->mAcc.vx;
+	this->mVel.vy += this->mAcc.vy;
+	this->mVel.vz += this->mAcc.vz;
+
+	this->mVel.vx -= this->mVel.vx >> this->mFric.vx;
+	this->mVel.vy -= this->mVel.vy >> this->mFric.vy;
+	this->mVel.vz -= this->mVel.vz >> this->mFric.vz;
+
+
+	if (++this->mFrame >= this->mNumFrames)
+	{
+		this->mFrame = this->mNumFrames - 1;
+	}
+
+	if (++this->mAge >= this->mLifetime)
+	{
+		this->Die();
+	}
 }
 
 // @SMALLTODO
