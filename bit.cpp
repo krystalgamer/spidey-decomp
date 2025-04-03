@@ -75,7 +75,7 @@ CBit* GPolyLineList;
 EXPORT CBit* QuadBitList;
 EXPORT CBit* GenPolyList;
 EXPORT CBit* GlassList;
-EXPORT CBit* GLineList;
+CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 

@@ -523,4 +523,6 @@ void validate_vector4d(void);
 void validate_CGlassBit(void);
 
 
+EXPORT extern CBit* GLineList;
+
 #endif

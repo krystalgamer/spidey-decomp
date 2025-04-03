@@ -45,14 +45,12 @@ class CGLine : public CBit
 		EXPORT void SetRGB1(unsigned char, unsigned char, unsigned char);
 		EXPORT CGLine(void);
 
-		int field_3C;
-		int field_40;
-		int field_44;
-		int field_48;
-		int field_4C;
-		int field_50;
-		int field_54;
-		int field_58;
+		u32 mCodeBGR0;
+		u32 mPadBGR1;
+
+		CVector mStart;
+
+		CVector mEnd;
 };
 
 class CPolyLine : public CBit
