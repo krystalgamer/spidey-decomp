@@ -154,10 +154,38 @@ CPolyLine::~CPolyLine(void)
 	this->DeleteFrom(&PolyLineList);
 }
 
-// @SMALLTODO
-CSmokeGenerator::CSmokeGenerator(CVector const *,i32,i32,u8,u8,u8,i32,i32,i32,i32)
+// @Ok
+// @Note: missing the SEH handler on the OG and mPos assingment is different
+CSmokeGenerator::CSmokeGenerator(
+		const CVector *a2,
+		i32 a3,
+		i32 a4,
+		u8 a5,
+		u8 a6,
+		u8 a7,
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		i32 a11)
 {
-    printf("CSmokeGenerator::CSmokeGenerator(CVector const *,i32,i32,u8,u8,u8,i32,i32,i32,i32)");
+	DoAssert(a3 != 0, "Smoke duration must be non zero");
+
+	this->mPos = *a2;
+	this->mLifetime = a3;
+
+	this->mPuffs = a4;
+
+	this->mR = a5;
+	this->mG = a6;
+	this->mB = a7;
+
+	this->mVBase = a8;
+	this->mVRandom = a9;
+
+	this->mScaleBase = a10;
+	this->mScaleRandom = a11;
+
+	this->mFrigDeltaZ = 100;
 }
 
 // @SMALLTODO
