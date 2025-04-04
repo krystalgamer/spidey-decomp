@@ -12,29 +12,31 @@ EXPORT extern i32 gFireDomes;
 EXPORT extern i32 gNumDomes;
 EXPORT extern CBody* WebList;
 
-class CImpactWeb : public CFlatBit{
-public:
-	unsigned char padFull[0x24];
+class CImpactWeb : public CFlatBit
+{
+	public:
+		PADDING(0x24);
 };
 
 
-class CDomePiece : public CBody {
-public:
-	EXPORT CDomePiece(CVector*, i32, i32, i32);
-	EXPORT virtual ~CDomePiece(void);
+class CDomePiece : public CBody 
+{
+	public:
+		EXPORT CDomePiece(CVector*, i32, i32, i32);
+		EXPORT virtual ~CDomePiece(void) OVERRIDE;
 
-	i32 field_F4;
-	i32 field_F8;
-	i32 field_FC;
+		i32 field_F4;
+		i32 field_F8;
+		i32 field_FC;
 };
 
 class CDome : public CBody
 {
 	public:
 		EXPORT CDome(CPlayer*, i32);
-		EXPORT virtual ~CDome(void);
+		EXPORT virtual ~CDome(void) OVERRIDE;
 
-		u8 padTop[0x4];
+		PADDING(4);
 
 		SHandle hPlayer;
 
@@ -50,59 +52,62 @@ class CDome : public CBody
 };
 
 class CDomeRing : public CBody {
-public:
+	public:
 
-	int padTop;
+		PADDING(4);
 
-	int field_F8;
-	int field_FC;
-	int field_100;
-	int field_104;
-	int field_108;
+		i32 field_F8;
+		i32 field_FC;
+		i32 field_100;
+		i32 field_104;
+		i32 field_108;
 
-	unsigned char lastCDomeRing;
+		PADDING(1);
 };
 
 
-class CWeb : public CBody {
-public:
+class CWeb : public CBody
+{
+	public:
 
-	unsigned char padTop[0xF8-0xF4];
+		PADDING(4);
 
-	int field_F8;
+		i32 field_F8;
 
-	unsigned char padBefore100[0x100-0xF8-4];
+		PADDING(4);
 
-	int field_100;
-	int field_104;
-	CVector field_108;
+		i32 field_100;
+		i32 field_104;
+		CVector field_108;
 
-	CVector field_114;
+		CVector field_114;
 
-	int field_120;
-	int field_124;
-	int field_128;
-	unsigned char *field_12C;
+		i32 field_120;
+		i32 field_124;
+		i32 field_128;
+		u8 *field_12C;
 
-	int field_130;
+		i32 field_130;
 
-	int field_134;
-	int field_138;
+		i32 field_134;
+		i32 field_138;
 };
 
 class CSwinger : public CBody 
 {
 	public:
-		EXPORT int IsOneTimeToDie(void);
-		EXPORT void SetSpideyAnimFrame(int);
-		unsigned char padTop[0x180-0xF4];
+		EXPORT i32 IsOneTimeToDie(void);
+		EXPORT void SetSpideyAnimFrame(i32);
 
-		int field_180;
+		PADDING(0x180-0xF4);
 
-		unsigned char padBottom[0x190-0x180-4];
+		i32 field_180;
+
+		PADDING(0x190-0x180-4);
 };
 
-class CSplat : public CQuadBit {
+class CSplat : public CQuadBit
+{
 	public:
 };
 
@@ -113,10 +118,11 @@ class CTrapWebEffect : public CNonRenderedBit
 
 		SHandle field_3C;
 		i32 *field_44;
-		u8 padAfter44[0x418-0x44-4];
+
+		PADDING(0x418-0x44-4);
 
 		u8 field_418;
-		u8 bottomPad[0x430-0x418-1];
+		PADDING(0x430-0x418-1);
 };
 
 class CDomeShockWave : public CNonRenderedBit
@@ -127,11 +133,12 @@ class CDomeShockWave : public CNonRenderedBit
 
 		EXPORT void ResetHitFlags(CBody*);
 
-		u8 padTop[8];
+		PADDING(8);
 		CVector field_44;
 		i32 field_50[16];
 		i32 field_90;
-		u8 padBottom[0x4];
+
+		PADDING(4);
 };
 
 EXPORT int Web_GetGroundY(const CVector*);

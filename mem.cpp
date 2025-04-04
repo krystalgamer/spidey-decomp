@@ -482,5 +482,5 @@ void validate_SBlockHeader(void){
 	*/
 	VALIDATE(SNewBlockHeader, Next, 0x4);
 	VALIDATE(SNewBlockHeader, UniqueIdentifier, 0x8);
-	VALIDATE(SNewBlockHeader, padding, 0xC);
+	//VALIDATE(SNewBlockHeader, padding, 0xC);
 }

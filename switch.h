@@ -21,11 +21,12 @@ class CSwitch : public CBody
 		EXPORT virtual ~CSwitch(void);
 		EXPORT virtual void AI(void);
 
-		unsigned char padTop[0xF8-0xF4];
+		PADDING(4);
 
 		u32 field_F8;
 		u16 field_FC;
-		u8 padAfterF8[2];
+
+		PADDING(2);
 
 		i32 field_100;
 
@@ -35,7 +36,8 @@ class CSwitch : public CBody
 		CVector field_10C;
 		CVector field_118;
 		u8 field_124;
-		unsigned char padBottom[0x128-0x124-1];
+
+		PADDING(0x128-0x124-1);
 };
 
 void validate_CSwitch(void);
