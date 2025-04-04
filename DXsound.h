@@ -41,7 +41,7 @@ struct DXPOLY
 	DWORD field_C;
 	SDXPolyField field_10[4];
 
-	u8 padBottom[0x6D];
+	PADDING(0x6D);
 };
 
 

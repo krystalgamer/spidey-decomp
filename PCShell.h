@@ -10,7 +10,8 @@ struct SActionMap
 	i32 field_0;
 	char field_4[1];
 
-	u8 padAfter4[0x14-0x4-1];
+	PADDING(0x14-0x4-1);
+
 	u32 field_14;
 	u32 field_18;
 };

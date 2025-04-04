@@ -13,7 +13,8 @@ struct SChainData
 	CVector field_C;
 	CVector field_18;
 	u8 field_24;
-	u8 padBottom[0x28-0x24-1];
+
+	PADDING(0x28-0x24-1);
 };
 
 class CChain : public CClass

@@ -12,7 +12,8 @@ static int * const gCameraRelated = (int*)0x56F254;
 
 struct SViewport
 {
-	u8 padTop[0xC];
+	PADDING(0xC);
+
 	u16 Zoom;
 	u16 field_E;
 };

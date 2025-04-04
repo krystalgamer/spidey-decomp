@@ -53,7 +53,8 @@ struct ClutPC
 
 struct PVRHeader
 {
-	u8 padTop[0x18];
+	PADDING(0x18);
+
 	i32 field_18;
 	u16 field_1C;
 	u16 field_1E;
@@ -80,7 +81,7 @@ struct SPCTexture
 	char field_28[0x1F];
 	i32 field_48;
 
-	u8 padAfter48[4];
+	PADDING(4);
 
 	i32 field_50;
 

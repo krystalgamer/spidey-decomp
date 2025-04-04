@@ -222,7 +222,9 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 		EXPORT void SetRGB(u8, u8, u8);
 
 		u16 field_3C;
-		u8 padAfter3C[0x48-0x3C-2];
+
+		PADDING(0x48-0x3C-2);
+
 		i32* field_48;
 };
 
@@ -396,7 +398,7 @@ class CTextBox : public CBit
 		EXPORT virtual ~CTextBox(void);
 
 		i32 field_3C;
-		u8 padBottom[4];
+		PADDING(4);
 };
 
 class CFireyExplosion : public CNonRenderedBit
@@ -435,10 +437,12 @@ class CWibbly : public CGouraudRibbon
 		CVector field_64;
 		CVector field_70;
 		i32 field_7C;
-		u8 padAfter7C[0x88-0x7C-4];
+
+		PADDING(0x88-0x7C-4);
 
 		i32 field_88;
-		u8 padBottom[0x98-0x88-4];
+
+		PADDING(0x98-0x88-4);
 
 };
 

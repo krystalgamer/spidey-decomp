@@ -17,9 +17,10 @@ class CBackground : public CBody
 
 		EXPORT void AI(void) OVERRIDE;
 
-		u8 padTop[4];
+		PADDING(4);
+
 		i16 field_F8;
-		u8 padBottom[2];
+		PADDING(2);
 };
 
 EXPORT extern CSuper* BackgroundList;

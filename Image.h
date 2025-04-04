@@ -66,7 +66,8 @@ class SlicedImage2 : public Image
 		i16 field_16;
 		i32 field_18;
 		u8 field_1C;
-		u8 padAfter1C[1];
+
+		PADDING(1);
 
 		u16 field_1E;
 };

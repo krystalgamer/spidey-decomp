@@ -64,7 +64,7 @@ public:
 	EXPORT virtual void SetVariable(u16);
 	EXPORT virtual i16 GetVariable(u16);
 
-	u8 padAfter1A4[4];
+	PADDING(4);
 
 	CVector field_1A8[6];
 
@@ -88,12 +88,14 @@ public:
 	u8 field_211;
 	u8 field_212;
 	u8 field_213;
-	u8 padAfter213[1];
+
+	PADDING(1);
 
 	i16 field_216;
 	i32 field_218;
 
 	PADDING(0x1);
+
 	u8 field_21D;
 
 	i16 field_21E;
@@ -102,7 +104,7 @@ public:
 	i16 field_220;
 	i16 realRegisterArr[6];
 
-	u8 padAfter222[2];
+	PADDING(2);
 
 	i32 field_230;
 	u8 field_234;

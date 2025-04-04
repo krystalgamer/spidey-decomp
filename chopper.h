@@ -50,7 +50,8 @@ public:
 	u32 field_328;
 
 	u8 field_32C;
-	u8 padAfter32C[3];
+
+	PADDING(3);
 
 	CVector field_330;
 
@@ -89,7 +90,8 @@ public:
 	CVector field_3B8;
 
 	u8 field_3C4;
-	u8 padAfter3c4[0x3c8 - 0x3c4 - 1];
+
+	PADDING(0x3c8 - 0x3c4 - 1);
 
 	i32 field_3C8;
 	i32 field_3CC;
@@ -109,7 +111,8 @@ public:
 	EXPORT CSniperSplat(CVector*, SVECTOR*);
 	EXPORT virtual void Move(void);
 	u8 field_84;
-	u8 padBottom[3];
+
+	PADDING(3);
 };
 
 class CSniperTarget : public CBody
@@ -121,9 +124,11 @@ class CSniperTarget : public CBody
 		EXPORT virtual void AI(void);
 		EXPORT virtual void DrawTargetRecticle(void);
 
-		u8 padTop[0xFC-0xF4];
+		PADDING(0xFC-0xF4);
+
 		i32 field_FC;
-		u8 padAfterFC[0x104-0xFC-0x4];
+
+		PADDING(0x104-0xFC-0x4);
 
 		CVector field_104;
 		i32 field_110;
@@ -131,10 +136,12 @@ class CSniperTarget : public CBody
 		i32 field_118;
 		Texture* field_11C;
 		i32 field_120;
-		u8 padAfter120[0x128-0x120-4];
+
+		PADDING(0x128-0x120-4);
 
 		bool field_128;
-		u8 padAfter128[0x13C-0x128-1];
+
+		PADDING(0x13C-0x128-1);
 
 		i32 field_13C;
 		i32 field_140;
@@ -143,7 +150,7 @@ class CSniperTarget : public CBody
 		i32 field_14C;
 		i32 field_150;
 
-		u8 padBottom[0x15C-0x150-4];
+		PADDING(0x15C-0x150-4);
 };
 
 class CSearchlight : public CBody
@@ -157,7 +164,8 @@ class CSearchlight : public CBody
 		EXPORT virtual void SpecialRenderer(void);
 
 
-		u8 padTop[4];
+		PADDING(4);
+
 		i32 field_F8;
 		i32 field_FC;
 
@@ -165,7 +173,8 @@ class CSearchlight : public CBody
 		CVector field_104;
 		CVector field_110;
 		CVector field_11C;
-		u8 padAfter11C[0x138-0x11C-sizeof(CVector)];
+
+		PADDING(0x138-0x11C-sizeof(CVector));
 
 		CVector field_138[66];
 };
@@ -186,29 +195,34 @@ class CMachineGunBullet : public CGLine
 		i32 field_68;
 		i32 field_6C;
 		i32 field_70;
-		u8 padAfter70[0x80-0x70-4];
+
+		PADDING(0x80-0x70-4);
 
 
 		i16 field_80;
 		i16 field_82;
 		i16 field_84;
-		u8 padAfter84[4];
+
+		PADDING(4);
 
 
 		SHandle field_8C;
 		SHandle field_94;
-		u8 padAfter8C[0xA4-0x94-sizeof(SHandle)];
+
+		PADDING(0xA4-0x94-sizeof(SHandle));
 
 
 
 		i16 field_A4;
-		u8 padAfterA4[0xA8-0xA4-2];
+
+		PADDING(0xA8-0xA4-2);
 
 
 		i32 field_A8;
 		i32 field_AC;
 		i32 field_B0;
-		u8 padBottom[0xB8-0xB0-4];
+
+		PADDING(0xB8-0xB0-4);
 };
 
 class CChopperMissile : public CBody
@@ -224,13 +238,14 @@ class CChopperMissile : public CBody
 		EXPORT virtual void AI(void);
 		EXPORT virtual void DrawTargetRecticle(void);
 
-		u8 padTop[4];
+		PADDING(4);
 
 		CSmokeTrail *field_F8;
 		i32 field_FC;
 		i32 field_100;
 		i32 field_104;
-		u8 padAfter104[4];
+
+		PADDING(4);
 
 		i32 field_10C;
 		CVector field_110;
