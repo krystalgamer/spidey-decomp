@@ -9,10 +9,10 @@ void M3dUtils_ReadLinksPacket(CSuper*, void*)
 // Revisit and fix globals
 void M3dUtils_InBetween(CSuper *a1)
 {
-	unsigned __int16 v1; // cx
-	int v2; // ebp
-	int v3; // edi
-	int v4; // si
+	u16 v1; // cx
+	i32 v2; // ebp
+	i32 v3; // edi
+	i32 v4; // si
 
 	v1 = a1->mAnim;
 	v2 = Animations[17 * a1->mRegion];
@@ -25,7 +25,7 @@ void M3dUtils_InBetween(CSuper *a1)
 		M3dUtils_InterpolateVectors(
 				4 * v4,
 				v3,
-				reinterpret_cast<unsigned int *>(v2),
+				reinterpret_cast<u32*>(v2),
 				a1,
 				0,
 				v4);
@@ -34,12 +34,16 @@ void M3dUtils_InBetween(CSuper *a1)
 
 // @BIGTODO
 void M3dUtils_BuildPose(CSuper*)
-{}
+{
+	printf("void M3dUtils_BuildPose(CSuper*)");
+}
 
 
 // @BIGTODO
-void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)
-{}
+void M3dUtils_InterpolateVectors(i32, i32, u32*, CItem*, i32, i32)
+{
+	printf("void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)");
+}
 
 // @BIGTODO
 void M3dUtils_GetHookPosition(VECTOR*, CSuper*, i32)

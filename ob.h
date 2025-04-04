@@ -61,7 +61,8 @@ class CItem
 
 		u16 mModel;
 
-		unsigned char pad1[3];
+		PADDING(3);
+
 		u8 mRegion;
 
 
@@ -74,7 +75,8 @@ class CItem
 
 		CItem *mPreviousItem;
 		u16 mType;
-		unsigned char padAfter38[2];
+
+		PADDING(2);
 
 
 		SLight *mpLight;
@@ -186,19 +188,20 @@ public:
 	EXPORT void OutlineOff(void);
 	EXPORT void OutlineOn(void);
 	EXPORT void SetOutlineSemiTransparent(void);
-	EXPORT void SetOutlineRGB(unsigned char a2, unsigned char a3, unsigned char a4);
+	EXPORT void SetOutlineRGB(u8, u8, u8);
 	EXPORT void UpdateFrame(void);
-	EXPORT void CycleAnim(int a2, char a3);
-	EXPORT void ApplyPose(__int16 *a2);
+	EXPORT void CycleAnim(i32, char a3);
+	EXPORT void ApplyPose(i16 *a2);
 	EXPORT void RunAnim(i32, i32, i32);
 
 
-	int field_F4;
+	i32 field_F4;
 
-	unsigned __int16 field_F8;
-	unsigned char padAfterF8[2];
+	u16 field_F8;
 
-	int field_FC;
+	PADDING(2);
+
+	i32 field_FC;
 	i32 field_100;
 	SHandle field_104;
 
@@ -207,51 +210,57 @@ public:
 	SHandle field_114;
 
 	void* field_11C;
-	int alsoOutlineRelated;
-	unsigned char outlineR;
-	unsigned char outlineG;
-	unsigned char outlineB;
+	i32 alsoOutlineRelated;
+
+	u8 outlineR;
+	u8 outlineG;
+	u8 outlineB;
 
 
-	__int16 field_128;
+	i16 field_128;
 	u16 mAnim;
 
-	int outlineRelated;
+	i32 outlineRelated;
 	void* field_130;
 	void* field_134;
-	u8 padAfter134[0x6];
 
-	unsigned char field_13E;
-	unsigned char field_13F;
+	PADDING(0x6);
 
-	unsigned char field_140;
+	u8 field_13E;
+	u8 field_13F;
+
+	u8 field_140;
 
 	i8 mAnimDir;
 	u8 mAnimFinished;
-	unsigned char field_143;
+
+	u8 field_143;
 
 
-	__int16 field_144;
+	i16 field_144;
 	i16 mFrameFrac;
 	i16 mNumFrames;
 
-	unsigned __int16 padAfte;
+	PADDING(2);
 
 	i32 mAnimSpeed;
 
 
-	__int16 field_150;
-	__int16 field_152;
-	__int16 field_154;
+	i16 field_150;
+	i16 field_152;
+	i16 field_154;
 
 
-	unsigned char padVE[0x14-8];
+	PADDING(0x14-8);
+
 	MATRIX mTransform;
 
 	void *field_184;
 	void* field_188;
-	unsigned char padEE[0x4];
-	__int16 *actualcsuperend;
+
+	PADDING(0x4);
+
+	i16 *actualcsuperend;
 
 	i32 field_194;
 	i32 field_198;

@@ -415,26 +415,26 @@ void CSuper::SetOutlineRGB(
 // Slightly different register allocation, edx and eax are swapped
 void CSuper::UpdateFrame(void){
 	char v1; // bl
-	int v2; // esi
-	int v3; // edx
-	int v4; // eax
-	int v5; // edx
-	int v6; // eax
-	unsigned __int16 v7; // dx
+	i32 v2; // esi
+	i32 v3; // edx
+	i32 v4; // eax
+	i32 v5; // edx
+	i32 v6; // eax
+	u16 v7; // dx
 
 
 	if ( !this->field_80 )
 	  this->field_80 = 2;
 	v1 = this->mAnimDir;
 	v2 = this->field_80 * this->mAnimSpeed / 2;
-	v3 = (unsigned __int16)this->mFrameFrac | (this->field_128 << 16);
+	v3 = (u16)this->mFrameFrac | (this->field_128 << 16);
 	if ( this->mAnimDir == 1 )
 	  v3 += v2;
 	if ( v1 == -1 )
 	  v3 -= v2;
 	v4 = v3;
 	this->mFrameFrac = v3;
-	v5 = (unsigned __int8)this->field_140;
+	v5 = (u8)this->field_140;
 	v6 = v4 >> 16;
 	this->field_128 = v6;
 
@@ -442,7 +442,7 @@ void CSuper::UpdateFrame(void){
 		if ( --v5 == 0)
 		{
 		  v7 = this->mNumFrames;
-		  if ( (__int16)v6 >= (int)v7 )
+		  if ( (i16)v6 >= (int)v7 )
 		  {
 			  this->field_128 = v6 - v7;
         
@@ -450,14 +450,14 @@ void CSuper::UpdateFrame(void){
 		  else
 		  {
 
-			if ( (__int16)(v6) < 0 )
+			if ( (i16)(v6) < 0 )
 			  this->field_128 = v6 + v7;
 		  }
 		}
 	}
-	else if( (this->mAnimDir == 1 && (__int16)v6 >= this->field_144)
+	else if( (this->mAnimDir == 1 && (i16)v6 >= this->field_144)
 		||
-		(v1 == -1 && (__int16)v6 <= this->field_144)
+		(v1 == -1 && (i16)v6 <= this->field_144)
 		)
 	{
 		this->field_128 = this->field_144;
@@ -493,7 +493,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 
 
 // @Ok
-void CSuper::ApplyPose(__int16 *a2){
+void CSuper::ApplyPose(i16 *a2){
 
 	if (!this->field_188)
 	{

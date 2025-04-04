@@ -24,27 +24,27 @@ struct SLevel
 struct SEntry
 {
 	const char* name;
-	__int16 val_a;
-	__int16 val_b;
-	__int16 field_8;
-	__int16 field_A;
-	unsigned char unk_a;
-	unsigned char unk_b;
-	unsigned char unk_c;
-	unsigned char unk_d;
-	unsigned char unk_e;
-	unsigned char field_11;
-	unsigned char field_12;
-	unsigned char field_13;
-	unsigned char field_14;
-	unsigned char field_15;
-	unsigned char field_16;
-	unsigned char field_17;
-	unsigned char field_18;
-	unsigned char field_19;
-	unsigned char field_1A;
-	unsigned char field_1B;
-	int what;
+	i16 val_a;
+	i16 val_b;
+	i16 field_8;
+	i16 field_A;
+	u8 unk_a;
+	u8 unk_b;
+	u8 unk_c;
+	u8 unk_d;
+	u8 unk_e;
+	u8 field_11;
+	u8 field_12;
+	u8 field_13;
+	u8 field_14;
+	u8 field_15;
+	u8 field_16;
+	u8 field_17;
+	u8 field_18;
+	u8 field_19;
+	u8 field_1A;
+	u8 field_1B;
+	i32 what;
 };
 
 class CMenu : public CClass
@@ -53,24 +53,24 @@ class CMenu : public CClass
 public:
 	EXPORT virtual ~CMenu();
 
-	EXPORT CMenu(int x,int y,unsigned char Justification,int HiScale,int LowScale, int LineSep);
+	EXPORT CMenu(i32 x,i32 y,u8 Justification,i32 HiScale,i32 LowScale, i32 LineSep);
 	EXPORT void SetLine(char);
 	EXPORT void Reset(void);
-	EXPORT void SetRedText(unsigned char);
-	EXPORT int ChoiceIs(const char*);
-	EXPORT void AdjustWidth(int);
-	EXPORT int FinishedZooming(void);
+	EXPORT void SetRedText(u8);
+	EXPORT i32 ChoiceIs(const char*);
+	EXPORT void AdjustWidth(i32);
+	EXPORT i32 FinishedZooming(void);
 	EXPORT void CentreX(void);
-	EXPORT int FindEntry(const char*);
+	EXPORT i32 FindEntry(const char*);
 	EXPORT void EntryOff(const char*);
 	EXPORT void EntryOn(const char* a2);
-	EXPORT void SetSelColor(unsigned int, int, int, int);
-	EXPORT void SetNormalColor(unsigned int, int, int, int);
+	EXPORT void SetSelColor(u32, i32, i32, i32);
+	EXPORT void SetNormalColor(u32, i32, i32, i32);
 	EXPORT void NonGouraud(void);
-	EXPORT int GetMenuHeight(void);
+	EXPORT i32 GetMenuHeight(void);
 	EXPORT void CentreY(void);
-	EXPORT void GetEntryXY(const char*, int*, int*);
-	EXPORT void EntryEnable(unsigned int, unsigned int);
+	EXPORT void GetEntryXY(const char*, i32*, i32*);
+	EXPORT void EntryEnable(u32, u32);
 	EXPORT void AddEntry(const char*);
 	EXPORT void Zoom(i32);
 	EXPORT void Display(void);
@@ -79,7 +79,7 @@ public:
 	CExpandingBox* ptr_to;
 	u16 menu_width;
 	i16 text_val_b;
-	int width_val_a;
+	i32 width_val_a;
 
 	char scrollbar_one;
 	char scrollbar_zero;
@@ -89,15 +89,18 @@ public:
 
 	u8 mLine;
 	u8 mCursorLine;
-	u8 padAfterCursorLine[4];
+
+	PADDING(4);
 
 	u8 mNumLines;
 	u8 field_1B;
 	u8 mZoomBoxType;
-	u8 padAfter1C[1];
+
+	PADDING(1);
 
 	i16 field_1E;
-	unsigned char padAfter1E[4];
+
+	PADDING(4);
 
 	i32 mX;
 	i32 mY;

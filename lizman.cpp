@@ -196,14 +196,14 @@ void __inline CLizMan::HelpOutBuddy(CMessage* pMessage)
 }
 
 // @Ok
-void __inline CLizMan::PlaySingleAnim(__int16 a1, int a2, int a3)
+void INLINE CLizMan::PlaySingleAnim(i16 a1, i32 a2, i32 a3)
 {
 	this->field_340 = 0;
 	this->RunAnim(a1, a2, a3);
 }
 
 // @Ok
-void __inline CLizMan::StandStill(void)
+void INLINE CLizMan::StandStill(void)
 {
 	switch (this->dumbAssPad)
 	{
@@ -257,7 +257,7 @@ void CLizMan::FlyAcrossRoom(void)
 }
 
 // @Ok
-int __inline CLizMan::IsSafeToSwitchToFollowWaypoints(void)
+i32 INLINE CLizMan::IsSafeToSwitchToFollowWaypoints(void)
 {
 	if (this->field_1F0 || this->field_1F4 > 0)
 		return 1;
@@ -269,7 +269,7 @@ static unsigned char gLizManAttackFlag;
 
 // @NotOk
 // globals
-void __inline CLizMan::ClearAttackFlags(void)
+void INLINE CLizMan::ClearAttackFlags(void)
 {
 	if (gGlobalLizMan == this)
 	{

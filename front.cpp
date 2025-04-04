@@ -485,9 +485,9 @@ void CMenu::SetLine(char Line)
 	this->mLine = Line;
 
 	SEntry *entries = this->mEntry;
-	for(int i = 0; i<40; i++)
+	for(i32 i = 0; i < 40; i++)
 	{
-		__int16 v5;
+		i16 v5;
 
 		if (i != this->mLine)
 		{
@@ -510,7 +510,7 @@ CMenu::~CMenu()
 }
 
 // @Ok
-void CMenu::EntryEnable(unsigned int a2, unsigned int a3)
+void CMenu::EntryEnable(u32 a2, u32 a3)
 {
 	this->mEntry[a2].what = a3 == 0;
 	if (a3)
