@@ -349,9 +349,9 @@ u16 CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 		return sFlags[this->field_314].flags[1];
 	}
 
-	for (int i = 0; i< a3; i++){
+	for (i32 i = 0; i< a3; i++){
 
-		if (this->field_31C.bothFlags != (unsigned __int16) sFlags[i].flags[0]){
+		if (this->field_31C.bothFlags != (u16) sFlags[i].flags[0]){
 			continue;
 		}
 
@@ -637,7 +637,7 @@ void __inline CBaddy::SendDeathPulse(void)
 	{
 		this->field_211 = 1;
 		Trig_SendPulse(
-				reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->mNode & 0xFFFF)));
+				reinterpret_cast<u16*>(Trig_GetLinksPointer(this->mNode & 0xFFFF)));
 	}
 }
 
@@ -841,8 +841,10 @@ i32 CBaddy::CheckSightCone(i32 a2, i32 a3, i32 a4, i32 a5, CBody *a6)
 }
 
 // @MEDIUMTODO
-void CBaddy::ParseScript(unsigned __int16*)
-{}
+void CBaddy::ParseScript(u16*)
+{
+	printf("void CBaddy::ParseScript(u16*)");
+}
 
 i32 NumBaddies;
 
@@ -964,7 +966,7 @@ CBaddy* CBaddy::GetClosest(i32 baddyType, i32 inSight)
 }
 
 // @BIGTODO
-int CBaddy::ExecuteCommand(unsigned __int16)
+int CBaddy::ExecuteCommand(u16)
 {
 	return 0x21052025;
 }
@@ -1100,7 +1102,7 @@ void CBaddy::DoPhysics(i32)
 // @Ok
 void CBaddy::Baddy_SendSignal(void)
 {
-	unsigned __int16 *ptr = reinterpret_cast<unsigned __int16*>(
+	u16 *ptr = reinterpret_cast<u16*>(
 			Trig_GetLinksPointer(this->mNode));
 	if (ptr)
 		Trig_SendSignalToLinks(ptr);

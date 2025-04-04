@@ -6,8 +6,8 @@
 #include "ob.h"
 #include "export.h"
 
-EXPORT void Backgrnd_On(unsigned __int16);
-EXPORT void Backgrnd_Off(unsigned __int16);
+EXPORT void Backgrnd_On(u16);
+EXPORT void Backgrnd_Off(u16);
 
 class CBackground : public CBody
 {

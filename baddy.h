@@ -60,27 +60,27 @@ public:
 	EXPORT virtual void Shouldnt_DoPhysics_Be_Virtual(void);
 	EXPORT virtual void UnknownCBaddyFunctionFive(int);
 	EXPORT virtual CBaddy* GetClosest(int, int);
-	EXPORT virtual int ExecuteCommand(unsigned __int16);
-	EXPORT virtual void SetVariable(unsigned __int16);
+	EXPORT virtual int ExecuteCommand(u16);
+	EXPORT virtual void SetVariable(u16);
 	EXPORT virtual i16 GetVariable(u16);
 
 	u8 padAfter1A4[4];
 
 	CVector field_1A8[6];
 
-	int field_1F0;
-	int field_1F4;
-	int field_1F8;
+	i32 field_1F0;
+	i32 field_1F4;
+	i32 field_1F8;
 	u16 field_1FC;
-	__int16 field_1FE;
-	unsigned char pad[0x1];
+	i16 field_1FE;
+	PADDING(1);
 
-	int field_204;
-	int field_208;
+	i32 field_204;
+	i32 field_208;
 
-	unsigned char field_20C;
+	u8 field_20C;
 
-	unsigned char fusdakjfasdPad[0x2];
+	PADDING(0x2);
 
 
 	u8 field_20F;
@@ -90,9 +90,10 @@ public:
 	u8 field_213;
 	u8 padAfter213[1];
 
-	__int16 field_216;
+	i16 field_216;
 	i32 field_218;
-	unsigned char padAFter218[0x1];
+
+	PADDING(0x1);
 	u8 field_21D;
 
 	i16 field_21E;
@@ -104,21 +105,22 @@ public:
 	u8 padAfter222[2];
 
 	i32 field_230;
-	unsigned char field_234;
+	u8 field_234;
 
-	unsigned char jasdkfasdkjfajsdfPad[4];
+	PADDING(4);
 
-	int field_23C;
+	i32 field_23C;
 
 	CVector field_240;
 	i16 *field_24C;
 
 
-	unsigned char morerPad[0x84 - 0x14 - 4 - 0x10 - 0x30 - 0xC];
-	__int16 attributeArr[6];
+	PADDING(0x84 - 0x14 - 4 - 0x10 - 0x30 - 0xC);
+
+	i16 attributeArr[6];
 	CVector field_27C;
 
-	int field_288;
+	i32 field_288;
 	
 	CAIProc *mAIProcList;
 	CMessage* pMessage;
@@ -127,57 +129,58 @@ public:
 	IntToBytes field_298;
 	i32 field_29C;
 
-	int field_2A0;
+	i32 field_2A0;
 	CBody *field_2A4;
 	i32 field_2A8;
-	int field_2AC;
-	int field_2B0;
+	i32 field_2AC;
+	i32 field_2B0;
 
-	int field_2B4;
+	i32 field_2B4;
 	CVector field_2B8;
 
-	int field_2C4;
-	int field_2C8;
-	int field_2CC;
+	i32 field_2C4;
+	i32 field_2C8;
+	i32 field_2CC;
 
 
 	CVector field_2D0;
 
-	__int16 field_2DC;
-	__int16 field_2DE;
-	__int16 field_2E0;
-	__int16 field_2E2;
-	__int16 field_2E4;
-	__int16 field_2E6;
+	i16 field_2DC;
+	i16 field_2DE;
+	i16 field_2E0;
+	i16 field_2E2;
+	i16 field_2E4;
+	i16 field_2E6;
 	CSVector field_2E8;
-	unsigned char padAfter2E8[0x2F0 - 0x2E8 - sizeof(CSVector)];
+	PADDING(0x2F0 - 0x2E8 - sizeof(CSVector));
 
 
-	int field_2F0;
-	int field_2F4;
-	int field_2F8;
+	i32 field_2F0;
+	i32 field_2F4;
+	i32 field_2F8;
 
 	CVector field_2FC;
-	int field_308;
-	unsigned char padAfter308[0x310 - 0x308 - 4];
+	i32 field_308;
+	PADDING(0x310 - 0x308 - 4);
 
 	i32 field_310;
-	__int16 field_314;
-	unsigned __int16 padAfter314;
+	i16 field_314;
+	PADDING(2);
 
-	int field_318;
+	i32 field_318;
 	SStateFlags field_31C;
-	int dumbAssPad;
+	i32 dumbAssPad;
 };
 
 
 class CScriptOnlyBaddy : public CBaddy {
 
 public:
-	unsigned char padSOBStart[0x4];
-	int field_328;
-	__int16 field_32C;
-	__int16 field_32E;
+	PADDING(4);
+
+	i32 field_328;
+	i16 field_32C;
+	i16 field_32E;
 };
 
 EXPORT CBaddy* FindBaddyOfType(int);

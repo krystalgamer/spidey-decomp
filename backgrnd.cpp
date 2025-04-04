@@ -38,7 +38,7 @@ CBackground::~CBackground(void)
 
 // @NotOk
 // global
-void Backgrnd_On(unsigned __int16 a1)
+void Backgrnd_On(u16 a1)
 {
 
 	CSuper* cur = BackgroundList;
@@ -61,7 +61,7 @@ void Backgrnd_On(unsigned __int16 a1)
 
 // @NotOk
 // global
-void Backgrnd_Off(unsigned __int16 a1)
+void Backgrnd_Off(u16 a1)
 {
 
 	CSuper* cur = BackgroundList;
