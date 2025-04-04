@@ -18,7 +18,7 @@ public:
 
 
 void validate_CMJ(void);
-EXPORT void MJ_CreateMJ(const unsigned int *, unsigned int *);
+EXPORT void MJ_CreateMJ(const u32 *, u32 *);
 EXPORT void MJ_RelocatableModuleClear(void);
 EXPORT void MJ_RelocatableModuleInit(reloc_mod*);
 #endif

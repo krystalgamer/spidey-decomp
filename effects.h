@@ -52,13 +52,14 @@ class CRhinoWallImpact : public CQuadBit
 		EXPORT virtual ~CRhinoWallImpact(void);
 
 		EXPORT virtual void Move(void);
-		u8 padBottom[4];
+
+		PADDING(4);
 };
 
 class CElectrify : public CSimpleTexturedRibbon
 {
 	public:
-		unsigned char pad[21];
+		PADDING(21);
 
 		EXPORT CElectrify(CSuper*, int);
 };
@@ -94,7 +95,7 @@ class CElectro : public CSimpleTexturedRibbon
 		EXPORT CElectro(void);
 		EXPORT virtual ~CElectro(void);
 
-		u8 padTop[4];
+		PADDING(4);
 
 		// @FIXME
 		void *field_50;
@@ -107,7 +108,7 @@ class CElectroLine : public CElectro
 		EXPORT CElectroLine(u16, u16, u16, u8, u8 ,u8, i32, i32, i32, i32, i32, u32*);
 		EXPORT virtual ~CElectroLine(void);
 
-		u8 padBottom[0x14];
+		PADDING(0x14);
 };
 
 void validate_CElectrify(void);

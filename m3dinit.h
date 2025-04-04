@@ -11,32 +11,34 @@ EXPORT extern u32 Yres;
 
 union ItemOffsetUnion
 {
-	unsigned Full;
-	unsigned char Byte[4];
+	u32 Full;
+	u8 Byte[4];
 };
 
 union UnionItemInfo
 {
-	unsigned __int16 Full;
-	unsigned char Byte[2];
+	u16 Full;
+	u8 Byte[2];
 };
 
 struct STexWibItemInfo
 {
 	ItemOffsetUnion ItemOffset;
-	unsigned char padAfterOffset[2];
 
-	unsigned char field_6;
-	unsigned char field_7;
-	unsigned char field_8;
-	unsigned char field_9;
+	PADDING(2);
 
-	unsigned char padAfter9[2];
+
+	u8 field_6;
+	u8 field_7;
+	u8 field_8;
+	u8 field_9;
+
+	PADDING(2);
 
 	UnionItemInfo field_C;
 
-	unsigned char ZeroUAmplitudes;
-	unsigned char ZeroVAmplitudes;
+	u8 ZeroUAmplitudes;
+	u8 ZeroVAmplitudes;
 };
 
 

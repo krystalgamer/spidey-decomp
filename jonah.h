@@ -29,18 +29,19 @@ public:
 
 	CVector field_34C;
 
-	u8 padAfter354[4];
+	PADDING(4);
 
 	SHandle field_35C;
 	SHandle field_364;
 
-	int field_36C;
-	int field_370;
-	unsigned char padEnd[0x380-0x370-4];
+	i32 field_36C;
+	i32 field_370;
+
+	PADDING(0x380-0x370-4);
 };
 
 void validate_CJonah(void);
-EXPORT void Jonah_CreateJonah(const unsigned int *stack, unsigned int *result);
+EXPORT void Jonah_CreateJonah(const u32 *stack, u32 *result);
 
 EXPORT void Jonah_RelocatableModuleInit(reloc_mod*);
 EXPORT void Jonah_RelocatableModuleClear(void);

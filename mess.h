@@ -29,17 +29,18 @@ struct SMessage
 	const char* pText;
 	u16 T;
 	u16 T_total;
-	u8 padAfter6[0x10-0x6-2];
+
+	PADDING(0x10-0x6-2);
 
 	SMessageProg* pProg;
 	SMessage* pNext;
 	SMessage* pPrevious;
 };
 
-EXPORT void Mess_SetTextJustify(unsigned char);
-EXPORT void Mess_SetScale(int);
+EXPORT void Mess_SetTextJustify(u8);
+EXPORT void Mess_SetScale(i32);
 EXPORT void Mess_SetRGB(u8, u8, u8, i32);
-EXPORT void Mess_SetRGBBottom(unsigned char, unsigned char, unsigned char);
+EXPORT void Mess_SetRGBBottom(u8, u8, u8);
 EXPORT char* Mess_GetCurrentFont(void);
 EXPORT void Mess_UnloadFont(void);
 EXPORT int Mess_TextHeight(char *);

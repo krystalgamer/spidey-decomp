@@ -16,7 +16,7 @@ public:
 
 
 void validate_CLizard(void);
-EXPORT void Lizard_CreateLizard(const unsigned int *, unsigned int *);
+EXPORT void Lizard_CreateLizard(const u32 *, u32 *);
 EXPORT void Lizard_RelocatableModuleClear(void);
 EXPORT void Lizard_RelocatableModuleInit(reloc_mod *);
 #endif

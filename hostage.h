@@ -35,7 +35,7 @@ public:
 
 
 void validate_CHostage(void);
-EXPORT void Hostage_CreateHostage(const unsigned int *, unsigned int *);
+EXPORT void Hostage_CreateHostage(const u32 *, u32 *);
 EXPORT void Hostage_RelocatableModuleClear(void);
 EXPORT void Hostage_RelocatableModuleInit(reloc_mod *);
 

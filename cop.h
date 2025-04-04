@@ -46,13 +46,16 @@ public:
 	EXPORT virtual u8 Grab(CVector*);
 
 	i32 field_324;
-	u8 padAfter324[0x340-0x324-4];
+
+	PADDING(0x340-0x324-4);
 
 	i32 field_340;
-	u8 padAfter340[0xC-4];
+
+	PADDING(0xC-4);
 
 	SHandle field_34C;
-	u8 padAfter34C[0x360-0x34C-sizeof(SHandle)];
+
+	PADDING(0x360-0x34C-sizeof(SHandle));
 
 	i32 field_360;
 	i32 field_364;
@@ -60,13 +63,15 @@ public:
 	i32 field_36C;
 	i32 field_370;
 	i32 field_374;
-	u8 padAfter374[0x37C - 0x374 - 4];
+
+	PADDING(0x37C - 0x374 - 4);
 	i32 field_37C;
 
 	// @FIXME - find type
 	CGPolyLine* field_380;
 	CVector* field_384;
-	u8 padAfter384[0x390 - 0x384 - 4];
+
+	PADDING(0x390 - 0x384 - 4);
 
 	u8 field_390;
 	u8 field_391;
@@ -121,7 +126,7 @@ void validate_CCopPing(void);
 void validate_CCopBulletTracer(void);
 void validate_CCopLaserPing(void);
 
-EXPORT void Cop_CreateCop(const unsigned int *stack, unsigned int *result);
+EXPORT void Cop_CreateCop(const u32 *stack, u32 *result);
 EXPORT void CreateCopRicochet(SLineInfo *,u8,u8,u8);
 EXPORT void Cop_RelocatableModuleInit(reloc_mod*);
 EXPORT void Cop_RelocatableModuleClear(void);
