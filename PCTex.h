@@ -65,11 +65,11 @@ struct SPCTexture
 {
 	u16 mSizeOne;
 	u16 mSizeTwo;
-	float mWScale;
-	float mHScale;
+	f32 mWScale;
+	f32 mHScale;
 
-	float field_C;
-	float field_10;
+	f32 field_C;
+	f32 field_10;
 
 	Bitmap256* mTexture;
 	i32 mAlpha;
@@ -94,8 +94,8 @@ struct SPCTexture
 };
 
 EXPORT void PCTex_SetTextureUserData(int, Bitmap256*);
-EXPORT float PCTex_GetTextureWScale(int);
-EXPORT float PCTex_GetTextureHScale(int);
+EXPORT f32 PCTex_GetTextureWScale(int);
+EXPORT f32 PCTex_GetTextureHScale(int);
 EXPORT int PCTex_GetTextureFlags(int);
 EXPORT int countBits(u32);
 EXPORT int PCTex_GetTextureSplitID(int, int);
@@ -113,7 +113,7 @@ EXPORT i32 PCTex_CreateTexturePVRInId(i32,i32,i32,u32, void *,u32, const char*,u
 EXPORT i32 PCTex_FindUnusedTextureId(void);
 EXPORT void PCTex_FreePcIcons(void);
 EXPORT IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32);
-EXPORT void PCTex_GetInvTextureSize(i32,float *,float *);
+EXPORT void PCTex_GetInvTextureSize(i32,f32 *,f32 *);
 EXPORT void PCTex_GetTextureSize(i32,i32 *,i32 *);
 EXPORT i32 PCTex_GetTextureSplitCount(i32);
 EXPORT void PCTex_InitSystemTextures(void);

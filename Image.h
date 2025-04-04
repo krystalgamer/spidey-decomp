@@ -55,7 +55,7 @@ class SlicedImage2 : public Image
 
 		EXPORT virtual void UnknownSlicedImageVirtualFunc(void);
 		EXPORT virtual void setData(void*);
-		EXPORT virtual void draw(i32, i32, i32, float);
+		EXPORT virtual void draw(i32, i32, i32, f32);
 
 		EXPORT void pack(void);
 		EXPORT void removeFromMemory(void);

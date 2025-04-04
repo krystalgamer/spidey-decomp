@@ -32,7 +32,7 @@ EXPORT void PCINPUT_SetKeyboardMappingForAction(u32,u32);
 EXPORT void PCINPUT_SetMouseBounds(i32,i32,i32,i32);
 EXPORT void PCINPUT_SetMouseHotspot(i32,i32);
 EXPORT void PCINPUT_SetMousePosition(i32,i32);
-EXPORT u8 PCINPUT_SetupForceFeedbackSineEffect(i32,float);
+EXPORT u8 PCINPUT_SetupForceFeedbackSineEffect(i32,f32);
 EXPORT void PCINPUT_Shutdown(void);
 EXPORT u8 PCINPUT_StartForceFeedbackEffect(void);
 EXPORT u8 PCINPUT_StopForceFeedbackEffect(void);

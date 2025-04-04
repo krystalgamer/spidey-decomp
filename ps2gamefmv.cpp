@@ -34,7 +34,7 @@ u8 GameFMV_PlayMovie(
 		u8 a1,
 		bool a2,
 		bool a3,
-		float a4)
+		f32 a4)
 {
 	Redbook_XAStop();
 	gSaveGame.field_88 |= 1 << a1;

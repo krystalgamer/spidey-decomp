@@ -196,9 +196,9 @@ void debugSettings(void)
 }
 
 // @SMALLTODO
-void mipmapOffset(u32,u32,float)
+void mipmapOffset(u32,u32,f32)
 {
-    printf("mipmapOffset(u32,u32,float)");
+    printf("mipmapOffset(u32,u32,f32)");
 }
 
 // @SMALLTODO

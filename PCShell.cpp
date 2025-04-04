@@ -55,8 +55,8 @@ INLINE void PCSHELL_CoordsDCtoPC(i32* pX, i32* pY)
 // @Matching
 INLINE void PCSHELL_CoordsPCtoDC(i32* pX, i32* pY)
 {
-	*pX = (float)(*pX * 512) / (float)gDxResolutionX;
-	*pY = (float)(*pY * 240) / (float)gDxResolutionY;
+	*pX = (f32)(*pX * 512) / (f32)gDxResolutionX;
+	*pY = (f32)(*pY * 240) / (f32)gDxResolutionY;
 }
 
 // @SMALLTODO

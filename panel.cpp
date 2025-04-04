@@ -21,39 +21,39 @@ EXPORT CBody* gHealthBarTwo;
 
 
 // @MEDIUMTODO
-void DCDrawGouraudPoly(float,POLY_GT4 *,Texture *,i32)
+void DCDrawGouraudPoly(f32,POLY_GT4 *,Texture *,i32)
 {
-    printf("DCDrawGouraudPoly(float,POLY_GT4 *,Texture *,i32)");
+    printf("DCDrawGouraudPoly(f32,POLY_GT4 *,Texture *,i32)");
 }
 
 // @MEDIUMTODO
-void DCDrawGouraudPoly(float,i32,i32,i32,i32,u32,u32,u32,u32,i32)
+void DCDrawGouraudPoly(f32,i32,i32,i32,i32,u32,u32,u32,u32,i32)
 {
-    printf("DCDrawGouraudPoly(float,i32,i32,i32,i32,u32,u32,u32,u32,i32)");
+    printf("DCDrawGouraudPoly(f32,i32,i32,i32,i32,u32,u32,u32,u32,i32)");
 }
 
 // @MEDIUMTODO
-void DCPanel_DrawFlatShadedPoly(float,i32,i32,i32,i32,u8,u8,u8,i32,i32)
+void DCPanel_DrawFlatShadedPoly(f32,i32,i32,i32,i32,u8,u8,u8,i32,i32)
 {
-    printf("DCPanel_DrawFlatShadedPoly(float,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
+    printf("DCPanel_DrawFlatShadedPoly(f32,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
 }
 
 // @MEDIUMTODO
-void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)
+void DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)
 {
-    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)");
+    printf("DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,SAnimFrame const *,i32,i32,i32,i32,i32,u32)");
 }
 
 // @MEDIUMTODO
-void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,u32)
+void DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,SAnimFrame const *,u32)
 {
-    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,SAnimFrame const *,u32)");
+    printf("DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,SAnimFrame const *,u32)");
 }
 
 // @MEDIUMTODO
-void DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)
+void DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,Texture const *,u32)
 {
-    printf("DCPanel_DrawTexturedPoly(float,POLY_FT4 *,Texture const *,u32)");
+    printf("DCPanel_DrawTexturedPoly(f32,POLY_FT4 *,Texture const *,u32)");
 }
 
 // @Ok

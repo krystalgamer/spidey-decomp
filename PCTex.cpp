@@ -654,13 +654,13 @@ i32 PCTex_CreateTexture256(
 	v34->mSizeTwo = a2;
 	v34->field_60 = (int)a4;
 
-	float v40 = (float)(u16)a1;
-	float v38 = (float)rounded_width;
+	f32 v40 = (f32)(u16)a1;
+	f32 v38 = (f32)rounded_width;
 	v34->pTextureData = a3;
 	v34->field_64 = 256;
 	v34->mWScale = v40 / v38;
-	float v41 = (float)(u16)a2;
-	float v43 = (float)rounded_height;
+	f32 v41 = (f32)(u16)a2;
+	f32 v43 = (f32)rounded_height;
 
 	v34->mHScale = v41 / v43;
 	if (pClut)
@@ -737,8 +737,8 @@ i32 PCTex_CreateTexturePVRInId(
 	gGlobalTextures[a1].mSizeTwo = a3;
 	gGlobalTextures[a1].mFlags = a6;
 	gGlobalTextures[a1].mTexture = 0;
-	gGlobalTextures[a1].field_C = 1.0f / (float)a2;
-	gGlobalTextures[a1].field_10 = 1.0f / (float)a3;
+	gGlobalTextures[a1].field_C = 1.0f / (f32)a2;
+	gGlobalTextures[a1].field_10 = 1.0f / (f32)a3;
 
 	char v13 = 0;
 	if (!a4 || a4 == 2 || a4 == 7)
@@ -910,7 +910,7 @@ IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32 index)
 }
 
 // @Ok
-void PCTex_GetInvTextureSize(i32 index, float* pF1 ,float * pF2)
+void PCTex_GetInvTextureSize(i32 index, f32* pF1 ,f32 * pF2)
 {
 	*pF1 = gGlobalTextures[index].field_C;
 	*pF2 = gGlobalTextures[index].field_10;
@@ -1220,13 +1220,13 @@ void PCTex_SetTextureUserData(int index, Bitmap256* texture)
 }
 
 // @Ok
-float PCTex_GetTextureWScale(int index)
+f32 PCTex_GetTextureWScale(int index)
 {
 	return gGlobalTextures[index].mWScale;
 }
 
 // @Ok
-float PCTex_GetTextureHScale(int index)
+f32 PCTex_GetTextureHScale(int index)
 {
 	return gGlobalTextures[index].mHScale;
 }

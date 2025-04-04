@@ -134,7 +134,7 @@ i32 Mess_DrawText(
 
 	gMessFont.field_34 = 8 * gScale;
 
-	float v6;
+	f32 v6;
 	switch (gSort)
 	{
 		case 4093:

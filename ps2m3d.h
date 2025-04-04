@@ -15,22 +15,22 @@ class matrix4x4
 		vector4d field_0[4];
 
 		EXPORT matrix4x4(
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float,
-				float);
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32,
+				f32);
 
 		EXPORT vector4d& operator[](i32);
 };

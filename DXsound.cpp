@@ -8,7 +8,7 @@
 EXPORT LPDIRECTDRAWSURFACE7 gDDSurface7;
 EXPORT bool gTexAlpha = false;
 EXPORT u32 dword_6B7A8C;
-EXPORT float flt_56817C = 10.0f;
+EXPORT f32 flt_56817C = 10.0f;
 EXPORT i32 dword_568184;
 EXPORT DXPOLY* gSceneBuffer[0x1001];
 EXPORT u8 gInBeginScene;
@@ -39,7 +39,7 @@ EXPORT bool gDepthWriting;
 EXPORT bool gDxPolyRelated;
 
 EXPORT i32 gHudOffset;
-EXPORT float gFlHudOffset = 1.0f;
+EXPORT f32 gFlHudOffset = 1.0f;
 
 EXPORT D3DCOLOR gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
@@ -465,9 +465,9 @@ i32 DXINPUT_SetupController(void)
 }
 
 // @MEDIUMTODO
-i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float)
+i32 DXINPUT_SetupForceFeedbackSineEffect(i32,f32)
 {
-    printf("DXINPUT_SetupForceFeedbackSineEffect(i32,float)");
+    printf("DXINPUT_SetupForceFeedbackSineEffect(i32,f32)");
 	return 0x24082024;
 }
 
@@ -576,10 +576,10 @@ EXPORT void gsub_514DB0(LPVOID,
 			i32,
 			LONG,
 			u32,
-			float,
+			f32,
 			i32,
-			float,
-			float)
+			f32,
+			f32)
 {
 	printf("void gsub_514DB0(LPVOID,");
 }
@@ -603,10 +603,10 @@ void DXPOLY_BeginScene(void)
 
 		i32 width, height;
 		DXINIT_GetCurrentResolution(&width, &height);
-		float v9 = (float)height;
-		float v8 = v9 * 0.5f;
-		float v10 = (float)width;
-		float v7 = v10 * 0.5f;
+		f32 v9 = (f32)height;
+		f32 v8 = v9 * 0.5f;
+		f32 v10 = (f32)width;
+		f32 v7 = v10 * 0.5f;
 		gsub_514DB0(
 			v13.lpSurface,
 			width,
@@ -638,7 +638,7 @@ void DXPOLY_DrawPoly(
 		DXPOLY* pPoly,
 		i32 a2,
 		i32,
-		float)
+		f32)
 {
 	if ( !gInBeginScene )
 		DXERR_printf("drawing outside scene\r\n");
@@ -1043,7 +1043,7 @@ INLINE void DXPOLY_SetFilterMode(u32 filterIndex)
 void DXPOLY_SetHUDOffset(i32 a1)
 {
 	gHudOffset = a1;
-	float v1 = (float)(4096 - a1);
+	f32 v1 = (f32)(4096 - a1);
 	gFlHudOffset = v1 / 4096.0f;
 }
 

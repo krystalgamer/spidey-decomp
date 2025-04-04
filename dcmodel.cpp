@@ -6,7 +6,7 @@
 #include "non_win32.h"
 #include <cmath>
 
-EXPORT float gPreComputedColorRelated = -1.0f;
+EXPORT f32 gPreComputedColorRelated = -1.0f;
 EXPORT u8 gConvertedColors[256];
 
 EXPORT DCSkaterModel gSkaterModels[2];
@@ -123,14 +123,14 @@ DCStrip::~DCStrip(void)
 
 // @Ok
 // @Matching
-void PreComputeConvertedColors(float a1)
+void PreComputeConvertedColors(f32 a1)
 {
 	for (i32 i = 0;
 			i < 256;
 			i++)
 	{
-		float v4 = (float)i / 255.0f;
-		float v5 = pow(v4, a1);
+		f32 v4 = (f32)i / 255.0f;
+		f32 v5 = pow(v4, a1);
 		if (v5 > 1.0)
 			v5 = 1.0;
 		gConvertedColors[i] = (v5 * 255.0f);

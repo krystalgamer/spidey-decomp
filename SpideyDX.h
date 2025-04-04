@@ -30,7 +30,7 @@ EXPORT LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM);
 EXPORT i32 WinYield(void);
 
 EXPORT void debugSettings(void);
-EXPORT void mipmapOffset(u32,u32,float);
+EXPORT void mipmapOffset(u32,u32,f32);
 EXPORT void parseCommandLine(char *);
 
 u16* PVR_ConvertTwiddledToBMP(i32, i32, const u16*, bool);

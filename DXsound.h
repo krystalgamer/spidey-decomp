@@ -23,13 +23,13 @@ typedef void* DIDEVICEINSTANCEA;
 
 struct SDXPolyField
 {
-	float field_0;
-	float field_4;
-	float field_8;
-	float field_C;
+	f32 field_0;
+	f32 field_4;
+	f32 field_8;
+	f32 field_C;
 	u32 field_10;
-	float field_14;
-	float field_18;
+	f32 field_14;
+	f32 field_18;
 };
 
 struct DXPOLY
@@ -58,7 +58,7 @@ EXPORT void DXINPUT_Release(void);
 EXPORT void DXINPUT_SetKeyState(u8,u8);
 EXPORT void DXINPUT_SetMouseButtonState(u8,u8);
 EXPORT i32 DXINPUT_SetupController(void);
-EXPORT i32 DXINPUT_SetupForceFeedbackSineEffect(i32,float);
+EXPORT i32 DXINPUT_SetupForceFeedbackSineEffect(i32,f32);
 EXPORT i32 DXINPUT_SetupKeyboard(i32,i32);
 EXPORT i32 DXINPUT_SetupMouse(i32);
 EXPORT i32 DXINPUT_StartForceFeedbackEffect(void);
@@ -66,7 +66,7 @@ EXPORT i32 DXINPUT_StopForceFeedbackEffect(void);
 EXPORT void DXINPUT_GetKeyName(u8, char*);
 
 EXPORT void DXPOLY_BeginScene(void);
-EXPORT void DXPOLY_DrawPoly(DXPOLY*,i32,i32,float);
+EXPORT void DXPOLY_DrawPoly(DXPOLY*,i32,i32,f32);
 EXPORT void DXPOLY_EnableTexAlpha(bool);
 EXPORT void DXPOLY_EndScene(bool);
 EXPORT void DXPOLY_Flip(void);

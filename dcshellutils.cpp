@@ -15,13 +15,13 @@ INLINE void DCSpriteDraw(
 		i32 a1,
 		i32 a2,
 		i32 a3,
-		float a4,
+		f32 a4,
 		u32 a5,
 		u32 a6,
 		u32 a7,
 		i32 a8,
 		u32 a9,
-		float a10)
+		f32 a10)
 {
 	if (a1 != -1)
 	{
@@ -127,7 +127,7 @@ void SlicedImage2::draw(
 		i32 a2,
 		i32 a3,
 		i32 a4,
-		float a5)
+		f32 a5)
 {
 	u32 v30, v31, v39;
 
@@ -148,33 +148,33 @@ void SlicedImage2::draw(
 	i32 v6 = this->field_10;
 	i32 v21 = this->field_16;
 	i32 v7 = v21;
-	float v10;
+	f32 v10;
 	if ( (v6 & 4) != 0 )
 	{
-		float v32 = (float)v5;
-		float v24 = (float)Xres;
-		float v33 = (float)gGameResolutionX;
+		f32 v32 = (f32)v5;
+		f32 v24 = (f32)Xres;
+		f32 v33 = (f32)gGameResolutionX;
 		v5 = (v32 * v24 / v33);
 
-		float v34 = (float)v21;
-		float v25 = (float)Yres;
+		f32 v34 = (f32)v21;
+		f32 v25 = (f32)Yres;
 
-		float v35 = (float)gGameResolutionY;
+		f32 v35 = (f32)gGameResolutionY;
 		v10 = v34 * v25 / v35;
 	}
 	else if (v6 & 0x20)
 	{
-		float v36 = (float)v5;
-		float v26 = (float)Xres;
+		f32 v36 = (f32)v5;
+		f32 v26 = (f32)Xres;
 		v5 = (v36 * v26 / 640.0f);
 
-		float v37 = (float)v21;
-		float v27 = (float)Yres;
+		f32 v37 = (f32)v21;
+		f32 v27 = (f32)Yres;
 		v10 = v37 * v27 / 480.0f;
 	}
 	v7 = v10;
 
-	float v28;
+	f32 v28;
 	if (!this->field_A)
 	{
 		v28 = 0.0f;
@@ -188,7 +188,7 @@ void SlicedImage2::draw(
 		v28 = -(v5 << this->field_1C);
 	}
 
-	float v13;
+	f32 v13;
 	if (!this->field_B)
 	{
 		v13 = 0.0f;
@@ -203,9 +203,9 @@ void SlicedImage2::draw(
 	}
 
 	u32 v15 = (v6 & 0x24) == 0;
-	float v38 = this->field_C / 4096.0;
-	float v29 = v38 * v28;
-	float v23 = v38 * v13;
+	f32 v38 = this->field_C / 4096.0;
+	f32 v29 = v38 * v28;
+	f32 v23 = v38 * v13;
 
 	if (a4)
 		v15 |= a4;
@@ -215,8 +215,8 @@ void SlicedImage2::draw(
 
 	DCSpriteDraw(
 			this->field_18,
-			(float)a2 + v29,
-			(float)a3 + v23,
+			(f32)a2 + v29,
+			(f32)a3 + v23,
 			v38,
 			v30,
 			v31,

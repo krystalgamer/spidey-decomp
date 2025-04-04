@@ -168,7 +168,7 @@ void Font::draw(
 		i32 y,
 		const char* pStr,
 		i32 drawFirst,
-		float)
+		f32)
 {
 	if (this->field_34 || this->field_30)
 	{

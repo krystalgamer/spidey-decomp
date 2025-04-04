@@ -476,7 +476,7 @@ INLINE void PCINPUT_SetMousePosition(
 
 // @Ok
 // @Matching
-u8 PCINPUT_SetupForceFeedbackSineEffect(i32 a1, float a2)
+u8 PCINPUT_SetupForceFeedbackSineEffect(i32 a1, f32 a2)
 {
 	if (gRenderTest & 0x20)
 		return 1;
@@ -510,7 +510,7 @@ u8 PCINPUT_StopForceFeedbackEffect(void)
 	return DXINPUT_StopForceFeedbackEffect() != 0;
 }
 
-EXPORT float ONE_FLOAT = 1.0f;
+EXPORT f32 ONE_FLOAT = 1.0f;
 
 // @Ok
 u8 PCINPUT_UpdateMouse(void)

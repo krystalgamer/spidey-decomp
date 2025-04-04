@@ -31,22 +31,22 @@ INLINE vector4d& matrix4x4::operator[](i32 index)
 // @Ok
 // @Matching
 matrix4x4::matrix4x4(
-			float a1,
-			float a2,
-			float a3,
-			float a4,
-			float a5,
-			float a6,
-			float a7,
-			float a8,
-			float a9,
-			float a10,
-			float a11,
-			float a12,
-			float a13,
-			float a14,
-			float a15,
-			float a16)
+			f32 a1,
+			f32 a2,
+			f32 a3,
+			f32 a4,
+			f32 a5,
+			f32 a6,
+			f32 a7,
+			f32 a8,
+			f32 a9,
+			f32 a10,
+			f32 a11,
+			f32 a12,
+			f32 a13,
+			f32 a14,
+			f32 a15,
+			f32 a16)
 {
 	this->field_0[0].field_0[0] = a1;
 	this->field_0[0].field_0[1] = a2;
@@ -74,7 +74,7 @@ matrix4x4::matrix4x4(
 EXPORT void __ml(matrix4x4 const *,matrix4x4 const *);
 
 EXPORT void matrix4x4::__vc(const(i32);
-EXPORT matrix4x4::matrix4x4(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float);
+EXPORT matrix4x4::matrix4x4(f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32,f32);
 
 EXPORT void uWibble(STexWibVertInfo *);
 EXPORT void vWibble(STexWibVertInfo *);
@@ -156,14 +156,14 @@ void M3d_RenderCleanup(void)
 	{
 		PCGfx_UseTexture(1, DCGfx_BlendingMode_0);
 
-		float v2 = (float)gGameResolutionY;
-		float v5 = (float)(unsigned int)Yres;
-		float v1 = v2 / v5;
-		float v6 = (float)gWideScreen;
-		float v12 = v1 * v6;
-		float v7 = (float)gGameResolutionX;
-		float v3 = (float)(unsigned int)Xres;
-		float v8 = v7 / v3 * 512.0f;
+		f32 v2 = (f32)gGameResolutionY;
+		f32 v5 = (f32)(unsigned int)Yres;
+		f32 v1 = v2 / v5;
+		f32 v6 = (f32)gWideScreen;
+		f32 v12 = v1 * v6;
+		f32 v7 = (f32)gGameResolutionX;
+		f32 v3 = (f32)(unsigned int)Xres;
+		f32 v8 = v7 / v3 * 512.0f;
 		PCGfx_DrawQuad2D(
 				0,
 				0,
@@ -177,16 +177,16 @@ void M3d_RenderCleanup(void)
 				0.0,
 				false);
 
-		float v13 = (float)gGameResolutionY;
-		float v9 = (float)(unsigned int)Yres;
-		float v4 = v13 / v9;
-		float v14 = (float)gWideScreen;
-		float v18 = v14 * v4;
-		float v15 = (float)gGameResolutionX;
-		float v10 = (float)(unsigned int)Xres;
-		float v11 = v15 / v10 * 512.0f;
-		float v16 = (float)(240 - gWideScreen);
-		float v17 = v16 * v4;
+		f32 v13 = (f32)gGameResolutionY;
+		f32 v9 = (f32)(unsigned int)Yres;
+		f32 v4 = v13 / v9;
+		f32 v14 = (f32)gWideScreen;
+		f32 v18 = v14 * v4;
+		f32 v15 = (f32)gGameResolutionX;
+		f32 v10 = (f32)(unsigned int)Xres;
+		f32 v11 = v15 / v10 * 512.0f;
+		f32 v16 = (f32)(240 - gWideScreen);
+		f32 v17 = v16 * v4;
 		PCGfx_DrawQuad2D(
 				0,
 				v17,

@@ -32,8 +32,8 @@ EXPORT DCGfx_BlendingMode gTextureBlendingMode;
 EXPORT i32 gPcGfxBlendModeRelated;
 EXPORT DXPOLY gDxPolys[15360];
 
-EXPORT float gRenderInitOne[3] = {  10.0f, 8048.0f, 276.0f };
-EXPORT float gRenderInitTwo[2] = { 8038.0f, 1.9624f };
+EXPORT f32 gRenderInitOne[3] = {  10.0f, 8048.0f, 276.0f };
+EXPORT f32 gRenderInitTwo[2] = { 8038.0f, 1.9624f };
 
 EXPORT i32 gPcGfxDrawRelated = 1;
 EXPORT i32 gPcGfxSlotNumber =  0x0FFFFFFFF;
@@ -43,11 +43,11 @@ EXPORT u8 gNonRendderSettingE;
 
 u8 gSceneRelated;
 
-EXPORT float gZLayerFurthest;
-EXPORT float gZLayerNearest;
+EXPORT f32 gZLayerFurthest;
+EXPORT f32 gZLayerNearest;
 
-EXPORT float gFlFoggingParamOne = 100000.0f;
-EXPORT float gFlFoggingParamTwo = 100005.0f;
+EXPORT f32 gFlFoggingParamOne = 100000.0f;
+EXPORT f32 gFlFoggingParamTwo = 100005.0f;
 EXPORT u32 gU32FoggingParamThree;
 
 u8 gBFoggingRelated;
@@ -330,37 +330,37 @@ void PCGfx_DoModelPreview(void)
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawLine(float,float,float,u32,float,float,float,u32,float)
+void PCGfx_DrawLine(f32,f32,f32,u32,f32,f32,f32,u32,f32)
 {
-    printf("PCGfx_DrawLine(float,float,float,u32,float,float,float,u32,float)");
+    printf("PCGfx_DrawLine(f32,f32,f32,u32,f32,f32,f32,u32,f32)");
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawQPoly2D(float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float)
+void PCGfx_DrawQPoly2D(f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32)
 {
-    printf("PCGfx_DrawQPoly2D(float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float)");
+    printf("PCGfx_DrawQPoly2D(f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32)");
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawQPoly3D(float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32)
+void PCGfx_DrawQPoly3D(f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32)
 {
-    printf("PCGfx_DrawQPoly3D(float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32)");
+    printf("PCGfx_DrawQPoly3D(f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32)");
 }
 
 // @NotOk
 // missing low graphics
 // might be wrong too
 void PCGfx_DrawQuad2D(
-		float a1,
-		float a2,
-		float a3,
-		float a4,
-		float a5,
-		float a6,
-		float a7,
-		float a8,
+		f32 a1,
+		f32 a2,
+		f32 a3,
+		f32 a4,
+		f32 a5,
+		f32 a6,
+		f32 a7,
+		f32 a8,
 		u32 color,
-		float a10,
+		f32 a10,
 		bool)
 {
 	gPcGfxDrawRelated &= 0xFFFFFFFB;
@@ -368,13 +368,13 @@ void PCGfx_DrawQuad2D(
 	if (a10 <= 6.0f)
 		gPcGfxSlotNumber = a10;
 
-	float v13 = a10;
+	f32 v13 = a10;
 	if (a10 < 0.0f)
 		v13 = v13 * a10 + gRenderInitOne[1];
 	else
 		v13 = v13 * a10 + gRenderInitOne[0];
 
-	float v24 = v13;
+	f32 v24 = v13;
 	print_if_false(v24 > 0.0f, "invalid zOffset!");
 
 	SDXPolyField *pDxPolyFields[4];
@@ -393,7 +393,7 @@ void PCGfx_DrawQuad2D(
 	dxPolyFields[3].field_14 = a5;
 	pDxPolyFields[2] = &dxPolyFields[2];
 
-	float v27 = (v24 - gRenderInitOne[0]) / gRenderInitTwo[0];
+	f32 v27 = (v24 - gRenderInitOne[0]) / gRenderInitTwo[0];
 	dxPolyFields[0].field_8 = v27;
 	dxPolyFields[1].field_8 = v27;
 	dxPolyFields[2].field_8 = v27;
@@ -402,27 +402,27 @@ void PCGfx_DrawQuad2D(
 	pDxPolyFields[0] = dxPolyFields;
 	pDxPolyFields[3] = &dxPolyFields[3];
 
-	float v32 = gRenderInitOne[2] / v24;
+	f32 v32 = gRenderInitOne[2] / v24;
 	dxPolyFields[0].field_C = v32;
 	dxPolyFields[1].field_C = v32;
 	dxPolyFields[2].field_C = v32;
 	dxPolyFields[3].field_C = v32;
 
-	float v28 = a1 + a3;
+	f32 v28 = a1 + a3;
 	dxPolyFields[1].field_0 = v28;
 	dxPolyFields[2].field_0 = v28;
 	pDxPolyFields[1] = &dxPolyFields[1];
 
-	float v25 = a5 + a7;
+	f32 v25 = a5 + a7;
 	dxPolyFields[1].field_14 = v25;
 	dxPolyFields[1].field_18 = a6;
 	dxPolyFields[2].field_14 = v25;
 
-	float v29 = a2 + a4;
+	f32 v29 = a2 + a4;
 	dxPolyFields[2].field_4 = v29;
 	dxPolyFields[3].field_4 = v29;
 
-	float v30 = a6 + a8;
+	f32 v30 = a6 + a8;
 	dxPolyFields[2].field_18 = v30;
 	dxPolyFields[3].field_18 = v30;
 
@@ -432,7 +432,7 @@ void PCGfx_DrawQuad2D(
 		return;
 	}
 
-	float v26 = 0.0;
+	f32 v26 = 0.0;
 	DXPOLY* v16 = &gDxPolys[gEndSceneRelatedTwo++];
 	i32 v31 = gPcGfxBlendModeRelated;
 
@@ -496,15 +496,15 @@ void PCGfx_DrawQuad2D(
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawTPoly2D(float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float)
+void PCGfx_DrawTPoly2D(f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32)
 {
-    printf("PCGfx_DrawTPoly2D(float,float,float,float,u32,float,float,float,float,u32,float,float,float,float,u32,float)");
+    printf("PCGfx_DrawTPoly2D(f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32,f32,f32,f32,u32,f32)");
 }
 
 // @MEDIUMTODO
-void PCGfx_DrawTPoly3D(float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32)
+void PCGfx_DrawTPoly3D(f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32)
 {
-    printf("PCGfx_DrawTPoly3D(float,float,float,float,float,u32,float,float,float,float,float,u32,float,float,float,float,float,u32)");
+    printf("PCGfx_DrawTPoly3D(f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32,f32,f32,f32,f32,f32,u32)");
 }
 
 // @MEDIUMTODO
@@ -512,10 +512,10 @@ void PCGfx_DrawTexture2D(
 		i32 a1,
 		i32 x,
 		i32 a3,
-		float drawScale,
+		f32 drawScale,
 		u32 color,
 		u32 a6,
-		float a7)
+		f32 a7)
 {
 	print_if_false(drawScale > 0.0f, "Improbable draw scale");
 	print_if_false(drawScale < 256.0f, "Improbable draw scale");
@@ -527,16 +527,16 @@ void PCGfx_DrawTexture2D(
 
 	if (textureWidth <= gMaxTextureWidth && textureHeight <= gTextureHeight)
 	{
-		i32 adjusted_width = ((float)textureWidth * drawScale);
-		i32 adjusted_height = ((float)textureHeight * drawScale);
+		i32 adjusted_width = ((f32)textureWidth * drawScale);
+		i32 adjusted_height = ((f32)textureHeight * drawScale);
 
 		if (adjusted_width && adjusted_height)
 		{
 			PCGfx_UseTexture(a1,
 					a6 & 4 ? DCGfx_BlendingMode_2 : DCGfx_BlendingMode_0);
 
-			float TextureWScale = PCTex_GetTextureWScale(a1);
-			float TextureHScale = PCTex_GetTextureHScale(a1);
+			f32 TextureWScale = PCTex_GetTextureWScale(a1);
+			f32 TextureHScale = PCTex_GetTextureHScale(a1);
 
 			i32 v36 = x;
 			i32 hateThiShit = a3;
@@ -641,7 +641,7 @@ void PCGfx_Exit(void)
 }
 
 // @Ok
-float PCGfx_GetZLayerFurthest(void)
+f32 PCGfx_GetZLayerFurthest(void)
 {
 	if ( !gSceneRelated )
 		PCGfx_BeginScene(3, -1);
@@ -650,7 +650,7 @@ float PCGfx_GetZLayerFurthest(void)
 }
 
 // @Ok
-float PCGfx_GetZLayerNearest(void)
+f32 PCGfx_GetZLayerNearest(void)
 {
 	if ( !gSceneRelated )
 		PCGfx_BeginScene(3, -1);
@@ -748,7 +748,7 @@ void PCGfx_ProcessTexture(
 
 // @Ok
 // @Matching
-void PCGfx_RenderInit(float a1, float a2, float a3)
+void PCGfx_RenderInit(f32 a1, f32 a2, f32 a3)
 {
 	gRenderInitOne[2] = a3;
 	gRenderInitOne[0] = a1;
@@ -806,7 +806,7 @@ void PCGfx_RenderModelPreview(
 	PCGfx_EndScene(1);
 }
 
-EXPORT float gPcGfxBrightnessPower[8] =
+EXPORT f32 gPcGfxBrightnessPower[8] =
 {
 	0.80000001f,
 	0.85000002f,
@@ -822,13 +822,13 @@ EXPORT float gPcGfxBrightnessPower[8] =
 // @Test
 INLINE void PCGfx_SetBrightness(i32 a1)
 {
-	float v8 = 1.0f / gPcGfxBrightnessPower[a1];
+	f32 v8 = 1.0f / gPcGfxBrightnessPower[a1];
 	for (i32 i = 0; i < 256; i++)
 	{
 
-		float v9 = i;
-		float v6 = v9 / 255.0f;
-		float v7 = pow(v6, v8);
+		f32 v9 = i;
+		f32 v6 = v9 / 255.0f;
+		f32 v7 = pow(v6, v8);
 
 		i32 v3 = (v7 * 255.0f + 0.5f);
 		if (v3 >= 128)
@@ -847,8 +847,8 @@ INLINE void PCGfx_SetBrightness(i32 a1)
 // @Ok
 // @Matching
 void PCGfx_SetFogParams(
-		float a1,
-		float a2,
+		f32 a1,
+		f32 a2,
 		u32 a3)
 {
 	u32 three = a3;
@@ -943,15 +943,15 @@ INLINE void PCGfx_UseTexture(i32 a1, DCGfx_BlendingMode a2)
 }
 
 // @MEDIUMTODO
-void PCPanel_DrawTexturedPoly(float,Texture const *,i32,i32,i32,i32,u8)
+void PCPanel_DrawTexturedPoly(f32,Texture const *,i32,i32,i32,i32,u8)
 {
-    printf("PCPanel_DrawTexturedPoly(float,Texture const *,i32,i32,i32,i32,u8)");
+    printf("PCPanel_DrawTexturedPoly(f32,Texture const *,i32,i32,i32,i32,u8)");
 }
 
 // @MEDIUMTODO
-void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,float)
+void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,f32)
 {
-    printf("ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,float)");
+    printf("ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,f32)");
 }
 
 // @SMALLTODO
