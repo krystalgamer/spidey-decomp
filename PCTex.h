@@ -96,7 +96,7 @@ EXPORT void PCTex_SetTextureUserData(int, Bitmap256*);
 EXPORT float PCTex_GetTextureWScale(int);
 EXPORT float PCTex_GetTextureHScale(int);
 EXPORT int PCTex_GetTextureFlags(int);
-EXPORT int countBits(unsigned int);
+EXPORT int countBits(u32);
 EXPORT int PCTex_GetTextureSplitID(int, int);
 
 EXPORT u8 CheckValidTexture(u32);

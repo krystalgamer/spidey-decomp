@@ -45,7 +45,7 @@ public:
 	EXPORT virtual ~CCamera(void);
 
 	EXPORT void SetFixedFocusMode(CVector *, u16, u16);
-	EXPORT int SetMode(ECameraMode mode);
+	EXPORT i32 SetMode(ECameraMode mode);
 	EXPORT void SetCollisionRayLR(i32);
 	EXPORT void SetCollisionRayBack(i32);
 	EXPORT void SetCollisionAngLR(i16);
@@ -69,70 +69,70 @@ public:
 	EXPORT void CM_TripodFocus(void);
 
 
-	int padTop;
+	PADDING(4);
 
-	unsigned char field_F8;
-	unsigned char field_F9;
+	u8 field_F8;
+	u8 field_F9;
 	CBody* field_FC;
-	unsigned char field_100;
+	u8 field_100;
 
 	CVector field_104;
 
-	int field_110;
-	int field_114;
-	int field_118;
-	int field_11C;
-	int field_120;
-	int field_124;
-	int field_128;
-	int field_12C;
-	int field_130;
-	int field_134;
-	int field_138;
+	i32 field_110;
+	i32 field_114;
+	i32 field_118;
+	i32 field_11C;
+	i32 field_120;
+	i32 field_124;
+	i32 field_128;
+	i32 field_12C;
+	i32 field_130;
+	i32 field_134;
+	i32 field_138;
 	CBody* field_13C;
-	unsigned char field_140;
+	u8 field_140;
 	CVector field_144;
 
-	int field_150;
-	int field_154;
-	int field_158;
-	int field_15C;
-	int field_160;
-	int field_164;
-	int field_168;
-	int field_16C;
-	int mZoom;
+	i32 field_150;
+	i32 field_154;
+	i32 field_158;
+	i32 field_15C;
+	i32 field_160;
+	i32 field_164;
+	i32 field_168;
+	i32 field_16C;
+	i32 mZoom;
 
-	__int16 field_174;
-	unsigned char padAfter174[2];
+	i16 field_174;
+	PADDING(2);
 
-	int field_178;
-	int field_17C;
+	i32 field_178;
+	i32 field_17C;
 
-	unsigned char padAfter17C[0x1A8-0x17C-4];
-
-
-	int field_1A8;
-	int field_1AC;
-	int field_1B0;
-	int field_1B4;
-	int field_1B8;
-	int field_1BC;
-	int field_1C0;
-
-	int padAfter1C0;
+	PADDING(0x1A8-0x17C-4);
 
 
-	int field_1C8;
-	__int16 field_1CC;
-	__int16 field_1CE;
+	i32 field_1A8;
+	i32 field_1AC;
+	i32 field_1B0;
+	i32 field_1B4;
+	i32 field_1B8;
+	i32 field_1BC;
+	i32 field_1C0;
 
-	unsigned char padAfter1CE[0x8];
+	PADDING(4);
 
 
-	int field_1D8;
-	int field_1DC;
-	int field_1E0;
+	i32 field_1C8;
+	i16 field_1CC;
+	i16 field_1CE;
+
+	PADDING(0x8);
+
+
+	i32 field_1D8;
+	i32 field_1DC;
+	i32 field_1E0;
 
 	CQuat field_1E4;
 
@@ -144,69 +144,69 @@ public:
 
 	
 
-	int field_224;
-	int field_228;
-	int field_22C;
-	int field_230;
+	i32 field_224;
+	i32 field_228;
+	i32 field_22C;
+	i32 field_230;
 	i16 field_234;
 	i16 field_236;
 	i16 field_238;
 	i16 field_23A;
 
-	unsigned char field_23C;
-	int field_240;
-	int field_244;
-	int field_248;
+	u8 field_23C;
+	i32 field_240;
+	i32 field_244;
+	i32 field_248;
 	CVector field_24C;
 
 	CVector field_258;
 
-	int field_264;
-	int field_268;
+	i32 field_264;
+	i32 field_268;
 	i16 field_26C;
 	i16 field_26E;
 
 	i16 field_270;
 	i16 field_272;
 
-	__int16 field_274;
-	unsigned char field_276;
-	unsigned char field_277;
-	unsigned char field_278;
-	__int16 field_27A;
-	__int16 field_27C;
-	__int16 field_27E;
+	i16 field_274;
+	u8 field_276;
+	u8 field_277;
+	u8 field_278;
+	i16 field_27A;
+	i16 field_27C;
+	i16 field_27E;
 
-	int field_280;
+	i32 field_280;
 
 	CVector field_284;
 
 	CQuat field_290;
 
-	int mMode;
+	i32 mMode;
 
-	int field_2A4;
-	int field_2A8;
+	i32 field_2A4;
+	i32 field_2A8;
 
-	unsigned char field_2AC;
+	u8 field_2AC;
 
 
 	CVector field_2B0;
 
-	int field_2BC;
+	i32 field_2BC;
 
-	int field_2C0;
+	i32 field_2C0;
 
 	CQuat field_2C4;
 	CQuat field_2D4;
 
-	__int16 field_2E4;
+	i16 field_2E4;
 
 	CVector field_2E8;
 
 };
 
-EXPORT __int16 CalcTheta(__int16, __int16);
+EXPORT i16 CalcTheta(i16, i16);
 EXPORT extern CCamera *CameraList;
 EXPORT extern SViewport gViewport;
 EXPORT extern SCamera gMikeCamera[2];

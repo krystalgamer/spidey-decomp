@@ -81,7 +81,8 @@ public:
 	i32 field_35C;
 
 	i32 field_360;
-	unsigned char padAfter360[0x8];
+
+	PADDING(0x8);
 
 	u8 field_36C;
 
@@ -93,9 +94,9 @@ class CSonicBubble : public CBody
 	public:
 		EXPORT CSonicBubble(void);
 		EXPORT ~CSonicBubble(void);
-		EXPORT void SetScale(int);
+		EXPORT void SetScale(i32);
 
-		int field_F4;
+		i32 field_F4;
 };
 
 class CCarnageElectrified : public CNonRenderedBit
@@ -126,7 +127,7 @@ void validate_CCarnageHitSpark(void);
 void validate_CSonicRipple(void);
 
 EXPORT void CreateSonicBubbleVertexWobbler(void);
-EXPORT void Carnage_CreateCarnage(const unsigned int *stack, unsigned int *result);
+EXPORT void Carnage_CreateCarnage(const u32 *stack, u32 *result);
 EXPORT void Carnage_RelocatableModuleInit(reloc_mod *);
 EXPORT void Carnage_RelocatableModuleClear(void);
 EXPORT void SetTheCarnageGooSourcesChecksums(void);

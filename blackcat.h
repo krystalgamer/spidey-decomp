@@ -24,20 +24,22 @@ public:
 	i32 field_324;
 	i32 field_328;
 	i32 field_32C;
-	unsigned char padAfter32C[0x33C-0x32C-4];
+
+	PADDING(0x33C-0x32C-4);
 
 	// @FIXME guess type
 	void *field_33C;
-	unsigned char field_340;
-	int field_344;
 
-	unsigned char field_348;
+	u8 field_340;
+	i32 field_344;
 
-	int field_34C;
+	u8 field_348;
+
+	i32 field_34C;
 	i32* field_350;
 };
 
 void validate_CBlackCat(void);
-EXPORT void BlackCat_CreateBlackCat(const unsigned int *stack, unsigned int *result);
+EXPORT void BlackCat_CreateBlackCat(const u32 *stack, u32 *result);
 EXPORT void BlackCat_RelocatableModuleClear(void);
 EXPORT void BlackCat_RelocatableModuleInit(reloc_mod*);

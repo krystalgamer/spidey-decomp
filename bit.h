@@ -135,12 +135,12 @@ public:
 
 	EXPORT CQuadBit(void);
 
-	EXPORT void SetTint(unsigned char a2, unsigned char a3, unsigned char a4);
+	EXPORT void SetTint(u8 a2, u8 a3, u8 a4);
 	EXPORT void SetSemiTransparent();
 	EXPORT void SetOpaque();
 	EXPORT void SetSubtractiveTransparency();
 	EXPORT void SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5);
-	EXPORT void SetTransparency(unsigned char a2);
+	EXPORT void SetTransparency(u8 a2);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32, i32);
 	EXPORT void SetTexture(int, int);
@@ -156,11 +156,11 @@ class CFT4Bit : public CBit
 		EXPORT void SetAnimSpeed(short);
 		EXPORT void SetScale(u16);
 		EXPORT void SetSemiTransparent();
-		EXPORT void SetTransparency(unsigned char t);
+		EXPORT void SetTransparency(u8 t);
 		EXPORT void SetAnim(int);
 		EXPORT void IncFrameWithWrap(void);
 		EXPORT void SetFrame(int);
-		EXPORT void SetTint(unsigned char, unsigned char, unsigned char);
+		EXPORT void SetTint(u8, u8, u8);
 		EXPORT void SetTexture(Texture*);
 		EXPORT void SetTexture(unsigned int);
 		EXPORT int Fade(int);
@@ -219,7 +219,7 @@ class CSpecialDisplay : public CBit
 class CSimpleTexturedRibbon : public CSpecialDisplay
 {
 	public:
-		EXPORT void SetRGB(unsigned char, unsigned char, unsigned char);
+		EXPORT void SetRGB(u8, u8, u8);
 
 		u16 field_3C;
 		u8 padAfter3C[0x48-0x3C-2];
@@ -301,7 +301,7 @@ class CSmokeTrail : public CRibbon
 class CTexturedRibbon : public CSpecialDisplay
 {
 	public:
-		EXPORT void SetOuterRGBi(int, unsigned char, unsigned char, unsigned char);
+		EXPORT void SetOuterRGBi(int, u8, u8, u8);
 		u8 topPad[0x60-0x3C];
 		i32* field_60;
 };
@@ -472,8 +472,8 @@ EXPORT extern CBit* GPolyLineList;
 
 EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
 EXPORT void MoveList(CBit *);
-EXPORT void Bit_SetSparkRGB(unsigned char, unsigned char, unsigned char);
-EXPORT void Bit_SetSparkFadeRGB(unsigned char, unsigned char, unsigned char);
+EXPORT void Bit_SetSparkRGB(u8, u8, u8);
+EXPORT void Bit_SetSparkFadeRGB(u8, u8, u8);
 EXPORT void Bit_SetSparkTrajectory(const CSVector *);
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
 EXPORT void Bit_ReduceRGB(unsigned int*, int);

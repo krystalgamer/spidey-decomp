@@ -34,7 +34,7 @@ public:
 	u8 mStartB;
 	u8 mCode;
 
-	unsigned char padAfter53[0x3];
+	PADDING(0x3);
 
 	u8 field_57;
 };
@@ -63,7 +63,8 @@ class CPolyLine : public CBit
 		EXPORT virtual ~CPolyLine(void) OVERRIDE;
 
 		EXPORT void SetSemiTransparent(void);
-		unsigned char topPad[4];
+
+		PADDING(4);
 
 		i32 mNumSegs;
 		SLineSeg* mSegs;
