@@ -262,7 +262,7 @@ CCamera::~CCamera(void)
 
 // @NotOk
 // Not matching, not important
-void CCamera::SetFixedFocusMode(CVector *a2, unsigned __int16 a3, unsigned __int16 a4){
+void CCamera::SetFixedFocusMode(CVector *a2, u16 a3, u16 a4){
 
 	this->mMode = 6;
 	this->field_2AC = 1;
@@ -294,16 +294,16 @@ void CCamera::SetCollisionRayBack(int a2){
 }
 
 // @Ok
-void CCamera::SetCollisionAngLR(__int16 a2){
+void CCamera::SetCollisionAngLR(i16 a2){
 	this->field_26C = a2;
 }
 
-void CCamera::SetCollisionAngBack(__int16 a2){
+void CCamera::SetCollisionAngBack(i16 a2){
 	this->field_26E = a2;
 }
 
 // @Ok
-void CCamera::SetZoom(int a2, unsigned __int16 a3){
+void CCamera::SetZoom(i32 a2, u16 a3){
 
 	this->field_174 = a3;
 	if (this->field_174)
@@ -517,18 +517,22 @@ void CCamera::CM_FixedPos(void){
 }
 
 // @BIGTODO
-void CCamera::SetCamYDistance(__int16, unsigned __int16)
-{}
+void CCamera::SetCamYDistance(i16, u16)
+{
+	printf("void CCamera::SetCamYDistance(i16, u16)");
+}
 
 // @BIGTODO
-void CCamera::SetCamAngle(__int16, unsigned __int16)
-{}
+void CCamera::SetCamAngle(i16, u16)
+{
+	printf("void CCamera::SetCamAngle(i16, u16)");
+}
 
 // @NotOk
 // Revisit when used (return type seems wrong)
 INLINE i16 CalcTheta(i16 a1, i16 a2)
 {
-	__int16 v2 = (a2 & 0xFFF) - (a1 & 0xFFF);
+	i16 v2 = (a2 & 0xFFF) - (a1 & 0xFFF);
 	if (v2 > 2048)
 		return v2 - 4096;
 	if (v2 < -2048)

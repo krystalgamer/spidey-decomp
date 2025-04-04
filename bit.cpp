@@ -1319,9 +1319,9 @@ void CFT4Bit::SetTexture(Texture* pTexture)
 
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (unsigned __int8)pTexture->v2;
-	v5 = (unsigned __int8)pTexture->u1 - (unsigned __int8)pTexture->u0;
-	v6 = (unsigned __int8)pTexture->v0;
+	v4 = (u8)pTexture->v2;
+	v5 = (u8)pTexture->u1 - (u8)pTexture->u0;
+	v6 = (u8)pTexture->v0;
 
 	this->mpPSXAnim->Width = v5;
 
@@ -1352,9 +1352,9 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (unsigned __int8)pTexture->v2;
-	v5 = (unsigned __int8)pTexture->u1 - (unsigned __int8)pTexture->u0;
-	v6 = (unsigned __int8)pTexture->v0;
+	v4 = (u8)pTexture->v2;
+	v5 = (u8)pTexture->u1 - (u8)pTexture->u0;
+	v6 = (u8)pTexture->v0;
 
 	this->mpPSXAnim->Width = v5;
 
@@ -1368,11 +1368,11 @@ void CFT4Bit::SetTexture(unsigned int Checksum)
 	this->mNumFrames = 1;
 }
 
-// @Ok
+// @NotOk
 // not matching becausae they assign all mCodeBGR at beggining
-int CFT4Bit::Fade(int a2)
+i32 CFT4Bit::Fade(i32 a2)
 {
-	int mCodeBGR = this->mCodeBGR;
+	i32 mCodeBGR = this->mCodeBGR;
 
 	if (!(mCodeBGR & 0xFFFFFF))
 	{
@@ -1380,21 +1380,21 @@ int CFT4Bit::Fade(int a2)
 		return 1;
 	}
 
-	unsigned __int16 v6 = this->mTransDecay;
-	unsigned char v10;
-	if (v6 > (unsigned __int16)(this->mCodeBGR & 0xFF))
+	u16 v6 = this->mTransDecay;
+	u8 v10;
+	if (v6 > (u16)(this->mCodeBGR & 0xFF))
 		v10 = 0;
 	else
 		v10 = (this->mCodeBGR & 0xFF) - (this->mTransDecay & 0xFF);
 
-	unsigned char v7;
-	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF00) >> 8))
+	u8 v7;
+	if (v6 > (u16)((this->mCodeBGR & 0xFF00) >> 8))
 		v7 = 0;
 	else
 		v7 = ((this->mCodeBGR & 0xFF00) >> 8) - (this->mTransDecay & 0xFF);
 
-	unsigned char v8;
-	if (v6 > (unsigned __int16)((this->mCodeBGR & 0xFF0000) >> 16))
+	u8 v8;
+	if (v6 > (u16)((this->mCodeBGR & 0xFF0000) >> 16))
 		v8 = 0;
 	else
 		v8 = ((this->mCodeBGR & 0xFFFF00) >> 16) - (this->mTransDecay & 0xFF);
@@ -1406,7 +1406,7 @@ int CFT4Bit::Fade(int a2)
 }
 
 // @MEDIUMTODO
-int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int)
+i32 Bit_MakeSpriteRing(CVector*, i32, i32, i32, i32, i32, i32, i32)
 {
 	return 0x420690;
 }

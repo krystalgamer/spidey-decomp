@@ -14,7 +14,7 @@ EXPORT extern u32 gTextureHeight;
 
 struct SPCTexContainer
 {
-	u8 padTop[4];
+	PADDING(4);
 
 	i32 field_4;
 	i32 field_8;

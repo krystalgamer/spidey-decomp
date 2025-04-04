@@ -96,9 +96,10 @@ class CBit
 		CVector mVel;
 		CVector mAcc;
 		CFriction mFric;
-		unsigned char mDead;
-		unsigned __int16 mFrigDeltaZ;
-		unsigned char mProtected;
+		u8 mDead;
+
+		u16 mFrigDeltaZ;
+		u8 mProtected;
 		u8 mType;
 
 		EXPORT CBit();
@@ -193,11 +194,14 @@ public:
 	EXPORT virtual ~CFlatBit(void) OVERRIDE;
 	i16 mAngle;
 	i16 field_5A;
-	unsigned char padAfter5A[0x2];
-	unsigned short field_5E;
+
+	PADDING(0x2);
+
+	u16 field_5E;
 	u32 mPostScale;
-	unsigned char pad1;
-	unsigned char mAngFric;
+
+	PADDING(1);
+	u8 mAngFric;
 };
 
 class CNonRenderedBit : public CBit {
