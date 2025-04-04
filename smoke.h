@@ -9,7 +9,7 @@
 class CSmokeJet : public CTexturedRibbon
 {
 	public:
-		unsigned char fullPad[0x125-40];
+		PADDING(0x125-40);
 };
 
 void validate_CSmokeJet(void);

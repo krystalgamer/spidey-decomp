@@ -15,10 +15,11 @@ public:
 	EXPORT virtual void AI(void);
 
 	EXPORT void SendPulse(void);
-	unsigned char padTop[4];
 
-	unsigned char field_328;
-	unsigned char padFull[0x32C - 0x328 - 1];
+	PADDING(4);
+
+	u8 field_328;
+	PADDING(0x32C - 0x328 - 1);
 };
 
 class CSimby : public CBaddy {
@@ -92,10 +93,10 @@ public:
 	u8 padBottom[0x460 - 0x40C-4];
 };
 
-class CSimbyBase : public CBaddy {
-
-public:
-	unsigned char padFull[0x334 - 0x324];
+class CSimbyBase : public CBaddy
+{
+	public:
+		PADDING(0x334 - 0x324);
 };
 
 class CSimbySlimeBase : public CQuadBit
@@ -112,6 +113,7 @@ class CSimbySlimeBase : public CQuadBit
 		PADDING(0xA4-0x9C-4);
 
 		i32 field_A4;
+
 		PADDING(0x114-0xA4-4);
 };
 

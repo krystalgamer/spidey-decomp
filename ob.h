@@ -33,12 +33,14 @@ struct SHitInfo
 {
 	u8 field_0;
 	u8 field_1;
-	u8 padAfter1[2];
+
+	PADDING(2);
 
 
 	i32 field_4;
 	u16 field_8;
-	u8 padAfter8[2];
+
+	PADDING(2);
 
 	CVector field_C;
 
@@ -46,8 +48,8 @@ struct SHitInfo
 	u16 field_1A;
 };
 
-static unsigned char * const Regions = (unsigned char*)0x006B2449;
-static int *** const CItemRelatedList = (int***)0x006B2454;
+static u8 * const Regions = (u8*)0x006B2449;
+static i32 *** const CItemRelatedList = (i32***)0x006B2454;
 
 
 class CItem  
@@ -126,7 +128,7 @@ public:
 	int field_A4;
 	CSVector field_A8;
 
-	unsigned char padAfterAC[0xB8-0xAC-2];
+	PADDING(0xB8-0xAC-2);
 
 	CVector mShadowPos;
 	CSVector mShadowNormal;

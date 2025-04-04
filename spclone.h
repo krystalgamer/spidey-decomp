@@ -20,17 +20,17 @@ class CSpClone : public CBaddy {
 		EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 		EXPORT void DoPhysics(void);
 		EXPORT void KillAllCommandBlocks(void);
-		EXPORT int* KillCommandBlock(int*);
+		EXPORT i32* KillCommandBlock(i32*);
 
-		int padTop;
+		PADDING(4);
 
-		int field_328;
-		int field_32C;
-		int field_330;
-		int field_334;
+		i32 field_328;
+		i32 field_32C;
+		i32 field_330;
+		i32 field_334;
 		CQuadBit *field_338;
 
-		unsigned char padAfter338[0x348-0x338-4];
+		PADDING(0x348-0x338-4);
 
 		i32 field_348;
 		i32* field_34C;

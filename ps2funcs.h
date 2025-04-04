@@ -63,7 +63,7 @@ struct SVECTOR {		/* short word type 3D vector */
 };
 	       
 typedef struct {		/* color type vector */	
-  unsigned char	r, g, b, cd;
+  u8	r, g, b, cd;
 } CVECTOR;
 	       
 typedef struct {		/* 2D short vector */
@@ -87,19 +87,19 @@ EXPORT void gte_op12(void);
 EXPORT void gte_ldlvl(VECTOR *a1);
 EXPORT void gte_sqr0(void);
 EXPORT void gte_rtv0(void);
-EXPORT void gte_stlvnl0(int *a1);
-EXPORT void gte_stlvnl2(int *a1);
+EXPORT void gte_stlvnl0(i32 *a1);
+EXPORT void gte_stlvnl2(i32 *a1);
 EXPORT void gte_gpf0(void);
-EXPORT void gte_stlzc(int *a1);
+EXPORT void gte_stlzc(i32 *a1);
 EXPORT void gte_stsv(SVECTOR *a1);
-EXPORT void gte_mvmva(int _sf, int mx, int a3, int cv, int lm);
-EXPORT void gte_stsxy(int *a1);
-EXPORT void gte_lddp(int a1);
+EXPORT void gte_mvmva(i32 _sf, i32 mx, i32 a3, i32 cv, i32 lm);
+EXPORT void gte_stsxy(i32 *a1);
+EXPORT void gte_lddp(i32 a1);
 EXPORT void gte_ldsvrtrow0(const SVECTOR *a1);
 EXPORT void gte_ldopv1(VECTOR *a1);
 EXPORT void gte_ldopv2(VECTOR *a1);
 EXPORT void gte_ldlv0(const VECTOR *a1);
-EXPORT void gte_stsxy3(int *a1, int *a2, int *a3);
+EXPORT void gte_stsxy3(i32 *a1, i32 *a2, i32 *a3);
 EXPORT void gte_rtir(void);
 EXPORT void M3dMaths_SetIdentityRotation(MATRIX *a1);
 EXPORT void MulMatrix0(MATRIX *a1, MATRIX *a2, MATRIX *a3);
@@ -107,9 +107,9 @@ EXPORT void MulMatrix(MATRIX *a1, MATRIX *a2);
 EXPORT void m3d_ZeroTransVector(void);
 EXPORT void VectorNormal(VECTOR*, VECTOR*);
 
-EXPORT int M3dMaths_SquareRoot0(int i);
+EXPORT i32 M3dMaths_SquareRoot0(i32 i);
 
-EXPORT int M3dMaths_MulDiv64(int, int, int);
+EXPORT i32 M3dMaths_MulDiv64(i32, i32, i32);
 
 EXPORT void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2);
 
@@ -118,13 +118,13 @@ EXPORT void M3dMaths_ScaleMatrix(CItem*, MATRIX *a2);
 
 EXPORT void M3dMaths_CopyMat(MATRIX*, MATRIX*);
 
-EXPORT void M3dAsm_ProcessPolys(unsigned int*, SVECTOR*, int);
+EXPORT void M3dAsm_ProcessPolys(u32*, SVECTOR*, i32);
 EXPORT void M3dAsm_SetTransVector(VECTOR*);
 
 EXPORT MATRIX* RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 EXPORT MATRIX* M3dMaths_RotMatrixYXZ(SVECTOR *a1, MATRIX *a2);
 
-EXPORT int ratan2(int, int);
+EXPORT i32 ratan2(i32, i32);
 
 EXPORT u16 GetClut(i32, i32);
 

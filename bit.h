@@ -143,7 +143,7 @@ public:
 	EXPORT void SetTransparency(u8 a2);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32, i32);
-	EXPORT void SetTexture(int, int);
+	EXPORT void SetTexture(i32, i32);
 	EXPORT void SetTexture(u32);
 	EXPORT void SetTexture(Texture*);
 };
@@ -157,14 +157,14 @@ class CFT4Bit : public CBit
 		EXPORT void SetScale(u16);
 		EXPORT void SetSemiTransparent();
 		EXPORT void SetTransparency(u8 t);
-		EXPORT void SetAnim(int);
+		EXPORT void SetAnim(i32);
 		EXPORT void IncFrameWithWrap(void);
-		EXPORT void SetFrame(int);
+		EXPORT void SetFrame(i32);
 		EXPORT void SetTint(u8, u8, u8);
 		EXPORT void SetTexture(Texture*);
-		EXPORT void SetTexture(unsigned int);
-		EXPORT int Fade(int);
-		EXPORT void SetTransDecay(int);
+		EXPORT void SetTexture(u32);
+		EXPORT int Fade(i32);
+		EXPORT void SetTransDecay(i32);
 		EXPORT void IncFrame(void);
 
 		u16 mTransDecay;
@@ -470,13 +470,13 @@ class CGlassBit : public CBit
 
 EXPORT extern CBit* GPolyLineList;
 
-EXPORT int Bit_MakeSpriteRing(CVector*, int, int, int, int, int, int, int);
+EXPORT i32 Bit_MakeSpriteRing(CVector*, i32, i32, i32, i32, i32, i32, i32);
 EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(u8, u8, u8);
 EXPORT void Bit_SetSparkFadeRGB(u8, u8, u8);
 EXPORT void Bit_SetSparkTrajectory(const CSVector *);
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
-EXPORT void Bit_ReduceRGB(unsigned int*, int);
+EXPORT void Bit_ReduceRGB(u32*, i32);
 EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
 EXPORT void Bit_DeleteAll(void);
