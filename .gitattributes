@@ -7,3 +7,4 @@
 *.dsp text eol=crlf
 *.dsw text eol=crlf
 *.mak text eol=crlf
+*.dep text eol=crlf

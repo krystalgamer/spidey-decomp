@@ -1,23 +1,2585 @@
 # Microsoft Developer Studio Generated Dependency File, included by spider.mak
 
-.\friction.cpp : \
+.\ai.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
 	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\algebra.cpp : \
+	".\algebra.h"\
+	
+
+.\backgrnd.cpp : \
+	".\backgrnd.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\baddy.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\bit.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\bit2.cpp : \
+	".\bit.h"\
+	".\bit2.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\bitmap256.cpp : \
+	".\bitmap256.h"\
+	".\export.h"\
+	".\my_types.h"\
+	".\validate.h"\
+	
+
+.\blackcat.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\blackcat.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\bmr.cpp : \
+	".\bit.h"\
+	".\bmr.h"\
+	".\dcshellutils.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\Image.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\vector.h"\
+	
+
+.\bullet.cpp : \
+	".\bit.h"\
+	".\bullet.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\camera.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\carnage.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\camera.h"\
+	".\carnage.h"\
+	".\effects.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\chain.cpp : \
+	".\chain.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\chopper.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\camera.h"\
+	".\chopper.h"\
+	".\chunk.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2pad.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\chunk.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\chunk.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\cinema.cpp : \
+	".\bit.h"\
+	".\cinema.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2gamefmv.h"\
+	".\ps2lowsfx.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\cop.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\cop.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\weapons.h"\
+	".\web.h"\
+	
+
+.\crate.cpp : \
+	".\bit.h"\
+	".\crate.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\shatter.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\vector.h"\
+	
+
+.\db.cpp : \
+	".\bit.h"\
+	".\db.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\dcfileio.cpp : \
+	".\dcfileio.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_debug.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\pcdcFile.h"\
+	".\pcdcMem.h"\
+	".\PRE.h"\
+	".\ps2funcs.h"\
+	".\ps2gamefmv.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\stubs.h"\
+	".\vector.h"\
+	
+
+.\dcmemcard.cpp : \
+	".\bit.h"\
+	".\dcmemcard.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\pcdcBkup.h"\
+	".\pcdcPad.h"\
+	".\ps2card.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\dcmodel.cpp : \
+	".\bitmap256.h"\
+	".\dcmodel.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCTex.h"\
+	".\validate.h"\
+	
+
+.\dcshellutils.cpp : \
+	".\bit.h"\
+	".\bitmap256.h"\
+	".\dcshellutils.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\Image.h"\
+	".\m3dinit.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\PCTex.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\SpideyDX.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\decomp.cpp : \
+	".\decomp.h"\
+	
+
+.\docock.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\docock.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\DXinit.cpp : \
+	".\bit.h"\
+	".\dcmodel.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\SpideyDX.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\DXsound.cpp : \
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\SpideyDX.h"\
+	".\validate.h"\
+	
+
+.\effects.cpp : \
+	".\bit.h"\
+	".\effects.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\exp.cpp : \
+	".\bit.h"\
+	".\bullet.h"\
+	".\crate.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\shatter.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\flash.cpp : \
+	".\export.h"\
+	".\flash.h"\
+	".\my_types.h"\
+	
+
+.\FontTools.cpp : \
+	".\bit.h"\
+	".\bitmap256.h"\
+	".\dcfileio.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\FontTools.h"\
+	".\friction.h"\
+	".\Image.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_debug.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCTex.h"\
+	".\ps2funcs.h"\
+	".\ps2pad.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\friction.cpp : \
+	".\export.h"\
+	".\friction.h"\
+	".\my_types.h"\
+	
+
+.\front.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\hostage.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\hostage.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\Image.cpp : \
+	".\bitmap256.h"\
+	".\dcfileio.h"\
+	".\dcshellutils.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\Image.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCTex.h"\
+	".\validate.h"\
+	
+
+.\init.cpp : \
+	".\backgrnd.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bullet.h"\
+	".\camera.h"\
+	".\db.h"\
+	".\dcfileio.h"\
+	".\dcmemcard.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\export.h"\
+	".\flash.h"\
+	".\FontTools.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\Image.h"\
+	".\init.h"\
+	".\m3dcolij.h"\
+	".\m3dinit.h"\
+	".\m3dutils.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pack.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\PCGfx.h"\
+	".\physics.h"\
+	".\powerup.h"\
+	".\ps2card.h"\
+	".\ps2funcs.h"\
+	".\ps2gamefmv.h"\
+	".\ps2lowsfx.h"\
+	".\ps2pad.h"\
+	".\ps2redbook.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\SpideyDX.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\tweak.h"\
+	".\utils.h"\
+	".\vector.h"\
+	".\weapons.h"\
+	".\web.h"\
+	
+
+.\jonah.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\jonah.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\l1a3bomb.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\l2a1lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\l2a1lsc.h"\
+	".\l5a5lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\vector.h"\
+	
+
+.\l5a5lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\l5a5lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\l5a6lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l5a6lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\l5a7lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l5a7lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\l6a1lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l6a1lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\l6a2lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l6a2lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\l6a3lsc.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l6a3lsc.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\lizard.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\lizard.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\lizman.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\lizman.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\localtxt.cpp : \
+	".\localtxt.h"\
+	
+
+.\LThread.cpp : \
+	".\LThread.h"\
 	
 
 .\m3d.cpp : \
 	".\export.h"\
 	".\m3d.h"\
+	".\my_types.h"\
+	
+
+.\m3dcolij.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dinit.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\m3dinit.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dinit.h"\
+	".\main.h"\
+	".\my_types.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\m3dutils.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\m3dzone.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
 	
 
 .\main.cpp : \
-	"..\..\..\..\..\..\program files (x86)\microsoft visual studio\vc98\include\basetsd.h"\
+	".\ai.h"\
+	".\backgrnd.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\bitmap256.h"\
+	".\blackcat.h"\
+	".\bullet.h"\
+	".\camera.h"\
+	".\carnage.h"\
+	".\chain.h"\
+	".\chopper.h"\
+	".\chunk.h"\
+	".\cop.h"\
+	".\db.h"\
+	".\dcmemcard.h"\
+	".\dcmodel.h"\
+	".\dcshellutils.h"\
+	".\directx\include\basetsd.h"\
+	".\docock.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\effects.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\FontTools.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\hostage.h"\
+	".\Image.h"\
+	".\init.h"\
+	".\jonah.h"\
+	".\l1a3bomb.h"\
+	".\lizard.h"\
+	".\lizman.h"\
+	".\m3dcolij.h"\
+	".\m3dinit.h"\
+	".\m3dutils.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\message.h"\
+	".\mj.h"\
+	".\my_assert.h"\
+	".\my_bink.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\mysterio.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pack.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\pcdcBkup.h"\
+	".\pcdcFile.h"\
+	".\pcdcMem.h"\
+	".\pcdcPad.h"\
+	".\PCGfx.h"\
+	".\PCInput.h"\
+	".\PCShell.h"\
+	".\PCTex.h"\
+	".\pkr.h"\
+	".\platform.h"\
+	".\powerup.h"\
+	".\PRE.h"\
+	".\ps2card.h"\
+	".\ps2funcs.h"\
+	".\ps2gamefmv.h"\
+	".\ps2lowsfx.h"\
+	".\ps2m3d.h"\
+	".\ps2pad.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\rhino.h"\
+	".\scorpion.h"\
+	".\shell.h"\
+	".\simby.h"\
+	".\smoke.h"\
+	".\spclone.h"\
+	".\spidey.h"\
+	".\SpideyDX.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\stubs.h"\
+	".\submarin.h"\
+	".\superock.h"\
+	".\switch.h"\
+	".\texture.h"\
+	".\thug.h"\
+	".\torch.h"\
+	".\trig.h"\
+	".\turret.h"\
+	".\utils.h"\
+	".\vector.h"\
+	".\venom.h"\
+	".\vram.h"\
+	".\weapons.h"\
+	".\web.h"\
+	".\wire.h"\
+	
+
+.\manipob.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
 	".\export.h"\
 	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
 	".\vector.h"\
+	
+
+.\mem.cpp : \
+	".\export.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\validate.h"\
+	
+
+.\mess.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\FontTools.h"\
+	".\friction.h"\
+	".\Image.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_types.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\message.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\mj.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\mj.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\music.cpp : \
+	".\music.h"\
+	
+
+.\my_bink.cpp : \
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\my_bink.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\validate.h"\
+	
+
+.\my_debug.cpp : \
+	".\directx\include\basetsd.h"\
+	".\my_debug.h"\
+	".\non_win32.h"\
+	
+
+.\mysterio.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\mysterio.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2pad.h"\
+	".\ps2redbook.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\ob.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\pack.cpp : \
+	".\export.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\pack.h"\
+	".\validate.h"\
+	
+
+.\pal.cpp : \
+	".\export.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\pack.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\validate.h"\
+	
+
+.\panel.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\pcdcBkup.cpp : \
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\pcdcBkup.h"\
+	".\ps2card.h"\
+	".\stubs.h"\
+	".\validate.h"\
+	
+
+.\pcdcFile.cpp : \
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\my_debug.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\pcdcFile.h"\
+	".\PCMovie.h"\
+	".\pkr.h"\
+	".\SpideyDX.h"\
+	".\validate.h"\
+	
+
+.\pcdcMem.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\pcdcMem.h"\
+	".\validate.h"\
+	
+
+.\pcdcPad.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\pcdcPad.h"\
+	".\PCInput.h"\
+	".\PCShell.h"\
+	".\ps2pad.h"\
+	".\validate.h"\
+	
+
+.\PCGfx.cpp : \
+	".\bit.h"\
+	".\bitmap256.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\PCInput.h"\
+	".\PCTex.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\ps2pad.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\SpideyDX.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\PCInput.cpp : \
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCInput.h"\
+	".\SpideyDX.h"\
+	".\validate.h"\
+	
+
+.\PCMovie.cpp : \
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\my_bink.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCMovie.h"\
+	".\pkr.h"\
+	".\SpideyDX.h"\
+	
+
+.\PCMusic.cpp : \
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\export.h"\
+	".\my_bink.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\pcdcBkup.h"\
+	".\pcdcFile.h"\
+	".\PCMusic.h"\
+	".\ps2card.h"\
+	".\SpideyDX.h"\
+	".\stubs.h"\
+	
+
+.\PCShell.cpp : \
+	".\bit.h"\
+	".\dcshellutils.h"\
+	".\directx\include\basetsd.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\Image.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\PCInput.h"\
+	".\PCShell.h"\
+	".\ps2funcs.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\SpideyDX.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\PCTex.cpp : \
+	".\bitmap256.h"\
+	".\dcfileio.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\export.h"\
+	".\mem.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCTex.h"\
+	".\SpideyDX.h"\
+	".\validate.h"\
+	
+
+.\PCTimer.cpp : \
+	".\bit.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCTimer.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\physics.cpp : \
+	".\export.h"\
+	".\friction.h"\
+	".\my_types.h"\
+	".\physics.h"\
+	".\vector.h"\
+	
+
+.\pkr.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\pkr.h"\
+	".\validate.h"\
+	".\zconf.h"\
+	".\zlib.h"\
+	
+
+.\platform.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\platform.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\shatter.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\post.cpp : \
+	".\bit.h"\
+	".\db.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dinit.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\post.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\SpideyDX.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\powerup.cpp : \
+	".\bit.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\powerup.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\PRE.cpp : \
+	".\export.h"\
+	".\main.h"\
+	".\my_types.h"\
+	".\PRE.h"\
+	".\validate.h"\
+	
+
+.\ps2card.cpp : \
+	".\dcmemcard.h"\
+	".\export.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\pcdcBkup.h"\
+	".\pcdcMem.h"\
+	".\ps2card.h"\
+	".\stubs.h"\
+	".\validate.h"\
+	
+
+.\ps2funcs.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\pcdcMem.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\Sbinit.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\ps2gamefmv.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCMovie.h"\
+	".\PCShell.h"\
+	".\ps2funcs.h"\
+	".\ps2gamefmv.h"\
+	".\ps2pad.h"\
+	".\ps2redbook.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\tweak.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\ps2lowsfx.cpp : \
+	".\bit.h"\
+	".\dcfileio.h"\
+	".\directx\include\basetsd.h"\
+	".\DXsound.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\pcdcMem.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\tweak.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\ps2m3d.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\db.h"\
+	".\dcmodel.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dinit.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\SpideyDX.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\ps2pad.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\PCInput.h"\
+	".\PCShell.h"\
+	".\ps2pad.h"\
+	".\validate.h"\
+	
+
+.\ps2redbook.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\vector.h"\
+	
+
+.\pshell.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\PCShell.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\quat.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\validate.h"\
+	
+
+.\reloc.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\blackcat.h"\
+	".\camera.h"\
+	".\carnage.h"\
+	".\chopper.h"\
+	".\cop.h"\
+	".\docock.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\hostage.h"\
+	".\jonah.h"\
+	".\l2a1lsc.h"\
+	".\l5a5lsc.h"\
+	".\l5a6lsc.h"\
+	".\l5a7lsc.h"\
+	".\l6a1lsc.h"\
+	".\l6a2lsc.h"\
+	".\l6a3lsc.h"\
+	".\lizard.h"\
+	".\lizman.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\mj.h"\
+	".\my_types.h"\
+	".\mysterio.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\rhino.h"\
+	".\scorpion.h"\
+	".\shell.h"\
+	".\simby.h"\
+	".\spclone.h"\
+	".\stateflags.h"\
+	".\submarin.h"\
+	".\superock.h"\
+	".\texture.h"\
+	".\thug.h"\
+	".\torch.h"\
+	".\training.h"\
+	".\trig.h"\
+	".\turret.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\venom.h"\
+	".\weapons.h"\
+	
+
+.\reloc_g.cpp : \
+	".\reloc_g.h"\
+	
+
+.\rfront.cpp : \
+	".\rfront.h"\
+	
+
+.\rhino.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2pad.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\rhino.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\Sbinit.cpp : \
+	".\bit.h"\
+	".\directx\include\basetsd.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\pcdcFile.h"\
+	".\pcdcMem.h"\
+	".\pcdcPad.h"\
+	".\PCGfx.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\Sbinit.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\scorpion.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\scorpion.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\screen.cpp : \
+	".\export.h"\
+	".\friction.h"\
+	".\my_types.h"\
+	".\screen.h"\
+	".\vector.h"\
+	
+
+.\shatter.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\shatter.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\shell.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\dcshellutils.h"\
+	".\effects.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\front.h"\
+	".\Image.h"\
+	".\init.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\mess.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\PCGfx.h"\
+	".\PCShell.h"\
+	".\powerup.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2m3d.h"\
+	".\ps2pad.h"\
+	".\pshell.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\shell.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\simby.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2m3d.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\simby.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\smoke.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\my_types.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\smoke.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\weapons.h"\
+	
+
+.\spclone.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spclone.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\spid_ai0.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spid_ai0.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\vector.h"\
+	
+
+.\spidey.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\screen.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\SpideyDX.cpp : \
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\export.h"\
+	".\main.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\PCTimer.h"\
+	".\SpideyDX.h"\
+	
+
+.\spool.cpp : \
+	".\bit.h"\
+	".\bitmap256.h"\
+	".\crate.h"\
+	".\dcfileio.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_dx.h"\
+	".\my_types.h"\
+	".\non_win32.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\panel.h"\
+	".\PCTex.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\SpideyDX.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\stubs.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\PCMusic.h"\
+	".\stubs.h"\
+	".\validate.h"\
+	
+
+.\submarin.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\submarin.h"\
+	".\texture.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\superock.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\dcmodel.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2m3d.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\superock.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\SwapTriggerData.cpp : \
+	".\swaptriggerdata.h"\
+	
+
+.\switch.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\switch.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\thug.cpp : \
+	".\ai.h"\
+	".\baddy.h"\
+	".\bit.h"\
+	".\bit2.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\message.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\ps2redbook.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\thug.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\torch.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\torch.h"\
+	".\trig.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\training.cpp : \
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\training.h"\
+	".\vector.h"\
+	
+
+.\trig.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\exp.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\turret.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\turret.h"\
+	".\validate.h"\
+	".\vector.h"\
+	
+
+.\tweak.cpp : \
+	".\export.h"\
+	".\my_types.h"\
+	".\tweak.h"\
+	
+
+.\utils.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\vector.h"\
+	
+
+.\validate.cpp : \
+	".\my_types.h"\
+	".\validate.h"\
 	
 
 .\vector.cpp : \
 	".\export.h"\
 	".\friction.h"\
+	".\my_types.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\validate.h"\
 	".\vector.h"\
+	
+
+.\venom.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dutils.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\reloc.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\venom.h"\
+	".\web.h"\
+	
+
+.\vram.cpp : \
+	".\export.h"\
+	".\mem.h"\
+	".\my_assert.h"\
+	".\my_types.h"\
+	".\pack.h"\
+	".\validate.h"\
+	".\vram.h"\
+	
+
+.\weapons.cpp : \
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spool.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\weapons.h"\
+	
+
+.\web.cpp : \
+	".\baddy.h"\
+	".\bit.h"\
+	".\camera.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\m3dinit.h"\
+	".\m3dutils.h"\
+	".\m3dzone.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\spool.h"\
+	".\stateflags.h"\
+	".\texture.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\web.h"\
+	
+
+.\wire.cpp : \
+	".\bit.h"\
+	".\bit2.h"\
+	".\export.h"\
+	".\friction.h"\
+	".\m3dcolij.h"\
+	".\main.h"\
+	".\manipob.h"\
+	".\mem.h"\
+	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\ps2funcs.h"\
+	".\ps2lowsfx.h"\
+	".\quat.h"\
+	".\spidey.h"\
+	".\texture.h"\
+	".\trig.h"\
+	".\utils.h"\
+	".\validate.h"\
+	".\vector.h"\
+	".\wire.h"\
+	
+
+.\zrhinog.cpp : \
+	".\zrhinog.h"\
 	
