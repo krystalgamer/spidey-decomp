@@ -36,12 +36,6 @@ typedef signed int i32;
 typedef float f32;
 typedef double f64;
 
-#ifndef _WIN32
-#define __int16 i16
-#define __int8 i8
-#endif
-
-
 #ifdef _WIN32
 #define INLINE __inline
 #else
