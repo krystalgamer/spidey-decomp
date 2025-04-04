@@ -46,7 +46,8 @@ public:
 	u16 field_32C;
 	i16 field_32E;
 	i32 field_330;
-	u8 padAfter330[0x348-0x330-4];
+
+	PADDING(0x348-0x330-4);
 
 	i32 field_348;
 	i32 field_34C;
@@ -72,17 +73,21 @@ public:
 	i32 field_398;
 
 	i32 field_39C;
-	u8 padAfter39C[0x3CC-0x39C-4];
+
+	PADDING(0x3CC-0x39C-4);
 
 	i32 field_3CC;
 	i32 field_3D0;
-	u8 padAfter3D0[0x3DC-0x3D0-4];
+
+	PADDING(0x3DC-0x3D0-4);
 
 	CVector field_3DC;
-	u8 padAfter3E4[0x3F0-0x3E4-4];
+
+	PADDING(0x3F0-0x3E4-4);
 
 	i32 field_3F0;
-	u8 padAfter3F0[4];
+
+	PADDING(4);
 
 	i32 field_3F8;
 	i32 field_3FC;
@@ -90,7 +95,8 @@ public:
 	i32 field_404;
 	i32 field_408;
 	i32 field_40C;
-	u8 padBottom[0x460 - 0x40C-4];
+
+	PADDING(0x460 - 0x40C-4);
 };
 
 class CSimbyBase : public CBaddy
@@ -202,7 +208,7 @@ class CFlamingImpactWeb : public CFlatBit
 		EXPORT CFlamingImpactWeb(CVector*, CSVector*, i32);
 		EXPORT virtual ~CFlamingImpactWeb(void);
 
-		u8 padBottom[0x28];
+		PADDING(0x28);
 };
 
 void validate_CPunchOb(void);

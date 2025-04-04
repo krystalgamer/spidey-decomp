@@ -14,11 +14,12 @@ struct SLevel
 {
 	char* mDisplayName;
 	char* mName;
-	u8 padAfter8[0x4];
+
+	PADDING(0x4);
 
 	u16 field_C;
 
-	u8 padBottom[0x14-0xC-4];
+	PADDING(0x14-0xC-4);
 };
 
 struct SEntry
@@ -85,7 +86,8 @@ public:
 	char scrollbar_zero;
 
 	u8 mJustification;
-	u8 padAfterJust;
+
+	PADDING(1);
 
 	u8 mLine;
 	u8 mCursorLine;

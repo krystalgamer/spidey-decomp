@@ -28,7 +28,8 @@ class CLaserFence : public CBody
 		i32 mVzMax;
 
 		bool field_114;
-		u8 padAfter114[0x118-0x114-sizeof(bool)];
+
+		PADDING(0x118-0x114-sizeof(bool));
 
 		CWibbly* field_118;
 };
@@ -41,7 +42,8 @@ class CTripWire : public CBody
 		EXPORT void AI(void) OVERRIDE;
 
 		EXPORT void BuildTripWire(void);
-		u8 padTop[0x4];
+
+		PADDING(4);
 
 		u8 field_F8;
 		u8 field_F9;
@@ -49,11 +51,12 @@ class CTripWire : public CBody
 		u8 field_FB;
 		u8 field_FC;
 
-		u8 padAfterFC;
+		PADDING(1);
 
 		u16 field_FE;
 		u16 field_100;
-		u8 padAfter100[2];
+
+		PADDING(2);
 
 		CVector field_104;
 

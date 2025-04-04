@@ -12,28 +12,31 @@ struct SCalcBuffer
 {
 	i32 field_0;
 	i32 field_4;
-	u8 padAfter4[0x18-0x4-4];
+
+	PADDING(0x18-0x4-4);
 
 	i32 field_18;
-	u8 padAfter18[0x20-0x18-4];
+
+	PADDING(0x20-0x18-4);
 
 	i32 field_20;
-	u8 padAfter20[0x38-0x20-4];
+
+	PADDING(0x38-0x20-4);
 
 	i32 field_38;
 };
 
 struct SSmokeRingRelated
 {
-	u8 padTop[0x4];
+	PADDING(4);
 
 	u8 field_4;
 	u8 field_5;
 	u8 field_6;
 
 	u8 field_7;
-	u8 padAfter7[0xC-0x7-1];
 
+	PADDING(4);
 
 	u8 field_C;
 	u8 field_D;
@@ -42,7 +45,8 @@ struct SSmokeRingRelated
 	u8 field_10;
 	u8 field_11;
 	u8 field_12;
-	u8 padAfter12[0x18-0x12-1];
+
+	PADDING(0x18-0x12-1);
 
 	u8 field_18;
 	u8 field_19;
@@ -52,27 +56,32 @@ struct SSmokeRingRelated
 	u8 field_1C;
 	u8 field_1D;
 	u8 field_1E;
-	u8 padAfter1E[0x24-(0x1E)-1];
+
+	PADDING(0x24-(0x1E)-1);
 
 	u8 field_24;
 	u8 field_25;
-	u8 padAfter25[2];
+
+	PADDING(2);
 
 	u8 field_28;
 	u8 field_29;
 	u8 field_2A;
-	u8 padAfter2A[0x30-0x2A-1];
+
+	PADDING(0x30-0x2A-1);
 
 	u8 field_30;
 	u8 field_31;
-	u8 padAfter31[0x38-0x31-1];
+
+	PADDING(0x38-0x31-1);
 
 	u8 field_38;
 	u8 field_39;
 	u8 field_3A;
 
 	u8 field_3B;
-	u8 padAfter3B[0x40-0x3B-1];
+
+	PADDING(0x40-0x3B-1);
 
 	u8 field_40;
 	u8 field_41;
@@ -81,7 +90,8 @@ struct SSmokeRingRelated
 	u8 field_44;
 	u8 field_45;
 	u8 field_46;
-	u8 padAfter46[0x4C-0x46-1];
+
+	PADDING(0x4C-0x46-1);
 
 	u8 field_4C;
 	u8 field_4D;
@@ -90,20 +100,24 @@ struct SSmokeRingRelated
 	u8 field_50;
 	u8 field_51;
 	u8 field_52;
-	u8 padAfter52[0x58-0x52-1];
+
+	PADDING(0x58-0x52-1);
 
 	u8 field_58;
 	u8 field_59;
-	u8 padAfter59[2];
+
+	PADDING(2);
 
 	u8 field_5C;
 	u8 field_5D;
 	u8 field_5E;
-	u8 padAfter5E[0x64-(0x5E)-1];
+
+	PADDING(0x64-(0x5E)-1);
 
 	u8 field_64;
 	u8 field_65;
-	u8 padAfter65[0x68-0x65-1];
+
+	PADDING(0x68-0x65-1);
 
 	CVector field_68;
 	CVector field_74;
@@ -124,7 +138,8 @@ class CSmokeRing : public CSpecialDisplay
 		i32 mNumSectors;
 		SSmokeRingRelated* mpSectors;
 		CSVector field_48;
-		u8 padAfter48[0x50-0x48-sizeof(CSVector)];
+
+		PADDING(0x50-0x48-sizeof(CSVector));
 
 		i32 field_50;
 		i32 field_54;
@@ -133,7 +148,7 @@ class CSmokeRing : public CSpecialDisplay
 		i32 field_5C;
 		i32 field_60;
 
-		u8 padBottom[0x6C-0x60-4];
+		PADDING(0x6C-0x60-4);
 };
 
 class CTexturedRibbon : public CSpecialDisplay
@@ -143,15 +158,19 @@ class CTexturedRibbon : public CSpecialDisplay
 		EXPORT void SetCoreRGBi(i32,u8,u8,u8);
 		EXPORT void SetOuterRGBi(i32,u8,u8,u8);
 		EXPORT void SetTexture(Texture *);
-		EXPORT ~CTexturedRibbon(void);
+		EXPORT virtual ~CTexturedRibbon(void) OVERRIDE;
 
 		u8 mTrail;
-		u8 padAfter3C[0x40-0x3C-1];
+
+		PADDING(0x40-0x3C-1);
+
 		Texture* field_40;
-		u8 padAfter40[0x50-0x40-4];
+
+		PADDING(0x50-0x40-4);
 
 		i32 field_50;
-		u8 padAfter50[0x58-0x50-4];
+
+		PADDING(0x58-0x50-4);
 
 		i32 mNumPoints;
 		SRibbonPoint* mpPoints;

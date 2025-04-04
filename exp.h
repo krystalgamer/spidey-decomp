@@ -38,10 +38,11 @@ class C3DExplosion : public CBody
 		EXPORT ~C3DExplosion(void);
 		EXPORT virtual void AI(void);
 
-		u8 padTop[4];
+		PADDING(4);
 
 		u8 field_F8;
-		u8 padAfterF8[0x3];
+
+		PADDING(3);
 
 		i32 field_FC;
 		i32 field_100;
@@ -64,22 +65,22 @@ class CGrenadeExplosion : public CNonRenderedBit
 {
 	public:
 		EXPORT CGrenadeExplosion(const CVector*);
-		EXPORT ~CGrenadeExplosion(void);
+		EXPORT virtual ~CGrenadeExplosion(void) OVERRIDE;
 
 		EXPORT virtual void Move(void);
 
 		SHandle hExp;
 
-		u8 padBottom[0x4C-0x3C-sizeof(SHandle)];
+		PADDING(0x4C-0x3C-sizeof(SHandle));
 };
 
 class CFlameExplosion : public CNonRenderedBit
 {
 	public:
 		EXPORT CFlameExplosion(const CVector*, i32, i32, i32);
-		EXPORT virtual ~CFlameExplosion(void);
+		EXPORT virtual ~CFlameExplosion(void) OVERRIDE;
 
-		u8 padTop[2];
+		PADDING(2);
 
 		u8 field_3E;
 		u8 field_3F;
@@ -122,7 +123,7 @@ class CGlowFlash : public CGlow
 		i16 field_6A;
 		u8 field_6C;
 
-		u8 padBottom[0x70-0x6C-1];
+		PADDING(0x70-0x6C-1);
 };
 
 EXPORT extern i32 g3DExplosions;

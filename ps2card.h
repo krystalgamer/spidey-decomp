@@ -20,7 +20,7 @@ struct SSaveFile
 {
 	SCardHead mCardHead;
 
-	u8 padBottom[0xA24 - sizeof(SCardHead)];
+	PADDING(0xA24 - sizeof(SCardHead));
 };
 
 

@@ -21,7 +21,7 @@ class CL1A3Bomb : public CManipOb
 		u8 field_128;
 		u8 field_129;
 
-		u8 padBottom[0x12C-0x129-1];
+		PADDING(0x12C-0x129-1);
 };
 
 EXPORT extern u32 gBombRelated;

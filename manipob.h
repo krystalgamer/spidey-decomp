@@ -27,14 +27,14 @@ class CManipOb : public CBody
 
 		EXPORT virtual void Smash(void);
 
-		u8 padTop[0xf8-0xF4];
+		PADDING(4);
 
 		i32 mNumVectors;
 		CVector *pVectors;
 		i32 field_100;
 
 		i16 field_104;
-		u8 padAfter104[2];
+		PADDING(2);
 
 		i16 field_108;
 
@@ -46,7 +46,8 @@ class CManipOb : public CBody
 		u32 field_120;
 
 		u8 field_124;
-		u8 padAfter124[0x128-0x124-1];
+
+		PADDING(0x128-0x124-1);
 };
 
 class CManipObChunk : public CBody
@@ -58,7 +59,8 @@ class CManipObChunk : public CBody
 		EXPORT void AI(void) OVERRIDE;
 		EXPORT void CManipObChunk::DoPhysics(void);
 
-		u8 padTop[0x8];
+		PADDING(8);
+
 		i32 field_FC;
 
 };

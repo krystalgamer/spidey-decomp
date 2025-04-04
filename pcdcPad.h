@@ -9,13 +9,13 @@ struct SPdPadBig
 {
 	i32 field_0;
 
-	u8 padBottom[0x78-4];
+	PADDING(0x78-4);
 };
 
 
 struct SPdPadSmall
 {
-	u8 padTop[0x30];
+	PADDING(0x30);
 
 	SPdPadBig *pBig;
 };

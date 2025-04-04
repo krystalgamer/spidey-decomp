@@ -75,7 +75,9 @@ struct SDoubleBuffer
 	struct DISPENV Disp;
 
 	u32* OrderingTable;
-	u8 padAfter70[4];
+
+	PADDING(4);
+
 	u8* Polys;
 };
 

@@ -79,10 +79,11 @@ class CPlayer : public CSuper
 		u8 field_8E8;
 		u8 field_8E9;
 		u8 field_8EA;
-		u8 padAFter8Ea;
+
+		PADDING(1);
 
 		u8 gCamAngleLock; //8EC
-						  //
+
 		PADDING(0xAC8-0x8EC-1);
 
 		CVector field_AC8;
@@ -116,12 +117,14 @@ class CPlayer : public CSuper
 		i32 field_C18;
 		CVector field_C1C;
 		CSVector field_C28;
-		u8 padAfterC28[2];
+
+		PADDING(2);
 
 
 		// @FIXME
 		i32* field_C30;
-		u8 padAfterC30[0xC6C-0xC30-4];
+
+		PADDING(0xC6C-0xC30-4);
 
 		CVector field_C6C;
 		i32 field_C78;

@@ -90,7 +90,8 @@ struct SPSXRegion {
 
 	// offset: 003C
 	SAccess* pAccess;
-	u32 padBottom;
+
+	PADDING(4);
 };
 
 

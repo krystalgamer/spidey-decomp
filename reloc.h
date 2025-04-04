@@ -12,7 +12,8 @@ typedef void (*UserFunction)(const u32*, u32*);
 struct reloc_mod
 {
 	ClearFunc mClearFunc;
-	u8 padAfter0[4];
+
+	PADDING(4);
 
 	u32 mCRC;
 	UserFunction field_C[8];

@@ -9,13 +9,14 @@
 struct tagSVRAMRect
 {
 	u8 flags;
-	u8 padAfter1[3];
+
+	PADDING(3);
 
 	SPack *p_pack;
 	void *p_poly;
 	u8 update_type;
 
-	u8 padAfter4[0x10-0xC-1];
+	PADDING(0x10-0xC-1);
 
 	tagSVRAMRect *p_next;
 };

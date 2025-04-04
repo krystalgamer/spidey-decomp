@@ -35,10 +35,10 @@ class CMessage : public CClass
 		i32 mParams[2];
 		i32 mVects[2][3];
 
-		u8 padBottom[4];
+		PADDING(4);
 
 
-		EXPORT CMessage(CBaddy*, CBaddy*, int a4, SMessageData*);
+		EXPORT CMessage(CBaddy*, CBaddy*, i32 a4, SMessageData*);
 		EXPORT ~CMessage(void) OVERRIDE;
 };
 

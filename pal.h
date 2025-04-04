@@ -12,11 +12,13 @@ struct tag_S_Pal
 	u8 flags;
 	u16 Usage;
 	u8 InVRAM;
-	u8 padAfterInVRAM;
+
+	PADDING(1);
+
 	u32 Checksum;
 	tag_S_Pal* pNext;
 
-	u8 padBottom[0x18-0xC-4];
+	PADDING(0x18-0xC-4);
 };
 
 EXPORT void Free16Slot(u16);

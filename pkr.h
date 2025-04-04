@@ -43,10 +43,11 @@ struct NODE_FILEINFO
 	PKR_DIRINFO* pDirInfo;
 	char name[1];
 
-	u8 padAfter38[0x13C-0x38-1];
-	i32 field_13C;
-	u8 padAfter13C[4];
+	PADDING(0x13C-0x38-1);
 
+	i32 field_13C;
+
+	PADDING(4);
 
 	NODE_FILEINFO* mNext;
 	NODE_FILEINFO* mPrev;
@@ -62,7 +63,8 @@ struct LIBPKR_HANDLE
 {
 	FILE* fp;
 	char name[1];
-	u8 padAfterName[0x108-4-1];
+
+	PADDING(0x108-4-1);
 
 
 	i32 field_108;
@@ -72,7 +74,7 @@ struct LIBPKR_HANDLE
 	NODE_DIRINFO* pDirInfo;
 	NODE_FILEINFO* pFileInfo;
 
-	u8 padBottom[0x12C-0x124-4];
+	PADDING(0x12C-0x124-4);
 };
 
 EXPORT u8 fileCRCCheck(u8*, i32, u32);

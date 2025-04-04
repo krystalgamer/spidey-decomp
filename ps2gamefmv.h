@@ -12,7 +12,7 @@ struct SMovieDetails
 	u16 height;
 	u16 endframe;
 
-	u8 padAfter8[0x10-0x8-2];
+	PADDING(0x10-0x8-2);
 
 	i32 field_10;
 	i32 field_14;

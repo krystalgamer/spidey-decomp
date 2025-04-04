@@ -42,7 +42,7 @@ struct SScore
 #define NUM_RECORDS_PER_CHALL 5
 struct SRecords
 {
-	u8 padTop[3];
+	PADDING(3);
 
 	SScore mScores[NUM_CHALLS * NUM_RECORDS_PER_CHALL];
 };
@@ -54,7 +54,8 @@ struct SSaveGame
 	// @FIXME: figure out proper size
 	char field_4[1];
 
-	u8 padAfter4[0xD-0x4-1];
+	PADDING(0xD-0x4-1);
+
 	char mRestartPointName[50];
 
 	// @FIXME: figure proper size
@@ -248,7 +249,8 @@ class CShellGoldFish : public CBody
 		EXPORT virtual ~CShellGoldFish(void);
 		EXPORT virtual void AI(void);
 
-		u8 padTop[4];
+		PADDING(4);
+
 		SHandle field_F8;
 		i32 field_100;
 		i32 field_104;
@@ -266,7 +268,8 @@ class CShellMysterioHeadCircle : public CQuadBit
 		EXPORT virtual void Move(void);
 
 		SHandle field_84;
-		u8 padAfter84[4];
+
+		PADDING(4);
 
 		i32 field_90;
 };
@@ -276,16 +279,18 @@ struct SpideyIconRelated
 	char *Name;
 	i32 IconModel;
 	i16 field_8;
-	u8 padAfter8[2];
+
+	PADDING(2);
 
 	i16 field_C;
-	u8 padAfterC[2];
+
+	PADDING(2);
 
 	i32 field_10;
 	i32 field_14;
 	i32 field_18;
 
-	u8 padBottom[0x28-0x18-4];
+	PADDING(0x28-0x18-4);
 };
 
 struct STrainingMission

@@ -11,7 +11,8 @@ EXPORT void DCClearSkater(void);
 class DCStrip
 {
 	public:
-		u8 padTop[8];
+		PADDING(8);
+
 		void* field_8;
 
 		EXPORT ~DCStrip(void);
@@ -20,7 +21,7 @@ class DCStrip
 class DCKeyFrame
 {
 	public:
-		u8 padTop[44];
+		PADDING(44);
 
 		DCKeyFrame *pNext;
 		EXPORT ~DCKeyFrame(void);
@@ -30,14 +31,16 @@ class DCMaterial
 {
 	public:
 
-		u8 padTop[0x10];
+		PADDING(0x10);
 
 		void *field_10;
-		u8 padAfter10[0x34-0x10-4];
+
+		PADDING(0x34-0x10-4);
 
 		void *field_34;
 		i32 field_38;
-		u8 padAfter38[0x3F-0x38-4];
+
+		PADDING(0x3F-0x38-4);
 
 		u8 field_3F;
 
@@ -57,25 +60,29 @@ class DCObjectList
 class DCObject
 {
 	public:
-		u8 padTop[4];
 
+		PADDING(4);
 
 		void *field_4;
-		u8 padAfter4[0xD0-0x4-4];
+
+		PADDING(0xD0-0x4-4);
 
 		DCKeyFrame *field_D0;
-		u8 padAfterD0[0xE0-0xD0-4];
+
+		PADDING(0xE0-0xD0-4);
 
 		void *field_E0;
 
 		DCObjectList field_E4;
 
 		DCObject *field_E8;
-		u8 padAfterE8[0x128-0xE8-4];
+
+		PADDING(0x128-0xE8-4);
 
 		void *field_128;
 		void *field_12C;
-		u8 padAfter12C[4];
+
+		PADDING(4);
 
 		DCStrip *field_134;
 
@@ -89,10 +96,12 @@ class DCSkaterModel
 		i32 field_0;
 
 		u8 field_4;
-		u8 padAfter4[3];
+		
+		PADDING(3);
 
 		u8 field_8;
-		u8 padAfter8[0x18-0x8-1];
+
+		PADDING(0x18-0x8-1);
 
 		i32 field_18;
 		i32 field_1C;

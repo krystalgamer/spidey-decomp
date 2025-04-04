@@ -11,7 +11,8 @@ struct SRhinoData
 {
 	u16 field_0;
 	u16 field_2;
-	u8 padAfter2[0x8-0x2-0x2];
+
+	PADDING(4);
 
 	i32 field_8;
 };

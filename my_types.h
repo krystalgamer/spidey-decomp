@@ -53,12 +53,18 @@ typedef double f64;
 #define OVERRIDE
 #endif
 
+// From SO: 42837863 - modified for PADDING
+#define CONCAT(x, y) x##y
+#define EXPAND(x, y) CONCAT(x, y)
+#define PADDING(x) EXPAND(u8 pad_, __LINE__)[(x)]
+
+
 #ifndef _WIN32
 #define FAILED(x) ((i32)(x) < 0)
 
 typedef struct _GUID
 {
-	u8 pad[0x10];
+	PADDING(0x10);
 } GUID;
 
 typedef u32 HRESULT;
@@ -79,11 +85,6 @@ struct tagPOINT
 
 
 #endif
-
-// From SO: 42837863 - modified for PADDING
-#define CONCAT(x, y) x##y
-#define EXPAND(x, y) CONCAT(x, y)
-#define PADDING(x) EXPAND(u8 pad_, __LINE__)[(x)]
 
 #endif
 
