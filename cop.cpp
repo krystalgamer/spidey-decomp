@@ -730,7 +730,7 @@ void CCop::Victorious(void)
 }
 
 // @Ok
-void __inline CCopPing::SetPosition(void)
+void INLINE CCopPing::SetPosition(void)
 {
 	CSuper* v2 = reinterpret_cast<CSuper*>(Mem_RecoverPointer(&this->field_70));
 

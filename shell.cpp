@@ -1083,7 +1083,7 @@ void CDummy::SelectNewTrack(int a2)
 }
 
 // @Ok
-void __inline CDummy::FadeAway(void)
+void INLINE CDummy::FadeAway(void)
 {
 	this->field_1F8 = 1;
 	this->field_1FC = 0;
@@ -1099,7 +1099,7 @@ void __inline CDummy::FadeAway(void)
 }
 
 // @Ok
-void __inline CDummy::FadeBack(void)
+void INLINE CDummy::FadeBack(void)
 {
 	this->field_1FC = 1;
 	this->field_1F8 = 0;

@@ -318,7 +318,7 @@ CElectrify::CElectrify(CSuper*, i32)
 }
 
 // @Ok
-void __inline Effects_UnElectrify(CSuper* pSuper)
+void INLINE Effects_UnElectrify(CSuper* pSuper)
 {
 	print_if_false(pSuper != 0, "NULL pSuper?");
 

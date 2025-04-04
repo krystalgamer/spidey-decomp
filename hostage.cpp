@@ -183,7 +183,7 @@ void CHostage::BegMotherfucker(void)
 	}
 }
 
-void __inline CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
+void INLINE CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
 {
 	if (Redbook_XAPlayPos(a2, a3, &this->mPos, a4))
 		this->AttachXA(a2, a3);
@@ -253,7 +253,7 @@ void CHostage::WaitForPlayer(void)
 }
 
 // @Ok
-void __inline CHostage::DisappearBitch(void)
+void INLINE CHostage::DisappearBitch(void)
 {
 	switch (this->dumbAssPad)
 	{
@@ -287,7 +287,7 @@ void __inline CHostage::DisappearBitch(void)
 }
 
 // @Ok
-void __inline CHostage::GetUp(void)
+void INLINE CHostage::GetUp(void)
 {
 	switch(this->dumbAssPad)
 	{

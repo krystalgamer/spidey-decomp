@@ -225,7 +225,7 @@ INLINE void CSwitch::SignalAttachedItems(void)
 }
 
 // @Ok
-void __inline CSwitch::SwitchInactive(void)
+void INLINE CSwitch::SwitchInactive(void)
 {
 	this->field_100 = 0;
 }
@@ -248,7 +248,7 @@ CVector* CSwitch::GetAutoAimTargetPointer(void)
 }
 
 // @Ok
-void __inline Switch_SetVisible(bool a1, CItem* pItem)
+void INLINE Switch_SetVisible(bool a1, CItem* pItem)
 {
 	print_if_false(pItem != 0, "Bad item");
 
@@ -259,7 +259,7 @@ void __inline Switch_SetVisible(bool a1, CItem* pItem)
 }
 
 // @Ok
-void __inline CSwitch::SwitchOff(void)
+void INLINE CSwitch::SwitchOff(void)
 {
 	this->field_100 = 1;
 	Switch_SetVisible(false, this->field_108);

@@ -358,7 +358,7 @@ void CMenu::SetSelColor(unsigned int a2, int a3, int a4, int a5)
 }
 
 // @Ok
-int __inline CMenu::FindEntry(const char* a2)
+int INLINE CMenu::FindEntry(const char* a2)
 {
 	for(int i = 0; i<this->mNumLines; i++)
 	{

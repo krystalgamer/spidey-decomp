@@ -1536,7 +1536,7 @@ unsigned char CPlayer::SetFireWebbing(void)
 }
 
 // @Ok
-void __inline CPlayer::GetHookPosition(CVector* a2, unsigned char a3)
+void INLINE CPlayer::GetHookPosition(CVector* a2, unsigned char a3)
 {
 	M3dUtils_GetHookPosition(reinterpret_cast<VECTOR*>(a2), this, a3);
 }

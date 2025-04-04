@@ -199,7 +199,7 @@ int Font::isEscapeChar(char a1)
 }
 
 // @Ok
-int __inline Font::GetCharMap(void)
+int INLINE Font::GetCharMap(void)
 {
 	return this->field_58;
 }

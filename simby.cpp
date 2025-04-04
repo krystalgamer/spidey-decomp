@@ -603,7 +603,7 @@ i32 CSimby::PlayAndAttachXAPlease(
 
 // @NotOk
 // understand ptr
-i32 __inline CSimby::FireTrappedToDeath(void)
+i32 INLINE CSimby::FireTrappedToDeath(void)
 {
 	u8 *v2 = reinterpret_cast<u8*>(Mem_RecoverPointer(&this->field_104));
 	if (!v2 || !v2[1048] || *(i32*)(*((u32*)v2 + 17) + 60) <= 40)
@@ -614,7 +614,7 @@ i32 __inline CSimby::FireTrappedToDeath(void)
 }
 
 // @Ok
-void __inline CSimby::RunAppropriateHitAnim(void)
+void INLINE CSimby::RunAppropriateHitAnim(void)
 {
 	if (this->field_218 & 0x10)
 		this->RunAnim(17, 0, -1);
@@ -625,7 +625,7 @@ void __inline CSimby::RunAppropriateHitAnim(void)
 }
 
 // @Ok
-void __inline CSimby::SetUpJumpData(i32 a2, i32 a3)
+void INLINE CSimby::SetUpJumpData(i32 a2, i32 a3)
 {
 	i32 v3;
 	if(a3 <= a2)
@@ -646,7 +646,7 @@ void __inline CSimby::SetUpJumpData(i32 a2, i32 a3)
 }
 
 // @Ok
-void __inline CSimby::SetAlertModeTimer(int timer)
+void INLINE CSimby::SetAlertModeTimer(int timer)
 {
 	if (this->field_348 < timer)
 		this->field_348 = timer;
@@ -785,7 +785,7 @@ static int gSimbyAttackData;
 
 // @NotOk
 // global
-void __inline CSimby::ClearAttackData(void)
+void INLINE CSimby::ClearAttackData(void)
 {
 	gSimbyAttackData &= ~this->field_3F0;
 	this->field_3F0 = 0;
@@ -802,7 +802,7 @@ INLINE void CPunchOb::SendPulse(void)
 }
 
 // @Ok
-void __inline CSimby::SetUpUnitFromDirection(CVector* a2, i32 a3)
+void INLINE CSimby::SetUpUnitFromDirection(CVector* a2, i32 a3)
 {
 	CSVector v4;
 	v4.vy = a3;

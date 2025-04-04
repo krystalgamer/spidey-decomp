@@ -1051,7 +1051,7 @@ void Thug_CreateThug(const u32 *stack, u32 *result)
 }
 
 // @Ok
-void __inline CThugPing::SetPosition(void)
+void INLINE CThugPing::SetPosition(void)
 {
 	CSuper* v2 = reinterpret_cast<CSuper*>(Mem_RecoverPointer(&this->field_70));
 

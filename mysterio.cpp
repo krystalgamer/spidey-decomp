@@ -257,19 +257,19 @@ void Mysterio_CreateMysterio(const unsigned int *stack, unsigned int *result)
 }
 
 // @Ok
-void __inline CMysterioLaser::SetDamage(int damage)
+void INLINE CMysterioLaser::SetDamage(int damage)
 {
 	this->field_4C = damage;
 }
 
 // @Ok
-void __inline CGoldFish::AngryMode(void)
+void INLINE CGoldFish::AngryMode(void)
 {
 	this->field_F8 = 1;
 }
 
 // @Ok
-void __inline CGoldFish::NormalMode(void)
+void INLINE CGoldFish::NormalMode(void)
 {
 	this->field_F8 = 0;
 }
@@ -279,7 +279,7 @@ void validate_CMystFoot(void){
 }
 
 // @Ok
-void __inline CMysterioHeadCircle::NormalMode(void)
+void INLINE CMysterioHeadCircle::NormalMode(void)
 {
 	if (this->field_8C)
 		this->field_88 >>= 1;
@@ -287,7 +287,7 @@ void __inline CMysterioHeadCircle::NormalMode(void)
 }
 
 // @Ok
-void __inline CMysterioHeadCircle::AngryMode(void)
+void INLINE CMysterioHeadCircle::AngryMode(void)
 {
 	if (!this->field_8C)
 		this->field_88 <<= 1;

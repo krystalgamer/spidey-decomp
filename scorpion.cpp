@@ -108,7 +108,7 @@ i32 CScorpion::PathLooksGood(CVector *pVector)
 }
 
 // @Ok
-void __inline CScorpion::PlayXA_NoRepeat(i32 a2, i32 a3, i32 a4, i32 *a5, CBody* pBody)
+void INLINE CScorpion::PlayXA_NoRepeat(i32 a2, i32 a3, i32 a4, i32 *a5, CBody* pBody)
 {
 	if (!this->field_C20)
 	{
@@ -223,13 +223,13 @@ void CScorpion::GetTrapped(void)
 }
 
 // @Ok
-void __inline CScorpion::NextRoom(void)
+void INLINE CScorpion::NextRoom(void)
 {
 	this->field_218 &= 0xFFFFFFE7;
 }
 
 // @Ok
-__inline void* CScorpion::GetCurrentTarget(void)
+INLINE void* CScorpion::GetCurrentTarget(void)
 {
 	if (!this->field_BF8)
 	{
@@ -268,7 +268,7 @@ INLINE CSuper* CScorpion::FindJonah(void)
 }
 
 // @Ok
-i32 __inline CScorpion::SetJonahHandle(SHandle* pHandle)
+i32 INLINE CScorpion::SetJonahHandle(SHandle* pHandle)
 {
 	print_if_false(&pHandle != 0, "what in the name of Dog?");
 	CSuper *pJonah = this->FindJonah();

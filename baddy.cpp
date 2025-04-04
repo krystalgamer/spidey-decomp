@@ -630,7 +630,7 @@ int CBaddy::SetHeight(int a2, int a3, int a4)
 
 
 // @Ok
-void __inline CBaddy::SendDeathPulse(void)
+void INLINE CBaddy::SendDeathPulse(void)
 {
 
 	if (!this->field_211 && this->mNode != 0xFFFF)

@@ -223,7 +223,7 @@ int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 }
 
 // @Ok
-int __inline CJonah::StartRunningToNextRoom(void)
+int INLINE CJonah::StartRunningToNextRoom(void)
 {
 	if (this->field_370)
 	{

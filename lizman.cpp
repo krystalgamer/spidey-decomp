@@ -179,7 +179,7 @@ void CLizMan::RunToWhereActionIs(CVector*)
 {}
 
 // @Ok
-void __inline CLizMan::HelpOutBuddy(CMessage* pMessage)
+void INLINE CLizMan::HelpOutBuddy(CMessage* pMessage)
 {
 	if (!this->field_390)
 	{

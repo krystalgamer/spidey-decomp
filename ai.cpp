@@ -78,7 +78,7 @@ INLINE i32 CAIProc::Wait(void)
 
 // @NotOk
 // Fix casts
-void __inline CAIProc::AttachProc(AIProcType a2, CBaddy* a3, int a4)
+void INLINE CAIProc::AttachProc(AIProcType a2, CBaddy* a3, int a4)
 {
 	this->pBaddy = a3;
 
@@ -98,7 +98,7 @@ void __inline CAIProc::AttachProc(AIProcType a2, CBaddy* a3, int a4)
 }
 
 // @Ok
-void __inline CAIProc_LookAt::SetUpVariables(int a2, int a3)
+void INLINE CAIProc_LookAt::SetUpVariables(int a2, int a3)
 {
 	int v3 = abs(a2);
 
