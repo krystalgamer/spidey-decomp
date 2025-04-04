@@ -797,12 +797,12 @@ INLINE void CPunchOb::SendPulse(void)
 	if (!this->field_328)
 	{
 		this->field_328 = 1;
-		Trig_SendPulse(reinterpret_cast<unsigned __int16*>(Trig_GetLinksPointer(this->mNode)));
+		Trig_SendPulse(reinterpret_cast<u16*>(Trig_GetLinksPointer(this->mNode)));
 	}
 }
 
 // @Ok
-void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
+void __inline CSimby::SetUpUnitFromDirection(CVector* a2, i32 a3)
 {
 	CSVector v4;
 	v4.vy = a3;
@@ -815,7 +815,7 @@ void __inline CSimby::SetUpUnitFromDirection(CVector* a2, int a3)
 
 // @NotOk
 // missing texture related
-CEmber::CEmber(const CVector* a2, int a3)
+CEmber::CEmber(const CVector* a2, i32 a3)
 {
 	this->field_68.vx = 0;
 	this->field_68.vy = 0;
@@ -845,7 +845,7 @@ CEmber::CEmber(const CVector* a2, int a3)
 }
 
 // @Ok
-void Simby_CreateEmber(const unsigned int* a1, unsigned int*)
+void Simby_CreateEmber(const u32* a1, u32*)
 {
 	const CVector *vec = reinterpret_cast<const CVector*>(a1);
 	new CEmber(vec, vec->vy);

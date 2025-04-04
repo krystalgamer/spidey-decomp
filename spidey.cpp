@@ -901,7 +901,7 @@ void CPlayer::SetIgnoreInputTimer(int a2)
 }
 
 // @Ok
-void CPlayer::SetCamAngleLock(unsigned __int16 a1)
+void CPlayer::SetCamAngleLock(u16 a1)
 {
 	if (a1)
 	{
@@ -944,7 +944,7 @@ void CPlayer::ExitLookaroundMode(void)
 		this->field_DE4 = 0;
 		Screen_TargetOn(false);
 
-		__int16 *v3 = reinterpret_cast<__int16*>(this->field_188);
+		i16 *v3 = reinterpret_cast<i16*>(this->field_188);
 		if (v3)
 		{
 			v3[6] = 0;
@@ -961,9 +961,9 @@ static int * const dword_6A8260 = (int*)0x6A8260;
 
 // @NotOk
 // Remove globals, there's an extra test for some reason
-void CPlayer::SetSpideyLookaroundCamValue(unsigned __int16 a1, unsigned __int16 a2, __int16 a3)
+void CPlayer::SetSpideyLookaroundCamValue(u16 a1, u16 a2, i16 a3)
 {
-	unsigned int actualA1 = a1;
+	u32 actualA1 = a1;
 	if (actualA1)
 	{
 		actualA1--;
@@ -1021,9 +1021,9 @@ void CPlayer::SetTargetTorsoAngleToThisPoint(CVector *a2)
 	gte_rtir();
 	gte_stlvnl(reinterpret_cast<VECTOR*>(&v8));
 
-	__int16 v6 = (1024 - ratan2(-v8.vz, -v8.vx)) & 0xFFF;
+	i16 v6 = (1024 - ratan2(-v8.vz, -v8.vx)) & 0xFFF;
 
-	__int16 v7;
+	i16 v7;
 	if (this->field_8E9)
 	{
 		v7 = this->GetEffectiveHeading() - v6;
@@ -1037,7 +1037,7 @@ void CPlayer::SetTargetTorsoAngleToThisPoint(CVector *a2)
 }
 
 // @Ok
-__int16 CPlayer::GetEffectiveHeading(void)
+i16 CPlayer::GetEffectiveHeading(void)
 { 
 	if (!this->field_8E8)
 	{
@@ -1089,20 +1089,21 @@ __int16 CPlayer::GetEffectiveHeading(void)
 }
 
 // @MEDIUMTODO
-void CPlayer::SetTargetTorsoAngle(__int16, int)
+void CPlayer::SetTargetTorsoAngle(i16, int)
 {
+	printf("void CPlayer::SetTargetTorsoAngle(i16, int)");
 }
 
 
-static int * const dword_60CFE8 = (int*)0x60CFE8;
-static int * const dword_54D474 = (int*)0x54D474;
+static i32 * const dword_60CFE8 = (i32*)0x60CFE8;
+static i32 * const dword_54D474 = (i32*)0x54D474;
 static char * const byte_682770 = (char*)0x682770;
 extern int CurrentSuit;
 
 // @NotOk
 // Globals
 // The part with >> 12 has a jump in the original rather than it's perfect
-char CPlayer::DecreaseWebbing(int a2)
+char CPlayer::DecreaseWebbing(i32 a2)
 {
 	if (!this->field_1AC &&
 			!*dword_60CFE8 &&
@@ -1182,10 +1183,10 @@ void CPlayer::RenderLookaroundReticle(void)
 		int v5;
 		gte_stlvnl2(&v5);
 
-		__int16 v6[2];
-		gte_stsxy(reinterpret_cast<int*>(v6));
+		i16 v6[2];
+		gte_stsxy(reinterpret_cast<i32*>(v6));
 
-		int v3 = 3072 - v5;
+		i32 v3 = 3072 - v5;
 		if (v3 < 768)
 		{
 			v3 = 768;
@@ -1196,25 +1197,27 @@ void CPlayer::RenderLookaroundReticle(void)
 }
 
 // @BIGTODO
-void CPlayer::DrawRecticle(unsigned __int16, unsigned __int16, unsigned int)
-{}
+void CPlayer::DrawRecticle(u16, u16, u32)
+{
+	printf("void CPlayer::DrawRecticle(unsigned __int16, unsigned __int16, unsigned int)");
+}
 
 
 // @Ok
 // instead of sub 0x1000 we do add 0xFFFFF000, dunno why
 // also abs is different but wtv
-void CPlayer::SetTargetTorsoAngle(__int16 a2, bool a3)
+void CPlayer::SetTargetTorsoAngle(i16 a2, bool a3)
 {
 	int v4 = (a2 & 0xFFF);
-	__int16 EffectiveHeading = this->GetEffectiveHeading();
+	i16 EffectiveHeading = this->GetEffectiveHeading();
 
-	if ( (__int16)v4 == EffectiveHeading)
+	if ( (i16)v4 == EffectiveHeading)
 	{
 		this->field_DF8 = 0;
 		return;
 	}
 
-	int v6 = this->field_E1C;
+	i32 v6 = this->field_E1C;
 	if (v6 & 6)
 		this->field_DF8 = 5 * this->field_DFC;
 	else
@@ -1226,18 +1229,18 @@ void CPlayer::SetTargetTorsoAngle(__int16 a2, bool a3)
 
 	this->field_DF0 = v4;
 
-	int v7;
+	i32 v7;
 	if (v4 > EffectiveHeading)
 	{
 		v7 = v4 - EffectiveHeading;
 		if ( v7 >= 2048 )
-			v7 = (__int16)(v4 - 0x1000) - EffectiveHeading;
+			v7 = (i16)(v4 - 0x1000) - EffectiveHeading;
 	}
 	else
 	{
-		int v8 = EffectiveHeading;
+		i32 v8 = EffectiveHeading;
 		if ( EffectiveHeading - v4 >= 2048 )
-			v8 = (__int16)(EffectiveHeading - 0x1000);
+			v8 = (i16)(EffectiveHeading - 0x1000);
 		v7 = v4 - v8;
 	}
 
@@ -1263,13 +1266,13 @@ void CPlayer::SetTargetTorsoAngle(__int16 a2, bool a3)
 	}
 }
 
-static __int16 * const word_6A8C66 = (__int16*)0x6A8C66;
-static __int16 * const word_610C4A = (__int16*)0x610C4A;
-static __int16 * const word_610C48 = (__int16*)0x610C48;
+static i16 * const word_6A8C66 = (i16*)0x6A8C66;
+static i16 * const word_610C4A = (i16*)0x610C4A;
+static i16 * const word_610C48 = (i16*)0x610C48;
 
 // @NotOk
 // globals
-void CPlayer::PutCameraBehind(int a2)
+void CPlayer::PutCameraBehind(i32 a2)
 {
 	if (!this->gCamAngleLock)
 	{
@@ -1286,7 +1289,7 @@ void CPlayer::PutCameraBehind(int a2)
 			{
 				if ((this->field_E2E | this->field_E2D) && this->field_E1C == 16)
 				{
-					int v6 = 2 * (this->field_E2D & 0xFFF);
+					i32 v6 = 2 * (this->field_E2D & 0xFFF);
 					gGlobalThisCamera->SetCamYDistance(*word_6A8C66 + ((500 * word_6A8C66[v6]) >> 12), a2);
 					gGlobalThisCamera->SetCamAngle(v5 + ((700 * word_610C48[v6]) >> 12), a2);
 				}

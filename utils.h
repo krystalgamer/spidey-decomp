@@ -13,25 +13,25 @@ EXPORT extern volatile u32 Vblanks;
 
 EXPORT u32 Utils_CrapDist(const CVector& a,const CVector& b);
 EXPORT u32 Utils_CrapXZDist(const CVector& a,const CVector& b);
-EXPORT int Utils_CompareStrings(const char* left, const char* right);
-EXPORT int Utils_ArcCos(int val);
-EXPORT int Utils_CopyString(const char*, char*, int);
+EXPORT i32 Utils_CompareStrings(const char* left, const char* right);
+EXPORT i32 Utils_ArcCos(i32 val);
+EXPORT i32 Utils_CopyString(const char*, char*, i32);
 EXPORT CBody* Utils_CheckObjectCollision(CVector*, CVector*, CBody*, CBody*);
-EXPORT int Utils_GetGroundHeight(CVector*, int, int, CBody**);
+EXPORT i32 Utils_GetGroundHeight(CVector*, i32, i32, CBody**);
 EXPORT i32 Utils_LineOfSight(CVector*, CVector*, CVector*, i32);
-EXPORT int Utils_CalcAim(CSVector*, CVector*, CVector*);
-EXPORT int Utils_GetValueFromDifficultyLevel(int, int, int, int);
-EXPORT void Utils_RotateY(CVector*, CVector*, int);
+EXPORT i32 Utils_CalcAim(CSVector*, CVector*, CVector*);
+EXPORT i32 Utils_GetValueFromDifficultyLevel(i32, i32, i32, i32);
+EXPORT void Utils_RotateY(CVector*, CVector*, i32);
 EXPORT void Utils_TurnTowards(CSVector, CSVector*, CSVector*, CSVector, i32);
 
-EXPORT int Rnd(int);
-EXPORT void Utils_InitialRand(int);
-EXPORT int catan(int);
+EXPORT i32 Rnd(i32);
+EXPORT void Utils_InitialRand(i32);
+EXPORT i32 catan(i32);
 
-EXPORT unsigned int Utils_GenerateCRC(const char*);
+EXPORT u32 Utils_GenerateCRC(const char*);
 
-EXPORT int Utils_LinearFilter(int, int, int);
-EXPORT void Utils_GetVecFromMagDir(CVector*, int, CSVector*);
+EXPORT i32 Utils_LinearFilter(i32, i32, i32);
+EXPORT void Utils_GetVecFromMagDir(CVector*, i32, CSVector*);
 
 EXPORT i32 Utils_XZDist(const CVector*, const CVector *);
 

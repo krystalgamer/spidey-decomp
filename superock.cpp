@@ -419,8 +419,8 @@ CSuperDocOck::~CSuperDocOck(void)
 // @AlmostMatching: global assingments slightly out of order
 CSuperDocOck::CSuperDocOck(i16 *a2, i32 a3)
 {
-	this->field_344 = reinterpret_cast<int>(
-			this->SquirtAngles(reinterpret_cast<__int16*>(this->SquirtPos(a2))));
+	this->field_344 = reinterpret_cast<i32>(
+			this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2))));
 
 	this->InitItem("superock");
 	this->mFlags |= 0x480;

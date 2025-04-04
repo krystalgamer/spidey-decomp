@@ -94,11 +94,11 @@ struct SPSXRegion {
 };
 
 
-EXPORT int Spool_FindRegion(const char *);
-EXPORT unsigned int Spool_GetModel(unsigned int, int);
-EXPORT unsigned int *Spool_SkipPackets(unsigned int *);
+EXPORT i32 Spool_FindRegion(const char *);
+EXPORT u32 Spool_GetModel(u32, i32);
+EXPORT u32 *Spool_SkipPackets(u32 *);
 EXPORT void Spool_ClearAllPSXs(void);
-EXPORT void ClearRegion(int, int);
+EXPORT void ClearRegion(i32, i32);
 EXPORT void Spool_RemoveUnusedTextures(void);
 EXPORT void Spool_ClearPSX(const char*);
 EXPORT CItem* Spool_FindEnviroItem(u32);
@@ -145,7 +145,7 @@ void validate_SAccess(void);
 void validate_AnimPacket(void);
 void validate_SModel(void);
 
-static const int MAXPSX = 40;
+static const i32 MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
 EXPORT extern i32 EnvRegions[2];
 

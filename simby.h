@@ -23,12 +23,12 @@ public:
 
 class CSimby : public CBaddy {
 public:
-	EXPORT CSimby(int*, int);
+	EXPORT CSimby(i32*, i32);
 	EXPORT CSimby(void);
 	EXPORT void FlashUpdate(void);
-	EXPORT void SetAlertModeTimer(int);
+	EXPORT void SetAlertModeTimer(i32);
 	EXPORT void ClearAttackData(void);
-	EXPORT void SetUpUnitFromDirection(CVector*, int);
+	EXPORT void SetUpUnitFromDirection(CVector*, i32);
 	EXPORT void SetUpJumpData(i32, i32);
 	EXPORT void RunAppropriateHitAnim(void);
 	EXPORT i32 FireTrappedToDeath(void);
@@ -105,12 +105,14 @@ class CSimbySlimeBase : public CQuadBit
 		EXPORT void ScaleDown(void);
 		EXPORT void ScaleDownAndDie(void);
 
-		unsigned char topPad[0x9C-0x84];
-		int field_9C;
-		unsigned char padAfter9C[0xA4-0x9C-4];
+		PADDING(0x9C-0x84);
 
-		int field_A4;
-		unsigned char bottomPad[0x114-0xA4-4];
+		i32 field_9C;
+
+		PADDING(0xA4-0x9C-4);
+
+		i32 field_A4;
+		PADDING(0x114-0xA4-4);
 };
 
 class CEmber : public CFlatBit
@@ -132,7 +134,7 @@ class CSimbyShot : public CQuadBit
 	public:
 		EXPORT CSimbyShot(CVector*);
 
-		u8 padFull[0x34];
+		PADDING(0x34);
 };
 
 class CSkidMark : public CQuadBit
@@ -173,7 +175,7 @@ class CSimbyDroplet : public CFlatBit
 
 #ifndef _WIN32
 		// @FIXME
-		u8 padTop[2];
+		PADDING(2);
 #endif
 		u16 field_68;
 		u16 field_6A;

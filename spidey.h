@@ -14,17 +14,20 @@ class CPlayer : public CSuper
 {
 	public:
 
-		unsigned char padtop[4];
+		PADDING(4);
 
-		int field_1A8;
+		i32 field_1A8;
 		char field_1AC;
-		unsigned char padAfter1AC[0x1BC-0x1AC-1];
 
-		int* field_1BC;
-		unsigned char padAfter1BC[0x350-0x1BC-4];
+		PADDING(0x1BC-0x1AC-1);
+
+		i32* field_1BC;
+
+		PADDING(0x350-0x1BC-4);
 
 		i32 field_350;
-		u8 padAfter350[0x528-0x350-4];
+
+		PADDING(0x528-0x350-4);
 
 		i32 field_528;
 		i32 field_52C;
@@ -33,67 +36,82 @@ class CPlayer : public CSuper
 		PADDING(0x538-0x530-4);
 
 		u32 field_538;
-		u8 padAfter538[0x54C-0x538-4];
+
+		PADDING(0x54C-0x538-4);
 
 		u8 field_54C;
-		u8 padAfter54C[0x568-0x54C-4];
+
+		PADDING(0x568-0x54C-4);
 
 		i32 field_568;
 		i32 field_56C;
-		u8 padAfter56C[0x57C-0x56C-4];
+
+		PADDING(0x57C-0x56C-4);
 
 		i8 field_57C;
-		u8 padAfter57C[0x580-0x57C-1];
+
+		PADDING(0x580-0x57C-1);
 
 		i32 field_580;
 		CSmokeTrail* field_584;
 		CSmokeTrail* field_588;
 		CSmokeTrail* field_58C;
 		CSmokeTrail* field_590;
-		unsigned char padAfter584[0x5D0-0x590-4];
+
+		PADDING(0x5D0-0x590-4);
 
 
 		i32 field_5D0;
 		i32 mWebbing;
 		i32 field_5D8;
 		i32 field_5DC;
-		u8 padAfter5DC[0x5E8-0x5DC-4];
+
+		PADDING(0x5E8-0x5DC-4);
 
 		char field_5E8;
-		unsigned char padAfter5E8[0x89C-0x5E8-4];
+
+		PADDING(0x89C-0x5E8-4);
 
 		MATRIX field_89C;
-		unsigned char padAfter89C[0x8E8-0x89C-sizeof(MATRIX)];
 
-		unsigned char field_8E8;
-		unsigned char field_8E9;
-		unsigned char field_8EA;
-		unsigned char padAFter8Ea;
+		PADDING(0x8E8-0x89C-sizeof(MATRIX));
 
-		unsigned char gCamAngleLock; //8EC
-		u8 padAfterLock[0xAC8-0x8EC-1];
+		u8 field_8E8;
+		u8 field_8E9;
+		u8 field_8EA;
+		u8 padAFter8Ea;
+
+		u8 gCamAngleLock; //8EC
+						  //
+		PADDING(0xAC8-0x8EC-1);
 
 		CVector field_AC8;
 
 		u8 field_AD4;
-		u8 padAfterAD4[0xAD7-0xAD4-1];
+
+		PADDING(0xAD7-0xAD4-1);
 
 		u8 field_AD7;
-		u8 padAfterAD7[0xAE5-0xAD7-1];
+
+		PADDING(0xAE5-0xAD7-1);
 
 		u8 field_AE5;
 		u8 field_AE6;
-		u8 padAfterAE6[0xB74-0xAE6-1];
+
+		PADDING(0xB74-0xAE6-1);
 
 		i32 field_B74;
-		u8 padAfterB74[0xB84-0xB74-4];
+
+		PADDING(0xB84-0xB74-4);
 
 		CSVector field_B84;
-		u8 padAfterB84[0xB8C-0xB84-sizeof(CSVector)];
+
+		PADDING(0xB8C-0xB84-sizeof(CSVector));
 
 		// @FIXME guess the type
 		i32* field_B8C;
-		u8 padAfterB8C[0xC18-0xB8C-4];
+
+		PADDING(0xC18-0xB8C-4);
 
 		i32 field_C18;
 		CVector field_C1C;
@@ -110,104 +128,124 @@ class CPlayer : public CSuper
 		i32 field_C7C;
 		i32 field_C80;
 		CVector field_C84;
-		int field_C90;
-		unsigned char padAfterC90[0xCB4-0xC90-4];
+		i32 field_C90;
+
+		PADDING(0xCB4-0xC90-4);
 
 		i32 field_CB4;
-		unsigned char padAfterCB4[0xCE4-0xCB4-4];
+
+		PADDING(0xCE4-0xCB4-4);
 
 		i32 field_CE4;
-		u8 padAfterCE4[0xD3C-0xCE4-4];
+
+		PADDING(0xD3C-0xCE4-4);
 
 		CVector field_D3C;
-		u8 padAfterD3C[((0xD4E)-0xD3C)-sizeof(CVector)];
+
+		PADDING(((0xD4E)-0xD3C)-sizeof(CVector));
 
 		CSVector field_D4E;
-		u8 padAfterD4E[(0xD80-(0xD4E))-sizeof(CSVector)];
+
+		PADDING((0xD80-(0xD4E))-sizeof(CSVector));
 
 		CSVector field_D80;
 		CSVector field_D86;
 		CSVector field_D8C;
-		u8 padAfterD8C[0xDA0-0xD8C-sizeof(CSVector)];
+
+		PADDING(0xDA0-0xD8C-sizeof(CSVector));
 
 		CVector field_DA0;
-		u8 padAfterDA0[0xDB8-0xDA0-sizeof(CVector)];
+
+		PADDING(0xDB8-0xDA0-sizeof(CVector));
 
 		i32 field_DB8;
-		u8 padAfterDB8[0xDC0-0xDB8-4];
+
+		PADDING(0xDC0-0xDB8-4);
 
 		CVector field_DC0;
-		unsigned char padAfterDC0[0xDE4-0xDC0-sizeof(CVector)];
+
+		PADDING(0xDE4-0xDC0-sizeof(CVector));
 
 		char field_DE4;
-		unsigned char padAfterDE4[0xDF0-0xDE4-1];
 
-		int field_DF0;
-		int field_DF4;
+		PADDING(0xDF0-0xDE4-1);
 
-		int field_DF8;
-		int field_DFC;
+		i32 field_DF0;
+		i32 field_DF4;
 
-		int field_E00;
-		unsigned char padAfterE00[0xE0C-0xE00-4];
+		i32 field_DF8;
+		i32 field_DFC;
 
-		int field_E0C;
+		i32 field_E00;
+
+		PADDING(0xE0C-0xE00-4);
+
+		i32 field_E0C;
 		char field_E10;
-		__int16 field_E12;
-		unsigned char padAfterE12[4];
 
-		int field_E18;
+		i16 field_E12;
+
+		PADDING(4);
+
+		i32 field_E18;
 		i32 field_E1C;
-		unsigned char padAfterE1C[0xE2D-0xE1C-4];
+
+		PADDING(0xE2D-0xE1C-4);
 
 		char field_E2D;
 		char field_E2E;
-		u8 padAfterE2E[(0xE38-0xE2E)-0x1];
+
+		PADDING((0xE38-0xE2E)-0x1);
 
 		i32 field_E38;
-		u8 padAfterE38[(0xE48-0xE38)-0x4];
+
+		PADDING((0xE48-0xE38)-0x4);
 
 		CManipOb* mHeldObject;
-		u8 padAfterE48[0xE84-0xE48-4];
+
+		PADDING(0xE84-0xE48-4);
 
 		i32 field_E84;
 		i32 field_E88;
 
 		u8 field_E8C;
-		u8 padAfterE8C[0xEA4-0xE8C-1];
+
+		PADDING(0xEA4-0xE8C-1);
 
 
 		u8 field_EA4;
-		u8 padAFterEA4[(0xEA8-0xEA4)-0x1];
+
+		PADDING((0xEA8-0xEA4)-0x1);
 
 		u16 field_EA8;
-		u8 padBottomPlayer[(0xEFC-0xEA8)-0x2];
+
+		PADDING((0xEFC-0xEA8)-0x2);
 
 
-		EXPORT void SetCamAngleLock(unsigned __int16);
+		EXPORT void SetCamAngleLock(u16);
 		EXPORT void ExitLookaroundMode(void);
-		EXPORT void SetIgnoreInputTimer(int);
-		EXPORT void PutCameraBehind(int);
-		EXPORT void SetSpideyLookaroundCamValue(unsigned __int16, unsigned __int16, __int16);
+		EXPORT void SetIgnoreInputTimer(i32);
+		EXPORT void PutCameraBehind(i32);
+		EXPORT void SetSpideyLookaroundCamValue(u16, u16, i16);
 		EXPORT void SetTargetTorsoAngleToThisPoint(CVector *a2);
 
-		EXPORT __int16 GetEffectiveHeading(void);
-		EXPORT void SetTargetTorsoAngle(__int16, int);
-		EXPORT char DecreaseWebbing(int);
+		EXPORT i16 GetEffectiveHeading(void);
+		EXPORT void SetTargetTorsoAngle(i16, i32);
+		EXPORT char DecreaseWebbing(i32);
 		EXPORT void RenderLookaroundReticle(void);
-		EXPORT void DrawRecticle(unsigned __int16, unsigned __int16, unsigned int);
-		EXPORT void SetTargetTorsoAngle(__int16, bool);
+		EXPORT void DrawRecticle(u16, u16, u32);
+		EXPORT void SetTargetTorsoAngle(i16, bool);
 		EXPORT void CreateJumpingSmashKickTrail(void);
-		EXPORT void PlaySingleAnim(int, int, int);
+		EXPORT void PlaySingleAnim(i32, i32, i32);
 		EXPORT void CutSceneSkipCleanup(void);
 		EXPORT void OrientToNormal(bool, CVector*);
 		EXPORT void PriorToVenomDistanceAttack(CVector);
 		EXPORT void SwitchToStandMode(void);
-		EXPORT void TidyUpZipWebLandingPosition(int);
-		EXPORT void CreateFists(unsigned char);
-		EXPORT unsigned char CanITalkRightNow(void);
-		EXPORT unsigned char SetFireWebbing(void);
-		EXPORT void GetHookPosition(CVector*, unsigned char);
+		EXPORT void TidyUpZipWebLandingPosition(i32);
+		EXPORT void CreateFists(u8);
+		EXPORT u8 CanITalkRightNow(void);
+		EXPORT u8 SetFireWebbing(void);
+		EXPORT void GetHookPosition(CVector*, u8);
 		EXPORT void DestroyJumpingSmashKickTrail(void);
 		EXPORT void DestroyHandTrails(void);
 		EXPORT void DeleteStuff(void);
@@ -309,7 +347,7 @@ EXPORT extern CItem* MiscellaneousRenderingList;
 
 EXPORT void Bruce_Sync(void);
 
-EXPORT void Spidey_SetUserFunction(const char *, unsigned int);
+EXPORT void Spidey_SetUserFunction(const char *, u32);
 EXPORT void Spidey_FreeHeadModel(void);
 EXPORT void Spidey_CopyHeadModel(i32);
 

@@ -5,6 +5,6 @@
 
 #include "export.h"
 
-EXPORT void DoAssert(u8, const char*);
+EXPORT void DoAssert(u8, const char*, ...);
 
 #endif

@@ -835,11 +835,14 @@ int Utils_CalcAim(CSVector* a1, CVector* a2, CVector* a3)
 	return v7;
 }
 
+// @FIXME
 static int gRndRelatedOne;
+// @FIXME
 static int gRndRelatedTwo;
+// @FIXME
 static int gRndRelatedThree;
 
-// @Ok
+// @NotOk
 void Utils_InitialRand(int a)
 {
 	gRndRelatedTwo = 0x12B9B0A1;
@@ -847,18 +850,18 @@ void Utils_InitialRand(int a)
 	gRndRelatedThree = 0xAA2FB3F;
 }
 
-// @Ok
-INLINE int Rnd(int n)
+// @NotOk
+INLINE int Rnd(i32 n)
 {
-	int result; // eax
+	i32 result; // eax
 	gRndRelatedOne = gRndRelatedThree + gRndRelatedOne * gRndRelatedTwo;
 	gRndRelatedTwo = (gRndRelatedOne >> 4) + (gRndRelatedOne ^ gRndRelatedTwo);
-	result = (n * (unsigned __int16)gRndRelatedOne) >> 16;
+	result = (n * (u16)gRndRelatedOne) >> 16;
 	gRndRelatedThree = gRndRelatedThree + (gRndRelatedOne >> 3) - 0x10101010;
 	return result;
 }
 
-const unsigned int crc32_tab[] = {
+const u32 crc32_tab[] = {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
 	0xe963a535, 0x9e6495a3,	0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
 	0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91, 0x1db71064, 0x6ab020f2,
@@ -953,7 +956,7 @@ void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 	printf("void Utils_GetVecFromMagDir(CVector*, int, CSVector*)");
 }
 
-int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
+i32 Utils_GetValueFromDifficultyLevel(i32 a1, i32 a2, i32 a3, i32 a4)
 {
 	switch (DifficultyLevel)
 	{
@@ -969,17 +972,19 @@ int Utils_GetValueFromDifficultyLevel(int a1, int a2, int a3, int a4)
 }
 
 // @Ok
-int Utils_XZDist(const CVector* a1, const CVector *a2)
+i32 Utils_XZDist(const CVector* a1, const CVector *a2)
 {
-	int v2 = ((a1->vx - a2->vx) >> 12);
+	i32 v2 = ((a1->vx - a2->vx) >> 12);
 	v2 *= v2;
 
-	int v3 = ((a1->vz - a2->vz) >> 12);
+	i32 v3 = ((a1->vz - a2->vz) >> 12);
 	v3 *= v3;
 
 	return M3dMaths_SquareRoot0(v2 + v3);
 }
 
 // @MEDIUMTODO
-void Utils_RotateY(CVector*, CVector*, int)
-{}
+void Utils_RotateY(CVector*, CVector*, i32)
+{
+	printf("void Utils_RotateY(CVector*, CVector*, i32)");
+}

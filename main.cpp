@@ -553,7 +553,7 @@ int main()
 #endif
 }
 
-void DoAssert(u8 cond, const char* str)
+void DoAssert(u8 cond, const char* str, ...)
 {
 	if (!cond)
 		puts(str);

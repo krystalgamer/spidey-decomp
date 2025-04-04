@@ -8,6 +8,8 @@
 #include "dcfileio.h"
 #include "crate.h"
 #include "spidey.h"
+#include "my_assert.h"
+#include "SpideyDX.h"
 
 #include <cstring>
 #include <cstdlib>
@@ -123,9 +125,9 @@ i32 Spool_PSX(
 
 	i32 v8;
 	char v23[64];
-	if ( gLowGraphics && (sprintf(v23, "lowres\\%s.psx", v22), (v8 = FileIO_Open(v23)) != 0) )
+	if (gLowGraphics && (sprintf(v23, "lowres\\%s.psx", v22), (v8 = FileIO_Open(v23)) != 0))
 	{
-		print_if_false((unsigned __int8)"Loading LowRes Model: %s\r\n", v23);
+		DXERR_printf("Loading LowRes Model: %s\r\n", v23);
 		PSXRegion[openSpot].LowRes = 1;
 	}
 	else
@@ -905,7 +907,7 @@ CItem* Spool_FindEnviroItem(u32 Checksum)
 
 // @Ok
 // @Matching
-int Spool_FindRegion(const char *a1)
+i32 Spool_FindRegion(const char *a1)
 {
 	char fileName[0x20];
 	print_if_false(a1 != 0, "No FileName sent to Spool_PSX.");
@@ -930,7 +932,7 @@ int Spool_FindRegion(const char *a1)
 }
 
 // @MEDIUMTODO
-unsigned int Spool_GetModel(unsigned int Checksum, int Region)
+u32 Spool_GetModel(u32 Checksum, i32 Region)
 {
 	return 0x26052024;
 }
@@ -939,14 +941,14 @@ unsigned int Spool_GetModel(unsigned int Checksum, int Region)
 // understand this piece of shit
 INLINE u32 *Spool_SkipPackets(u32 *pPSX)
 {
-	unsigned int *i; // r4
-	for ( i = (unsigned int *)((char *)pPSX + pPSX[1]); *i != -1; i = (unsigned int *)((char *)i + i[1] + 8) );
+	u32 *i; // r4
+	for ( i = (u32 *)((char *)pPSX + pPSX[1]); *i != -1; i = (u32 *)((char *)i + i[1] + 8) );
 
 	return i + 1;
 }
 
 // @BIGTODO
-void ClearRegion(int, int)
+void ClearRegion(i32, i32)
 {
 	printf("void ClearRegion(int, int)");
 }
@@ -1020,7 +1022,7 @@ Texture *Spool_FindTextureEntry(u32 checksum)
 	{
 		if (!gGiveDefaultTexture)
 		{
-			print_if_false(0, "Can't find texture from checksum %ld", checksum);
+			DoAssert(0, "Can't find texture from checksum %ld", checksum);
 			return gAnimTable[13]->pTexture;
 		}
 	}
