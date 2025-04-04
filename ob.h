@@ -192,7 +192,7 @@ public:
 	EXPORT void SetOutlineSemiTransparent(void);
 	EXPORT void SetOutlineRGB(u8, u8, u8);
 	EXPORT void UpdateFrame(void);
-	EXPORT void CycleAnim(i32, char a3);
+	EXPORT void CycleAnim(i32, i8 a3);
 	EXPORT void ApplyPose(i16 *a2);
 	EXPORT void RunAnim(i32, i32, i32);
 

@@ -25,21 +25,22 @@
 
 #include <cstdio>
 
-#ifndef _WIN32
-#define __int16 short
-#define __int8 char
-#endif
-
 typedef unsigned char u8;
-typedef unsigned __int16 u16;
+typedef unsigned short u16;
 typedef unsigned int u32;
 
-typedef char i8;
-typedef __int16 i16;
-typedef int i32;
+typedef signed char i8;
+typedef signed short i16;
+typedef signed int i32;
 
 typedef float f32;
 typedef double f64;
+
+#ifndef _WIN32
+#define __int16 i16
+#define __int8 i8
+#endif
+
 
 #ifdef _WIN32
 #define INLINE __inline
