@@ -726,14 +726,8 @@ void validate_CBody(void){
 	VALIDATE_VTABLE(CBody, DeleteStuff, 4);
 }
 
-void validate_CSuper(void){
-
-	/*
-		unsigned char field_13E;
-	unsigned char field_13F;
-	unsigned char field_142;
-	__int16 field_148;
-	*/
+void validate_CSuper(void)
+{
 
 	VALIDATE_SIZE(CSuper, 0x1A4);
 	

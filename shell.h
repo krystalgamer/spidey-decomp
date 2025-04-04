@@ -12,18 +12,21 @@ EXPORT extern CBody *MiscList;
 struct SRecordRelated
 {
 	char* pName;
-	u8 padAfter0[2];
+
+	PADDING(2);
 
 	u8 field_6;
-	u8 padAfter6[1];
+
+	PADDING(1);
 
 	i8 field_8;
 	i8 field_9;
-	u8 padAfter9[0xC-0x9-1];
+
+	PADDING(0xC-0x9-1);
 
 	i8 field_C;
 
-	u8 padBottom[0x10-0xC-1];
+	PADDING(0x10-0xC-1);
 };
 
 struct SScore
@@ -56,16 +59,17 @@ struct SSaveGame
 
 	// @FIXME: figure proper size
 	char field_3F[1];
-	u8 padAfter3F[0x54-0x3F-1];
+
+	PADDING(0x54-0x3F-1);
 
 	i8 mDifficulty;
-	u8 padAfter54[0x7B-0x54-1];
+	PADDING(0x7B-0x54-1);
 
 	u8 field_7B;
-	u8 padAfter7B[0x88-0x7B-1];
+	PADDING(0x88-0x7B-1);
 
 	i32 field_88;
-	u8 padBottom[0xBC-0x88-4];
+	PADDING(0xBC-0x88-4);
 };
 
 class CWobblyGlow : public CGlow
@@ -87,9 +91,9 @@ class CShellMysterioHeadGlow : public CWobblyGlow
 		EXPORT CShellMysterioHeadGlow(void);
 		EXPORT virtual void Move(void);
 
-		unsigned __int16 field_A4;
+		u16 field_A4;
 
-		unsigned char padBottom[0xA8-0xA4-2];
+		PADDING(0xA8-0xA4-2);
 };
 
 class CRudeWordHitterSpidey : public CSuper
@@ -107,30 +111,34 @@ class CDummy : public CSuper {
 public:
 	EXPORT void FadeBack(void);
 	EXPORT void FadeAway(void);
-	EXPORT void SelectNewTrack(int);
+	EXPORT void SelectNewTrack(i32);
 	EXPORT void SelectNewAnim(void);
 
 	u16* field_1A4;
 	u16* field_1A8;
 	u16* field_1AC;
 
-	u8 padAfter1AC[0x1B8-0x1AC-4];
+	PADDING(0x1B8-0x1AC-4);
 
 	u16* field_1B8;
 	u16* field_1BC;
 	i32 field_1C0;
 
-	u8 padAfter1BC[0x1F8-0x1C0-4];
+	PADDING(0x1F8-0x1C0-4);
 
 
 	i32 field_1F8;
 	i32 field_1FC;
-	unsigned char padAfter1FC[0x240-0x1FC-4];
+
+	PADDING(0x240-0x1FC-4);
 
 	CItem field_240;
-	unsigned char padAfter240[0x288 - 0x240 - sizeof(CItem)];
+
+	PADDING(0x288 - 0x240 - sizeof(CItem));
+
 	CItem field_288;
-	unsigned char padAfter288[0x2d4 - 0x288 - sizeof(CItem)];
+
+	PADDING(0x2d4 - 0x288 - sizeof(CItem));
 
 
 	CVector field_2D4[4];

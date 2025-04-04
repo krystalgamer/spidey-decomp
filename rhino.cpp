@@ -602,7 +602,7 @@ INLINE void CRhino::PlaySingleAnim(u32 a2, i32 a3, i32 a4)
 
 // @NotOk
 // globals
-CRhino::CRhino(i16* a2, int a3)
+CRhino::CRhino(i16* a2, i32 a3)
 {
 	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 	this->InitItem("rhino");
@@ -696,24 +696,24 @@ CRhinoNasalSteam::CRhinoNasalSteam(CVector* a2, CVector* a3)
 void CRhinoNasalSteam::Move(void)
 {
 
-	__int16 mAnimSpeed = this->mAnimSpeed;
+	i16 mAnimSpeed = this->mAnimSpeed;
 
 	if (mAnimSpeed)
 	{
-		unsigned __int16 v3 = (this->mFrame << 8) | this->mFrameFrac;
-		unsigned __int16 v4 = mAnimSpeed + v3;
+		u16 v3 = (this->mFrame << 8) | this->mFrameFrac;
+		u16 v4 = mAnimSpeed + v3;
 
 		this->mFrameFrac = v4;
 		v4 >>= 8;
 		this->mFrame = v4;
 
-		if ( (char)v4 >= (int)this->mNumFrames)
+		if ( (char)v4 >= (i32)this->mNumFrames)
 		{
 			this->mAnimSpeed = 0;
 			this->mFrame = this->mNumFrames - 1;
 		}
 
-		int index = this->mFrame;
+		i32 index = this->mFrame;
 		this->mpPSXFrame = &this->mpPSXAnim[index];
 	}
 

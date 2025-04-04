@@ -1105,7 +1105,7 @@ void __inline CDummy::FadeBack(void)
 	this->field_1F8 = 0;
 }
 
-static const __int16 *word_610C48 = (__int16*)0x610C48;
+static const i16 *word_610C48 = (i16*)0x610C48;
 
 // @NotOk
 // Global

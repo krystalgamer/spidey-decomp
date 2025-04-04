@@ -55,22 +55,26 @@ public:
 	EXPORT void StompGround(void);
 	EXPORT void StuckInWall(void);
 
-	unsigned char padTop[0x344 - 0x324];
+	PADDING(0x344 - 0x324);
+
 	i32 field_344;
-	u8 padAfter344[0x358-0x344-4];
+
+	PADDING(0x358-0x344-4);
 
 	i32 field_358;
-	u8 padAfter358[0x388-0x358-4];
+
+	PADDING(0x388-0x358-4);
 
 	i32 field_388;
-	u8 padAfter88[0x3E0-0x388-4];
+
+	PADDING(0x3E0-0x388-4);
 
 	u32 field_3E0;
 	u32 field_3E4[5];
 	u32 field_3F8[5];
 	u32 field_40C[5];
 
-	u8 padBottom[0x424-0x420];
+	PADDING(0x424-0x420);
 };
 
 class CRhinoNasalSteam : public CFlatBit
@@ -85,7 +89,7 @@ void validate_CRhino(void);
 void validate_SRhinoData(void);
 void validate_CRhinoNasalSteam(void);
 
-EXPORT void Rhino_CreateRhino(const unsigned int *stack, unsigned int *result);
+EXPORT void Rhino_CreateRhino(const u32 *stack, u32 *result);
 EXPORT void Rhino_RelocatableModuleClear(void);
 EXPORT void Rhino_RelocatableModuleInit(reloc_mod *);
 

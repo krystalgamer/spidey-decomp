@@ -265,7 +265,7 @@ public:
 	i32 field_194;
 	i32 field_198;
 
-	u8 padCsuperBottom[0x8];
+	PADDING(0x8);
 };
 
 

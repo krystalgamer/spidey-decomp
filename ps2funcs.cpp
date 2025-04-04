@@ -87,7 +87,7 @@ void gte_ldv0(const SVECTOR* a1){
 }
 
 // @Ok
-void __inline FixedXForm(__int16 matrix[3][3], const VECTOR* a, VECTOR *r){
+EXPORT void INLINE FixedXForm(i16 matrix[3][3], const VECTOR* a, VECTOR *r){
 
 	int x = a->vx;
 	int y = a->vy;
@@ -100,8 +100,8 @@ void __inline FixedXForm(__int16 matrix[3][3], const VECTOR* a, VECTOR *r){
 }
 
 // @Ok
-void gte_rtv0tr(void){
-
+void gte_rtv0tr(void)
+{
 	FixedXForm(gRotMatrix, (VECTOR*)&vertexRegister[0], &gGeneralLongVector);
 
 	gGeneralLongVector.vx += translationVector.vx >> 12;
