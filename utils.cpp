@@ -778,7 +778,7 @@ i32 Utils_LineOfSight(
 // @Ok
 int catan(int a1)
 {
-	 return (atan((double)a1 / 4096.0) * 651.0006103515625);
+	 return (atan((f64)a1 / 4096.0) * 651.0006103515625);
 }
 
 // @Ok

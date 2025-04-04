@@ -457,7 +457,7 @@ int M3dMaths_SquareRoot0(int i){
         return 0;
     }
 
-	volatile double tmp = i;
+	volatile f64 tmp = i;
 	return (int)sqrt(tmp);
 }
 
@@ -471,7 +471,7 @@ int M3dMaths_MulDiv64(int a1, int a2, int a3)
 		return -1;
 	}
 
-	double hope = (double)a1 * (double)a2 / (double)a3;
+	f64 hope = (f64)a1 * (f64)a2 / (f64)a3;
 	print_if_false(hope <= 2147483647.0, "hope<=INT_MAX");
 	print_if_false(hope >= -2147483648.0, "hope>=INT_MIN");
 	return (int)hope;
@@ -573,7 +573,7 @@ int ratan2(int x, int y)
 		}
 	}
 
-	return atan2((double)x, (double)y) * 651.0006103515625;
+	return atan2((f64)x, (f64)y) * 651.0006103515625;
 
 }
 
@@ -601,7 +601,7 @@ INLINE void DCInitSinCosTable(void)
 {
 	for (i32 i = 0; i < FLATBIT_VELOCITIES_SIZE; i++)
 	{
-		double v9 = (double)i * 0.001536096911877394;
+		f64 v9 = (f64)i * 0.001536096911877394;
 		rcossin_tbl[i].sin = sin(v9) * 4096.0;
 		rcossin_tbl[i].cos = cos(v9) * 4096.0;
 	}

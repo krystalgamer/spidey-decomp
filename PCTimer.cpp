@@ -14,10 +14,10 @@ EXPORT u32 gTimerInitTwo;
 #endif
 EXPORT LPTIMECALLBACK fptc;
 
-EXPORT double gTimerMsInterval;
+EXPORT f64 gTimerMsInterval;
 
 EXPORT STimerInfo gTimerInfo;
-EXPORT double gTimerVblankRelated;
+EXPORT f64 gTimerVblankRelated;
 
 // @FIXME
 #ifndef _WIN32
@@ -122,7 +122,7 @@ void PCTIMER_Init(void)
 
 	gTimerInfo.uTimerID = timeSetEvent(uDelay, uResolution, fptc, (DWORD)&gTimerInfo, 1);
 
-	gTimerMsInterval = (double)gTimerInfo.field_4 * 60.0 / 1000.0;
+	gTimerMsInterval = (f64)gTimerInfo.field_4 * 60.0 / 1000.0;
 	timeBeginPeriod(gTimerInfo.uPeriod);
 
 	onexit(PCTIMER_Kill);
@@ -168,7 +168,7 @@ void CALLBACK TimerCallback(
 
 	if (!gPcTimerPaused)
 	{
-		gTimerMsInterval = (double)pTimeInfo->field_4 * 60.0 / 1000.0;
+		gTimerMsInterval = (f64)pTimeInfo->field_4 * 60.0 / 1000.0;
 		pTimeInfo->field_C += pTimeInfo->field_4;
 		gTimerVblankRelated += gTimerMsInterval;
 
