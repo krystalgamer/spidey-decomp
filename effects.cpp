@@ -92,7 +92,7 @@ CBouncingRock::CBouncingRock(
 		if ( a4 == 0x3288E271 )
 		{
 			this->SetTexture(*reinterpret_cast<Texture **>(gTextureRelated + 20));
-			this->mAngFric = 0;
+			this->mSemiTransparencyRate = 0;
 		}
 	}
 	else

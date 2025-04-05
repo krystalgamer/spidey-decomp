@@ -197,11 +197,11 @@ public:
 
 	PADDING(0x2);
 
-	u16 field_5E;
+	u16 mAngFric;
 	u32 mPostScale;
 
 	PADDING(1);
-	u8 mAngFric;
+	u8 mSemiTransparencyRate;
 };
 
 class CNonRenderedBit : public CBit {
