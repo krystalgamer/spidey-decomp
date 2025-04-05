@@ -468,6 +468,7 @@ i32 DXINPUT_PollMouse(i32 *,i32 *)
 // @Matching
 void DXINPUT_Release(void)
 {
+#ifdef _WIN32
 	if (g_pKeyboard)
 	{
 		g_pKeyboard->Unacquire();
@@ -503,6 +504,7 @@ void DXINPUT_Release(void)
 
 	gDxInputRelated = 0;
 	gNumControllerButtons = 0;
+#endif
 }
 
 // @Ok
@@ -620,11 +622,13 @@ i32 DXINPUT_SetupMouse(i32 exclusive)
 // @Matching
 i32 DXINPUT_StartForceFeedbackEffect(void)
 {
+#ifdef _WIN32
 	if (gDxInputRelated && gControllerRelated && gForceFeedbackRelated)
 	{
 		gForceFeedbackRelated->Start(1, DIES_NODOWNLOAD);
 		return 1;
 	}
+#endif
 
 	return 0;
 }
@@ -633,11 +637,13 @@ i32 DXINPUT_StartForceFeedbackEffect(void)
 // @Matching
 INLINE i32 DXINPUT_StopForceFeedbackEffect(void)
 {
+#ifdef _WIN32
 	if (gDxInputRelated && gControllerRelated && gForceFeedbackRelated)
 	{
 		gForceFeedbackRelated->Stop();
 		return 1;
 	}
+#endif
 
 	return 0;
 }
@@ -1146,6 +1152,7 @@ INLINE void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
 // @Matching
 void DXSOUND_Close(i32 a1)
 {
+#ifdef _WIN32
 	if (gDxSoundHolder[a1].pDSB)
 	{
 		HRESULT hr = gDxSoundHolder[a1].pDSB->Release();
@@ -1157,6 +1164,7 @@ void DXSOUND_Close(i32 a1)
 		gDxSoundHolder[a1].field_8 = 0;
 		gDxSoundHolder[a1].field_9 = 0;
 	}
+#endif
 }
 
 // @MEDIUMTODO
@@ -1169,6 +1177,7 @@ void DXSOUND_CreateDSBuffer(char *,i32)
 // @Matching
 void DXSOUND_Init(void)
 {
+#ifdef _WIN32
 	DSBUFFERDESC v6;
 
 	memset(gDxSomething, 0, sizeof(gDxSomething));
@@ -1187,6 +1196,7 @@ void DXSOUND_Init(void)
 
 	hr = g_pDSBuffer->Play(0, 0, 1);
 	DS_ERROR_LOG_AND_QUIT(hr);
+#endif
 }
 
 // @Ok
@@ -1194,6 +1204,8 @@ void DXSOUND_Init(void)
 i32 DXSOUND_IsPlaying(i32 a1)
 {
 	DWORD v5 = 0;
+
+#ifdef _WIN32
 
 	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
 	if (!pDSB)
@@ -1205,6 +1217,7 @@ i32 DXSOUND_IsPlaying(i32 a1)
 	HRESULT hr = pDSB->GetStatus(&v5);
 
 	DS_ERROR_LOG_AND_QUIT(hr);
+#endif
 
 	return v5 & 4;
 }
@@ -1225,6 +1238,7 @@ void DXSOUND_Open(i32,i32,i32)
 // @Matching
 void DXSOUND_Play(i32 a1, i32 a2)
 {
+#ifdef _WIN32
 	if (gDxSoundHolder[a1].pDSB)
 	{
 		gDxSoundHolder[a1].field_8 = 0;
@@ -1233,24 +1247,28 @@ void DXSOUND_Play(i32 a1, i32 a2)
 		HRESULT hr = gDxSoundHolder[a1].pDSB->Play(0, 0, a2 != 0);
 		DS_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXSOUND_SetPan(i32 a1,i32 a2)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
 	if (pDSB)
 	{
 		HRESULT hr = pDSB->SetPan(645 * a2 - 10000);
 		DS_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXSOUND_SetPitch(i32 a1, i32 a2)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
 	if (pDSB)
 	{
@@ -1258,40 +1276,47 @@ void DXSOUND_SetPitch(i32 a1, i32 a2)
 		HRESULT hr = pDSB->SetFrequency(res);
 		DS_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXSOUND_SetVolume(i32 a1,i32 a2)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
 	if (pDSB)
 	{
 		HRESULT hr = pDSB->SetVolume(39 * (a2 - 255));
 		DS_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 // @Ok
 // @Matching
 void DXSOUND_ShutDown(void)
 {
+#ifdef _WIN32
 	HRESULT hr = g_pDSBuffer->Stop();
 	DS_ERROR_LOG_AND_QUIT(hr);
 
 	DXSOUND_Unload(0, 1);
+#endif
 }
 
 // @Ok
 // @Matching
 void DXSOUND_Stop(i32 a1)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
 	if (pDSB)
 	{
 		HRESULT hr = pDSB->Stop();
 		DS_ERROR_LOG_AND_QUIT(hr);
 	}
+#endif
 }
 
 
