@@ -607,11 +607,17 @@ i32 DXINPUT_SetupMouse(i32 exclusive)
 	return 1;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 i32 DXINPUT_StartForceFeedbackEffect(void)
 {
-    printf("DXINPUT_StartForceFeedbackEffect(void)");
-	return 0x23082024;
+	if (gDxInputRelated && gControllerRelated && gForceFeedbackRelated)
+	{
+		gForceFeedbackRelated->Start(1, DIES_NODOWNLOAD);
+		return 1;
+	}
+
+	return 0;
 }
 
 // @Ok
