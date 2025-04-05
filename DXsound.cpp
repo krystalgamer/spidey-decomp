@@ -1265,10 +1265,14 @@ void DXSOUND_SetVolume(i32 a1,i32 a2)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DXSOUND_ShutDown(void)
 {
-    printf("DXSOUND_ShutDown(void)");
+	HRESULT hr = g_pDSBuffer->Stop();
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	DXSOUND_Unload(0, 1);
 }
 
 // @Ok
