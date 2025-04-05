@@ -1189,10 +1189,24 @@ void DXSOUND_Init(void)
 	DS_ERROR_LOG_AND_QUIT(hr);
 }
 
-// @SMALLTODO
-i32 DXSOUND_IsPlaying(i32)
+// @Ok
+// @Matching
+i32 DXSOUND_IsPlaying(i32 a1)
 {
-	return 0x26032025;
+	DWORD v5 = 0;
+
+	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
+	if (!pDSB)
+		return 0;
+
+	if (gDxSoundHolder[a1].field_8)
+		return 1;
+
+	HRESULT hr = pDSB->GetStatus(&v5);
+
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	return v5 & 4;
 }
 
 // @SMALLTODO
