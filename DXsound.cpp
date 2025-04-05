@@ -1235,10 +1235,16 @@ void DXSOUND_Play(i32 a1, i32 a2)
 	}
 }
 
-// @SMALLTODO
-void DXSOUND_SetPan(i32,i32)
+// @Ok
+// @Matching
+void DXSOUND_SetPan(i32 a1,i32 a2)
 {
-    printf("DXSOUND_SetPan(i32,i32)");
+	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
+	if (pDSB)
+	{
+		HRESULT hr = pDSB->SetPan(645 * a2 - 10000);
+		DS_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @SMALLTODO
