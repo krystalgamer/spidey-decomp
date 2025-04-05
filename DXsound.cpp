@@ -1247,10 +1247,17 @@ void DXSOUND_SetPan(i32 a1,i32 a2)
 	}
 }
 
-// @SMALLTODO
-void DXSOUND_SetPitch(i32,i32)
+// @Ok
+// @Matching
+void DXSOUND_SetPitch(i32 a1, i32 a2)
 {
-    printf("DXSOUND_SetPitch(i32,i32)");
+	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
+	if (pDSB)
+	{
+		i32 res = (i32)(static_cast<f32>(a2) / 1200.f * static_cast<f32>(gDxSoundHolder[a1].mFrequency));
+		HRESULT hr = pDSB->SetFrequency(res);
+		DS_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @Ok

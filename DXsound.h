@@ -48,7 +48,7 @@ struct SDDXSoundHolder
 {
 	LPDIRECTSOUNDBUFFER pDSB;
 
-	u32 mFrequency;
+	i32 mFrequency;
 
 	u8 field_8;
 	u8 field_9;
