@@ -45,6 +45,9 @@ EXPORT D3DCOLOR gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
 // @Ok
+EXPORT SDDXSoundHolder gDxSoundHolder[0x20];
+
+// @Ok
 EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
 
 // @Ok
@@ -1133,10 +1136,21 @@ INLINE void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
 #endif
 }
 
-// @SMALLTODO
-void DXSOUND_Close(i32)
+// @Ok
+// @Matching
+void DXSOUND_Close(i32 a1)
 {
-    printf("DXSOUND_Close(i32)");
+	if (gDxSoundHolder[a1].pDSB)
+	{
+		HRESULT hr = gDxSoundHolder[a1].pDSB->Release();
+
+		DS_ERROR_LOG_AND_QUIT(hr);
+
+		gDxSoundHolder[a1].pDSB = 0;
+		gDxSoundHolder[a1].mFrequency = 0;
+		gDxSoundHolder[a1].field_8 = 0;
+		gDxSoundHolder[a1].field_9 = 0;
+	}
 }
 
 // @MEDIUMTODO
