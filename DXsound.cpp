@@ -455,7 +455,8 @@ i32 DXINPUT_PollMouse(i32 *,i32 *)
 	return 0x23082024;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DXINPUT_Release(void)
 {
 	if (g_pKeyboard)
@@ -481,6 +482,7 @@ void DXINPUT_Release(void)
 
 	if (gForceFeedbackRelated)
 	{
+		DXINPUT_StopForceFeedbackEffect();
 		gForceFeedbackRelated->Release();
 		gForceFeedbackRelated = 0;
 	}
