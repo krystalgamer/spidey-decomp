@@ -56,6 +56,11 @@ struct SDDXSoundHolder
 	PADDING(2);
 };
 
+struct SDxSomething
+{
+	PADDING(0x10);
+};
+
 
 EXPORT u8 DXINPUT_GetControllerButtonState(u8);
 EXPORT u8 DXINPUT_GetKeyState(u8);
@@ -120,5 +125,7 @@ void validate_DXsound(void);
 void validate_DXPOLY(void);
 void validate_SDXPolyField(void);
 void validate_SDXSoundHolder(void);
+void validate_SDxSomething(void);
+void validate_DSBUFFERDESC(void);
 
 #endif

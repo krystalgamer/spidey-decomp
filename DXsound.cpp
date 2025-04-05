@@ -45,6 +45,12 @@ EXPORT D3DCOLOR gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
 // @Ok
+EXPORT LPDIRECTSOUNDBUFFER g_pDSBuffer;
+
+// @Ok
+EXPORT SDxSomething gDxSomething[0x20];
+
+// @Ok
 EXPORT SDDXSoundHolder gDxSoundHolder[0x20];
 
 // @Ok
@@ -1159,10 +1165,28 @@ void DXSOUND_CreateDSBuffer(char *,i32)
     printf("DXSOUND_CreateDSBuffer(char *,i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DXSOUND_Init(void)
 {
-    printf("DXSOUND_Init(void)");
+	DSBUFFERDESC v6;
+
+	memset(gDxSomething, 0, sizeof(gDxSomething));
+	memset(gDxSoundHolder, 0, sizeof(gDxSoundHolder));
+	memset(&v6, 0, sizeof(v6));
+
+	v6.dwBufferBytes = 0;
+	v6.dwSize = sizeof(v6);
+	v6.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_PRIMARYBUFFER;
+
+	HRESULT hr = g_pDS->CreateSoundBuffer(&v6, &g_pDSBuffer, 0);
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	hr = g_pDSBuffer->SetVolume(0);
+	DS_ERROR_LOG_AND_QUIT(hr);
+
+	hr = g_pDSBuffer->Play(0, 0, 1);
+	DS_ERROR_LOG_AND_QUIT(hr);
 }
 
 // @SMALLTODO
@@ -1363,4 +1387,20 @@ void validate_SDXSoundHolder(void)
 
 	VALIDATE(SDDXSoundHolder, field_8, 0x8);
 	VALIDATE(SDDXSoundHolder, field_9, 0x9);
+}
+
+void validate_SDxSomething(void)
+{
+	VALIDATE_SIZE(SDxSomething, 0x10);
+}
+
+void validate_DSBUFFERDESC(void)
+{
+#ifdef _WIN32
+	VALIDATE_SIZE(DSBUFFERDESC, 36);
+
+	VALIDATE(DSBUFFERDESC, dwSize, 0x0);
+	VALIDATE(DSBUFFERDESC, dwFlags, 0x4);
+	VALIDATE(DSBUFFERDESC, dwBufferBytes, 0x8);
+#endif
 }

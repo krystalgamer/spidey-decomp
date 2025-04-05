@@ -6,7 +6,7 @@
 
 #include "validate.h"
 
-// @OK
+// @Ok
 // @Test
 void CGPolyLine::SetStartAndEnd(
 		CVector *pStart,

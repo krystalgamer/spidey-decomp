@@ -19,7 +19,7 @@ void Mem_AlignedDelete(void *p)
 	Mem_Delete(p);
 }
 
-// @OK
+// @Ok
 // @CM: Different register allocation
 // but code matches perfect :D
 void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
