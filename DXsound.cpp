@@ -1221,10 +1221,18 @@ void DXSOUND_Open(i32,i32,i32)
     printf("DXSOUND_Open(i32,i32,i32)");
 }
 
-// @SMALLTODO
-void DXSOUND_Play(i32,i32)
+// @Ok
+// @Matching
+void DXSOUND_Play(i32 a1, i32 a2)
 {
-    printf("DXSOUND_Play(i32,i32)");
+	if (gDxSoundHolder[a1].pDSB)
+	{
+		gDxSoundHolder[a1].field_8 = 0;
+		gDxSoundHolder[a1].field_9 = a2 != 0;
+
+		HRESULT hr = gDxSoundHolder[a1].pDSB->Play(0, 0, a2 != 0);
+		DS_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @SMALLTODO
