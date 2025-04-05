@@ -1257,11 +1257,18 @@ void DXSOUND_ShutDown(void)
     printf("DXSOUND_ShutDown(void)");
 }
 
-// @SMALLTODO
-void DXSOUND_Stop(i32)
+// @Ok
+// @Matching
+void DXSOUND_Stop(i32 a1)
 {
-    printf("DXSOUND_Stop(i32)");
+	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
+	if (pDSB)
+	{
+		HRESULT hr = pDSB->Stop();
+		DS_ERROR_LOG_AND_QUIT(hr);
+	}
 }
+
 
 // @SMALLTODO
 void DXSOUND_Unload(char *,i32)
