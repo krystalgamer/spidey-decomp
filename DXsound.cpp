@@ -44,14 +44,28 @@ EXPORT f32 gFlHudOffset = 1.0f;
 EXPORT D3DCOLOR gDxPolyBackgroundColor = 0x0FF000000;
 EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 
+// @Ok
 EXPORT LPDIRECTINPUTDEVICE8A g_pKeyboard;
-EXPORT LPDIRECTINPUTDEVICE8A g_pMouse;
-EXPORT i32 gControllerRelated;
-EXPORT i32 gForceFeedbackRelated;
 
+// @Ok
+EXPORT LPDIRECTINPUTDEVICE8A g_pMouse;
+
+//@Ok
+EXPORT LPDIRECTINPUTDEVICE8A gControllerRelated;
+
+// @Ok
+EXPORT LPDIRECTINPUTEFFECT gForceFeedbackRelated;
+
+// @Ok
 EXPORT i32 gNumControllerButtons;
+
+// @Ok
 EXPORT u8 gKeyState[0x100];
+
+// @Ok
 EXPORT u8 gControllerButtonState[0x20];
+
+// @Ok
 EXPORT u8 gMouseButtonState[3];
 
 EXPORT char* gDxKeyNames[0x100] = 
@@ -315,8 +329,12 @@ EXPORT char* gDxKeyNames[0x100] =
 };
 
 
-LPDIRECTINPUT8 g_pDI;
+// @Ok
+EXPORT LPDIRECTINPUT8 g_pDI;
+
+// @Ok
 EXPORT HWND gDxInputHwnd;
+
 EXPORT u8 gDxInputRelated;
 
 // @Ok
@@ -440,7 +458,40 @@ i32 DXINPUT_PollMouse(i32 *,i32 *)
 // @SMALLTODO
 void DXINPUT_Release(void)
 {
-    printf("DXINPUT_Release(void)");
+	if (g_pKeyboard)
+	{
+		g_pKeyboard->Unacquire();
+		g_pKeyboard->Release();
+		g_pKeyboard = 0;
+	}
+
+	if (g_pMouse)
+	{
+		g_pMouse->Unacquire();
+		g_pMouse->Release();
+		g_pMouse = 0;
+	}
+
+	if (gControllerRelated)
+	{
+		gControllerRelated->Unacquire();
+		gControllerRelated->Release();
+		gControllerRelated = 0;
+	}
+
+	if (gForceFeedbackRelated)
+	{
+		gForceFeedbackRelated->Release();
+		gForceFeedbackRelated = 0;
+	}
+
+	g_pDI = 0;
+	memset(gKeyState, 0, sizeof(gKeyState));
+	memset(gMouseButtonState, 0, sizeof(gMouseButtonState));
+	memset(gControllerButtonState, 0, sizeof(gControllerButtonState));
+
+	gDxInputRelated = 0;
+	gNumControllerButtons = 0;
 }
 
 // @Ok
@@ -561,11 +612,17 @@ i32 DXINPUT_StartForceFeedbackEffect(void)
 	return 0x23082024;
 }
 
-// @SMALLTODO
-i32 DXINPUT_StopForceFeedbackEffect(void)
+// @Ok
+// @Matching
+INLINE i32 DXINPUT_StopForceFeedbackEffect(void)
 {
-    printf("DXINPUT_StopForceFeedbackEffect(void)");
-	return 0x23082024;
+	if (gDxInputRelated && gControllerRelated && gForceFeedbackRelated)
+	{
+		gForceFeedbackRelated->Stop();
+		return 1;
+	}
+
+	return 0;
 }
 
 
