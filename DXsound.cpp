@@ -1239,10 +1239,16 @@ void DXSOUND_SetPitch(i32,i32)
     printf("DXSOUND_SetPitch(i32,i32)");
 }
 
-// @SMALLTODO
-void DXSOUND_SetVolume(i32,i32)
+// @Ok
+// @Matching
+void DXSOUND_SetVolume(i32 a1,i32 a2)
 {
-    printf("DXSOUND_SetVolume(i32,i32)");
+	LPDIRECTSOUNDBUFFER pDSB = gDxSoundHolder[a1].pDSB;
+	if (pDSB)
+	{
+		HRESULT hr = pDSB->SetVolume(39 * (a2 - 255));
+		DS_ERROR_LOG_AND_QUIT(hr);
+	}
 }
 
 // @SMALLTODO
