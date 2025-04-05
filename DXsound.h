@@ -44,6 +44,17 @@ struct DXPOLY
 	PADDING(0x6D);
 };
 
+struct SDDXSoundHolder
+{
+	LPDIRECTSOUNDBUFFER pDSB;
+
+	u32 mFrequency;
+
+	u8 field_8;
+	u8 field_9;
+
+	PADDING(2);
+};
 
 
 EXPORT u8 DXINPUT_GetControllerButtonState(u8);
@@ -108,5 +119,6 @@ EXPORT extern LPDIRECTINPUT8 g_pDI;
 void validate_DXsound(void);
 void validate_DXPOLY(void);
 void validate_SDXPolyField(void);
+void validate_SDXSoundHolder(void);
 
 #endif

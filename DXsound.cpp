@@ -1339,3 +1339,14 @@ void validate_SDXPolyField(void)
 	VALIDATE(SDXPolyField, field_14, 0x14);
 	VALIDATE(SDXPolyField, field_18, 0x18);
 }
+
+void validate_SDXSoundHolder(void)
+{
+	VALIDATE_SIZE(SDDXSoundHolder, 0xC);
+
+	VALIDATE(SDDXSoundHolder, pDSB, 0x0);
+	VALIDATE(SDDXSoundHolder, mFrequency, 0x4);
+
+	VALIDATE(SDDXSoundHolder, field_8, 0x8);
+	VALIDATE(SDDXSoundHolder, field_9, 0x9);
+}
