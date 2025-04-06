@@ -26,7 +26,8 @@ LPDIRECTSOUND8 g_pDS;
 
 EXPORT DSCAPS gDsCaps;
 
-EXPORT u8 gD3DOptionsRelated[8004];
+// @Ok
+EXPORT DXVideoModeContext gDisplayModeContext;
 
 EXPORT u32 gDisplayDeviceIndex;
 EXPORT LPDIRECTDRAW7 lpDD;
@@ -116,10 +117,45 @@ void DXINIT_GetCurrentResolution(u32 *,u32 *)
     printf("DXINIT_GetCurrentResolution(u32 *,u32 *)");
 }
 
-// @SMALLTODO
-void DXINIT_GetNextColorDepth(u32)
+// @Ok
+// @Matching
+u32 DXINIT_GetNextColorDepth(u32 a1)
 {
-    printf("DXINIT_GetNextColorDepth(u32)");
+	u32 result = -1;
+	u32 secondResult = -1;
+#ifdef _WIN32
+	for (i32 i = 0; i < gDisplayModeContext.mNumEntries; i++)
+	{
+		if (gDisplayModeContext.mFlags[i] & 1)
+		{
+			if (gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount > a1
+					&& gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount < result)
+			{
+				result = gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount;
+			}
+		}
+
+		if (gDisplayModeContext.mFlags[i] & 1)
+		{
+			if(gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount < secondResult)
+			{
+				secondResult = gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount;
+			}
+		}
+	}
+#endif
+
+	if (result == -1)
+	{
+		result = secondResult;
+	}
+
+	if (result == -1)
+	{
+		result = 0;
+	}
+
+	return result;
 }
 
 // @SMALLTODO
@@ -266,7 +302,7 @@ INLINE void enumDisplayModes(void)
 	v123.dwSize = 124;
 	v123.ddpfPixelFormat.dwRGBBitCount = 16;
 	v123.ddsCaps.dwCaps = DDSCAPS_3DDEVICE;
-	HRESULT hr = lpDD->EnumDisplayModes(0, &v123, gD3DOptionsRelated, enumerateModesCB);
+	HRESULT hr = lpDD->EnumDisplayModes(0, &v123, &gDisplayModeContext, enumerateModesCB);
 	D3D_ERROR_LOG_AND_QUIT(hr);
 #endif
 }
@@ -553,7 +589,7 @@ void initDirectDraw7(HWND hwnd)
 	DXContext Context;
 
 	memset(&Context, 0, sizeof(Context));
-	memset(gD3DOptionsRelated, 0, sizeof(gD3DOptionsRelated));
+	memset(&gDisplayModeContext, 0, sizeof(gDisplayModeContext));
 	memset(&Guid, 0, sizeof(Guid));
 	
 	HRESULT hr = DirectDrawEnumerateEx(
@@ -880,11 +916,18 @@ void validate_SVideoMode(void)
 void validate_DXVideoModeContext(void)
 {
 #ifdef _WIN32
+
+	VALIDATE_SIZE(gDisplayModeContext, 8004);
 	VALIDATE_SIZE(DXVideoModeContext, 0x1F44);
 
 	VALIDATE(DXVideoModeContext, mNumEntries, 0x0);
 	VALIDATE(DXVideoModeContext, mSurfaces, 0x4);
 	VALIDATE(DXVideoModeContext, mFlags, 0x1F04);
+
+	VALIDATE_SIZE(DDSURFACEDESC2, 0x7C);
+	VALIDATE(DDSURFACEDESC2, dwDepth, 0x14);
+	VALIDATE(DDSURFACEDESC2, ddpfPixelFormat.dwRGBBitCount, 0x54);
+	VALIDATE(DDSURFACEDESC2, lpSurface, 0x24);
 #endif
 }
 
