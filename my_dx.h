@@ -16,6 +16,7 @@
 
 #else
 
+typedef void* IDirectSoundBuffer;
 typedef void* LPDIRECTSOUNDBUFFER;
 typedef void* LPDIRECTINPUTEFFECT;
 typedef i32 _DDPIXELFORMAT;
