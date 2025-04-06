@@ -243,10 +243,21 @@ void debugSettings(void)
     printf("debugSettings(void)");
 }
 
-// @SMALLTODO
-void mipmapOffset(u32,u32,f32)
+// @Ok
+// @Matching
+i32 mipmapOffset(
+		u32 a1,
+		u32 a2,
+		f32 a3)
 {
-    printf("mipmapOffset(u32,u32,f32)");
+	if (a1 == 1 && a2 == 1)
+	{
+		return a3;
+	}
+
+	i32 v4 = mipmapOffset(a1 >> 1, a2 >> 1, a3);
+	v4 += (i32)((a2 * a1) * a3);
+	return v4;
 }
 
 // @PowerPC
