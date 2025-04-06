@@ -2,6 +2,7 @@
 #include "main.h"
 #include "PCTimer.h"
 #include "DXinit.h"
+#include "pcdcPad.h"
 
 #include "stdarg.h"
 #include <cstdio>
@@ -96,10 +97,13 @@ void SPIDEYDX_SaveSettings(void)
     printf("SPIDEYDX_SaveSettings(void)");
 }
 
-// @SMALLTODO
-void SPIDEYDX_Shutdown(void)
+// @Ok
+// @Matching
+INLINE void SPIDEYDX_Shutdown(void)
 {
-    printf("SPIDEYDX_Shutdown(void)");
+	pdExitPeripheral();
+	PCTIMER_Kill();
+	DXINIT_ShutDown();
 }
 
 // @Ok
