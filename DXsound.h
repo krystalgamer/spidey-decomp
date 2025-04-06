@@ -56,12 +56,6 @@ struct SDDXSoundHolder
 	PADDING(2);
 };
 
-struct SDxSomething
-{
-	PADDING(0x10);
-};
-
-
 EXPORT u8 DXINPUT_GetControllerButtonState(u8);
 EXPORT u8 DXINPUT_GetKeyState(u8);
 EXPORT u8 DXINPUT_GetMouseButtonState(u8);

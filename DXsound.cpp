@@ -48,7 +48,7 @@ EXPORT u32 gDxOutlineColor = 0x0FF00FF00;
 EXPORT LPDIRECTSOUNDBUFFER g_pDSBuffer;
 
 // @Ok
-EXPORT SDxSomething gDxSomething[0x20];
+EXPORT IDirectSoundBuffer* gDxSoundBuffers[0x80];
 
 // @Ok
 EXPORT SDDXSoundHolder gDxSoundHolder[0x20];
@@ -1180,7 +1180,7 @@ void DXSOUND_Init(void)
 #ifdef _WIN32
 	DSBUFFERDESC v6;
 
-	memset(gDxSomething, 0, sizeof(gDxSomething));
+	memset(gDxSoundBuffers, 0, sizeof(gDxSoundBuffers));
 	memset(gDxSoundHolder, 0, sizeof(gDxSoundHolder));
 	memset(&v6, 0, sizeof(v6));
 
@@ -1228,10 +1228,34 @@ void DXSOUND_Load(char *)
     printf("DXSOUND_Load(char *)");
 }
 
-// @SMALLTODO
-void DXSOUND_Open(i32,i32,i32)
+// @Ok
+// @Matching
+void DXSOUND_Open(
+		i32 a1,
+		i32 a2,
+		i32 a3)
 {
-    printf("DXSOUND_Open(i32,i32,i32)");
+#ifdef _WIN32
+	if (g_pDS)
+	{
+		if (a3)
+			a2 += 0x40;
+
+		IDirectSoundBuffer *v3 = gDxSoundBuffers[a2];
+
+		if (v3)
+		{
+			HRESULT hr = g_pDS->DuplicateSoundBuffer(v3, &gDxSoundHolder[a1].pDSB);
+			DS_ERROR_LOG_AND_QUIT(hr);
+
+			DWORD freq;
+			hr = gDxSoundHolder[a1].pDSB->GetFrequency(&freq);
+			DS_ERROR_LOG_AND_QUIT(hr);
+
+			gDxSoundHolder[a1].mFrequency = freq;
+		}
+	}
+#endif
 }
 
 // @Ok
@@ -1468,7 +1492,7 @@ void validate_SDXSoundHolder(void)
 
 void validate_SDxSomething(void)
 {
-	VALIDATE_SIZE(SDxSomething, 0x10);
+	VALIDATE_SIZE(gDxSoundBuffers, 0x200);
 }
 
 void validate_DSBUFFERDESC(void)
