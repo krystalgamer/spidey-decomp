@@ -41,6 +41,7 @@ EXPORT i32 WINAPI RealWinMain(HINSTANCE, HINSTANCE, LPSTR, i32);
 EXPORT extern HWND gHwnd;
 
 EXPORT extern i32 gBrightnessRelated;
+EXPORT void validate_TwiddleStuff(void);
 
 
 #endif

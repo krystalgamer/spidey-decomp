@@ -521,6 +521,7 @@ i32 validate(void)
 	validate_SDXSoundHolder();
 	validate_SDxSomething();
 	validate_DSBUFFERDESC();
+	validate_TwiddleStuff();
 
 	puts("[*] Validation done!");
 
