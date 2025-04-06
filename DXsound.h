@@ -104,7 +104,7 @@ EXPORT void DXSOUND_SetVolume(i32,i32);
 EXPORT void DXSOUND_ShutDown(void);
 EXPORT void DXSOUND_Stop(i32);
 EXPORT void DXSOUND_Unload(char *,i32);
-EXPORT void EnumControllersCallback(DIDEVICEINSTANCEA const *,void *);
+EXPORT BOOL CALLBACK EnumControllersCallback(const DIDEVICEINSTANCEA *,void *);
 EXPORT void ParseWavHeader(char *,tWAVEFORMATEX **,long *,u8 **);
 EXPORT void initialSettings(void);
 EXPORT void loadWAV(char *,tWAVEFORMATEX *,long *);

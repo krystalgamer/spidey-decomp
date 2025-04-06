@@ -1382,13 +1382,35 @@ void DXSOUND_Unload(char *a1, i32 a2)
 #endif
 }
 
-// @SMALLTODO
-void EnumControllersCallback(DIDEVICEINSTANCEA const *,void *)
+// @Ok
+// @Matching
+BOOL CALLBACK EnumControllersCallback(
+		const DIDEVICEINSTANCEA *pDev,
+		void *)
 {
-    printf("EnumControllersCallback(DIDEVICEINSTANCEA const *,void *)");
+#ifdef _WIN32
+	if (FAILED(g_pDI->CreateDevice(pDev->guidInstance, &gControllerRelated, 0)))
+	{
+		return DIENUM_CONTINUE;
+	}
+
+	DIDEVCAPS v5;
+	memset(&v5, 0, sizeof(v5));
+	v5.dwSize = sizeof(v5);
+
+	HRESULT hr = gControllerRelated->GetCapabilities(&v5);
+	DI_ERROR_LOG_AND_QUIT(hr);
+
+	gDxInputRelated = !!(v5.dwFlags & DIDC_FORCEFEEDBACK);
+	gNumControllerButtons = v5.dwButtons;
+
+	return DIENUM_STOP;
+#else
+	return 0;
+#endif
 }
 
-// @SMALLTODO
+// @MEDIUMTODO
 void ParseWavHeader(char *,tWAVEFORMATEX **,long *,u8 **)
 {
     printf("ParseWavHeader(char *,tWAVEFORMATEX **,long *,u8 **)");
