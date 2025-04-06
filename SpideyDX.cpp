@@ -69,8 +69,8 @@ EXPORT u8 isMMX(void)
 
 // @Ok
 // @Validated
-// @Note: Not matching but didn't check inlined version
-void BuildTwiddleTable(void)
+// @NotMatching: Not matching but didn't check inlined version
+INLINE void BuildTwiddleTable(void)
 {
 	for (u32 i = 0; i < 1024; i++)
 	{
@@ -99,10 +99,28 @@ void CalcUntwiddledPos(u32,u32,u32,u32)
     printf("CalcUntwiddledPos(u32,u32,u32,u32)");
 }
 
-// @SMALLTODO
-void ComputeMaskShift(u32,u32,u32 *,u32 *)
+// @NotOk
+// @Validate: when inlined
+INLINE void ComputeMaskShift(
+		u32 a1,
+		u32 a2,
+		u32 *a3,
+		u32 *a4)
 {
-    printf("ComputeMaskShift(u32,u32,u32 *,u32 *)");
+	if (a2 < a1)
+	{
+		a1 = a2;
+	}
+
+	*a3 = a1 - 1;
+
+	u32 v4 = 1;
+	*a4 = 0;
+	while (*a3 & v4)
+	{
+		v4 <<= 1;
+		++*a4;
+	}
 }
 
 // @SMALLTODO
