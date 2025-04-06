@@ -43,8 +43,8 @@ struct DXContext
 EXPORT extern i32 gLowGraphics;
 EXPORT extern void* gLowGraphicsRelated;
 
-EXPORT void DXINIT_GetCurrentResolution(int *, int *);
-EXPORT void AUDIOGROUPS_GetGroup(char *);
+EXPORT void DXINIT_GetCurrentResolution(i32 *, i32 *);
+EXPORT i32 AUDIOGROUPS_GetGroup(char *);
 
 EXPORT void DXINIT_DirectX8(HWND, HINSTANCE,u32);
 EXPORT void DXINIT_GetCurrentResolution(u32 *,u32 *);

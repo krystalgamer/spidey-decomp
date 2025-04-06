@@ -1344,10 +1344,42 @@ void DXSOUND_Stop(i32 a1)
 }
 
 
-// @SMALLTODO
-void DXSOUND_Unload(char *,i32)
+// @Ok
+// @Matching
+void DXSOUND_Unload(char *a1, i32 a2)
 {
-    printf("DXSOUND_Unload(char *,i32)");
+#ifdef _WIN32
+	if (a2)
+	{
+		for (i32 i = 0; i < 0x80; i++)
+		{
+			IDirectSoundBuffer *pBuf = gDxSoundBuffers[i];
+			if (pBuf)
+			{
+				HRESULT hr = pBuf->Release();
+				DS_ERROR_LOG_AND_QUIT(hr);
+				gDxSoundBuffers[i] = 0;
+			}
+		}
+	}
+	else
+	{
+		i32 startIndex = AUDIOGROUPS_GetGroup(a1) != 1 ? 0x40 : 0;
+
+		for (i32 j = 0; j < 64; j++)
+		{
+			IDirectSoundBuffer *pBuf = gDxSoundBuffers[startIndex];
+			if (pBuf)
+			{
+				HRESULT hr = pBuf->Release();
+				DS_ERROR_LOG_AND_QUIT(hr);
+				gDxSoundBuffers[startIndex] = 0;
+			}
+
+			startIndex++;
+		}
+	}
+#endif
 }
 
 // @SMALLTODO

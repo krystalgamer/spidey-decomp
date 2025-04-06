@@ -68,9 +68,10 @@ void gsub_5027A0(void)
 }
 
 // @MEDIUMTODO
-void AUDIOGROUPS_GetGroup(char *)
+i32 AUDIOGROUPS_GetGroup(char *)
 {
     printf("AUDIOGROUPS_GetGroup(char *)");
+	return 0x06042025;
 }
 
 // @Ok
