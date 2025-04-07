@@ -955,10 +955,41 @@ void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,f32)
 }
 
 // @SMALLTODO
-CSuper* createSuperItem(CItem *)
+CSuper* createSuperItem(CItem *pItem)
 {
-    printf("createSuperItem(CItem *)");
-	return (CSuper*)0x30092024;
+	CSuper *pSuper = new CSuper();
+
+	pSuper->mFlags |= pItem->mFlags;
+	pSuper->mInquiry = pItem->mInquiry;
+
+	pSuper->mPos = pItem->mPos;
+
+
+	pSuper->mAngles = pItem->mAngles;
+
+	pSuper->mModel = pItem->mModel;
+
+	/*
+	pSuper->cbody.citem.gap1C[0] = pItem->gap1C[0];
+	pSuper->cbody.citem.gap1C[1] = pItem->gap1C[1];
+	pSuper->cbody.citem.gap1C[2] = pItem->gap1C[2];
+	pSuper->cbody.citem.mRegion = pItem->mRegion;
+	pSuper->cbody.citem.mNextItem = pItem->mNextItem;
+	pSuper->cbody.citem.mRGB.Int = pItem->mRGB.Int;
+	*/
+
+	pSuper->mScale = pItem->mScale;
+	
+
+	pSuper->mTRN = pItem->mTRN;
+	pSuper->mPreviousItem = pItem->mPreviousItem;
+	pSuper->mType = pItem->mType;
+	pSuper->mpLight = pItem->mpLight;
+
+	pSuper->field_128 = 0;
+	pSuper->mAnim = 0;
+
+	return pSuper;
 }
 
 // @SMALLTODO

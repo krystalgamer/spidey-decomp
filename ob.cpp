@@ -655,7 +655,7 @@ void validate_CItem(void)
 	VALIDATE(CItem, mRGB, 0x24);
 	VALIDATE(CItem, mScale, 0x28);
 
-	VALIDATE(CItem, field_30, 0x30);
+	VALIDATE(CItem, mTRN, 0x30);
 	VALIDATE(CItem, mPreviousItem, 0x34);
 	VALIDATE(CItem, mType, 0x38);
 	VALIDATE(CItem, mpLight, 0x3C);

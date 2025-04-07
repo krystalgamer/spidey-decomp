@@ -73,7 +73,7 @@ class CItem
 		u32 mRGB;
 		CSVector mScale;
 
-		i32 field_30;
+		u32 mTRN;
 
 		CItem *mPreviousItem;
 		u16 mType;

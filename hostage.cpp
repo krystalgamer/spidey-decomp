@@ -38,7 +38,7 @@ void CHostage::DieHostage(void)
 			this->mAcc.vx = 0;
 			this->Neutralize();
 			this->mFlags |= 0x800;
-			this->field_30 = 128;
+			this->mTRN = 128;
 			this->KillShadow();
 
 			this->mFlags |= 0x400;

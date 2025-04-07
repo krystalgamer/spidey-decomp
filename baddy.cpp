@@ -666,7 +666,7 @@ int CBaddy::Die(int a2)
 				}
 
 				this->mFlags |= 0x800;
-				this->field_30 = 128;
+				this->mTRN = 128;
 				this->KillShadow();
 
 				this->mFlags |= 0x400;
