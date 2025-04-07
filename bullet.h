@@ -6,6 +6,7 @@
 
 #include "export.h"
 #include "ob.h"
+#include "weapons.h"
 
 EXPORT extern CBody* BulletList;
 enum HitId
@@ -46,5 +47,12 @@ class CBullet : public CBody
 		i32 field_138;
 };
 
+class CSmokePuff : public CSmokeRing
+{
+	public:
+		EXPORT CSmokePuff(CVector*);
+};
+
+void validate_CSmokePuff(void);
 void validate_CBullet(void);
 #endif

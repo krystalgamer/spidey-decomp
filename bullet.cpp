@@ -97,6 +97,21 @@ void CBullet::GiveScaledDamageToObjects(
 	}
 }
 
+// @Ok
+// @NotMatching: validate when inlined, it's inlined in both PowerPC and Windows so
+// I had to guess the params
+INLINE CSmokePuff::CSmokePuff(CVector* pVec)
+	: CSmokeRing(12, 0xB159E2AB)
+{
+	this->mVel.Set(0, -32768, 0);
+
+	this->SetParams(pVec, 0, 0);
+
+	this->mLifetime = 16;
+	this->field_68 = 32;
+	this->field_6A = this->field_68 / 2;
+}
+
 /*
 // @SMALLTODO
 void CSmokePuff::Move(void)
@@ -166,4 +181,9 @@ void validate_CBullet(void)
 	VALIDATE(CBullet, field_130, 0x130);
 	VALIDATE(CBullet, field_134, 0x134);
 	VALIDATE(CBullet, field_138, 0x138);
+}
+
+void validate_CSmokePuff(void)
+{
+	VALIDATE_SIZE(CSmokePuff, 0x6C);
 }

@@ -148,7 +148,10 @@ class CSmokeRing : public CSpecialDisplay
 		i32 field_5C;
 		i32 field_60;
 
-		PADDING(0x6C-0x60-4);
+		PADDING(0x68-0x60-4);
+
+		u16 field_68;
+		u16 field_6A;
 };
 
 class CTexturedRibbon : public CSpecialDisplay

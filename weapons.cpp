@@ -390,6 +390,9 @@ void validate_CSmokeRing(void)
 	VALIDATE(CSmokeRing, field_58, 0x58);
 	VALIDATE(CSmokeRing, field_5C, 0x5C);
 	VALIDATE(CSmokeRing, field_60, 0x60);
+
+	VALIDATE(CSmokeRing, field_68, 0x68);
+	VALIDATE(CSmokeRing, field_6A, 0x6A);
 }
 
 void validate_CTexturedRibbon(void)

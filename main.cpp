@@ -522,6 +522,7 @@ i32 validate(void)
 	validate_SDxSomething();
 	validate_DSBUFFERDESC();
 	validate_TwiddleStuff();
+	validate_CSmokePuff();
 
 	puts("[*] Validation done!");
 
