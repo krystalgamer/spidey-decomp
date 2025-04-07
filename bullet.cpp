@@ -118,13 +118,13 @@ void CSmokePuff::Move(void)
 {
     printf("CSmokePuff::Move(void)");
 }
+*/
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSmokePuff::~CSmokePuff(void)
 {
-    printf("CSmokePuff::~CSmokePuff(void)");
 }
-*/
 
 // @NotOk
 CBullet::~CBullet(void)
