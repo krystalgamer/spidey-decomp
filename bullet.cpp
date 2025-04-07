@@ -58,10 +58,43 @@ void CBullet::GiveScaledDamageToEnviro(i32 a2)
 	}
 }
 
-// @SMALLTODO
-void CBullet::GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId)
+// @Ok
+// @Matching
+void CBullet::GiveScaledDamageToObjects(
+		CBody *a2,
+		i32 a3,
+		i32 a4,
+		i32 a5,
+		HitId a6)
 {
-    printf("CBullet::GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId)");
+	while (a2)
+	{
+		CVector v10 = a2->mPos - this->mPos;
+		i32 vecLen = v10.Length();
+
+		if (vecLen <= a3)
+		{
+			SHitInfo v13;
+			v13.field_0 = 14;
+			v13.field_4 = a6;
+
+			v13.field_8 = this->field_104 - (this->field_104 >> 1) * vecLen / a3;
+
+			v13.field_C = v10 / vecLen;
+			
+			v13.field_18 = a4 - a4 * vecLen / a3;
+			v13.field_1A = a5 - a5 * vecLen / a3;
+
+			if (!v13.field_1A)
+			{
+				v13.field_1A = 1;
+			}
+
+			a2->Hit(&v13);
+		}
+
+		a2 = reinterpret_cast<CBody*>(a2->mNextItem);
+	}
 }
 
 /*
