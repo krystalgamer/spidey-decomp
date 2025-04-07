@@ -112,13 +112,27 @@ INLINE CSmokePuff::CSmokePuff(CVector* pVec)
 	this->field_6A = this->field_68 / 2;
 }
 
-/*
-// @SMALLTODO
+// @Ok
+// @Matching
 void CSmokePuff::Move(void)
 {
-    printf("CSmokePuff::Move(void)");
+	if (++this->mAge > this->mLifetime)
+	{
+		this->Die();
+	}
+	else
+	{
+		this->mPos += this->mVel;
+
+		this->SetParams(
+			&this->mPos,
+			this->field_50 + this->field_68,
+			this->field_54 + this->field_6A);
+
+		i32 v3 = 255 * (this->mLifetime - this->mAge) / this->mLifetime;
+		this->SetRGB(v3, v3, v3 >> 1);
+	}
 }
-*/
 
 // @Ok
 // @Matching

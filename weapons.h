@@ -150,8 +150,8 @@ class CSmokeRing : public CSpecialDisplay
 
 		PADDING(0x68-0x60-4);
 
-		u16 field_68;
-		u16 field_6A;
+		i16 field_68;
+		i16 field_6A;
 };
 
 class CTexturedRibbon : public CSpecialDisplay

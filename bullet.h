@@ -52,6 +52,8 @@ class CSmokePuff : public CSmokeRing
 	public:
 		EXPORT CSmokePuff(CVector*);
 		EXPORT virtual ~CSmokePuff(void) OVERRIDE;
+
+		EXPORT virtual void Move(void) OVERRIDE;
 };
 
 void validate_CSmokePuff(void);
