@@ -647,6 +647,11 @@ void validate_CItem(void)
 	VALIDATE(CItem, mPos, 0x8);
 	VALIDATE(CItem, mAngles, 0x14);
 	VALIDATE(CItem, mModel, 0x1A);
+
+	VALIDATE(CItem, mDummyFrame, 0x1C);
+	VALIDATE(CItem, mTintIndex, 0x1D);
+	VALIDATE(CItem, mDummyAnim, 0x1E);
+
 	VALIDATE(CItem, mRegion, 0x1F);
 
 	VALIDATE(CItem, mNextItem, 0x20);

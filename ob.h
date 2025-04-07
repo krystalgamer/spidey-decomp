@@ -63,7 +63,9 @@ class CItem
 
 		u16 mModel;
 
-		PADDING(3);
+		char mDummyFrame;
+		u8 mTintIndex;
+		u8 mDummyAnim;
 
 		u8 mRegion;
 

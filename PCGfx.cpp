@@ -954,7 +954,8 @@ void ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,f32)
     printf("ZCLIP_VERT(_DXVERT *,_DXVERT *,_DXVERT *,f32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: CVector and CSVector assingment is different, goddamn I don't understand
 CSuper* createSuperItem(CItem *pItem)
 {
 	CSuper *pSuper = new CSuper();
@@ -964,22 +965,19 @@ CSuper* createSuperItem(CItem *pItem)
 
 	pSuper->mPos = pItem->mPos;
 
-
 	pSuper->mAngles = pItem->mAngles;
 
 	pSuper->mModel = pItem->mModel;
 
-	/*
-	pSuper->cbody.citem.gap1C[0] = pItem->gap1C[0];
-	pSuper->cbody.citem.gap1C[1] = pItem->gap1C[1];
-	pSuper->cbody.citem.gap1C[2] = pItem->gap1C[2];
-	pSuper->cbody.citem.mRegion = pItem->mRegion;
-	pSuper->cbody.citem.mNextItem = pItem->mNextItem;
-	pSuper->cbody.citem.mRGB.Int = pItem->mRGB.Int;
-	*/
+	pSuper->mDummyFrame = pItem->mDummyFrame;
+	pSuper->mTintIndex = pItem->mTintIndex;
+	pSuper->mDummyAnim = pItem->mDummyAnim;
+
+	pSuper->mRegion = pItem->mRegion;
+	pSuper->mNextItem = pItem->mNextItem;
+	pSuper->mRGB = pItem->mRGB;
 
 	pSuper->mScale = pItem->mScale;
-	
 
 	pSuper->mTRN = pItem->mTRN;
 	pSuper->mPreviousItem = pItem->mPreviousItem;
