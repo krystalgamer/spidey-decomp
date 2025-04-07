@@ -88,7 +88,7 @@ struct SPCTexture
 	i32 mSplitCount;
 	i32 *mSplit;
 
-	const void* pTextureData;
+	void* pTextureData;
 	i32 field_60;
 	i32 field_64;
 };

@@ -656,7 +656,8 @@ i32 PCTex_CreateTexture256(
 
 	f32 v40 = (f32)(u16)a1;
 	f32 v38 = (f32)rounded_width;
-	v34->pTextureData = a3;
+	// @FIXME
+	v34->pTextureData = const_cast<void*>(a3);
 	v34->field_64 = 256;
 	v34->mWScale = v40 / v38;
 	f32 v41 = (f32)(u16)a2;
@@ -1018,10 +1019,54 @@ void PCTex_ReleaseAllTextures(void)
 	}
 }
 
-// @SMALLTODO
-void PCTex_ReleaseSysTexture(i32,bool)
+// @Ok
+// @AlmostMatching: sligthly different order on the 9FF and thingy
+void PCTex_ReleaseSysTexture(i32 a1, bool a2)
 {
-    printf("PCTex_ReleaseSysTexture(i32,bool)");
+	if (gGlobalTextures[a1].mD3DTex)
+	{
+		if (gGlobalTextures[a1].mFlags & 0x400)
+		{
+			free(gGlobalTextures[a1].mD3DTex);
+		}
+		else
+		{
+#ifdef _WIN32
+			HRESULT hr = gGlobalTextures[a1].mD3DTex->Release();
+			D3D_ERROR_LOG_AND_QUIT(hr);
+#endif
+		}
+
+		gGlobalTextures[a1].mD3DTex = 0;
+		gGlobalTextures[a1].mFlags &= 0x9FF;
+
+		// @FIXME
+		ClutPC *v14 = clutToClutPc(reinterpret_cast<u16*>(gGlobalTextures[a1].field_60));
+		if (v14)
+		{
+			if (--v14->mRefs <= 0 && a2)
+			{
+				releaseClutPc(v14);
+			}
+		}
+	}
+
+	if (a2)
+	{
+		if (gGlobalTextures[a1].field_64 == 0xFFFFFF)
+		{
+			free(gGlobalTextures[a1].pTextureData);
+		}
+		gGlobalTextures[a1].pTextureData = 0;
+		gGlobalTextures[a1].field_60 = 0;
+		gGlobalTextures[a1].field_64 = 0;
+	}
+
+	if (gGlobalTextures[a1].mSplit)
+	{
+		free(gGlobalTextures[a1].mSplit);
+		gGlobalTextures[a1].mSplit = 0;
+	}
 }
 
 // @Ok
@@ -1152,7 +1197,7 @@ HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT lpDDPixFmt, void * lpContext
 
 // @Ok
 // @Matching
-void releaseClutPc(ClutPC* pClut)
+INLINE void releaseClutPc(ClutPC* pClut)
 {
 	print_if_false(pClut->mRefs == 0, "Releasing a clut with pending references!");
 	print_if_false(gClutCount > 0, "Uh oh, clut count is off!");
