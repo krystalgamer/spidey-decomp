@@ -8,4 +8,5 @@
 
 EXPORT void Training_RelocatableModuleInit(reloc_mod *);
 EXPORT void Training_RelocatableModuleClear(void);
+EXPORT void Training_SpideyDied(void);
 #endif
