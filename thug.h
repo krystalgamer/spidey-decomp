@@ -44,8 +44,8 @@ public:
 	EXPORT i32 AdjustPosPlaySound(i32);
 	EXPORT void WarnOtherThugs(void);
 	EXPORT void CheckToShoot(i32, i32);
-	EXPORT i32 DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
-	EXPORT i32 SetUpLaser(CGPolyLine**, CVector*, CVector*);
+	EXPORT void DrawBarrelFlash(CVector*, CVector *, SLineInfo *, u8, u8, u8);
+	EXPORT void SetUpLaser(CGPolyLine**, CVector*, CVector*);
 	EXPORT i32 ShouldIShootPlayer(void);
 	EXPORT void Caution(void);
 	EXPORT i32 DetermineFightState(void);

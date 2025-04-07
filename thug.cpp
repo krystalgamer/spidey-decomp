@@ -289,14 +289,35 @@ CThug::~CThug(void)
 }
 
 // @SMALLTODO
-i32 CThug::SetUpLaser(CGPolyLine**, CVector*, CVector*)
+void CThug::SetUpLaser(
+		CGPolyLine **a2,
+		CVector *a3,
+		CVector *a4)
 {
-	printf("i32 CThug::SetUpLaser(CGPolyLine**, CVector*, CVector*)");
-	return 0x26042024;
+	if (!*a2)
+	{
+		*a2 = new CGPolyLine(1);
+
+		(*a2)->mStartB = 80;
+		(*a2)->mSegs->r = 0;
+		(*a2)->mSegs->g = 0;
+		(*a2)->mStartG = 0;
+		(*a2)->mStartR = 0;
+		(*a2)->SetSemiTransparent();
+	}
+
+	i32 v6 = Utils_CrapDist(*a3, *a4);
+
+	if (v6 >= 1000)
+		(*a2)->mSegs->b = 0;
+	else
+		(*a2)->mSegs->b = (320 * (1000 - v6)) >> 12;
+
+	(*a2)->SetStartAndEnd(a3, a4);
 }
 
 // @Ok
-INLINE i32 CThug::DrawBarrelFlash(
+INLINE void CThug::DrawBarrelFlash(
 		CVector *a2,
 		CVector *a3,
 		SLineInfo *a4,
@@ -305,7 +326,7 @@ INLINE i32 CThug::DrawBarrelFlash(
 		u8 a7)
 {
 	new CGlowFlash(a2, 5, a5, a6, a7, 32, 0, 0, 0, 0, 50, 20, 1, 20, 10, 40, 20, 10, 1);
-	return this->SetUpLaser(&this->field_3A0, a2, a3);
+	this->SetUpLaser(&this->field_3A0, a2, a3);
 }
 
 // @NotOk
