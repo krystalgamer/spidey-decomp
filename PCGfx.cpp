@@ -990,7 +990,7 @@ CSuper* createSuperItem(CItem *pItem)
 	return pSuper;
 }
 
-// @SMALLTODO
+// @MEDIUMTODO
 void setupFog(void)
 {
     printf("setupFog(void)");

@@ -1,5 +1,10 @@
 #include "bullet.h"
+#include "utils.h"
+#include "exp.h"
+
 #include "validate.h"
+
+#include <cmath>
 
 
 CBody* BulletList;
@@ -12,10 +17,45 @@ void CBullet::BlowUp(void)
     printf("CBullet::BlowUp(void)");
 }
 
-// @SMALLTODO
-void CBullet::GiveScaledDamageToEnviro(i32)
+// @Ok
+// @Matching
+void CBullet::GiveScaledDamageToEnviro(i32 a2)
 {
-    printf("CBullet::GiveScaledDamageToEnviro(i32)");
+	CItem *pItem = EnviroList;
+
+	while (pItem)
+	{
+		i32 dX = pItem->mPos.vx - this->mPos.vx;
+		if (dX < 0)
+		{
+			dX = -dX;
+		}
+
+		if (dX < a2 << 12)
+		{
+			i32 dZ = pItem->mPos.vz - this->mPos.vz;
+			if (dZ < 0)
+			{
+				dZ = -dZ;
+			}
+
+			if (dZ < a2 << 12)
+			{
+				CVector v7;
+				v7.vx = pItem->mPos.vx;
+				v7.vy = pItem->mPos.vy;
+				v7.vz = pItem->mPos.vz;
+
+				// @FIXME - CrapDist should be a u32 why the fuck it's a i32 here
+				if (static_cast<i32>(Utils_CrapDist(this->mPos, v7)) < a2)
+				{
+					Exp_HitEnvItem(pItem, 0, this->field_104);
+				}
+			}
+		}
+
+		pItem = pItem->mNextItem;
+	}
 }
 
 // @SMALLTODO
@@ -80,6 +120,8 @@ CBullet::CBullet(void)
 void validate_CBullet(void)
 {
 	VALIDATE_SIZE(CBullet, 0x13C);
+
+	VALIDATE(CBullet, field_104, 0x104);
 
 	VALIDATE(CBullet, field_10C, 0x10C);
 

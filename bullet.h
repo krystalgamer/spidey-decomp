@@ -23,7 +23,11 @@ class CBullet : public CBody
 		EXPORT void GiveScaledDamageToEnviro(i32);
 		EXPORT void GiveScaledDamageToObjects(CBody *,i32,i32,i32,HitId);
 
-		PADDING(0x10C-0xF4);
+		PADDING(0x104-0xF4);
+
+		u16 field_104;
+
+		PADDING(0x10C-0x104-2);
 
 		void* field_10C;
 
