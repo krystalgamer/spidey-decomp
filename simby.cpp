@@ -95,9 +95,10 @@ CFlamingImpactWeb::CFlamingImpactWeb(
 	gLineInfo.StartCoords = this->mPos;
 
 	// @FIXME - all get fetched 3 times wth is going
-	gLineInfo.EndCoords.vx = this->mPos.vx + this->mVel.vx * this->mLifetime;
-	gLineInfo.EndCoords.vy = this->mPos.vy + this->mVel.vy * this->mLifetime;
-	gLineInfo.EndCoords.vz = this->mPos.vz + this->mVel.vz * this->mLifetime;
+	// setters it makes it better but still weird
+	gLineInfo.EndCoords.SetX(this->mPos.vx + this->mVel.vx * this->mLifetime);
+	gLineInfo.EndCoords.SetY(this->mPos.vy + this->mVel.vy * this->mLifetime);
+	gLineInfo.EndCoords.SetZ(this->mPos.vz + this->mVel.vz * this->mLifetime);
 
 	M3dColij_InitLineInfo(&gLineInfo);
 
