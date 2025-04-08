@@ -105,10 +105,50 @@ void Panel_Init(void)
 	Spool_AnimAccess("Webcart", &gAnimWebcart);
 }
 
-// @SMALLTODO
-void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)
+// @Ok
+// @AlmostMatching: same logic but slightly out of order
+void Panel_SetStretchedScreenCoords(
+		i32 a1,
+		i32 a2,
+		POLY_FT4 *a3,
+		SAnimFrame *a4,
+		i32 a5,
+		i32 a6)
 {
-    printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)");
+	i32 v6 = a5;
+	if (!v6)
+	{
+		v6 = a4->Width;
+	}
+
+	v6 *= 6554;
+
+	if ( (v6 & 0xFFF) >= 0x800)
+	{
+		v6 += 4096;
+	}
+
+	v6 >>= 12;
+
+	if (!a6)
+	{
+		a6 = a4->Height;
+	}
+
+	i32 OffY = a4->OffY;
+	i32 OffX = a4->OffX;
+
+
+	a3->x0 = a1 + ((6554 * OffX) >> 12);
+	a3->y0 = a2 + OffY;
+
+	a3->x1 = a3->x0 + v6;
+	a3->y1 = a3->y0;
+	a3->x2 = a3->x0;
+
+	a3->y2 = a3->y0 + a6;
+	a3->x3 = a3->x1;
+	a3->y3 = a3->y2;
 }
 
 // @Ok
