@@ -7,8 +7,6 @@
 #include "validate.h"
 
 
-extern SSinCos rcossin_tbl[];
-
 extern CBody* ControlBaddyList;
 
 // @MEDIUMTODO

@@ -17,7 +17,6 @@
 
 extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
-extern SSinCos rcossin_tbl[];
 
 extern i32 DifficultyLevel;
 extern i16 **gTrigNodes;

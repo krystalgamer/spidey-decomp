@@ -17,7 +17,19 @@ class CSonicRipple : public CGPolyLine
 		EXPORT virtual void Move(void);
 		EXPORT virtual ~CSonicRipple(void);
 
-		u8 fullPad[0x30];
+		PADDING(0x5E-0x58);
+
+		i16 field_5E;
+
+		PADDING(0x74 - 0x5E - 2);
+
+		i32 field_74;
+		i32 field_78;
+		i32 field_7C;
+
+		i16 field_80;
+
+		PADDING(0x88-0x80-2);
 };
 
 class CCarnage : public CBaddy {

@@ -44,6 +44,22 @@ class CVector
 			this->Set(a1->vx, a1->vy, a1->vz);
 		}
 
+		EXPORT INLINE void SetX(i32 val)
+		{
+			this->vx = val;
+		}
+
+		EXPORT INLINE void SetY(i32 val)
+		{
+			this->vy = val;
+		}
+
+		EXPORT INLINE void SetZ(i32 val)
+		{
+			this->vz = val;
+		}
+
+
 		//EXPORT CVector(i32, i32, i32);
 		EXPORT void KillSmall();
 		EXPORT CVector* operator-=(const CVector& other);

@@ -20,6 +20,7 @@
 extern const char *gObjFile;
 extern CBaddy *BaddyList;
 
+// @Ok
 EXPORT SLight M3d_CarnageLight =
 {
 
@@ -1754,10 +1755,19 @@ CSonicRipple::CSonicRipple(
     printf("CSonicRipple::CSonicRipple(CVector const *,i32,i32,i32,i32,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
 }
 
-// @SMALLTODO
-void CSonicRipple::CalcPos(CVector *,i16,i32)
+// @Ok
+// @NotMatching: same as CFlammingImpactWeb ctor, it's just weird
+void CSonicRipple::CalcPos(
+		CVector *a2,
+		i16 a3,
+		i32 a4)
 {
-    printf("CSonicRipple::CalcPos(CVector *,i16,i32)");
+	i32 v4 = this->field_5E + ((this->field_80 * rcossin_tbl[a3 & 0xFFF].sin) >> 12);
+	i32 v5 = a4 & 0xFFF;
+
+	a2->SetX(this->mPos.vx + this->field_74 * ((v4 * rcossin_tbl[v5].cos) >> 12));
+	a2->SetY(this->mPos.vy + this->field_78 * ((v4 * rcossin_tbl[v5].cos) >> 12) - v4 * rcossin_tbl[v5].sin);
+	a2->SetZ(this->mPos.vz + this->field_7C * ((v4 * rcossin_tbl[v5].cos) >> 12));
 }
 
 // @MEDIUMTODO
@@ -2187,4 +2197,12 @@ void validate_CCarnageHitSpark(void)
 void validate_CSonicRipple(void)
 {
 	VALIDATE_SIZE(CSonicRipple, 0x88);
+
+	VALIDATE(CSonicRipple, field_5E, 0x5E);
+
+	VALIDATE(CSonicRipple, field_74, 0x74);
+	VALIDATE(CSonicRipple, field_78, 0x78);
+	VALIDATE(CSonicRipple, field_7C, 0x7C);
+
+	VALIDATE(CSonicRipple, field_80, 0x80);
 }

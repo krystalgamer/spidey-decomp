@@ -6,7 +6,6 @@
 #include "validate.h"
 
 extern i32 CurrentSuit;
-extern SSinCos rcossin_tbl[];
 
 EXPORT i32 gTextureRelated;
 
