@@ -208,7 +208,14 @@ class CFlamingImpactWeb : public CFlatBit
 		EXPORT CFlamingImpactWeb(CVector*, CSVector*, i32);
 		EXPORT virtual ~CFlamingImpactWeb(void);
 
-		PADDING(0x28);
+		PADDING(4);
+
+		i32 field_6C;
+		i32 field_70;
+		CItem *pItem;
+		u32 *pFace;
+		CVector mLinePos;
+		CSVector mLineNormal;
 };
 
 void validate_CPunchOb(void);

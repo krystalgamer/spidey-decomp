@@ -3,6 +3,9 @@
 #include "validate.h"
 #include "ob.h"
 
+// @Ok
+SLineInfo gLineInfo;
+
 i32 LineOfSightCheck;
 
 u32 M3dColij_OneMask;

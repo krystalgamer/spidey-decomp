@@ -14,7 +14,6 @@ i32 gFireDomes;
 i32 gNumDomes;
 CBody* WebList;
 
-EXPORT SLineInfo gLineInfo;
 EXPORT i32 gGetGroundDefaultValue;
 
 extern CBody* MiscList;

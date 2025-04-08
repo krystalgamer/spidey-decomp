@@ -87,5 +87,6 @@ EXPORT extern u32 M3dColij_ZeroMask;
 EXPORT extern i32 BaddyCollisionCheck;
 EXPORT extern i32 CameraCollisionCheck;
 EXPORT extern i32 TriggerCollisionCheck;
+EXPORT extern SLineInfo gLineInfo;
 
 #endif

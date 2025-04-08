@@ -288,7 +288,8 @@ CThug::~CThug(void)
 	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CThug::SetUpLaser(
 		CGPolyLine **a2,
 		CVector *a3,

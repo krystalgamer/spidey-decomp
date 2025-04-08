@@ -12,6 +12,8 @@
 #include "ps2m3d.h"
 #include "web.h"
 #include "camera.h"
+#include "m3dzone.h"
+#include "my_assert.h"
 
 static SStateFlags gSimbyFlags;
 extern CPlayer* MechList;
@@ -75,10 +77,60 @@ void Simby_RelocatableModuleInit(reloc_mod *pMod)
 	pMod->field_C[5] = Simby_CreateEmber;
 }
 
-// @SMALLTODO
-CFlamingImpactWeb::CFlamingImpactWeb(CVector*, CSVector*, i32)
+// @Ok
+// @AlmostMatching: EndCoords dudes get refetched 3 times, which makes me believe there's some crazy inline
+CFlamingImpactWeb::CFlamingImpactWeb(
+		CVector *a2,
+		CSVector *a3,
+		i32 a4)
 {
-	printf("CFlamingImpactWeb::CFlamingImpactWeb(CVector*, CSVector*, i32);");
+	this->field_6C = a4;
+	this->mPos = *a2;
+	this->field_70 = gTimerRelated;
+
+	Utils_GetVecFromMagDir(&this->mVel, 32, a3);
+
+	this->mLifetime = 120;
+
+	gLineInfo.StartCoords = this->mPos;
+
+	// @FIXME - all get fetched 3 times wth is going
+	gLineInfo.EndCoords.vx = this->mPos.vx + this->mVel.vx * this->mLifetime;
+	gLineInfo.EndCoords.vy = this->mPos.vy + this->mVel.vy * this->mLifetime;
+	gLineInfo.EndCoords.vz = this->mPos.vz + this->mVel.vz * this->mLifetime;
+
+	M3dColij_InitLineInfo(&gLineInfo);
+
+	LineOfSightCheck = 1;
+	M3dZone_LineToItem(&gLineInfo, 0);
+	LineOfSightCheck = 0;
+
+	if ( gLineInfo.pItem )
+	{
+		this->pItem = gLineInfo.pItem;
+
+		this->pFace = gLineInfo.pFace;
+		this->mLinePos = gLineInfo.Position;
+		this->mLineNormal = gLineInfo.Normal;
+		this->mLifetime = gLineInfo.Distance / 32;
+
+		DoAssert((this->pItem->mFlags & 0x10) == 0, "Hit env obj!");
+	}
+
+	if (this->mLifetime > 0x78u)
+	{
+		this->mLifetime = 120;
+	}
+
+	this->SetAnim(0x10u);
+	this->SetSemiTransparent();
+	this->mAngle = Rnd(4096);
+
+	this->SetTransparency(0x64u);
+	this->SetScale(0);
+
+	this->mPostScale = 0xA001000;
+	this->field_5A = Rnd(2) != 0 ? 768 : -768;
 }
 
 // @Ok
@@ -1002,4 +1054,13 @@ void validate_CSymBurn(void)
 void validate_CFlamingImpactWeb(void)
 {
 	VALIDATE_SIZE(CFlamingImpactWeb, 0x90);
+
+	VALIDATE(CFlamingImpactWeb, field_6C, 0x6C);
+	VALIDATE(CFlamingImpactWeb, field_70, 0x70);
+
+	VALIDATE(CFlamingImpactWeb, pItem, 0x74);
+	VALIDATE(CFlamingImpactWeb, pFace, 0x78);
+
+	VALIDATE(CFlamingImpactWeb, mLinePos, 0x7C);
+	VALIDATE(CFlamingImpactWeb, mLineNormal, 0x88);
 }
