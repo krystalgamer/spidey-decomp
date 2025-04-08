@@ -79,6 +79,18 @@ CBit* GLineList;
 EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
+// @NotMatching: figure the type of field_40
+void CSimpleTexturedRibbon::SetSemiTransparent(void)
+{
+	u8 *ptr = this->field_40;
+	for (i32 i = 0; i < this->field_3C; i++)
+	{
+		// @FIXME - figure the type
+		ptr[0x20*i] |= 0xC0;
+	}
+}
+
+// @Ok
 // @Matching
 void Bit_RemoveDeadBits(void)
 {

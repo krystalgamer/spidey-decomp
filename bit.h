@@ -220,10 +220,13 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 {
 	public:
 		EXPORT void SetRGB(u8, u8, u8);
+		EXPORT void SetSemiTransparent(void);
 
 		u16 field_3C;
 
-		PADDING(0x48-0x3C-2);
+		PADDING(0x40-0x3C-2);
+		// @FIXME - figure the type
+		u8 *field_40;
 
 		i32* field_48;
 };
