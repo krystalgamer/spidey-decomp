@@ -79,6 +79,12 @@ CBit* GLineList;
 EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
+// @Matching
+INLINE CSimpleTexturedRibbon::CSimpleTexturedRibbon(void)
+{
+}
+
+// @Ok
 // @NotMatching: figure the type of field_40
 void CSimpleTexturedRibbon::SetSemiTransparent(void)
 {
