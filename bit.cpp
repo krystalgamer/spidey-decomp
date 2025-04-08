@@ -1465,9 +1465,9 @@ void Bit_SetSparkFadeRGB(unsigned char r, unsigned char g, unsigned char b)
 }
 
 // @Ok
-CSpecialDisplay::CSpecialDisplay(void)
+INLINE CSpecialDisplay::CSpecialDisplay(void)
 {
-	this->AttachTo(reinterpret_cast<CBit**>(SpecialDisplayList));
+	this->AttachTo(reinterpret_cast<CBit**>(&SpecialDisplayList));
 }
 
 // @Ok
