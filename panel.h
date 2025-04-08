@@ -88,7 +88,7 @@ EXPORT void Panel_DisplayTimer(void);
 EXPORT void Panel_DrawFlatShadedPoly(i32,i32,i32,i32,u8,u8,u8,i32,i32);
 EXPORT void Panel_Init(void);
 EXPORT void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32);
-EXPORT void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32);
+EXPORT void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *, const Texture *,i32,i32);
 EXPORT void Panel_UpdateTimer(void);
 
 void validate_SAnimFrame(void);

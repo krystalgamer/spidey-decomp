@@ -111,10 +111,44 @@ void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)
     printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,SAnimFrame *,i32,i32)");
 }
 
-// @SMALLTODO
-void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)
+// @Ok
+// @Matching
+void Panel_SetStretchedScreenCoords(
+		i32 a1,
+		i32 a2,
+		POLY_FT4 *a3,
+		const Texture *a4,
+		i32 a5,
+		i32 a6)
 {
-    printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)");
+	i32 v6 = a5;
+	if (!a5)
+	{
+		v6 = a4->u1 - a4->u0;
+	}
+
+	v6 *= 6554;
+
+	if ((v6 & 0xFFF) >= 0x800)
+	{
+		v6 += 4096;
+	}
+
+	v6 >>= 12;
+
+	if (!a6)
+	{
+		a6 = a4->v2 - a4->v0;
+	}
+
+	a3->x0 = a1;
+	a3->y0 = a2;
+	a3->x1 = a1 + v6;
+	a3->y1 = a2;
+	a3->x2 = a1;
+	a3->y2 = a2 + a6;
+	a3->x3 = a3->x1;
+	a3->y3 = a3->y2;
 }
 
 // @Ok
