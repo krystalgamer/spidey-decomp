@@ -1793,18 +1793,17 @@ CSonicRipple::CSonicRipple(
 }
 
 // @Ok
-// @NotMatching: same as CFlammingImpactWeb ctor, it's just weird
+// @Matching
 void CSonicRipple::CalcPos(
 		CVector *a2,
 		i16 a3,
 		i32 a4)
 {
 	i32 v4 = this->field_5E + ((this->field_80 * rcossin_tbl[a3 & 0xFFF].sin) >> 12);
-	i32 v5 = a4 & 0xFFF;
 
-	a2->SetX(this->mPos.vx + this->field_74.vx * ((v4 * rcossin_tbl[v5].cos) >> 12));
-	a2->SetY(this->mPos.vy + this->field_74.vy * ((v4 * rcossin_tbl[v5].cos) >> 12) - v4 * rcossin_tbl[v5].sin);
-	a2->SetZ(this->mPos.vz + this->field_74.vz * ((v4 * rcossin_tbl[v5].cos) >> 12));
+	a2->vx = this->mPos.vx + this->field_74.vx * ((v4 * rcossin_tbl[a4 & 0xFFF].cos) >> 12);
+	a2->vy = this->mPos.vy + this->field_74.vy * ((v4 * rcossin_tbl[a4 & 0xFFF].cos) >> 12) - v4 * rcossin_tbl[a4 & 0xFFF].sin;
+	a2->vz = this->mPos.vz + this->field_74.vz * ((v4 * rcossin_tbl[a4 & 0xFFF].cos) >> 12);
 }
 
 // @MEDIUMTODO
