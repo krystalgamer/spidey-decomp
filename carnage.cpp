@@ -1734,25 +1734,62 @@ u8 CCarnage::Grab(CVector*)
 	return 1;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSonicRipple::CSonicRipple(
-		const CVector*,
-		i32,
-		i32,
-		i32,
-		i32,
+		const CVector* a2,
+		i32 a3,
+		i32 a4,
+		i32 a5,
+		i32 a6,
 		i32 a7,
-		i32,
-		i32,
-		i32,
-		u8,
-		u8,
-		u8,
-		i32,
-		i32)
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		u8 a11,
+		u8 a12,
+		u8 a13,
+		i32 a14,
+		i32 a15)
 	: CGPolyLine(a7)
 {
-    printf("CSonicRipple::CSonicRipple(CVector const *,i32,i32,i32,i32,i32,i32,i32,i32,u8,u8,u8,i32,i32)");
+	this->mPos = *a2;
+
+	this->field_58 = a3;
+	this->field_5A = a4;
+	this->field_5C = (a4 - a3) / a7;
+	this->field_5E = a5;
+	this->field_60 = a6;
+
+	this->SetSemiTransparent();
+
+	this->mStartR = 0;
+	this->mStartG = 0;
+	this->mStartB = 0;
+
+	SLineSeg *pSeg = this->mSegs;
+
+	for (i32 i = 0; i < a7 - 1; i++)
+	{
+		pSeg->r = a11;
+		pSeg->g = a12;
+		pSeg->b = a13;
+
+		pSeg++;
+	}
+
+	pSeg->r = 0;
+	pSeg->g = 0;
+	pSeg->b = 0;
+
+	this->field_62 = a14;
+	this->field_64 = a15;
+	this->field_84 = Rnd(4096);
+	this->field_86 = (a8 << 12) / a7;
+
+	this->field_80 = a10;
+	this->field_82 = a9;
+	this->field_68.vy = -4096;
 }
 
 // @Ok
@@ -1765,9 +1802,9 @@ void CSonicRipple::CalcPos(
 	i32 v4 = this->field_5E + ((this->field_80 * rcossin_tbl[a3 & 0xFFF].sin) >> 12);
 	i32 v5 = a4 & 0xFFF;
 
-	a2->SetX(this->mPos.vx + this->field_74 * ((v4 * rcossin_tbl[v5].cos) >> 12));
-	a2->SetY(this->mPos.vy + this->field_78 * ((v4 * rcossin_tbl[v5].cos) >> 12) - v4 * rcossin_tbl[v5].sin);
-	a2->SetZ(this->mPos.vz + this->field_7C * ((v4 * rcossin_tbl[v5].cos) >> 12));
+	a2->SetX(this->mPos.vx + this->field_74.vx * ((v4 * rcossin_tbl[v5].cos) >> 12));
+	a2->SetY(this->mPos.vy + this->field_74.vy * ((v4 * rcossin_tbl[v5].cos) >> 12) - v4 * rcossin_tbl[v5].sin);
+	a2->SetZ(this->mPos.vz + this->field_74.vz * ((v4 * rcossin_tbl[v5].cos) >> 12));
 }
 
 // @MEDIUMTODO
@@ -2198,11 +2235,22 @@ void validate_CSonicRipple(void)
 {
 	VALIDATE_SIZE(CSonicRipple, 0x88);
 
-	VALIDATE(CSonicRipple, field_5E, 0x5E);
+	VALIDATE(CSonicRipple, field_58, 0x58);
+	VALIDATE(CSonicRipple, field_5A, 0x5A);
+	VALIDATE(CSonicRipple, field_5C, 0x5C);
 
+	VALIDATE(CSonicRipple, field_5E, 0x5E);
+	VALIDATE(CSonicRipple, field_60, 0x60);
+
+	VALIDATE(CSonicRipple, field_62, 0x62);
+	VALIDATE(CSonicRipple, field_64, 0x64);
+
+	VALIDATE(CSonicRipple, field_68, 0x68);
 	VALIDATE(CSonicRipple, field_74, 0x74);
-	VALIDATE(CSonicRipple, field_78, 0x78);
-	VALIDATE(CSonicRipple, field_7C, 0x7C);
 
 	VALIDATE(CSonicRipple, field_80, 0x80);
+
+	VALIDATE(CSonicRipple, field_82, 0x82);
+	VALIDATE(CSonicRipple, field_84, 0x84);
+	VALIDATE(CSonicRipple, field_86, 0x86);
 }
