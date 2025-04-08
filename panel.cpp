@@ -1,5 +1,8 @@
 #include "panel.h"
 #include "spool.h"
+#include "l1a3bomb.h"
+#include "spidey.h"
+
 #include "validate.h"
 
 EXPORT i32 gHealthBarItemType;
@@ -114,10 +117,33 @@ void Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)
     printf("Panel_SetStretchedScreenCoords(i32,i32,POLY_FT4 *,Texture const *,i32,i32)");
 }
 
-// @SMALLTODO
-void Panel_UpdateTimer(void)
+// @Ok
+INLINE void Panel_UpdateTimer(void)
 {
-    printf("Panel_UpdateTimer(void)");
+	if (gBombDieRelatedTwo)
+	{
+		u32 v1 = 0;
+		if (MechList->field_E18 || MechList->field_1AC)
+		{
+			v1 = 0;
+		}
+		else
+		{
+			v1 = (gBombRelated * (gTimerRelated - gBombDieTimerRelated)) >> 12;
+		}
+
+		if (gBombAIRelated > v1)
+		{
+			gBombAIRelated -= v1;
+		}
+		else
+		{
+			gBombAIRelated = 0;
+		}
+
+	}
+
+	gBombDieTimerRelated = gTimerRelated;
 }
 
 // @Ok
