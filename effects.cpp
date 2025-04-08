@@ -20,8 +20,9 @@ CElectroLine::~CElectroLine(void)
 {
 }
 
-// @SMALLTODO
-CElectro::CElectro(void)
+// @Ok
+// @Matching
+INLINE CElectro::CElectro(void)
 {
 }
 
@@ -405,10 +406,12 @@ void validate_CBouncingRock(void)
 
 void validate_CElectro(void)
 {
-	VALIDATE_SIZE(CElectro, 0x58);
+	VALIDATE_SIZE(CElectro, 0x64);
 
 	VALIDATE(CElectro, field_50, 0x50);
 	VALIDATE(CElectro, field_54, 0x54);
+
+	VALIDATE(CElectro, field_58, 0x58);
 }
 
 void validate_CElectroLine(void)
