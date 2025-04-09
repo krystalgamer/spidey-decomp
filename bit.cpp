@@ -131,10 +131,31 @@ void CSimpleTexturedRibbon::SetTexture(u32 checksum)
 	this->SetTexture(TextureEntry);
 }
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetTexturei(i32,Texture *)
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetTexturei(i32 a2, Texture *a3)
 {
-    printf("CSimpleTexturedRibbon::SetTexturei(i32,Texture *)");
+	DoAssert(a2 < this->field_3C, "Bad i in call to CSimpleTexturedRibbon::SetTexturei");
+	DoAssert(a3 != 0, "NULL pTex sent to SetTexturei");
+
+	this->pTextures[a2].mPage = a3->tpage;
+	this->pTextures[a2].mClut = a3->clut;
+
+	this->pTextures[a2].u0 = a3->u0;
+
+	this->pTextures[a2].u1 = a3->u1;
+	this->pTextures[a2].v0 = a3->v0;
+
+	this->pTextures[a2].v1 = a3->v1;
+
+	this->pTextures[a2].u2 = a3->u2;
+	this->pTextures[a2].u3 = a3->u3;
+
+	this->pTextures[a2].v2 = a3->v2;
+
+	this->pTextures[a2].v3 = a3->v3;
+
+	this->pTextures[a2].mTexWin = a3->TexWin;
 }
 
 // @Ok
