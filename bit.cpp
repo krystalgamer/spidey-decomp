@@ -148,10 +148,13 @@ void CSimpleTexturedRibbon::SetWidthi(i32,u16)
     printf("CSimpleTexturedRibbon::SetWidthi(i32,u16)");
 }
 
-// @SMALLTODO
+// @Ok
+// @NotMatching: need the simpledisplaydestructor
 CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)
 {
-    printf("CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)");
+	Mem_Delete(this->field_40);
+	Mem_Delete(this->field_44);
+	Mem_Delete(this->field_48);
 }
 
 // @Ok
@@ -1971,6 +1974,9 @@ void validate_CSimpleTexturedRibbon(void)
 	VALIDATE_SIZE(CSimpleTexturedRibbon, 0x4C);
 
 	VALIDATE(CSimpleTexturedRibbon, field_3C, 0x3C);
+
+	VALIDATE(CSimpleTexturedRibbon, field_40, 0x40);
+	VALIDATE(CSimpleTexturedRibbon, field_44, 0x44);
 	VALIDATE(CSimpleTexturedRibbon, field_48, 0x48);
 }
 

@@ -241,7 +241,7 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 		// @FIXME - figure the type
 		u8 *field_40;
 
-		PADDING(4);
+		void *field_44;
 
 		i32* field_48;
 };
