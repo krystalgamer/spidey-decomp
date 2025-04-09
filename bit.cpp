@@ -240,10 +240,16 @@ void CSimpleTexturedRibbon::SetTexturei(i32 a1, u32 a2)
 	this->SetTexturei(a1, TextureEntry);
 }
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetWidth(u16)
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetWidth(u16 a2)
 {
-    printf("CSimpleTexturedRibbon::SetWidth(u16)");
+	SSimpleRibbonParams *pParam = this->field_44;
+	for (i32 i = 0; i < this->field_3C + 1; i++)
+	{
+		pParam->field_18 = a2;
+		++pParam;
+	}
 }
 
 // @Ok
