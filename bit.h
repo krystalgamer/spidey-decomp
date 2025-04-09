@@ -11,7 +11,9 @@
 // @Note: guessed name
 struct SRibbonTexture
 {
-	PADDING(0x10);
+	u16 field_0;
+
+	PADDING(0x10-2);
 
 	u8 u0;
 	u8 v0;
@@ -264,7 +266,7 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 
 		PADDING(0x40-0x3C-2);
 		// @FIXME - figure the type
-		u8 *field_40;
+		SRibbonTexture *pTextures;
 
 		void *field_44;
 

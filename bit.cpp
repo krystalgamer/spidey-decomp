@@ -163,7 +163,7 @@ void CSimpleTexturedRibbon::SetWidthi(i32,u16)
 // @Ok
 CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)
 {
-	Mem_Delete(this->field_40);
+	Mem_Delete(this->pTextures);
 	Mem_Delete(this->field_44);
 	Mem_Delete(this->field_48);
 }
@@ -175,14 +175,14 @@ INLINE CSimpleTexturedRibbon::CSimpleTexturedRibbon(void)
 }
 
 // @Ok
-// @NotMatching: figure the type of field_40
+// @Matching
 void CSimpleTexturedRibbon::SetSemiTransparent(void)
 {
-	u8 *ptr = this->field_40;
+	SRibbonTexture *pTexture = this->pTextures;
 	for (i32 i = 0; i < this->field_3C; i++)
 	{
-		// @FIXME - figure the type
-		ptr[0x20*i] |= 0xC0;
+		pTexture->field_0 |= 0xC0;
+		pTexture++;
 	}
 }
 
@@ -1986,7 +1986,7 @@ void validate_CSimpleTexturedRibbon(void)
 
 	VALIDATE(CSimpleTexturedRibbon, field_3C, 0x3C);
 
-	VALIDATE(CSimpleTexturedRibbon, field_40, 0x40);
+	VALIDATE(CSimpleTexturedRibbon, pTextures, 0x40);
 	VALIDATE(CSimpleTexturedRibbon, field_44, 0x44);
 	VALIDATE(CSimpleTexturedRibbon, field_48, 0x48);
 }
@@ -2170,6 +2170,8 @@ void validate_CGlassBit(void)
 void validate_SRibbonTexture(void)
 {
 	VALIDATE_SIZE(SRibbonTexture, 0x20);
+
+	VALIDATE(SRibbonTexture, field_0, 0x0);
 
 	VALIDATE(SRibbonTexture, u0, 0x10);
 	VALIDATE(SRibbonTexture, v0, 0x11);
