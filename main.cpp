@@ -523,6 +523,7 @@ i32 validate(void)
 	validate_DSBUFFERDESC();
 	validate_TwiddleStuff();
 	validate_CSmokePuff();
+	validate_SRibbonTexture();
 
 	puts("[*] Validation done!");
 

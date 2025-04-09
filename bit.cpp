@@ -2166,3 +2166,27 @@ void validate_CGlassBit(void)
 
 	VALIDATE(CGlassBit, mFadeRate, 0x6A);
 }
+
+void validate_SRibbonTexture(void)
+{
+	VALIDATE_SIZE(SRibbonTexture, 0x20);
+
+	VALIDATE(SRibbonTexture, u0, 0x10);
+	VALIDATE(SRibbonTexture, v0, 0x11);
+
+	VALIDATE(SRibbonTexture, mClut, 0x12);
+
+	VALIDATE(SRibbonTexture, u1, 0x14);
+	VALIDATE(SRibbonTexture, v1, 0x15);
+
+	VALIDATE(SRibbonTexture, mPage, 0x16);
+
+
+	VALIDATE(SRibbonTexture, u2, 0x18);
+	VALIDATE(SRibbonTexture, v2, 0x19);
+
+	VALIDATE(SRibbonTexture, u3, 0x1A);
+	VALIDATE(SRibbonTexture, v3, 0x1B);
+
+	VALIDATE(SRibbonTexture, mTexWin, 0x1C);
+}

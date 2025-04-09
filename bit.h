@@ -8,6 +8,30 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+// @Note: guessed name
+struct SRibbonTexture
+{
+	PADDING(0x10);
+
+	u8 u0;
+	u8 v0;
+
+	u16 mClut;
+
+	u8 u1;
+	u8 v1;
+
+	u16 mPage;
+
+	u8 u2;
+	u8 v2;
+
+	u8 u3;
+	u8 v3;
+
+	u32 mTexWin;
+};
+
 class vector3d
 {
 	public:
@@ -547,6 +571,7 @@ void validate_SFringeQuad(void);
 void validate_vector3d(void);
 void validate_vector4d(void);
 void validate_CGlassBit(void);
+void validate_SRibbonTexture(void);
 
 
 EXPORT extern CBit* GLineList;
