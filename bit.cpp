@@ -137,10 +137,15 @@ void CSimpleTexturedRibbon::SetTexturei(i32,Texture *)
     printf("CSimpleTexturedRibbon::SetTexturei(i32,Texture *)");
 }
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetTexturei(i32,u32)
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetTexturei(i32 a1, u32 a2)
 {
-    printf("CSimpleTexturedRibbon::SetTexturei(i32,u32)");
+	DoAssert(a1 < this->field_3C, "Bad i in call to CSimpleTexturedRibbon::SetTexturei");
+	Texture *TextureEntry = Spool_FindTextureEntry(a2);
+	DoAssert(TextureEntry != 0, "Could not find texture for ribbon");
+
+	this->SetTexturei(a1, TextureEntry);
 }
 
 // @SMALLTODO
