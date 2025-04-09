@@ -78,6 +78,12 @@ CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
+// @Ok
+INLINE CSpecialDisplay::~CSpecialDisplay(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&SpecialDisplayList));
+}
+
 // @SMALLTODO
 CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32)
 {
@@ -149,7 +155,6 @@ void CSimpleTexturedRibbon::SetWidthi(i32,u16)
 }
 
 // @Ok
-// @NotMatching: need the simpledisplaydestructor
 CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)
 {
 	Mem_Delete(this->field_40);

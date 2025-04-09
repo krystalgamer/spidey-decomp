@@ -214,6 +214,7 @@ class CSpecialDisplay : public CBit
 {
 	public:
 		EXPORT CSpecialDisplay(void);
+		EXPORT ~CSpecialDisplay(void) OVERRIDE;
 };
 
 class CSimpleTexturedRibbon : public CSpecialDisplay
