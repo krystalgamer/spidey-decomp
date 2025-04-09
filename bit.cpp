@@ -99,15 +99,16 @@ void CSimpleTexturedRibbon::Display(void)
 }
 
 // @Ok
-// @AlmostMatching: calls to DCMem_New are slightly different
+// @Matching
 void CSimpleTexturedRibbon::SetNumFaces(i32 a1)
 {
 	DoAssert(a1 != 0, "Zero NumFaces");
 	this->field_3C = a1;
 	this->field_3E = a1;
 
+	i32 texSize = this->field_3C * sizeof(SRibbonTexture);
 	this->pTextures = static_cast<SRibbonTexture *>(DCMem_New(
-		this->field_3C * sizeof(SRibbonTexture),
+		texSize,
 		0,
 		1,
 		0,
@@ -144,10 +145,13 @@ void CSimpleTexturedRibbon::SetNumFaces(i32 a1)
 		pTexture++;
 	}
 
+	i32 ffSize = sizeof(SSimpleRibbonParams) *  (a1+1);
 	this->field_44 = static_cast<SSimpleRibbonParams*>(
-			DCMem_New(sizeof(SSimpleRibbonParams) *  (a1+1), 0, 1, 0, 1));
+			DCMem_New(ffSize, 0, 1, 0, 1));
+
+	i32 feSize = sizeof(u32) * (a1+1);
 	this->field_48 = static_cast<u32*>(
-			DCMem_New(sizeof(u32) * (a1+1), 0, 1, 0, 1));
+			DCMem_New(feSize, 0, 1, 0, 1));
 }
 
 // @Ok
