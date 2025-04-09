@@ -144,8 +144,10 @@ void CSimpleTexturedRibbon::SetNumFaces(i32 a1)
 		pTexture++;
 	}
 
-	this->field_44 = DCMem_New(28 *  (a1+1), 0, 1, 0, 1);
-	this->field_48 = static_cast<u32*>(DCMem_New(sizeof(u32) * (a1+1), 0, 1, 0, 1));
+	this->field_44 = static_cast<SSimpleRibbonParams*>(
+			DCMem_New(sizeof(SSimpleRibbonParams) *  (a1+1), 0, 1, 0, 1));
+	this->field_48 = static_cast<u32*>(
+			DCMem_New(sizeof(u32) * (a1+1), 0, 1, 0, 1));
 }
 
 // @Ok
@@ -244,10 +246,12 @@ void CSimpleTexturedRibbon::SetWidth(u16)
     printf("CSimpleTexturedRibbon::SetWidth(u16)");
 }
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetWidthi(i32,u16)
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetWidthi(i32 a2, u16 a3)
 {
-    printf("CSimpleTexturedRibbon::SetWidthi(i32,u16)");
+	DoAssert(a2 < this->field_3C + 1, "Bad i in call to CSimpleTexturedRibbon::SetWidthi");
+	this->field_44[a2].field_18 = a3;
 }
 
 // @Ok
@@ -2296,4 +2300,11 @@ void validate_SRibbonTexture(void)
 	VALIDATE(SRibbonTexture, v3, 0x1B);
 
 	VALIDATE(SRibbonTexture, mTexWin, 0x1C);
+}
+
+void validate_SSimpleRibbonParams(void)
+{
+	VALIDATE_SIZE(SSimpleRibbonParams, 0x1C);
+
+	VALIDATE(SSimpleRibbonParams, field_18, 0x18);
 }

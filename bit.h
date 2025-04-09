@@ -8,6 +8,13 @@
 #include "texture.h"
 #include "ps2funcs.h"
 
+// @Note guessed the name
+struct SSimpleRibbonParams
+{
+	PADDING(0x18);
+	u32 field_18;
+};
+
 // @Note: guessed name
 struct SRibbonTexture
 {
@@ -279,7 +286,7 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 
 		SRibbonTexture *pTextures;
 
-		void *field_44;
+		SSimpleRibbonParams *field_44;
 
 		u32 *field_48;
 };
@@ -585,6 +592,7 @@ void validate_vector3d(void);
 void validate_vector4d(void);
 void validate_CGlassBit(void);
 void validate_SRibbonTexture(void);
+void validate_SSimpleRibbonParams(void);
 
 
 EXPORT extern CBit* GLineList;
