@@ -104,10 +104,16 @@ void CSimpleTexturedRibbon::SetNumFaces(i32)
     printf("CSimpleTexturedRibbon::SetNumFaces(i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CSimpleTexturedRibbon::SetOpaque(void)
 {
-    printf("CSimpleTexturedRibbon::SetOpaque(void)");
+	SRibbonTexture *pTexture = this->pTextures;
+	for (i32 i = 0; i < this->field_3C; i++)
+	{
+		pTexture->field_0 |= 0x80;
+		pTexture++;
+	}
 }
 
 
