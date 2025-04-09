@@ -84,10 +84,11 @@ INLINE CSpecialDisplay::~CSpecialDisplay(void)
 	this->DeleteFrom(reinterpret_cast<CBit**>(&SpecialDisplayList));
 }
 
-// @SMALLTODO
-CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32)
+// @Ok
+// @AlmostMatching: slightly out of order due ot the AttachTo
+CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32 numfaces)
 {
-    printf("CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32)");
+	this->SetNumFaces(numfaces);
 }
 
 
