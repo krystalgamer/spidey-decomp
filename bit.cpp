@@ -111,10 +111,29 @@ void CSimpleTexturedRibbon::SetOpaque(void)
 }
 
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetTexture(Texture *)
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetTexture(Texture *a2)
 {
-    printf("CSimpleTexturedRibbon::SetTexture(Texture *)");
+	DoAssert(a2 != 0, "NULL pTex sent to SetTexture");
+
+	SRibbonTexture *pTexture = this->pTextures;
+
+	for (i32 i = 0; i < this->field_3C; i++)
+	{
+		pTexture->mPage = a2->tpage;
+		pTexture->mClut = a2->clut;
+		pTexture->u0 = a2->u0;
+		pTexture->u1 = a2->u1;
+		pTexture->v0 = a2->v0;
+		pTexture->v1 = a2->v1;
+		pTexture->u2 = a2->u2;
+		pTexture->u3 = a2->u3;
+		pTexture->v2 = a2->v2;
+		pTexture->v3 = a2->v3;
+		pTexture->mTexWin = a2->TexWin;
+		++pTexture;
+	}
 }
 
 // @Ok
