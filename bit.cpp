@@ -98,10 +98,54 @@ void CSimpleTexturedRibbon::Display(void)
     printf("CSimpleTexturedRibbon::Display(void)");
 }
 
-// @SMALLTODO
-void CSimpleTexturedRibbon::SetNumFaces(i32)
+// @Ok
+// @AlmostMatching: calls to DCMem_New are slightly different
+void CSimpleTexturedRibbon::SetNumFaces(i32 a1)
 {
-    printf("CSimpleTexturedRibbon::SetNumFaces(i32)");
+	DoAssert(a1 != 0, "Zero NumFaces");
+	this->field_3C = a1;
+	this->field_3E = a1;
+
+	this->pTextures = static_cast<SRibbonTexture *>(DCMem_New(
+		this->field_3C * sizeof(SRibbonTexture),
+		0,
+		1,
+		0,
+		1));
+
+	u32 v4 = 0;
+	u32 v5 = 0;
+
+	SRibbonTexture *pTexture = this->pTextures;
+
+	for (i32 i = 0; i < this->field_3C; i++)
+	{
+		pTexture->field_0 = 0xA01;
+		pTexture->field_2 = 32;
+
+
+		pTexture->field_4 = v4;
+		pTexture->field_5 = v4 + 2;
+		pTexture->field_6 = v4 + 1;
+
+		pTexture->field_7 = v4 + 3;
+		v4 += 2;
+
+		pTexture->field_8 = v5;
+		pTexture->field_9 = v5 + 1;
+		pTexture->field_A = v5;
+		pTexture->field_B = v5 + 1;
+
+		pTexture->field_C = 0;
+		pTexture->field_E = 0;
+
+		v5++;
+
+		pTexture++;
+	}
+
+	this->field_44 = DCMem_New(28 *  (a1+1), 0, 1, 0, 1);
+	this->field_48 = static_cast<u32*>(DCMem_New(sizeof(u32) * (a1+1), 0, 1, 0, 1));
 }
 
 // @Ok
@@ -1681,12 +1725,12 @@ void CGlow::SetRadius(int radius)
 	}
 }
 
-// @Ok
+// @NotOk
 // slightly different register allocation
 void CSimpleTexturedRibbon::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 {
 	int value = (r | (((b << 8) | g) << 8));
-	int *ptr = this->field_48;
+	u32 *ptr = this->field_48;
 
 	int i = 0;
 	for (i = 0; i < this->field_3C + 1; i++)
@@ -2032,6 +2076,8 @@ void validate_CSimpleTexturedRibbon(void)
 
 	VALIDATE(CSimpleTexturedRibbon, field_3C, 0x3C);
 
+	VALIDATE(CSimpleTexturedRibbon, field_3E, 0x3E);
+
 	VALIDATE(CSimpleTexturedRibbon, pTextures, 0x40);
 	VALIDATE(CSimpleTexturedRibbon, field_44, 0x44);
 	VALIDATE(CSimpleTexturedRibbon, field_48, 0x48);
@@ -2218,6 +2264,19 @@ void validate_SRibbonTexture(void)
 	VALIDATE_SIZE(SRibbonTexture, 0x20);
 
 	VALIDATE(SRibbonTexture, field_0, 0x0);
+	VALIDATE(SRibbonTexture, field_2, 0x2);
+
+	VALIDATE(SRibbonTexture, field_4, 0x4);
+	VALIDATE(SRibbonTexture, field_5, 0x5);
+	VALIDATE(SRibbonTexture, field_6, 0x6);
+	VALIDATE(SRibbonTexture, field_7, 0x7);
+	VALIDATE(SRibbonTexture, field_8, 0x8);
+	VALIDATE(SRibbonTexture, field_9, 0x9);
+	VALIDATE(SRibbonTexture, field_A, 0xA);
+	VALIDATE(SRibbonTexture, field_B, 0xB);
+
+	VALIDATE(SRibbonTexture, field_C, 0xC);
+	VALIDATE(SRibbonTexture, field_E, 0xE);
 
 	VALIDATE(SRibbonTexture, u0, 0x10);
 	VALIDATE(SRibbonTexture, v0, 0x11);

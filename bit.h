@@ -12,8 +12,19 @@
 struct SRibbonTexture
 {
 	u16 field_0;
+	u16 field_2;
 
-	PADDING(0x10-2);
+	u8 field_4;
+	u8 field_5;
+	u8 field_6;
+	u8 field_7;
+	u8 field_8;
+	u8 field_9;
+	u8 field_A;
+	u8 field_B;
+
+	u16 field_C;
+	u16 field_E;
 
 	u8 u0;
 	u8 v0;
@@ -264,13 +275,13 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 
 		u16 field_3C;
 
-		PADDING(0x40-0x3C-2);
-		// @FIXME - figure the type
+		u16 field_3E;
+
 		SRibbonTexture *pTextures;
 
 		void *field_44;
 
-		i32* field_48;
+		u32 *field_48;
 };
 
 class CGlow : public CBit
