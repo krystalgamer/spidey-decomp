@@ -221,7 +221,19 @@ class CSimpleTexturedRibbon : public CSpecialDisplay
 	public:
 		EXPORT void SetRGB(u8, u8, u8);
 		EXPORT void SetSemiTransparent(void);
+
 		EXPORT CSimpleTexturedRibbon(void);
+		EXPORT CSimpleTexturedRibbon(i32);
+		EXPORT void Display(void);
+		EXPORT void SetNumFaces(i32);
+		EXPORT void SetOpaque(void);
+		EXPORT void SetTexture(Texture *);
+		EXPORT void SetTexture(u32);
+		EXPORT void SetTexturei(i32,Texture *);
+		EXPORT void SetTexturei(i32,u32);
+		EXPORT void SetWidth(u16);
+		EXPORT void SetWidthi(i32,u16);
+		EXPORT virtual ~CSimpleTexturedRibbon(void) OVERRIDE;
 
 		u16 field_3C;
 

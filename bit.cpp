@@ -78,6 +78,82 @@ CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
 
+// @SMALLTODO
+CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32)
+{
+    printf("CSimpleTexturedRibbon::CSimpleTexturedRibbon(i32)");
+}
+
+
+// @MEDIUMTODO
+void CSimpleTexturedRibbon::Display(void)
+{
+    printf("CSimpleTexturedRibbon::Display(void)");
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetNumFaces(i32)
+{
+    printf("CSimpleTexturedRibbon::SetNumFaces(i32)");
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetOpaque(void)
+{
+    printf("CSimpleTexturedRibbon::SetOpaque(void)");
+}
+
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetTexture(Texture *)
+{
+    printf("CSimpleTexturedRibbon::SetTexture(Texture *)");
+}
+
+// @Ok
+// @Matching
+void CSimpleTexturedRibbon::SetTexture(u32 checksum)
+{
+	Texture *TextureEntry = Spool_FindTextureEntry(checksum);
+	DoAssert(TextureEntry != 0, "Could not find texture for ribbon");
+	if (!TextureEntry)
+	{
+		TextureEntry = gAnimTable[13]->pTexture;
+	}
+
+	this->SetTexture(TextureEntry);
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetTexturei(i32,Texture *)
+{
+    printf("CSimpleTexturedRibbon::SetTexturei(i32,Texture *)");
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetTexturei(i32,u32)
+{
+    printf("CSimpleTexturedRibbon::SetTexturei(i32,u32)");
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetWidth(u16)
+{
+    printf("CSimpleTexturedRibbon::SetWidth(u16)");
+}
+
+// @SMALLTODO
+void CSimpleTexturedRibbon::SetWidthi(i32,u16)
+{
+    printf("CSimpleTexturedRibbon::SetWidthi(i32,u16)");
+}
+
+// @SMALLTODO
+CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)
+{
+    printf("CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)");
+}
+
 // @Ok
 // @Matching
 INLINE CSimpleTexturedRibbon::CSimpleTexturedRibbon(void)
