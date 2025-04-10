@@ -536,16 +536,73 @@ void Bit_Init(void)
 // @Ok
 void Bit_SetSparkSize(u32 size)
 {
-	print_if_false(size < 0x10, "Daft spark size");
+	DoAssert(size < 0x10, "Daft spark size");
 
 	SparkSize = size | (size << 16);
 }
 
-// @MEDIUMTODO
-CWibbly::CWibbly(u8,u8,u8,i32,i32 a6,i32,i32,i32,i32,i32,i32,i32,i32)
+// @Ok
+// @Matching
+CWibbly::CWibbly(
+		u8 a2,
+		u8 a3,
+		u8 a4,
+		i32 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8,
+		i32 a9,
+		i32 a10,
+		i32 a11,
+		i32 a12,
+		i32 a13,
+		i32 a14)
 	: CGouraudRibbon(a6 + 1, 0)
 {
-    printf("CWibbly::CWibbly(u8,u8,u8,i32,i32,i32,i32,i32,i32,i32,i32,i32,i32)");
+	this->field_7C = a9;
+	this->field_88 = a10;
+	this->field_80 = a11;
+
+	this->field_8C = a13;
+	this->field_84 = a12;
+	this->field_90 = a14;
+	this->field_94 = Rnd(4096);
+
+	this->SetRGB(a2, a3, a4);
+
+	this->mpPoints[this->mNumPoints - 1].r = a2 >> 1;
+	this->mpPoints->r = this->mpPoints[this->mNumPoints - 1].r;
+
+	this->mpPoints[this->mNumPoints - 1].g = a3 >> 1;
+	this->mpPoints->g = this->mpPoints[this->mNumPoints - 1].g;
+
+	this->mpPoints[this->mNumPoints - 1].b = a4 >> 1;
+	this->mpPoints->b = this->mpPoints[this->mNumPoints - 1].b;
+
+	this->SetWidth(a8 / 20);
+
+	this->mpPoints[this->mNumPoints - 1].Width = a8 / 40;
+	this->mpPoints->Width = this->mpPoints[this->mNumPoints - 1].Width;
+
+	i32 v15 = 2 * a2;
+	if (v15 > 255)
+	{
+		v15 = 0xFF;
+	}
+
+	i32 v21 = 2 * a3;
+	if (v21 > 255)
+	{
+		v21 = 0xFF;
+	}
+
+	i32 v20 = 2 * a4;
+	if (v20 > 255)
+	{
+		v20 = 0xFF;
+	}
+
+	this->SetCore(v15, v21, v20, a8 / 80);
 }
 
 // @MEDIUMTODO
@@ -555,7 +612,7 @@ void CWibbly::Move(void)
 }
 
 // @Ok
-void CWibbly::SetCore(
+INLINE void CWibbly::SetCore(
 		u8 a2,
 		u8 a3,
 		u8 a4,
@@ -2281,7 +2338,14 @@ void validate_CWibbly(void)
 	VALIDATE(CWibbly, field_70, 0x70);
 	VALIDATE(CWibbly, field_7C, 0x7C);
 
+	VALIDATE(CWibbly, field_80, 0x80);
+	VALIDATE(CWibbly, field_84, 0x84);
+
 	VALIDATE(CWibbly, field_88, 0x88);
+	VALIDATE(CWibbly, field_8C, 0x8C);
+
+	VALIDATE(CWibbly, field_90, 0x90);
+	VALIDATE(CWibbly, field_94, 0x94);
 }
 
 void validate_SBitServerEntry(void)

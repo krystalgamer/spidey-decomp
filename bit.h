@@ -499,10 +499,10 @@ class CWibbly : public CGouraudRibbon
 {
 	public:
 		EXPORT CWibbly(u8,u8,u8,i32,i32,i32,i32,i32,i32,i32,i32,i32,i32);
-		EXPORT void Move(void) OVERRIDE;
+		EXPORT virtual void Move(void) OVERRIDE;
 		EXPORT void SetCore(u8,u8,u8,i32);
 		EXPORT void SetEndPoints(CVector *,CVector *);
-		EXPORT virtual ~CWibbly(void);
+		EXPORT virtual ~CWibbly(void) OVERRIDE;
 
 		CGouraudRibbon* field_48;
 		CVector field_4C;
@@ -511,12 +511,14 @@ class CWibbly : public CGouraudRibbon
 		CVector field_70;
 		i32 field_7C;
 
-		PADDING(0x88-0x7C-4);
+		i32 field_80;
+		i32 field_84;
 
 		i32 field_88;
+		i32 field_8C;
+		i32 field_90;
 
-		PADDING(0x98-0x88-4);
-
+		i32 field_94;
 };
 
 class CGlassBit : public CBit
