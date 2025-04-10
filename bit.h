@@ -393,6 +393,8 @@ class CMotionBlur : public CFlatBit
 {
 	public:
 		EXPORT CMotionBlur(CVector*, CVector*, i32,i32,i32,i32);
+		EXPORT virtual ~CMotionBlur(void) OVERRIDE;
+
 		EXPORT virtual void Move(void);
 };
 

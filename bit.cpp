@@ -1217,6 +1217,12 @@ INLINE CFlatBit::~CFlatBit(void)
 }
 
 // @Ok
+// @Note: this is missing from the original game because CFlatBit is not inlined
+CMotionBlur::~CMotionBlur(void)
+{
+}
+
+// @Ok
 // @Test
 void CMotionBlur::Move(void)
 {
