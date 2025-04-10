@@ -989,6 +989,31 @@ INLINE CSimpleAnim::~CSimpleAnim(void)
 
 // @Ok
 // @Matching
+void CRibbon::SetPos(CVector &pos)
+{
+	if (++this->field_48 == this->mNumPoints)
+	{
+		this->field_48 = 0;
+	}
+
+	this->mPoints[this->field_48] = pos;
+
+	i32 v4 = this->field_48;
+	for (i32 i = this->mNumBits - 1; i >= 0; i--)
+	{
+		this->mBits[i]->field_64 = this->mPoints[v4];
+		v4 -= this->mPointsPerBit;
+		if (v4 < 0)
+		{
+			v4 += this->mNumPoints;
+		}
+
+		this->mBits[i]->field_58 = this->mPoints[v4];
+	}
+}
+
+// @Ok
+// @Matching
 void CRibbon::SetScale(i32 Scale)
 {
 	for (i32 i = 0; i < this->mNumBits; i++)
@@ -2086,6 +2111,8 @@ void validate_CRibbon(void)
 	VALIDATE(CRibbon, mNumBits, 0x3C);
 	VALIDATE(CRibbon, mPointsPerBit, 0x40);
 	VALIDATE(CRibbon, mNumPoints, 0x44);
+
+	VALIDATE(CRibbon, field_48, 0x48);
 
 	VALIDATE(CRibbon, mPoints, 0x4C);
 	VALIDATE(CRibbon, mBits, 0x50);

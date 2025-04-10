@@ -344,11 +344,13 @@ class CRibbon : public CNonRenderedBit
 		EXPORT virtual ~CRibbon(void) OVERRIDE;
 		EXPORT void SetScale(i32);
 
+		EXPORT void SetPos(CVector&);
+
 		i32 mNumBits;
 		i32 mPointsPerBit;
 		i32 mNumPoints;
 
-		PADDING(4);
+		i32 field_48;
 
 		CVector *mPoints;
 		CRibbonBit **mBits;
