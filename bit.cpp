@@ -13,6 +13,9 @@
 EXPORT u8 gSparkRGB[3] = { 0x80, 0x80, 0x80 };
 
 // @Ok
+EXPORT u8 gSparkFadeRGB[3] = { 4, 4, 4 };
+
+// @Ok
 EXPORT char *gAnimNames[29] =
 {
 	"SHADOW  ",
@@ -1774,17 +1777,13 @@ void Bit_SetSparkRGB(u8 r, u8 g, u8 b)
 	gSparkRGB[2] = b;
 }
 
-static unsigned char gSparkFadeR;
-static unsigned char gSparkFadeG;
-static unsigned char gSparkFadeB;
-
-// @NotOk
-// Globals
-void Bit_SetSparkFadeRGB(unsigned char r, unsigned char g, unsigned char b)
+// @Ok
+// @Matching
+void Bit_SetSparkFadeRGB(u8 r, u8 g, u8 b)
 {
-	gSparkFadeR = r;
-	gSparkFadeG = g;
-	gSparkFadeB = b;
+	gSparkFadeRGB[0] = r;
+	gSparkFadeRGB[1] = g;
+	gSparkFadeRGB[2] = b;
 }
 
 // @Ok
