@@ -1717,10 +1717,10 @@ INLINE CRibbonBit::CRibbonBit(void)
 {
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CRibbonBit::~CRibbonBit(void)
 {
-    printf("CRibbonBit::~CRibbonBit(void)");
 }
 
 // @Ok
