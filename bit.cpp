@@ -614,6 +614,24 @@ CFireyExplosion::~CFireyExplosion(void)
 }
 
 // @Ok
+// @Matching
+void CFireyExplosion::Move(void)
+{
+	if (this->mAge == 5)
+	{
+		for (i32 i = 0; i < 1; ++i )
+		{
+			Rnd(100);
+		}
+
+	}
+	if (++this->mAge > this->mLifetime)
+	{
+		this->Die();
+	}
+}
+
+// @Ok
 CCombatImpactRing::~CCombatImpactRing(void)
 {
 }

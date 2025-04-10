@@ -477,6 +477,8 @@ class CFireyExplosion : public CNonRenderedBit
 	public:
 		EXPORT CFireyExplosion(CVector*);
 		EXPORT virtual ~CFireyExplosion(void);
+
+		EXPORT virtual void Move(void) OVERRIDE;
 };
 
 class CGouraudRibbon : public CSpecialDisplay
