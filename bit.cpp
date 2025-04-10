@@ -163,10 +163,30 @@ CSpark::CSpark(
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CSpark::Move(void)
 {
-    printf("CSpark::Move(void)");
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	i32 newVelX = this->mVel.vx + this->mAcc.vx;
+	i32 newVelY = this->mVel.vy + this->mAcc.vy;
+	i32 newVelZ = this->mVel.vz + this->mAcc.vz;
+
+	this->mVel.vx = newVelX - (newVelX >> 3);
+	this->mVel.vy = newVelY - (newVelY >> 3);
+	this->mVel.vz = newVelZ - (newVelZ >> 3);
+
+	if (++this->mAge >= this->mLifetime)
+	{
+		this->Die();
+	}
+
+	this->r0 -= this->mFadeR;
+	this->g0 -= this->mFadeG;
+	this->b0 -= this->mFadeB;
 }
 
 // @Ok
