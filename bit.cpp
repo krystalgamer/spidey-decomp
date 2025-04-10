@@ -96,10 +96,10 @@ void CSpark::Move(void)
     printf("CSpark::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CSpark::~CSpark(void)
 {
-    printf("CSpark::~CSpark(void)");
 }
 
 // @Ok
