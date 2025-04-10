@@ -330,6 +330,8 @@ class CLinked2EndedBit : public CFT4Bit
 class CRibbonBit : public CLinked2EndedBit
 {
 	public:
+		EXPORT CRibbonBit(void);
+		EXPORT virtual ~CRibbonBit(void) OVERRIDE;
 		EXPORT virtual void Move(void);
 };
 

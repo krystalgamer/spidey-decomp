@@ -1710,6 +1710,19 @@ INLINE CLinked2EndedBit::CLinked2EndedBit(void)
 	this->AttachTo(&Linked2EndedBitListLeftover);
 }
 
+
+// @Ok
+// @Matching
+INLINE CRibbonBit::CRibbonBit(void)
+{
+}
+
+// @SMALLTODO
+CRibbonBit::~CRibbonBit(void)
+{
+    printf("CRibbonBit::~CRibbonBit(void)");
+}
+
 // @Ok
 void CRibbonBit::Move(void)
 {
