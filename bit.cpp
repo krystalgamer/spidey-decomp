@@ -10,6 +10,12 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT CSVector gSparkTrajectoryCone;
+
+// @Ok
+EXPORT CSVector gSparkTrajectory;
+
+// @Ok
 EXPORT u8 gSparkRGB[3] = { 0x80, 0x80, 0x80 };
 
 // @Ok
@@ -83,6 +89,31 @@ EXPORT CBit* GlassList;
 CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
+
+// @Ok
+// @Validate: when inlined
+void Bit_CalculateSparkVelocity(CVector &a1, i32 a2)
+{
+	CSVector v11;
+	v11 = gSparkTrajectory;
+
+	if (gSparkTrajectoryCone.vx)
+	{
+		v11.vx += gSparkTrajectoryCone.vx - (gSparkTrajectory.vx >> 1);
+	}
+
+	if (gSparkTrajectoryCone.vy)
+	{
+		v11.vy += gSparkTrajectoryCone.vy - (gSparkTrajectory.vy >> 1);
+	}
+
+	if (gSparkTrajectoryCone.vz)
+	{
+		v11.vz += gSparkTrajectoryCone.vz - (gSparkTrajectory.vz >> 1);
+	}
+
+	Utils_GetVecFromMagDir(&a1, a2, &v11);
+}
 
 // @SMALLTODO
 CSpark::CSpark(CVector *,i32,i32,i32)
@@ -1798,16 +1829,12 @@ void CGlow::SetCentreRGB(unsigned char a2, unsigned char a3, unsigned char a4)
 	this->mCentreCodeBGR = 0x32000000 | (((a4 << 8) | a3) << 8) | a2;
 }
 
-static CSVector gSparkTrajectory;
-
 // @NotOk
 // global
 void Bit_SetSparkTrajectory(const CSVector *pVec)
 {
 	gSparkTrajectory = *pVec;
 }
-
-static CSVector gSparkTrajectoryCone;
 
 // @NotOk
 // global

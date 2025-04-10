@@ -564,7 +564,10 @@ EXPORT void MoveList(CBit *);
 EXPORT void Bit_SetSparkRGB(u8, u8, u8);
 EXPORT void Bit_SetSparkFadeRGB(u8, u8, u8);
 EXPORT void Bit_SetSparkTrajectory(const CSVector *);
+EXPORT void Bit_CalculateSparkVelocity(CVector&,i32);
+
 EXPORT void Bit_SetSparkTrajectoryCone(const CSVector *);
+
 EXPORT void Bit_ReduceRGB(u32*, i32);
 EXPORT void Bit_SetSparkSize(u32);
 EXPORT void Bit_Init(void);
