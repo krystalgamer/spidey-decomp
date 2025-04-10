@@ -1710,6 +1710,12 @@ INLINE CLinked2EndedBit::CLinked2EndedBit(void)
 	this->AttachTo(&Linked2EndedBitListLeftover);
 }
 
+// @Ok
+// @AlmostMatching: slightly different inline
+INLINE CLinked2EndedBit::~CLinked2EndedBit(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBit**>(&Linked2EndedBitListLeftover));
+}
 
 // @Ok
 // @Matching

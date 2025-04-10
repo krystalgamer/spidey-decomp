@@ -323,6 +323,8 @@ class CLinked2EndedBit : public CFT4Bit
 {
 	public:
 		EXPORT CLinked2EndedBit(void);
+		EXPORT virtual ~CLinked2EndedBit(void) OVERRIDE;
+
 		CVector field_58;
 		CVector field_64;
 };
