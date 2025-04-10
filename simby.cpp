@@ -282,22 +282,22 @@ void CFireySpark::Move(void)
 
 	this->mVel.vy += 29584;
 
-	if ( this->field_40 >= this->field_48 )
-		this->field_40 -= this->field_48;
+	if ( this->r0 >= this->field_48 )
+		this->r0 -= this->field_48;
 	else
-		this->field_40 = 0;
+		this->r0 = 0;
 
-	if ( this->field_41 >= this->field_48 )
-		this->field_41 -= this->field_48;
+	if ( this->b0 >= this->field_48 )
+		this->b0 -= this->field_48;
 	else
-		this->field_41 = 0;
+		this->b0 = 0;
 
-	if ( this->field_42 >= this->field_48 )
-		this->field_42 -= this->field_48;
+	if ( this->g0 >= this->field_48 )
+		this->g0 -= this->field_48;
 	else
-		this->field_42 = 0;
+		this->g0 = 0;
 
-	if ( !(this->field_40 | (this->field_42 | this->field_41)) )
+	if ( !(this->r0 | (this->g0 | this->b0)) )
 		this->Die();
 }
 
@@ -316,21 +316,21 @@ CFireySpark::CFireySpark(CVector* a2, CVector* a3, i32 a4)
 
 	if (Rnd(2))
 	{
-		this->field_43 = 106;
-		this->field_3C = 0x2000000;
-		this->field_44 = 1;
+		this->code = 106;
+		this->tag = 0x2000000;
+		this->mWidthHeight = 1;
 	}
 	else
 	{
-		this->field_43 = 98;
-		this->field_3C = 50331648;
+		this->code = 98;
+		this->tag = 50331648;
 		i32 v6 = Rnd(2) + 2;
-		this->field_44 = (v6 << 16) | (v6 + 1);
+		this->mWidthHeight = (v6 << 16) | (v6 + 1);
 	}
 
-	this->field_40 = -1;
-	this->field_41 = 0x80;
-	this->field_42 = 0;
+	this->r0 = -1;
+	this->g0 = 0x80;
+	this->b0 = 0;
 	this->field_48 = Rnd(10) + 10;
 	this->mType = 16;
 }
@@ -1021,13 +1021,6 @@ void validate_CFireySpark(void)
 {
 	VALIDATE_SIZE(CFireySpark, 0x50);
 
-	VALIDATE(CFireySpark, field_3C, 0x3C);
-	VALIDATE(CFireySpark, field_40, 0x40);
-	VALIDATE(CFireySpark, field_41, 0x41);
-	VALIDATE(CFireySpark, field_42, 0x42);
-	VALIDATE(CFireySpark, field_43, 0x43);
-
-	VALIDATE(CFireySpark, field_44, 0x44);
 	VALIDATE(CFireySpark, field_48, 0x48);
 
 	VALIDATE(CFireySpark, field_4C, 0x4C);

@@ -2332,7 +2332,16 @@ void validate_CFrag(void)
 
 void validate_CPixel(void)
 {
-	VALIDATE_SIZE(CPixel, 0x3C);
+	VALIDATE_SIZE(CPixel, 0x48);
+
+	VALIDATE(CPixel, tag, 0x3C);
+
+	VALIDATE(CPixel, r0, 0x40);
+	VALIDATE(CPixel, g0, 0x41);
+	VALIDATE(CPixel, b0, 0x42);
+
+	VALIDATE(CPixel, code, 0x43);
+	VALIDATE(CPixel, mWidthHeight, 0x44);
 }
 
 void validate_CBitServer(void)

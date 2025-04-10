@@ -423,6 +423,16 @@ class CPixel : public CBit
 	public:
 		EXPORT CPixel(void);
 		EXPORT virtual ~CPixel(void);
+
+		u32 tag;
+
+		u8 r0;
+		u8 g0;
+		u8 b0;
+
+		u8 code;
+
+		u32 mWidthHeight;
 };
 
 struct SBitServerEntry

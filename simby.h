@@ -160,14 +160,6 @@ class CFireySpark : public CPixel
 
 		EXPORT virtual void Move(void);
 
-		i32 field_3C;
-
-		u8 field_40;
-		u8 field_41;
-		u8 field_42;
-		u8 field_43;
-
-		i32 field_44;
 		i32 field_48;
 		i32 field_4C;
 };
