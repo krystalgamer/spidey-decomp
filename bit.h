@@ -547,6 +547,16 @@ class CGlassBit : public CBit
 		PADDING(1);
 };
 
+class CSpark : public CPixel
+{
+	public:
+		EXPORT CSpark(CVector *,i32,i32,i32);
+		EXPORT virtual void Move(void) OVERRIDE;
+		EXPORT ~CSpark(void) OVERRIDE;
+
+		PADDING(0x10);
+};
+
 EXPORT extern CBit* GPolyLineList;
 
 EXPORT i32 Bit_MakeSpriteRing(CVector*, i32, i32, i32, i32, i32, i32, i32);
@@ -605,6 +615,7 @@ void validate_vector4d(void);
 void validate_CGlassBit(void);
 void validate_SRibbonTexture(void);
 void validate_SSimpleRibbonParams(void);
+void validate_CSpark(void);
 
 
 EXPORT extern CBit* GLineList;

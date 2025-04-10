@@ -525,6 +525,7 @@ i32 validate(void)
 	validate_CSmokePuff();
 	validate_SRibbonTexture();
 	validate_SSimpleRibbonParams();
+	validate_CSpark();
 
 	puts("[*] Validation done!");
 

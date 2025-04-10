@@ -10,6 +10,9 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT u8 gSparkRGB[3] = { 0x80, 0x80, 0x80 };
+
+// @Ok
 EXPORT char *gAnimNames[29] =
 {
 	"SHADOW  ",
@@ -77,6 +80,24 @@ EXPORT CBit* GlassList;
 CBit* GLineList;
 
 EXPORT CBitServer* gBitServer = 0;
+
+// @SMALLTODO
+CSpark::CSpark(CVector *,i32,i32,i32)
+{
+    printf("CSpark::CSpark(CVector *,i32,i32,i32)");
+}
+
+// @SMALLTODO
+void CSpark::Move(void)
+{
+    printf("CSpark::Move(void)");
+}
+
+// @SMALLTODO
+CSpark::~CSpark(void)
+{
+    printf("CSpark::~CSpark(void)");
+}
 
 // @Ok
 INLINE CSpecialDisplay::~CSpecialDisplay(void)
@@ -1744,17 +1765,13 @@ void MoveList(CBit *pBit)
 	}
 }
 
-static unsigned char gSparkR;
-static unsigned char gSparkG;
-static unsigned char gSparkB;
-
-// @NotOk
-// Globals
-void Bit_SetSparkRGB(unsigned char r, unsigned char g, unsigned char b)
+// @Ok
+// @Matching
+void Bit_SetSparkRGB(u8 r, u8 g, u8 b)
 {
-	gSparkR = r;
-	gSparkG = g;
-	gSparkB = b;
+	gSparkRGB[0] = r;
+	gSparkRGB[1] = g;
+	gSparkRGB[2] = b;
 }
 
 static unsigned char gSparkFadeR;
@@ -2451,4 +2468,9 @@ void validate_SSimpleRibbonParams(void)
 	VALIDATE_SIZE(SSimpleRibbonParams, 0x1C);
 
 	VALIDATE(SSimpleRibbonParams, field_18, 0x18);
+}
+
+void validate_CSpark(void)
+{
+	VALIDATE_SIZE(CSpark, 0x4C);
 }
