@@ -106,12 +106,14 @@ class CSVector{
 			this->vz = 0;
 		}
 
+		/*
 		INLINE void operator=(const CSVector& other)
 		{
             this->vx = other.vx;
             this->vy = other.vy;
             this->vz = other.vz;
         }
+		*/
 
 		// @Ok
 		// Note: Guessed the name

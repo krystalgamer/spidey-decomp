@@ -10,10 +10,13 @@
 #include "my_assert.h"
 
 // @Ok
-EXPORT CSVector gSparkTrajectoryCone;
+EXPORT bool SparkSemiTrans = true;
 
 // @Ok
-EXPORT CSVector gSparkTrajectory;
+EXPORT CSVector SparkTrajectoryCone;
+
+// @Ok
+EXPORT CSVector SparkTrajectory;
 
 // @Ok
 EXPORT u8 gSparkRGB[3] = { 0x80, 0x80, 0x80 };
@@ -92,33 +95,72 @@ EXPORT CBitServer* gBitServer = 0;
 
 // @Ok
 // @Validate: when inlined
-void Bit_CalculateSparkVelocity(CVector &a1, i32 a2)
+INLINE void Bit_CalculateSparkVelocity(CVector &a1, i32 a2)
 {
-	CSVector v11;
-	v11 = gSparkTrajectory;
+	CSVector v11 = SparkTrajectory;
 
-	if (gSparkTrajectoryCone.vx)
+	if (SparkTrajectoryCone.vx)
 	{
-		v11.vx += gSparkTrajectoryCone.vx - (gSparkTrajectory.vx >> 1);
+		v11.vx += Rnd(SparkTrajectoryCone.vx) - (SparkTrajectory.vx >> 1);
 	}
 
-	if (gSparkTrajectoryCone.vy)
+	if (SparkTrajectoryCone.vy)
 	{
-		v11.vy += gSparkTrajectoryCone.vy - (gSparkTrajectory.vy >> 1);
+		v11.vy += Rnd(SparkTrajectoryCone.vy) - (SparkTrajectory.vy >> 1);
 	}
 
-	if (gSparkTrajectoryCone.vz)
+	if (SparkTrajectoryCone.vz)
 	{
-		v11.vz += gSparkTrajectoryCone.vz - (gSparkTrajectory.vz >> 1);
+		v11.vz += Rnd(SparkTrajectoryCone.vz) - (SparkTrajectory.vz >> 1);
 	}
 
 	Utils_GetVecFromMagDir(&a1, a2, &v11);
 }
 
-// @SMALLTODO
-CSpark::CSpark(CVector *,i32,i32,i32)
+// @Ok
+// @NotMatching: different register alloc totally diff registers
+// the call to calculate spark velocity is lsight differnt but all good
+CSpark::CSpark(
+		CVector& a2,
+		i32 a3,
+		i32 a4,
+		i32 a5)
 {
-    printf("CSpark::CSpark(CVector *,i32,i32,i32)");
+	if ((SparkSize & 0xF) != 1)
+	{
+		this->code = 96;
+		this->tag = 0x3000000;
+		this->mWidthHeight = SparkSize;
+	}
+	else
+	{
+		this->code = 104;
+		this->tag = 0x2000000;
+		this->mWidthHeight = 1;
+	}
+
+	this->r0 = gSparkRGB[0];
+	this->g0 = gSparkRGB[1];
+	this->b0 = gSparkRGB[2];
+
+	this->mFadeR = gSparkFadeRGB[0];
+	this->mFadeG = gSparkFadeRGB[1];
+	this->mFadeB = gSparkFadeRGB[2];
+
+	this->mPos = a2;
+
+	Bit_CalculateSparkVelocity(this->mVel, a3);
+
+	this->mAcc.vy = a4;
+
+	this->mFric.Set(3, 3, 3);
+
+	this->mLifetime = Rnd(a5);
+
+	if (SparkSemiTrans)
+	{
+		this->code |= 2u;
+	}
 }
 
 // @SMALLTODO
@@ -896,7 +938,7 @@ CPixel::~CPixel(void)
 }
 
 // @Ok
-CPixel::CPixel(void)
+INLINE CPixel::CPixel(void)
 {
 	this->AttachTo(reinterpret_cast<CBit**>(&PixelList));
 }
@@ -1833,14 +1875,14 @@ void CGlow::SetCentreRGB(unsigned char a2, unsigned char a3, unsigned char a4)
 // global
 void Bit_SetSparkTrajectory(const CSVector *pVec)
 {
-	gSparkTrajectory = *pVec;
+	SparkTrajectory = *pVec;
 }
 
 // @NotOk
 // global
 void Bit_SetSparkTrajectoryCone(const CSVector *pVec)
 {
-	gSparkTrajectoryCone = *pVec;
+	SparkTrajectoryCone = *pVec;
 }
 
 // @Ok
@@ -2508,4 +2550,8 @@ void validate_SSimpleRibbonParams(void)
 void validate_CSpark(void)
 {
 	VALIDATE_SIZE(CSpark, 0x4C);
+
+	VALIDATE(CSpark, mFadeR, 0x48);
+	VALIDATE(CSpark, mFadeG, 0x49);
+	VALIDATE(CSpark, mFadeB, 0x4A);
 }

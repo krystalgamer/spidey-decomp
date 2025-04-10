@@ -560,11 +560,15 @@ class CGlassBit : public CBit
 class CSpark : public CPixel
 {
 	public:
-		EXPORT CSpark(CVector *,i32,i32,i32);
+		EXPORT CSpark(CVector&,i32,i32,i32);
 		EXPORT virtual void Move(void) OVERRIDE;
 		EXPORT ~CSpark(void) OVERRIDE;
 
-		PADDING(0x10);
+		u8 mFadeR;
+		u8 mFadeG;
+		u8 mFadeB;
+
+		PADDING(1);
 };
 
 EXPORT extern CBit* GPolyLineList;
