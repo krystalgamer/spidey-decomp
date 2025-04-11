@@ -11,6 +11,9 @@ EXPORT i32 NumCameras;
 SCamera gMikeCamera[2];
 
 // @Ok
+EXPORT i32 gCameraModeRelated;
+
+// @Ok
 EXPORT i32 gCamXZDistance = 0x120;
 
 // @Ok
@@ -335,12 +338,14 @@ void CCamera::SetFixedFocusMode(CVector *a2, u16 a3, u16 a4){
 }
 
 // @Ok
+// @Matching
 i32 CCamera::SetMode(ECameraMode mode){
 
 	i32 oldMode = this->mMode;
 	this->mMode = mode;
-	if (mode == ECam_mode_0x10 || mode == ECam_mode_0x11){
-		*gCameraRelated = 0;
+	if (mode == ECam_mode_0x10 || mode == ECam_mode_0x11)
+	{
+		gCameraModeRelated = 0;
 	}
 
 	return oldMode;

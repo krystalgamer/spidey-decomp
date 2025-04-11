@@ -8,8 +8,6 @@
 #include "vector.h"
 #include "quat.h"
 
-static int * const gCameraRelated = (int*)0x56F254;
-
 struct SViewport
 {
 	PADDING(0xC);
