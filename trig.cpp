@@ -17,8 +17,10 @@ const i32 MAXPENDING = 16;
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
 EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
-static int gTrigMenu[40];
-static int gRestartPoints;
+
+EXPORT char *MenuFileNamePointers[40];
+
+EXPORT i32 NumTrigMenuEntries;
 EXPORT i32 Restart;
 i32 RestartNode;
 i32 gReStartDeathRelated;
@@ -615,14 +617,15 @@ void Trig_SendSignalToLinks(u16* pLinkInfo)
 }
 
 // @Ok
+// @Matching
 void Trig_ClearTrigMenu(void)
 {
-	for (int i = 0; i<40; i++)
+	for (i32 i = 0; i<40; i++)
 	{
-		gTrigMenu[i] = 0;
+		MenuFileNamePointers[i] = 0;
 	}
 
-	gRestartPoints = 0;
+	NumTrigMenuEntries = 0;
 }
 
 // @Ok
