@@ -69,6 +69,7 @@ public:
 	EXPORT i16 GetCamXZDistance(void);
 	EXPORT void SetCamXZDistance(u16, u16);
 	EXPORT i16 GetCamYDistance(void);
+	EXPORT void SetCamXOffset(i16,u16);
 
 
 	PADDING(4);

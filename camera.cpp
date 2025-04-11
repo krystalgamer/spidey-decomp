@@ -41,7 +41,41 @@ EXPORT i32 gCamYDistanceRelatedTwo;
 // @Ok
 EXPORT i32 gCamYDistanceRelatedThree;
 
-// @SMALLTODO
+// @Ok
+EXPORT i32 gCamXOffsetRelatedOne;
+
+// @Ok
+EXPORT i32 gCamXOffsetRelatedTwo;
+
+// @Ok
+EXPORT i32 gCamXOffsetRelatedThree;
+
+// @Ok
+EXPORT i32 gCamXOffsetRelatedFour;
+
+// @Ok
+// @Matching
+void CCamera::SetCamXOffset(i16 offset, u16 frames)
+{
+	if (this->mMode != 4 && this->mMode != 5)
+	{
+		if (frames)
+		{
+			gCamXOffsetRelatedThree = ((offset - gCamXOffsetRelatedFour) << 12) / frames;
+			gCamXOffsetRelatedOne = offset;
+			gCamXOffsetRelatedTwo = frames;
+		}
+		else
+		{
+			gCamXOffsetRelatedFour = offset;
+			gWtfCam[29] = offset;
+			gCamXOffsetRelatedTwo = 0;
+		}
+	}
+}
+
+// @Ok
+// @Matching
 i16 CCamera::GetCamYDistance(void)
 {
 	return camYDist;
