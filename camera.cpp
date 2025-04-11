@@ -14,10 +14,10 @@ SCamera gMikeCamera[2];
 EXPORT i32 gCameraModeRelated;
 
 // @Ok
-EXPORT i32 gCamXZDistance = 0x120;
+EXPORT i32 camXZDist = 0x120;
 
 // @Ok
-EXPORT i32 gCamYDistance = 0x0FFFFFFDC;
+EXPORT i32 camYDist = 0x0FFFFFFDC;
 
 // @Ok
 EXPORT i32 gWtfCam[35];
@@ -44,28 +44,28 @@ EXPORT i32 gCamYDistanceRelatedThree;
 // @SMALLTODO
 i16 CCamera::GetCamYDistance(void)
 {
-	return gCamYDistance;
+	return camYDist;
 }
 
 // @Ok
 // @Matching
-void CCamera::SetCamXZDistance(u16 a2, u16 a3)
+void CCamera::SetCamXZDistance(u16 dist, u16 frames)
 {
-	if (a3)
+	if (frames)
 	{
-		gCamXZRelatedThree = (a2 - gCamXZDistance) / a3;
-		gCamXZRelatedTwo = a2;
+		gCamXZRelatedThree = (dist - camXZDist) / frames;
+		gCamXZRelatedTwo = dist;
 
 		if (this->field_23C)
 		{
-			gCamXZDistanceRelated = a3;
+			gCamXZDistanceRelated = frames;
 		}
 	}
 	else
 	{
 		gCamXZDistanceRelated = 0;
-		gCamXZDistance = a2;
-		gWtfCam[32] = a2;
+		camXZDist = dist;
+		gWtfCam[32] = dist;
 	}
 }
 
@@ -73,7 +73,7 @@ void CCamera::SetCamXZDistance(u16 a2, u16 a3)
 // @Matching
 i16 CCamera::GetCamXZDistance(void)
 {
-	return gCamXZDistance;
+	return camXZDist;
 }
 
 // @Ok
@@ -395,7 +395,8 @@ void CCamera::SetZoom(i32 a2, u16 a3){
 }
 
 // @Ok
-int CCamera::GetZoom(void) const{
+int CCamera::GetZoom(void) const
+{
 	return this->mZoom;
 }
 
@@ -593,23 +594,24 @@ void CCamera::CM_FixedPos(void){
 
 }
 
-// @BIGTODO
-void CCamera::SetCamYDistance(i16 a2, u16 a3)
+// @Ok
+// @Matching
+void CCamera::SetCamYDistance(i16 dist, u16 frames)
 {
-	if (a3)
+	if (frames)
 	{
-		gCamYDistanceRelatedThree = (a2 - gCamYDistance) / a3;
-		gCamYDistanceRelatedTwo = a2;
+		gCamYDistanceRelatedThree = (dist - camYDist) / frames;
+		gCamYDistanceRelatedTwo = dist;
 
 		if (this->field_23C)
 		{
-			gCamYDistanceRelated = a3;
+			gCamYDistanceRelated = frames;
 		}
 	}
 	else
 	{
-		gCamYDistance = a2;
-		gWtfCam[33] = a2;
+		camYDist = dist;
+		gWtfCam[33] = dist;
 		gCamYDistanceRelated = 0;
 	}
 }
