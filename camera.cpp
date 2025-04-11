@@ -10,6 +10,15 @@ EXPORT i32 NumCameras;
 
 SCamera gMikeCamera[2];
 
+EXPORT u16 gCamXZDistance = 0x120;
+
+// @Ok
+// @Matching
+u16 CCamera::GetCamXZDistance(void)
+{
+	return gCamXZDistance;
+}
+
 // @Ok
 // @Test
 void CCamera::CM_TripodFocus(void)

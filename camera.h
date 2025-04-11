@@ -68,6 +68,7 @@ public:
 	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
 	EXPORT void LoadIntoMikeCamera(void);
 	EXPORT void CM_TripodFocus(void);
+	EXPORT u16 GetCamXZDistance(void);
 
 
 	PADDING(4);
