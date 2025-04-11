@@ -580,9 +580,24 @@ void CCamera::CM_FixedPos(void){
 }
 
 // @BIGTODO
-void CCamera::SetCamYDistance(i16, u16)
+void CCamera::SetCamYDistance(i16 a2, u16 a3)
 {
-	printf("void CCamera::SetCamYDistance(i16, u16)");
+	if (a3)
+	{
+		gCamYDistanceRelatedThree = (a2 - gCamYDistance) / a3;
+		gCamYDistanceRelatedTwo = a2;
+
+		if (this->field_23C)
+		{
+			gCamYDistanceRelated = a3;
+		}
+	}
+	else
+	{
+		gCamYDistance = a2;
+		gWtfCam[33] = a2;
+		gCamYDistanceRelated = 0;
+	}
 }
 
 // @BIGTODO
