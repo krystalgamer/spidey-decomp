@@ -240,10 +240,10 @@ CCamera::CCamera(CBody* tripod)
 	this->field_2D4.z = 0;
 	this->field_2E8.vx = 0;
 	this->field_23C = 1;
-	this->field_264 = -1;
-	this->field_268 = -1;
-	this->field_26C = 256;
-	this->field_26E = 784;
+	this->mCollisionRayLR = -1;
+	this->mCollisionRayBack = -1;
+	this->mCollisionAngLR = 256;
+	this->mCollisionAngBack = 784;
 	this->field_2A4 = 31;
 	this->field_2A8 = 512;
 	this->field_2D4.w = 4096;
@@ -352,22 +352,31 @@ i32 CCamera::SetMode(ECameraMode mode){
 }
 
 // @Ok
-void CCamera::SetCollisionRayLR(int a2){
-	this->field_264 = a2;
+// @Matching
+void CCamera::SetCollisionRayLR(i32 r)
+{
+	this->mCollisionRayLR = r;
 }
 
 // @Ok
-void CCamera::SetCollisionRayBack(int a2){
-	this->field_268 = a2;
+// @Matching
+void CCamera::SetCollisionRayBack(i32 r)
+{
+	this->mCollisionRayBack = r;
 }
 
 // @Ok
-void CCamera::SetCollisionAngLR(i16 a2){
-	this->field_26C = a2;
+// @Matching
+void CCamera::SetCollisionAngLR(i16 a)
+{
+	this->mCollisionAngLR = a;
 }
 
-void CCamera::SetCollisionAngBack(i16 a2){
-	this->field_26E = a2;
+// @Ok
+// @Matching
+void CCamera::SetCollisionAngBack(i16 a)
+{
+	this->mCollisionAngBack = a;
 }
 
 // @Ok
@@ -718,10 +727,10 @@ void validate_CCamera(void){
 
 	VALIDATE(CCamera, field_258, 0x258);
 
-	VALIDATE(CCamera, field_264, 0x264);
-	VALIDATE(CCamera, field_268, 0x268);
-	VALIDATE(CCamera, field_26C, 0x26C);
-	VALIDATE(CCamera, field_26E, 0x26E);
+	VALIDATE(CCamera, mCollisionRayLR, 0x264);
+	VALIDATE(CCamera, mCollisionRayBack, 0x268);
+	VALIDATE(CCamera, mCollisionAngLR, 0x26C);
+	VALIDATE(CCamera, mCollisionAngBack, 0x26E);
 
 	VALIDATE(CCamera, field_270, 0x270);
 	VALIDATE(CCamera, field_272, 0x272);

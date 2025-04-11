@@ -163,10 +163,11 @@ public:
 
 	CVector field_258;
 
-	i32 field_264;
-	i32 field_268;
-	i16 field_26C;
-	i16 field_26E;
+	i32 mCollisionRayLR;
+	i32 mCollisionRayBack;
+
+	i16 mCollisionAngLR;
+	i16 mCollisionAngBack;
 
 	i16 field_270;
 	i16 field_272;
