@@ -6,10 +6,22 @@
 
 #include "validate.h"
 
-// @SMALLTODO
-CGLineParticle::CGLineParticle(CVector &,CVector &,u16,i32)
+// @Ok
+// @Matching
+CGLineParticle::CGLineParticle(
+		CVector &a2,
+		CVector &a3,
+		u16 a4,
+		i32 a5)
 {
-    printf("CGLineParticle::CGLineParticle(CVector *,CVector *,u16,i32)");
+	this->mEnd = a2;
+	this->mStart = this->mEnd;
+
+	this->mVel = a3;
+	this->mLifetime = a4;
+	this->field_5C = gTimerRelated;
+
+	this->mAcc.vy = a5 << 12;
 }
 
 // @SMALLTODO
@@ -127,7 +139,7 @@ CPolyLine::CPolyLine(i32 numsegs)
 
 // @Ok
 // @Matching
-CGLine::CGLine(void)
+INLINE CGLine::CGLine(void)
 {
 	this->mCodeBGR0 = 0x50808080;
 	this->mPadBGR1 = 0x55808080;
