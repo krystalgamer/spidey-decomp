@@ -14,6 +14,9 @@ SCamera gMikeCamera[2];
 EXPORT i32 gCamXZDistance = 0x120;
 
 // @Ok
+EXPORT i32 gCamYDistance = 0x0FFFFFFDC;
+
+// @Ok
 EXPORT i32 gWtfCam[35];
 
 
@@ -25,6 +28,21 @@ EXPORT i32 gCamXZRelatedTwo;
 
 // @Ok
 EXPORT i32 gCamXZRelatedThree;
+
+// @Ok
+EXPORT i32 gCamYDistanceRelated;
+
+// @Ok
+EXPORT i32 gCamYDistanceRelatedTwo;
+
+// @Ok
+EXPORT i32 gCamYDistanceRelatedThree;
+
+// @SMALLTODO
+i16 CCamera::GetCamYDistance(void)
+{
+	return gCamYDistance;
+}
 
 // @Ok
 // @Matching

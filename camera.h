@@ -70,6 +70,7 @@ public:
 	EXPORT void CM_TripodFocus(void);
 	EXPORT i16 GetCamXZDistance(void);
 	EXPORT void SetCamXZDistance(u16, u16);
+	EXPORT i16 GetCamYDistance(void);
 
 
 	PADDING(4);
