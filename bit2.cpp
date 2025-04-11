@@ -6,6 +6,25 @@
 
 #include "validate.h"
 
+// @SMALLTODO
+CGLineParticle::CGLineParticle(CVector &,CVector &,u16,i32)
+{
+    printf("CGLineParticle::CGLineParticle(CVector *,CVector *,u16,i32)");
+}
+
+// @SMALLTODO
+void CGLineParticle::Move(void)
+{
+    printf("CGLineParticle::Move(void)");
+}
+
+// @Ok
+// @Matching
+CGLineParticle::~CGLineParticle(void)
+{
+}
+
+
 // @Ok
 // @Test
 void CGPolyLine::SetStartAndEnd(
@@ -290,4 +309,11 @@ void validate_CSmokeGenerator(void)
 
 	VALIDATE(CSmokeGenerator, mScaleBase, 0x4C);
 	VALIDATE(CSmokeGenerator, mScaleRandom, 0x50);
+}
+
+void validate_CGLineParticle(void)
+{
+	VALIDATE_SIZE(CGLineParticle, 0x60);
+
+	VALIDATE(CGLineParticle, field_5C, 0x5C);
 }

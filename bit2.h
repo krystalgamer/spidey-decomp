@@ -93,10 +93,22 @@ class CSmokeGenerator : public CNonRenderedBit
 		i32 mScaleRandom;
 };
 
+class CGLineParticle : public CGLine
+{
+	public:
+		EXPORT CGLineParticle(CVector &,CVector &,u16,i32);
+		EXPORT virtual ~CGLineParticle(void) OVERRIDE;
+
+		EXPORT virtual void Move(void) OVERRIDE;
+
+		i32 field_5C;
+};
+
 void validate_CGPolyLine(void);
 void validate_CPolyLine(void);
 void validate_CGLine(void);
 void validate_SLineSeg(void);
 void validate_CSmokeGenerator(void);
+void validate_CGLineParticle(void);
 
 #endif
