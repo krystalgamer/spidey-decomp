@@ -10,11 +10,47 @@ EXPORT i32 NumCameras;
 
 SCamera gMikeCamera[2];
 
-EXPORT u16 gCamXZDistance = 0x120;
+// @Ok
+EXPORT i32 gCamXZDistance = 0x120;
+
+// @Ok
+EXPORT i32 gWtfCam[35];
+
+
+// @Ok
+EXPORT i32 gCamXZDistanceRelated;
+
+// @Ok
+EXPORT i32 gCamXZRelatedTwo;
+
+// @Ok
+EXPORT i32 gCamXZRelatedThree;
 
 // @Ok
 // @Matching
-u16 CCamera::GetCamXZDistance(void)
+void CCamera::SetCamXZDistance(u16 a2, u16 a3)
+{
+	if (a3)
+	{
+		gCamXZRelatedThree = (a2 - gCamXZDistance) / a3;
+		gCamXZRelatedTwo = a2;
+
+		if (this->field_23C)
+		{
+			gCamXZDistanceRelated = a3;
+		}
+	}
+	else
+	{
+		gCamXZDistanceRelated = 0;
+		gCamXZDistance = a2;
+		gWtfCam[32] = a2;
+	}
+}
+
+// @Ok
+// @Matching
+i16 CCamera::GetCamXZDistance(void)
 {
 	return gCamXZDistance;
 }
