@@ -24,10 +24,30 @@ CGLineParticle::CGLineParticle(
 	this->mAcc.vy = a5 << 12;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CGLineParticle::Move(void)
 {
-    printf("CGLineParticle::Move(void)");
+	u32 timeDiff = gTimerRelated - this->field_5C;
+	if (this->mLifetime < timeDiff)
+	{
+		this->Die();
+	}
+	else
+	{
+		this->mLifetime -= timeDiff;
+		this->field_5C = gTimerRelated;
+
+		this->mEnd.vx = this->mStart.vx;
+		this->mEnd.vy = this->mStart.vy;
+		this->mEnd.vz = this->mStart.vz;
+
+		this->mVel.vy += this->mAcc.vy;
+
+		this->mStart.vx += this->mVel.vx * timeDiff;
+		this->mStart.vy += this->mVel.vy * timeDiff;
+		this->mStart.vz += this->mVel.vz * timeDiff;
+	}
 }
 
 // @Ok
