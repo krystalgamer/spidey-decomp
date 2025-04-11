@@ -17,7 +17,7 @@ EXPORT i32 gCameraModeRelated;
 EXPORT i32 camXZDist = 0x120;
 
 // @Ok
-EXPORT i32 camYDist = 0x0FFFFFFDC;
+EXPORT i32 camYDist = 0xFFFFFFDC;
 
 // @Ok
 EXPORT i32 gWtfCam[35];
@@ -52,6 +52,40 @@ EXPORT i32 gCamXOffsetRelatedThree;
 
 // @Ok
 EXPORT i32 gCamXOffsetRelatedFour;
+
+// @Ok
+EXPORT i32 gCamYOffsetOne;
+
+// @Ok
+EXPORT i32 gCamYOffsetTwo;
+
+// @Ok
+EXPORT i32 gCamYOffsetThree;
+
+// @Ok
+EXPORT i32 gCamYOffsetFour = 0xFFFFFFFA;
+
+// @Ok
+// @Matching
+void CCamera::SetCamYOffset(i16 offset, u16 frames)
+{
+	if (this->mMode != 4 && this->mMode != 5)
+	{
+		if (frames)
+		{
+			gCamYOffsetThree = ((offset - gCamYOffsetFour) << 12) / frames;
+			gCamYOffsetOne = offset;
+			gCamYOffsetTwo = frames;
+		}
+
+		else
+		{
+			gCamYOffsetFour = offset;
+			gWtfCam[30] = offset;
+			gCamYOffsetTwo = 0;
+		}
+	}
+}
 
 // @Ok
 // @Matching
