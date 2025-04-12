@@ -601,49 +601,59 @@ void CCamera::SetFixedPosMode(CVector &a2, u16 a3){
 }
 
 
-// @NotOk
-// Revisit
-// Not matching but the same, compiler generates codeblock for else statement twice for some reason
-void CCamera::CM_FixedPosAngles(void){
-
-
-	int v2; // r30
-	int v3; // r30
-
-	v2 = this->field_2BC;
-
-	if ( v2 && v2 - this->field_80 > 0)
+// @Ok
+// AlmostMatching: my ccode is "better"
+// both assingment from 24C to mPos are merged in my version, same happens with 1F4 and 2D4, nto sure what's
+// causing it
+void CCamera::CM_FixedPosAngles(void)
+{
+	if (this->field_2BC)
 	{
-		this->mPos += this->field_2B0 * this->field_80;
+		if (this->field_2BC - this->field_80 > 0)
+		{
+			this->mPos = this->field_24C;
+		}
+		else
+		{
+			this->mPos += (this->field_2B0 * this->field_80);
+		}
 	}
 	else
 	{
 		this->mPos = this->field_24C;
 	}
 
-
-	v3 = this->field_2BC;
-
-	if ( v3 && v3 - this->field_80 > 0 )
+	i32 v4 = this->field_2BC;
+	if (v4)
 	{
-		Quat_Slerp(
-			this->field_2C4,
-			this->field_2D4,
-			((this->field_2C0 - v3) << 12) / this->field_2C0,
-			this->field_1F4);
-	}
+		v4 -= this->field_80;
 
+		if (v4 <= 0)
+		{
+			this->field_1F4 = this->field_2D4;
+		}
+		else
+		{
+			i32 tmp = ((this->field_2C0 - v4) << 12) / this->field_2C0;
+			Quat_Slerp(
+					this->field_2C4,
+					this->field_2D4,
+					tmp,
+					this->field_1F4);
+		}
+	}
 	else
 	{
 		this->field_1F4 = this->field_2D4;
 	}
 
-	this->field_2BC = v3;
+	this->field_2BC = v4;
 
-	if ( this->field_2AC )
+
+	if (this->field_2AC)
 	{
 		this->field_2AC = 0;
-		if ( !this->field_2BC )
+		if (!this->field_2BC)
 		{
 			this->field_1E4 = this->field_1F4;
 			this->field_204 = this->field_1E4;
