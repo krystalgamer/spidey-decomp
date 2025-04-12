@@ -602,20 +602,18 @@ void CCamera::SetFixedPosMode(CVector &a2, u16 a3){
 
 
 // @Ok
-// AlmostMatching: my ccode is "better"
-// both assingment from 24C to mPos are merged in my version, same happens with 1F4 and 2D4, nto sure what's
-// causing it
+// @Matching
 void CCamera::CM_FixedPosAngles(void)
 {
 	if (this->field_2BC)
 	{
-		if (this->field_2BC - this->field_80 <= 0)
+		if (this->field_2BC - this->field_80 > 0)
 		{
-			this->mPos = this->field_24C;
+			this->mPos += (this->field_2B0 * this->field_80);
 		}
 		else
 		{
-			this->mPos += (this->field_2B0 * this->field_80);
+			this->mPos = this->field_24C;
 		}
 	}
 	else
@@ -628,18 +626,18 @@ void CCamera::CM_FixedPosAngles(void)
 	{
 		v4 -= this->field_80;
 
-		if (v4 <= 0)
-		{
-			this->field_1F4 = this->field_2D4;
-		}
-		else
+		if (v4 > 0)
 		{
 			i32 tmp = ((this->field_2C0 - v4) << 12) / this->field_2C0;
 			Quat_Slerp(
-					this->field_2C4,
-					this->field_2D4,
-					tmp,
-					this->field_1F4);
+				this->field_2C4,
+				this->field_2D4,
+				tmp,
+				this->field_1F4);
+		}
+		else
+		{
+			this->field_1F4 = this->field_2D4;
 		}
 	}
 	else
@@ -659,7 +657,6 @@ void CCamera::CM_FixedPosAngles(void)
 			this->field_204 = this->field_1E4;
 		}
 	}
-
 }
 
 static CVector * const stru_56F260 = (CVector*)0x56F260;
