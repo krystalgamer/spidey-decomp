@@ -106,6 +106,13 @@ class CSVector{
 			this->vz = 0;
 		}
 
+		EXPORT INLINE CSVector(i16 x, i16 y, i16 z)
+		{
+			this->vx = x;
+			this->vy = y;
+			this->vz = z;
+		}
+
 		/*
 		INLINE void operator=(const CSVector& other)
 		{

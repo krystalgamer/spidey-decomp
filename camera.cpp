@@ -8,6 +8,24 @@ SViewport gViewport;
 CCamera *CameraList;
 
 // @Ok
+EXPORT CSVector BigShakeAmp(25, 0, 50);
+
+// @Ok
+EXPORT CSVector MediumShakeAmp(0, 0, 30);
+
+// @Ok
+EXPORT CSVector SmallShakeAmp(0, 0, 25);
+
+// @Ok
+EXPORT CSVector UnkShakeAmp(0, 0, 16);
+
+// @Ok
+EXPORT CFriction LandShakeDecay(3, 0, 3);
+
+// @Ok
+EXPORT CSVector LandShakeSpeed(600, 0, 600);
+
+// @Ok
 EXPORT i32 gCameraModeOne;
 
 // @Ok
@@ -296,7 +314,7 @@ CCamera::CCamera(CBody* tripod)
 	this->field_224 = 0;
 	this->field_F8 = 1;
 	this->field_F9 = 0;
-	this->field_FC = tripod;
+	this->mTripod = tripod;
 	this->field_100 = 1;
 	this->field_128 = 0;
 	this->field_12C = -1;
@@ -320,19 +338,11 @@ CCamera::CCamera(CBody* tripod)
 	this->field_258.vx = 0;
 	this->field_24C.vy = 0;
 
-	this->field_270 = 0;
-	this->field_272 = 0;
 	this->field_248 = 0;
 	this->field_258.vy = 0;
-	this->field_276 = 0;
-	this->field_277 = 0;
-	this->field_278 = 0;
+
 	this->field_24C.vz = 0;
-	this->field_274 = 0;
-	this->field_27A = 0;
-	this->field_27C = 0;
 	this->field_258.vz = 0;
-	this->field_27E = 0;
 	this->field_284.vx = 0;
 	this->field_284.vy = 0;
 	this->field_284.vz = 0;
@@ -551,7 +561,7 @@ void CCamera::SetStartPosition(void){
 
 	if (this->mCameraMode == CAMERAMODE_DEMO)
 	{
-		this->field_104 = this->field_FC->mPos;
+		this->field_104 = this->mTripod->mPos;
 		this->CM_Normal();
 		this->mPos = this->field_24C;
 		this->field_1E4 = this->field_1F4;
@@ -807,10 +817,36 @@ void CCamera::GetPosition(CVector &dst)
 }
 
 
-// @MEDIUMTODO
-void CCamera::Shake(CVector*, EShakeType)
+// @Ok
+// @Matching
+void CCamera::Shake(CVector& pos, EShakeType ShakeMagnitude)
 {
-	printf("void CCamera::Shake(CVector*, EShakeType)");
+	switch (ShakeMagnitude)
+	{
+		case CAMERASHAKE_BIG:
+			this->mShakeAmp = BigShakeAmp;
+			this->mShakeDecay = LandShakeDecay;
+			this->mShakeSpeed = LandShakeSpeed;
+			break;
+		case CAMERASHAKE_MEDIUM:
+			this->mShakeAmp = MediumShakeAmp;
+			this->mShakeDecay = LandShakeDecay;
+			this->mShakeSpeed = LandShakeSpeed;
+			break;
+		case CAMERASHAKE_SMALL:
+			this->mShakeAmp = SmallShakeAmp;
+			this->mShakeDecay = LandShakeDecay;
+			this->mShakeSpeed = LandShakeSpeed;
+			break;
+		case CAMERASHAKE_UNK:
+			this->mShakeAmp = UnkShakeAmp;
+			this->mShakeDecay = LandShakeDecay;
+			this->mShakeSpeed = LandShakeSpeed;
+			break;
+		default:
+			DoAssert(0, "Unknown EShakeType!");
+			break;
+	}
 }
 
 void validate_CCamera(void){
@@ -819,7 +855,7 @@ void validate_CCamera(void){
 
 	VALIDATE(CCamera, field_F8, 0xF8);
 	VALIDATE(CCamera, field_F9, 0xF9);
-	VALIDATE(CCamera, field_FC, 0xFC);
+	VALIDATE(CCamera, mTripod, 0xFC);
 	VALIDATE(CCamera, field_100, 0x100);
 	VALIDATE(CCamera, field_104, 0x104);
 
@@ -898,16 +934,9 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, mCollisionAngLR, 0x26C);
 	VALIDATE(CCamera, mCollisionAngBack, 0x26E);
 
-	VALIDATE(CCamera, field_270, 0x270);
-	VALIDATE(CCamera, field_272, 0x272);
-
-	VALIDATE(CCamera, field_274, 0x274);
-	VALIDATE(CCamera, field_276, 0x276);
-	VALIDATE(CCamera, field_277, 0x277);
-	VALIDATE(CCamera, field_278, 0x278);
-	VALIDATE(CCamera, field_27A, 0x27A);
-	VALIDATE(CCamera, field_27C, 0x27C);
-	VALIDATE(CCamera, field_27E, 0x27E);
+	VALIDATE(CCamera, mShakeAmp, 0x270);
+	VALIDATE(CCamera, mShakeDecay, 0x276);
+	VALIDATE(CCamera, mShakeSpeed, 0x27A);
 
 	VALIDATE(CCamera, field_280, 0x280);
 	VALIDATE(CCamera, field_284, 0x284);

@@ -23,6 +23,13 @@ public:
 		this->vz = 0;
 	}
 
+	EXPORT INLINE CFriction(u8 x, u8 y, u8 z)
+	{
+		this->vx = x;
+		this->vy = y;
+		this->vz = z;
+	}
+
 	EXPORT INLINE void Set(u8 x, u8 y, u8 z)
 	{
 		this->vx = x;

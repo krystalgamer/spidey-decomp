@@ -59,6 +59,9 @@ enum EShakeType
 	CAMERASHAKE_BIG    = 0,
 	CAMERASHAKE_MEDIUM = 1,
 	CAMERASHAKE_SMALL  = 2,
+
+	// @FIXME
+	CAMERASHAKE_UNK  = 3,
 };
 
 enum ECameraModeIncDir
@@ -90,7 +93,7 @@ public:
 	EXPORT void SetCamYDistance(i16, u16);
 	EXPORT void SetCamAngle(i16, u16);
 	EXPORT void GetPosition(CVector &);
-	EXPORT void Shake(CVector*, EShakeType);
+	EXPORT void Shake(CVector&, EShakeType);
 	EXPORT void SetTripodInterpolation(i32, i32, i32);
 	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
 	EXPORT void LoadIntoMikeCamera(void);
@@ -107,7 +110,7 @@ public:
 
 	u8 field_F8;
 	u8 field_F9;
-	CBody* field_FC;
+	CBody* mTripod;
 	u8 field_100;
 
 	CVector field_104;
@@ -201,16 +204,11 @@ public:
 	i16 mCollisionAngLR;
 	i16 mCollisionAngBack;
 
-	i16 field_270;
-	i16 field_272;
+	CSVector mShakeAmp;
 
-	i16 field_274;
-	u8 field_276;
-	u8 field_277;
-	u8 field_278;
-	i16 field_27A;
-	i16 field_27C;
-	i16 field_27E;
+	CFriction mShakeDecay;
+
+	CSVector mShakeSpeed;
 
 	ECameraMode field_280;
 
