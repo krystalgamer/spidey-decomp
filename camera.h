@@ -84,7 +84,7 @@ public:
 	EXPORT void PopMode(void);
 	EXPORT void CM_Normal(void);
 	EXPORT void SetStartPosition(void);
-	EXPORT void SetFixedPosMode(CVector *a2, u16 a3);
+	EXPORT void SetFixedPosMode(CVector &a2, u16 a3);
 	EXPORT void CM_FixedPosAngles(void);
 	EXPORT void CM_FixedPos(void);
 	EXPORT void SetCamYDistance(i16, u16);

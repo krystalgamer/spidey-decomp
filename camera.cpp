@@ -517,8 +517,8 @@ void CCamera::PushMode(void){
 }
 
 // @Ok
-void CCamera::PopMode(void){
-
+void CCamera::PopMode(void)
+{
 	ECameraMode mode = this->field_280;
 	if (mode == 4 || mode == 5 || mode == 6){
 		this->mPos = this->field_284;
@@ -550,18 +550,19 @@ void CCamera::SetStartPosition(void){
 
 }
 
-// @NotOk
-// Revisit
-void CCamera::SetFixedPosMode(CVector *a2, u16 a3){
+// @Ok
+// AlmostMatching: two instructions swapped around realted to assingment on 2AC and 24C, no biggie
+void CCamera::SetFixedPosMode(CVector &a2, u16 a3){
 
-	this->mCameraMode = CAMERAMODE_START;
-	this->field_24C = *a2;
 	this->field_2AC = 1;
+	this->mCameraMode = CAMERAMODE_START;
+	this->field_24C = a2;
+
 	this->field_2BC = a3;
 
 	if (a3)
 	{
-		this->field_2B0 = (*a2 - this->mPos)/a3;
+		this->field_2B0 = (a2 - this->mPos)/a3;
 	}
 }
 
