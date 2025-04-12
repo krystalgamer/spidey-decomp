@@ -6,6 +6,8 @@
 
 SViewport gViewport;
 CCamera *CameraList;
+
+// @Ok
 EXPORT i32 NumCameras;
 
 SCamera gMikeCamera[2];
@@ -81,7 +83,7 @@ EXPORT i32 gCamZOffsetFour;
 // @Matching
 void CCamera::SetCamZOffset(i16 offset, u16 frames)
 {
-	if (this->mMode != 4 && this->mMode != 5)
+	if (this->mCameraMode != CAMERAMODE_START && this->mCameraMode != CAMERAMODE_FAR)
 	{
 		if (frames)
 		{
@@ -102,7 +104,7 @@ void CCamera::SetCamZOffset(i16 offset, u16 frames)
 // @Matching
 void CCamera::SetCamYOffset(i16 offset, u16 frames)
 {
-	if (this->mMode != 4 && this->mMode != 5)
+	if (this->mCameraMode != CAMERAMODE_START && this->mCameraMode != CAMERAMODE_FAR)
 	{
 		if (frames)
 		{
@@ -124,7 +126,7 @@ void CCamera::SetCamYOffset(i16 offset, u16 frames)
 // @Matching
 void CCamera::SetCamXOffset(i16 offset, u16 frames)
 {
-	if (this->mMode != 4 && this->mMode != 5)
+	if (this->mCameraMode != CAMERAMODE_START && this->mCameraMode != CAMERAMODE_FAR)
 	{
 		if (frames)
 		{
@@ -366,7 +368,7 @@ CCamera::CCamera(CBody* tripod)
 	this->mCBodyFlags &= ~2;
 	NumCameras++;
 	this->mRMinor = 0;
-	this->mMode = 3;
+	this->mCameraMode = CAMERAMODE_DEMO;
 }
 
 // @Ok
@@ -394,7 +396,7 @@ void CCamera::SetFixedPosAnglesMode(
 		CQuat *a3,
 		u16 a4)
 {
-	this->mMode = 5;
+	this->mCameraMode = CAMERAMODE_FAR;
 	this->field_24C = *a2;
 	this->field_2D4 = *a3;
 	this->field_2AC = 1;
@@ -431,7 +433,7 @@ CCamera::~CCamera(void)
 // Not matching, not important
 void CCamera::SetFixedFocusMode(CVector *a2, u16 a3, u16 a4){
 
-	this->mMode = 6;
+	this->mCameraMode = CAMERAMODE_OVERHEAD;
 	this->field_2AC = 1;
 	this->field_2E8 = *a2;
 	this->field_2E4 = (0xFFFF & a3) / 3;
@@ -442,9 +444,9 @@ void CCamera::SetFixedFocusMode(CVector *a2, u16 a3, u16 a4){
 // @Matching
 i32 CCamera::SetMode(ECameraMode mode){
 
-	i32 oldMode = this->mMode;
-	this->mMode = mode;
-	if (mode == ECam_mode_0x10 || mode == ECam_mode_0x11)
+	ECameraMode oldMode = this->mCameraMode;
+	this->mCameraMode = mode;
+	if (mode == CAMERAMODE_FUNKYFLYING || mode == CAMERAMODE_LOOKAROUND)
 	{
 		gCameraModeRelated = 0;
 	}
@@ -505,7 +507,7 @@ int CCamera::GetZoom(void) const
 // @Ok
 void CCamera::PushMode(void){
 
-	int mode = this->mMode;
+	ECameraMode mode = this->mCameraMode;
 	this->field_280 = mode;
 
 	if (mode == 4 || mode == 5 || mode == 6){
@@ -517,18 +519,20 @@ void CCamera::PushMode(void){
 // @Ok
 void CCamera::PopMode(void){
 
-	int mode = this->field_280;
+	ECameraMode mode = this->field_280;
 	if (mode == 4 || mode == 5 || mode == 6){
 		this->mPos = this->field_284;
 		this->field_1E4 = this->field_290;
 	}
 
-	this->mMode = mode;
+	this->mCameraMode = mode;
 }
 
 
 //TODO
-void CCamera::CM_Normal(void){
+void CCamera::CM_Normal(void)
+{
+	printf("void CCamera::CM_Normal(void)");
 	/* DO ME */
 }
 
@@ -536,7 +540,7 @@ void CCamera::CM_Normal(void){
 // @Ok
 void CCamera::SetStartPosition(void){
 
-	if ( this->mMode == 3 )
+	if (this->mCameraMode == CAMERAMODE_DEMO)
 	{
 		this->field_104 = this->field_FC->mPos;
 		this->CM_Normal();
@@ -550,7 +554,7 @@ void CCamera::SetStartPosition(void){
 // Revisit
 void CCamera::SetFixedPosMode(CVector *a2, u16 a3){
 
-	this->mMode = 4;
+	this->mCameraMode = CAMERAMODE_START;
 	this->field_24C = *a2;
 	this->field_2AC = 1;
 	this->field_2BC = a3;
@@ -737,10 +741,9 @@ INLINE i16 CalcTheta(i16 a1, i16 a2)
 
 
 // @Ok
-void CCamera::GetPosition(CVector * dst)
+void CCamera::GetPosition(CVector &dst)
 {
-	CVector *src = &this->mPos;
-	*dst = *src;
+	dst = this->mPos;
 }
 
 
@@ -851,7 +854,7 @@ void validate_CCamera(void){
 
 	VALIDATE(CCamera, field_290, 0x290);
 
-	VALIDATE(CCamera, mMode, 0x2A0);
+	VALIDATE(CCamera, mCameraMode, 0x2A0);
 	VALIDATE(CCamera, field_2A4, 0x2A4);
 
 	VALIDATE(CCamera, field_2A8, 0x2A8);

@@ -376,7 +376,7 @@ void CRhino::HitWall(void)
 	{
 		case 0:
 			this->ShakePad();
-			CameraList->Shake(&this->mPos, EShake_0x0);
+			CameraList->Shake(&this->mPos, CAMERASHAKE_BIG);
 			this->Neutralize();
 			this->mCBodyFlags &= ~0x10;
 			this->PlaySingleAnim(17, 0, -1);

@@ -1285,7 +1285,7 @@ void CPlayer::PutCameraBehind(i32 a2)
 			int v5 = (1024 - ratan2(this->field_C84.vz, this->field_C84.vx)) & 0xFFF;
 			gGlobalThisCamera->SetCamAngle(v5, a2);
 
-			if (gGlobalThisCamera->mMode == 3)
+			if (gGlobalThisCamera->mCameraMode == CAMERAMODE_DEMO)
 			{
 				if ((this->field_E2E | this->field_E2D) && this->field_E1C == 16)
 				{
@@ -1391,7 +1391,7 @@ void CPlayer::CutSceneSkipCleanup(void)
 {
 	Redbook_XAStop();
 
-	if (gGlobalThisCamera->mMode != 3 && Trig_GetLevelId() != 514)
+	if (gGlobalThisCamera->mCameraMode != CAMERAMODE_DEMO && Trig_GetLevelId() != 514)
 	{
 		gGlobalThisCamera->SetMode(static_cast<ECameraMode>(3));
 	}

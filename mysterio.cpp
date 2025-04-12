@@ -349,7 +349,7 @@ i32 INLINE CMysterio::CheckforCameraShake(i32 a2)
 	if (this->field_218 & 8 || this->field_218 < a2)
 		return 0;
 
-	CameraList->Shake(&this->mPos, EShake_0x0);
+	CameraList->Shake(&this->mPos, CAMERASHAKE_BIG);
 
 	this->ShakePad();
 

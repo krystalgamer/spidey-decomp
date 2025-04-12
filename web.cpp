@@ -46,7 +46,7 @@ CDomeShockWave::CDomeShockWave(i32 a2)
 		this->field_50[i] = Rnd(4096);
 	}
 
-	CameraList->Shake(&this->mPos, EShake_0x1);
+	CameraList->Shake(&this->mPos, CAMERASHAKE_MEDIUM);
 }
 
 // @Ok

@@ -28,14 +28,43 @@ struct SCamera
 };
 
 enum ECameraMode {
-	ECam_mode_0x10 = 0x10,
-	ECam_mode_0x11 = 0x11,
+	CAMERAMODE_NOTHING          = 0,
+	CAMERAMODE_NORMAL           = 1,
+	CAMERAMODE_NO_BIG_AIR       = 2,
+	CAMERAMODE_DEMO             = 3,
+	CAMERAMODE_START            = 4,
+	CAMERAMODE_FAR              = 5,
+	CAMERAMODE_OVERHEAD         = 6,
+	CAMERAMODE_FRONT            = 7,
+	CAMERAMODE_IDLE             = 8,
+	CAMERAMODE_FLYING           = 9,
+	CAMERAMODE_FUNKYFLYING      = 10,
+	CAMERAMODE_ROLLERCOASTER    = 11,
+	CAMERAMODE_PAN              = 12,
+	CAMERAMODE_ITSYLOOKDOWN     = 13,
+	CAMERAMODE_ITSYLOOKUP       = 14,
+	CAMERAMODE_LOOSE            = 15,
+	CAMERAMODE_USER             = 16,
+	CAMERAMODE_LOOKAROUND       = 17,
+	CAMERAMODE_UPSIDETEST       = 18,
+	CAMERAMODE_BOSSBEAST        = 19,
+	CAMERAMODE_BOSSWAR          = 20,
+	CAMERAMODE_BOSSTANK         = 21,
+	CAMERAMODE_DEBUG            = 22,
+	CAMERAMODE_COMPETITIONINTRO = 23,
 };
 
 enum EShakeType
 {
-	EShake_0x0 = 0x0,
-	EShake_0x1 = 0x1,
+	CAMERASHAKE_BIG    = 0,
+	CAMERASHAKE_MEDIUM = 1,
+	CAMERASHAKE_SMALL  = 2,
+};
+
+enum ECameraModeIncDir
+{
+	ASCENDING  = 0,
+	DESCENDING = 1,
 };
 
 class CCamera : public CBody {
@@ -60,7 +89,7 @@ public:
 	EXPORT void CM_FixedPos(void);
 	EXPORT void SetCamYDistance(i16, u16);
 	EXPORT void SetCamAngle(i16, u16);
-	EXPORT void GetPosition(CVector *);
+	EXPORT void GetPosition(CVector &);
 	EXPORT void Shake(CVector*, EShakeType);
 	EXPORT void SetTripodInterpolation(i32, i32, i32);
 	EXPORT void SetFixedPosAnglesMode(CVector *, CQuat *, u16);
@@ -183,13 +212,13 @@ public:
 	i16 field_27C;
 	i16 field_27E;
 
-	i32 field_280;
+	ECameraMode field_280;
 
 	CVector field_284;
 
 	CQuat field_290;
 
-	i32 mMode;
+	ECameraMode mCameraMode;
 
 	i32 field_2A4;
 	i32 field_2A8;
