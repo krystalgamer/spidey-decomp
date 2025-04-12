@@ -609,7 +609,7 @@ void CCamera::CM_FixedPosAngles(void)
 {
 	if (this->field_2BC)
 	{
-		if (this->field_2BC - this->field_80 > 0)
+		if (this->field_2BC - this->field_80 <= 0)
 		{
 			this->mPos = this->field_24C;
 		}
