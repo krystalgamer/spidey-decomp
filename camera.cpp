@@ -8,6 +8,15 @@ SViewport gViewport;
 CCamera *CameraList;
 
 // @Ok
+EXPORT i32 gCameraModeOne;
+
+// @Ok
+EXPORT i32 gCameraModeTwo;
+
+// @Ok
+EXPORT i32 gCameraModeThree;
+
+// @Ok
 EXPORT i32 NumCameras;
 
 SCamera gMikeCamera[2];
@@ -722,10 +731,60 @@ void CCamera::SetCamYDistance(i16 dist, u16 frames)
 	}
 }
 
+
 // @BIGTODO
-void CCamera::SetCamAngle(i16, u16)
+void CCamera::SetCamAngle(i16 y, u16 frames)
 {
-	printf("void CCamera::SetCamAngle(i16, u16)");
+	CCamera *lol = this;
+	if (lol->mCameraMode != CAMERAMODE_LOOSE 
+			&& lol->mCameraMode != CAMERAMODE_USER 
+			&& lol->mCameraMode != CAMERAMODE_LOOKAROUND)
+	{
+		i16 v4 = y & 0xFFF;
+
+		if (frames)
+		{
+			i16 v5 = lol->field_236;
+			gCameraModeTwo = v4;
+			if (v4 > v5)
+			{
+				i32 v6 = v4 - v5;
+				gCameraModeOne = frames;
+				if (v6 > 2048)
+				{
+					gCameraModeThree = (v6 - 4096) / frames;
+				}
+				else
+				{
+					gCameraModeThree = v6 / frames;
+				}
+			}
+			else if (v4 < v5)
+			{
+				gCameraModeOne = frames;
+				if (v5 - v4 > 2048)
+				{
+					gCameraModeThree = (v4 - v5 + 4096) / frames;
+				}
+				else
+				{
+					gCameraModeThree = (v4 - v5) / frames;
+				}
+			}
+			else
+			{
+				gCameraModeThree = 0;
+				gCameraModeOne = 0;
+			}
+		}
+		else
+		{
+			gCameraModeOne = 0;
+			lol->field_236 = y & 0xFFF;
+			gWtfCam[34] = lol->field_236;
+		}
+
+	}
 }
 
 // @NotOk
