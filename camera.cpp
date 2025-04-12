@@ -507,7 +507,7 @@ void CCamera::SetZoom(i32 a2, u16 a3){
 }
 
 // @Ok
-int CCamera::GetZoom(void) const
+i32 CCamera::GetZoom(void) const
 {
 	return this->mZoom;
 }
@@ -732,19 +732,19 @@ void CCamera::SetCamYDistance(i16 dist, u16 frames)
 }
 
 
-// @BIGTODO
+// @Ok
+// @AlmostMatching: ecx is put into edx for some reason
 void CCamera::SetCamAngle(i16 y, u16 frames)
 {
-	CCamera *lol = this;
-	if (lol->mCameraMode != CAMERAMODE_LOOSE 
-			&& lol->mCameraMode != CAMERAMODE_USER 
-			&& lol->mCameraMode != CAMERAMODE_LOOKAROUND)
+	if (this->mCameraMode != CAMERAMODE_LOOSE 
+			&& this->mCameraMode != CAMERAMODE_USER 
+			&& this->mCameraMode != CAMERAMODE_LOOKAROUND)
 	{
 		i16 v4 = y & 0xFFF;
 
 		if (frames)
 		{
-			i16 v5 = lol->field_236;
+			i16 v5 = this->field_236;
 			gCameraModeTwo = v4;
 			if (v4 > v5)
 			{
@@ -780,8 +780,8 @@ void CCamera::SetCamAngle(i16 y, u16 frames)
 		else
 		{
 			gCameraModeOne = 0;
-			lol->field_236 = y & 0xFFF;
-			gWtfCam[34] = lol->field_236;
+			this->field_236 = y & 0xFFF;
+			gWtfCam[34] = this->field_236;
 		}
 
 	}

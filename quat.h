@@ -9,9 +9,18 @@
 struct MATRIX;
 
 class CQuat {
-public:
+	public:
 
-	int x,y,z,w;
+		// @Ok
+		EXPORT INLINE CQuat(void)
+		{
+			this->x = 0;
+			this->y = 0;
+			this->z = 0;
+			this->w = 0;
+		}
+
+		i32 x,y,z,w;
 
 };
 
