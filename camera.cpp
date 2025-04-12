@@ -107,6 +107,30 @@ EXPORT i32 gCamZOffsetThree;
 EXPORT i32 gCamZOffsetFour;
 
 // @Ok
+// @AlmostMatching: lea instruction when assigning a2 happens couple places up for some reason
+void CCamera::SetTripodMotion(const CVector &a2, u32 a3)
+{
+	DoAssert(a3 != 0, "bad time value in SetTripodMotion");
+
+	if (this->field_128)
+	{
+		CBody *pTripod = this->mTripod;
+		if (pTripod)
+		{
+			if (!pTripod->IsDead())
+			{
+				this->field_104 = pTripod->mPos;
+			}
+		}
+	}
+
+	this->field_128 = a3;
+	this->field_110 = a2;
+
+	this->field_11C = (a2 - this->field_104) / a3;
+}
+
+// @Ok
 // @Matching
 void CCamera::SetCamZOffset(i16 offset, u16 frames)
 {
@@ -265,15 +289,6 @@ void CCamera::CM_TripodFocus(void)
 // @Ok
 CCamera::CCamera(CBody* tripod)
 {
-	this->field_104.vx = 0;
-	this->field_104.vy = 0;
-	this->field_104.vz = 0;
-	this->field_110 = 0;
-	this->field_114 = 0;
-	this->field_118 = 0;
-	this->field_11C = 0;
-	this->field_120 = 0;
-	this->field_124 = 0;
 	this->field_144.vx = 0;
 	this->field_144.vy = 0;
 	this->field_144.vz = 0;
@@ -860,11 +875,8 @@ void validate_CCamera(void){
 	VALIDATE(CCamera, field_104, 0x104);
 
 	VALIDATE(CCamera, field_110, 0x110);
-	VALIDATE(CCamera, field_114, 0x114);
-	VALIDATE(CCamera, field_118, 0x118);
 	VALIDATE(CCamera, field_11C, 0x11C);
-	VALIDATE(CCamera, field_120, 0x120);
-	VALIDATE(CCamera, field_124, 0x124);
+
 	VALIDATE(CCamera, field_128, 0x128);
 	VALIDATE(CCamera, field_12C, 0x12C);
 	VALIDATE(CCamera, field_130, 0x130);

@@ -104,6 +104,7 @@ public:
 	EXPORT void SetCamXOffset(i16,u16);
 	EXPORT void SetCamYOffset(i16,u16);
 	EXPORT void SetCamZOffset(i16,u16);
+	EXPORT void SetTripodMotion(const CVector &,u32);
 
 
 	PADDING(4);
@@ -115,12 +116,10 @@ public:
 
 	CVector field_104;
 
-	i32 field_110;
-	i32 field_114;
-	i32 field_118;
-	i32 field_11C;
-	i32 field_120;
-	i32 field_124;
+	CVector field_110;
+
+	CVector field_11C;
+
 	i32 field_128;
 	i32 field_12C;
 	i32 field_130;
