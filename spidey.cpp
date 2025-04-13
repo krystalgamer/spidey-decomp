@@ -15,6 +15,10 @@
 #include "m3dzone.h"
 #include "ps2lowsfx.h"
 #include "spool.h"
+#include "DXinit.h"
+
+// @Ok
+EXPORT u8 gSpideyVramProcessing;
 
 // @Ok
 EXPORT SAnimFrame *gSpideyAnim;
@@ -872,10 +876,23 @@ void Spidey_BagHead(i32,i32)
     printf("Spidey_BagHead(i32,i32)");
 }
 
-// @SMALLTODO
-void Spidey_DoArmorVRAMProcessing(bool)
+// @NotOk
+// @Validate: when inlined
+INLINE void Spidey_DoArmorVRAMProcessing(bool a1)
 {
-    printf("Spidey_DoArmorVRAMProcessing(bool)");
+	if (gLowGraphics && (!a1 || !gSpideyVramProcessing) && (a1 || gSpideyVramProcessing))
+	{
+		if (a1)
+		{
+			Spidey_SwapSuitTextures(CurrentSuit, 0);
+		}
+		else
+		{
+			Spidey_SwapSuitTextures(0, CurrentSuit);
+		}
+
+		gSpideyVramProcessing = !gSpideyVramProcessing;
+	}
 }
 
 // @Ok
