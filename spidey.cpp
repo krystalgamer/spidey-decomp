@@ -16,6 +16,19 @@
 #include "ps2lowsfx.h"
 #include "spool.h"
 
+// @Ok EXPORT SLight M3d_PlayerLight =
+{
+
+  { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
+
+  0,
+  { { 3200, 1040, 2048 }, { 2720, 1600, 1920 }, { 2400, 2560, 2048 } },
+  0,
+
+  { 1800, 1800, 1440 }
+};
+
+
 CItem* SpideyAdditionalBodyPartsList;
 CItem* MiscellaneousRenderingList;
 
@@ -48,10 +61,51 @@ void CPlayer::AI(void)
     printf("CPlayer::AI(void)");
 }
 
-// @SMALLTODO
-void CPlayer::AdjustBrightness(u16)
+// @Ok
+// @NotMatching: the light assingment does not match, didn't care enough
+void CPlayer::AdjustBrightness(u16 a2)
 {
-    printf("CPlayer::AdjustBrightness(u16)");
+	// @Ok - according to PPC it's a static variable
+	static u32 gPlayerBrightness = -1;
+	if (this->field_570 < a2)
+	{
+		this->field_570 += 8 * this->field_80;
+
+		if (this->field_570 > a2)
+		{
+			this->field_570 = a2;
+		}
+	}
+	else if (this->field_570 > a2)
+	{
+		this->field_570 -= 8 * this->field_80;
+
+		if (this->field_570 > a2)
+		{
+			this->field_570 = a2;
+		}
+	}
+
+	u32 v5 = this->field_570;
+	if (gPlayerBrightness != v5)
+	{
+		M3d_PlayerLight.ColorMatrix[0][0] = (3200 * v5) >> 8;
+		M3d_PlayerLight.ColorMatrix[0][1] = (1040 * v5) >> 8;
+		M3d_PlayerLight.ColorMatrix[0][2] = 8 * v5;
+
+		M3d_PlayerLight.ColorMatrix[1][0] = (2720 * v5) >> 8;
+		M3d_PlayerLight.ColorMatrix[1][1] = (1600 * v5) >> 8;
+		M3d_PlayerLight.ColorMatrix[1][2] = (1920 * v5) >> 8;
+
+		M3d_PlayerLight.ColorMatrix[2][0] = (2400 * v5) >> 8;
+		M3d_PlayerLight.ColorMatrix[2][1] = 10 * v5;
+		M3d_PlayerLight.ColorMatrix[2][2] = 8 * v5;
+
+		M3d_PlayerLight.BackColor[0] = (1800 * v5) >> 8;
+		M3d_PlayerLight.BackColor[1] = (1800 * v5) >> 8;
+		M3d_PlayerLight.BackColor[2] = (1440 * v5) >> 8;
+		gPlayerBrightness = v5;
+	}
 }
 
 // @MEDIUMTODO
@@ -1672,6 +1726,8 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_568, 0x568);
 	VALIDATE(CPlayer, field_56C, 0x56C);
+
+	VALIDATE(CPlayer, field_570, 0x570);
 
 	VALIDATE(CPlayer, field_57C, 0x57C);
 
