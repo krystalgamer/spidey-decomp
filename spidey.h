@@ -63,7 +63,13 @@ class CPlayer : public CSuper
 		CSmokeTrail* field_58C;
 		CSmokeTrail* field_590;
 
-		PADDING(0x5D0-0x590-4);
+		PADDING(0x5E9-0x590-4);
+
+		bool field_5E9;
+
+		PADDING(0x5EC-0x5E9-1);
+		
+		i32 field_5EC;
 
 
 		i32 field_5D0;
@@ -346,7 +352,7 @@ class CPlayer : public CSuper
 		EXPORT void SelectAutoAimTarget(void);
 		EXPORT void SelectTargetBaddy(i32,i32,i32,i32);
 		EXPORT void SelectTargetSwitch(i32,i32,SHandle *,i32,i32);
-		EXPORT void SetArmor(bool);
+		EXPORT u8 SetArmor(bool);
 		EXPORT void SetCeilingCamera(i32);
 		EXPORT void SetFallingCamera(i32);
 		EXPORT void SetFirstContactDetails(void);

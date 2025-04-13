@@ -737,10 +737,51 @@ void CPlayer::SelectTargetSwitch(i32,i32,SHandle *,i32,i32)
     printf("CPlayer::SelectTargetSwitch(i32,i32,SHandle *,i32,i32)");
 }
 
-// @SMALLTODO
-void CPlayer::SetArmor(bool)
+// @Ok
+EXPORT u8 gSpideyArmorSet;
+
+// @Ok
+// @Matching
+u8 CPlayer::SetArmor(bool a2)
 {
-    printf("CPlayer::SetArmor(bool)");
+	gSpideyAnimTwo = 0;
+	if (a2)
+	{
+		gSpideyAnimTwo = Spool_FindAnim("costarm", 1);
+		switch (DifficultyLevel)
+		{
+			case 0:
+				this->field_5EC = 600;
+				break;
+			case 1:
+				this->field_5EC = 200;
+				break;
+			case 2:
+				this->field_5EC = 100;
+				break;
+			case 3:
+				this->field_5EC = 80;
+				break;
+			default:
+				break;
+		}
+	}
+
+	if (a2 && gSpideyArmorSet)
+	{
+		return 1;
+	}
+
+	if (!a2 && !gSpideyArmorSet)
+	{
+		return 1;
+	}
+
+	Spidey_DoArmorVRAMProcessing(a2);
+	this->field_5E9 = a2;
+	gSpideyArmorSet = a2;
+
+	return 1;
 }
 
 // @SMALLTODO
@@ -876,12 +917,17 @@ void Spidey_BagHead(i32,i32)
     printf("Spidey_BagHead(i32,i32)");
 }
 
-// @NotOk
-// @Validate: when inlined
+// @Ok
+// @Matching
 INLINE void Spidey_DoArmorVRAMProcessing(bool a1)
 {
-	if (gLowGraphics && (!a1 || !gSpideyVramProcessing) && (a1 || gSpideyVramProcessing))
+	if (gLowGraphics)
 	{
+		if ((a1 && gSpideyVramProcessing) || (!a1 && !gSpideyVramProcessing))
+		{
+		   return;
+		}
+
 		if (a1)
 		{
 			Spidey_SwapSuitTextures(CurrentSuit, 0);
@@ -891,6 +937,7 @@ INLINE void Spidey_DoArmorVRAMProcessing(bool a1)
 			Spidey_SwapSuitTextures(0, CurrentSuit);
 		}
 
+		
 		gSpideyVramProcessing = !gSpideyVramProcessing;
 	}
 }
@@ -1869,6 +1916,8 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_58C, 0x58C);
 	VALIDATE(CPlayer, field_590, 0x590);
+
+	VALIDATE(CPlayer, field_5EC, 0x5EC);
 
 	VALIDATE(CPlayer, field_5D0, 0x5D0);
 	VALIDATE(CPlayer, mWebbing, 0x5D4);
