@@ -37,7 +37,11 @@ class CPlayer : public CSuper
 
 		u32 field_538;
 
-		PADDING(0x54C-0x538-4);
+		PADDING(0x540-0x538-4);
+
+		i32 field_540;
+
+		PADDING(8);
 
 		u8 field_54C;
 

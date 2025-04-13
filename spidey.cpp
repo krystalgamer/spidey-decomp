@@ -17,6 +17,19 @@
 #include "spool.h"
 
 // @Ok
+EXPORT i16 gPlayerCamXOff;
+// @Ok
+EXPORT i16 gPlayerCamYOff;
+// @Ok
+EXPORT i16 gPlayerCamZOff;
+
+// @Ok
+EXPORT i16 gPlayerCamXZDist;
+// @Ok
+EXPORT i16 gPlayerCamYDist;
+
+
+// @Ok
 EXPORT SLight M3d_PlayerLight =
 {
 
@@ -738,10 +751,22 @@ void CPlayer::SetFirstContactDetails(void)
     printf("CPlayer::SetFirstContactDetails(void)");
 }
 
-// @SMALLTODO
-void CPlayer::SetFloorCamera(i32)
+// @Ok
+// @Matching
+void CPlayer::SetFloorCamera(i32 a3)
 {
-    printf("CPlayer::SetFloorCamera(i32)");
+	CCamera *pCamera = CameraList;
+	if (pCamera->mCameraMode == 3)
+	{
+		pCamera->SetCamXOffset(gPlayerCamXOff, a3);
+		pCamera->SetCamYOffset(gPlayerCamYOff, a3);
+		pCamera->SetCamZOffset(gPlayerCamZOff, a3);
+
+		pCamera->SetCamXZDistance(gPlayerCamXZDist, a3);
+		pCamera->SetCamYDistance(gPlayerCamYDist, a3);
+
+		this->field_540 = 5;
+	}
 }
 
 // @SMALLTODO
@@ -1769,6 +1794,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_530, 0x530);
 
 	VALIDATE(CPlayer, field_538, 0x538);
+
+	VALIDATE(CPlayer, field_540, 0x540);
 
 	VALIDATE(CPlayer, field_54C, 0x54C);
 
