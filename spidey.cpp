@@ -16,7 +16,8 @@
 #include "ps2lowsfx.h"
 #include "spool.h"
 
-// @Ok EXPORT SLight M3d_PlayerLight =
+// @Ok
+EXPORT SLight M3d_PlayerLight =
 {
 
   { { -2430, -2228, -2430 }, { 2509, -2896, 1447 }, { -648, -3711, -1607 } },
@@ -195,10 +196,57 @@ void CPlayer::CalculateTugWebPathPoints(void)
     printf("CPlayer::CalculateTugWebPathPoints(void)");
 }
 
-// @SMALLTODO
-void CPlayer::CheckCeilingJumpingSmashPunch(void)
+// @Ok
+// @AlmostMatching: SetTargetTorsoAngleToThisPoint arg pushed one instruction earlier
+u8 CPlayer::CheckCeilingJumpingSmashPunch(void)
 {
-    printf("CPlayer::CheckCeilingJumpingSmashPunch(void)");
+	if (this->field_8EA || !this->field_8E9 && !this->field_8E8)
+	{
+		return 0;
+	}
+
+	if (!this->field_DCC)
+	{
+		return 0;
+	}
+
+	// @FIXME
+	u8 *v3 = reinterpret_cast<u8*>(this->field_E0C);
+	if (!v3[289] && !v3[305])
+	{
+		return 0;
+	}
+
+	CVector v17 = (this->field_DCC->mPos - this->mPos) >> 12;
+	VectorNormal(
+			reinterpret_cast<VECTOR*>(&v17),
+			reinterpret_cast<VECTOR*>(&v17));
+
+	this->field_AE4 = 0;
+	this->field_A8.vx = 0;
+	this->field_A8.vy = -4096;
+	this->field_A8.vz = 0;
+
+	this->OrientToNormal(0, &ZeroVector);
+
+	this->field_AD4 = 0;
+	this->field_8DC = 0;
+	this->field_8CC = this->field_DCC->mPos;
+
+	this->SetTargetTorsoAngleToThisPoint(&this->field_8CC);
+
+	this->field_E1C = 0x1000000;
+	this->field_8C8 = this->field_8C4;
+	this->field_8C4 = gTimerRelated;
+	this->field_8D8 = 0;
+
+	// @FIXME
+	if (reinterpret_cast<u8*>(this->field_E0C)[289])
+		this->PlaySingleAnim(133, 0, -1);
+	else
+		this->PlaySingleAnim(129, 0, -1);
+
+	return 1;
 }
 
 // @MEDIUMTODO
@@ -1748,6 +1796,14 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_89C, 0x89C);
 
+	VALIDATE(CPlayer, field_8C4, 0x8C4);
+	VALIDATE(CPlayer, field_8C8, 0x8C8);
+
+	VALIDATE(CPlayer, field_8CC, 0x8CC);
+
+	VALIDATE(CPlayer, field_8D8, 0x8D8);
+	VALIDATE(CPlayer, field_8DC, 0x8DC);
+
 	VALIDATE(CPlayer, field_8E8, 0x8E8);
 	VALIDATE(CPlayer, field_8E9, 0x8E9);
 	VALIDATE(CPlayer, field_8EA, 0x8EA);
@@ -1760,6 +1816,7 @@ void validate_CPlayer(void)
 
 	VALIDATE(CPlayer, field_AD7, 0xAD7);
 
+	VALIDATE(CPlayer, field_AE4, 0xAE4);
 	VALIDATE(CPlayer, field_AE5, 0xAE5);
 	VALIDATE(CPlayer, field_AE6, 0xAE6);
 
@@ -1799,6 +1856,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_DB8, 0xDB8);
 
 	VALIDATE(CPlayer, field_DC0, 0xDC0);
+	VALIDATE(CPlayer, field_DCC, 0xDCC);
+
 	VALIDATE(CPlayer, field_DE4, 0xDE4);
 
 

@@ -75,7 +75,20 @@ class CPlayer : public CSuper
 
 		MATRIX field_89C;
 
-		PADDING(0x8E8-0x89C-sizeof(MATRIX));
+		PADDING(0x8C4-0x89C-sizeof(MATRIX));
+
+		i32 field_8C4;
+		i32 field_8C8;
+		CVector field_8CC;
+
+		u8 field_8D8;
+
+		PADDING(3);
+
+		i32 field_8DC;
+
+		PADDING(0x8E8-0x8DC-4);
+
 
 		u8 field_8E8;
 		u8 field_8E9;
@@ -95,8 +108,9 @@ class CPlayer : public CSuper
 
 		u8 field_AD7;
 
-		PADDING(0xAE5-0xAD7-1);
+		PADDING(0xAE4-0xAD7-1);
 
+		u8 field_AE4;
 		u8 field_AE5;
 		u8 field_AE6;
 
@@ -168,7 +182,10 @@ class CPlayer : public CSuper
 
 		CVector field_DC0;
 
-		PADDING(0xDE4-0xDC0-sizeof(CVector));
+		// @FIXME - type
+		CBody *field_DCC;
+
+		PADDING(0xDE4-0xDCC-4);
 
 		char field_DE4;
 
@@ -267,7 +284,7 @@ class CPlayer : public CSuper
 		EXPORT i32 CalculateIntermediateTrailSteps(CVector *,CVector *,CVector *);
 		EXPORT void CalculateSwingWebParameters(CVector *);
 		EXPORT void CalculateTugWebPathPoints(void);
-		EXPORT void CheckCeilingJumpingSmashPunch(void);
+		EXPORT u8 CheckCeilingJumpingSmashPunch(void);
 		EXPORT void CheckExteriorSurfaceTransition(void);
 		EXPORT void CheckFenceSurfaceTransition(void);
 		EXPORT void CheckForwards(bool);
