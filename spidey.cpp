@@ -17,6 +17,12 @@
 #include "spool.h"
 
 // @Ok
+EXPORT SAnimFrame *gSpideyAnim;
+
+// @Ok
+EXPORT SAnimFrame *gSpideyAnimTwo;
+
+// @Ok
 EXPORT i16 gPlayerCamXOff;
 // @Ok
 EXPORT i16 gPlayerCamYOff;
@@ -872,10 +878,42 @@ void Spidey_DoArmorVRAMProcessing(bool)
     printf("Spidey_DoArmorVRAMProcessing(bool)");
 }
 
-// @SMALLTODO
-void Spidey_LoadAlternativeHealthIcon(i32)
+// @Ok
+// @Matching
+void Spidey_LoadAlternativeHealthIcon(i32 a1)
 {
-    printf("Spidey_LoadAlternativeHealthIcon(i32)");
+	gSpideyAnimTwo = 0;
+	gSpideyAnim = 0;
+	switch ( a1 )
+	{
+		case 2:
+			Spool_PSX("cost99", 0);
+			gSpideyAnim = Spool_FindAnim("cost99", 1);
+			break;
+		case 3:
+		case 9:
+			Spool_PSX("costblk", 0);
+			gSpideyAnim = Spool_FindAnim("costblk", 1);
+			break;
+		case 4:
+			Spool_PSX("costcapt", 0);
+			gSpideyAnim = Spool_FindAnim("costcapt", 1);
+			break;
+		case 6:
+			Spool_PSX("costbag", 0);
+			gSpideyAnim = Spool_FindAnim("costbag", 1);
+			break;
+		case 7:
+			Spool_PSX("costscar", 0);
+			gSpideyAnim = Spool_FindAnim("costscar", 1);
+			break;
+		case 10:
+			Spool_PSX("costpete", 0);
+			gSpideyAnim = Spool_FindAnim("costpete", 1);
+			break;
+		default:
+			break;
+	}
 }
 
 // @MEDIUMTODO

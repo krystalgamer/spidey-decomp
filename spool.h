@@ -121,7 +121,7 @@ EXPORT void RemoveTextureEntry(Texture *);
 EXPORT void Spool_AddEnvModelsToHashTable(void);
 EXPORT void Spool_AnimAccess(char *,SAnimFrame **);
 EXPORT void Spool_ClearEnvironmentRegions(void);
-EXPORT i32 Spool_FindAnim(char *,i32);
+EXPORT SAnimFrame* Spool_FindAnim(char *,i32);
 EXPORT i32 Spool_GetEnvIndex(i32);
 EXPORT void Spool_GetPalette(u32,i32);
 EXPORT void Spool_Init(void);

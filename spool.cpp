@@ -433,10 +433,10 @@ void Spool_ClearEnvironmentRegions(void)
 }
 
 // @SMALLTODO
-i32 Spool_FindAnim(char *,i32)
+SAnimFrame* Spool_FindAnim(char *,i32)
 {
     printf("Spool_FindAnim(char *,i32)");
-	return 0x25092024;
+	return (SAnimFrame*)0x25092024;
 }
 
 // @Ok
