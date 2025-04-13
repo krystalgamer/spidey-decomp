@@ -63,13 +63,7 @@ class CPlayer : public CSuper
 		CSmokeTrail* field_58C;
 		CSmokeTrail* field_590;
 
-		PADDING(0x5E9-0x590-4);
-
-		bool field_5E9;
-
-		PADDING(0x5EC-0x5E9-1);
-		
-		i32 field_5EC;
+		PADDING(0x5D0-0x590-4);
 
 
 		i32 field_5D0;
@@ -80,8 +74,14 @@ class CPlayer : public CSuper
 		PADDING(0x5E8-0x5DC-4);
 
 		char field_5E8;
+		bool field_5E9;
 
-		PADDING(0x89C-0x5E8-4);
+		PADDING(0x5EC-0x5E9-sizeof(bool));
+		
+		i32 field_5EC;
+
+
+		PADDING(0x89C-0x5EC-4);
 
 		MATRIX field_89C;
 
