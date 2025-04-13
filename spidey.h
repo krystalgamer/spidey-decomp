@@ -228,7 +228,11 @@ class CPlayer : public CSuper
 
 		CManipOb* mHeldObject;
 
-		PADDING(0xE84-0xE48-4);
+		PADDING(0xE70-0xE48-4);
+
+		SHandle hLockTarget;
+
+		PADDING(0xE84-0xE70-sizeof(SHandle));
 
 		i32 field_E84;
 		i32 field_E88;

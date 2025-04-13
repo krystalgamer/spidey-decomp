@@ -769,10 +769,11 @@ void CPlayer::SetFloorCamera(i32 a3)
 	}
 }
 
-// @SMALLTODO
-void CPlayer::SetFocusLockTarget(CBody const *)
+// @Ok
+// @Matching
+void CPlayer::SetFocusLockTarget(const CBody *a2)
 {
-    printf("CPlayer::SetFocusLockTarget(CBody const *)");
+	this->hLockTarget = Mem_MakeHandle(const_cast<CBody*>(a2));
 }
 
 // @MEDIUMTODO
@@ -1905,6 +1906,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_E2E, 0xE2E);
 
 	VALIDATE(CPlayer, field_E38, 0xE38);
+
+	VALIDATE(CPlayer, hLockTarget, 0xE70);
 
 	VALIDATE(CPlayer, field_E84, 0xE84);
 	VALIDATE(CPlayer, field_E88, 0xE88);
