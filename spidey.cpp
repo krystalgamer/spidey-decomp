@@ -19,6 +19,20 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT i16 gSpideyWallCamXOffset;
+// @Ok
+EXPORT i16 gSpideyWallCamYOffset;
+// @Ok
+EXPORT i16 gSpideyWallCamZOffset;
+
+// @Ok
+EXPORT i16 gSpideyWallCamXZDistance;
+
+// @Ok
+EXPORT i16 gSpideyWallCamYDistance;
+
+
+// @Ok
 EXPORT u8 gSpideyVramProcessing;
 
 // @Ok
@@ -910,10 +924,20 @@ void CPlayer::SetSwingCamera(i32)
     printf("CPlayer::SetSwingCamera(i32)");
 }
 
-// @SMALLTODO
-void CPlayer::SetWallCamera(i32)
+// @Ok
+// @Matching
+void CPlayer::SetWallCamera(i32 a3)
 {
-    printf("CPlayer::SetWallCamera(i32)");
+	CCamera *pCamera = CameraList;
+	if (pCamera->mCameraMode == 3)
+	{
+		pCamera->SetCamXOffset(gSpideyWallCamXOffset, a3);
+		pCamera->SetCamYOffset(gSpideyWallCamYOffset, a3);
+		pCamera->SetCamZOffset(gSpideyWallCamZOffset, a3);
+		pCamera->SetCamXZDistance(gSpideyWallCamXZDistance, a3);
+		pCamera->SetCamYDistance(gSpideyWallCamYDistance, a3);
+		this->field_540 = 1;
+	}
 }
 
 // @MEDIUMTODO
