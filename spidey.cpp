@@ -921,7 +921,12 @@ void CPlayer::SetFloorCamera(i32 a3)
 // @SMALLTODO
 void CPlayer::SetFirstContactDetails(void)
 {
-    printf("CPlayer::SetFirstContactDetails(void)");
+	if (!this->field_354)
+	{
+		this->field_354 = 1;
+		this->field_358 = this->mHealth;
+		this->field_35C = gTimerRelated;
+	}
 }
 
 // @Ok
@@ -2034,6 +2039,10 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_1BC, 0x1BC);
 
 	VALIDATE(CPlayer, field_350, 0x350);
+
+	VALIDATE(CPlayer, field_354, 0x354);
+	VALIDATE(CPlayer, field_358, 0x358);
+	VALIDATE(CPlayer, field_35C, 0x35C);
 
 	VALIDATE(CPlayer, field_528, 0x528);
 	VALIDATE(CPlayer, field_52C, 0x52C);
