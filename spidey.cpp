@@ -19,6 +19,18 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT i16 gSpideySwingCamXOffset;
+// @Ok
+EXPORT i16 gSpideySwingCamYOffset;
+// @Ok
+EXPORT i16 gSpideySwingCamZOffset;
+
+// @Ok
+EXPORT i16 gSpideySwingCamXZDistance;
+// @Ok
+EXPORT i16 gSpideySwingCamYDistance;
+
+// @Ok
 EXPORT i16 gSpideyWallCamXOffset;
 // @Ok
 EXPORT i16 gSpideyWallCamYOffset;
@@ -918,10 +930,20 @@ void CPlayer::SetSpideyCamValue(u16,u16,i16,u16,u16)
     printf("CPlayer::SetSpideyCamValue(u16,u16,i16,u16,u16)");
 }
 
-// @SMALLTODO
-void CPlayer::SetSwingCamera(i32)
+// @Ok
+// @matching
+void CPlayer::SetSwingCamera(i32 a3)
 {
-    printf("CPlayer::SetSwingCamera(i32)");
+	CCamera *pCamera = CameraList;
+	if (pCamera->mCameraMode == 3)
+	{
+		pCamera->SetCamXOffset(gSpideySwingCamXOffset, a3);
+		pCamera->SetCamYOffset(gSpideySwingCamYOffset, a3);
+		pCamera->SetCamZOffset(gSpideySwingCamZOffset, a3);
+		pCamera->SetCamXZDistance(gSpideySwingCamXZDistance, a3);
+		pCamera->SetCamYDistance(gSpideySwingCamYDistance, a3);
+		this->field_540 = 4;
+	}
 }
 
 // @Ok
