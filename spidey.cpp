@@ -16,6 +16,7 @@
 #include "ps2lowsfx.h"
 #include "spool.h"
 #include "DXinit.h"
+#include "my_assert.h"
 
 // @Ok
 EXPORT u8 gSpideyVramProcessing;
@@ -680,10 +681,23 @@ i32 CPlayer::Hit(SHitInfo *)
     return 0x04082024;
 }
 
-// @SMALLTODO
-void CPlayer::IfPlayerCeilingCheck(i32,i32)
+// @Ok
+// @matching
+u8 CPlayer::IfPlayerCeilingCheck(i32 a2, i32 a3)
 {
-    printf("CPlayer::IfPlayerCeilingCheck(i32,i32)");
+	DoAssert(a2 <= a3, "Bad min and max for C_IF_PLAYER_CEILING_CHECK");
+	if (!this->field_8EA || this->field_CB4)
+	{
+		if (this->mPos.vy >= a2 && this->mPos.vy <= a3)
+		{
+			if (this->field_8E9 || this->field_8E8 && this->field_B84.vy > 3400)
+			{
+				return 1;
+			}
+		}
+	}
+
+	return 0;
 }
 
 // @SMALLTODO

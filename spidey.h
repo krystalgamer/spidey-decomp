@@ -352,7 +352,7 @@ class CPlayer : public CSuper
 		EXPORT void GrabUpdate(CVector *,i16 *);
 		EXPORT void HandleControlsForSurfaceTransition(bool);
 		EXPORT i32 Hit(SHitInfo *) OVERRIDE;
-		EXPORT void IfPlayerCeilingCheck(i32,i32);
+		EXPORT u8 IfPlayerCeilingCheck(i32,i32);
 		EXPORT void IncHealth(i32);
 		EXPORT void InitialiseOffscreenSpideySenseIndicatorList(void);
 		EXPORT void InitialiseSFXArray(void);
