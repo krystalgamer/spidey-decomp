@@ -19,6 +19,18 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT i16 gSpideyFloorCamXOffset;
+// @Ok
+EXPORT i16 gSpideyFloorCamYOffset;
+// @Ok
+EXPORT i16 gSpideyFloorCamZOffset;
+
+// @Ok
+EXPORT i16 gSpideyFloorCamXZDistance;
+// @Ok
+EXPORT i16 gSpideyFloorCamYDistance;
+
+// @Ok
 EXPORT i16 gSpideySwingCamXOffset;
 // @Ok
 EXPORT i16 gSpideySwingCamYOffset;
@@ -54,16 +66,16 @@ EXPORT SAnimFrame *gSpideyAnim;
 EXPORT SAnimFrame *gSpideyAnimTwo;
 
 // @Ok
-EXPORT i16 gPlayerCamXOff;
+EXPORT i16 gSpideyFallingCamXOff;
 // @Ok
-EXPORT i16 gPlayerCamYOff;
+EXPORT i16 gSpideyFallingCamYOff;
 // @Ok
-EXPORT i16 gPlayerCamZOff;
+EXPORT i16 gSpideyFallingCamZOff;
 
 // @Ok
-EXPORT i16 gPlayerCamXZDist;
+EXPORT i16 gSpideyFallingCamXZDist;
 // @Ok
-EXPORT i16 gPlayerCamYDist;
+EXPORT i16 gSpideyFallingCamYDist;
 
 
 // @Ok
@@ -887,10 +899,23 @@ void CPlayer::SetCeilingCamera(i32)
     printf("CPlayer::SetCeilingCamera(i32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void CPlayer::SetFloorCamera(i32 a3)
 {
-    printf("CPlayer::SetFallingCamera(i32)");
+	CCamera *pCamera = CameraList;
+	if (pCamera)
+	{
+		if (pCamera->mCameraMode == 3)
+		{
+			pCamera->SetCamXOffset(gSpideyFloorCamXOffset, a3);
+			pCamera->SetCamYOffset(gSpideyFloorCamYOffset, a3);
+			pCamera->SetCamZOffset(gSpideyFloorCamZOffset, a3);
+			pCamera->SetCamXZDistance(gSpideyFloorCamXZDistance, a3);
+			pCamera->SetCamYDistance(gSpideyFloorCamYDistance, a3);
+			this->field_540 = 0;
+		}
+	}
 }
 
 // @SMALLTODO
@@ -906,12 +931,12 @@ void CPlayer::SetFallingCamera(i32 a3)
 	CCamera *pCamera = CameraList;
 	if (pCamera->mCameraMode == 3)
 	{
-		pCamera->SetCamXOffset(gPlayerCamXOff, a3);
-		pCamera->SetCamYOffset(gPlayerCamYOff, a3);
-		pCamera->SetCamZOffset(gPlayerCamZOff, a3);
+		pCamera->SetCamXOffset(gSpideyFallingCamXOff, a3);
+		pCamera->SetCamYOffset(gSpideyFallingCamYOff, a3);
+		pCamera->SetCamZOffset(gSpideyFallingCamZOff, a3);
 
-		pCamera->SetCamXZDistance(gPlayerCamXZDist, a3);
-		pCamera->SetCamYDistance(gPlayerCamYDist, a3);
+		pCamera->SetCamXZDistance(gSpideyFallingCamXZDist, a3);
+		pCamera->SetCamYDistance(gSpideyFallingCamYDist, a3);
 
 		this->field_540 = 5;
 	}
