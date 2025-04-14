@@ -862,7 +862,7 @@ void CPlayer::SetCeilingCamera(i32)
 }
 
 // @SMALLTODO
-void CPlayer::SetFallingCamera(i32)
+void CPlayer::SetFloorCamera(i32 a3)
 {
     printf("CPlayer::SetFallingCamera(i32)");
 }
@@ -875,7 +875,7 @@ void CPlayer::SetFirstContactDetails(void)
 
 // @Ok
 // @Matching
-void CPlayer::SetFloorCamera(i32 a3)
+void CPlayer::SetFallingCamera(i32 a3)
 {
 	CCamera *pCamera = CameraList;
 	if (pCamera->mCameraMode == 3)
