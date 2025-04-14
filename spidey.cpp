@@ -19,6 +19,9 @@
 #include "my_assert.h"
 
 // @Ok
+i32 *gSpideySFXEntry[300];
+
+// @Ok
 EXPORT i16 gSpideyFloorCamXOffset;
 // @Ok
 EXPORT i16 gSpideyFloorCamYOffset;
@@ -99,7 +102,6 @@ u8 gSpideyPsxIndex;
 CPlayer* MechList;
 extern i32 CurrentSuit;
 
-EXPORT i32* gPlayerAnimRelated[1];
 EXPORT void *gSpideyHeadModel;
 
 extern CCamera* CameraList;
@@ -1727,22 +1729,33 @@ void CPlayer::CreateJumpingSmashKickTrail(void)
 	}
 }
 
+// @Ok
+// @Matching
+INLINE void CPlayer::ResetSFXArrayEntry(u32 a2)
+{
+	i32 *v2 = gSpideySFXEntry[a2];
+	if (v2)
+	{
+		while (*v2 != -1)
+		{
+			*v2 = *v2 & 0xFFFF;
+			v2++;
+		}
+	}
+}
 
 // @Ok
 // @Matching
-INLINE void CPlayer::PlaySingleAnim(int a2, int a3, int a4)
+INLINE void CPlayer::PlaySingleAnim(i32 a2, i32 a3, i32 a4)
 {
 
-	i32* v4 = gPlayerAnimRelated[a2];
 
-	this->field_350 = reinterpret_cast<i32>(v4);
+	i32 *tmp = gSpideySFXEntry[a2];
+	this->field_350 = tmp;
 
-	if (this->field_350)
+	if (tmp)
 	{
-		for (i32 i = *v4; i != -1; v4++, i = *v4)
-		{
-			*v4 = i & 0xFFFFF;
-		}
+		this->ResetSFXArrayEntry(a2);
 	}
 
 	CSuper::RunAnim(a2, a3, a4);

@@ -38,7 +38,7 @@ class CPlayer : public CSuper
 
 		PADDING(0x350-0x1BC-4);
 
-		i32 field_350;
+		i32 *field_350;
 
 		u8 field_354;
 		PADDING(3);
@@ -400,6 +400,7 @@ class CPlayer : public CSuper
 		EXPORT void UpdateTrails(void);
 		EXPORT ~CPlayer(void);
 		EXPORT void nullsub_one(i32);
+		EXPORT void ResetSFXArrayEntry(u32);
 };
 
 EXPORT extern CPlayer* MechList;
