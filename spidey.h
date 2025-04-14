@@ -10,6 +10,15 @@
 
 EXPORT extern u8 gSpideyPsxIndex;
 
+struct SIndicator
+{
+	PADDING(0xC);
+
+	SHandle field_C;
+
+	PADDING(0x68-0xC-sizeof(SHandle));
+};
+
 class CPlayer : public CSuper 
 {
 	public:
@@ -80,8 +89,10 @@ class CPlayer : public CSuper
 		
 		i32 field_5EC;
 
+		SIndicator field_5F0[6];
 
-		PADDING(0x89C-0x5EC-4);
+
+		PADDING(0x89C-0x5F0-(sizeof(SIndicator)*6));
 
 		MATRIX field_89C;
 
@@ -342,7 +353,7 @@ class CPlayer : public CSuper
 		EXPORT void InitialiseOffscreenSpideySenseIndicatorList(void);
 		EXPORT void InitialiseSFXArray(void);
 		EXPORT void InitiateCombo(u16,i32);
-		EXPORT void IsInIndicatorList(SHandle *);
+		EXPORT u8 IsInIndicatorList(SHandle &);
 		EXPORT void KnockSpideyFromCrawlPosition(void);
 		EXPORT void LockTargetTorsoAngle(void);
 		EXPORT void NotifyKill(u16);
@@ -395,5 +406,6 @@ EXPORT void Spidey_SwapSuitTextures(i32,i32);
 EXPORT void spideyLog(char *,...);
 
 void validate_CPlayer(void);
+void validate_SIndicator(void);
 
 #endif

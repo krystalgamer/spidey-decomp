@@ -700,10 +700,19 @@ void CPlayer::InitiateCombo(u16,i32)
     printf("CPlayer::InitiateCombo(u16,i32)");
 }
 
-// @SMALLTODO
-void CPlayer::IsInIndicatorList(SHandle *)
+// @Ok
+// @Matching
+u8 CPlayer::IsInIndicatorList(SHandle &a2)
 {
-    printf("CPlayer::IsInIndicatorList(SHandle *)");
+	for (i32 i = 0; i < 6; i++)
+	{
+		if (this->field_5F0[i].field_C.field_0 && this->field_5F0[i].field_C.field_4 == a2.field_4)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
 // @SMALLTODO
@@ -1943,6 +1952,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_5E9, 0x5E9);
 	VALIDATE(CPlayer, field_5EC, 0x5EC);
 
+	VALIDATE(CPlayer, field_5F0, 0x5F0);
+
 	VALIDATE(CPlayer, field_5D0, 0x5D0);
 	VALIDATE(CPlayer, mWebbing, 0x5D4);
 	VALIDATE(CPlayer, field_5D8, 0x5D8);
@@ -2046,4 +2057,11 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_EA4, 0xEA4);
 
 	VALIDATE(CPlayer, field_EA8, 0xEA8);
+}
+
+void validate_SIndicator(void)
+{
+	VALIDATE_SIZE(SIndicator, 0x68);
+
+	VALIDATE(SIndicator, field_C, 0xC);
 }

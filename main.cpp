@@ -526,6 +526,7 @@ i32 validate(void)
 	validate_SRibbonTexture();
 	validate_SSimpleRibbonParams();
 	validate_CSpark();
+	validate_SIndicator();
 
 	puts("[*] Validation done!");
 
