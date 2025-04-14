@@ -16,6 +16,8 @@ struct SIndicator
 
 	SHandle field_C;
 
+	// @FIXME - there's a POLY_F3 that should go in here but I have
+	// no idea how it works leaving it for future me
 	PADDING(0x64-0xC-sizeof(SHandle));
 
 	i32 mInUse;

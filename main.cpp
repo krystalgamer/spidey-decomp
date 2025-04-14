@@ -527,6 +527,7 @@ i32 validate(void)
 	validate_SSimpleRibbonParams();
 	validate_CSpark();
 	validate_SIndicator();
+	validate_POLY_F3();
 
 	puts("[*] Validation done!");
 

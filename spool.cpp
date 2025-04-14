@@ -10,6 +10,7 @@
 #include "spidey.h"
 #include "my_assert.h"
 #include "SpideyDX.h"
+#include "psx_types.h"
 
 #include <cstring>
 #include <cstdlib>
@@ -1127,4 +1128,24 @@ void validate_SModel(void)
 {
 	VALIDATE_SIZE(SModel, 2);
 	VALIDATE(SModel, Flags, 0);
+}
+
+void validate_POLY_F3(void)
+{
+	VALIDATE_SIZE(POLY_F3, 0x14);
+
+	VALIDATE(POLY_F3, tag, 0x0);
+	VALIDATE(POLY_F3, r0, 0x4);
+	VALIDATE(POLY_F3, g0, 0x5);
+	VALIDATE(POLY_F3, b0, 0x6);
+	VALIDATE(POLY_F3, code, 0x7);
+
+	VALIDATE(POLY_F3, x0, 0x8);
+	VALIDATE(POLY_F3, y0, 0xA);
+
+	VALIDATE(POLY_F3, x1, 0xC);
+	VALIDATE(POLY_F3, y1, 0xE);
+
+	VALIDATE(POLY_F3, x2, 0x10);
+	VALIDATE(POLY_F3, y2, 0x12);
 }

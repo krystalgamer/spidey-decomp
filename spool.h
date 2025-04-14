@@ -145,6 +145,7 @@ void validate_TextureEntry(void);
 void validate_SAccess(void);
 void validate_AnimPacket(void);
 void validate_SModel(void);
+void validate_POLY_F3(void);
 
 static const i32 MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
