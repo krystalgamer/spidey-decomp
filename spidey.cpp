@@ -612,10 +612,20 @@ void CPlayer::GetEnterExitFrameInfoPointer(u16)
     printf("CPlayer::GetEnterExitFrameInfoPointer(u16)");
 }
 
-// @SMALLTODO
-void CPlayer::GetFreeIndicatorListEntry(void)
+// @Ok
+// @Matching
+i32 CPlayer::GetFreeIndicatorListEntry(void)
 {
-    printf("CPlayer::GetFreeIndicatorListEntry(void)");
+	for (i32 i = 0; i < 6; i++)
+	{
+		if (!this->field_5F0[i].field_C.field_0)
+		{
+			this->field_5F0[i].mInUse = 0;
+			return i;
+		}
+	}
+
+	return -1;
 }
 
 // @Ok
@@ -2064,4 +2074,6 @@ void validate_SIndicator(void)
 	VALIDATE_SIZE(SIndicator, 0x68);
 
 	VALIDATE(SIndicator, field_C, 0xC);
+
+	VALIDATE(SIndicator, mInUse, 0x64);
 }

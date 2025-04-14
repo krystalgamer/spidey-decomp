@@ -16,7 +16,9 @@ struct SIndicator
 
 	SHandle field_C;
 
-	PADDING(0x68-0xC-sizeof(SHandle));
+	PADDING(0x64-0xC-sizeof(SHandle));
+
+	i32 mInUse;
 };
 
 class CPlayer : public CSuper 
@@ -342,7 +344,7 @@ class CPlayer : public CSuper
 		EXPORT void GetComboPartsInfoPointer(u16);
 		EXPORT i32 GetDamageInflictedFromDifficulty(i32);
 		EXPORT void GetEnterExitFrameInfoPointer(u16);
-		EXPORT void GetFreeIndicatorListEntry(void);
+		EXPORT i32 GetFreeIndicatorListEntry(void);
 		EXPORT i32* GetNewCommandBlock(u32);
 		EXPORT void GetPerpendicularisationRadius(void);
 		EXPORT void GrabUpdate(CVector *,i16 *);
