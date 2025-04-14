@@ -84,7 +84,9 @@ class CPlayer : public CSuper
 		i32 field_5D8;
 		i32 field_5DC;
 
-		PADDING(0x5E8-0x5DC-4);
+		i32 field_5E0;
+
+		PADDING(0x5E8-0x5E0-4);
 
 		char field_5E8;
 		bool field_5E9;
@@ -269,7 +271,11 @@ class CPlayer : public CSuper
 
 		u16 field_EA8;
 
-		PADDING((0xEFC-0xEA8)-0x2);
+		PADDING(0xEF0 - 0xEA8 - 2);
+
+		i32 mMaxHealth;
+
+		PADDING((0xEFC-0xEF0)-0x4);
 
 
 		EXPORT void SetCamAngleLock(u16);
@@ -353,7 +359,7 @@ class CPlayer : public CSuper
 		EXPORT void HandleControlsForSurfaceTransition(bool);
 		EXPORT i32 Hit(SHitInfo *) OVERRIDE;
 		EXPORT u8 IfPlayerCeilingCheck(i32,i32);
-		EXPORT void IncHealth(i32);
+		EXPORT i32 IncHealth(i32);
 		EXPORT void InitialiseOffscreenSpideySenseIndicatorList(void);
 		EXPORT void InitialiseSFXArray(void);
 		EXPORT void InitiateCombo(u16,i32);

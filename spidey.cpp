@@ -700,10 +700,25 @@ u8 CPlayer::IfPlayerCeilingCheck(i32 a2, i32 a3)
 	return 0;
 }
 
-// @SMALLTODO
-void CPlayer::IncHealth(i32)
+// @Ok
+// @Matching
+i32 CPlayer::IncHealth(i32 a2)
 {
-    printf("CPlayer::IncHealth(i32)");
+	if (this->mHealth < this->mMaxHealth && this->mHealth > 0)
+	{
+		this->mHealth += a2;
+
+		if (this->mHealth > this->mMaxHealth)
+		{
+			this->mHealth = this->mMaxHealth;
+		}
+
+		this->field_5E0 = gTimerRelated;
+		this->field_5D0++;
+		return 1;
+	}
+
+	return 0;
 }
 
 // @SMALLTODO
@@ -1983,6 +1998,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_5D8, 0x5D8);
 	VALIDATE(CPlayer, field_5DC, 0x5DC);
 
+	VALIDATE(CPlayer, field_5E0, 0x5E0);
+
 	VALIDATE(CPlayer, field_5E8, 0x5E8);
 
 	VALIDATE(CPlayer, field_89C, 0x89C);
@@ -2081,6 +2098,8 @@ void validate_CPlayer(void)
 	VALIDATE(CPlayer, field_EA4, 0xEA4);
 
 	VALIDATE(CPlayer, field_EA8, 0xEA8);
+
+	VALIDATE(CPlayer, mMaxHealth, 0xEF0);
 }
 
 void validate_SIndicator(void)
