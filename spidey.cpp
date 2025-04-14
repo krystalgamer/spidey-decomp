@@ -577,10 +577,33 @@ void CPlayer::GetComboPartsInfoPointer(u16)
     printf("CPlayer::GetComboPartsInfoPointer(u16)");
 }
 
-// @SMALLTODO
-void CPlayer::GetDamageInflictedFromDifficulty(i32)
+// @Ok
+// @Matching
+i32 CPlayer::GetDamageInflictedFromDifficulty(i32 a2)
 {
-    printf("CPlayer::GetDamageInflictedFromDifficulty(i32)");
+	if (CurrentSuit == 2 || CurrentSuit == 3 || CurrentSuit == 4)
+	{
+		a2 *= 2;
+	}
+
+	if (DifficultyLevel != 2)
+	{
+		if (!DifficultyLevel)
+		{
+			return a2 << 13 >> 12;
+		}
+
+		i32 dmg = a2 * 3;
+
+		if (DifficultyLevel == 1)
+		{
+			return dmg << 11 >> 12;
+		}
+
+		return dmg << 10 >> 12;
+	}
+
+	return a2;
 }
 
 // @SMALLTODO

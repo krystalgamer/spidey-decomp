@@ -329,7 +329,7 @@ class CPlayer : public CSuper
 		EXPORT void FireWeb(bool,i32,CVector *,bool,CSVector *);
 		EXPORT void GetComboFrameInfoPointer(u16);
 		EXPORT void GetComboPartsInfoPointer(u16);
-		EXPORT void GetDamageInflictedFromDifficulty(i32);
+		EXPORT i32 GetDamageInflictedFromDifficulty(i32);
 		EXPORT void GetEnterExitFrameInfoPointer(u16);
 		EXPORT void GetFreeIndicatorListEntry(void);
 		EXPORT i32* GetNewCommandBlock(u32);
