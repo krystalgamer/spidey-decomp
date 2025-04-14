@@ -383,7 +383,7 @@ class CPlayer : public CSuper
 		EXPORT void SetSwingCamera(i32);
 		EXPORT void SetWallCamera(i32);
 		EXPORT void SetupLookaroundCamera(void);
-		EXPORT void ShouldPlayerDropFlail(void);
+		EXPORT u8 ShouldPlayerDropFlail(void);
 		EXPORT void SortAnimationFollowOnData(void);
 		EXPORT void SortFistsData(void);
 		EXPORT void SwitchToDeathMode(bool);

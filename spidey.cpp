@@ -946,10 +946,11 @@ void CPlayer::SetupLookaroundCamera(void)
     printf("CPlayer::SetupLookaroundCamera(void)");
 }
 
-// @SMALLTODO
-void CPlayer::ShouldPlayerDropFlail(void)
+// @Ok
+// @Matching
+u8 CPlayer::ShouldPlayerDropFlail(void)
 {
-    printf("CPlayer::ShouldPlayerDropFlail(void)");
+	return Utils_GetGroundHeight(&this->mPos, 0, 4096, 0) != -1;
 }
 
 // @SMALLTODO
