@@ -9,6 +9,7 @@
 
 #include "validate.h"
 
+// @Ok
 SControl gSControl[NUM_CONTROLLERS];
 
 // @Ok
@@ -26,14 +27,15 @@ EXPORT u8 gPadOne = 0x3B;
 // @Ok
 EXPORT u8 gPadTwo;
 
-// @NotOk
-// global
+// @Ok
+// @Matching
 void Pad_ActuatorOff(u8 a1, u8)
 {
 	gPadActuator[a1] = 1;
 }
 
 // @Ok
+// @Matching
 INLINE void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i32 a5)
 {
 	pControl->field_140 = a2;
