@@ -1,13 +1,20 @@
 #include "ps2pad.h"
 #include "PCInput.h"
 #include "PCShell.h"
+#include "utils.h"
 
 #include "validate.h"
 
 SControl gSControl[NUM_CONTROLLERS];
 EXPORT i32 Pad_IdleTime;
 
-i32 gPadActuator[255];
+// @Ok
+EXPORT i32 gPadActuator[255];
+
+// @Ok
+EXPORT u8 gPadOne = 0x3B;
+// @Ok
+EXPORT u8 gPadTwo;
 
 // @NotOk
 // global
@@ -31,10 +38,16 @@ u16 Pad_GetActuatorTime(u8, u8)
 	return 0x020702024;
 }
 
-// @SMALLTODO
-void Pad_ActuatorOn(u8, u16, u8, u8)
+// @Ok
+// @Matching
+void Pad_ActuatorOn(
+		u8 a1,
+		u16 a2,
+		u8 a3,
+		u8 a4)
 {
-	printf("void Pad_ActuatorOn(u8, u16, u8, u8)");
+	gPadActuator[a1] = Vblanks + a2 + 10;
+	DCPad_Vibrate(a1, 5 * a3 + 2, gPadOne, gPadTwo);
 }
 
 // @SMALLTODO
