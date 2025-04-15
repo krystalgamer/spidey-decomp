@@ -4,10 +4,14 @@
 #include "utils.h"
 #include "pcdcPad.h"
 #include "dcmemcard.h"
+#include "my_assert.h"
+#include "tweak.h"
 
 #include "validate.h"
 
 SControl gSControl[NUM_CONTROLLERS];
+
+// @Ok
 EXPORT i32 Pad_IdleTime;
 
 // @OK
@@ -30,7 +34,7 @@ void Pad_ActuatorOff(u8 a1, u8)
 }
 
 // @Ok
-void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i32 a5)
+INLINE void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i32 a5)
 {
 	pControl->field_140 = a2;
 	pControl->field_144 = a3;
@@ -204,7 +208,7 @@ INLINE void Pad_Clear(SControl *pControl)
 
 // @Ok
 // @Matching
-void Pad_ClearAll(void)
+INLINE void Pad_ClearAll(void)
 {
 	for (i32 i = 0; i < 1; i++)
 	{
@@ -247,15 +251,54 @@ void Pad_ClearTriggers(SControl *pControl)
 	}
 }
 
-// @SMALLTODO
-void Pad_InitAtStart(void)
+EXPORT i32 gPadInited;
+
+static void nullsub_38()
 {
-    printf("Pad_InitAtStart(void)");
 }
 
 // @Ok
 // @Matching
-void Pad_SetAnalogueMapping(
+void Pad_InitAtStart(void)
+{
+	DoAssert(1u, "NUMPADS defined as 0");
+	DoAssert(gPadInited == 0, "Control system already initialised");
+
+	for (i32 i = 0; i < 1; i++)
+	{
+		gSControl[i].pTriangle = &gSControl[i].LeftOne;
+		gSControl[i].pSquare = &gSControl[i].LeftTwo;
+		gSControl[i].pCircle = &gSControl[i].RightOne;
+		gSControl[i].pX = &gSControl[i].RightTwo;
+
+		Pad_SetDigitalMapping(
+				&gSControl[i], 
+				gGameState[0],
+				gGameState[1],
+				gGameState[2],
+				gGameState[3]);
+
+		Pad_SetAnalogueMapping(
+				&gSControl[i],
+				3, 2, 1, 0,
+				gGameState[4],
+				gGameState[5],
+				gGameState[6],
+				gGameState[7]);
+	}
+
+	Pad_ClearAll();
+	Pad_IdleTime = 0;
+	gPadInited = 1;
+	nullsub_38();
+
+	Pad_Update();
+
+}
+
+// @Ok
+// @Matching
+INLINE void Pad_SetAnalogueMapping(
 		SControl *pControl,
 		u8 a2,
 		u8 a3,
@@ -335,6 +378,11 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_16C, 0x16C);
 
 	VALIDATE(SControl, field_170, 0x170);
+
+	VALIDATE(SControl, pTriangle, 0x17C);
+	VALIDATE(SControl, pSquare, 0x180);
+	VALIDATE(SControl, pCircle, 0x184);
+	VALIDATE(SControl, pX, 0x188);
 }
 
 void validate_SButton(void)

@@ -68,7 +68,12 @@ struct SControl
 
 	i32 field_170;
 
-	PADDING(0x18C-0x170-4);
+	PADDING(0x8);
+
+	SButton *pTriangle;
+	SButton *pSquare;
+	SButton *pCircle;
+	SButton *pX;
 };
 
 EXPORT void Pad_SetDigitalMapping(SControl*, i32, i32, i32, i32);
