@@ -42,10 +42,13 @@ INLINE void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i3
 	pControl->field_14C = a5;
 }
 
-// @MEDIUMTODO
-u16 Pad_GetActuatorTime(u8, u8)
+// @Ok
+// @Matching
+u16 Pad_GetActuatorTime(u8 a1, u8 a2)
 {
-	return 0x020702024;
+	// @FIXME - not portable
+	u16 *p = &gSControl[a1].Motor0Timer;
+	return p[a2];
 }
 
 // @Ok
@@ -378,6 +381,9 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_16C, 0x16C);
 
 	VALIDATE(SControl, field_170, 0x170);
+
+	VALIDATE(SControl, Motor0Timer, 0x178);
+	VALIDATE(SControl, Motor1Timer, 0x17A);
 
 	VALIDATE(SControl, pTriangle, 0x17C);
 	VALIDATE(SControl, pSquare, 0x180);

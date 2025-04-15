@@ -68,7 +68,10 @@ struct SControl
 
 	i32 field_170;
 
-	PADDING(0x8);
+	PADDING(4);
+
+	u16 Motor0Timer;
+	u16 Motor1Timer;
 
 	SButton *pTriangle;
 	SButton *pSquare;
