@@ -66,7 +66,9 @@ struct SControl
 
 	i32 field_16C;
 
-	PADDING(0x18C-0x16C-4);
+	i32 field_170;
+
+	PADDING(0x18C-0x170-4);
 };
 
 EXPORT void Pad_SetDigitalMapping(SControl*, i32, i32, i32, i32);

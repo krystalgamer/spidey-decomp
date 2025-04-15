@@ -208,10 +208,17 @@ void Pad_ClearAll(void)
     printf("Pad_ClearAll(void)");
 }
 
-// @SMALLTODO
-void Pad_ClearAllOne(i32)
+// @Ok
+INLINE void Pad_ClearAllOne(i32 a1)
 {
-    printf("Pad_ClearAllOne(i32)");
+	Pad_Clear(&gSControl[a1]);
+
+
+	gSControl[a1].field_170 = 0;
+	gSControl[a1].field_16B = 0;
+	gSControl[a1].field_16A = 0;
+	gSControl[a1].field_169 = 0;
+	gSControl[a1].field_168 = 0;
 }
 
 // @SMALLTODO
@@ -306,6 +313,8 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_16B, 0x16B);
 
 	VALIDATE(SControl, field_16C, 0x16C);
+
+	VALIDATE(SControl, field_170, 0x170);
 }
 
 void validate_SButton(void)
