@@ -53,10 +53,23 @@ void Pad_ActuatorOn(
 	DCPad_Vibrate(a1, 5 * a3 + 2, gPadOne, gPadTwo);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void DCPad_ExpireVibrations(void)
 {
-    printf("DCPad_ExpireVibrations(void)");
+	for (i32 i = 0; i < 2; i++)
+	{
+		u32 v4 = gPadActuator[i];
+		if (v4)
+		{
+			if (Vblanks > v4)
+			{
+				pdVibMxStop(gAlarmFirst[2 * i]);
+				pdVibMxStop(gAlarmFirst[2 * i + 1]);
+				gPadActuator[i] = 0;
+			}
+		}
+	}
 }
 
 static void nullsub_3(void)
