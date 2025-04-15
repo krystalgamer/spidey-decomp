@@ -202,17 +202,21 @@ INLINE void Pad_Clear(SControl *pControl)
 	gSControl[0].field_16B = 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Pad_ClearAll(void)
 {
-    printf("Pad_ClearAll(void)");
+	for (i32 i = 0; i < 1; i++)
+	{
+		Pad_ClearAllOne(i);
+	}
 }
 
 // @Ok
+// @Matching
 INLINE void Pad_ClearAllOne(i32 a1)
 {
 	Pad_Clear(&gSControl[a1]);
-
 
 	gSControl[a1].field_170 = 0;
 	gSControl[a1].field_16B = 0;
