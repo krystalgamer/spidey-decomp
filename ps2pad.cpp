@@ -199,10 +199,28 @@ void Pad_InitAtStart(void)
     printf("Pad_InitAtStart(void)");
 }
 
-// @SMALLTODO
-void Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32)
+// @Ok
+// @Matching
+void Pad_SetAnalogueMapping(
+		SControl *pControl,
+		u8 a2,
+		u8 a3,
+		u8 a4,
+		u8 a5,
+		i32 a6,
+		i32 a7,
+		i32 a8,
+		i32 a9)
 {
-    printf("Pad_SetAnalogueMapping(SControl *,u8,u8,u8,u8,i32,i32,i32,i32)");
+	pControl->field_160 = a2;
+	pControl->field_161 = a3;
+	pControl->field_162 = a4;
+	pControl->field_163 = a5;
+
+	pControl->field_150 = a6;
+	pControl->field_154 = a7;
+	pControl->field_158 = a8;
+	pControl->field_15C = a9;
 }
 
 void validate_SControl(void)
@@ -244,6 +262,16 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_144, 0x144);
 	VALIDATE(SControl, field_148, 0x148);
 	VALIDATE(SControl, field_14C, 0x14C);
+
+	VALIDATE(SControl, field_150, 0x150);
+	VALIDATE(SControl, field_154, 0x154);
+	VALIDATE(SControl, field_158, 0x158);
+	VALIDATE(SControl, field_15C, 0x15C);
+
+	VALIDATE(SControl, field_160, 0x160);
+	VALIDATE(SControl, field_161, 0x161);
+	VALIDATE(SControl, field_162, 0x162);
+	VALIDATE(SControl, field_163, 0x163);
 
 	VALIDATE(SControl, field_16C, 0x16C);
 }

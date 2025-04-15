@@ -47,7 +47,17 @@ struct SControl
 	i32 field_148;
 	i32 field_14C;
 
-	PADDING(0x16C-0x14C-4);
+	i32 field_150;
+	i32 field_154;
+	i32 field_158;
+	i32 field_15C;
+
+	u8 field_160;
+	u8 field_161;
+	u8 field_162;
+	u8 field_163;
+
+	PADDING(0x16C-0x163-1);
 
 	i32 field_16C;
 
