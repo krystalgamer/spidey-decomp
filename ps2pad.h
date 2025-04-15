@@ -60,7 +60,7 @@ EXPORT u16 Pad_GetActuatorTime(u8, u8);
 EXPORT void Pad_ActuatorOn(u8, u16, u8, u8);
 EXPORT void DCPad_ExpireVibrations(void);
 EXPORT void DCPad_ShutDownVibrations(void);
-EXPORT void DCPad_Vibrate(i32,signed char,u8,u8);
+EXPORT i32 DCPad_Vibrate(i32,signed char,u8,u8);
 EXPORT void Pad_Button(SButton *,i32);
 EXPORT void Pad_Clear(SControl *);
 EXPORT void Pad_ClearAll(void);

@@ -90,7 +90,7 @@ SPdPadSmall* pdGetPeripheral(u32 a1)
 
 // @Ok
 // @Matching
-i32 pdVibMxStart(void)
+i32 pdVibMxStart(i32, u8*)
 {
 	if (PCINPUT_SetupForceFeedbackSineEffect(2000, 5.0f))
 		PCINPUT_StartForceFeedbackEffect();
@@ -107,7 +107,7 @@ i32 pdVibMxStop(i32)
 
 // @Ok
 // @Matching
-i32 pdVibMxIsReady(void)
+i32 pdVibMxIsReady(i32)
 {
 	return 1;
 }

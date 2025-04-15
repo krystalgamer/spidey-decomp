@@ -10,6 +10,9 @@
 SControl gSControl[NUM_CONTROLLERS];
 EXPORT i32 Pad_IdleTime;
 
+// @OK
+EXPORT u8 gPadVibrate[5];
+
 // @Ok
 // @FIXME - is it really 2?
 EXPORT i32 gPadActuator[2];
@@ -90,10 +93,38 @@ void DCPad_ShutDownVibrations(void)
 	gPadActuator[1] = 1;
 }
 
-// @SMALLTODO
-void DCPad_Vibrate(i32,signed char,u8,u8)
+// @Ok
+// @NotMatching: uses one more register
+i32 DCPad_Vibrate(
+		i32 a1,
+		i8 a2,
+		u8 a3,
+		u8 a4)
 {
-    printf("DCPad_Vibrate(i32,signed char,u8,u8)");
+	i32 limit = (a1*2)+2;
+	for (i32 i = a1 *2; i < limit; i++)
+	{
+		if (pdGetPeripheral(6 * (i/2))->pBig->field_0)
+		{
+			i32 val = gAlarmFirst[i];
+			if (pdVibMxIsReady(val) == 1)
+			{
+				gPadVibrate[0] = 1;
+				gPadVibrate[1] = 1;
+				gPadVibrate[2] = a2;
+				gPadVibrate[3] = a3;
+				gPadVibrate[4] = a4;
+				do
+				{
+				}
+				while (pdVibMxStart(val, gPadVibrate));
+				break;
+			}
+		}
+	}
+
+
+	return 0;
 }
 
 
