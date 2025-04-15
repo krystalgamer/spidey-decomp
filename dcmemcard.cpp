@@ -10,7 +10,7 @@
 
 EXPORT u8 gAlarmTwo[2] = { 0xC, 0x80 };
 
-EXPORT i32 gAlarmFirst[4] = { 1, 2, 7, 8 };
+i32 gAlarmFirst[4] = { 1, 2, 7, 8 };
 
 EXPORT u8 gCardData[8];
 EXPORT u8 gCardInit;

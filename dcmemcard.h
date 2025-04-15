@@ -19,5 +19,7 @@ EXPORT u8 DCCard_Wait(i32,i32);
 EXPORT void MemCardInit(i32);
 EXPORT void MemCardStop(void);
 
+// @FIXME - maybe move to another place?
+EXPORT extern i32 gAlarmFirst[4];
 
 #endif

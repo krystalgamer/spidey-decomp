@@ -2,6 +2,8 @@
 #include "PCInput.h"
 #include "PCShell.h"
 #include "utils.h"
+#include "pcdcPad.h"
+#include "dcmemcard.h"
 
 #include "validate.h"
 
@@ -9,7 +11,8 @@ SControl gSControl[NUM_CONTROLLERS];
 EXPORT i32 Pad_IdleTime;
 
 // @Ok
-EXPORT i32 gPadActuator[255];
+// @FIXME - is it really 2?
+EXPORT i32 gPadActuator[2];
 
 // @Ok
 EXPORT u8 gPadOne = 0x3B;
@@ -56,10 +59,22 @@ void DCPad_ExpireVibrations(void)
     printf("DCPad_ExpireVibrations(void)");
 }
 
-// @SMALLTODO
+static void nullsub_3(void)
+{
+}
+
+// @Ok
+// @Matching
 void DCPad_ShutDownVibrations(void)
 {
-    printf("DCPad_ShutDownVibrations(void)");
+	for (i32 i = 0; i < 4; i++)
+	{
+		pdVibMxStop(gAlarmFirst[i]);
+	}
+
+	nullsub_3();
+	gPadActuator[0] = 1;
+	gPadActuator[1] = 1;
 }
 
 // @SMALLTODO
