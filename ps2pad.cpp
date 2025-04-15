@@ -225,10 +225,26 @@ INLINE void Pad_ClearAllOne(i32 a1)
 	gSControl[a1].field_168 = 0;
 }
 
-// @SMALLTODO
-void Pad_ClearTriggers(SControl *)
+// @Ok
+// @Matching
+void Pad_ClearTriggers(SControl *pControl)
 {
-    printf("Pad_ClearTriggers(SControl *)");
+	if (!pControl)
+	{
+		for (i32 i = 0; i < 1; i++)
+		{
+			Pad_ClearTriggers(&gSControl[i]);
+		}
+
+		return;
+	}
+
+	SButton *pButton = &pControl->Triangle;
+	for (i32 i = 0; i < 20; i++)
+	{
+		pButton[i].Triggered = 0;
+		pButton[i].field_2 = 0;
+	}
 }
 
 // @SMALLTODO
