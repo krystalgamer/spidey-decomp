@@ -169,10 +169,37 @@ void Pad_Button(SButton* pBut, i32 state)
 	}
 }
 
-// @SMALLTODO
-void Pad_Clear(SControl *)
+// @Ok
+// @Matching
+INLINE void Pad_Clear(SControl *pControl)
 {
-    printf("Pad_Clear(SControl *)");
+	if (!pControl)
+	{
+		for (i32 i = 0; i < 1; i++)
+		{
+			Pad_Clear(&gSControl[i]);
+		}
+
+		return;
+	}
+
+
+	SButton *pButton = &pControl->Triangle;
+
+	for (i32 i = 0; i < 20; i++)
+	{
+		pButton[i].Pressed = 0;
+		pButton[i].Triggered = 0;
+		pButton[i].PressedTime = 0;
+		pButton[i].ReleasedTime = 0;
+		pButton[i].TriggeredTime = 0;
+		pButton[i].field_2 = 0;
+	}
+
+	gSControl[0].field_168 = 0;
+	gSControl[0].field_169 = 0;
+	gSControl[0].field_16A = 0;
+	gSControl[0].field_16B = 0;
 }
 
 // @SMALLTODO
@@ -272,6 +299,11 @@ void validate_SControl(void)
 	VALIDATE(SControl, field_161, 0x161);
 	VALIDATE(SControl, field_162, 0x162);
 	VALIDATE(SControl, field_163, 0x163);
+
+	VALIDATE(SControl, field_168, 0x168);
+	VALIDATE(SControl, field_169, 0x169);
+	VALIDATE(SControl, field_16A, 0x16A);
+	VALIDATE(SControl, field_16B, 0x16B);
 
 	VALIDATE(SControl, field_16C, 0x16C);
 }
