@@ -6,12 +6,39 @@
 #include "trig.h"
 #include "web.h"
 #include "spool.h"
+#include "panel.h"
+#include "trig.h"
 
 
 extern CBody* EnvironmentalObjectList;
 
 #define LEN_VENOM_TEXS 10
 EXPORT Texture* gVenomTexs[LEN_VENOM_TEXS];
+
+// @Ok
+// @Matching
+CVenom::~CVenom(void)
+{
+	this->DeleteFrom(reinterpret_cast<CBody**>(&BaddyList));
+	Panel_DestroyHealthBar();
+	this->KillAllCommandBlocks();
+
+	if (Trig_GetLevelID() == 1281)
+	{
+		Panel_DestroyCompass();
+	}
+
+	delete this->field_434;
+	delete this->field_428;
+	delete this->field_398;
+	delete this->field_3E4;
+	delete this->field_334;
+
+	if (this->field_390)
+	{
+		Mem_Delete(this->field_390);
+	}
+}
 
 // @Ok
 // @Matching
@@ -258,14 +285,20 @@ void CVenom::PlayNextFootstepSFX(void)
 	SFX_PlayPos(i | 0x8000, &this->mPos, 0);
 }
 
-// @Ok
-void CVenom::GetTargetPosFromNode(CVector *pVector, i32 a3)
+// @NotOk
+// @Validate: when inlined
+i32 CVenom::GetTargetPosFromNode(CVector *pVector, i32 a3)
 {
 	Trig_GetPosition(pVector, a3);
 
 	i32 v5 = Utils_GetGroundHeight(pVector, 0, 0x2000, 0);
-	if (v5 != -1)
-		pVector->vy = v5 - (this->field_21E << 12);
+	if (v5 == -1)
+	{
+		return 0;
+	}
+
+	pVector->vy = v5 - (this->field_21E << 12);
+	return 1;
 }
 
 // @Ok
@@ -396,7 +429,7 @@ void CVenom::VenomDie(void)
 		case 2:
 			if (this->mAnimFinished)
 			{
-				if (Trig_GetLevelId() == 1540)
+				if (Trig_GetLevelID() == 1540)
 				{
 					this->PulseL6A4Node(false);
 					this->dumbAssPad++;
@@ -414,6 +447,7 @@ void validate_CVenom(void){
 	VALIDATE_SIZE(CVenom, 0x468);
 
 	VALIDATE(CVenom, field_330, 0x330);
+	VALIDATE(CVenom, field_334, 0x334);
 	VALIDATE(CVenom, field_338, 0x338);
 
 	VALIDATE(CVenom, field_33C, 0x33C);
@@ -429,6 +463,9 @@ void validate_CVenom(void){
 	VALIDATE(CVenom, field_380, 0x380);
 	VALIDATE(CVenom, field_384, 0x384);
 
+	VALIDATE(CVenom, field_390, 0x390);
+
+	VALIDATE(CVenom, field_398, 0x398);
 	VALIDATE(CVenom, field_39C, 0x39C);
 
 	VALIDATE(CVenom, field_3A0, 0x3A0);
@@ -437,6 +474,8 @@ void validate_CVenom(void){
 
 	VALIDATE(CVenom, field_3B0, 0x3B0);
 	VALIDATE(CVenom, field_3B4, 0x3B4);
+
+	VALIDATE(CVenom, field_3E4, 0x3E4);
 
 	VALIDATE(CVenom, field_3E8, 0x3E8);
 	VALIDATE(CVenom, field_3EC, 0x3EC);
@@ -450,6 +489,8 @@ void validate_CVenom(void){
 	VALIDATE(CVenom, field_418, 0x418);
 	VALIDATE(CVenom, field_41C, 0x41C);
 	VALIDATE(CVenom, field_420, 0x420);
+
+	VALIDATE(CVenom, field_428, 0x428);
 
 	VALIDATE(CVenom, field_430, 0x430);
 	VALIDATE(CVenom, field_434, 0x434);

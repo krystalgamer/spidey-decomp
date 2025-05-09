@@ -1028,7 +1028,7 @@ CThug::CThug(i16 *a2, i32 a3)
 {
 	i16 *v5 = this->SquirtAngles(reinterpret_cast<i16*>(this->SquirtPos(a2)));
 
-	this->field_3B8 = Trig_GetLevelId();
+	this->field_3B8 = Trig_GetLevelID();
 
 	this->ShadowOn();
 	this->mShadowScale = 50;
@@ -1141,7 +1141,7 @@ void CThug::SetThugType(int type)
 
 			break;
 		case 312:
-			if (Trig_GetLevelId() == 513)
+			if (Trig_GetLevelID() == 513)
 				this->InitItem("henchngt");
 			else
 				this->InitItem("henchman");

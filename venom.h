@@ -22,6 +22,8 @@ class CVenom : public CBaddy
 	public:
 
 		EXPORT CVenom(i32*, i32);
+		EXPORT virtual ~CVenom(void) OVERRIDE;
+
 		EXPORT void Shouldnt_DoPhysics_Be_Virtual(void);
 		EXPORT void DoPhysics(void);
 
@@ -31,7 +33,7 @@ class CVenom : public CBaddy
 
 		EXPORT u8 TugImpulse(CVector *, CVector *, CVector *);
 		EXPORT void PlayNextFootstepSFX(void);
-		EXPORT void GetTargetPosFromNode(CVector *, i32);
+		EXPORT i32 GetTargetPosFromNode(CVector *, i32);
 		EXPORT void Lookaround(void);
 		EXPORT void TugWeb(void);
 		EXPORT void AdjustWaterModel(void);
@@ -47,7 +49,8 @@ class CVenom : public CBaddy
 
 		i32 field_330;
 
-		PADDING(4);
+		// @FIXME
+		CClass *field_334;
 
 		i32 field_338;
 		u8 field_33C;
@@ -67,7 +70,15 @@ class CVenom : public CBaddy
 		i32 field_380;
 		i32 field_384;
 
-		PADDING(0x14);
+		PADDING(8);
+
+		// @FIXME
+		void *field_390;
+
+		PADDING(4);
+
+		// @FIXME
+		CClass *field_398;
 
 		i32 field_39C;
 		i32 field_3A0;
@@ -79,7 +90,10 @@ class CVenom : public CBaddy
 		i32 field_3B0;
 		i32 field_3B4;
 
-		PADDING(0x3E8-0x3B4-4);
+		PADDING(0x3E4-0x3B4-4);
+
+		// @FIXME
+		CClass *field_3E4;
 
 		i32 field_3E8;
 		i32 field_3EC;
@@ -97,7 +111,12 @@ class CVenom : public CBaddy
 		i32 field_41C;
 		i32 field_420;
 
-		PADDING(0x30 - 0x24);
+		PADDING(4);
+
+		// @FIXME
+		CClass *field_428;
+
+		PADDING(4);
 
 		i32 field_430;
 		CQuadBit *field_434;

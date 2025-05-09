@@ -508,7 +508,7 @@ void* Trig_GetLinkInfoList(
 }
 
 // @MEDIUMTODO
-int Trig_GetLevelId(void)
+int Trig_GetLevelID(void)
 {
 	return 0x686868;
 }

@@ -1833,7 +1833,7 @@ void CPlayer::CutSceneSkipCleanup(void)
 {
 	Redbook_XAStop();
 
-	if (gGlobalThisCamera->mCameraMode != CAMERAMODE_DEMO && Trig_GetLevelId() != 514)
+	if (gGlobalThisCamera->mCameraMode != CAMERAMODE_DEMO && Trig_GetLevelID() != 514)
 	{
 		gGlobalThisCamera->SetMode(static_cast<ECameraMode>(3));
 	}

@@ -49,7 +49,7 @@ struct PendingListEntry
 	u16* pCommands;
 };
 
-EXPORT int Trig_GetLevelId(void);
+EXPORT i32 Trig_GetLevelID(void);
 EXPORT u16* Trig_GetPosition(CVector*, i32);
 EXPORT u16* Trig_GetLinksPointer(i32);
 EXPORT void Trig_SendPulse(u16*);

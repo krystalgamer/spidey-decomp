@@ -42,7 +42,7 @@ void Training_RelocatableModuleInit(reloc_mod *pMod)
 
 	Spidey_SetUserFunction("training", 1u);
 
-	gTrainingStuff[0] = Trig_GetLevelId();
+	gTrainingStuff[0] = Trig_GetLevelID();
 	for (i32 i = 1; i < 8; i++)
 	{
 		gTrainingStuff[i] = 0;

@@ -101,7 +101,7 @@ CTorch::CTorch(i16* a2, i32 a3)
 	this->mRMinor = 0;
 	this->field_34C = reinterpret_cast<i32>(v5);
 
-	if (submarinerDieRelated && Trig_GetLevelId() != 2051)
+	if (submarinerDieRelated && Trig_GetLevelID() != 2051)
 		this->Die(0);
 }
 
