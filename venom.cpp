@@ -13,6 +13,31 @@ extern CBody* EnvironmentalObjectList;
 #define LEN_VENOM_TEXS 10
 EXPORT Texture* gVenomTexs[LEN_VENOM_TEXS];
 
+// @MEDIUMTODO
+CVenomHitSpark::CVenomHitSpark(CVector const *)
+{
+    printf("CVenomHitSpark::CVenomHitSpark(CVector const *)");
+}
+
+// @SMALLTODO
+void CVenomHitSpark::Move(void)
+{
+    printf("CVenomHitSpark::Move(void)");
+}
+
+// @SMALLTODO
+CVenomHitSpark::~CVenomHitSpark(void)
+{
+    printf("CVenomHitSpark::~CVenomHitSpark(void)");
+}
+
+
+// @SMALLTODO
+void CVenom::CreateCombatImpactEffect(CVector *,i32)
+{
+    printf("CVenom::CreateCombatImpactEffect(CVector *,i32)");
+}
+
 // @BIGTODO
 void Venom_DisplayProgressBar(const u32*, u32*)
 {
@@ -149,7 +174,9 @@ INLINE void CVenom::KillAllCommandBlocks(void)
 unsigned char CVenom::TugImpulse(CVector *a2, CVector *a3, CVector *a4)
 {
 	if (a4)
+	{
 		Mem_Delete(a4);
+	}
 	this->field_218 |= 0x200;
 
 	return 0;
@@ -389,4 +416,9 @@ void validate_CVenomElectrified(void)
 	VALIDATE_SIZE(CVenomElectrified, 0x48);
 
 	VALIDATE(CVenomElectrified, field_3C, 0x3C);
+}
+
+void validate_CVenomHitSpark(void)
+{
+	VALIDATE_SIZE(CVenomHitSpark, 0x84);
 }

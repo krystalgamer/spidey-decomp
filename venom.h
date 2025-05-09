@@ -7,6 +7,14 @@
 #include "baddy.h"
 #include "reloc.h"
 
+class CVenomHitSpark : public CQuadBit
+{
+	public:
+		EXPORT CVenomHitSpark(const CVector *);
+		EXPORT virtual ~CVenomHitSpark(void) OVERRIDE;
+
+		EXPORT virtual void Move(void) OVERRIDE;
+};
 
 class CVenom : public CBaddy 
 {
@@ -29,6 +37,8 @@ class CVenom : public CBaddy
 		EXPORT void AdjustWaterModel(void);
 		EXPORT void PulseL6A4Node(bool);
 		EXPORT void VenomDie(void);
+
+		EXPORT virtual void CreateCombatImpactEffect(CVector *,i32) OVERRIDE;
 
 		PADDING(0x18-0xC);
 
@@ -115,6 +125,8 @@ class CVenomElectrified : public CNonRenderedBit
 void validate_CVenom(void);
 void validate_CVenomWrap(void);
 void validate_CVenomElectrified(void);
+void validate_CVenomHitSpark(void);
+
 EXPORT void Venom_CreateVenom(const u32 *stack, u32 *result);
 EXPORT void Venom_DisplayProgressBar(const u32*, u32*);
 

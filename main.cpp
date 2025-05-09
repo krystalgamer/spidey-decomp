@@ -528,6 +528,7 @@ i32 validate(void)
 	validate_CSpark();
 	validate_SIndicator();
 	validate_POLY_F3();
+	validate_CVenomHitSpark();
 
 	puts("[*] Validation done!");
 
