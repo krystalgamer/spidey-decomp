@@ -19,10 +19,32 @@ CVenomHitSpark::CVenomHitSpark(CVector const *)
     printf("CVenomHitSpark::CVenomHitSpark(CVector const *)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
+// @Note: COMDAT should merge this with CarnageHitSpark::Move
 void CVenomHitSpark::Move(void)
 {
-    printf("CVenomHitSpark::Move(void)");
+	this->mPos.vx += this->mVel.vx;
+	this->mPos.vy += this->mVel.vy;
+	this->mPos.vz += this->mVel.vz;
+
+	this->mPosB.vx += this->mVel.vx;
+	this->mPosB.vy += this->mVel.vy;
+	this->mPosB.vz += this->mVel.vz;
+
+	this->mPosC.vx += this->mVel.vx;
+	this->mPosC.vy += this->mVel.vy;
+	this->mPosC.vz += this->mVel.vz;
+
+	this->mPosD.vx += this->mVel.vx;
+	this->mPosD.vy += this->mVel.vy;
+	this->mPosD.vz += this->mVel.vz;
+
+	if (++this->mAge > 0)
+		Bit_ReduceRGB(&this->mTint, 30);
+
+	if ((this->mTint & 0xFFFFFF) == 0)
+		this->Die();
 }
 
 // @Ok
