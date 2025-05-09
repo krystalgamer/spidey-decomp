@@ -19,6 +19,17 @@
 #include "my_assert.h"
 
 // @Ok
+EXPORT u16 gSpideyCeilingCameraXOffset;
+// @Ok
+EXPORT u16 gSpideyCeilingCameraYOffset;
+// @Ok
+EXPORT u16 gSpideyCeilingCameraZOffset;
+// @Ok
+EXPORT u16 gSpideyCeilingCameraXZDistance;
+// @Ok
+EXPORT u16 gSpideyCeilingCameraYDistance;
+
+// @Ok
 i32 *gSpideySFXEntry[300];
 
 // @Ok
@@ -722,7 +733,7 @@ i32 CPlayer::Hit(SHitInfo *)
 }
 
 // @Ok
-// @matching
+// @Matching
 u8 CPlayer::IfPlayerCeilingCheck(i32 a2, i32 a3)
 {
 	DoAssert(a2 <= a3, "Bad min and max for C_IF_PLAYER_CEILING_CHECK");
@@ -895,10 +906,20 @@ u8 CPlayer::SetArmor(bool a2)
 	return 1;
 }
 
-// @SMALLTODO
-void CPlayer::SetCeilingCamera(i32)
+// @Ok
+// @Matching
+void CPlayer::SetCeilingCamera(i32 a3)
 {
-    printf("CPlayer::SetCeilingCamera(i32)");
+	CCamera *pCamera = CameraList;
+	if (pCamera->mCameraMode == 3)
+	{
+		pCamera->SetCamXOffset(gSpideyCeilingCameraXOffset, a3);
+		pCamera->SetCamYOffset(gSpideyCeilingCameraYOffset, a3);
+		pCamera->SetCamZOffset(gSpideyCeilingCameraZOffset, a3);
+		pCamera->SetCamXZDistance(gSpideyCeilingCameraXZDistance, a3);
+		pCamera->SetCamYDistance(gSpideyCeilingCameraYDistance, a3);
+		this->field_540 = 2;
+	}
 }
 
 // @Ok
@@ -1241,7 +1262,7 @@ void CPlayer::SetStartOrientation(CSVector* pVector)
 
 // @NotOk
 // validate later
-void CPlayer::CreateFists(unsigned char a2)
+INLINE void CPlayer::CreateFists(u8 a2)
 {
 	if (a2 & 1)
 	{
