@@ -805,10 +805,42 @@ u8 CPlayer::IsInIndicatorList(SHandle &a2)
 	return 0;
 }
 
-// @SMALLTODO
-void CPlayer::KnockSpideyFromCrawlPosition(void)
+// @Ok
+// @Note: PlaySingleAnim is cooked
+u8 CPlayer::KnockSpideyFromCrawlPosition(void)
 {
-    printf("CPlayer::KnockSpideyFromCrawlPosition(void)");
+	if (!this->field_AD4 || !this->field_8E8 && !this->field_8E9)
+	{
+		return 0;
+	}
+
+	if (this->field_8EA)
+	{
+		this->ExitLookaroundMode();
+	}
+
+	this->field_AD4 = 0;
+	this->field_E1C = 0x800000;
+
+	this->field_A8.vx = 0;
+	this->field_A8.vy = -4096;
+	this->field_A8.vz = 0;
+
+	this->PlaySingleAnim(175, 0, -1);
+	this->field_AE5 = 1;
+
+	if (this->field_8E8)
+	{
+		this->OrientToNormal(1, &this->field_C84);
+		this->field_8E8 = 0;
+	}
+	else if (this->field_8E9)
+	{
+		this->OrientToNormal(1, &this->field_C6C);
+		this->field_8E9 = 0;
+	}
+
+	return 1;
 }
 
 // @SMALLTODO
@@ -1769,8 +1801,6 @@ INLINE void CPlayer::ResetSFXArrayEntry(u32 a2)
 // @Matching
 INLINE void CPlayer::PlaySingleAnim(i32 a2, i32 a3, i32 a4)
 {
-
-
 	i32 *tmp = gSpideySFXEntry[a2];
 	this->field_350 = tmp;
 

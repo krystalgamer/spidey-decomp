@@ -370,7 +370,7 @@ class CPlayer : public CSuper
 		EXPORT void InitialiseSFXArray(void);
 		EXPORT void InitiateCombo(u16,i32);
 		EXPORT u8 IsInIndicatorList(SHandle &);
-		EXPORT void KnockSpideyFromCrawlPosition(void);
+		EXPORT u8 KnockSpideyFromCrawlPosition(void);
 		EXPORT void LockTargetTorsoAngle(void);
 		EXPORT void NotifyKill(u16);
 		EXPORT void ParseFightData(void);
