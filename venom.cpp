@@ -25,10 +25,10 @@ void CVenomHitSpark::Move(void)
     printf("CVenomHitSpark::Move(void)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 CVenomHitSpark::~CVenomHitSpark(void)
 {
-    printf("CVenomHitSpark::~CVenomHitSpark(void)");
 }
 
 
