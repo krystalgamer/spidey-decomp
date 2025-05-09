@@ -40,6 +40,8 @@ class CVenom : public CBaddy
 
 		EXPORT virtual void CreateCombatImpactEffect(CVector *,i32) OVERRIDE;
 
+		EXPORT virtual void EnterWaitState(void);
+
 		PADDING(0x18-0xC);
 
 		i32 field_330;
@@ -71,7 +73,11 @@ class CVenom : public CBaddy
 		i32 field_3A4;
 		i32 field_3A8;
 		
-		PADDING(0x3C);
+		PADDING(0x3B4-0x3A8-4);
+
+		i32 field_3B4;
+
+		PADDING(0x3E8-0x3B4-4);
 
 		i32 field_3E8;
 		i32 field_3EC;

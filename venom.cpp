@@ -13,6 +13,16 @@ extern CBody* EnvironmentalObjectList;
 #define LEN_VENOM_TEXS 10
 EXPORT Texture* gVenomTexs[LEN_VENOM_TEXS];
 
+void CVenom::EnterWaitState(void)
+{
+	this->field_3B4 = 0;
+	if (this->field_31C.bothFlags != 1)
+	{
+		this->field_31C.bothFlags = 1;
+		this->dumbAssPad = 0;
+	}
+}
+
 // @MEDIUMTODO
 CVenomHitSpark::CVenomHitSpark(CVector const *)
 {
@@ -408,6 +418,8 @@ void validate_CVenom(void){
 	VALIDATE(CVenom, field_3A4, 0x3A4);
 	VALIDATE(CVenom, field_3A8, 0x3A8);
 
+	VALIDATE(CVenom, field_3B4, 0x3B4);
+
 	VALIDATE(CVenom, field_3E8, 0x3E8);
 	VALIDATE(CVenom, field_3EC, 0x3EC);
 	VALIDATE(CVenom, field_3F0, 0x3F0);
@@ -430,6 +442,8 @@ void validate_CVenom(void){
 	VALIDATE(CVenom, field_45C, 0x45C);
 	VALIDATE(CVenom, field_460, 0x460);
 	VALIDATE(CVenom, field_464, 0x464);
+
+	VALIDATE_VTABLE(CVenom, EnterWaitState, 17);
 }
 
 void validate_CVenomWrap(void)
