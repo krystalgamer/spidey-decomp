@@ -54,10 +54,14 @@ CVenomHitSpark::~CVenomHitSpark(void)
 }
 
 
-// @SMALLTODO
-void CVenom::CreateCombatImpactEffect(CVector *,i32)
+// @Ok
+// @Matching
+void CVenom::CreateCombatImpactEffect(CVector *a2,i32)
 {
-    printf("CVenom::CreateCombatImpactEffect(CVector *,i32)");
+	for (i32 i = 0; i < 16; i++)
+	{
+		new CVenomHitSpark(a2);
+	}
 }
 
 // @BIGTODO
