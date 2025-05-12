@@ -256,7 +256,8 @@ void FreePushOffsets(void)
 	gPushOffsetOne = 0;
 }
 
-// @SMALLTODO
+// @NotOk
+// @Note: looks fine but registers are saved at different places
 void LoadPushOffsets(void)
 {
 	char path[32];
@@ -479,8 +480,8 @@ HRESULT WINAPI enumerateZBuffersCB(LPDDPIXELFORMAT a1, LPVOID a2)
 	return FALSE;
 }
 
-// @NotOk
-// @Validate: when done
+// @Ok
+// @Note: windows and powerpc versions are diff
 INLINE char* getNextNumber(
 		char *a1,
 		i32 *a2)
