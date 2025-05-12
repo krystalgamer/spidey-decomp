@@ -8,6 +8,11 @@
 #include <cstring>
 #include <cstdlib>
 
+// @Ok
+EXPORT void *gPushOffsetAddr;
+// @Ok
+EXPORT i32 gPushOffsetOne;
+
 EXPORT int gResolutionX;
 EXPORT int gResolutionY;
 
@@ -234,10 +239,17 @@ void DXINIT_ZBufSupported(u32)
     printf("DXINIT_ZBufSupported(u32)");
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void FreePushOffsets(void)
 {
-    printf("FreePushOffsets(void)");
+	if (gPushOffsetAddr)
+	{
+		free(gPushOffsetAddr);
+	}
+
+	gPushOffsetAddr = 0;
+	gPushOffsetOne = 0;
 }
 
 // @SMALLTODO
