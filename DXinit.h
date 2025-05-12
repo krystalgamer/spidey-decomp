@@ -61,7 +61,7 @@ EXPORT u32 DXINIT_GetPrevColorDepth(u32);
 EXPORT void DXINIT_GetPrevResolution(u32 *,u32 *,u32,i32,bool);
 EXPORT void DXINIT_SetDisplayOptions(u32,u32,u32,i32,i32);
 EXPORT void DXINIT_ShutDown(void);
-EXPORT void DXINIT_ZBufSupported(u32);
+EXPORT u8 DXINIT_ZBufSupported(u32);
 EXPORT void FreePushOffsets(void);
 EXPORT void LoadPushOffsets(void);
 EXPORT HRESULT WINAPI MyD3DEnumCallback(LPSTR,LPSTR, LPD3DDEVICEDESC7, LPVOID);

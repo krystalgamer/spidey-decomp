@@ -237,10 +237,19 @@ INLINE void DXINIT_ShutDown(void)
 	shutdownDirectInput8();
 }
 
-// @SMALLTODO
-void DXINIT_ZBufSupported(u32)
+// @NotOk
+// @Validate: when done
+u8 DXINIT_ZBufSupported(u32 a1)
 {
-    printf("DXINIT_ZBufSupported(u32)");
+	for (i32  i = 0; i < gDisplayModeContext.mNumEntries; i++)
+	{
+		if (gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount == a1)
+		{
+			return gDisplayModeContext.mFlags[i] & 1;
+		}
+	}
+
+	return 0;
 }
 
 // @Ok
