@@ -168,10 +168,43 @@ void DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool)
     printf("DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool)");
 }
 
-// @SMALLTODO
-void DXINIT_GetPrevColorDepth(u32)
+// @Ok
+// @Matching
+u32 DXINIT_GetPrevColorDepth(u32 a1)
 {
-    printf("DXINIT_GetPrevColorDepth(u32)");
+	u32 v1 = 0;
+	u32 v2 = 0;
+
+#ifdef _WIN32
+
+	for (i32 i = 0; i < gDisplayModeContext.mNumEntries; i++)
+	{
+
+		if (gDisplayModeContext.mFlags[i] & 1)
+		{
+			if (gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount < a1
+					&& gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount > v1)
+			{
+				v1 = gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount;
+			}
+		}
+
+		if (gDisplayModeContext.mFlags[i] & 1)
+		{
+			if(gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount > v2)
+			{
+				v2 = gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount;
+			}
+		}
+	}
+#endif
+
+	if (!v1)
+	{
+		v1 = v2;
+	}
+
+	return v1;
 }
 
 // @SMALLTODO
