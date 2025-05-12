@@ -3,6 +3,8 @@
 #include "dcmodel.h"
 #include "PCGfx.h"
 #include "DXsound.h"
+#include "spool.h"
+#include "dcfileio.h"
 #include "validate.h"
 
 #include <cstring>
@@ -255,7 +257,34 @@ void FreePushOffsets(void)
 // @SMALLTODO
 void LoadPushOffsets(void)
 {
-    printf("LoadPushOffsets(void)");
+	char path[32];
+
+	if (gPushOffsetAddr)
+	{
+		free(gPushOffsetAddr);
+		gPushOffsetAddr = 0;
+		gPushOffsetOne = 0;
+	}
+
+	sprintf(path, "offsets\\%s.off", PSXRegion[gSpoolCurrentOpenSpot].Filename);
+
+	i32 fileSize = FileIO_Open(path);
+	if (fileSize)
+	{
+		void *fileBuf = malloc(fileSize);
+
+		if (fileBuf)
+		{
+			FileIO_Load(fileBuf);
+		}
+		else
+		{
+			DXERR_printf("Out of memory loading: %s [%i entries]\r\n", path, gPushOffsetOne);
+			gPushOffsetOne = 0;
+		}
+
+		free(fileBuf);
+	}
 }
 
 // @Ok
@@ -429,7 +458,7 @@ HRESULT WINAPI enumerateZBuffersCB(LPDDPIXELFORMAT a1, LPVOID a2)
 
 // @NotOk
 // @Validate: when done
-char* getNextNumber(
+INLINE char* getNextNumber(
 		char *a1,
 		i32 *a2)
 {
@@ -455,7 +484,7 @@ char* getNextNumber(
 	}
 
 	*a1 = 0;
-	*a2 = strtol(orig, 0, 10);
+	*a2 = strtol(start, 0, 10);
 	*a1 = orig;
 
 	return a1;
@@ -1015,4 +1044,13 @@ void validate_DxZBufferContext(void)
 	VALIDATE(DxZBufferContext, mNumEntries, 0x0);
 	VALIDATE(DxZBufferContext, mEntry, 0x4);
 #endif
+}
+
+void validate_SPushOffset(void)
+{
+	VALIDATE_SIZE(SPushOffset, 0x8);
+
+	VALIDATE(SPushOffset, field_0, 0x0);
+	VALIDATE(SPushOffset, field_4, 0x4);
+	VALIDATE(SPushOffset, field_6, 0x6);
 }

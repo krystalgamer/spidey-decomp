@@ -8,6 +8,13 @@
 #include "non_win32.h"
 #include "my_dx.h"
 
+struct SPushOffset
+{
+	i32 field_0;
+	i16 field_4;
+	i16 field_6;
+};
+
 struct DxZBufferContext
 {
 	i32 mNumEntries;
@@ -131,5 +138,6 @@ void validate_DXContextEntry(void);
 void validate_SVideoMode(void);
 void validate_DXVideoModeContext(void);
 void validate_DxZBufferContext(void);
+void validate_SPushOffset(void);
 
 #endif

@@ -33,7 +33,7 @@ EXPORT i32 FireDomeRegion = -1;
 EXPORT i32 FireRingRegion = -1;
 
 
-EXPORT i32 gSpoolCurrentOpenSpot;
+i32 gSpoolCurrentOpenSpot;
 EXPORT AnimPacket* AnimPackets;
 EXPORT i32 gSpoolInitOne;
 EXPORT i32 gSpoolInitTwo;
