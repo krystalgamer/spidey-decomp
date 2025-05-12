@@ -7,11 +7,13 @@
 #include "dcfileio.h"
 #include "validate.h"
 
+#include "my_assert.h"
+
 #include <cstring>
 #include <cstdlib>
 
 // @Ok
-EXPORT void *gPushOffsetAddr;
+EXPORT SPushOffset *gPushOffsetAddr;
 // @Ok
 EXPORT i32 gPushOffsetOne;
 
@@ -276,6 +278,27 @@ void LoadPushOffsets(void)
 		if (fileBuf)
 		{
 			FileIO_Load(fileBuf);
+
+			char *v15 = getNextNumber(static_cast<char*>(fileBuf), &gPushOffsetOne);
+
+			gPushOffsetAddr = static_cast<SPushOffset*>(
+					malloc(sizeof(SPushOffset) * gPushOffsetOne));
+
+			if (gPushOffsetAddr)
+			{
+
+				for (i32 i = 0; i < gPushOffsetOne; i++)
+				{
+					char *v19 = getNextNumber(v15, &gPushOffsetAddr[i].field_0);
+
+					i32 v22, v21;
+					char *v20 = getNextNumber(v19, &v22);
+					v15 = getNextNumber(v20, &v21);
+
+					gPushOffsetAddr[i].field_6 = v22;
+					gPushOffsetAddr[i].field_4 = v21;
+				}
+			}
 		}
 		else
 		{
@@ -462,15 +485,20 @@ INLINE char* getNextNumber(
 		char *a1,
 		i32 *a2)
 {
-
 	while (*a1 <= ' ')
 	{
 		a1++;
 	}
 
 	char *start = a1;
-	char orig;
 
+	for (char cur = *a1; cur > ' '; a1++)
+	{
+		DoAssert(cur >= '0' && cur <= '9', "found non-digit when reading a decimal number!");
+		cur = a1[1];
+	}
+	
+	/*
 	while (1)
 	{
 		orig = *a1;
@@ -480,12 +508,15 @@ INLINE char* getNextNumber(
 			break;
 		}
 
+		//DoAssert(orig >= '0' && orig <= '9', "found non-digit when reading a decimal number!");
 		a1++;
 	}
+	*/
 
+	char bkup = *a1;
 	*a1 = 0;
 	*a2 = strtol(start, 0, 10);
-	*a1 = orig;
+	*a1 = bkup;
 
 	return a1;
 }
