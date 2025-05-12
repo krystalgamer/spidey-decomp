@@ -56,7 +56,7 @@ EXPORT i32 AUDIOGROUPS_GetGroup(char *);
 EXPORT void DXINIT_DirectX8(HWND, HINSTANCE,u32);
 EXPORT void DXINIT_GetCurrentResolution(u32 *,u32 *);
 EXPORT u32 DXINIT_GetNextColorDepth(u32);
-EXPORT void DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool);
+EXPORT u8 DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool);
 EXPORT u32 DXINIT_GetPrevColorDepth(u32);
 EXPORT void DXINIT_GetPrevResolution(u32 *,u32 *,u32,i32,bool);
 EXPORT void DXINIT_SetDisplayOptions(u32,u32,u32,i32,i32);

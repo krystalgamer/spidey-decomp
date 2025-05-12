@@ -171,10 +171,94 @@ u32 DXINIT_GetNextColorDepth(u32 a1)
 	return result;
 }
 
-// @SMALLTODO
-void DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool)
+// @NotOk
+// @Validate: asm not matching and code not tested
+u8 DXINIT_GetNextResolution(
+		u32 *a1,
+		u32 *a2,
+		u32 a3,
+		i32 a4,
+		bool a5)
 {
-    printf("DXINIT_GetNextResolution(u32 *,u32 *,u32,i32,bool)");
+
+	i32 v17;
+	u32 v11 = -1;
+	u32 v12 = -1;
+	u8 v13 = 0;
+
+
+	DDSURFACEDESC2* pSurface = gDisplayModeContext.mSurfaces;
+	i32 i;
+	for (i = 0 ;i < gDisplayModeContext.mNumEntries; i++)
+	{
+		if (a4)
+		{
+			if ((gDisplayModeContext.mFlags[i] & 2) == 0)
+			{
+				continue;
+			}
+		}
+		else if ((gDisplayModeContext.mFlags[i] & 4) == 0)
+		{
+			continue;
+		}
+
+		if (pSurface[i].ddpfPixelFormat.dwRGBBitCount == a3)
+		{
+			if (DXINIT_ZBufSupported(a3))
+			{
+				DWORD dwWidth = pSurface[i].dwWidth;
+				v17 = 0;
+				if (dwWidth >= *a1)
+				{
+					if (dwWidth == *a1)
+					{
+						if (pSurface[i].dwHeight == *a2)
+						{
+							if (a5)
+							{
+								return 1;
+							}
+						}
+					}
+					else if (dwWidth >= *a1)
+					{
+						if (dwWidth <= v11)
+						{
+							DWORD dwHeight = pSurface[i].dwHeight;
+							if(dwHeight > *a2 && dwHeight < v12)
+							{
+								v17 = 1;
+							}
+						}
+						else
+						{
+							if (dwWidth > *a1 || pSurface[i].dwHeight > *a2)
+							{
+								v17 = 1;
+							}
+						}
+
+						if (v17)
+						{
+							v11 = pSurface[i].dwWidth;
+							v12 = pSurface[i].dwHeight;
+							v13 = 1;
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+	if (v13)
+	{
+		*a1 = v11;
+		*a2 = v12;
+	}
+
+	return v13;
 }
 
 // @Ok
@@ -239,7 +323,7 @@ INLINE void DXINIT_ShutDown(void)
 
 // @NotOk
 // @Validate: when done
-u8 DXINIT_ZBufSupported(u32 a1)
+INLINE u8 DXINIT_ZBufSupported(u32 a1)
 {
 	for (i32  i = 0; i < gDisplayModeContext.mNumEntries; i++)
 	{
