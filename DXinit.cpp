@@ -111,10 +111,14 @@ void DXINIT_DirectX8(
 	DXPOLY_Init(v3);
 }
 
-// @SMALLTODO
-void DXINIT_GetCurrentResolution(u32 *,u32 *)
+// @Ok
+// @Matching
+void DXINIT_GetCurrentResolution(
+		u32 *a1,
+		u32 *a2)
 {
-    printf("DXINIT_GetCurrentResolution(u32 *,u32 *)");
+	*a1 = gDxResolutionX;
+	*a2 = gDxResolutionY;
 }
 
 // @Ok
