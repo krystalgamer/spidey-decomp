@@ -185,8 +185,7 @@ u8 DXINIT_GetNextResolution(
 	u32 v11 = -1;
 	u32 v12 = -1;
 	u8 v13 = 0;
-
-
+#ifdef _WIN32
 	DDSURFACEDESC2* pSurface = gDisplayModeContext.mSurfaces;
 	i32 i;
 	for (i = 0 ;i < gDisplayModeContext.mNumEntries; i++)
@@ -258,6 +257,7 @@ u8 DXINIT_GetNextResolution(
 		*a2 = v12;
 	}
 
+#endif
 	return v13;
 }
 
@@ -325,6 +325,7 @@ INLINE void DXINIT_ShutDown(void)
 // @Validate: when done
 INLINE u8 DXINIT_ZBufSupported(u32 a1)
 {
+#ifdef _WIN32
 	for (i32  i = 0; i < gDisplayModeContext.mNumEntries; i++)
 	{
 		if (gDisplayModeContext.mSurfaces[i].ddpfPixelFormat.dwRGBBitCount == a1)
@@ -332,6 +333,7 @@ INLINE u8 DXINIT_ZBufSupported(u32 a1)
 			return gDisplayModeContext.mFlags[i] & 1;
 		}
 	}
+#endif
 
 	return 0;
 }
