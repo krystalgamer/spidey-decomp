@@ -427,10 +427,38 @@ HRESULT WINAPI enumerateZBuffersCB(LPDDPIXELFORMAT a1, LPVOID a2)
 	return FALSE;
 }
 
-// @SMALLTODO
-void getNextNumber(char *,i32 *)
+// @NotOk
+// @Validate: when done
+char* getNextNumber(
+		char *a1,
+		i32 *a2)
 {
-    printf("getNextNumber(char *,i32 *)");
+
+	while (*a1 <= ' ')
+	{
+		a1++;
+	}
+
+	char *start = a1;
+	char orig;
+
+	while (1)
+	{
+		orig = *a1;
+
+		if (*a1 <= ' ')
+		{
+			break;
+		}
+
+		a1++;
+	}
+
+	*a1 = 0;
+	*a2 = strtol(orig, 0, 10);
+	*a1 = orig;
+
+	return a1;
 }
 
 // @Ok
