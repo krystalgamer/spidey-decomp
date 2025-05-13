@@ -1,0 +1,12 @@
+{
+  "image": "ubuntu:22.04",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "containerEnv": {
+    "WINEARCH": "win32",
+    "WINEPREFIX": "/root/.wine"
+	},
+  "onCreateCommand": "dpkg --add-architecture i386 && apt update && apt install -y wget g++ clang g++-multilib unzip cmake wine32",
+  "postCreateCommand": "wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /root/.wine/drive_c/vs && ln -s /workspaces/spidey-decomp /root/.wine/drive_c/spidey-decomp"
+}
