@@ -17,19 +17,12 @@ jobs:
           Invoke-WebRequest https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip -OutFile c:\spidey_vs.zip
           7z x C:\spidey_vs.zip -oC:\vs
       - uses: actions/checkout@v4
-      - name: Setup spidey-decomp
-        shell: cmd
-        run: |
-          mkdir C:\spidey-decomp
-          xcopy %GITHUB_WORKSPACE% C:\spidey-decomp /s /e
       - name: Build
         shell: cmd
-        working-directory: C:\spidey-decomp
         run: build.bat
       - name: Validate
         shell: cmd
-        working-directory: C:\spidey-decomp\Release
-        run: spider.exe
+        run: .\Release\spider.exe
 
 
   build-linux:
