@@ -1,3 +1,4 @@
+setlocal
 set MSVCDir=C:\vs
 
 set PATH=%MSDevDir%\BIN;%MSVCDir%\BIN;%PATH%

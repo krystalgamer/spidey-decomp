@@ -8,8 +8,31 @@ on:
 
 jobs:
 
-  build-linux:
+  build-old-win:
+    runs-on: windows-2025
 
+    steps:
+      - name: Setup Visual Studio
+        run: |
+          Invoke-WebRequest https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip -OutFile c:\spidey_vs.zip
+          7z x C:\spidey_vs.zip -oC:\vs
+      - uses: actions/checkout@v4
+      - name: Setup spidey-decomp
+        shell: cmd
+        run: |
+          mkdir C:\spidey-decomp
+          xcopy %GITHUB_WORKSPACE% C:\spidey-decomp /s /e
+      - name: Build
+        shell: cmd
+        working-directory: C:\spidey-decomp
+        run: build.bat
+      - name: Validate
+        shell: cmd
+        working-directory: C:\spidey-decomp\Release
+        run: spider.exe
+
+
+  build-linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,7 +50,7 @@ jobs:
       run: ./out/spider
 
   build-win:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -50,7 +73,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Setup Makefile
       run: cmake -B out
-    - name: Build
+    - name: 
       continue-on-error: true
       run: cmake --build out
     - name: Run

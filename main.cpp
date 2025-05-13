@@ -3,6 +3,9 @@
 // #define BOOT_GAME
 #define MODEL_PREVIEW
 
+// #define LOCK_VALIDATION
+
+
 #include "main.h"
 #include "my_assert.h"
 #include "ob.h"
@@ -541,7 +544,9 @@ i32 validate(void)
 		      //int 3
 
 			 }
+#ifdef LOCK_VALIDATION
 	while(1){}
+#endif
 #endif
 
     return FAIL_VALIDATION;
