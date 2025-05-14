@@ -53,6 +53,7 @@ def validate_all_functions_have_comment(root):
 
     function_defs = list(get_all_function_defs(root))
 
+    validated = True
     for entry in function_defs:
 
         entry_content = entry.text.decode()
@@ -85,6 +86,7 @@ def validate_all_functions_have_comment(root):
                 continue
 
             print(f'[!] Missing comment for {entry.text}')
+            validated = False
             continue
     
         func_status = FunctionStatus()
@@ -108,8 +110,9 @@ def validate_all_functions_have_comment(root):
 
         if not func_status.is_valid():
             print(f'[!] Got invalid status for {entry.text}')
+            validated = False
 
-    return True
+    return validated
 
 def handle_file(parser, file_name):
 
