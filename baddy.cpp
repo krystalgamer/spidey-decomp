@@ -364,6 +364,7 @@ u16 CBaddy::CheckStateFlags(SStateFlags *sFlags, int a3){
 	return 0;	
 }
 
+// @NotOk
 // Revisit??
 int CBaddy::YawTowards(int a2, int a3){
 

@@ -183,6 +183,8 @@ void CHostage::BegMotherfucker(void)
 	}
 }
 
+// @NotOk
+// @Validate
 void INLINE CHostage::HostageXAPlay(i32 a2, i32 a3, i32 a4)
 {
 	if (Redbook_XAPlayPos(a2, a3, &this->mPos, a4))
@@ -208,6 +210,8 @@ void CHostage::TellSomebodyToShootMe(void)
 	}
 }
 
+// @NotOk
+// @Validate
 INLINE void CHostage::CheckIfFreed(void)
 {
 	if (Utils_CrapDist(MechList->mPos, this->mPos) < 0xC8 || this->mInputFlags & 1)

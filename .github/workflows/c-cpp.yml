@@ -8,7 +8,22 @@ on:
 
 jobs:
 
+  validate-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: getsentry/action-setup-venv@v2.1.1
+      id: venv
+      with:
+        python-version: 3.12.3
+        install-cmd: pip install tree-sitter tree-sitter-cpp
+    - name: Run script
+      run: python tools/dunno.py
+
+
   build-old-win:
+    needs: validate-repo
     runs-on: windows-2025
 
     steps:
@@ -26,6 +41,7 @@ jobs:
 
 
   build-linux:
+    needs: validate-repo
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,6 +59,7 @@ jobs:
       run: ./out/spider
 
   build-win:
+    needs: validate-repo
     runs-on: windows-2025
     steps:
     - name: Add msbuild to PATH
@@ -58,8 +75,8 @@ jobs:
       run: Release\spider.exe
 
   build-mac:
-
     if: false
+    needs: validate-repo
     runs-on: macos-13
 
     steps:

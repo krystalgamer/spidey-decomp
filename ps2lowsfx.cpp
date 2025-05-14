@@ -306,13 +306,13 @@ EXPORT u32 gSfxArrayOne[192] =
 // @Ok
 EXPORT u16 gSfxArraAliasyOne[64];
 
-// @IGNOREME
+// @Bogus
 // @Note: exists purely for matching purposes
 static void nullsub_3(void)
 {
 }
 
-// @IGNOREME
+// @Bogus
 // @Note: exists purely for matching purposes
 static void nullsub_one_arg(i32)
 {
@@ -1176,6 +1176,8 @@ void SFX_LevelStart(void)
 	SFXPaused = 0;
 }
 
+// @NotOk
+// @Validate
 void INLINE SFX_SetReverbType(unsigned char reverb)
 {
 	gReverbType = reverb != 0;

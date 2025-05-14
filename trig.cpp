@@ -35,7 +35,7 @@ extern CBaddy* BaddyList;
 extern CBody* EnvironmentalObjectList;
 extern CBody* PowerUpList;
 
-//@IGNORE
+// @Bogus
 void trigLog(const char*, ...)
 {
 	printf("trigLog!");

@@ -192,6 +192,7 @@ struct StaticAssert<true>
 	static void assert() {}
 };
 
+// @Bogus
 void compile_time_assertions(){
 	StaticAssert<sizeof(CVector)==12>::assert();
 	StaticAssert<sizeof(CFriction)==3>::assert();
@@ -220,6 +221,7 @@ void compile_time_assertions(){
 	StaticAssert<sizeof(i8)==1>::assert();
 }
 
+// @Bogus
 i32 validate(void)
 {
 #ifdef _OLD_WINDOWS
@@ -570,6 +572,7 @@ int main()
 #endif
 }
 
+// @Bogus
 void DoAssert(u8 cond, const char* str, ...)
 {
 	if (!cond)

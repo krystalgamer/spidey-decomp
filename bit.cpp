@@ -464,6 +464,8 @@ CQuadBit::CQuadBit(void)
 	this->field_70 = 0;
 }
 
+// @NotOk
+// @Note: added to make this valid for validation
 vector3d::vector3d(f32 a1, f32 a2, f32 a3)
 {
 	this->field_0[0] = a1;

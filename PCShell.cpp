@@ -184,7 +184,7 @@ u8 PCSHELL_UpdateMouse(void)
 	return 0;
 }
 
-// @IGNORE
+// @Bogus
 void shell_optimized_func(i32, i32, i32)
 {
 	printf("void shell_optimized_func(i32, i32, i32)");

@@ -522,6 +522,8 @@ void CSimby::SetUpHandPos(void)
 	this->field_3DC = (a2 + a3) >> 1;
 }
 
+// @NotOk
+// @Validate
 void CSimby::Shoot(void)
 {
 	switch (this->dumbAssPad)

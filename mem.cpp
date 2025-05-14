@@ -113,11 +113,6 @@ void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
 	pNewFreeBlock->UniqueIdentifier = 0;
 }
 
-EXPORT void Mem_Secret(SNewBlockHeader *p, i32 x)
-{
-	p->ParentHeap = x;
-}
-
 // @Ok
 // @Matching
 void Mem_Init(void)

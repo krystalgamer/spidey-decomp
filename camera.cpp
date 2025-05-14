@@ -563,7 +563,7 @@ void CCamera::PopMode(void)
 }
 
 
-//TODO
+// @MEDIUMTODO
 void CCamera::CM_Normal(void)
 {
 	printf("void CCamera::CM_Normal(void)");

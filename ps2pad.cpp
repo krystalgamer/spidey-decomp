@@ -84,6 +84,7 @@ void DCPad_ExpireVibrations(void)
 	}
 }
 
+// @Bogus
 static void nullsub_3(void)
 {
 }
@@ -258,6 +259,7 @@ void Pad_ClearTriggers(SControl *pControl)
 
 EXPORT i32 gPadInited;
 
+// @Bogus
 static void nullsub_38()
 {
 }

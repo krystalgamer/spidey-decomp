@@ -117,7 +117,7 @@ EXPORT void *gSpideyHeadModel;
 
 extern CCamera* CameraList;
 
-// @IGNOREME
+// @Bogus
 void CPlayer::nullsub_one(i32)
 {
 	printf("void CPlayer::nullsub_one(i32)");

@@ -257,7 +257,8 @@ CExpandingBox::~CExpandingBox(void)
 }
 
 
-EXPORT int PShell_DrawMenuBox(int, int, int, int, int, int, int, int){
+// @BIGTODO
+i32 PShell_DrawMenuBox(i32, i32, i32, i32, i32, i32, i32, i32){
 	return 69;
 }
 
@@ -323,9 +324,6 @@ int CExpandingBox::Display(){
 		*/
 	return 0x14072024;
 }
-
-int expected(){ return 200;}
-int not_expected() { return 69; }
 
 // @BIGTODO
 i32 CExpandingBox::ScrollBarHitTest(i32 a2, i32 a3)

@@ -45,8 +45,7 @@ void Utils_Init(void)
 	gUtilsRelatedSeven = 512;
 }
 
-// @UNKTODO
-// different in windows version
+// @SMALLTODO
 void MyVSync(void)
 {
     printf("MyVSync(void)");
@@ -572,6 +571,8 @@ u32 Utils_CrapXZDist(const CVector& a,const CVector& b) {
     return Utils_CrapDist(tmp, b);
 }
 
+// @NotOk
+// @Validate: added this with validation script
 int Utils_CompareStrings(const char* left, const char* right) {
 
     if (left == NULL && right == NULL){
@@ -624,6 +625,8 @@ const f32 FOUR_NINETY_SIX = 4096.0;
 const f32 TWO_FOURTY_EIGHT = 2048.0;
 const f32 PI = 3.1415927;
 
+// @NotOk
+// @Validate
 int Utils_ArcCos(int val){
 	f32 inp = val;
 	f32 res = acos(inp / FOUR_NINETY_SIX);
@@ -956,6 +959,7 @@ void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 	printf("void Utils_GetVecFromMagDir(CVector*, int, CSVector*)");
 }
 
+// @Ok
 i32 Utils_GetValueFromDifficultyLevel(i32 a1, i32 a2, i32 a3, i32 a4)
 {
 	switch (DifficultyLevel)

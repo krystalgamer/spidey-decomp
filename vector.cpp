@@ -172,7 +172,7 @@ CVector operator-(const CVector& lhs, const CVector& other)
 	return res;
 }
 
-
+// @Ok
 CVector operator/(const CVector& lhs, const int& other){
 
 	CVector res;
@@ -182,10 +182,9 @@ CVector operator/(const CVector& lhs, const int& other){
 	res.vz = lhs.vz / other;
 
 	return res;
-
-
 }
 
+// @Ok
 CVector operator*(const CVector& lhs, const int& other)
 {
 	CVector res;
@@ -197,6 +196,7 @@ CVector operator*(const CVector& lhs, const int& other)
 	return res;
 }
 
+// @Ok
 CVector operator*(const int& lhs, const CVector& other)
 {
 	CVector res;
@@ -208,6 +208,7 @@ CVector operator*(const int& lhs, const CVector& other)
 	return res;
 }
 
+// @Ok
 CVector operator*(const CVector& lhs, const CVector& other){
 
 	CVector res;
@@ -261,6 +262,7 @@ int CVector::Length(void)
 	return M3dMaths_SquareRoot0(v4.vx + v4.vy + v4.vz);
 }
 
+// @Bogus
 void CVector::Zero(void)
 {
 	this->vx = 0;
