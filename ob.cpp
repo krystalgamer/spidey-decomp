@@ -765,9 +765,6 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, mAnimDir, 0x141);
 	VALIDATE(CSuper, mAnimFinished, 0x142);
 	VALIDATE(CSuper, field_143, 0x143);
-	VALIDATE(CSuper, field_150, 0x150);
-	VALIDATE(CSuper, field_152, 0x152);
-	VALIDATE(CSuper, field_154, 0x154);
 
 
 	VALIDATE(CSuper, field_144, 0x144);	
@@ -775,6 +772,12 @@ void validate_CSuper(void)
 
 	VALIDATE(CSuper, mNumFrames, 0x148);	
 	VALIDATE(CSuper, mAnimSpeed, 0x14C);
+
+	VALIDATE(CSuper, field_150, 0x150);
+	VALIDATE(CSuper, field_152, 0x152);
+	VALIDATE(CSuper, field_154, 0x154);
+
+	VALIDATE(CSuper, field_158, 0x158);
 
 	VALIDATE(CSuper, mTransform, 0x164);
 

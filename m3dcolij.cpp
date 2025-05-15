@@ -15,6 +15,10 @@ i32 BaddyCollisionCheck;
 i32 CameraCollisionCheck;
 i32 TriggerCollisionCheck;
 
+// @NotOk
+// @FIXME - check ppc version to address this
+i16 gUnkPose[1];
+
 // @SMALLTODO
 void M3dColij_GetLineInfo(SLineInfo *)
 {

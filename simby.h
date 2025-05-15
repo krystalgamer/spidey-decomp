@@ -236,4 +236,7 @@ EXPORT void Simby_CreateFlamingImpactWeb(const u32 *,u32 *);
 EXPORT void Simby_CreatePunchOb(const u32 *stack, u32 *result);
 EXPORT void Simby_TestDrop(const u32 *, u32 *);
 
+class CPlayer;
+EXPORT void SpideyAI_WaitForSimbyGrab(CPlayer *);
+
 #endif

@@ -255,7 +255,11 @@ public:
 	i16 field_154;
 
 
-	PADDING(0x14-8);
+	PADDING(0x158-0x154-2);
+
+	u8 field_158;
+
+	PADDING(0x164 - 0x158 - 1);
 
 	MATRIX mTransform;
 

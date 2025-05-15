@@ -88,5 +88,6 @@ EXPORT extern i32 BaddyCollisionCheck;
 EXPORT extern i32 CameraCollisionCheck;
 EXPORT extern i32 TriggerCollisionCheck;
 EXPORT extern SLineInfo gLineInfo;
+EXPORT extern i16 gUnkPose[1];
 
 #endif

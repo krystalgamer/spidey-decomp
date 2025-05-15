@@ -3,7 +3,7 @@
 // #define BOOT_GAME
 #define MODEL_PREVIEW
 
-// #define LOCK_VALIDATION
+#define LOCK_VALIDATION
 
 
 #include "main.h"
