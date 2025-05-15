@@ -38,6 +38,7 @@ public:
 	EXPORT void TakeHit(void);
 	EXPORT void Shoot(void);
 	EXPORT void SetUpHandPos(void);
+	EXPORT void SimbyKnockSpideyDown(i32);
 
 
 	i32 field_324;

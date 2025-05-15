@@ -26,6 +26,32 @@ extern CCamera* CameraList;
 
 // @Ok
 // @Matching
+void CSimby::SimbyKnockSpideyDown(i32 a2)
+{
+	SHitInfo v10;
+
+	CVector v7;
+	CVector v6;
+
+	v6 = this->mPos - MechList->mPos;
+
+	v6 >>= 12;
+	VectorNormal(
+			reinterpret_cast<VECTOR*>(&v6),
+			reinterpret_cast<VECTOR*>(&v6));
+
+	v7 = MechList->mPos + (v6 * 50);
+
+	MechList->CreateCombatImpactEffect(&v7, 0);
+	v10.field_0 = 6;
+	v10.field_8 = a2;
+	v10.field_4 = 14;
+
+	MechList->Hit(&v10);
+}
+
+// @Ok
+// @Matching
 void Simby_TestDrop(const u32 *, u32 *)
 {
 }
