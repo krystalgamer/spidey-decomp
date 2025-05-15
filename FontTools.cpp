@@ -168,7 +168,7 @@ Font::~Font(void)
 {
 }
 
-extern "C" __fastcall Font_draw_asm(Font*, void*, i32, i32, const char*, i32, f32);
+extern "C" FASTCALL void Font_draw_asm(Font*, void*, i32, i32, const char*, i32, f32);
 
 // @MEDIUMTODO
 void Font::draw(
