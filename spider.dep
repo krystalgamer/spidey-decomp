@@ -166,6 +166,7 @@
 .\bullet.cpp : \
 	".\bit.h"\
 	".\bullet.h"\
+	".\exp.h"\
 	".\export.h"\
 	".\friction.h"\
 	".\main.h"\
@@ -176,8 +177,10 @@
 	".\ps2funcs.h"\
 	".\quat.h"\
 	".\texture.h"\
+	".\utils.h"\
 	".\validate.h"\
 	".\vector.h"\
+	".\weapons.h"\
 	
 
 .\camera.cpp : \
@@ -519,6 +522,7 @@
 
 .\DXinit.cpp : \
 	".\bit.h"\
+	".\dcfileio.h"\
 	".\dcmodel.h"\
 	".\directx\include\basetsd.h"\
 	".\DXinit.h"\
@@ -527,6 +531,7 @@
 	".\friction.h"\
 	".\main.h"\
 	".\mem.h"\
+	".\my_assert.h"\
 	".\my_dx.h"\
 	".\my_types.h"\
 	".\non_win32.h"\
@@ -536,6 +541,7 @@
 	".\ps2funcs.h"\
 	".\quat.h"\
 	".\SpideyDX.h"\
+	".\spool.h"\
 	".\texture.h"\
 	".\validate.h"\
 	".\vector.h"\
@@ -594,6 +600,7 @@
 	".\utils.h"\
 	".\validate.h"\
 	".\vector.h"\
+	".\weapons.h"\
 	
 
 .\flash.cpp : \
@@ -1384,7 +1391,10 @@
 	".\bit.h"\
 	".\export.h"\
 	".\friction.h"\
+	".\l1a3bomb.h"\
+	".\m3dcolij.h"\
 	".\main.h"\
+	".\manipob.h"\
 	".\mem.h"\
 	".\my_types.h"\
 	".\ob.h"\
@@ -1392,6 +1402,7 @@
 	".\panel.h"\
 	".\ps2funcs.h"\
 	".\quat.h"\
+	".\spidey.h"\
 	".\spool.h"\
 	".\texture.h"\
 	".\validate.h"\
@@ -1792,12 +1803,28 @@
 	
 
 .\ps2pad.cpp : \
+	".\bit.h"\
+	".\dcmemcard.h"\
 	".\export.h"\
+	".\friction.h"\
+	".\main.h"\
+	".\mem.h"\
+	".\my_assert.h"\
 	".\my_types.h"\
+	".\ob.h"\
+	".\pal.h"\
+	".\pcdcPad.h"\
 	".\PCInput.h"\
 	".\PCShell.h"\
+	".\ps2funcs.h"\
 	".\ps2pad.h"\
+	".\quat.h"\
+	".\stubs.h"\
+	".\texture.h"\
+	".\tweak.h"\
+	".\utils.h"\
 	".\validate.h"\
+	".\vector.h"\
 	
 
 .\ps2redbook.cpp : \
@@ -2070,9 +2097,11 @@
 	".\friction.h"\
 	".\m3dcolij.h"\
 	".\m3dutils.h"\
+	".\m3dzone.h"\
 	".\main.h"\
 	".\manipob.h"\
 	".\mem.h"\
+	".\my_assert.h"\
 	".\my_types.h"\
 	".\ob.h"\
 	".\pal.h"\
@@ -2151,6 +2180,8 @@
 .\spidey.cpp : \
 	".\bit.h"\
 	".\camera.h"\
+	".\directx\include\basetsd.h"\
+	".\DXinit.h"\
 	".\export.h"\
 	".\friction.h"\
 	".\m3dcolij.h"\
@@ -2159,7 +2190,10 @@
 	".\main.h"\
 	".\manipob.h"\
 	".\mem.h"\
+	".\my_assert.h"\
+	".\my_dx.h"\
 	".\my_types.h"\
+	".\non_win32.h"\
 	".\ob.h"\
 	".\pal.h"\
 	".\ps2funcs.h"\
@@ -2184,6 +2218,7 @@
 	".\my_dx.h"\
 	".\my_types.h"\
 	".\non_win32.h"\
+	".\pcdcPad.h"\
 	".\PCTimer.h"\
 	".\SpideyDX.h"\
 	
@@ -2210,6 +2245,7 @@
 	".\panel.h"\
 	".\PCTex.h"\
 	".\ps2funcs.h"\
+	".\psx_types.h"\
 	".\quat.h"\
 	".\spidey.h"\
 	".\SpideyDX.h"\
@@ -2379,6 +2415,7 @@
 	".\spidey.h"\
 	".\texture.h"\
 	".\training.h"\
+	".\trig.h"\
 	".\vector.h"\
 	
 
@@ -2482,6 +2519,7 @@
 	".\my_types.h"\
 	".\ob.h"\
 	".\pal.h"\
+	".\panel.h"\
 	".\ps2funcs.h"\
 	".\ps2lowsfx.h"\
 	".\quat.h"\
