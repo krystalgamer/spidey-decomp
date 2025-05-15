@@ -43,6 +43,7 @@ class Font : public CClass
 		EXPORT i32 heightAboveBaseline(char*);
 		EXPORT void draw(i32, i32, const char*, i32, f32);
 		EXPORT i32 fixedCharWidth(char);
+		EXPORT void handleEscapeChar(char);
 
 		i32 field_4;
 		i32 field_8;

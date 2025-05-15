@@ -3,7 +3,7 @@
 // #define BOOT_GAME
 #define MODEL_PREVIEW
 
-#define LOCK_VALIDATION
+// #define LOCK_VALIDATION
 
 
 #include "main.h"
@@ -537,7 +537,6 @@ i32 validate(void)
 	validate_SPushOffset();
 
 	puts("[*] Validation done!");
-
 
 #ifdef _OLD_WINDOWS
 	CItem* items = new CItem[1];

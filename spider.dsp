@@ -610,6 +610,10 @@ SOURCE=.\wire.cpp
 
 SOURCE=.\zrhinog.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\font_draw.obj
+# End Source File
 # End Group
 # Begin Group "Header Files"
 

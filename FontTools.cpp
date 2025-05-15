@@ -10,6 +10,12 @@
 
 #include <cstring>
 
+// @SMALLTODO
+void Font::handleEscapeChar(char)
+{
+    printf("Font::handleEscapeChar(char)");
+}
+
 // @Ok
 i32 Font::fixedCharWidth(char c)
 {
@@ -162,17 +168,19 @@ Font::~Font(void)
 {
 }
 
+extern "C" __fastcall Font_draw_asm(Font*, void*, i32, i32, const char*, i32, f32);
+
 // @MEDIUMTODO
 void Font::draw(
 		i32 x,
 		i32 y,
 		const char* pStr,
 		i32 drawFirst,
-		f32)
+		f32 last)
 {
-	if (this->field_34 || this->field_30)
-	{
-	}
+#ifdef _OLD_WINDOWS
+	Font_draw_asm(this, 0, x, y, pStr, drawFirst, last);
+#endif
 }
 
 // @Ok
