@@ -238,5 +238,6 @@ EXPORT void Simby_TestDrop(const u32 *, u32 *);
 
 class CPlayer;
 EXPORT void SpideyAI_WaitForSimbyGrab(CPlayer *);
+EXPORT void SpideyAI_ThrownBySimby(CPlayer *);
 
 #endif

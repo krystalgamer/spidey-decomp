@@ -25,6 +25,44 @@ extern CBody *MiscList;
 extern CCamera* CameraList;
 
 // @Ok
+// @AlmostMatching: same as SpideyAI_WaitForSimbyGrab
+void SpideyAI_ThrownBySimby(CPlayer *pPlayer)
+{
+	MechList->mFlags &= ~0x800u;
+
+	if (MechList->mAnimFinished)
+	{
+		MechList->PlaySingleAnim(0xBAu, 0, -1);
+	}
+
+	if (pPlayer->mFlags & 4)
+	{
+		pPlayer->ApplyPose(gUnkPose);
+	}
+	else
+	{
+		M3d_BuildTransform(pPlayer);
+	}
+
+	i32 GroundHeight = Utils_GetGroundHeight(&pPlayer->mPos, 0, 0x2000, 0);
+	if (GroundHeight != -1)
+	{
+		pPlayer->field_158 = 1;
+
+		pPlayer->mShadowPos.vz = pPlayer->mPos.vz;
+		pPlayer->mShadowPos.vx = pPlayer->mPos.vx;
+		pPlayer->mShadowPos.vy = GroundHeight;
+
+	}
+	else
+	{
+		pPlayer->field_158 = 0;
+	}
+
+	pPlayer->DoMGSShadow();
+}
+
+// @Ok
 // @AlmostMatching: assignment to field_158 is slightly off :(
 void SpideyAI_WaitForSimbyGrab(CPlayer *pPlayer)
 {
