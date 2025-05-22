@@ -805,8 +805,8 @@ void DXPOLY_Flip(void)
 
 EXPORT u8 byte_6B7A80 = 0;
 
-EXPORT u32 gFogStart;
-EXPORT u32 gFogEnd;
+EXPORT f32 gFogStart;
+EXPORT f32 gFogEnd;
 EXPORT u32 gFogColor;
 EXPORT DWORD gAddressU;
 EXPORT DWORD gAddressV;
@@ -840,8 +840,8 @@ void DXPOLY_Init(u32 a1)
 	gDepthWriting = (a1 & 2) != 0;
 	gTexAlpha = false;
 	gCurrentFilterIndex = 1;
-	gFogStart = 0x3DCCCCCD;
-	gFogEnd = 0x3F7D70A4;
+	gFogStart = 0.1f;
+	gFogEnd = 0.99000001f;
 	gFogColor = 0xFFFFFF;
 	dword_6B7A8C = 3;
 	gAddressU = 3;
