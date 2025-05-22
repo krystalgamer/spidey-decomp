@@ -9,10 +9,11 @@
 
 struct SRhinoData
 {
-	u16 field_0;
-	u16 field_2;
+	i16 field_0;
+	i16 field_2;
 
-	PADDING(4);
+	u16 field_4;
+	i16 field_6;
 
 	i32 field_8;
 };
@@ -68,8 +69,9 @@ public:
 
 	i32 field_388;
 
-	PADDING(0x3E0-0x388-4);
+	PADDING(0x3DC-0x388-4);
 
+	i32 field_3DC;
 	u32 field_3E0;
 	u32 field_3E4[5];
 	u32 field_3F8[5];

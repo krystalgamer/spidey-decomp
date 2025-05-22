@@ -5,6 +5,7 @@
 #include "ps2pad.h"
 #include "spidey.h"
 #include "ps2lowsfx.h"
+#include "ps2redbook.h"
 #include "camera.h"
 #include "ai.h"
 #include "my_assert.h"
@@ -293,10 +294,57 @@ void CRhino::PlaySounds(void)
     printf("CRhino::PlaySounds(void)");
 }
 
-// @SMALLTODO
-void CRhino::PlayXAPlease(i32,i32,i32)
+// @Ok
+// @AlmostMatching: slightly diff code gen
+void CRhino::PlayXAPlease(
+		i32 a2,
+		i32 a3,
+		i32 a4)
 {
-    printf("CRhino::PlayXAPlease(i32,i32,i32)");
+	i32 v5 = Rnd(a3 + a4);
+	i32 v6 = this->field_3DC;
+
+	if (v5 < a3)
+	{
+		if (a3 > 1)
+		{
+			if ( ((v6 >> a2) & (1 << v5)) != 0 && ++v5 >= a3 )
+			{
+				v5 = 0;
+			}
+
+			for (i32 i = 0; i < a3; i++)
+			{
+				v6 &= ~(1 << (i + a2));
+			}
+
+			v6 |= 1 << (v5 + a2);
+		}
+
+		i32 v8 = a2 + v5;
+		if ( gRhinoData[v8].field_4 )
+		{
+			if (Redbook_XAPlayPos(
+				gRhinoData[v8].field_0,
+				gRhinoData[v8].field_2,
+				&this->mPos,
+				gRhinoData[v8].field_6) )
+
+			{
+				this->AttachXA(gRhinoData[v8].field_0, gRhinoData[v8].field_2);
+				this->field_3DC = v6;
+			}
+		}
+		else if (MechList->CanITalkRightNow() && Redbook_XAPlayPos(
+				gRhinoData[v8].field_0,
+				gRhinoData[v8].field_2,
+				&MechList->mPos,
+				gRhinoData[v8].field_6) )
+		{
+			MechList->AttachXA(gRhinoData[v8].field_0, gRhinoData[v8].field_2);
+			this->field_3DC = v6;
+		}
+	}
 }
 
 // @MEDIUMTODO
@@ -771,6 +819,7 @@ void validate_CRhino(void){
 	VALIDATE(CRhino, field_358, 0x358);
 	VALIDATE(CRhino, field_388, 0x388);
 
+	VALIDATE(CRhino, field_3DC, 0x3DC);
 	VALIDATE(CRhino, field_3E0, 0x3E0);
 	VALIDATE(CRhino, field_3E4, 0x3E4);
 	VALIDATE(CRhino, field_3F8, 0x3F8);
@@ -788,6 +837,9 @@ void validate_SRhinoData(void)
 
 	VALIDATE(SRhinoData, field_0, 0x0);
 	VALIDATE(SRhinoData, field_2, 0x2);
+
+	VALIDATE(SRhinoData, field_4, 0x4);
+	VALIDATE(SRhinoData, field_6, 0x6);
 
 	VALIDATE(SRhinoData, field_8, 0x8);
 }
