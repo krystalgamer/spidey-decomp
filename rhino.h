@@ -39,7 +39,7 @@ public:
 	EXPORT void AttackPlayer(void);
 	EXPORT void ChargePlayer(void);
 	EXPORT void ChasePlayer(i32);
-	EXPORT void CheckIfPlayerHit(void);
+	EXPORT i32 CheckIfPlayerHit(void);
 	EXPORT void DieRhino(void);
 	EXPORT void DoDazedEffect(void);
 	EXPORT void DoMGSShadow(void);

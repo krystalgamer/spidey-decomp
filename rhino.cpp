@@ -72,10 +72,40 @@ void CRhino::ChasePlayer(i32)
     printf("CRhino::ChasePlayer(i32)");
 }
 
-// @SMALLTODO
-void CRhino::CheckIfPlayerHit(void)
+// @NotOk
+// @Validate
+INLINE i32 CRhino::CheckIfPlayerHit(void)
 {
-    printf("CRhino::CheckIfPlayerHit(void)");
+	i32 v4;
+
+	if (this->field_288 & 0x10)
+	{
+		this->field_288 &= 0xFFFFFFEF;
+		v4 = 1;
+	}
+	else
+	{
+		v4 = 0;
+	}
+
+	if (v4)
+	{
+		SHitInfo v9;
+
+		v9.field_0 = 14;
+		v9.field_4 = 11;
+
+		v9.field_C = MechList->mPos - this->mPos;
+		this->field_344 = gAttackRelated;
+		v9.field_8 = 15;
+
+		if (MechList->Hit(&v9))
+		{
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
 // @MEDIUMTODO
