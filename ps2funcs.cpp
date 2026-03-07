@@ -445,20 +445,19 @@ void VectorNormal(VECTOR* a1, VECTOR* a2)
 }
 
 
-// @NotOk
-// fild, fstp fiasco, goofyness all around
+// @Matching
+// @Note: kudos to valps, adding extra parentheses fix it
 int M3dMaths_SquareRoot0(int i){
-
-    if (i <= (int)0xffff8000) {
-        return 0x8000;
+	
+    if (i <= -32768) {
+        return 32768;
     }
 
     if (i < 0) {
         return 0;
     }
-
-	volatile f64 tmp = i;
-	return (int)sqrt(tmp);
+    
+	return sqrt(((double)i));
 }
 
 
