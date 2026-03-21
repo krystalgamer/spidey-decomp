@@ -10,6 +10,7 @@ jobs:
 
   validate-repo:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
@@ -21,10 +22,20 @@ jobs:
     - name: Run script
       run: python tools/dunno.py
 
+  detect-gitea:
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-wine]
+    timeout-minutes: 10
+
+    steps:
+    - name: Inside GITEA
+      run: [ -z "${IS_GITEA}" ]
+
 
   build-old-win:
-    needs: validate-repo
+    needs: detect-gitea
     runs-on: windows-2025
+    timeout-minutes: 10
 
     steps:
       - name: Setup Visual Studio
@@ -40,17 +51,39 @@ jobs:
         run: .\Release\spider.exe
 
 
+  build-wine:
+    needs: validate-repo
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      WINEARCH: "win32"
+      WINPREFIX: "/root/.wine"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install packages
+      run: sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y wget unzip wine32 xvfb
+    - name: Setup wine
+      run: wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /root/.wine/drive_c/vs
+    - name: Build
+      run: wine cmd /c build.bat
+    - name: Run
+      run: xvfb-run wine Release/spider.exe
+
   build-linux:
     needs: validate-repo
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         compiler: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v4
+    - name: Update package list
+      run: sudo apt update
     - name: Install 32-bit libs
-      run: sudo apt install g++-multilib
+      run: sudo apt install -y g++-multilib cmake g++ clang
     - name: Setup Makefile
       run: CXX=${{ matrix.compiler }} cmake -B out
     - name: Build
@@ -59,8 +92,9 @@ jobs:
       run: ./out/spider
 
   build-win:
-    needs: validate-repo
+    needs: detect-gitea
     runs-on: windows-2025
+    timeout-minutes: 10
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -76,8 +110,9 @@ jobs:
 
   build-mac:
     if: false
-    needs: validate-repo
+    needs: detect-gitea
     runs-on: macos-13
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
