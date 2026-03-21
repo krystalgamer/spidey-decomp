@@ -23,13 +23,13 @@ jobs:
       run: python tools/dunno.py
 
   detect-gitea:
-    runs-on: ubuntu-latest
     needs: [build-linux, build-wine]
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
     - name: Inside GITEA
-      run: "[ -z \"${IS_GITEA}\" ]"
+      run: exit ${{ vars.IS_GITEA }}
 
 
   build-old-win:
@@ -57,14 +57,14 @@ jobs:
     timeout-minutes: 10
     env:
       WINEARCH: "win32"
-      WINPREFIX: "/home/runner/.wine"
+      WINEPREFIX: "/home/runner/.wine"
 
     steps:
     - uses: actions/checkout@v4
     - name: Install packages
       run: sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y wget unzip wine32 xvfb
     - name: Setup wine
-      run: wineboot && mkdir -p /home/runner && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /home/runner/.wine/drive_c/vs
+      run: mkdir -p /home/runner/.wine && wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /home/runner/.wine/drive_c/vs
     - name: Build
       run: wine cmd /c build.bat
     - name: Run
@@ -109,8 +109,8 @@ jobs:
       run: Release\spider.exe
 
   build-mac:
-    if: false
     needs: detect-gitea
+    if: false
     runs-on: macos-13
     timeout-minutes: 10
 
