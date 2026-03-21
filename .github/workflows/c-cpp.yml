@@ -57,14 +57,14 @@ jobs:
     timeout-minutes: 10
     env:
       WINEARCH: "win32"
-      WINPREFIX: "/tmp/.wine"
+      WINPREFIX: "/home/runner/.wine"
 
     steps:
     - uses: actions/checkout@v4
     - name: Install packages
       run: sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install -y wget unzip wine32 xvfb
     - name: Setup wine
-      run: wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /tmp/.wine/drive_c/vs
+      run: wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /home/runner/.wine/drive_c/vs
     - name: Build
       run: wine cmd /c build.bat
     - name: Run
