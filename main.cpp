@@ -534,6 +534,7 @@ extern "C" EXPORT int run_assertions(void)
     return FAIL_VALIDATION;
 }
 
+// @Bogus
 void runtime_assertions()
 
 {
@@ -543,6 +544,7 @@ void runtime_assertions()
 		;
 }
 
+// @Bogus
 void runtime_patches(void)
 {
 }
