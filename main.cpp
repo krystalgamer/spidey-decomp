@@ -222,15 +222,8 @@ void compile_time_assertions(){
 }
 
 // @Bogus
-i32 validate(void)
+extern "C" EXPORT int run_assertions(void)
 {
-#ifdef _OLD_WINDOWS
-	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
-#endif
-
-
-
 	puts("[*] Starting validation");
 
 
@@ -538,37 +531,65 @@ i32 validate(void)
 
 	puts("[*] Validation done!");
 
-#ifdef _OLD_WINDOWS
-	CItem* items = new CItem[1];
-	__asm {
-
-		      //int 3
-
-			 }
-#ifdef LOCK_VALIDATION
-	while(1){}
-#endif
-#endif
-
     return FAIL_VALIDATION;
 }
 
+void runtime_assertions()
 
+{
+	int result = run_assertions();
 
-#ifdef _OLD_WINDOWS
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-    PSTR lpCmdLine, int nCmdShow)
-#else
-int main()
+	while(result)
+		;
+}
+
+void runtime_patches(void)
+{
+}
+
+#include "runtime_version.h"
+
+#ifndef RUNTIME_VERSION
+#define RUNTIME_VERSION "LOCAL"
+
 #endif
+
+
+BOOL WINAPI DllMain(
+    HINSTANCE hinstDLL,
+    DWORD fdwReason,
+    LPVOID lpvReserved ) 
 {
 	compile_time_assertions();
+    switch( fdwReason ) 
+    { 
+        case DLL_PROCESS_ATTACH:
 
-#ifdef BOOT_GAME
-	return RealWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-#else
-	return validate();
-#endif
+			if(GetModuleHandle("tobey_validator.exe") != NULL)
+			{
+				puts("In validator");
+				break;
+			}
+
+			AllocConsole();
+			SetConsoleTitle("open-tobey - " RUNTIME_VERSION);
+			freopen("CONOUT$", "w", stdout);
+
+
+			puts("spidey-decomp starting " RUNTIME_VERSION);
+
+			runtime_assertions();
+			runtime_patches();
+
+            break;
+
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
+    }
+
+    return TRUE;
 }
 
 // @Bogus
