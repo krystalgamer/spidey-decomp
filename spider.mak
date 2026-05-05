@@ -13,8 +13,8 @@ CFG=spider - Win32 Debug
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "spider - Win32 Release" (based on "Win32 (x86) Application")
-!MESSAGE "spider - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "spider - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "spider - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 !ERROR An invalid configuration is specified.
 !ENDIF 
@@ -37,7 +37,7 @@ INTDIR=.\Release
 OutDir=.\Release
 # End Custom Macros
 
-ALL : "$(OUTDIR)\spider.exe"
+ALL : "$(OUTDIR)\spider.dll"
 
 
 CLEAN :
@@ -172,7 +172,9 @@ CLEAN :
 	-@erase "$(INTDIR)\web.obj"
 	-@erase "$(INTDIR)\wire.obj"
 	-@erase "$(INTDIR)\zrhinog.obj"
-	-@erase "$(OUTDIR)\spider.exe"
+	-@erase "$(OUTDIR)\spider.dll"
+	-@erase "$(OUTDIR)\spider.exp"
+	-@erase "$(OUTDIR)\spider.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -184,7 +186,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\spider.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib zlib.lib winmm.lib dinput8.lib dxguid.lib dsound.lib ddraw.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\spider.pdb" /machine:I386 /out:"$(OUTDIR)\spider.exe" /libpath:"directx\lib" /libpath:"lib" 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib zlib.lib winmm.lib dinput8.lib dxguid.lib dsound.lib ddraw.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\spider.pdb" /machine:I386 /out:"$(OUTDIR)\spider.dll" /implib:"$(OUTDIR)\spider.lib" /libpath:"directx\lib" /libpath:"lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\ai.obj" \
 	"$(INTDIR)\algebra.obj" \
@@ -318,7 +320,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\zrhinog.obj" \
 	".\font_draw.obj"
 
-"$(OUTDIR)\spider.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+"$(OUTDIR)\spider.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
@@ -331,7 +333,7 @@ INTDIR=.\Debug
 OutDir=.\Debug
 # End Custom Macros
 
-ALL : "$(OUTDIR)\spider.exe"
+ALL : "$(OUTDIR)\spider.dll"
 
 
 CLEAN :
@@ -466,7 +468,9 @@ CLEAN :
 	-@erase "$(INTDIR)\web.obj"
 	-@erase "$(INTDIR)\wire.obj"
 	-@erase "$(INTDIR)\zrhinog.obj"
-	-@erase "$(OUTDIR)\spider.exe"
+	-@erase "$(OUTDIR)\spider.dll"
+	-@erase "$(OUTDIR)\spider.exp"
+	-@erase "$(OUTDIR)\spider.lib"
 	-@erase "$(OUTDIR)\spider.pdb"
 
 "$(OUTDIR)" :
@@ -479,7 +483,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\spider.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\spider.pdb" /debug /machine:I386 /out:"$(OUTDIR)\spider.exe" /pdbtype:sept 
+LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\spider.pdb" /debug /machine:I386 /out:"$(OUTDIR)\spider.dll" /implib:"$(OUTDIR)\spider.lib" /pdbtype:sept 
 LINK32_OBJS= \
 	"$(INTDIR)\ai.obj" \
 	"$(INTDIR)\algebra.obj" \
@@ -613,7 +617,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\zrhinog.obj" \
 	".\font_draw.obj"
 
-"$(OUTDIR)\spider.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+"$(OUTDIR)\spider.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<

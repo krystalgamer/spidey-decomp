@@ -1121,6 +1121,7 @@
 	".\exp.h"\
 	".\export.h"\
 	".\FontTools.h"\
+	".\forwards.h"\
 	".\friction.h"\
 	".\front.h"\
 	".\hostage.h"\
@@ -1172,6 +1173,7 @@
 	".\quat.h"\
 	".\reloc.h"\
 	".\rhino.h"\
+	".\runtime_version.h"\
 	".\scorpion.h"\
 	".\shell.h"\
 	".\simby.h"\
@@ -1296,6 +1298,7 @@
 .\my_bink.cpp : \
 	".\directx\include\basetsd.h"\
 	".\export.h"\
+	".\forwards.h"\
 	".\my_bink.h"\
 	".\my_dx.h"\
 	".\my_types.h"\
@@ -1500,6 +1503,7 @@
 	".\DXinit.h"\
 	".\DXsound.h"\
 	".\export.h"\
+	".\forwards.h"\
 	".\my_bink.h"\
 	".\my_dx.h"\
 	".\my_types.h"\
@@ -1513,6 +1517,7 @@
 	".\directx\include\basetsd.h"\
 	".\DXinit.h"\
 	".\export.h"\
+	".\forwards.h"\
 	".\my_bink.h"\
 	".\my_dx.h"\
 	".\my_types.h"\
@@ -1960,6 +1965,7 @@
 	".\ps2funcs.h"\
 	".\ps2lowsfx.h"\
 	".\ps2pad.h"\
+	".\ps2redbook.h"\
 	".\quat.h"\
 	".\reloc.h"\
 	".\rhino.h"\

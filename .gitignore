@@ -7,3 +7,4 @@ Release/
 *.opt
 out/
 out_win/
+*.sh

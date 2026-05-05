@@ -56,25 +56,29 @@ struct BINKSUMMARY
 	u32 Highest1SecRate;        // Highest 1 second rate
 	u32 Highest1SecFrame;       // Highest 1 second start frame
 };
-
-EXPORT void STDCALL BinkDoFrame(HBINK);
-EXPORT i32 STDCALL BinkWait(HBINK);
-EXPORT void STDCALL BinkClose(HBINK);
-EXPORT void STDCALL BinkSetVolume(HBINK, i32);
-EXPORT void STDCALL BinkSetPan(HBINK, i32);
-EXPORT void STDCALL BinkSetSoundSystem(void (STDCALL *fptr)(void), LPDIRECTSOUND8);
-EXPORT void STDCALL BinkOpenDirectSound(void);
-EXPORT void STDCALL BinkSetIOSize(i32);
-EXPORT i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7);
-EXPORT HBINK STDCALL BinkOpen(void*, i32);
-EXPORT void STDCALL BinkSetVideoOnOff(HBINK, i32);
-EXPORT void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*);
-EXPORT void STDCALL BinkNextFrame(HBINK);
-EXPORT void STDCALL BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32);
-EXPORT void STDCALL BinkPause(HBINK, i32);
-EXPORT void STDCALL BinkService(HBINK);
-
 void validate_BINKSUMMARY(void);
 void validate_BINK(void);
+
+void STDCALL BinkDoFrame(HBINK);
+i32 STDCALL BinkWait(HBINK);
+void STDCALL BinkClose(HBINK);
+void STDCALL BinkSetVolume(HBINK, i32);
+void STDCALL BinkSetPan(HBINK, i32);
+void STDCALL BinkSetSoundSystem(void (STDCALL *fptr)(void), LPDIRECTSOUND8);
+void STDCALL BinkOpenDirectSound(void);
+void STDCALL BinkSetIOSize(i32);
+i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7);
+HBINK STDCALL BinkOpen(void*, i32);
+void STDCALL BinkSetVideoOnOff(HBINK, i32);
+void STDCALL BinkGetSummary(HBINK, BINKSUMMARY*);
+void STDCALL BinkNextFrame(HBINK);
+void STDCALL BinkCopyToBuffer(HBINK, void*, u32, u32, u32, u32, u32);
+void STDCALL BinkPause(HBINK, i32);
+void STDCALL BinkService(HBINK);
+
+#ifdef _WIN32
+#include "forwards.h"
+#endif
+
 
 #endif
