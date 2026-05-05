@@ -47,10 +47,12 @@ jobs:
         run: build.bat
       - name: Validate
         shell: cmd
-        run: tobey_validator.exe Release\binkw32.dll
+        run: |
+          cp Release\spider.dll binkw32.dll
+          tobey_validator.exe binkw32.dll
       - uses: actions/upload-artifact@v4
         with:
-          path: Release/binkw32.dll
+          path: binkw32.dll
           name: tobey
 
 
