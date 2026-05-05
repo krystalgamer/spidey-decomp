@@ -2,7 +2,7 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "issa_dll" ]
   pull_request:
     branches: [ "master" ]
 
@@ -43,12 +43,24 @@ jobs:
           Invoke-WebRequest https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip -OutFile c:\spidey_vs.zip
           7z x C:\spidey_vs.zip -oC:\vs
       - uses: actions/checkout@v4
+      - name: Setup Validator
+        run: |
+          Invoke-WebRequest https://github.com/krystalgamer/tobey-validator/releases/download/v1/tobey_validator.zip -OutFile tobey_validator.zip
+          7z x tobey_validator.zip
+      - name: Setup build version
+        run: |
+          $version = git rev-parse HEAD
+          Write-Output "#define RUNTIME_VERSION `"$version`"" | Out-File -FilePath .\runtime_version.h -Encoding ascii
       - name: Build
         shell: cmd
         run: build.bat
       - name: Validate
         shell: cmd
-        run: .\Release\spider.exe
+        run: tobey_validator.exe binkw32.dll
+      - uses: actions/upload-artifact@v4
+        with:
+          path: binkw32.dll
+          name: tobey
 
 
   build-wine:
@@ -67,8 +79,8 @@ jobs:
       run: mkdir -p /home/runner/.wine && wineboot && wget https://github.com/krystalgamer/spidey-decomp-vs/releases/download/v1.0/spidey-vs.zip && unzip spidey-vs.zip -d /home/runner/.wine/drive_c/vs
     - name: Build
       run: wine cmd /c build.bat
-    - name: Run
-      run: xvfb-run wine Release/spider.exe
+    - name: Detect output
+      run: test -f Release/spider.dll
 
   build-linux:
     needs: validate-repo
@@ -91,36 +103,3 @@ jobs:
     - name: Run
       run: ./out/spider
 
-  build-win:
-    needs: detect-gitea
-    runs-on: windows-2025
-    timeout-minutes: 10
-    steps:
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-    - uses: actions/checkout@v4
-    - name: Generate solution
-      run: cmake -B out -A Win32
-    - name: Compile
-      working-directory: ./out
-      run: msbuild spider.sln /p:Platform=Win32 /p:Configuration=Release
-    - name: Run
-      working-directory: ./out
-      run: Release\spider.exe
-
-  build-mac:
-    needs: detect-gitea
-    if: false
-    runs-on: macos-13
-    timeout-minutes: 10
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup Makefile
-      run: cmake -B out
-    - name: 
-      continue-on-error: true
-      run: cmake --build out
-    - name: Run
-      continue-on-error: true
-      run: ./out/spider
