@@ -554,6 +554,16 @@ void runtime_patches(void)
 
 #endif
 
+#ifndef _WIN32
+
+int main()
+{
+	compile_time_assertions();
+	return run_assertions();
+}
+
+
+#else
 
 BOOL WINAPI DllMain(
     HINSTANCE hinstDLL,
@@ -572,7 +582,7 @@ BOOL WINAPI DllMain(
 			}
 
 			AllocConsole();
-			SetConsoleTitle("open-tobey - " RUNTIME_VERSION);
+			SetConsoleTitle("spidey-decomp - " RUNTIME_VERSION);
 			freopen("CONOUT$", "w", stdout);
 
 
@@ -591,6 +601,7 @@ BOOL WINAPI DllMain(
 
     return TRUE;
 }
+#endif
 
 // @Bogus
 void DoAssert(u8 cond, const char* str, ...)

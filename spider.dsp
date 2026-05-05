@@ -2,7 +2,7 @@
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
-# TARGTYPE "Win32 (x86) Application" 0x0102
+# TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=spider - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
@@ -1013,6 +1013,10 @@ SOURCE=.\rfront.h
 # Begin Source File
 
 SOURCE=.\rhino.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\runtime_version.h
 # End Source File
 # Begin Source File
 
