@@ -3,6 +3,8 @@
 // #define BOOT_GAME
 #define MODEL_PREVIEW
 
+#include <stdlib.h>
+
 // #define LOCK_VALIDATION
 
 #include "main.h"
@@ -561,7 +563,7 @@ void my_free(void* block)
 
 // @Bogus
 int my_atexit(
-   void (__cdecl *func )( void )
+   void (CDECL *func )( void )
 )
 {
 	return atexit(func);
@@ -575,6 +577,7 @@ void *my_realloc(void *m, size_t s)
 	return res;
 }
 
+#ifdef _WIN32
 // @Bogus
 _onexit_t my_onexit(
    _onexit_t function
@@ -582,6 +585,7 @@ _onexit_t my_onexit(
 {
 	return _onexit(function);
 }
+#endif
 
 // @Bogus
 void *my_new(size_t s)
@@ -604,7 +608,9 @@ void patch_alloc(void)
 	PATCH_PUSH_RET(0x00529C39, my_atexit);
 
 	PATCH_PUSH_RET(0x0052F250, my_realloc);
+#ifdef _WIN32
 	PATCH_PUSH_RET(0x00529BBB, my_onexit);
+#endif
 	PATCH_PUSH_RET(0x00529BA2, my_new);
 
 	PATCH_PUSH_RET(0x0052C044, my_calloc);
@@ -614,11 +620,13 @@ void patch_alloc(void)
 void game_patches(void)
 {
 	patch_alloc();
+	patch_utils();
 }
 
 // @Bogus
 void runtime_patches(void)
 {
+#ifdef _WIN32
 	LPVOID text_start = (void*)0x00401000;
 
 	SIZE_T text_size = 0x0053B000 - (int)text_start;
@@ -630,6 +638,7 @@ void runtime_patches(void)
 
 	DWORD t;
 	VirtualProtect(text_start, text_size, text_protect, &t);
+#endif
 }
 
 #include "runtime_version.h"

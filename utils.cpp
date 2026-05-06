@@ -636,7 +636,7 @@ int Utils_ArcCos(int val){
 
 
 // @Ok
-// Matching
+// @Matching
 int Utils_CopyString(const char* src, char* dst, int maxSize)
 {
 	int total = 0;
@@ -960,9 +960,10 @@ void Utils_GetVecFromMagDir(CVector*, int, CSVector*)
 }
 
 // @Ok
+// @Matching
 i32 Utils_GetValueFromDifficultyLevel(i32 a1, i32 a2, i32 a3, i32 a4)
 {
-	switch (DifficultyLevel)
+	switch (G_DIFFICULTY_LEVEL)
 	{
 		case 0:
 			return a1;
@@ -991,4 +992,12 @@ i32 Utils_XZDist(const CVector* a1, const CVector *a2)
 void Utils_RotateY(CVector*, CVector*, i32)
 {
 	printf("void Utils_RotateY(CVector*, CVector*, i32)");
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_utils(void)
+{
+	PATCH_PUSH_RET(0x004E5DF0, Utils_GetValueFromDifficultyLevel);
 }

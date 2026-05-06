@@ -54,4 +54,9 @@ EXPORT void Utils_SetVisibilityInBox(CVector const *,CVector const *,bool,bool);
 EXPORT i32 Utils_ShiftFilter(i32,i32,i32,i32);
 EXPORT void Utils_VblankProcessing(void);
 
+//#define G_DIFFICULTY_LEVEL (DifficultyLevel)
+#define G_DIFFICULTY_LEVEL (*reinterpret_cast<i32*>(0x0054D474))
+
+void patch_utils(void);
+
 #endif
