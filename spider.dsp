@@ -876,6 +876,10 @@ SOURCE=.\my_bink.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\my_patch.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mysterio.h
 # End Source File
 # Begin Source File

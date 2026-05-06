@@ -5,7 +5,6 @@
 
 // #define LOCK_VALIDATION
 
-
 #include "main.h"
 #include "my_assert.h"
 #include "ob.h"
@@ -100,6 +99,9 @@
 #include "vram.h"
 #include "m3dzone.h"
 #include "PRE.h"
+
+
+#include "my_patch.h"
 
 extern int FAIL_VALIDATION;
 
@@ -536,7 +538,6 @@ extern "C" EXPORT int run_assertions(void)
 
 // @Bogus
 void runtime_assertions()
-
 {
 	int result = run_assertions();
 
@@ -545,8 +546,90 @@ void runtime_assertions()
 }
 
 // @Bogus
+void *my_malloc(size_t s)
+{
+	void* res = malloc(s);
+
+	return res;
+}
+
+// @Bogus
+void my_free(void* block)
+{
+	free(block);
+}
+
+// @Bogus
+int my_atexit(
+   void (__cdecl *func )( void )
+)
+{
+	return atexit(func);
+}
+
+// @Bogus
+void *my_realloc(void *m, size_t s)
+{
+	void* res = realloc(m, s);
+
+	return res;
+}
+
+// @Bogus
+_onexit_t my_onexit(
+   _onexit_t function
+)
+{
+	return _onexit(function);
+}
+
+// @Bogus
+void *my_new(size_t s)
+{
+	void* res = ::operator new(s);
+	return res;
+}
+
+// @Bogus
+void *my_calloc(size_t a, size_t b)
+{
+	return calloc(a, b);
+}
+
+// @Bogus
+void patch_alloc(void)
+{
+	PATCH_PUSH_RET(0x0052A227, my_malloc);
+	PATCH_PUSH_RET(0x0052A3C0, my_free);
+	PATCH_PUSH_RET(0x00529C39, my_atexit);
+
+	PATCH_PUSH_RET(0x0052F250, my_realloc);
+	PATCH_PUSH_RET(0x00529BBB, my_onexit);
+	PATCH_PUSH_RET(0x00529BA2, my_new);
+
+	PATCH_PUSH_RET(0x0052C044, my_calloc);
+}
+
+// @Bogus
+void game_patches(void)
+{
+	patch_alloc();
+}
+
+// @Bogus
 void runtime_patches(void)
 {
+	LPVOID text_start = (void*)0x00401000;
+
+	SIZE_T text_size = 0x0053B000 - (int)text_start;
+
+	DWORD text_protect;
+	VirtualProtect(text_start, text_size, PAGE_EXECUTE_READWRITE, &text_protect);
+
+	game_patches();
+
+	DWORD t;
+	VirtualProtect(text_start, text_size, text_protect, &t);
 }
 
 #include "runtime_version.h"
