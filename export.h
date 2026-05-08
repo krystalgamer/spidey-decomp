@@ -14,7 +14,7 @@ static u16* const word_6B2478 = (u16*)0x6B2478;
 
 static void print_if_false(unsigned char cry, char * message, ...) {
 	if (!cry) {
-		printf(message);
+		puts(message);
 	}
 }
 

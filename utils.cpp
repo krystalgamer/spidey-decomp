@@ -977,6 +977,7 @@ i32 Utils_GetValueFromDifficultyLevel(i32 a1, i32 a2, i32 a3, i32 a4)
 }
 
 // @Ok
+// @Matching
 i32 Utils_XZDist(const CVector* a1, const CVector *a2)
 {
 	i32 v2 = ((a1->vx - a2->vx) >> 12);
@@ -1000,4 +1001,5 @@ void Utils_RotateY(CVector*, CVector*, i32)
 void patch_utils(void)
 {
 	PATCH_PUSH_RET(0x004E5DF0, Utils_GetValueFromDifficultyLevel);
+	PATCH_PUSH_RET(0x004E61A0, Utils_XZDist);
 }
