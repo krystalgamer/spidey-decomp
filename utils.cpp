@@ -911,10 +911,11 @@ const u32 crc32_tab[] = {
 };
 
 // @Ok
-unsigned int Utils_GenerateCRC(const char* buf)
+// @Matching
+u32 Utils_GenerateCRC(const char* buf)
 {
 	const unsigned char *p = reinterpret_cast<const unsigned char*>(buf);
-	unsigned int crc;
+	u32 crc;
 	crc = ~0U;
 
 	while (*p)
@@ -997,4 +998,5 @@ void patch_utils(void)
 	PATCH_PUSH_RET(0x004E61A0, Utils_XZDist);
 	PATCH_PUSH_RET(0x004E6F00, Utils_LinearFilter);
 	PATCH_PUSH_RET(0x004E6F50, Utils_ShiftFilter);
+	PATCH_PUSH_RET(0x004E6520, Utils_GenerateCRC);
 }
