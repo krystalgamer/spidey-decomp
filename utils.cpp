@@ -457,7 +457,7 @@ void Utils_SetVisibilityInBox(CVector const * min,CVector const * max, bool visi
 }
 
 // @Ok
-// @Test
+// @AlmostMatching: similar to LinearFilter
 i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 {
 	print_if_false(delta > 0, "delta must be greater than zero");
@@ -996,4 +996,5 @@ void patch_utils(void)
 	PATCH_PUSH_RET(0x004E5DF0, Utils_GetValueFromDifficultyLevel);
 	PATCH_PUSH_RET(0x004E61A0, Utils_XZDist);
 	PATCH_PUSH_RET(0x004E6F00, Utils_LinearFilter);
+	PATCH_PUSH_RET(0x004E6F50, Utils_ShiftFilter);
 }
