@@ -926,7 +926,7 @@ unsigned int Utils_GenerateCRC(const char* buf)
 }
 
 // @Ok
-// @Test
+// @AlmostMatching: the return a2 is merging for some reason
 int Utils_LinearFilter(
 		i32 a1,
 		i32 a2,
@@ -936,21 +936,14 @@ int Utils_LinearFilter(
 
 	if (a1 > a2)
 	{
-		if (a1 - a2 <= delta)
-			return a2;
+		if (a1 - a2 > delta)
+	        return a1 - delta;
 
-		return a1 - delta;
 	}
-	else
-	{
-		if (a2 - a1 <= delta)
-		{
-			return a1;
-		}
+    else if (a2 - a1 > delta)
+        return a1 + delta;
 
-		return a1 + delta;
-	}
-
+	return a2;
 }
 
 // @MEDIUMTODO
@@ -1002,4 +995,5 @@ void patch_utils(void)
 {
 	PATCH_PUSH_RET(0x004E5DF0, Utils_GetValueFromDifficultyLevel);
 	PATCH_PUSH_RET(0x004E61A0, Utils_XZDist);
+	PATCH_PUSH_RET(0x004E6F00, Utils_LinearFilter);
 }
