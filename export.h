@@ -36,4 +36,9 @@ static void DebugPrintfX(const char *message, ...)
 
 #define my_abs(x) ( (x ^ ((i32)x >> 31)) - ((i32)x >> 31) )
 
+
+#define STRINGIFICATE_INNER(x) #x
+#define STRINGIFICATE(x) STRINGIFICATE_INNER(x)
+#define DO_LOG puts("Running " __FILE__ ":" STRINGIFICATE(__LINE__))
+
 #endif

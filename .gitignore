@@ -10,3 +10,4 @@ out_win/
 *.sh
 *.dll
 *.exe
+tags

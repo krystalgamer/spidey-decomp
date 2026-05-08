@@ -17,12 +17,12 @@
 #define EXPORT __declspec( dllexport )
 #define FASTCALL __fastcall
 #define STDCALL __stdcall
-#define CDECL __cdecl
+#define MY_CDECL __cdecl
 #else
 #define EXPORT
 #define FASTCALL __attribute__((fastcall))
 #define STDCALL __attribute__((stdcall))
-#define CDECL __attribute__((cdecl))
+#define MY_CDECL __attribute__((cdecl))
 #endif
 
 #include <cstdio>

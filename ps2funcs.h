@@ -204,4 +204,6 @@ STUBBED_FUNC(PutDrawEnv)
 STUBBED_FUNC(DrawOTag)
 STUBBED_FUNC(SetDrawArea)
 
+void patch_ps2funcs(void);
+
 #endif

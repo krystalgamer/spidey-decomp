@@ -563,7 +563,7 @@ void my_free(void* block)
 
 // @Bogus
 int my_atexit(
-   void (CDECL *func )( void )
+   void (MY_CDECL *func )( void )
 )
 {
 	return atexit(func);
@@ -617,10 +617,19 @@ void patch_alloc(void)
 }
 
 // @Bogus
+static int my_video_player(const char*, i32)
+{
+	return 1;
+}
+
+// @Bogus
 void game_patches(void)
 {
+	PATCH_CALL(0x004707BE, my_video_player);
+
 	patch_alloc();
 	patch_utils();
+	patch_ps2funcs();
 }
 
 // @Bogus

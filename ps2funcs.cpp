@@ -444,12 +444,11 @@ void VectorNormal(VECTOR* a1, VECTOR* a2)
 	printf("void VectorNormal(VECTOR* a1, VECTOR* a2)");
 }
 
-
 // @Ok
 // @Matching
 // @Note: kudos to valps, adding extra parentheses fix it
-int M3dMaths_SquareRoot0(int i){
-	
+i32 M3dMaths_SquareRoot0(i32 i){
+
     if (i <= -32768) {
         return 32768;
     }
@@ -676,4 +675,12 @@ void Port_InitAtStart(void)
 void Port_Exit(void)
 {
 	sbExitSystem();
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_ps2funcs(void)
+{
+	PATCH_PUSH_RET(0x0046D430, M3dMaths_SquareRoot0);
 }
