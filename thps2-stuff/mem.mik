@@ -1,0 +1,1973 @@
+/***************************************************************************/
+/*                                                                         */
+/* MEM.CPP                                                                 */
+/*                                                                         */
+/* Memory manager                                                          */
+/*                                                                         */
+/***************************************************************************/
+#define ASSERTIONS (!CD)
+
+#include "globals.h"
+#include "mem.h"
+
+#define	SMALLHEADER		1
+
+#include "db.h"
+
+#define	NOSMALLHEAP 0
+
+#define RECORDEVERYTHING (0&DEBUG)
+#define BITFIELD 			(0&DEBUG)
+
+#define RECORDSMALLHEAPPOINTERS 0
+
+// If the small heap is over this percentage used, the LowMemory indicator will come on.
+#define BIGHEAPOVERLOAD 98   // 2% left give about 20K
+
+#define PRINTBIGHEAPCALLS 0
+#define PRINTHEAPSIZES 1
+
+// Semidebug will make the screen go blue if a memory allocation fails, even if DEBUG is off.
+#define SEMIDEBUG 1
+
+
+void*   Mem_NewTop(size_t size);
+
+
+#if (SUPERMEMDEBUG)
+SDebugHeader *pFirstUsed;
+#endif
+
+int Mem_NumNew = 0;
+int Mem_NumDelete = 0;
+
+#if SEMIDEBUG
+static void Bang( Uint8 r, Uint8 g, Uint8 b )
+{
+   static RECT bg = {100, 0, 50, 256};
+   ClearImage(&bg, r,g,b);
+   while (TRUE);
+}
+#endif
+
+#if DEBUG&&BITFIELD
+#define PSXMEMORYSIZE (1048576*8)
+#define BITFIELDSIZE ((PSXMEMORYSIZE/4)/8)
+Uint8 MemBitfield[BITFIELDSIZE];
+//Uint8 LeakCheckBitfield[BITFIELDSIZE];
+static void FlagLocationUsed(Uint32 Loc)
+{
+	RECORDRA;
+   Loc&=0x7fffffff;
+   if (Loc>=PSXMEMORYSIZE || (Loc&3))
+   {
+   	printf("\nBad loc = 0x%08lx\n",Loc);
+   	ASSERT(0,"Bad Loc sent to FlagLocationUsed");
+   }
+
+	int Mask=1<<((Loc>>2)&7);
+	int i=Loc>>5;
+   if (MemBitfield[i]&Mask)
+   {
+   	printf("\nBad loc = 0x%08lx\n",Loc);
+   	ASSERT(0,"Location already used");
+   }   
+	MemBitfield[i]|=Mask;
+}
+
+static void FlagLocationUnused(Uint32 Loc)
+{
+	RECORDRA;
+   Loc&=0x7fffffff;
+   if (Loc>=PSXMEMORYSIZE || (Loc&3))
+   {
+   	printf("\nBad loc = 0x%08lx\n",Loc);
+   	ASSERT(0,"Bad Loc sent to FlagLocationUnused");
+   }
+
+	int Mask=1<<((Loc>>2)&7);
+	int i=Loc>>5;
+   if ((MemBitfield[i]&Mask)==0)
+   {
+   	printf("\nBad loc = 0x%08lx\n",Loc);
+   	ASSERT(0,"Tried to delete non-allocated memory");
+   }   
+	MemBitfield[i]&=~Mask;
+}
+#endif
+
+
+
+Uint32 HeapDefs[MAXHEAPS][2]={{NULL,NULL},
+                              {NULL,NULL}};
+
+
+int LowMemory=FALSE;
+static Uint32 CriticalBigHeapUsage=0;
+
+#if RECORDSMALLHEAPPOINTERS&DEBUG
+static int StartRecording=FALSE;
+struct SPointer
+{
+	Uint32 *pWhatever;
+	int ReturnAddress;
+	int Flag;
+	SPointer *pNext;
+};
+
+static SPointer *pFreeList;
+static SPointer *pAllocatedList;
+#endif
+
+static Uint32 UniqueIndentifier=0;	
+
+// Returns a pointer to the first byte after free block p
+// p is a pointer to a block header, not a pointer returned by Mem_New
+#define FREEAFTER(p) (SBlockHeader*)(((char*)((p)+1))+(p)->Size)
+
+#define CHECKUP 0
+
+// --------------------------------------------------------------------------
+//
+//           A high speed cache, separate from the above heaps, 
+//           for storing small things.
+//
+// --------------------------------------------------------------------------
+
+
+#if DEBUG
+int CacheUsage=0;
+int BiggestCacheRequest=0;
+#endif
+// --------------------------------------------------------------------------
+
+
+// This keeps track of the number of searchs needed to find a free block
+#define COUNTSEARCHS 1
+
+// Make this 1 to make free blocks get filled with rubbish, so as to
+// upset naughty functions that try to keep accessing freed memory
+// Things will slow down if this is set, especially when deleting big things
+// Note: This define is only effective if DEBUG is 1
+// Another Note:  will be VERY SLOW if TONS_OF_RAM is true, as it usually scribbles over
+// all 4 MB for each call to Mem_Delete()
+#define SCRIBBLEOVERFREEBLOCKS 1				
+
+// Set this to 1 to clear the allocated memory to 0
+#define CLEARTOZERO 1
+
+
+
+#if CLEARTOZERO
+// Note, does not clear to zero, but to 0x33333333
+#define ClearMem(p,n)                                 \
+         {                                            \
+            Uint32* pMem=(Uint32*)(p);                \
+            for (int ii=0; ii<(n)/4; ++ii) *pMem++=0x33333333; \
+         }
+#else
+#define ClearMem(p,n) NULL
+#endif
+
+
+#if DEBUG & SCRIBBLEOVERFREEBLOCKS
+// Filling free blocks with rubbish only occurs if Scribble is TRUE.
+// The purpose of this variable is to allow Mem_MoveBlockDown to still be 
+// able to delete and reallocate a block without the source getting trashed 
+// even if SCRIBBLEOVERFREEBLOCKS is set 
+// Mem_MoveBlockDown will temporarily set Scribble to FALSE
+static int Scribble=TRUE;
+#endif
+
+
+
+// --------------------------------------------------------------------------
+// Mem_New and Mem_Delete will allocate memory from the area between HEAPBOT
+// and HEAPTOP
+//
+// To keep fragmentation problems to a minimum, Mem_Delete will merge with
+// adjacent holes
+// Mem_New will allocate from the first biggest free block lowest in memory,
+// which also helps to squash out holes.
+
+// Head pointer of the free block linked list
+SBlockHeader* FirstFreeBlock[MAXHEAPS];
+
+// How much memory is being used on each heap. Includes the 8 byte headers.
+int Used[MAXHEAPS];
+
+#if DEBUG
+int MemInitialised=FALSE;
+int Holes[MAXHEAPS];
+
+int FreeBlocks[MAXHEAPS];
+int AllocatedBlocks[MAXHEAPS];
+
+static int TotalSearch[MAXHEAPS];
+static int NumSearchs[MAXHEAPS];
+int AverageSearch[MAXHEAPS];
+int MaxSearch[MAXHEAPS];
+
+#if RECORDEVERYTHING
+
+
+SMemDebug  MemDebug[MAXDEBUG];
+
+int Mem_Debugging = 0;
+int Mem_NextDebug = 0;
+int Mem_When = 0;
+int Mem_Snap = 0;
+
+// Called when you want to record the state of the stack
+void Mem_InitDebug()
+{
+	for (int i=0;i<MAXDEBUG;i++)
+		MemDebug[i].pBlock = 0;
+	Mem_NextDebug = 0;
+	Mem_Debugging = 1;
+	Mem_When = 0;
+	Mem_Snap = 0;
+}
+
+// Record the allocation of a block
+void Mem_Record(SBlockHeader *pBlock, int ReturnAddress)
+{
+	ASSERT(Mem_NextDebug < MAXDEBUG,"Mem Debug buffer full");
+	MemDebug[Mem_NextDebug].pBlock = pBlock;
+	MemDebug[Mem_NextDebug].ReturnAddress = ReturnAddress;
+
+//	if (Mem_When == 932)
+//		asm("break 666");
+
+	MemDebug[Mem_NextDebug].When = Mem_When++;
+	Mem_NextDebug++;
+}
+
+// Remove a block from the list
+void Mem_Remove(void *p)
+{
+   SBlockHeader *pBlock=GETBLOCKHEADER(p);
+	for (int i=0;i<Mem_NextDebug;i++)
+	{
+		if (MemDebug[i].pBlock == pBlock)
+		{
+			if (Mem_NextDebug == 1)
+			{
+				Mem_NextDebug = 0;
+			}
+			else
+			{
+				Mem_NextDebug--;				  // just copy the last item down over this.
+				MemDebug[i] = MemDebug[Mem_NextDebug];
+			}
+			return;
+		}
+	}
+	ASSERT(0,"Mem_remove did not find the block");
+}
+
+void Mem_SnapShot()
+{
+	Mem_Snap = Mem_When;
+}
+
+
+#include "pack.h"
+SPack * Pack_GetSlot( void );
+
+// Check to see if there are any memory with a time greater than this
+void Mem_Check()
+{
+	int Errors = 0;
+	int Total = 0;
+	printf("\nMem_Snap is %d\n\n",Mem_Snap);
+	for (int i=0;i<Mem_NextDebug;i++)
+	{
+		if (MemDebug[i].When >= Mem_Snap)
+		{
+
+			if (((int)MemDebug[i].ReturnAddress - (int)Pack_GetSlot) != 32)
+			{
+				Errors++;
+				if (Errors < 100)
+				{
+					printf("\nStill Allocated\n");
+					printf("pBlock->Size = %d  ",MemDebug[i].pBlock->Size);
+					printf("ReturnAddress = %lx  ",MemDebug[i].ReturnAddress);
+					printf("When = %d\n",MemDebug[i].When); 
+				}
+				else
+					if (Errors == 100)
+						printf("Too many Mem_Check Errors");
+				Total += MemDebug[i].pBlock->Size;
+			}
+		}
+	}
+	printf("\nNew Blocks = %d, TOTAL new MEMORY = %d\n",Errors,Total);
+//	ASSERT(Errors==0,"Mem_Check Errors");
+}
+
+
+#endif
+
+/*
+// Handy for seeing how much effect a Mem_MoveBlockDown had.
+int Mem_GetBiggestFreeBlockSize(int Heap)
+{
+   RECORDRA;
+   register SBlockHeader* pBlock=FirstFreeBlock[Heap];
+   int Biggest=0;
+
+   while (pBlock)
+   {
+      if (pBlock->Size>Biggest) Biggest=pBlock->Size;
+      pBlock=pBlock->Next;
+   }
+
+   return Biggest;
+}
+*/
+#endif
+
+
+// This adds pNewFreeBlock to the linked list of free blocks, but if there 
+// happens to be a free block on either side, it will bobble them together 
+// into just one block, reducing the number of holes.
+// This function maintains the list of holes in address order, which ensures
+// that the lowest memory possible gets allocated, keeping the holes high up.
+void AddToFreeList(SBlockHeader* pNewFreeBlock, int Heap)
+{
+   RECORDRA;
+   register SBlockHeader *pAfter=FirstFreeBlock[Heap];
+   register SBlockHeader *pBefore=NULL;
+
+	int	OriginalSize = pNewFreeBlock->Size;
+
+   // Find the blocks either side of pNewFreeBlock
+   while ((Uint32)pAfter<(Uint32)pNewFreeBlock && pAfter)
+   {
+      pBefore=pAfter;
+      pAfter=pAfter->Next;
+   }
+   // Either of pBefore or pAfter could now be NULL
+
+
+   if (pBefore)
+   {
+      if (FREEAFTER(pBefore)==pNewFreeBlock)
+      {
+         if (FREEAFTER(pNewFreeBlock)==pAfter)
+         {
+            // pNewFreeBlock is adjacent to pBefore and pAfter, so merge pNewFreeBlock
+            // and pAfter into pBefore
+            pBefore->Next=pAfter->Next;
+            pBefore->Size+=pNewFreeBlock->Size+pAfter->Size+2*sizeof(SBlockHeader);
+
+            #if DEBUG & SCRIBBLEOVERFREEBLOCKS
+            // Scribble over the new free block and the headers on either side
+            // of it. We don't need to scribble over the other two free blocks
+            // because they will have already been scribbled over.
+
+            if (Scribble)
+            {
+               Uint32* pFree=(Uint32*)pNewFreeBlock;
+               int NumLWords=(pNewFreeBlock->Size+2*sizeof(SBlockHeader))/4;
+               for (int i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
+            }
+            #endif
+
+            #if DEBUG
+            --FreeBlocks[Heap];
+            #endif
+         }
+         else
+         {
+            // pNewFreeBlock is adjacent to pBefore, so merge it into pBefore by
+            // just increasing the size of pBefore
+            pBefore->Size+=pNewFreeBlock->Size+sizeof(SBlockHeader);
+
+            #if DEBUG & SCRIBBLEOVERFREEBLOCKS
+            // Scribble over the new free block just merged, and its header
+
+            if (Scribble)
+            {
+               Uint32* pFree=(Uint32*)pNewFreeBlock;
+               int NumLWords=(pNewFreeBlock->Size+sizeof(SBlockHeader))/4;
+               for (int i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
+            }
+            #endif
+         }
+
+         return;  // That's that
+      }
+      else
+      {
+         // pNewFreeBlock isn't adjacent to pBefore, so insert it into the linked
+         // list after pBefore. pNewFreeBlock->Next isn't set yet though cos we still
+         // need to check if it is adjacent to pAfter
+         pBefore->Next=pNewFreeBlock;
+      }
+   }
+   else
+   {
+      // There is no pBefore, so insert pNewFreeBlock into the linked list by setting
+      // FirstFreeBlock equal to it. pNewFreeBlock->Next isn't set yet though cos we still
+      // need to check if it is adjacent to pAfter
+      FirstFreeBlock[Heap]=pNewFreeBlock;
+   }
+
+
+   #if DEBUG & SCRIBBLEOVERFREEBLOCKS
+   // Scribble over the memory contained in the new free block
+	// but only the original size
+   if (Scribble)
+   {
+      Uint32* pFree=(Uint32*)(pNewFreeBlock+1);
+      int NumLWords=pNewFreeBlock->Size/4;
+      for (int i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
+   }
+   #endif
+
+
+
+   // Note: pAfter could be NULL, but this bit will still work if it is
+   if (FREEAFTER(pNewFreeBlock)==pAfter)
+   {
+      // pNewFreeBlock is adjacent to pAfter, so merge pAfter with pNewFreeBlock by
+      // making pNewFreeBlock->Next jump over pAfter, then increase the size 
+      // of pNewFreeBlock to absorb pAfter
+      pNewFreeBlock->Next=pAfter->Next;
+      pNewFreeBlock->Size+=pAfter->Size+sizeof(SBlockHeader);
+
+      #if DEBUG & SCRIBBLEOVERFREEBLOCKS
+      // Scribble over pAfter's header, since it has become part of the
+      // free block
+
+      if (Scribble)
+      {
+         Uint32* pFree=(Uint32*)pAfter;
+         int NumLWords=sizeof(SBlockHeader)/4;
+         for (int i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
+      }
+      #endif
+   }
+   else
+   {
+      // pNewFreeBlock is not adjacent to pAfter, so just set pNewFreeBlock->Next to
+      // point to pAfter
+      pNewFreeBlock->Next=pAfter;
+
+      #if DEBUG
+      ++FreeBlocks[Heap];
+      #endif
+   }
+}
+
+// This function must be called right at the start, before Mem_New 
+// or Mem_Delete are used.
+// The HeapDefs array must have been set up before calling this.
+void Mem_Init()
+{
+   RECORDRA;
+   #if PRINTHEAPSIZES
+   printf("Heap sizes: ");
+   #endif
+
+	#if RECORDEVERYTHING
+	Mem_Debugging = 0;
+	#endif
+
+	#if	RECORDEVERYTHING
+	Mem_InitDebug();
+	#endif
+	
+	#if DEBUG&&BITFIELD
+   for (int i=0; i<BITFIELDSIZE; ++i) MemBitfield[i]=0;
+   #endif
+   
+	#if (SUPERMEMDEBUG)
+	pFirstUsed = 0;
+	#endif
+
+   for (int i=0; i<MAXHEAPS; ++i)
+   {
+      ASSERT(HeapDefs[i][HBOT]&0x80000000,"Bad value for HEAPBOT");
+      ASSERT(HeapDefs[i][HTOP]&0x80000000,"Bad value for HEAPTOP");
+      ASSERT(HeapDefs[i][HBOT]+sizeof(SBlockHeader)<HeapDefs[i][HTOP],"Bad values for HEAPBOT and HEAPTOP");
+
+      // Initialise free list head pointer
+      FirstFreeBlock[i]=NULL;
+
+      Used[i]=0;
+      #if DEBUG
+      Holes[i]=0;
+      FreeBlocks[i]=0;
+      AllocatedBlocks[i]=0;
+
+      #if COUNTSEARCHS
+      TotalSearch[i]=0;
+      NumSearchs[i]=0;
+      MaxSearch[i]=0;
+      #endif
+      #endif
+
+      // Create a huge block containing all the free memory, and add it to the free list
+      SBlockHeader *pAllFreeMem=(SBlockHeader*)HeapDefs[i][HBOT];
+      pAllFreeMem->Size=HeapDefs[i][HTOP]-HeapDefs[i][HBOT]-sizeof(SBlockHeader);
+      AddToFreeList(pAllFreeMem,i);
+
+      #if PRINTHEAPSIZES
+      printf("Heap %d: %ld bytes, ",i,HeapDefs[i][HTOP]-HeapDefs[i][HBOT]);
+      #endif
+   }
+	
+
+   #if PRINTHEAPSIZES
+   printf("\n");
+   #endif
+
+   #if DEBUG
+   MemInitialised=TRUE;
+   #endif
+
+	// Calculate the small heap usage above which the LowMemory global will be set to TRUE.	
+	CriticalBigHeapUsage=BIGHEAPOVERLOAD*(HeapDefs[BIGHEAP][HTOP]-HeapDefs[BIGHEAP][HBOT])/100;
+	
+	
+	#if RECORDSMALLHEAPPOINTERS&DEBUG
+	pAllocatedList=NULL;
+	pFreeList=(SPointer*)0x80700000;
+	int NumPointers=0x80000/sizeof(SPointer);
+	SPointer *pElement=pFreeList;
+	for (int i=0; i<NumPointers-1; ++i)
+	{
+		pElement->pNext=pElement+1;
+		pElement++;
+	}	
+	pElement->pNext=NULL;
+	#endif
+}
+
+
+int ReturnAddress=12345;
+
+#if SMALLHEADER
+void* Mem_NewX(size_t size, int Heap, int AssertOnFailure)
+#else
+void* Mem_New(size_t size, int Heap, int AssertOnFailure)
+#endif
+{
+//   RECORDRA;
+
+	#if (RECORDSMALLHEAPPOINTERS|RECORDEVERYTHING)&DEBUG
+	   register int _retaddr;
+	   __asm__ volatile ("move %0,$31" : "=r"(_retaddr) : : "%0");
+	ReturnAddress=_retaddr;
+	#endif
+
+	#if 0&MICK
+	if (Pad[0].LeftOne.Pressed)
+	{
+	   register int _retaddr;
+	   __asm__ volatile ("move %0,$31" : "=r"(_retaddr) : : "%0");
+		printf ("%d,%lx ",size,_retaddr);
+		Mem_PrintFree("");
+	}
+	#endif
+
+
+
+	if (Heap == 0)								// if we are using heap 0, Small heap, then try using the top of heap 1
+		return Mem_NewTop(size);
+
+
+	#if DEBUG
+	Mem_NumNew++;
+	#endif
+
+	UniqueIndentifier=(UniqueIndentifier+1)&0x7fffffff;
+	
+	
+
+
+
+	#if NOSMALLHEAP
+	if (Heap == 0)
+	{
+		Heap=1;
+	}
+	#endif
+
+
+	#if DEBUG
+   ASSERT(MemInitialised,"New called before memory initialised");
+   #endif
+	size=(size+3)&0xfffffffc;
+   ASSERT(size,"Zero size sent to Mem_New");
+   ASSERT(size<0x0fffffff,"size exceeds 28 bit range"); // Just in case, since upper 4 bits
+																		  // are used for heap number.
+	
+	#if PRINTBIGHEAPCALLS
+	if (Heap==BIGHEAP)
+		printf("\nAllocating %ld bytes from big heap.",size);
+	#endif
+
+   #if DEBUG
+	// Validate heap.
+   switch (Heap)
+   {
+		case BIGHEAP:case SMALLHEAP:
+			break;
+			
+		default:	
+      	ASSERT(0,"Bad heap number sent to Mem_New");
+      	return NULL;
+			break;
+   }
+	#endif
+	
+
+	
+
+
+   #if DEBUG
+   if (FirstFreeBlock[Heap]==NULL)
+   {
+      sprintf(AssertString,"  %ld bytes off heap %d\n No free blocks at all!",size,Heap);
+      ASSERT(0,"\n  Failed trying to allocate\n");
+      return NULL;
+   }
+   #endif
+
+   // Search for a big enough free block (this is the slow bit)
+   register SBlockHeader* pBlock=FirstFreeBlock[Heap];
+   register SBlockHeader* pLast=NULL;
+   #if DEBUG & COUNTSEARCHS
+   register int search=1;
+   #endif
+   while (pBlock->Size<size && pBlock->Next)
+   {
+      pLast=pBlock;
+      pBlock=pBlock->Next;
+      #if DEBUG & COUNTSEARCHS
+      ++search;
+      #endif
+   }
+
+   if (pBlock->Size<size)
+   {
+      #if DEBUG
+      if (AssertOnFailure)
+      {
+
+// dump memory to the screen
+	extern void Mem_DumpUpdate(int);
+	extern int Mem_DumpToScreen();
+	Pad[0].RightOne.Pressed = Pad[0].RightTwo.Pressed = 1;		// frig display on
+	Mem_DumpUpdate(1500000);
+	Mem_DumpUpdate(1500000);
+	Mem_DumpToScreen();
+	pDoubleBuffer = pOtherBuffer;			// both buffers, just in case
+	Mem_DumpToScreen();
+
+
+         sprintf(AssertString,"  %ld bytes off heap %d\n",size,Heap);
+         ASSERT(0,"\n  Failed trying to allocate\n");
+      }
+      #endif
+		
+#		if SEMIDEBUG
+		if( AssertOnFailure )
+		{
+			if( Heap == BIGHEAP )
+			{
+#				if DEBUG
+				Mem_CheckHeaps();			
+#				endif
+				Bang( 0x80, 0x00, 0x00 );
+			}
+			else if( Heap == SMALLHEAP )
+			{
+#				if DEBUG
+				Mem_CheckHeaps();			
+#				endif
+				Bang( 0x00, 0x00, 0x80 );
+			}
+		}
+#		endif
+
+      return NULL;
+   }
+
+   #if DEBUG & COUNTSEARCHS
+   ++NumSearchs[Heap];
+   TotalSearch[Heap]+=search;
+   AverageSearch[Heap]=TotalSearch[Heap]/NumSearchs[Heap];
+   if (search>MaxSearch[Heap]) MaxSearch[Heap]=search;
+   #endif
+
+   #if DEBUG
+   ++AllocatedBlocks[Heap];
+   --FreeBlocks[Heap];
+   #endif
+
+   if (pBlock->Size>size+sizeof(SBlockHeader))
+   {
+      // The found block is sufficiently big to make a new free block
+      // out of the leftover space
+      // Sufficiently big=more than enough space for the block header
+
+      // new block starts at current block ptr + current block header size + requested space size
+      SBlockHeader* pLeftOver=(SBlockHeader*)((char*)(pBlock+1)+size);
+      pLeftOver->Size=pBlock->Size-size-sizeof(SBlockHeader);
+      // pLeftOver is now a free block hanging in space
+
+      // Remove pBlock from the linked list and make it into a used block
+      if (pLast)
+         pLast->Next=pBlock->Next;
+      else
+         FirstFreeBlock[Heap]=pBlock->Next;
+//		pBlock->Id=UniqueIndentifier;	
+		pBlock->ParentHeap=Heap;
+      pBlock->Size=size;
+
+      Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
+
+      // Add pLeftOver to the linked list
+		#if DEBUG&&SCRIBBLEOVERFREEBLOCKS
+		Scribble = 0;
+		#endif
+
+      AddToFreeList(pLeftOver,Heap);
+
+		#if DEBUG&&SCRIBBLEOVERFREEBLOCKS
+		Scribble = 1;
+		#endif
+
+      ClearMem(pBlock+1,size);
+		
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+		}
+		
+		#if RECORDSMALLHEAPPOINTERS&DEBUG
+		if (Heap==SMALLHEAP)
+		{
+			SPointer *pNew=GetSPointer();
+			pNew->pWhatever=(Uint32*)(pBlock+1);
+			pNew->ReturnAddress=ReturnAddress;
+		}
+		#endif
+				
+      // Return the newly allocated block
+			#if RECORDEVERYTHING
+			Mem_Record(pBlock, ReturnAddress);
+			#endif
+
+         #if DEBUG&&BITFIELD
+         FlagLocationUsed((Uint32)(pBlock+1));
+         #endif
+
+      return (void*)(pBlock+1);
+   }
+   // if there is enough room for the requested amount of space in pBlock,
+   // but not enough left over to form a new free block
+   else
+   {
+      // Remove pBlock from the linked list and make it into a used block
+      if (pLast)
+         pLast->Next=pBlock->Next;
+      else
+         FirstFreeBlock[Heap]=pBlock->Next;
+//		pBlock->Id=UniqueIndentifier;	
+      pBlock->ParentHeap=Heap;
+
+      // pBlock->Size is not changed, because we've had to allocate
+      // the whole block.
+
+      Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
+		
+      // Return the newly allocated block
+      ClearMem(pBlock+1,size);
+		
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+		}
+
+		#if RECORDSMALLHEAPPOINTERS&DEBUG
+		if (Heap==SMALLHEAP)
+		{
+			SPointer *pNew=GetSPointer();
+			pNew->pWhatever=(Uint32*)(pBlock+1);
+			pNew->ReturnAddress=ReturnAddress;
+		}
+		#endif
+		
+			#if RECORDEVERYTHING
+			Mem_Record(pBlock, ReturnAddress);
+			#endif
+         #if DEBUG&&BITFIELD
+         FlagLocationUsed((Uint32)(pBlock+1));
+         #endif
+      return (void*)(pBlock+1);
+   }
+}
+
+
+// allocates memory from the top (or as near as possible) of heap 1
+void* Mem_NewTop(size_t size)
+{
+	int Heap = 1;
+	int AssertOnFailure = TRUE;
+
+	#if 0&MICK&DEBUG
+	if (size>450)
+	{
+//		int ReturnAddress=Debug_GetLastAddress();
+		printf ("%d - %d from %lx\n",Heap,size,ReturnAddress);
+	}
+	#endif
+
+	#if DEBUG
+	Mem_NumNew++;
+	#endif
+
+
+//   RECORDRA;
+	UniqueIndentifier=(UniqueIndentifier+1)&0x7fffffff;
+	
+	
+
+
+
+	#if NOSMALLHEAP
+	if (Heap == 0)
+	{
+		Heap=1;
+	}
+	#endif
+
+
+	
+	#if DEBUG
+   ASSERT(MemInitialised,"New called before memory initialised");
+   #endif
+	size=(size+3)&0xfffffffc;
+   ASSERT(size,"Zero size sent to Mem_New");
+   ASSERT(size<0x0fffffff,"size exceeds 28 bit range"); // Just in case, since upper 4 bits
+																		  // are used for heap number.
+	
+	#if PRINTBIGHEAPCALLS
+	if (Heap==BIGHEAP)
+		printf("\nAllocating %ld bytes from big heap.",size);
+	#endif
+
+   #if DEBUG
+	// Validate heap.
+   switch (Heap)
+   {
+		case BIGHEAP:case SMALLHEAP:
+			break;
+			
+		default:	
+      	ASSERT(0,"Bad heap number sent to Mem_New");
+      	return NULL;
+			break;
+   }
+	#endif
+	
+
+   #if DEBUG
+   if (FirstFreeBlock[Heap]==NULL)
+   {
+	// dump memory to the screen
+	extern void Mem_DumpUpdate(int);
+	extern int Mem_DumpToScreen();
+	Mem_DumpUpdate(1500000);
+	Mem_DumpUpdate(1500000);
+	Mem_DumpToScreen();
+	pDoubleBuffer = pOtherBuffer;
+	Mem_DumpToScreen();
+
+      sprintf(AssertString,"  %ld bytes off heap %d\n No free blocks at all!",size,Heap);
+      ASSERT(0,"\n  Failed trying to allocate\n");
+      return NULL;
+   }
+   #endif
+
+   // Search for a big enough free block (this is the slow bit)
+   register SBlockHeader* pBlock=FirstFreeBlock[Heap];
+   register SBlockHeader* pLast=NULL;
+   register SBlockHeader* pChoice = pBlock;
+   register SBlockHeader* pChoiceLast = NULL;
+   
+   #if DEBUG & COUNTSEARCHS
+   register int search=1;
+   #endif
+   
+   // pChoice is the suitable block last in the heap 
+   // pChoiceLast is the one before pChoice
+   while (pBlock)
+   {
+		if (pBlock->Size >= size)
+		{ 
+			pChoice = pBlock;
+			pChoiceLast = pLast;
+		}
+
+		pLast=pBlock;
+		pBlock=pBlock->Next;
+		#if DEBUG & COUNTSEARCHS
+		++search;
+		#endif
+   }
+   pBlock = pChoice;
+   pLast = pChoiceLast;
+
+   // if the found block is too small, error
+   if (pBlock->Size<size)
+   {
+      #if DEBUG
+      if (AssertOnFailure)
+      {
+		// dump memory to the screen
+	extern void Mem_DumpUpdate(int);
+	extern int Mem_DumpToScreen();
+	Mem_DumpUpdate(1500000);
+	Mem_DumpUpdate(1500000);
+	Mem_DumpToScreen();
+	pDoubleBuffer = pOtherBuffer;
+	Mem_DumpToScreen();
+
+         sprintf(AssertString,"  %ld bytes off heap %d\n",size,Heap);
+         ASSERT(0,"\n  Failed trying to allocate\n");
+      }
+      #endif
+		
+#		if SEMIDEBUG
+		if( AssertOnFailure )
+		{
+			if( Heap == BIGHEAP )
+			{
+#				if DEBUG
+				Mem_CheckHeaps();			
+#				endif
+				Bang( 0x80, 0x00, 0x00 );
+			}
+			else if( Heap == SMALLHEAP )
+			{
+#				if DEBUG
+				Mem_CheckHeaps();			
+#				endif
+				Bang( 0x00, 0x00, 0x80 );
+			}
+		}
+#		endif
+
+      return NULL;
+   }
+
+   #if DEBUG & COUNTSEARCHS
+   ++NumSearchs[Heap];
+   TotalSearch[Heap]+=search;
+   AverageSearch[Heap]=TotalSearch[Heap]/NumSearchs[Heap];
+   if (search>MaxSearch[Heap]) MaxSearch[Heap]=search;
+   #endif
+
+   #if DEBUG
+   ++AllocatedBlocks[Heap];
+   --FreeBlocks[Heap];
+   #endif
+
+   if (pBlock->Size>size+sizeof(SBlockHeader))
+   {
+      // The found block is sufficiently big to make a new free block
+      // out of the leftover space
+      // Sufficiently big=more than enough space for the block header
+	  // pBlock->Size doesn't include space that is taken up by header
+
+      // new block starts at current block ptr + current block header size + requested space size
+      int old_size = pBlock->Size;
+      
+      SBlockHeader* pLeftOver = pBlock;
+      pLeftOver->Size = old_size - size - sizeof(SBlockHeader);
+      
+      pBlock = (SBlockHeader*) ((char *)(pLeftOver+1) + old_size - size - sizeof(SBlockHeader));
+      pBlock->Size = size;
+
+      // pBlock is now hanging in space
+
+	  // set up info
+//	  pBlock->Id=UniqueIndentifier;	
+	  pBlock->ParentHeap=Heap;
+
+      Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
+
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+		}
+
+
+      ClearMem(pBlock+1,size);
+						
+      // Return the newly allocated block
+			#if RECORDEVERYTHING
+			Mem_Record(pBlock, ReturnAddress);
+			#endif
+         #if DEBUG&&BITFIELD
+         FlagLocationUsed((Uint32)(pBlock+1));
+         #endif
+      return (void*)(pBlock+1);
+   }
+   
+   // if there is enough room for the requested amount of space in pBlock,
+   // but not enough left over to form a new free block
+   else
+   {
+      // Remove pBlock from the linked list and make it into a used block
+      if (pLast)
+         pLast->Next=pBlock->Next;
+      else
+         FirstFreeBlock[Heap]=pBlock->Next;
+//	  pBlock->Id=UniqueIndentifier;	
+      pBlock->ParentHeap=Heap;
+
+      // pBlock->Size is not changed, because we've had to allocate
+      // the whole block.
+
+      Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
+
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+		}
+		
+      // Return the newly allocated block
+      ClearMem(pBlock+1,size);
+		
+			#if RECORDEVERYTHING
+			Mem_Record(pBlock, ReturnAddress);
+			#endif
+         #if DEBUG&&BITFIELD
+         FlagLocationUsed((Uint32)(pBlock+1));
+         #endif
+      return (void*)(pBlock+1);
+   }
+}
+
+
+#if SMALLHEADER
+void Mem_DeleteX(void *p)
+#else
+void Mem_Delete(void *p)
+#endif
+{
+   RECORDRA;
+	#if DEBUG
+   ASSERT(MemInitialised,"Mem_Delete called before memory initialised");
+   #endif
+	// C++ will never actually call operator delete if a delete NULL is 
+   // attempted, but this check is stuck in anyway cos Mem_Delete probably
+   // won't only be called from C++ delete operators
+   ASSERT(p,"NULL pointer sent to Mem_Delete");
+
+
+	#if RECORDEVERYTHING
+	Mem_Remove(p);
+	#endif
+
+   #if DEBUG&&BITFIELD
+   FlagLocationUnused((Uint32)p);
+   #endif
+
+	#if DEBUG
+	Mem_NumDelete++;
+	#endif
+
+
+	//Uint32* hmm = (Uint32*)p;
+	//ASSERT(*hmm != SCRIBBLE,"Mem_Delete to something that is scribbled");
+
+   // Get the pointer to the block header, which is before
+   // the allocated memory
+   SBlockHeader *pBlock=GETBLOCKHEADER(p);
+	int Heap=pBlock->ParentHeap;
+
+
+	#if PRINTBIGHEAPCALLS
+	if (Heap==BIGHEAP)
+		printf("\nFreeing %ld bytes from big heap.",pBlock->Size);
+	#endif
+
+
+	//////////////////////////////////////////////////////////////////////////////
+
+
+   // Check that this memory was allocated by Mem_New()
+   // This isn't a foolproof check, cos pBlock->ParentHeap could 
+   // equal a valid value by chance, but something is definitely up
+   // if pBlock->ParentHeap is invalid
+   if (!(Heap>=0 && Heap<MAXHEAPS))
+   { 
+      ASSERT(0,"Invalid pointer sent to Mem_Delete");
+      return;
+   }
+									
+		#if DEBUG
+		if (pBlock->Size<4 || pBlock->Size>800000)
+		{
+			sprintf(AssertString,"\npointer %lx, Size %d (%lx)",(int)pBlock,(int)(pBlock->Size),(int)(pBlock->Size));
+			ASSERT(0,"Unlikely Mem_Delete size");
+		}
+		#endif
+
+   Used[Heap]-=sizeof(SBlockHeader)+pBlock->Size;
+   #if DEBUG
+   --AllocatedBlocks[Heap];
+   #endif
+
+
+	#if RECORDSMALLHEAPPOINTERS&DEBUG
+	if (Heap==SMALLHEAP) RemovePointer((Uint32*)p);
+	#endif
+
+   // Set the block free
+   AddToFreeList(pBlock,Heap);
+	
+	// Check if the LowMemory indicator needs to stay on or go off.
+	if (Heap==BIGHEAP)
+	{
+		if (Used[Heap]>=CriticalBigHeapUsage)
+			LowMemory=TRUE;
+		else	
+			LowMemory=FALSE;
+	}
+}
+
+// This will shrink the allocated block to have newsize. However, it will
+// only shrink it if there is enough leftover space to at least hold a
+// SBlockHeader structure so that a new free block can be made from the
+// leftover space.
+#if SMALLHEADER
+void Mem_ShrinkX(void *p, size_t newsize)
+#else
+void Mem_Shrink(void *p, size_t newsize)
+#endif
+{
+   RECORDRA;
+   SBlockHeader *pBlock=GETBLOCKHEADER(p);
+	int Heap=pBlock->ParentHeap;
+	
+	#if PRINTBIGHEAPCALLS
+   if (Heap==BIGHEAP)
+		printf("\nShrinking %ld bytes on big heap down to %ld bytes.",pBlock->Size,newsize);
+	#endif	
+
+
+   ASSERT(newsize<=pBlock->Size,"Illegal newsize %d sent to Mem_Shrink",newsize);
+   ASSERT((newsize&3)==0,"newsize %d not lword aligned",newsize);
+
+
+   ASSERT(Heap>=0 && Heap<MAXHEAPS,
+          "Corrupt block header, parent heap (%d) out of range",Heap);
+
+   if (newsize<pBlock->Size-sizeof(SBlockHeader))
+   {
+      SBlockHeader *pNewFreeBlock=(SBlockHeader*)((char*)p+newsize);
+      pNewFreeBlock->Size=pBlock->Size-sizeof(SBlockHeader)-newsize;
+
+      Used[Heap]-=pBlock->Size-newsize;
+
+      pBlock->Size=newsize;
+      AddToFreeList(pNewFreeBlock,Heap);
+		
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+		}
+   }
+}
+
+
+#if DEBUG
+// Not a very important function, it just calculates the amount of space occupied by holes
+void Mem_CalcHoles(int Heap)
+{
+   RECORDRA;
+   SBlockHeader* pBlock=FirstFreeBlock[Heap];
+
+   // Find the block which ends just before HEAPTOP. This block represents
+   // the free space, while other blocks count as holes.
+   while (((char*)(pBlock+1)+pBlock->Size)!=(char*)HeapDefs[Heap][HTOP] && pBlock)
+      pBlock=pBlock->Next;
+
+   if (pBlock)
+      Holes[Heap]=HeapDefs[Heap][HTOP]-HeapDefs[Heap][HBOT]-sizeof(SBlockHeader)-pBlock->Size-Used[Heap];
+   else
+      // The block which ends just before HEAPTOP is being used, so all
+      // the free space is occupied by holes
+      Holes[Heap]=HeapDefs[Heap][HTOP]-HeapDefs[Heap][HBOT]-Used[Heap];
+}
+
+
+int Mem_CheckIfValidPointer(void* p)
+{
+   RECORDRA;
+   SBlockHeader *pBlock=GETBLOCKHEADER(p);
+
+
+   if (pBlock->ParentHeap<0 || pBlock->ParentHeap>=MAXHEAPS)
+   {
+      printf("\n\nBad pointer: Parent Heap out of range\n");
+      return FALSE;
+   }
+
+   if (pBlock->Size&3)
+   {
+      printf("\n\nBad pointer: Size not a multiple of 4 bytes\n");
+      return FALSE;
+   }
+
+   if (((Uint32)pBlock)<HeapDefs[pBlock->ParentHeap][0] ||
+       (Uint32)p+pBlock->Size>HeapDefs[pBlock->ParentHeap][1])
+   {
+      printf("\n\nBad pointer: Block is not within parent heap\n");
+      return FALSE;
+   }
+
+   return TRUE;
+}
+
+
+
+void Mem_CheckForCorruption()
+{
+   RECORDRA;
+   #if SCRIBBLEOVERFREEBLOCKS
+   printf("\n");
+   int CorruptionFound=FALSE;
+   for (int Heap=0; Heap<MAXHEAPS; ++Heap)
+   {
+      register SBlockHeader *pFree=FirstFreeBlock[Heap];
+
+      while (pFree)
+      {
+         Uint32* pCheck=(Uint32*)(pFree+1);
+         for (int i=0; i<pFree->Size/4; ++i)
+            if (*pCheck++!=SCRIBBLE)
+            {
+               printf("\nHeap %d is corrupted",Heap);
+               CorruptionFound=TRUE;
+			   return;
+            }
+   
+         pFree=pFree->Next;
+      }
+   }
+   if (CorruptionFound==FALSE) printf("No heap corruption found\n");
+   #else
+   printf("\nCould not check for heap corruption because");
+   printf("\nSCRIBBLEOVERFREEBLOCKS not set in mem.cpp\n");
+   #endif
+}
+
+
+
+void Mem_ListFreeBlocks(int Heap)
+{
+   RECORDRA;
+   ASSERT(Heap>=0 && Heap<MAXHEAPS,"Bad heap number sent to Mem_ListFreeBlocks");
+
+   printf("\n\n--------- Heap %d Free Blocks ---------\n",Heap);
+
+   register SBlockHeader *pBlock=FirstFreeBlock[Heap];
+   int total=0;
+   while (pBlock)
+   {
+      printf("\n%x ... Size=%ld",pBlock+1,pBlock->Size);
+      total+=pBlock->Size;
+      pBlock=pBlock->Next;
+   }
+   printf("\nTotal=%ld",total);
+}
+
+
+
+void Mem_CheckHeaps()
+{
+	RECORDRA;
+	printf("\n\nChecking heaps:");
+	for (int i=0; i<MAXHEAPS; ++i)
+	{
+		printf("\n\nHeap %d:",i);
+		SBlockHeader *pBlock=FirstFreeBlock[i];
+		
+		while (pBlock)
+		{
+			printf("\npBlock=%lx Size=%ld",pBlock,pBlock->Size);
+			Uint32 p=(Uint32)pBlock;
+			if (p<HeapDefs[i][0] || p>HeapDefs[i][1])
+			{
+				printf("POINTER OUT OF RANGE!!\n\n");
+				ASSERT(0,"Pointer out of range");
+			}	
+			pBlock=pBlock->Next;
+		}
+	}
+	printf("\n");
+}
+#endif
+
+// Returns the size in bytes of an allocated block
+#if SMALLHEADER
+int Mem_GetBlockSizeX(void *p)
+#else
+int Mem_GetBlockSize(void *p)
+#endif
+{
+   RECORDRA;
+   SBlockHeader *pBlock=GETBLOCKHEADER(p);
+
+   ASSERT((pBlock->ParentHeap>=0 && pBlock->ParentHeap<MAXHEAPS)
+           ,"Invalid pointer sent to Mem_GetBlockSize");
+
+   return pBlock->Size;
+}
+
+
+
+#if DEBUG
+
+// If the pointer p points to free space, or if it points outside the heap, this will assert.
+void Mem_Validate(void *p, int Heap)
+{
+	int CallerAddress;
+	int i=NextRA-1;
+	if (i<0) i=MAXRETURNADDRESSES-1;
+	CallerAddress=RA[i];
+	
+	RECORDRA;
+	
+	// For the moment, it only works on the regular heaps.
+	ASSERT(Heap>=0 && Heap<MAXHEAPS,"Illegal Heap id sent to Mem_Validate");
+
+	Uint32 pp=(Uint32)p;
+	
+	// Check if the pointer is within the heap somewhere.
+	if (pp<HeapDefs[Heap][0] || pp>=HeapDefs[Heap][1])
+	{
+		sprintf(AssertString,"\n Bad pointer = %lx\n Last function called = %lx",pp,CallerAddress);
+		ASSERT(0,"Pointer out of range of heap");
+	}	
+	
+	// Now scan through the free blocks checking that the pointer does not point within
+	// any of them.
+	SBlockHeader *pBlock=FirstFreeBlock[Heap];
+	while (pBlock)
+	{
+		if (pp>=(Uint32)pBlock && pp<(((Uint32)(pBlock+1))+pBlock->Size))
+		{
+			sprintf(AssertString,"\n Bad pointer = %lx\n Last function called = %lx",pp,CallerAddress);
+			ASSERT(0,"Pointer points to free memory");
+		}
+		pBlock=pBlock->Next;
+	}		
+}
+#endif
+
+#if DEBUG
+void Mem_PrintFree(char *str)
+{
+	int Free0=(HeapDefs[0][1]-HeapDefs[0][0]-Used[0]);
+	int Free1=(HeapDefs[1][1]-HeapDefs[1][0]-Used[1]);
+	printf ("%s: %d New = %d, Delete = %d (Diff %d) \n",str,Free1,Mem_NumNew,Mem_NumDelete,Mem_NumNew-Mem_NumDelete);
+}
+#endif
+
+int Mem_GetFree(char heap)
+{
+	return(HeapDefs[heap][1]-HeapDefs[heap][0]-Used[heap]);
+}
+
+void Mem_Copy(void *dest, void *source, int bytes)
+{
+	// copy 32 bits at a time, then 8 bits at a time
+	int num32 = bytes >> 2;
+	int num8 = bytes & 3;
+
+	Uint32 *s1 = (Uint32 *) source;
+	Uint32 *d1 = (Uint32 *) dest;
+
+	while (num32 > 0)
+	{
+		*(d1++) = *(s1++);
+		num32--;
+	}
+
+	Uint8 *s2 = (Uint8 *) s1;
+	Uint8 *d2 = (Uint8 *) d1;
+
+	while (num8 > 0)
+	{
+		*(d2++) = *(s2++);
+		num8--;
+	}
+}
+
+#include "hires.h"
+#include "ShellUtils.h"
+void Mem_Debug(char *str)
+{
+	#if DEBUG
+	Mem_PrintFree(str);
+
+	HiRes_ClearOTag();
+	ResetOT();
+	ProfileAddHeapIndicator(1);
+	HiRes_DrawOTag();
+
+	HiRes_ClearOTag();
+	ResetOT();
+	ProfileAddHeapIndicator(1);
+	HiRes_DrawOTag();
+	#endif
+}
+
+
+#if DEBUG||(MICK&&!CD)
+
+static	const char * DumpArea  = (char*)0x80400000;
+static	const	int	DumpWidth  = 600;
+static	const int   DumpHeight = 180;
+static	const int	DumpSize = DumpWidth * DumpHeight;
+static	const char * DumpEnd = DumpArea + DumpSize;	
+
+
+static int 	Off = 0;												// offset into memory
+static char *pDump = DumpArea;
+// only do a bit per frame
+void Mem_DumpUpdate(int BytesPerFrame)
+{
+
+	if (!Pad[0].RightOne.Pressed || !Pad[0].RightTwo.Pressed)
+		return;
+
+
+// dodgy little thing, creates a 200x200 rectangle showing the heap, and groks it down to the screen
+// where to put it in memory?   Try 0x80040000 for now
+
+	char *Start;
+	char *End;
+
+	if (!Pad[0].Triangle.Pressed)
+	{
+	 	Start = (char*) HeapDefs[1][HBOT];
+	 	End = (char*) HeapDefs[1][HTOP];
+	}
+	else										// if triangle pressed, then show the code
+	{
+		extern Uint32 TopOfCode;
+	 	Start = (char*)0x80000000;
+	 	End =   (char*)TopOfCode;							
+	}
+
+	int 	Len = (int)(End) - (int)(Start);
+	int 	Step = Len * 256 / DumpSize;					// 8 bit fixed point step 
+
+	// Find the end of this section
+	// if past DumpEnd, then set to DumpEnd
+	char *SectionEnd = pDump + BytesPerFrame;
+	if (SectionEnd > DumpEnd)
+		SectionEnd = (char*)DumpEnd;
+
+	char *pFrom;
+
+	// Update this section
+	while (pDump < SectionEnd)
+	{		
+			Off += Step;
+			pFrom = Start + (Off>>8);						
+			*pDump++ = *pFrom;			// and copy a byte
+	}	
+
+	// If it was the last section, then back to 0
+	if (SectionEnd == DumpEnd)
+	{
+		Off = 0;
+		pDump = (char*)DumpArea;
+	}
+
+
+}
+
+
+
+void Mem_DumpRect()
+{
+	
+	RECT r;
+	r.x=(512-DumpWidth/2)/2;
+	r.y=pOtherBuffer->Top+(240-DumpHeight)/2;
+	r.w=DumpWidth/2;
+	r.h=DumpHeight;
+	LoadImage( &r, (u_long *)DumpArea );
+   DrawSync( 0 );
+
+}
+
+
+#define		MAXBLOCKTYPE	100
+/*
+struct	SDebugHeader
+{
+	int ParentHeap:4;
+	size_t Size:28; 			// The size of the block in bytes, not including this header
+   SBlockHeader* Next;
+	// data after this is extra stuff
+	char *pFunction;			// return address of function
+	char *pFile;				// file it was in
+	char *pPretty;				// Pretty function name
+	int	Line;					// line number it was called from
+	int	When;
+};
+*/
+
+SDebugHeader  BlockType[MAXBLOCKTYPE];
+int	BlockTypes;
+
+#define MEMMAP 0x80500000
+
+#include	"font.h"
+
+extern void Pause(int Time);
+
+// Display the heap, with the ability to zoom in and inspect individual areas
+// and to display the names of blocks
+SuperDuperMemoryInspector()
+{
+	int	HeapBot = HeapDefs[1][HBOT];
+	int	HeapTop = HeapDefs[1][HTOP];
+	int	HeapSize = HeapTop - HeapBot;
+	
+	printf ("heapsize = %d, Bot = %lx, Top = %lx\n",HeapSize, HeapBot,HeapTop);
+
+	// wait for square and circle to be released
+	while (Pad[0].Square.Pressed)
+		Pad_Update();
+
+	RECT r;
+
+	printf ("Categorizing Block types\n");
+	BlockTypes = 1;				// start out with type 1
+	// First find out all the the block types
+	SDebugHeader *pDebug = pFirstUsed;
+	while (pDebug)
+	{
+		int i;
+		char *pFunction = pDebug->pFunction;
+		for (i=0;i<BlockTypes;i++)
+		{
+			if (BlockType[i].pFunction == pFunction)
+			{
+				BlockType[i].When++;
+				break;
+			}
+		}
+		if (i == BlockTypes)
+		{
+//			printf ("New Block %d  =  %lx\n",BlockTypes,pFunction);
+			BlockType[BlockTypes] = *pDebug;
+			BlockType[BlockTypes].When = 1;
+			BlockTypes++;
+		}
+
+		pDebug = (SDebugHeader*)pDebug->Next;
+	}
+
+
+	// Now create a map of the heap, coded by block type
+	// at 0x80050000 for now
+
+	// clear it all to zero first
+	char *pMap = (char*) MEMMAP;
+	printf ("Zeroing Memory Map from %lx to %lx\n",pMap,(MEMMAP + HeapSize));
+	while (pMap < (char*)(MEMMAP + HeapSize))
+	{
+		*pMap++ = 0;
+	}
+	int i;
+
+	printf ("Creating Memory Map\n");
+	// Now go through all the allocated blocks, and code the map based on block type
+	pDebug = pFirstUsed;
+	while (pDebug)
+	{
+		// Find the block type
+		int	type;
+		char *pFunction = pDebug->pFunction;
+		for (i=0;i<BlockTypes;i++)
+		{
+			if (BlockType[i].pFunction == pFunction)
+			{
+				type = i;
+				break;
+			}
+		}
+		ASSERT(i!=BlockTypes,"Memory type for %lx not found",pFunction);
+		pMap = MEMMAP - HeapBot + (char*)pDebug;
+		int	len = pDebug->Size + sizeof(SDebugHeader);
+		pMap -= sizeof(SDebugHeader);
+//		printf ("%d,%d\n",type,len);
+			extern int    Rnd(int n);
+
+//		type = Rnd(255);
+		for (i=0;i<len;i++)
+		{
+//			*pMap++ = Rnd(255);		//type;
+			*pMap++ = type;
+		}
+		pDebug = (SDebugHeader*)pDebug->Next;
+	}
+
+	// Now we have the memory map in memory, so we can display it
+
+	int	Start = 0;
+	int	Step = 20*256;		// 256 = a step of 1
+	int	Offset = 0;
+
+	int	w = 256;
+	int	h = 200;
+	int	x = 100;
+	int	y = 32;
+
+
+
+   FntLoad(0, pOtherBuffer->Top);
+   FntOpen(0, 0, 512, SCREENHEIGHT, 0, 1024);
+DRAWENV DrawEnv;	
+	SetDefDrawEnv(&DrawEnv, 0, pDoubleBuffer->Top, 512, SCREENHEIGHT);
+//   SetDefDispEnv(&DispEnv, 0, 0, 512, SCREENHEIGHT);
+   PutDrawEnv(&DrawEnv);
+//   PutDispEnv(&DispEnv);
+
+
+
+
+	printf ("Displaying Memory Map\n");
+	while (!Pad[0].Start.Pressed)
+	{
+		Pad_Update();
+		PollHost();
+
+		int BytesPerLine = w * Step / 256;
+
+		if (Pad[0].Up.Pressed)
+		{
+			Start -= BytesPerLine;
+			if (Pad[0].Up.PressedTime > 1)
+				Start -= 3*BytesPerLine;
+
+//			printf ("Start = %d\n",Start);
+		}
+
+		if (Pad[0].Down.Pressed)
+		{
+			Start += BytesPerLine;
+			if (Pad[0].Down.PressedTime > 1)
+				Start += 3*BytesPerLine;
+//			printf ("Start = %d\n",Start);
+		}
+
+//		if (Start > HeapSize - w*h*Step/256)
+//				Start = HeapSize - w*h*Step/256;
+
+//		if (Start < 0)
+//			Start = 0;
+
+
+		if (Pad[0].Right.Pressed && Step > 10)
+		{
+			int MidOffset = w * h/2 * Step /256;
+			Start = Start + MidOffset/10;
+			Step = Step * 9 / 10;
+//			printf ("Step = %d\n",Step);
+		}
+		
+		if (Pad[0].Left.Pressed && Step < 200*256)
+		{
+			int MidOffset = w * h/2 * Step /256;
+			Start = Start - MidOffset/10;
+			Step = Step * 10 / 9;
+//			printf ("Step = %d\n",Step);
+		}
+
+
+
+		Offset = 0;
+		Uint16* pOut = (Uint16*) DumpArea;
+		char *pIn = (char*)((int)MEMMAP + (int)Start);
+		char *pSample = DumpArea + (w*2) * (h/2); 
+		while (pOut < (DumpArea + w * h*2) && pIn < MEMMAP + HeapSize)
+		{
+			Uint16 a = *pIn;
+			a = a | (a<<8);
+			
+			if (pIn<MEMMAP)
+				*pOut++ = (8<<10)+(8<<5)+8;
+			else
+			{
+				if (a)
+					*pOut++ = a;
+				else
+					*pOut++ = (10<<10)+(0<<5)+10;			// magenta = free
+			}
+			Offset += Step;
+			if (Offset & 0xffffff00)
+			{
+		 		int Top = Offset >> 8;
+				pIn += Top;
+				Offset -= (Top<<8);
+			}
+		}
+
+
+		if (pOut < (DumpArea + w * h*2))
+		{
+			while (pOut < (DumpArea + w * h*2))
+				*pOut++ = (8<<10)+(8<<5)+8;			// nice null grey for "past the bottom"
+
+		}
+	
+		r.x=x;
+		r.y=pDoubleBuffer->Top+y;
+		r.w=w;
+		r.h=h;
+		LoadImage( &r, (u_long *)DumpArea );
+		DrawSync( 0 );
+
+		r.x -= 16;
+		r.y += h/2-1;
+		r.w = 10;
+		r.h = 3;
+		ClearImage(&r,255,0,0);
+		DrawSync( 0 );
+		r.y += 1;
+		r.w = 15;
+		r.h = 1;
+		ClearImage(&r,255,255,0);
+
+		int Type = *pSample;
+
+//		Db_FlipClear();					// Flip the buffers, start rendering and clear ot
+		
+		char	hmm[200];
+		sprintf(hmm,"\n\n  %s (%s:%d)",BlockType[Type].pPretty,BlockType[Type].pFile,BlockType[Type].Line);
+
+
+   FntPrint(hmm);
+   //ClearImage(&bg, 0, 0, 0);
+   FntFlush(-1);
+		DrawSync(0);
+
+//		Pause(1);
+//		Db_DisplayDraw();					// Start Rendering
+
+
+
+	}
+
+	while (Pad[0].Start.Pressed)
+		Pad_Update();
+	Pad[0].Start.Triggered = 0;
+
+
+}
+
+
+
+int Mem_DumpToScreen()
+{
+
+// dodgy little thing, creates a 200x200 rectangle showing the heap, and groks it down to the screen
+// where to put it in memory?   Try 0x80040000 for now
+	if (!Pad[0].RightOne.Pressed || !Pad[0].RightTwo.Pressed)
+		return 0 ;
+
+	#if SUPERMEMDEBUG
+	if (Pad[0].Square.Pressed)
+		SuperDuperMemoryInspector();
+	#endif
+
+
+	Mem_DumpRect();
+	return 1;
+}
+#endif
+
+#if SMALLHEADER&&!(SUPERMEMDEBUG)
+void* Mem_New(size_t size, int Heap, int AssertOnFailure)
+{
+	if (size<=4)
+		size = 8;
+//	printf ("N %d\n",size);
+	Uint32 *p = (Uint32*)Mem_NewX(size-4,Heap,AssertOnFailure);
+	p--;		// use the "Id" field, which is never used
+	return (void *) p; 
+}
+
+void Mem_Delete(void *p)
+{
+//	printf ("D\n");
+	Mem_DeleteX((void*)((int)(p) + 4));
+}
+
+void Mem_Shrink(void *p, size_t newsize)
+{
+	if (newsize<=4)
+		newsize = 8;
+//	printf ("S %d\n",newsize);
+	Mem_ShrinkX((void*)((int)(p)+4),newsize-4);
+}
+
+int Mem_GetBlockSize(void *p)
+{
+	int n =  4+Mem_GetBlockSizeX((void*)((int)(p)+4));
+	return n;
+}
+
+#endif
+
+#if (SUPERMEMDEBUG)
+
+#define MEMDIFF (sizeof(SDebugHeader) - sizeof(SBlockHeader))
+
+void*   Mem_NewSuper(char* pFile, char*pPretty, int Line, size_t size, int Heap=SMALLHEAP, int AssertOnFailure=TRUE)
+{
+		register int _retaddr;
+	__asm__ volatile ("move %0,$31" : "=r"(_retaddr) : : "%0");
+	
+	//	printf ("N %d\n",size);
+	char *p = (char*)Mem_NewX(size+MEMDIFF,Heap,AssertOnFailure);
+	
+	SDebugHeader *pDebug = (SDebugHeader*)(p-sizeof(SBlockHeader));
+	if (pFirstUsed == 0)
+	{
+		pFirstUsed = pDebug;	  		// first item in the list
+		pDebug->Next = 0;				// and the last
+	}
+	else
+	{
+		pDebug->Next = (SBlockHeader*)pFirstUsed;	  // insert in head of list
+		pFirstUsed = pDebug;
+	}
+
+	
+	pDebug->pFunction = (char*)_retaddr;
+	pDebug->Line = Line;
+	pDebug->pFile = pFile;
+	pDebug->pPretty = pPretty;
+
+	p += MEMDIFF;		
+	return (void *) p; 
+}
+
+void Mem_Delete(void *p)
+{
+//	printf ("D\n");
+	SDebugHeader *pDebug = (SDebugHeader*)((int)(p)-sizeof(SDebugHeader));
+	if (pFirstUsed == pDebug)
+	{
+		pFirstUsed = (SDebugHeader*)pDebug->Next;
+	}
+	else
+	{
+		SDebugHeader *pFind = pFirstUsed;
+		while (pFind->Next != (SBlockHeader*)pDebug)
+		{
+			pFind = (SDebugHeader*)(pFind->Next);
+			ASSERT(pFind,"Debug info not found in Mem_Delete");
+		}
+		pFind->Next = pDebug->Next;
+	}
+	Mem_DeleteX((void*)((int)(p) - MEMDIFF));
+}
+
+void Mem_Shrink(void *p, size_t newsize)
+{
+	if (newsize<=4)
+		newsize = 8;
+//	printf ("S %d\n",newsize);
+	Mem_ShrinkX((void*)((int)(p)-MEMDIFF),newsize+MEMDIFF);
+}
+
+int Mem_GetBlockSize(void *p)
+{
+	int n =  Mem_GetBlockSizeX((void*)((int)(p)-MEMDIFF)) - MEMDIFF;
+	return n;
+}
+
+
+#endif
+
+int	Mem_SuperDebugUsage()
+{
+#if SUPERMEMDEBUG
+	printf ("\nMemory Usage\n\n");
+	SDebugHeader *pDebug = pFirstUsed;
+	while (pDebug)
+	{
+//		printf ("%8lx %d\n",pDebug->pFunction,pDebug->Size);
+		char *Function = pDebug->pFunction;
+		SDebugHeader *pBefore = pFirstUsed;
+		while (pBefore != pDebug)				// search to see if we had this before
+		{
+			if (pBefore->pFunction == Function)
+				break;
+			pBefore = (SDebugHeader*)pBefore->Next;
+		}
+		if (pBefore == pDebug)					// not found before
+		{
+			// add up this one, and all the ones after
+			int	TotalSize = 0;
+			int	Count = 0;
+			SDebugHeader *pTally = pDebug;
+			while (pTally)
+			{
+				if (pTally->pFunction == Function)
+				{
+					TotalSize += pTally->Size - MEMDIFF + 4;  // calculate the size as if no SUPERMEMDEBUG
+					Count++;
+				}
+				pTally = (SDebugHeader*)pTally->Next;
+			}
+			printf("%8lx : %4d %7d  %s (%s:%d)\n",Function,Count,TotalSize,pDebug->pPretty,pDebug->pFile,pDebug->Line);
+		}
+  		pDebug = (SDebugHeader*)pDebug->Next;
+	}
+#endif
+}
+
+

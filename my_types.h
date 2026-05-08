@@ -3,6 +3,9 @@
 #ifndef MY_TYPES_H
 #define MY_TYPES_H
 
+#define SQ2(x,y) (x*x + y*y)
+#define SQ3(x,y,z) (x*x + y*y + z*z)
+
 #ifdef _MSC_VER
 
 #if _MSC_VER < 1300

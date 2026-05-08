@@ -196,14 +196,11 @@ i32 Utils_CanSee(
 }
 
 // @Ok
-// @Test
-u32 Utils_Dist(CVector const * a1,CVector const * a2)
+// @AlmostMatching: close enough slightly diff operator order
+// think it's because of the inline of CVector stuff
+u32 Utils_Dist(const CVector &a1, const CVector &a2)
 {
-	i32 x = ((a1->vx - a2->vx) >> 12) * ((a1->vx - a2->vx) >> 12);
-	i32 y = ((a1->vy - a2->vy) >> 12) * ((a1->vy - a2->vy) >> 12);
-	i32 z = ((a1->vz - a2->vz) >> 12) * ((a1->vz - a2->vz) >> 12);
-
-	return M3dMaths_SquareRoot0(x + y + z);
+	return M3dMaths_SquareRoot0(((a1 - a2) >> 12).SquaredLength());
 }
 
 // @SMALLTODO
@@ -999,4 +996,5 @@ void patch_utils(void)
 	PATCH_PUSH_RET(0x004E6F00, Utils_LinearFilter);
 	PATCH_PUSH_RET(0x004E6F50, Utils_ShiftFilter);
 	PATCH_PUSH_RET(0x004E6520, Utils_GenerateCRC);
+	PATCH_PUSH_RET(0x004E6150, Utils_Dist);
 }

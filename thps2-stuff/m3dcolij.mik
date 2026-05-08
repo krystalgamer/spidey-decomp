@@ -1,0 +1,1489 @@
+#include	<sys/types.h>
+#include	<libgte.h>
+#include	<inline_c.h>
+#include	<stddef.h>
+#include	"globals.h"
+#include	"m3dcolij.h"
+#include	"m3dmaths.h"
+#include	"m3dgte.h"
+#include	"m3dasm.h"
+#include	"physics.h"
+#include    "spool.h"
+#include    "trig.h"
+
+
+//---------------------------------------------------------------------------
+
+// Globals...
+
+MATRIX	Tfm;
+CBody		*pBodyHit;
+SHit		NearestHit;
+Uint16	Inquiry=0xFFFF;
+int		CameraCollisionCheck	 = 0,
+			BaddyCollisionCheck	 = 0,
+			BulletCollisionCheck	 = 0,
+			TriggerCollisionCheck = 0;
+int		CollidedTriggerModel;
+Uint32	M3dColij_ZeroMask, M3dColij_OneMask;
+
+//	Global ColInfo	structure used	for passing	and returning parameters
+//	to	Mikes	collision functions
+SLineInfo GColInfo;
+
+//----------------------------------------------------------------------------
+
+
+	//	this will eliminate multiple collision tests on objects listed in more than one zone
+
+
+void NextInquiry(void)
+{
+	// increment inquiry
+	// if it's 0, set to 1 and set all objects' inquiry fields to 0.
+	// If this weren't done, a rare bug may occur where the previous collision test with a particular object was
+	// performed 65536 tests ago, and the current test would automatically fail.
+	if	(!++Inquiry)
+	{
+		SItem	*pItem;
+		Inquiry=1;
+		for (pItem=EnviroList; pItem; pItem=pItem->NextItem)
+			pItem->Inquiry=0;
+		for (pItem=(SItem *)EnvironmentalObjectList; pItem; pItem=pItem->NextItem)
+			pItem->Inquiry=0;
+	}
+}
+
+
+//----------------------------------------------------------------------------
+
+
+	///////////////////////////////////
+	//											//
+	//	line-item collision functions	//
+	//											//
+	///////////////////////////////////
+
+
+
+
+void M3dColij_InitLineInfo(SLineInfo *pInfo)
+{
+	short		*pShort;
+	SVECTOR	L,AbsL;
+	Vector	*p0,*p1;
+
+//	ASSERT(pInfo->StartCoords.vx != pInfo->EndCoords.vx ||
+//			 pInfo->StartCoords.vy != pInfo->EndCoords.vy ||
+//			 pInfo->StartCoords.vz != pInfo->EndCoords.vz, "Degenerate collision segment");
+
+		//	set up the world collision	segment transform	and other stuff
+
+		//	assume no collision
+
+	pInfo->pItem	 =	NULL;
+	pInfo->Distance =	0x7FFFFFFF;
+	pInfo->Model	 =	-1;
+	pInfo->RecordTriggerZoneHits=FALSE;
+
+
+	pInfo->DropDown = 0;		//	assume not a drop-down test
+
+
+	// calculate the world collision segment transform (cst)
+
+	L.vx = pInfo->EndCoords.vx	- pInfo->StartCoords.vx	>>	FRACBITS;
+	L.vy = pInfo->EndCoords.vy	- pInfo->StartCoords.vy	>>	FRACBITS;
+	L.vz = pInfo->EndCoords.vz	- pInfo->StartCoords.vz	>>	FRACBITS;
+
+#if 0
+
+	AbsL.vx = L.vx>=0 ? L.vx : -L.vx;
+	AbsL.vy = L.vy>=0 ? L.vy : -L.vy;
+	AbsL.vz = L.vz>=0 ? L.vz : -L.vz;
+
+	pShort =	&pInfo->WorldCst.m[0][0];
+
+	if (AbsL.vx>AbsL.vy && AbsL.vx>AbsL.vz)
+	{
+		if (L.vx>0)
+		{
+			*pShort++ = -(L.vy<<12)/L.vx;
+			*pShort++ = 0x1000;
+			*pShort++ = 0;
+			*pShort++ = -(L.vz<<12)/L.vx;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+			*pShort++ = 0x1000;
+			*pShort++ = 0;
+			*pShort++ = 0;
+		}
+		else
+		{
+			*pShort++ = (L.vy<<12)/L.vx;
+			*pShort++ = -0x1000;
+			*pShort++ = 0;
+			*pShort++ = -(L.vz<<12)/L.vx;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+			*pShort++ = -0x1000;
+			*pShort++ = 0;
+			*pShort++ = 0;
+		}
+		pInfo->Length = AbsL.vx;
+	}
+	else if (AbsL.vy>AbsL.vz)
+	{
+		if (L.vy>0)
+		{
+			*pShort++ = 0;
+			*pShort++ = -(L.vz<<12)/L.vy;
+			*pShort++ = 0x1000;
+			*pShort++ = 0x1000;
+			*pShort++ = -(L.vx<<12)/L.vy;
+			*pShort++ = 0;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+			*pShort++ = 0;
+		}
+		else
+		{
+			*pShort++ = 0;
+			*pShort++ = (L.vz<<12)/L.vy;
+			*pShort++ = -0x1000;
+			*pShort++ = 0x1000;
+			*pShort++ = -(L.vx<<12)/L.vy;
+			*pShort++ = 0;
+			*pShort++ = 0;
+			*pShort++ = -0x1000;
+			*pShort++ = 0;
+		}
+		pInfo->Length = AbsL.vy;
+	}
+	else
+	{
+		if (L.vz>0)
+		{
+			*pShort++ = 0x1000;
+			*pShort++ = 0;
+			*pShort++ = -(L.vx<<12)/L.vz;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+			*pShort++ = -(L.vy<<12)/L.vz;
+			*pShort++ = 0;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+		}
+		else
+		{
+			*pShort++ = -0x1000;
+			*pShort++ = 0;
+			*pShort++ = (L.vx<<12)/L.vz;
+			*pShort++ = 0;
+			*pShort++ = 0x1000;
+			*pShort++ = -(L.vy<<12)/L.vz;
+			*pShort++ = 0;
+			*pShort++ = 0;
+			*pShort++ = -0x1000;
+		}
+		pInfo->Length = AbsL.vz;
+	}
+
+#else
+
+	int		lzc,Shift1,Shift2;
+	Sint32	s1,s2,r1,r2,s1Norm,s2Norm,r1Norm,r2Norm;
+	Sint16	Cos, Sin;
+
+	s1	= SQ2(L.vx,L.vz);
+
+	if	(s1)
+	{
+		gte_ldlzc(s1);
+		gte_nop();
+		gte_nop();
+		gte_stlzc(&lzc);
+		Shift1 = lzc-1 >> 1;
+
+		s1Norm =	s1 << (lzc-1 & 0x1E);
+		r1Norm = M3dMaths_SquareRoot0(s1Norm);
+
+		Sin = (L.vx<<12+Shift1)/r1Norm;
+		Cos = (L.vz<<12+Shift1)/r1Norm;
+
+		pShort =	&Tfm.m[0][0];
+
+		*pShort++ =	Cos;
+		*pShort++ =	0;
+		*pShort++ =	-Sin;
+		*pShort++ =	0;
+		*pShort++ =	0x1000;
+		*pShort++ =	0;
+		*pShort++ =	Sin;
+		*pShort++ =	0;
+		*pShort	 =	Cos;
+
+		s2	= s1+SQ1(L.vy);
+
+		gte_ldlzc(s2);
+		gte_nop();
+		gte_nop();
+		gte_stlzc(&lzc);
+		Shift2 = lzc-1 >> 1;
+
+		s2Norm =	s2 << (lzc-1 & 0x1E);
+		r2Norm = M3dMaths_SquareRoot0(s2Norm);
+		pInfo->Length = r2Norm>>Shift2;
+
+		Sin = (L.vy<<12+Shift2)/r2Norm;
+		Cos = (r1Norm<<12)/(r2Norm << Shift1-Shift2);
+
+		pShort =	&pInfo->WorldCst.m[0][0];
+
+		*pShort++ =	0x1000;
+		*pShort++ =	0;
+		*pShort++ =	0;
+		*pShort++ =	0;
+		*pShort++ =	Cos;
+		*pShort++ =	-Sin;
+		*pShort++ =	0;
+		*pShort++ =	Sin;
+		*pShort	 =	Cos;
+
+		MulMatrix(&pInfo->WorldCst, &Tfm);
+	}
+	else
+	{
+		if	(L.vy<0)
+		{
+			Sin =	0xF000;
+			pInfo->Length = -L.vy;
+		}
+		else
+		{
+			Sin =	0x1000;
+			pInfo->Length = L.vy;
+			pInfo->DropDown = 1;
+		}
+
+		pShort =	&pInfo->WorldCst.m[0][0];
+
+		//	in	the case	of	a drop-down	vector, the	world	cst will	be
+		//	1	0	0      1  0  0
+		//	0	0 -1  or  0  0  1
+		//	0	1	0      0 -1  0
+
+		*pShort++ =	0x1000;
+		*pShort++ =	0;
+		*pShort++ =	0;
+		*pShort++ =	0;
+		*pShort++ =	0;
+		*pShort++ =	-Sin;
+		*pShort++ =	0;
+		*pShort++ =	Sin;
+		*pShort	 =	0;
+
+	}
+
+#endif
+
+	SetRotMatrix(&pInfo->WorldCst);
+
+
+		//	get the bounding box	of	the collision segment
+
+	p0	= &pInfo->StartCoords;
+	p1	= &pInfo->EndCoords;
+
+	if	(p0->vx < p1->vx)
+		pInfo->MinCoords.vx = p0->vx,	pInfo->MaxCoords.vx = p1->vx;
+	else
+		pInfo->MinCoords.vx = p1->vx,	pInfo->MaxCoords.vx = p0->vx;
+
+	if	(p0->vy < p1->vy)
+		pInfo->MinCoords.vy = p0->vy,	pInfo->MaxCoords.vy = p1->vy;
+	else
+		pInfo->MinCoords.vy = p1->vy,	pInfo->MaxCoords.vy = p0->vy;
+
+	if	(p0->vz < p1->vz)
+		pInfo->MinCoords.vz = p0->vz,	pInfo->MaxCoords.vz = p1->vz;
+	else
+		pInfo->MinCoords.vz = p1->vz,	pInfo->MaxCoords.vz = p0->vz;
+
+
+		//	set the inquiry number
+		//	this will be unique over 65535 consecutive line	or	sphere tests
+
+	NextInquiry();
+
+	pInfo->Inquiry = Inquiry;
+}
+
+
+
+
+
+void M3dColij_LineToItem(SItem *pItem,	SLineInfo *pInfo)
+{
+	if	(!pItem)	return;
+
+	if (pInfo->Length==0)
+		return;
+
+	SetRotMatrix(&pInfo->WorldCst);
+
+	M3dAsm_LineColijPreprocessItems(pItem,0,pInfo,pInfo->Inquiry);
+
+	for (	; pItem;	pItem=pItem->NextItem)
+		if	(pItem->Inquiry != pInfo->Inquiry)
+		{
+			pItem->Inquiry	= pInfo->Inquiry;
+			M3dColij_LineToThisItem(pItem, pInfo);
+		}
+}
+
+
+
+
+#if 0   // 1 if old collision
+void M3dColij_LineToItemZoned(SItem **ppItem, SLineInfo	*pInfo)
+{
+	if	(!ppItem) return;
+
+	if (pInfo->Length==0)
+		return;
+
+	SetRotMatrix(&pInfo->WorldCst);
+
+	M3dAsm_LineColijPreprocessItemsZoned(ppItem,0,pInfo,pInfo->Inquiry);
+
+	for (	; *ppItem; ppItem++)
+		if	((*ppItem)->Inquiry != pInfo->Inquiry)
+		{
+			(*ppItem)->Inquiry =	pInfo->Inquiry;
+
+
+			M3dColij_LineToThisItem(*ppItem, pInfo);
+		}
+}
+
+
+#else
+
+// This is the old routine, not using the cache
+// use it for odd instances
+// can only be called from within M3dColijLineToItemZoned
+void M3dColij_LineToItemZonedSlow(SItem **ppItem, SLineInfo	*pInfo)
+{
+	for (	; *ppItem; ppItem++)
+		if	((*ppItem)->Inquiry != pInfo->Inquiry)
+		{
+			(*ppItem)->Inquiry =	pInfo->Inquiry;
+
+
+			M3dColij_LineToThisItem(*ppItem, pInfo);
+		}
+}
+
+// New complex yet eventually swifter caching code
+
+typedef struct 
+{
+	SItem* pItem;
+	SModel* pModel;
+	int Faces;
+	int	FirstFace;
+} SColCache;
+
+typedef struct 
+{
+	int	Flags;
+	int	XMin,YMin,ZMin;
+	int XMax,YMax,ZMax;
+} SFaceCache;
+
+
+#define	ITEMCACHESIZE  10			// Number of Item we store in the Cache
+#define FACECACHESIZE 500			// Maximum Number of faces we can store
+SColCache ItemCache[ITEMCACHESIZE];	// The Circular buffer storing the items
+SFaceCache FaceCache[FACECACHESIZE]; // Could Dynamically allocate this if needed
+int ItemCacheIndex=0;					// Next Free entry in Object Cache
+int FaceCacheIndex=0;					// Next Free entry in Face Cache
+int FaceCacheStart=-1;					// First Used Entry in Face Cache
+
+int	CacheHit,CacheMiss;					// Reassuring diagnostic numbers
+int TotalItemFaces,MaxItemFaces;
+
+// Flush the collision Cache
+// Only needed when a PSX is removed from memory
+// otherwise collision pointer will be invalid
+void M3dColij_FlushCache(void)
+{
+	ItemCacheIndex=0;					// Next Free entry in Object Cache
+	FaceCacheIndex=0;					// Next Free entry in Face Cache
+	FaceCacheStart=-1;					// Last Used Entry in Face Cache	
+	for (int i=0;i<ITEMCACHESIZE;i++)
+	{
+		ItemCache[i].pItem = 0;			// Clear entry in the cache
+	}
+}
+
+int	BB_Hit = 0;
+int BB_Miss = 0;
+int BB_PolyHit = 0;
+int BB_PolyMiss = 0;
+
+
+void M3dColij_LineToThisItemCached(SItem *pItem, SLineInfo *pInfo, SColCache *pColCache)
+{
+	VECTOR	PosnRelStart;
+	Uint16	And;
+	SModel	*pModel;
+	SProjectedVertex	*pVertices;
+
+	if	(pItem->Flags & (ITEMFLAGS_INACTIVE|ITEMFLAGS_NONCOLLIDABLE))
+		return;
+
+
+	SItem *pOldInfoItem = pInfo->pItem;
+
+
+	// Quick test fo something ...
+	// Check line segment against all bounding boxes of faces
+	// if it fails to intersect any, then return
+
+    
+	int XMin = pInfo->MinCoords.vx;
+	int YMin = pInfo->MinCoords.vy;
+	int ZMin = pInfo->MinCoords.vz;
+
+	int XMax = pInfo->MaxCoords.vx;
+	int YMax = pInfo->MaxCoords.vy;
+	int ZMax = pInfo->MaxCoords.vz;
+
+
+//	printf("Line Min(%d,%d,%d)  Max(%d,%d,%d)\n",XMin>>FRACBITS,YMin>>FRACBITS,ZMin>>FRACBITS,XMax>>FRACBITS,YMax>>FRACBITS,ZMax>>FRACBITS);
+
+	ASSERT(pColCache->pItem == pItem,"pColCache->pItem is wrong in lintothisitemcached");
+
+	SFaceCache *pFaceCache = &FaceCache[pColCache->FirstFace];
+    int Faces = pColCache->Faces;
+
+
+#if DEBUG
+	
+	pModel =	PSXRegion[pItem->Region].ppModels[pItem->Model];
+	ASSERT(pColCache->pModel == pModel,"pModel Wrong");
+	ASSERT(Faces == pModel->NumFaces,"Faces Wrong");
+	int NumVertices = pModel->NumVertices;
+	int NumNormals = pModel->NumNormals;
+	SVECTOR *Normals	  = pModel->Vertices	+ pModel->NumVertices;
+	SVECTOR *pVerts = pModel->Vertices;
+
+#endif
+
+//	printf("%d\n",Faces);
+
+	SFace *pFace;
+
+	ASSERT(Faces >0 && Faces<1000,"Illegal number of faces");
+
+	int hits=0;
+
+
+if ( !Pad[0].Square.Pressed)
+	{
+		for (int i=0;i<Faces;i++)
+		{
+
+
+			if (   pFaceCache->YMin <= YMax	  // check Y first, as it's the UP direction
+				&& pFaceCache->YMax >= YMin
+				&& pFaceCache->XMin <= XMax
+				&& pFaceCache->XMax >= XMin
+				&& pFaceCache->ZMin <= ZMax
+				&& pFaceCache->ZMax >= ZMin
+				)
+			{
+				hits++;
+				break;		// actually, don't need to keep going if we find a hit, unless counting for debuggin
+			}
+			pFaceCache++;			
+		}
+	
+		if (hits == 0)
+		{
+	/*
+			if (Faces == 1)
+			{
+			printf("Line Min(%d,%d,%d)  Max(%d,%d,%d)\n",XMin,YMin,ZMin,XMax,YMax,ZMax);
+			pFaceCache--;
+			printf("Object Min(%d,%d,%d)  Max(%d,%d,%d)\n",pFaceCache->XMin,pFaceCache->YMin,pFaceCache->ZMin,pFaceCache->XMax,pFaceCache->YMax,pFaceCache->ZMax);
+	}
+			ASSERT(Faces > 1, "Missed a 1 face object");
+	*/
+			BB_PolyMiss+=Faces;
+			BB_Miss++;
+			return;
+		}
+	}
+	BB_Hit++;
+	BB_PolyHit+=Faces;
+    // below here we just drop into the old routine
+
+	SetColorMatrix(&pInfo->WorldCst);	//	rot matrix will be buggered up by cross-products
+
+	pModel =	PSXRegion[pItem->Region].ppModels[pItem->Model];
+	ASSERT(pModel->NumVertices,"Collision check on a model with	no	vertices");
+
+	if (pModel->NumVertices<=128)
+		pVertices = (SProjectedVertex *)0x1F800000;
+	else
+		pVertices = ProjectedVertices;
+
+
+	if	(pItem->Angles.vx==0	&&	pItem->Angles.vy==0 && pItem->Angles.vz==0 && !(pItem->Flags&ITEMFLAGS_SCALED))
+	{
+		PosnRelStart.vx = pItem->Position.vx - pInfo->StartCoords.vx >> FRACBITS;
+		PosnRelStart.vy = pItem->Position.vy - pInfo->StartCoords.vy >> FRACBITS;
+		PosnRelStart.vz = pItem->Position.vz - pInfo->StartCoords.vz >> FRACBITS;
+
+		m3d_ZeroTransVector();
+	}
+	else
+	{
+		if (pInfo->DropDown)
+		{
+			Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;	// this is because of the simple
+			Tfm.t[1]	= pInfo->StartCoords.vz	- pItem->Position.vz	>>	FRACBITS;	// form of the cst,
+			Tfm.t[2]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;	// ie (1,0,0,0,0,-1,0,1,0)
+		}
+		else
+		{
+			Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;
+			Tfm.t[1]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;
+			Tfm.t[2]	= pItem->Position.vz	- pInfo->StartCoords.vz	>>	FRACBITS;
+
+			gte_ldlv0(&Tfm.t[0]);
+			gte_lcv0();
+			gte_stlvnl(&Tfm.t[0]);
+		}
+
+		SetTransMatrix(&Tfm);
+
+		PosnRelStart.vx = 0;
+		PosnRelStart.vy = 0;
+		PosnRelStart.vz = 0;
+
+
+		if	(pItem->Angles.vx || pItem->Angles.vy	||	pItem->Angles.vz)
+		{
+			M3dMaths_RotMatrixYXZ((SVECTOR *)&pItem->Angles, &Tfm);
+			if (pItem->Flags & ITEMFLAGS_SCALED)
+					M3dMaths_ScaleMatrix(pItem,&Tfm);
+			M3dMaths_MulLcmMatrix(&Tfm,&Tfm);
+			SetColorMatrix(&Tfm);
+		}
+		else // pItem->Flags & ITEMFLAGS_SCALED
+		{
+			M3dMaths_SetIdentityRotation(&Tfm);
+			M3dMaths_ScaleMatrix(pItem,&Tfm);
+			M3dMaths_MulLcmMatrix(&Tfm,&Tfm);
+			SetColorMatrix(&Tfm);
+		}
+	}
+
+	And =	M3dAsm_LineColijProcessVertices(pModel, pVertices, pInfo->Length, &PosnRelStart);
+
+	//	skip if all	outcodes	have a common relevant bit
+	if	(And&0x060F)
+		return;
+
+	CollidedTriggerModel=-1;
+
+	M3dAsm_LineColijProcessFaces(pModel,pVertices,pInfo,pItem);
+
+
+	//	If	we	collided	with a trigger	model, trigger	the command	point
+	//	associated with it.
+	if	(CollidedTriggerModel!=-1)
+	{
+		int i=Spool_GetEnvIndex(pItem->Region);
+		ASSERT(i!=-1,"Found a trigger	zone not	in	the environment");
+		OtherEnvIndex=i^1;
+		//	The passed value is the	checksum	of	the model.
+		TriggerCollisionCheck = 0;		// ready for baddies' recursive call of this function
+		Trig_TriggerCommandPoint(*(EnvModelChecksums[i]+CollidedTriggerModel));
+	}
+
+#if 0 && DEBUG
+	
+	
+	if (pInfo->pItem != pOldInfoItem && hits == 0)
+	{
+	   // we hit something really, but bounding box missed it
+		printf("BB Missed something\n");
+
+		printf("Line BB\nMin(%d,%d,%d)  Max(%d,%d,%d)\n",XMin>>FRACBITS,YMin>>FRACBITS,ZMin>>FRACBITS,XMax>>FRACBITS,YMax>>FRACBITS,ZMax>>FRACBITS);
+
+		printf("\nFaces BB in reverse order\n");
+		while (Faces)
+		{
+			pFaceCache--;
+			Faces--;
+			printf("%d Min(%d,%d,%d)  Max(%d,%d,%d)\n",(int) pFaceCache, pFaceCache->XMin>>FRACBITS,pFaceCache->YMin>>FRACBITS,pFaceCache->ZMin>>FRACBITS,pFaceCache->XMax>>FRACBITS,pFaceCache->YMax>>FRACBITS,pFaceCache->ZMax>>FRACBITS);
+		}
+
+		printf("\nHit Point\n (%d,%d,%d)\n",pInfo->Position.vx>>FRACBITS,pInfo->Position.vy>>FRACBITS,pInfo->Position.vz>>FRACBITS);
+
+		pFace = (SFace*)pInfo->pFace;
+
+
+
+	Uint16   *pFaceFlags=(Uint16*)pFace;
+	Uint16   *pVertexIndex=pFaceFlags+2;
+
+
+		printf("Faces= %d\n",Faces); 
+		printf ("\nItem = %d\n",(int)pInfo->pItem);
+		printf ("Face = %d\n",(int)pInfo->pFace);
+		pModel =	PSXRegion[pInfo->pItem->Region].ppModels[pInfo->pItem->Model];
+		pVerts =pModel->Vertices;
+		printf ("Model = %d\n",(int)pModel);
+		printf ("pVerts = %d\n",(int)pVerts);
+		printf("Proper Vertex Numbers ?  %d,%d,%d,%d\n",pVertexIndex[0]>>3,pVertexIndex[1]>>3,pVertexIndex[2]>>3,pVertexIndex[3]>>3);
+		printf("\n Item\n(%d,%d,%d)\n(%d,%d,%d)\n(%d,%d,%d)\n(%d,%d,%d)\n",
+
+		(pItem->Position.vx + (pVerts[pVertexIndex[0]>>3].vx<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vy + (pVerts[pVertexIndex[0]>>3].vy<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vz + (pVerts[pVertexIndex[0]>>3].vz<<FRACBITS))>>FRACBITS,
+		
+		(pItem->Position.vx + (pVerts[pVertexIndex[1]>>3].vx<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vy + (pVerts[pVertexIndex[1]>>3].vy<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vz + (pVerts[pVertexIndex[1]>>3].vz<<FRACBITS))>>FRACBITS,
+		
+		(pItem->Position.vx + (pVerts[pVertexIndex[2]>>3].vx<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vy + (pVerts[pVertexIndex[2]>>3].vy<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vz + (pVerts[pVertexIndex[2]>>3].vz<<FRACBITS))>>FRACBITS,
+
+		(pItem->Position.vx + (pVerts[pVertexIndex[3]>>3].vx<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vy + (pVerts[pVertexIndex[3]>>3].vy<<FRACBITS))>>FRACBITS,
+		(pItem->Position.vz + (pVerts[pVertexIndex[3]>>3].vz<<FRACBITS))>>FRACBITS
+		);
+
+	    printf("Position %d,%d,%d\n",pInfo->pItem->Position.vx,pInfo->pItem->Position.vy,pInfo->pItem->Position.vz);
+		printf ("\nItem For that position = %d\n",(int)pInfo->pItem);
+
+
+		if (pFace->Flags&FACEFLAGS_TRIANGLE)
+			printf("Triangle\n");
+
+
+	ASSERT(pInfo->pItem == pItem,"pInfo->pItem != pItem");
+
+	ASSERT(pColCache->pItem == pItem,"pColCache->pItem is wrong in lintothisitemcached");
+		
+
+
+	ASSERT(0,"BB Missed Something");
+
+
+	}
+#endif
+}
+
+
+
+// The following is the same as before the asm version, to show how the general flow of logic goes
+/*
+void M3dColij_LineToThisItemCachedOldcrappyVersion(SItem *pItem, SLineInfo *pInfo, SColCache *pColCache)
+{
+	int i;
+	double DoubleDotProd;
+
+	if	(pItem->Flags & ITEMFLAGS_INACTIVE)
+		return;
+
+	SetColorMatrix(&pInfo->WorldCst);	//	rot matrix will be buggered up by cross-products
+
+	if (DropDown)
+	{
+		Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;	// this is because of the simple
+		Tfm.t[1]	= pInfo->StartCoords.vz	- pItem->Position.vz	>>	FRACBITS;	// form of the cst,
+		Tfm.t[2]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;	// ie (1,0,0,0,0,-1,0,1,0)
+	}
+	else
+	{
+		Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;
+		Tfm.t[1]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;
+		Tfm.t[2]	= pItem->Position.vz	- pInfo->StartCoords.vz	>>	FRACBITS;
+
+		gte_ldlv0(&Tfm.t[0]);
+		gte_lcv0();
+		gte_stlvnl(&Tfm.t[0]);
+	}
+
+	SetTransMatrix(&Tfm);
+
+	if	(pItem->Angles.vx || pItem->Angles.vy	||	pItem->Angles.vz)
+	{
+		M3dMaths_RotMatrixYXZ((SVECTOR *)&pItem->Angles, &Tfm);
+		if (pItem->Flags & ITEMFLAGS_SCALED)
+				M3dMaths_ScaleMatrix(pItem,&Tfm);
+		M3dMaths_MulLcmMatrix(&Tfm,&Tfm);
+		SetColorMatrix(&Tfm);
+	}
+
+
+		#if MICK
+//		if (Pad[0].Select.Pressed)
+//			return;
+		#endif
+
+
+	pModel =	PSXRegion[pItem->Region].ppModels[pItem->Model];
+
+	ASSERT(pModel->NumVertices,"Collision check on a model with	no	vertices");
+	And =	M3dAsm_LineColijProcessVertices(pModel,ProjectedVertices,pInfo->Length);
+
+		//	skip if all	outcodes	have a common relevant bit
+
+	if	(And&0x060F)
+		return;
+
+
+
+
+
+		//	get hook	on	normals
+
+	NumNormals = pModel->NumNormals;
+	Normals	  = pModel->Vertices	+ pModel->NumVertices;
+
+
+		//	loop over faeces
+
+	NumFaces	= pModel->NumFaces;
+	pFace		= (Uint32 *)(Normals+NumNormals);
+
+	int CollidedTriggerModel=-1;
+
+	for (i=0; i<NumFaces; i++,pFace+=FACELEN(pFace))
+	{
+		// do the special flag tests...
+
+		// if it's a camera check but not camera-collideable, ignore
+		if	(CameraCollisionCheck && !(pFace[CFACE_NORMAL]>>16 & FU_CAMCOLLIDE))
+			continue;
+
+		// if it's a bullet check and bullet-missable, ignore
+		if (BulletCollisionCheck && (pFace[CFACE_NORMAL]>>16 & FU_BULLETSMISS))
+			continue;
+
+		// if it's not a baddy check but is baddies-only-collideable, ignore
+		if (!BaddyCollisionCheck && (pFace[CFACE_NORMAL]>>16 & FU_BADDYCOLLIDE))
+			continue;
+
+		// if it's a trigger check and isn't a trigger poly, ignore
+		if (TriggerCollisionCheck && !(pFace[CFACE_NORMAL]>>16 & FU_TRIGGERZONE))
+			continue;
+
+		//	it it's uncollidable and not a trigger zone face, ignore
+		if	((pFace[CFACE_NORMAL]>>16 & FU_NONCOLLIDABLE) && !(pFace[CFACE_NORMAL]>>16 & FU_TRIGGERZONE))
+			continue;
+
+
+		DoubleDotProd = M3dAsm_LineColijProcessFace(pFace,Normals,pInfo->Length);
+		dp0 =	((Sint32	*)&DoubleDotProd)[0];
+		if	(dp0==0x80000000)
+		{
+		#if MICK
+			DotMissed++;
+		#endif
+			continue;
+		}
+		#if MICK	
+		DotHit++;
+		#endif
+		dp2 =	((Sint32	*)&DoubleDotProd)[1];
+
+
+		//	Ken: 
+		pInfo->Model=pItem->Model;	//	Is	this still needed?
+		//	If	we've	found	a collision, and the	face belonged to a trigger
+		//	zone,	and trigger	zone detection	is	needed, record	the model
+		if	( (pFace[CFACE_NORMAL]>>16)	& FU_TRIGGERZONE)
+		{
+			if	(pInfo->RecordTriggerZoneHits)
+			{
+				ASSERT( CollidedTriggerModel == -1, "Multiple trigger poly hit" );
+				CollidedTriggerModel=pItem->Model;
+			}
+
+			//	Don't	do	any further	collision stuff because	nothing must	
+			//	actually	collide with trigger	zones
+
+			continue;
+		}
+
+
+			//	if	we	got this	far, the	intersection is in the collision	segment
+			//	so	we've	found	a hit
+
+		z = dp0 * pInfo->Length	/ dp2	- 2;	//	-2	to	keep just above surface
+		if	(z	< pInfo->Distance)
+		{
+				//	record all the	necessary collision info
+
+			pInfo->pItem	 =	pItem;
+			pInfo->Distance =	z;
+			pInfo->pFace	 =	pFace;
+			pInfo->Model	 =	pItem->Model;
+
+				//	record the world position
+				//	(this	is	a bit	of	a cheat because it relies on the	fact
+				//	that FRACBITS is 12)
+
+			gte_ldlvnl(&pInfo->StartCoords);
+			gte_ldsv(&pInfo->WorldCst.m[2][0]);
+			gte_lddp(z);
+			gte_gpl0();
+			gte_stlvnl(&pInfo->Position);
+
+				//	record the world normal
+			*(SVECTOR **)&NearestHit.Normal = &Normals[*(Uint16 *)&pFace[CFACE_NORMAL] >> 3];
+			NearestHit.pFace = pFace;
+		}
+
+	}	//	end of faces loop
+
+
+	//	If	we	collided	with a trigger	model, trigger	the command	point
+	//	associated with it.
+	if	(CollidedTriggerModel!=-1)
+	{
+		int i=Spool_GetEnvIndex(pItem->Region);
+		ASSERT(i!=-1,"Found a trigger	zone not	in	the environment");
+		OtherEnvIndex=i^1;
+		//	The passed value is the	checksum	of	the model.
+		TriggerCollisionCheck = 0;		// ready for baddies' recursive call of this function
+		Trig_TriggerCommandPoint(*(EnvModelChecksums[i]+CollidedTriggerModel));
+	}
+}
+*/
+
+
+void M3dColij_LineToItemZoned(SItem **ppItem, SLineInfo	*pInfo)
+{
+	if	(!ppItem) return;
+
+	if (pInfo->Length==0)
+		return;
+
+	SetRotMatrix(&pInfo->WorldCst);
+
+	M3dAsm_LineColijPreprocessItemsZoned(ppItem,0,pInfo,pInfo->Inquiry);
+
+
+	for (	; *ppItem; ppItem++)
+		if	((*ppItem)->Inquiry != pInfo->Inquiry)
+		{
+			(*ppItem)->Inquiry = pInfo->Inquiry;
+
+
+			SItem* pItem = *ppItem;
+
+			int i;
+			for (i=0;i<ITEMCACHESIZE;i++)
+			{
+				if (ItemCache[i].pItem == pItem)
+					break;
+			}
+			if (i!=ITEMCACHESIZE)
+			{
+			  // found item in cache
+			  // So now we need to use the quick collision scheme
+			  M3dColij_LineToThisItemCached(pItem, pInfo, &ItemCache[i]);
+			  CacheHit++;
+			}
+			else
+			{
+				// item not in cache, so we need a new entry
+				// first of all, check to see if we would be overwriting an existing entry
+				if (ItemCache[ItemCacheIndex].pItem)
+				{
+					// There is an existing entry in this slot, so we need to remove the polygons
+					// the circular item buffer is full at this point
+					// so we just need to set FaceCacheStart to the first face of the next item
+					if ( ItemCacheIndex + 1 == ITEMCACHESIZE )
+					{
+						// wrap around to first item
+						FaceCacheStart = ItemCache[0].FirstFace;
+					} 
+					else
+					{
+						// Just the next item
+						FaceCacheStart = ItemCache[ItemCacheIndex+1].FirstFace;
+					}
+				}
+
+				// Make the entry in the item cache
+				ItemCache[ItemCacheIndex].pItem = pItem;
+				SModel *pModel =	PSXRegion[pItem->Region].ppModels[pItem->Model];
+				ItemCache[ItemCacheIndex].pModel = pModel;
+				int	Faces = pModel->NumFaces;
+				ItemCache[ItemCacheIndex].Faces = Faces;
+
+
+				// Now we need to assign space in the polygon buffer
+				// there are several conditions which may apply
+				// 1) There is enough room, and we have not reached the end yet
+				// 2) There is not enough room at the end, but we can wrap back
+				//    to the start, where there is enough room
+				// 3) There is not enough room, but we can make room without wrapping
+				// 4) There is not enough room at the end or the start, but there
+				//    is nothing ahead of us as the end, so we just have to clean up the start
+				// 5) There is not enough room, and there is something ahead of us at the end
+				//    and at the start, which need deleting
+				//
+				// we could possibly get away with only handling 1 and 2, if the buffer is big enough
+				// however we would make more efficient use of space, and be a lot more
+				// robust, if we were to handle all cases.
+
+				if (FaceCacheIndex + Faces < FACECACHESIZE)
+				{
+					// Fits in the space at the end of the face buffer
+
+				    // For now we don't handle the complex cases, just assert if it fails
+					ASSERT(FaceCacheStart<FaceCacheIndex || FaceCacheStart >= (FaceCacheIndex + Faces),"Face Cache Overflow");
+
+					ItemCache[ItemCacheIndex].FirstFace = FaceCacheIndex;
+					FaceCacheIndex += Faces; 
+				}
+				else
+				{
+					// Need to reset to the front of the face buffer, where there should be space
+
+				    // For now we don't handle the complex cases, just assert if it fails
+					ASSERT(FaceCacheStart == -1 || FaceCacheStart >= Faces, "Face Cache overflow with wrap");
+
+					ItemCache[ItemCacheIndex].FirstFace = 0;
+					FaceCacheIndex = Faces; 
+				}  
+				
+
+				// Now we need to pre-process the faces, calculating the bounding boxes
+				// and putting them in the face cache, so they can be used for the 
+				// fast collision detection algorithm
+
+/// TODO ?????????????????????????????????????????????????????????????????????????????????????
+// what info needs to be in here, besides the bounding box
+
+				int ItemX = pItem->Position.vx;
+				int ItemY = pItem->Position.vy;
+				int ItemZ = pItem->Position.vz;
+
+				int NumFaces = pModel->NumFaces;
+				int NumVertices = pModel->NumVertices;
+				int NumNormals = pModel->NumNormals;
+				SVECTOR *Normals	  = pModel->Vertices	+ pModel->NumVertices;
+				SVECTOR *pVertices = pModel->Vertices;
+				Uint32 *pFaceX= (Uint32 *)(Normals+NumNormals);
+
+				// get the address of where the first face goes in the cache
+				// (as calculated above)
+				SFaceCache *pFaceCache = &FaceCache[ItemCache[ItemCacheIndex].FirstFace];
+
+//				printf("/n/n*************************<<<<<<<<<<<<<<<<<<<<<<<< /n");
+				for (int i=0; i<NumFaces; i++,pFaceX+=FACELEN(pFaceX))
+				{
+					SFace *pFace = (SFace*)pFaceX;		// to simplify casting, which hurts my head.
+					
+					pFaceCache->Flags = pFace->Flags;
+					 
+					Uint16   *pFaceFlags=(Uint16*)pFace;
+					Uint16   *pVertexIndex=pFaceFlags+2;
+/*		
+		printf ("\nItem = %d\n",(int)pItem);
+		printf ("Face = %d\n",(int)pFace);
+		printf ("pModel = %d\n",(int)pModel);
+		printf ("pVerts = %d\n",(int)pVertices);
+		printf("Cachin Verts :  %d,%d,%d,%d\n",pVertexIndex[0]>>3,pVertexIndex[1]>>3,pVertexIndex[2]>>3,pVertexIndex[3]>>3);
+*/
+
+					int x0 =   pVertices[pVertexIndex[0]>>3].vx; 
+					int y0 =   pVertices[pVertexIndex[0]>>3].vy; 
+					int z0 =   pVertices[pVertexIndex[0]>>3].vz; 
+
+					int	xmin =  x0;
+					int	ymin =  y0;
+					int	zmin =  z0;
+					int	xmax = xmin;
+					int	ymax = ymin;
+					int	zmax = zmin;
+					
+					int x1 =   pVertices[pVertexIndex[1]>>3].vx; 
+					int y1 =   pVertices[pVertexIndex[1]>>3].vy; 
+					int z1 =   pVertices[pVertexIndex[1]>>3].vz; 
+
+					int x2 =   pVertices[pVertexIndex[2]>>3].vx; 
+					int y2 =   pVertices[pVertexIndex[2]>>3].vy; 
+					int z2 =   pVertices[pVertexIndex[2]>>3].vz; 
+					
+
+					if (x1>xmax) xmax = x1;
+					if (x2>xmax) xmax = x2;
+					if (y1>ymax) ymax = y1;
+					if (y2>ymax) ymax = y2;
+					if (z1>zmax) zmax = z1;
+					if (z2>zmax) zmax = z2;
+
+					if (x1<xmin) xmin = x1;
+					if (x2<xmin) xmin = x2;
+					if (y1<ymin) ymin = y1;
+					if (y2<ymin) ymin = y2;
+					if (z1<zmin) zmin = z1;
+					if (z2<zmin) zmin = z2;
+
+
+					int x3 =   pVertices[pVertexIndex[3]>>3].vx; 
+					int y3 =   pVertices[pVertexIndex[3]>>3].vy; 
+					int z3 =   pVertices[pVertexIndex[3]>>3].vz; 
+
+
+					if (! (pFace->Flags&FACEFLAGS_TRIANGLE))
+					{
+						// Not a triangle, so it must be a quad
+						if (x3>xmax) xmax = x3;
+						if (y3>ymax) ymax = y3;
+						if (z3>zmax) zmax = z3;
+						if (x3<xmin) xmin = x3;
+						if (y3<ymin) ymin = y3;
+						if (z3<zmin) zmin = z3;
+					}
+
+
+
+
+					// offset are store as 16 bit
+					// we need to convert them to fixed point format
+					xmin<<=FRACBITS;
+					ymin<<=FRACBITS;
+					zmin<<=FRACBITS;
+					xmax<<=FRACBITS;
+					ymax<<=FRACBITS;
+					zmax<<=FRACBITS;
+
+					// and add them to the absolute item position
+					xmin+=ItemX;
+					ymin+=ItemY;
+					zmin+=ItemZ;
+
+					xmax+=ItemX;
+					ymax+=ItemY;
+					zmax+=ItemZ;
+
+
+					#if DEBUG
+					if (pVertexIndex[0]>>3 == 4 && pVertexIndex[1]>>3 == 5)
+					{
+						x0<<=FRACBITS;
+						y0<<=FRACBITS;
+						z0<<=FRACBITS;
+						x1<<=FRACBITS;
+						y1<<=FRACBITS;
+						z1<<=FRACBITS;
+						x2<<=FRACBITS;
+						y2<<=FRACBITS;
+						z2<<=FRACBITS;
+						x3<<=FRACBITS;
+						y3<<=FRACBITS;
+						z3<<=FRACBITS;
+						x0+=ItemX;
+						y0+=ItemY;
+						z0+=ItemZ;
+
+						x1+=ItemX;
+						y1+=ItemY;
+						z1+=ItemZ;
+
+						x2+=ItemX;
+						y2+=ItemY;
+						z2+=ItemZ;
+
+						x3+=ItemX;
+						y3+=ItemY;
+						z3+=ItemZ;
+/*
+						printf("\n The bad boy is\n");
+						printf("%d,%d,%d\n",x0>>FRACBITS,y0>>FRACBITS,z0>>FRACBITS);
+						printf("%d,%d,%d\n",x1>>FRACBITS,y1>>FRACBITS,z1>>FRACBITS);
+						printf("%d,%d,%d\n",x2>>FRACBITS,y2>>FRACBITS,z2>>FRACBITS);
+						printf("%d,%d,%d\n",x3>>FRACBITS,y3>>FRACBITS,z3>>FRACBITS);
+						printf("Min Max\n");
+						printf("%d,%d,%d\n",xmin>>FRACBITS,ymin>>FRACBITS,zmin>>FRACBITS);
+						printf("%d,%d,%d\n",xmax>>FRACBITS,ymax>>FRACBITS,zmax>>FRACBITS);
+						printf("Position %d,%d,%d\n",ItemX,ItemY,ItemZ);
+					    printf("XXX Position %d,%d,%d\n",pItem->Position.vx,pItem->Position.vy,pItem->Position.vz);
+						printf ("\nItem for that position = %d\n",(int)pItem);
+*/
+					}
+					#endif
+
+
+//				    printf("min (%d,%d,%d), max (%d,%d,%d)\n\n",xmin>>FRACBITS,ymin>>FRACBITS,zmin>>FRACBITS,xmax>>FRACBITS,ymax>>FRACBITS,zmax>>FRACBITS);
+					
+
+					pFaceCache->XMin = xmin;
+					pFaceCache->YMin = ymin;
+					pFaceCache->ZMin = zmin;
+
+					pFaceCache->XMax = xmax;
+					pFaceCache->YMax = ymax;
+					pFaceCache->ZMax = zmax;
+/*
+					printf("%d Min(%d,%d,%d)  Max(%d,%d,%d)\n",(int) pFaceCache, pFaceCache->XMin>>FRACBITS,pFaceCache->YMin>>FRACBITS,pFaceCache->ZMin>>FRACBITS,pFaceCache->XMax>>FRACBITS,pFaceCache->YMax>>FRACBITS,pFaceCache->ZMax>>FRACBITS);
+*/
+					
+					pFaceCache++;
+					
+				}
+
+				ASSERT(pFaceCache ==  &FaceCache[FaceCacheIndex] || FaceCacheIndex == 0,"pFaceCache incorrect?");
+
+
+				// alter number of faces for debugging info
+				TotalItemFaces =0;
+				for (int j=0;j<ITEMCACHESIZE;j++)
+				{
+					if (ItemCache[j].pItem)
+						TotalItemFaces += ItemCache[j].Faces;
+				}
+				
+				// maybe new max number
+				if (TotalItemFaces > MaxItemFaces)
+					MaxItemFaces = TotalItemFaces;
+				
+
+				M3dColij_LineToThisItemCached(pItem, pInfo, &ItemCache[ItemCacheIndex]);
+
+				ItemCacheIndex++;
+				if (ItemCacheIndex == ITEMCACHESIZE)
+					ItemCacheIndex = 0;
+				CacheMiss++;
+			}			
+		
+//		   	M3dColij_LineToThisItem(pItem, pInfo);
+		}
+}
+
+/*
+#include	"profile.h"
+
+void M3dColij_LineToItemZoned(SItem **ppItem, SLineInfo	*pInfo)
+{
+	   #if DEBUG
+	   ProfileReadCount(100,100,0);		     // Yellow = Other stuff
+	   #endif
+	M3dColij_LineToItemZonedx(ppItem, pInfo);
+	   #if DEBUG
+	   ProfileReadCount(0,100,100);			 // Dark CYAN = Actual collision
+	   #endif
+}
+
+*/
+
+#endif
+
+
+int M3dColij_GetLineInfo(SLineInfo *pInfo)
+{
+	if	(pInfo->pItem)
+	{
+		M3dMaths_RotMatrixYXZ((SVECTOR *)&pInfo->pItem->Angles, &Tfm);
+		SetRotMatrix(&Tfm);
+		gte_ldv0(*(SVECTOR **)&NearestHit.Normal);
+		gte_rtv0();
+		gte_stsv(&pInfo->Normal);
+
+		int Length = M3dMaths_SquareRoot0(SQ3(pInfo->EndCoords.vx-pInfo->StartCoords.vx >> 12,
+														  pInfo->EndCoords.vy-pInfo->StartCoords.vy >> 12,
+														  pInfo->EndCoords.vz-pInfo->StartCoords.vz >> 12));
+		pInfo->Distance = pInfo->Distance*Length/pInfo->Length;
+		pInfo->Length = Length;
+
+		return 1;
+	}
+	else
+		return 0;
+}
+
+
+
+
+void M3dColij_LineToThisItem(SItem *pItem, SLineInfo *pInfo)
+{
+	VECTOR	PosnRelStart;
+	Uint16	And;
+	SModel	*pModel;
+	SProjectedVertex	*pVertices;
+
+	if	(pItem->Flags & (ITEMFLAGS_INACTIVE|ITEMFLAGS_NONCOLLIDABLE))
+		return;
+
+	SetColorMatrix(&pInfo->WorldCst);	//	rot matrix will be buggered up by cross-products
+
+	pModel =	PSXRegion[pItem->Region].ppModels[pItem->Model];
+	ASSERT(pModel->NumVertices,"Collision check on a model with	no	vertices");
+
+	if (pModel->NumVertices<=128)
+		pVertices = (SProjectedVertex *)0x1F800000;
+	else
+		pVertices = ProjectedVertices;
+
+
+	if	(pItem->Angles.vx==0	&&	pItem->Angles.vy==0 && pItem->Angles.vz==0 && !(pItem->Flags&ITEMFLAGS_SCALED))
+	{
+		PosnRelStart.vx = pItem->Position.vx - pInfo->StartCoords.vx >> FRACBITS;
+		PosnRelStart.vy = pItem->Position.vy - pInfo->StartCoords.vy >> FRACBITS;
+		PosnRelStart.vz = pItem->Position.vz - pInfo->StartCoords.vz >> FRACBITS;
+
+		m3d_ZeroTransVector();
+	}
+	else
+	{
+		if (pInfo->DropDown)
+		{
+			Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;	// this is because of the simple
+			Tfm.t[1]	= pInfo->StartCoords.vz	- pItem->Position.vz	>>	FRACBITS;	// form of the cst,
+			Tfm.t[2]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;	// ie (1,0,0,0,0,-1,0,1,0)
+		}
+		else
+		{
+			Tfm.t[0]	= pItem->Position.vx	- pInfo->StartCoords.vx	>>	FRACBITS;
+			Tfm.t[1]	= pItem->Position.vy	- pInfo->StartCoords.vy	>>	FRACBITS;
+			Tfm.t[2]	= pItem->Position.vz	- pInfo->StartCoords.vz	>>	FRACBITS;
+
+			gte_ldlv0(&Tfm.t[0]);
+			gte_lcv0();
+			gte_stlvnl(&Tfm.t[0]);
+		}
+
+		SetTransMatrix(&Tfm);
+
+		PosnRelStart.vx = 0;
+		PosnRelStart.vy = 0;
+		PosnRelStart.vz = 0;
+
+
+		if	(pItem->Angles.vx || pItem->Angles.vy	||	pItem->Angles.vz)
+		{
+			M3dMaths_RotMatrixYXZ((SVECTOR *)&pItem->Angles, &Tfm);
+			if (pItem->Flags & ITEMFLAGS_SCALED)
+					M3dMaths_ScaleMatrix(pItem,&Tfm);
+			M3dMaths_MulLcmMatrix(&Tfm,&Tfm);
+			SetColorMatrix(&Tfm);
+		}
+		else // pItem->Flags & ITEMFLAGS_SCALED
+		{
+			M3dMaths_SetIdentityRotation(&Tfm);
+			M3dMaths_ScaleMatrix(pItem,&Tfm);
+			M3dMaths_MulLcmMatrix(&Tfm,&Tfm);
+			SetColorMatrix(&Tfm);
+		}
+	}
+
+	And =	M3dAsm_LineColijProcessVertices(pModel, pVertices, pInfo->Length, &PosnRelStart);
+
+	//	skip if all	outcodes	have a common relevant bit
+	if	(And&0x060F)
+		return;
+
+	CollidedTriggerModel=-1;
+
+	M3dAsm_LineColijProcessFaces(pModel,pVertices,pInfo,pItem);
+
+
+	//	If	we	collided	with a trigger	model, trigger	the command	point
+	//	associated with it.
+	if	(CollidedTriggerModel!=-1)
+	{
+		int i=Spool_GetEnvIndex(pItem->Region);
+		ASSERT(i!=-1,"Found a trigger	zone not	in	the environment");
+		OtherEnvIndex=i^1;
+		//	The passed value is the	checksum	of	the model.
+		TriggerCollisionCheck = 0;		// ready for baddies' recursive call of this function
+		Trig_TriggerCommandPoint(*(EnvModelChecksums[i]+CollidedTriggerModel));
+	}
+}
+
+
+
+
+
+//----------------------------------------------------------------------------
+
+
+	////////////////////////////////////
+	//											 //
+	//	line-sphere	collision function //
+	//											 //
+	////////////////////////////////////
+
+
+
+CBody* M3dColij_LineToSphere(CVector& OldPos, CVector& NewPos,
+									  CVector& ColijPos,CBody *pBody,
+									  CBody *pIgnore)
+{
+	Sint32  Radius, RadiusSquared, Length, DotProd;
+	CVector DirectionVec, MinCoords,	MaxCoords, SquareVec, OldToCentre,
+			  NewToCentre;
+	SVECTOR DirVecShort;
+
+
+	pBodyHit	= NULL;
+	NearestHit.Dist =	0x7FFFFFFF;
+
+		//	get a	unit direction	vector along the segment
+
+	DirectionVec =	NewPos -	OldPos >> FRACBITS;
+	gte_ldlvl(&DirectionVec);
+	gte_sqr0();
+	gte_stlvnl(&SquareVec);
+
+	Length =	M3dMaths_SquareRoot0(SquareVec.vx+SquareVec.vy+SquareVec.vz);
+	if	(Length)
+		DirectionVec =	(DirectionVec<<12)/Length;
+	else
+		return NULL;
+
+	gte_ldopv1(&DirectionVec);
+	COPYVEC(DirVecShort,	DirectionVec);
+	gte_ldsvllrow0(&DirVecShort);
+
+
+
+		//	get bounding box of segment
+
+	if	(OldPos.vx < NewPos.vx)
+		MinCoords.vx =	OldPos.vx, MaxCoords.vx	= NewPos.vx;
+	else
+		MinCoords.vx =	NewPos.vx, MaxCoords.vx	= OldPos.vx;
+
+	if	(OldPos.vy < NewPos.vy)
+		MinCoords.vy =	OldPos.vy, MaxCoords.vy	= NewPos.vy;
+	else
+		MinCoords.vy =	NewPos.vy, MaxCoords.vy	= OldPos.vy;
+
+	if	(OldPos.vz < NewPos.vz)
+		MinCoords.vz =	OldPos.vz, MaxCoords.vz	= NewPos.vz;
+	else
+		MinCoords.vz =	NewPos.vz, MaxCoords.vz	= OldPos.vz;
+
+
+		//	loop over body	list
+
+	for (	; pBody;	pBody=(CBody *)pBody->mNextItem)
+	{
+
+			//	make sure it's	not dead
+
+		if	(pBody->mCBodyFlags&CBODY_ZOMBIE)
+			continue;
+
+
+			//	is	it	the ignored	one?
+
+		if	(pBody == pIgnore)
+			continue;
+
+
+			//	check	bounding	boxes
+
+		Radius =	pBody->mRMinor	<<	FRACBITS;
+
+		if	(pBody->mPos.vx +	Radius <	MinCoords.vx ||
+			 pBody->mPos.vx -	Radius >	MaxCoords.vx ||
+			 pBody->mPos.vy +	Radius <	MinCoords.vy ||
+			 pBody->mPos.vy -	Radius >	MaxCoords.vy ||
+			 pBody->mPos.vz +	Radius <	MinCoords.vz ||
+			 pBody->mPos.vz -	Radius >	MaxCoords.vz)
+
+			continue;
+
+
+			//	check	sign of descriminant
+
+		OldToCentre	= (pBody->mPos	- OldPos) >> FRACBITS;
+
+		gte_ldopv2(&OldToCentre);
+		gte_op12();
+		gte_sqr0();
+		gte_stlvnl(&SquareVec);
+
+		RadiusSquared = SQ1(pBody->mRMinor);
+		if	(SquareVec.vx+SquareVec.vy+SquareVec.vz >= RadiusSquared)
+			continue;
+
+
+			//	so	the extended line	definitely passes	through the	sphere
+			//	now see if any	of	the segment	actually	hits it
+
+		gte_ldlv0(&OldToCentre);
+		gte_llv0();
+		gte_stlvnl0(&DotProd);
+
+
+			//	skip it if it's not nearer	than the	nearest so far
+
+		if	(DotProd	>=	NearestHit.Dist)
+			continue;
+
+
+		if	(DotProd	< 0)
+		{
+				//	sphere centre is "behind" segment
+				//	so	make sure OldPos is inside	sphere
+
+			gte_ldlvl(&OldToCentre);
+			gte_sqr0();
+			gte_stlvnl(&SquareVec);
+			if	(SquareVec.vx+SquareVec.vy+SquareVec.vz >= RadiusSquared)
+				continue;
+		}
+		else if (DotProd > Length)
+		{
+				//	sphere centre is "ahead	of" segment
+				//	so	make sure NewPos is inside	sphere
+
+			NewToCentre	= (pBody->mPos	- NewPos) >> FRACBITS;
+			gte_ldlvl(&NewToCentre);
+			gte_sqr0();
+			gte_stlvnl(&SquareVec);
+			if	(SquareVec.vx+SquareVec.vy+SquareVec.vz >= RadiusSquared)
+				continue;
+		}
+
+
+			//	a definite hit, nearest	so	far, so record	distance	and pointer
+
+		NearestHit.Dist =	DotProd;
+		pBodyHit	= pBody;
+	}
+
+
+		//	all done; now calculate	the coords and	get out of here
+
+	if	(pBodyHit)
+	{
+		gte_ldlvl(&DirectionVec);
+		gte_lddp(NearestHit.Dist);
+		gte_gpf12();
+		gte_stlvnl(&ColijPos);
+		ColijPos	<<= FRACBITS;
+		ColijPos	+=	OldPos;
+	}
+
+	return pBodyHit;
+}

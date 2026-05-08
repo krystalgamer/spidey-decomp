@@ -1,0 +1,411 @@
+/////////////////////////////////////////////////////////////////////////////////
+//  Create.CPP 
+//
+//  Create-a-skater module
+//
+
+#include "globals.h"
+#include "qdefs.h"
+#include "utils.h"
+#include "db.h"
+#include "create.h"
+#include "ob.h"
+#include "spool.h"
+#include "m3dmaths.h"
+#include "m3dinit.h"
+#include "camera.h"			// for MikeCamera
+#include "init.h"
+#include "fileio.h"
+#include "strings.h"
+
+#define MAXPART		50
+#define GROUP_NAME_LEN 16
+
+typedef struct 
+{
+	Uint8 Parent;							// Part number of parent part
+	Uint8 Child;							// part number of first child
+	Uint8 Sibling;							// part number of first sibling
+	Uint8	Active;							// set to 1 if active, 0 if not.
+	char *pName;							// pointer to name in original PSH file.  Now null ternimated and lower case
+	char *pParentName;					// ditto for name of parent
+	char GroupName[GROUP_NAME_LEN];	//	string containing the first word of the part name (i.e, the group name)
+} SPart;
+
+typedef struct
+{
+	Uint8 Num;
+	Uint8 Current;
+	char *pSearch;
+} SGroup;
+
+#define NUM_GROUPS  4
+
+SGroup Group[NUM_GROUPS] = 
+{
+	{0,0,"_head"},
+	{0,0,"_chest"},
+	{0,0,"_left_shin"},
+	{0,0,"_board"}
+};
+
+SPart	Part[MAXPART];
+static int NextPart;
+
+static int Create_Parts;
+
+static CSuper *pSkater;
+static CSuper *pSkater2;
+
+static int Create_Region;			// The region of the source file
+
+// the group numbers of the four groups that make up the body
+static int Create_HeadNum = 0;
+static int Create_TorsoNum = 0;
+static int Create_LegsNum = 0;
+static int Create_BoardNum = 0;
+
+static char * pPSH;
+
+SViewport CreateViewport = {512,240,0,0,10,30000,3413}; // xR,yB,xL,yT,Hither,Yon,TanHalf
+
+static SViewport *pViewport = &CreateViewport;
+
+
+static SLight Skater_CreateLight = {{{     0, 0x1000,		 0},
+									 {        0, 0xF000,		 0},
+									 {		    0, 0     ,0x1000}},
+									0,
+									// bot    top     mid  
+									{{0x0280,0x0b80,0x0140},
+									 {0x0280,0x0b80,0x0140},			
+									 {0x0280,0x0b80,0x0140}},
+									0,
+									{0x0880,0x0880,0x0880}};		 // ambient
+
+
+void LowerCase(char *p)
+{
+	while (*p)
+	{
+		char letter = *p;
+		if (letter>='A' && letter<='Z')
+			letter+='a'-'A';
+		*p++ = letter;
+	}
+}
+
+int WhiteSpace(char *p)
+{
+	if (*p == 0x20 || *p== 0x09)
+		return 1;
+	else
+		return 0;
+}
+
+
+// turn off all the body parts of the skater (with all the overlapping parts)
+Create_Off()
+{
+	int region = Create_Region;
+
+	ASSERT(region>=0 && region< MAXPSXS, "Create_Off called with illegal region number");
+	SPSXRegion *pRegion = &PSXRegion[region];
+	ASSERT(pRegion->Filename[0],"Create off called on empty region");
+	ASSERT(pRegion->IsSuper,"Create off called with non-super region");
+	ASSERT(pRegion->Usable,"Create off called with unusable region");
+
+	int Parts = pRegion->NumParts;
+
+	ASSERT(Parts == Create_Parts, "Create Parts does not match parts in region");
+
+	SModel **ppModels = pRegion->ppModels;
+
+	// Loop over all parts and set the invisble model flag
+	for (int i = 0; i < Parts; i++)
+	{
+		SModel * pModel = *ppModels++;
+		pModel->Flags |= MODELFLAGS_INVISIBLE;
+	}
+}
+
+
+// turn on all body parts that contain this string 
+Create_On(char *p)
+{
+	SPSXRegion *pRegion = &PSXRegion[Create_Region];
+	int Parts = pRegion->NumParts;
+	SModel **ppModels = pRegion->ppModels;
+	for (int i = 0; i < Parts; i++)
+	{
+		SModel * pModel = *ppModels++;						// step through model pointers
+		if (strstr(Part[i].pName,p))							// if this part contains the name
+		{
+			pModel->Flags &= ~MODELFLAGS_INVISIBLE;		// then clear the invisible flag 
+		}
+	}	
+}
+
+// turn on all body parts that contain these two strings 
+Create_On2(char *p1, char*p2)
+{
+
+	SPSXRegion *pRegion = &PSXRegion[Create_Region];
+	int Parts = pRegion->NumParts;
+	SModel **ppModels = pRegion->ppModels;
+	for (int i = 0; i < Parts; i++)
+	{
+		SModel * pModel = *ppModels++;						// step through model pointers
+		if (strstr(Part[i].pName,p1) && strstr(Part[i].pName,p2))							// if this part contains the name
+		{
+			pModel->Flags &= ~MODELFLAGS_INVISIBLE;		// then clear the invisible flag 
+		}
+	}	
+}
+
+
+// find how many instances of the string p there are in the parts
+int Create_Count(char *p)
+{
+	int n=0;
+	SPSXRegion *pRegion = &PSXRegion[Create_Region];
+	int Parts = pRegion->NumParts;
+	SModel **ppModels = pRegion->ppModels;
+	for (int i = 0; i < Parts; i++)
+	{
+		SModel * pModel = *ppModels++;						// step through model pointers
+		if (strstr(Part[i].pName,p))							// if this part contains the name
+		{
+			n++;														// increment count on number of parts
+		}
+	}	
+
+	#if DEBUG
+	printf("%d %ss\n",n,p);
+	#endif
+
+	return n;
+}
+
+// Find the nth instance of a part containing a string p
+// return the index into the Part[] array 
+char* Create_GetGroupName(char *p, int Number)
+{
+
+	int n=0;
+	SPSXRegion *pRegion = &PSXRegion[Create_Region];
+	int Parts = pRegion->NumParts;
+	SModel **ppModels = pRegion->ppModels;
+	for (int i = 0; i < Parts; i++)
+	{
+		SModel * pModel = *ppModels++;						// step through model pointers
+		if (strstr(Part[i].pName,p))							// if this part contains the name
+		{
+			n++;														// increment count on number of parts
+		}
+	}	
+	return n;
+}
+
+
+Create_OnHead(char *p)
+{
+	Create_On2(p,"_head");
+}
+
+Create_OnBoard(char *p)
+{
+	Create_On2(p,"_board");
+	Create_On2(p,"_front_wheel");
+	Create_On2(p,"_back_wheel");
+}
+
+Create_OnTorso(char *p)
+{
+	Create_On2(p,"_pelvis");
+	Create_On2(p,"_stomach");
+	Create_On2(p,"_chest");
+	Create_On2(p,"_right_bicep");
+	Create_On2(p,"_right_forearm");
+	Create_On2(p,"_right_hand");
+	Create_On2(p,"_left_bicep");
+	Create_On2(p,"_left_forearm");
+	Create_On2(p,"_left_hand");
+}
+
+Create_OnLegs(char *p)
+{
+	Create_On2(p,"_left_thigh");
+	Create_On2(p,"_left_shin");
+	Create_On2(p,"_left_shoe");
+	Create_On2(p,"_right_thigh");
+	Create_On2(p,"_right_shin");
+	Create_On2(p,"_right_shoe");
+}
+
+
+Create_LoadPSH()
+{
+	ASSERT(MAXPART<256,"MAXPART too big to fit in Uint8");
+
+	// Load the .PSH file
+	pPSH = FileIO_OpenLoad("default.psh");
+	// Zero terminate it, fo string searching
+	pPSH[FileIO_Size-1] = 0;
+	// Convert it all to lower case
+	LowerCase(pPSH);
+	// Extract the heirachy
+	char *p = pPSH;
+
+	// Scan over the PSH file and find the name of the part, and the name of the part's parent
+	NextPart = 0;
+	while (*p)
+	{
+
+		// Find the part name by searching for "defaultpart_" and then skipping over it.
+		p = strstr(p,"defaultpart_");
+		if (!p)
+			break;
+		p += 12;			// skip the "defaultpart_"
+
+		// Copy the first part of the name into the group name
+		char *g = p;		// get pointer to 
+		char *pGroupName = Part[NextPart].GroupName;
+		int GroupNameLen = 0;
+		while (*g != '_')
+		{
+			*pGroupName++ = *g++;
+			GroupNameLen++;
+			ASSERT(GroupNameLen<GROUP_NAME_LEN,"Group name too long");
+		}
+
+		// Find the end of the name, and zero ternimate it
+		Part[NextPart].pName = p;
+		while (!WhiteSpace(p))
+			p++;
+		*p++ = 0;
+
+		// Now find the parent part name as above, by searching for "parent:" 
+		p = strstr(p,"parent:");
+		ASSERT(p,"No parent");
+		// Skip the "parent:"
+		while(!WhiteSpace(p))
+			p++;	
+		// Skip the space	
+		p++;
+		Part[NextPart].pParentName = p;
+
+		// Find the end of the parent name and null teminate it
+		while (!WhiteSpace(p) && *p != 0x0a)  p++;
+		*p++ = 0;			// Null ternimate it
+
+		NextPart++;				// increment the counter of number of parts				 
+	}
+
+	Create_Parts = NextPart;		// Store number of parts in global for later
+
+	// Print out parts, for debugging
+	for (int i = 0;i < Create_Parts;i++)
+	{
+		printf("Group: %s, Part: %s, Parent: %s\n",Part[i].GroupName,Part[i].pName,Part[i].pParentName);
+	}
+
+}
+
+
+// Initialize the default skater and stuff 
+void Create_Init()
+{
+	int i;
+	// The file name for the PSX file that has all the skater parts
+	char Create_PSXFile[] = "default";
+
+	Create_Region = Spool_PSX(Create_PSXFile,0,TRUE);
+	Spool_Sync();
+
+	Create_LoadPSH();
+
+
+	for (i=0;i<NUM_GROUPS;i++)
+	{
+		Group[i].Num = Create_Count(Group[i].pSearch);
+		Group[i].Current = 0;
+	}
+
+
+   pSkater = new CSuper;
+   pSkater->InitItem(Create_PSXFile);
+	pSkater->mpLight = &Skater_CreateLight;
+	pSkater->mPos.vx = -50<<FRACBITS;
+
+   pSkater2 = new CSuper;
+   pSkater2->InitItem(Create_PSXFile);
+	pSkater2->mpLight = &Skater_CreateLight;
+	pSkater2->mPos.vx = 50<<FRACBITS;
+
+
+
+	M3dMaths_SetIdentityRotation(&MikeCamera[0].Transform);
+	MikeCamera[0].Position.vx = 0;
+	MikeCamera[0].Position.vy = -50;
+	MikeCamera[0].Position.vz = -300;
+	TransMatrix(&MikeCamera[0].Transform, &MikeCamera[0].Position);
+	M3dInit_SetFoggingParams(10, 6000, 2048);  // Default fogging params
+
+	M3dInit_InitAtStart();
+
+}
+
+void Create_Logic()
+{
+	static SVECTOR RotAngle;
+
+	pSkater->UpdateFrame();
+	pSkater2->UpdateFrame();
+
+	pSkater->mAngles.vy+=60;
+
+
+	Create_Off();
+	Create_On("default");
+
+}
+
+void Create_Display()
+{
+	M3d_RenderSetup(&MikeCamera[0], pViewport, pDoubleBuffer->OrderingTable);
+
+	M3d_BuildTransform(pSkater);
+	M3d_Render(pSkater);
+
+	M3d_BuildTransform(pSkater2);
+	M3d_Render(pSkater2);
+
+	M3d_RenderCleanup();
+}
+
+void Create_Exit()
+{
+}
+
+
+void Create_Main()
+{
+	Create_Init();
+	while(1)
+	{
+		GStartTime = Vblanks;
+		Db_FlipClear();					// Flip the buffers, start rendering and clear ot
+		Create_Logic();						// all logic
+		Create_Display();					// all display	 (Note, these could be mixed together)
+
+		DrawSync(0);
+		Pause(1);
+		while (Vblanks < GStartTime+2);	   // +2 syncs to 30fps,  +1 will sync to 60 fps
+		Db_DisplayDraw();					// Start Rendering
+
+		PollHost();
+//		printf("x\n");
+	}
+
+}

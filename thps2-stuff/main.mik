@@ -1,0 +1,3942 @@
+/***************************************************************************/
+/*                                                                         */
+/* Main module for Pro Skater!!!                                           */
+/*                                                                         */
+/***************************************************************************/
+
+#define 	ASYNC 1				// True if we use triple buffering stuff
+
+
+#define	DDBUG 0
+#define  LDBUG 0
+
+#include "globals.h"
+
+#if SERIALPRINTF
+#include <libsio.h>
+#endif
+
+#include	"qdefs.h"
+#include "timeouts.h"
+#include "db.h"
+#include "pad.h"
+#include "pack.h"
+#include "vram.h"
+#include "m3d.h"
+#include "ob.h"
+#include "quat.h"
+#include "camera.h"
+#include "spool.h"
+#include "panel.h"
+#include "debug.h"
+#include "init.h"
+#include "font.h"
+#include "textwin.h"
+#include "trig.h"
+#include "rgb.h"
+#include "bit.h"
+#include "bit2.h"
+#include "m3dutils.h"
+#include "utils.h"
+#include "shell.h"
+#include "post.h"
+#include "backgrnd.h"
+#include "m3dcolij.h"
+#include "m3dmaths.h"
+#include "m3dasm.h"
+#include "mech.h"
+#include "powerup.h"
+#include "redbook.h"
+#include "flash.h"
+#include "mess.h"
+#include "proctex.h"
+#include "gamefmv.h"
+#include "front.h"
+#include "card.h"
+#include "reloc.h"
+#include "shatter.h"
+#include "fileio.h"
+#include "mem.h"
+#include "bmr.h"
+#include "symbols.h"
+#include "tweak.h"
+#include "trickob.h"
+#include "rail.h"
+#include "crowd.h"
+
+#include "frontend2.h"
+
+#include "hires.h"
+#include "sfx.h"
+
+#include "video.h"
+#include "campt.h"												
+
+#include "stats.h"
+
+#include "LoadingScreen.h"
+
+#include "shellutils.h"
+#include "career.h"
+#include "FrontEnd.h"
+#include "m3dface.h"
+
+#include "tricktips.h"
+#include "localtxt.h"
+
+#include <libpad.h>
+
+#	if ( ( ENGLISH + FRENCH + ITALIAN + GERMAN ) != 1 )
+#		error No build language defined
+#	endif
+
+#ifndef MICKMAP
+#define MICKMAP 0
+#endif
+
+#ifndef SUBMIT
+#define SUBMIT 0
+#endif
+
+CPowerUp *GPowS;
+CPowerUp *GPowK;
+CPowerUp *GPowA;
+CPowerUp *GPowT;
+CPowerUp *GPowE;
+CPowerUp *GPowTape;
+
+
+//#define SMALL_HEAP_SIZE 			(150000-(32768*DEMODISK))
+// small heap is now shrunk out of existance, as we now use the top of the large heap
+// hopefully overlap will be avoided
+#define SMALL_HEAP_SIZE 			16			//(140000)
+#define HIRES_SMALL_HEAP_SIZE 	16			//30000
+
+// Useful Globals are here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	char	GVideoFlags;				// flags for if we have the SKATE letters, or the hidden tape
+
+	int GGame = GAME_CAREER;					// The type of game,  GAME_CAREER, GAME_PRACTICE, etc...
+
+// The Level Number is stated in GLevel
+// The skater type is in GSkater1->mType;
+
+// Number of players
+	int GNumberOfPlayers;
+
+	SCareer GCareer;
+
+// Pointers to each skater
+   CBruce* GSkater1;
+   CBruce* GSkater2;
+
+int GClear1, GClear2;			// global flags set if we have to clear pad1 or pad2
+
+// varaibles used by the auto test for gameplay
+// so we can cycle through the levels, and the players
+// in both one and two players 
+int GAutoTest = 0;
+int GAutoPlayer1 = 0;
+int GAutoPlayer2 = 0;
+int GAutoLevel = 0;
+int GAutoGame = 0;
+
+int GAutoPlayer1a = 0;
+int GAutoPlayer2a = 0;
+int GAutoLevela = 0;
+int GAutoGamea = 0;
+
+int GHorsePlayer;			// Which player (0 or 1) is playing now in HORSE
+int GHorseMode;			// HORSE_SET, or HORSE_MATCH  for setting a score or trying to match
+int GHorseScore;        // what score are we trying to match?
+int GHorseDoneStart;		// have we done the text display at the start?
+int GHorseRestart;		// index of the restart point we are currently at
+//char GHorseWord[MAX_HORSE_LETTERS+1];	// the string containign the number of letters, plus a null terminator
+int GHorseLetters[2];	// Number of letters each player has 
+//int GHorseLen;			// length of the word used
+int GHorseWordChosen = 0;	// have we done the "play to" display?
+int GHorseCursorPos;	// cursor position for the change word screen
+int GHorseWaitTime;
+int GHorseClearInput2;	// whether we should clear the second controller
+
+#define SPIN_TIME 40
+
+int Mick_MapMode = 0;
+int Mick_MapDoit = 0;
+
+int	SelectedSkater2 = 0;					// This is a patch,  all the selected skater stuff need cleaning up
+
+int GRenderedInvisible;
+int GRenderedCulled;
+int GRenderedFast;
+int GRenderedNonRotated;
+int GRenderedRotated;
+
+int GGameFont;
+int GTimeFont;
+int GScoreFont;
+
+int	NumPolyF3;
+int	NumPolyFT3;
+int	NumPolyG3;
+int	NumPolyGT3;
+int	NumPolyF4;
+int	NumPolyFT4;
+int	NumPolyG4;
+int	NumPolyGT4;
+int   NumSetTile;
+int   NumTile1;
+int	NumOther;
+
+extern int GModelVideoDisplayed;
+
+#define	OVERLAPX 96
+#define  OVERLAPY	64
+#define	BIGW (256+OVERLAPX/2)
+#define	BIGH (SCREENHEIGHT/2+OVERLAPY/2)
+
+
+void DumpAutoTest()
+{
+
+
+   DISPENV DispEnv;
+   DRAWENV DrawEnv;
+	char Temp[200];
+
+//   ResetGraph(0);
+   SetDispMask(1);
+   SetGraphDebug(0);
+   FntLoad(0, 0);
+   int n = FntOpen(200, 175, 160, 16, 1, 1024);
+   DrawSync(0);
+
+   SetDefDrawEnv(&DrawEnv, 0, 0, 512, SCREENHEIGHT);
+   PutDrawEnv(&DrawEnv);
+
+	sprintf(Temp,"L-%d, P1-%d, P2-%d, G-%d", GAutoLevela, GAutoPlayer1a, GAutoPlayer2a, GAutoGamea);
+   FntPrint(Temp);
+   FntFlush(n);
+
+	GAutoLevela = GAutoLevel;
+	GAutoPlayer1a = GAutoPlayer1;
+	GAutoPlayer2a = GAutoPlayer2;
+	GAutoGamea = GAutoGame;
+
+}
+
+
+#if 0 && DEBUG && CHRISTER // Stuff for SN profiler
+
+StartSNProfiler()
+{
+	unsigned int event;
+
+printf("### Starting SN profiler! ###\n");
+
+//   INITprofile((void*)0x801F8000, 0x8000);   // set-up profile buffer
+   INITprofile((void*)0x80680000, 0x8000);   // set-up profile buffer
+	SetRCnt(RCntCNT2,0x1000,RCntMdINTR);
+	EnterCriticalSection();
+   event = OpenEvent(RCntCNT2, EvSpINT, EvMdINTR, (void *)SNprofile);
+	EnableEvent(event);
+	StartRCnt(RCntCNT2);
+	ExitCriticalSection();
+	SETprofrange(1,(void*)0,(void*)-1);
+}
+#endif
+
+
+#if DEMODISK
+
+
+int Timeout;        // Timeout in seconds.
+
+int DemoTimer;
+
+
+int ExitDemo()
+{
+	if (Pad[0].Select.Pressed)
+		return 1;
+	if (Timeout && Vblanks - DemoTimer > Timeout*60) 
+		return 1;
+	else
+		return 0;
+}
+#endif
+
+void ResetDemoTimer()
+{
+#if DEMODISK
+	DemoTimer = Vblanks;
+#endif
+}
+
+
+int GState;				// Global state, used to indicate states around when time runs out
+int GSpin;
+int GSpinSpeed;
+
+extern int SelectedSkater;
+
+#if !CD
+// Mimic the CD library code size to avoid nasty surprises later
+//Uint8 cdlibcodesize[34584];						// Added 1040 based on observed difference
+Uint8 cdlibcodesize[20412+17896+8000];						// modified again, afted discovering discrepencies
+#endif
+
+
+#define TRIPLEBUFFER 0
+
+// For the AutoTest cheat.
+//SDemo pLittleDemo[]={ {103,52,10,1}, {105,53,0,1}, {105,53,2,1}, {110,65535,0,0} };
+SDemo pLittleDemo[]={ {5,5,10,1}, {5,5,0,1}, {5,5,2,1}, {10,65535,0,0} };
+static char *pAutoTestRestartName=NULL;
+
+//Uint32 TimeOfLastInput=Vblanks;
+
+
+int	CloseCam;
+
+EEndCode EndCode=ENDCODE_NONE;
+
+#if DEBUG
+int NonRandom = 0;					// if this is TRUE, then calling RND will cause an ASSERT
+#endif
+
+
+int TTime=0;        			 		// Global time
+int EveryOther=0;	  			 		// Flag for Logic()
+int Restart=FALSE;  			 		// Set to TRUE to escape from the main loop
+int CurrentGameLevel;		 		// The current level in play.
+int CurrentWaterLevel = 0x7fffffff;    // The current water level for player 1
+int CurrentWaterLevel2 = 0x7fffffff;   // The current water level for player 2
+int CurrentWaterDamage;		 		// The current water damage (for ooze etc).
+int CurrentDifficultyLevel; 		// The current ... difficulty level.
+int CurrentDualShockLevel = 2;	// The current ... dual shock level.
+int GameFrozen = FALSE;		 		// freeze game, for screenshots and camera adjustments
+
+// Set cheat globals to values defined in globdefs.s.
+int	Cheat_PanelOn = 1;
+int	Cheat_L2KillsBaddies = 0;
+int   Cheat_LevelSelect = 0;
+int   Cheat_AutoTest = 0;
+int   Cheat_RestartSkip = (1-CD);
+int   Cheat_GameInfo = 0;
+int   Cheat_FPS = (1-CD);
+int   Cheat_Blood = 1;
+int Cheat_SlowMo = 0;
+int	Cheat_BigHead = 0;
+int   Cheat_ScreenShots = 0;
+int   Cheat_Fire = 0;
+
+void* OldSP;
+
+Uint8* PolyBufferEnd;
+int PolyBufferBytesUsed=0;
+
+int MusicStopped = 0;
+
+// Used in various places.
+VECTOR Zero={0,0,0,0};
+
+void PlayAway();
+void Logic();
+void Display();
+
+//int hxx = 0;
+
+void* CClass::operator new(size_t size)
+{
+   RECORDRA;
+
+   void *pnew=Mem_New(size);
+
+   // Ensure size is a multiple of 4.
+   size = ( size + 3 ) & ~0x03;
+
+   // Zero all the newly allocated memory
+   Uint32 *p=(Uint32 *)pnew;
+   for (int i=0; i<size/4; ++i) *p++=0;
+
+   return pnew;
+}
+
+void CClass::operator delete(void* p)
+{
+   RECORDRA;
+   Mem_Delete(p);
+}
+
+
+void CalcPolyBufferEnd(void)
+{
+   // Calculate the end of the poly buffer
+   // less a 256 byte buffer, just in case.
+   PolyBufferEnd=((Uint8*)pDoubleBuffer->Polys)+(POLYBUFFERSIZE+MICKMAP*500000)-256;
+   PolyBufferEnd=(Uint8*)((Uint32)PolyBufferEnd&0x7fffffff);
+}
+
+#if POLLHOST
+#if DDX
+void PollHost(void)
+{
+   DDXpollhost();
+}
+#else
+void PollHost(void)
+{
+   pollhost();
+}
+#endif
+#else
+void PollHost(void)
+{
+}
+#endif
+
+
+void Game_Over()
+{
+
+	#if MICK&&DEBUG
+	printf("Game Over, Dude!\n");
+	#endif
+
+
+
+	if (GGame == GAME_GRAFFITI)
+	{
+		if (GSkater2->mTags == GSkater1->mTags)
+		{
+			// It's a tie!
+		} 
+		else
+		{
+			// Someone has won, so find out who
+			if (GSkater2->mTags > GSkater1->mTags)
+			{
+				GWins2++;
+				GLosses1++;
+				if (GStreak2<0)
+					GStreak2 = 1;
+				else
+					GStreak2++;
+				GStreak1 = -GStreak2;	
+			}
+			else
+			{
+				GWins1++;
+				GLosses2++;
+				if (GStreak1<0)
+					GStreak1 = 1;
+				else
+					GStreak1++;
+				GStreak2 = -GStreak1;	
+			}
+			if (GSkater1->mTags > GHighTags1)
+				GHighTags1 = GSkater1->mTags;
+			if (GSkater2->mTags > GHighTags2)
+				GHighTags2 = GSkater2->mTags;
+		}												
+	}
+
+	if (GState == GSTATE_NORMAL)
+	{
+		GState = GSTATE_STOP;
+		GSpin = 80;
+		GSpinSpeed = 64;
+//		Crowd_Cheer(500);
+
+
+		if (GSkater2)
+		{
+			GSkater2->mLeanAngle = 0;   // huh?
+		}
+	}
+}
+
+
+#if MICKMAP
+
+int MapX=256;
+int MapY=120;
+int MapScale=256;
+
+void Mick_Line(int x0, int y0, int x1, int y1, int Color)
+{
+	RECORDRA;
+
+	x0-=(GSkater1->mPos.vx>>FRACBITS);
+	x1-=(GSkater1->mPos.vx>>FRACBITS);
+	y0-=(GSkater1->mPos.vz>>FRACBITS);
+	y1-=(GSkater1->mPos.vz>>FRACBITS);
+
+
+	x0*=MapScale;
+	x1*=MapScale;
+	y0*=MapScale;
+	y1*=MapScale;
+
+	x0/=62*256;
+	x1/=62*256;
+	y0/=-100*256;
+	y1/=-100*256;
+
+	// ignore points
+	if (x0==x1 && y0==y1)
+		return;
+
+	x0+=MapX;
+	x1+=MapX;
+	y0+=MapY;
+	y1+=MapY;
+
+	// Clipping
+	int t;   // temp var for swapping
+
+	if (x0>x1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (x1<0 || x0>511)
+		return;
+
+	if (x0<0)
+	{
+		y0 = (0-x0)*(y1-y0)/(x1-x0)+y0;
+		x0 = 0;
+	}
+	if (x1>511)
+	{
+		y1 = (511-x0)*(y1-y0)/(x1-x0)+y0;
+		x1 = 511;
+	}
+
+	if (y0>y1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (y1<0 || y0>239)
+		return;
+	if (y0<0)
+	{
+		x0 = (0-y0)*(x1-x0)/(y1-y0)+x0;
+		y0 = 0;
+	}
+	if (y1>239)
+	{
+		x1 = (239-y0)*(x1-x0)/(y1-y0)+x0;
+		y1 = 239;
+	}
+
+
+	
+   LINE_F2* aline=(LINE_F2*)pPoly;
+	Uint8 *newppoly=(Uint8*)(aline+1);
+	if (newppoly>PolyBufferEnd) {POLYOVERFLOWINDICATOR; return;} // See ya
+   pPoly=(Uint32*)newppoly;
+	
+   aline->tag=0x03000000;
+	*(Uint32*)&aline->r0=0x40000000 + Color;
+	aline->x0=x0;
+	aline->y0=y0;
+	aline->x1=x1;
+	aline->y1=y1;
+	addPrim(pDoubleBuffer->PanelOT,aline);
+}
+
+
+
+// draw the bounding box of an item
+Mick_ItemOutline(SItem * pItem, int color)
+{
+	SModel *pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+	int x = pItem->Position.vx>>FRACBITS;
+	int y = pItem->Position.vz>>FRACBITS;
+
+	if (pModel->NumFaces > 50	)
+	{
+		color = Rnd(3000);
+	}
+
+	int x0 = x+ ((Sint32)(Sint16)(pModel->Box.vx));
+	int x1 = x+ (pModel->Box.vx>>16);
+
+	int y0 = y +((Sint32)(Sint16)(pModel->Box.vz));
+	int y1 = y +(pModel->Box.vz>>16);
+
+	
+	Mick_Line(x0,y0,x1,y0,color);
+	Mick_Line(x0,y0,x0,y1,color);
+	Mick_Line(x0,y1,x1,y1,color);
+	Mick_Line(x1,y0,x1,y1,color);
+}
+
+// draw the top down view of an item 
+Mick_Item(SItem * pItem, int color)
+{
+	SModel *pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+
+   int ItemX = pItem->Position.vx>>FRACBITS;
+   int ItemZ = pItem->Position.vz>>FRACBITS;
+
+	if (pModel->NumFaces > 50	)
+	{
+		color = Rnd(3000);
+	}
+
+   int NumFaces = pModel->NumFaces;
+   int NumVertices = pModel->NumVertices;
+   int NumNormals = pModel->NumNormals;
+   SVECTOR *Normals	  = pModel->Vertices	+ pModel->NumVertices;
+   SVECTOR *pVertices = pModel->Vertices;
+   Uint32 *pFaceX= (Uint32 *)(Normals+NumNormals);
+
+   //				printf("/n/n*************************<<<<<<<<<<<<<<<<<<<<<<<< /n");
+   for (int i=0; i<NumFaces; i++,pFaceX+=FACELEN(pFaceX))
+   {
+      SFace *pFace = (SFace*)pFaceX;		// to simplify casting, which hurts my head.
+
+
+      Uint16   *pFaceFlags=(Uint16*)pFace;
+		#if PSXVERSION>=0x20004
+      Uint8    *pVertexIndex=(Uint8*)(pFaceFlags+CFACE_VERTEXNUMS*2); // Byte vertex indices which are not shifted
+      int x0 =   pVertices[pVertexIndex[0]].vx+ItemX; 
+      int z0 =   pVertices[pVertexIndex[0]].vz+ItemZ;
+
+      int x1 =   pVertices[pVertexIndex[1]].vx+ItemX;
+      int z1 =   pVertices[pVertexIndex[1]].vz+ItemZ;
+
+      int x2 =   pVertices[pVertexIndex[2]].vx+ItemX;
+      int z2 =   pVertices[pVertexIndex[2]].vz+ItemZ;
+		#else
+      Uint16    *pVertexIndex=pFaceFlags+CFACE_VERTEXNUMS*2;
+      int x0 =   pVertices[pVertexIndex[0]>>3].vx+ItemX;
+      int z0 =   pVertices[pVertexIndex[0]>>3].vz+ItemZ;
+
+      int x1 =   pVertices[pVertexIndex[1]>>3].vx+ItemX;
+      int z1 =   pVertices[pVertexIndex[1]>>3].vz+ItemZ;
+
+      int x2 =   pVertices[pVertexIndex[2]>>3].vx+ItemX;
+      int z2 =   pVertices[pVertexIndex[2]>>3].vz+ItemZ;
+		#endif
+
+		// ignore axis aligned vertical linesa
+//		if (x0==x1 && x1 == x2 || z0==z1 && z1==z2)
+//			continue;
+		// ignore if any two points on top of each other
+		if (x0==x2 && z0==z2)
+			continue;
+		if (x0==x1 && z0==z1)
+			continue;
+		if (x2==x1 && z2==z1)
+			continue;
+
+      if (! (pFace->Flags&FACEFLAGS_TRIANGLE))
+      {
+			#if PSXVERSION>=0x20004
+         int x3 =   pVertices[pVertexIndex[3]].vx+ItemX;
+         int z3 =   pVertices[pVertexIndex[3]].vz+ItemZ;
+			#else
+         int x3 =   pVertices[pVertexIndex[3]>>3].vx+ItemX;
+         int z3 =   pVertices[pVertexIndex[3]>>3].vz+ItemZ;
+			#endif
+			Mick_Line(x0,z0,x1,z1,color);
+			Mick_Line(x1,z1,x3,z3,color);
+			Mick_Line(x2,z2,x3,z3,color);
+			Mick_Line(x2,z2,x0,z0,color);
+      }
+		else
+		{
+			Mick_Line(x0,z0,x1,z1,color);
+			Mick_Line(x1,z1,x2,z2,color);
+			Mick_Line(x2,z2,x0,z0,color);
+		}
+
+   }
+}
+
+#endif
+
+int	Mick_Darkness=0;
+
+void Mick_Darken()
+{
+
+//		return;
+		// Get the position in the OT.
+      Uint32* OTPos=pDoubleBuffer->PanelOT+1;			// last slot of panel, and set it up before them, but after the windowing
+		
+		if (Mick_Darkness<40)
+		{
+			Mick_Darkness += 4;
+		}
+
+		// Set up the big transparent poly and add it to the display list.
+		POLY_F4 *aPoly=(POLY_F4*)pPoly;
+      DR_TPAGE* ptpage=(DR_TPAGE*)(aPoly+1);
+		Uint8 *newppoly=(Uint8*)(ptpage+1);
+		if (newppoly>PolyBufferEnd) {POLYOVERFLOWINDICATOR; return;} // See ya
+	   pPoly=(Uint32*)newppoly;
+		
+		setPolyF4(aPoly);
+		aPoly->code|=0x02; // Semitransparent
+		aPoly->r0=Mick_Darkness, aPoly->g0=Mick_Darkness, aPoly->b0=Mick_Darkness;
+
+		aPoly->x0=0;	aPoly->x1=SCREENWIDTH;
+		aPoly->y0=0;	aPoly->y1=0;
+		aPoly->x2=0;	aPoly->x3=SCREENWIDTH;
+		aPoly->y2=SCREENHEIGHT;	aPoly->y3=SCREENHEIGHT;
+      addPrim(OTPos,aPoly);
+
+		
+		// Now add the tpage primitive to set the transparency rate for the above poly.
+      ptpage->tag=0x01000000;
+//		if (Fading)
+	      ptpage->code[0]=0xe1000640; // Subtractive transparency
+//		else	
+//      	ptpage->code[0]=0xe1000620; // 50:50 transparency
+      addPrim(OTPos,ptpage);
+}
+
+#if DEBUG&&MICK
+
+#define TRACERS 0
+
+
+STracer *pTracerList = NULL; 
+int TraceIndex = 0;
+
+STracer *Tracer_New(int color)
+{
+	#if !TRACERS
+	return 0;
+	#else
+	STracer *pTracer = (STracer*)Mem_New(sizeof(STracer));
+	pTracer->Scale = 256;
+	pTracer->Color = color;
+	pTracer->pNext = pTracerList;
+	pTracerList = pTracer;
+	for (int i=0;i<TRACELEN;i++)
+		pTracer->Data[i]=0;
+	return pTracer;
+	#endif
+}
+
+void Tracers_Delete()
+{
+	#if TRACERS
+	STracer *pTracer = pTracerList;
+	while (pTracer)
+	{
+		STracer *pThis = pTracer; 
+		pTracer = pTracer->pNext;
+		Mem_Delete(pThis);
+	}
+	pTracerList = NULL;
+	#endif
+}
+
+
+// advance the index, and clear that position in all tracers
+void Tracers_Advance()
+{
+	#if TRACERS
+	TraceIndex++;
+	if (TraceIndex == TRACELEN)
+		TraceIndex = 0;
+	STracer *pTracer = pTracerList;
+	while (pTracer)
+	{
+		pTracer->Data[TraceIndex] = 0;
+		pTracer = pTracer->pNext;
+	}
+	#endif
+}
+
+
+void Tracer_Set(STracer *pTrace, int Value)
+{
+	#if TRACERS
+	pTrace->Data[TraceIndex] = Value;
+	#endif
+}
+
+void Tracer_Increment(STracer *pTrace, int Value)
+{
+	#if TRACERS
+
+	if (!GamePaused)			// Dont do it if paused, as we might end up getting overflows
+		pTrace->Data[TraceIndex] += Value;
+	#endif
+}
+
+
+void Tracer_Line(int x0, int y0, int x1, int y1, int Color)
+{
+	RECORDRA;
+
+
+	// Clipping
+	int t;   // temp var for swapping
+
+	if (x0>x1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (x1<0 || x0>511)
+		return;
+
+	if (x0<0)
+	{
+		y0 = (0-x0)*(y1-y0)/(x1-x0)+y0;
+		x0 = 0;
+	}
+	if (x1>511)
+	{
+		y1 = (511-x0)*(y1-y0)/(x1-x0)+y0;
+		x1 = 511;
+	}
+
+	if (y0>y1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (y1<0 || y0>239)
+		return;
+	if (y0<0)
+	{
+		x0 = (0-y0)*(x1-x0)/(y1-y0)+x0;
+		y0 = 0;
+	}
+	if (y1>239)
+	{
+		x1 = (239-y0)*(x1-x0)/(y1-y0)+x0;
+		y1 = 239;
+	}
+
+
+	
+   LINE_F2* aline=(LINE_F2*)pPoly;
+	Uint8 *newppoly=(Uint8*)(aline+1);
+	if (newppoly>PolyBufferEnd) {POLYOVERFLOWINDICATOR; return;} // See ya
+   pPoly=(Uint32*)newppoly;
+	
+   aline->tag=0x03000000;
+	*(Uint32*)&aline->r0=0x40000000 + Color;
+	aline->x0=x0;
+	aline->y0=y0;
+	aline->x1=x1;
+	aline->y1=y1;
+	addPrim(pDoubleBuffer->PanelOT,aline);
+}
+
+
+void Tracers_Display()
+{
+	#if TRACERS
+
+	STracer *pTrace = pTracerList;
+	int TraceX = 30;
+	int TraceY = 50;
+	STracer *pTracer = pTracerList;
+	int Color = pTracer->Color;
+	while (pTracer)
+	{
+		int index = TraceIndex+1;
+		for (int i=0;i<TRACELEN;i++)
+		{
+			if (index == TRACELEN)
+				index = 0;
+			Tracer_Line(TraceX+i,TraceY,TraceX+i,TraceY-pTracer->Data[index],Color);
+			index++;
+		}
+		pTracer = pTracer->pNext;
+		TraceY += 30;
+	}
+	#endif
+}
+
+
+#endif //DEBUG
+
+
+// given a loaded bmp file, download it, and the palette to specific locations
+// modified version of function written by Ryan
+// pData is the .BMP file
+// x,y = coordinates of texture in VRAM
+// ClutX, ClutY = coordinates of 256 color palette in VRAM
+// assumes that the textures are the same size
+// loads and decodes the (uncompressed) bmp
+void DownloadBMP(char* pData, int x, int y, int ClutX, int ClutY) 
+{
+	char dum1, dum2;
+	
+	int w, h;
+	w = (int) (*(Uint16 *) (pData + 18));
+	h = (int) (*(Uint16 *) (pData + 22));
+
+
+	int bpp = *(Uint16 *) (pData + 28);
+	ASSERT(bpp == 8,"Non-8 bit texture in DownloadBMP");
+
+	int colors = (int) (*(Uint16 *) (pData + 46));
+	if (colors == 0) colors = 256;
+
+	int transparent_color = 0;
+	Uint16 colorTab[256];
+	char *pColor = pData + 54;
+	for (int i = 0; i < colors; i++) 
+	{
+		Uint16 r, g, b;
+		b = (Uint16) *pColor;	
+		g = (Uint16) *(pColor+1);	
+		r = (Uint16) *(pColor+2);
+		if (b > 247 && g == 0 && r > 247) // replace this color with transparent black
+		{
+			transparent_color = i;
+			colorTab[i] = 0x0000;
+		}
+		else
+		{
+			b = b>>3;
+			g = g>>3;
+			r = r>>3;
+			if (b == 0 && g == 0 && r == 0) // replace with solid black
+				colorTab[i] = 0x8000;	
+			else colorTab[i] = (b<<10) + (g<<5) + r;
+		}
+		pColor += 4;	
+	}
+
+
+	// put pallete there
+	RECT r;
+	r.x = ClutX;
+	r.y = ClutY;
+	r.w = 256;
+	r.h = 1;
+	LoadImage(&r, (u_long *) colorTab);
+	DrawSync(0);
+
+
+	// should I add padding?
+	// (note: the width of the image is automatically a multiple of four,
+	// even though the width specifier in the BMP header isn't)
+	int pad = w % 4;
+	if (pad > 0) pad = 4 - pad;
+	w += pad;
+	
+	// create a new memory buffer and copy actual image data into it
+	// (this also puts the BMP data right-side up)
+	char *data = (char *) Mem_New((w+3) * h, 1);
+	char *in = pData + 54 + (colors * 4);
+	char *out = (char*)(data + ((h - 1) * w));
+	for (int j = 0; j < h; j++) 
+	{
+		for (int i = 0; i < w - pad; i++)
+			*out++ = *in++;
+		
+		for (int i = 0; i < pad; i++) 
+		{
+			*out++ = transparent_color;
+			in++;
+		}
+		
+		out -= w << 1;
+	}
+
+	r.x = x;
+	r.y = y;
+	r.w = w/2;
+	r.h = h;
+	LoadImage(&r, (u_long*)data);
+	DrawSync(0);
+
+
+
+	Mem_Delete(data);
+
+}
+
+
+// Replace a texture in VRAM with one loaded in from a file
+
+void ReplaceTexture(Uint32 Checksum, char *pFile)
+{
+
+	// Find the texture, make sure it is there
+	STexture *pTexture = Spool_FindTextureEntry(Checksum);
+	#if RYAN
+	ASSERT(pTexture,"Target Texture not found in ReplaceTexture");
+	#endif
+	if (!pTexture) return;   // just to be on the safe side
+
+	// find where it is in VRAM
+	#if DEBUG
+	int X = pTexture->pVRAMRect->p_pack->X;
+	int Y = pTexture->pVRAMRect->p_pack->Y;
+	#else
+	int X = pTexture->x;
+	int Y = pTexture->y;
+	#endif
+
+	// find where the palette is
+	int ClutX = Pal256X;
+	int ClutY = Pal256Y + pTexture->pPalette->slot; 
+
+	// Load the BMP into memory
+	int size = FileIO_Open(pFile);
+	char *buf = (char*) Mem_New(size, 1);
+	FileIO_Load(buf);
+	FileIO_Sync();
+
+
+	// extract and download bmp and font
+	DownloadBMP(buf,X,Y,ClutX,ClutY);
+
+	// recover memory
+
+	Mem_Delete(buf);
+
+	// That's it	
+
+}
+
+
+
+#define MAPSPEED 8
+
+
+void Logic()
+{
+   RECORDRA;
+
+
+#if DEBUG
+   if (Pad[0].Up.Triggered && Pad[0].Select.Pressed && Pad[0].Up.Pressed)
+   {
+      Pad[0].Up.Triggered=0;
+      DebugFaceFlags ^= FF_TRN;     // no bits zeroed out,
+   }
+//   if (Pad[0].Down.Triggered && Pad[0].Select.Pressed && Pad[0].Down.Pressed)
+//   {
+//      Pad[0].Down.Triggered=0;
+//      DebugFaceFlags ^= ((FF_TEX|FF_ARB))<<16;     // zero the textured bit
+//   }
+//   if (Pad[0].Left.Triggered && Pad[0].Select.Pressed && Pad[0].Left.Pressed)
+//   {
+//      Pad[0].Left.Triggered=0;
+//      DebugFaceFlags ^= FF_VXC<<16;     // zero the gourad bit
+//   }
+
+   if (Pad[0].Right.Triggered && Pad[0].Select.Pressed && Pad[0].Right.Pressed)
+   {
+      Pad[0].Right.Triggered = 0;
+      DebugFaceFlags = 0xffff0000;     // zero the textured bit
+   }
+
+#endif
+
+   extern int LogicsCalled;
+   LogicsCalled++;
+
+   int i;
+   CBruce* pMech;
+   CCamera* pCam;
+
+   if( EveryOther++ & 1 ) return;
+
+	#if DEBUG&&MICKMAP
+	if (Pad[0].LeftOne.Pressed && Pad[0].LeftTwo.Pressed && Pad[0].RightOne.Pressed && Pad[0].RightTwo.Pressed)
+	{
+		Mick_MapMode ^=1;
+		Pause(30);
+	}
+	if (Mick_MapMode && GamePaused)
+	{
+		if (Pad[0].Up.Pressed)
+			MapY+=MAPSPEED;
+		if (Pad[0].Down.Pressed)
+			MapY-=MAPSPEED;
+		if (Pad[0].Left.Pressed)
+			MapX+=MAPSPEED*16/10;
+		if (Pad[0].Right.Pressed)
+			MapX-=MAPSPEED*16/10;
+		if (Pad[0].Select.Pressed)
+		{
+			MapX = 256;
+			MapY = 120;
+		}
+		if (Pad[0].Square.Pressed)
+		{
+			if (MapScale > 32)
+			MapScale -= MapScale/16;
+		}
+		if (Pad[0].Circle.Pressed)
+		{
+			MapScale += MapScale/16;
+		}
+	}
+
+	if (Mick_MapMode)
+	{
+		GSkater1->mPlayTime = XFrames + 20*60*60;
+	}
+	#endif
+
+
+   ++TTime;
+
+//   Tint_Update();
+   Font_Reset();
+
+#	if DEBUG
+   // Reset these counters (Ob_AI() calls will modify them)
+   NumSuspended=0;
+   NumAICalls=0;
+#	endif
+
+//   Pad_Update();   << in logic
+
+#if DEBUG
+   Debug_Print();
+   Debug_TestingStuff();
+#endif
+
+#if DEBUG
+   ProfileReadCount(0,0,44);
+#endif
+
+
+   int	Frozen;
+   Frozen = (GamePaused || GameFrozen);
+   if (!Frozen)
+   {
+      Flash_Update();
+      Utils_ClearExplosionStack();
+      Ob_ClearInputFlags(BaddyList);
+      Ob_ClearInputFlags(EnvironmentalObjectList);
+
+//      Trig_ResetCPCollisionFlags(); // Flag logic for the command points.
+
+      Ob_AI(&MechList);
+
+		if (!GamePaused)				// Might become paused at end of 2P replay
+		{
+
+//	      Trig_ResetCPExecutedFlags();
+
+	#if DEBUG
+	      ProfileReadCount(0,255,255);				// CYAN
+	#endif
+
+	      Bit_Move();
+	      Rail_Update(); // Rails now separated from non-rendered bit list
+
+	#if DEBUG
+	      ProfileReadCount(0,128,0);
+	#endif
+
+	      Ob_AI(&PowerUpList);
+
+	#if DEBUG
+	      ProfileReadCount(70,28,200);				  // blue
+	#endif
+
+	      TrickOb_Update(); // Brighten up objects
+	#if DEBUG
+	      ProfileReadCount(50,50,50);		   ///  GRAY
+	#endif
+			
+	      Ob_QuickAI(&EnvironmentalObjectList);
+
+	#if DEBUG
+	      ProfileReadCount(0,100,0);		   ///  GREEN
+	#endif
+	      Ob_QuickAI(&BackgroundList);
+	#if DEBUG
+	      ProfileReadCount(100,100,0);		   ///  yellow
+	#endif
+
+	      Ob_MaybeUnSuspendOrCull();
+
+	      Ob_AI(&BaddyList);    // Baddies are moved last because bullets and bits
+	      // may set the baddies input flags which they
+	      // need to respond to
+	#if DEBUG
+	      ProfileReadCount(0,100,100);		   ///  dull cyan
+	#endif
+
+
+	#if DEBUG
+	      ProfileReadCount(132,132,132);		   ///  white
+	#endif
+
+	      Bit_RemoveDeadBits();
+
+			if(GGame != GAME_HORSE)
+				if (   GState == GSTATE_STOP && GSpin < SPIN_TIME 
+				    && GSkater1->mPhysicsState == PHYSICS_ON_GROUND
+				    && (!GSkater2 || GSkater2->mPhysicsState == PHYSICS_ON_GROUND))
+				{
+					//spin the camera around the player whilst he keeps moving
+					GSkater1->mpCamera->extra_YRot+=GSpinSpeed;
+					if (GSkater2)
+						GSkater2->mpCamera->extra_YRot+=GSpinSpeed;
+
+		//	  		((CCamera*)CameraList)->extra_YRot+=64;	   // was 64
+		//			if (GNumberOfPlayers == 2)
+		//	  			(((CCamera*)((CCamera*)CameraList)->mNextItem))->extra_YRot-=64;  // other player spins other way
+
+				}
+
+		}	// end if (!GamePaused)
+		else
+		{
+			#if MICK&&DEBUG
+			printf("Skipped final P1 Physics that previously caused nasty obscure crashes, phew!\n");
+			#endif
+		}
+      //if (!InShell) Panel_Update();
+   }	// if (!GamePaused)
+   else
+   {
+		if (GState == GSTATE_STOP)
+		{
+			//spin the camera around the player whilst he keeps moving
+	  	//	((CCamera*)CameraList)->extra_YRot+=64;
+		// here we should test to see it the skater has come to a rest.
+
+//	      int temp = GamePaused;
+//	      int temp1 = GameFrozen;
+//	      GamePaused = 0;
+//			GameFrozen = 0;
+	      Ob_AI(&CameraList);
+//			GamePaused = temp;
+//	      GameFrozen = temp1;
+      }
+		else
+		{
+	   //   Ob_AI(&CameraList);
+		}
+   }
+
+
+   Shatter_MaybeMakeGlassShatterSound();
+
+#if DEBUG
+   // Maybe turn on the low memory indicator.
+   if (LowMemory) LowMemoryIndicatorTimer=LOWMEMORYMESSAGEDURATION;
+#endif
+
+//#if TWEAK
+//   if (!TweakMode)
+//#endif
+//   {
+      Panel_Update();
+
+	  SControl TempPad;
+
+	  if (GGame == GAME_HORSE && GHorsePlayer == 1)
+	  {
+		  // must swap back pads so that we can restore/remap
+		  // controllers appropriately
+		  // (this is because Pad_Restore/Pad_Remap store actual
+		  // pointers, rather than offsets into the current pad)
+		  TempPad = Pad[0];
+		  Pad[0] = Pad[1];
+		  Pad[1] = TempPad;
+	  }
+	  
+	  Pad_Restore();
+      Front_Update();
+	  Pad_Remap();
+
+	  if (GGame == GAME_HORSE && GHorsePlayer == 1)
+	  {
+		  // must swap back pads so that we can restore/remap
+		  // controllers appropriately
+		  // (this is because Pad_Restore/Pad_Remap store actual
+		  // pointers, rather than offsets into the current pad)
+		  TempPad = Pad[0];
+		  Pad[0] = Pad[1];
+		  Pad[1] = TempPad;
+	  }
+
+	TrickTips_Update();
+//   }
+   Mess_Update();
+
+   // unless we are doing a spoollock test, we load a bit every frame
+//   if (!Cheat_SpoolLockTest)
+   {
+      Spool_Continue();
+      FileIO_Continue();
+   }
+
+#if DEBUG
+   Mem_CalcHoles(DisplayedHeap);
+#endif
+
+
+#if DEBUG
+   ProfileReadCount(128,128,0);
+#endif
+
+   return;
+}
+
+// End of Logic()
+////////////////////////////////////////////////////////////////
+
+
+// These six functions are used for smoothing objects and bits' motions when the GPU
+// is struggling. They are only called from within Display().
+
+
+
+
+
+int	PrimitiveCount;
+
+
+//
+//#define setPolyF3(p)	setlen(p, 4),  setcode(p, 0x20)
+//#define setPolyFT3(p)	setlen(p, 7),  setcode(p, 0x24)
+//#define setPolyG3(p)	setlen(p, 6),  setcode(p, 0x30)
+//#define setPolyGT3(p)	setlen(p, 9),  setcode(p, 0x34)
+//#define setPolyF4(p)	setlen(p, 5),  setcode(p, 0x28)
+//#define setPolyFT4(p)	setlen(p, 9),  setcode(p, 0x2c)
+//#define setPolyG4(p)	setlen(p, 8),  setcode(p, 0x38)
+//#define setPolyGT4(p)	setlen(p, 12), setcode(p, 0x3c)
+
+
+#if DEBUG
+
+int CountPrimitives()
+{
+   RECORDRA;
+
+   int	Primitives = 0;
+
+	NumPolyF3=0;
+	NumPolyFT3=0;
+	NumPolyG3=0;
+	NumPolyGT3=0;
+	NumPolyF4=0;
+	NumPolyFT4=0;
+	NumPolyG4=0;
+	NumPolyGT4=0;
+	NumSetTile=0;
+	NumTile1=0;
+	NumOther=0;
+
+
+
+   P_TAG* pPrim = (P_TAG*)(pDoubleBuffer->PanelOT[Db_OTSize()-1]);
+
+   while (pPrim!=(P_TAG*)0xffffff)
+   {
+      if (pPrim->len==0)
+      {
+         pPrim=(P_TAG*)(pPrim->addr);
+         ASSERT((((Uint32)pPrim)&0xff000000)==0,"eh?");
+      }
+      else
+      {
+         Primitives++;
+
+			switch (pPrim->code & 0x7c)
+			{
+				case 0x20 :
+					NumPolyF3++;
+					break;
+				case 0x24 :
+					NumPolyFT3++;
+					break;
+				case 0x30 :
+					NumPolyG3++;
+					break;
+				case 0x34 :
+					NumPolyGT3++;
+					break;
+				case 0x28 :
+					NumPolyF4++;
+					break;
+				case 0x2c :
+					NumPolyFT4++;
+					break;
+				case 0x38 :
+					NumPolyG4++;
+					break;
+				case 0x3c :
+					NumPolyGT4++;
+					break;
+				case 0x60 :
+					NumSetTile++;
+					break;
+				case 0x68 :
+					NumTile1++;
+					break;
+				default :
+					//if (NumOther < 20)
+					//	printf("%lx\n",(int)(pPrim->code & 0x7c));
+					NumOther++;
+			}
+         pPrim=(P_TAG*)(pPrim->addr);
+         ASSERT((((Uint32)pPrim)&0xff000000)==0,"eh?");
+      }
+   }
+   return Primitives;
+}
+
+#endif
+
+// Shrink everything that is being drawing into the middle of the screen
+// so we can see what a vast amount of overdraw we have
+void ShrinkPrimitives()
+{
+#if DEBUG
+   RECORDRA;
+
+
+   P_TAG* pPrim = (P_TAG*)(pDoubleBuffer->PanelOT[Db_OTSize()-1]);
+
+   while (pPrim!=(P_TAG*)0xffffff)
+   {
+      if (pPrim->len==0)
+      {
+         pPrim=(P_TAG*)(pPrim->addr);
+         ASSERT((((Uint32)pPrim)&0xff000000)==0,"eh?");
+      }
+      else
+      {
+
+   	POLY_G3  *pG3;
+   	POLY_F3  *pF3;
+   	POLY_FT3 *pFT3;
+   	POLY_GT3 *pGT3;
+
+   	POLY_G4  *pG4;
+   	POLY_F4  *pF4;
+   	POLY_FT4 *pFT4;
+   	POLY_GT4 *pGT4;
+
+
+			switch (pPrim->code & 0x7c)
+			{
+
+				case 0x20 :
+				// F3
+		      	pF3 = (POLY_F3 *)pPrim;
+					pF3->x0 = pF3->x0/4+128;
+					pF3->x1 = pF3->x1/4+128;
+					pF3->x2 = pF3->x2/4+128;
+
+					pF3->y0 = pF3->y0/4+60;
+					pF3->y1 = pF3->y1/4+60;
+					pF3->y2 = pF3->y2/4+60;
+					break;
+				case 0x24 :
+				// ft3
+		      	pFT3 = (POLY_FT3 *)pPrim;
+					pFT3->x0 = pFT3->x0/4+128;
+					pFT3->x1 = pFT3->x1/4+128;
+					pFT3->x2 = pFT3->x2/4+128;
+
+					pFT3->y0 = pFT3->y0/4+60;
+					pFT3->y1 = pFT3->y1/4+60;
+					pFT3->y2 = pFT3->y2/4+60;
+					break;
+				case 0x30 :
+				// g3
+		      	pG3 = (POLY_G3 *)pPrim;
+					pG3->x0 = pG3->x0/4+128;
+					pG3->x1 = pG3->x1/4+128;
+					pG3->x2 = pG3->x2/4+128;
+
+					pG3->y0 = pG3->y0/4+60;
+					pG3->y1 = pG3->y1/4+60;
+					pG3->y2 = pG3->y2/4+60;
+					break;
+				case 0x34 :
+				// gt3 
+		      	pGT3 = (POLY_GT3 *)pPrim;
+					pGT3->x0 = pGT3->x0/4+128;
+					pGT3->x1 = pGT3->x1/4+128;
+					pGT3->x2 = pGT3->x2/4+128;
+
+					pGT3->y0 = pGT3->y0/4+60;
+					pGT3->y1 = pGT3->y1/4+60;
+					pGT3->y2 = pGT3->y2/4+60;
+					break;
+
+				case 0x28 :
+				// f4
+		      	pF4 = (POLY_F4 *)pPrim;
+					pF4->x0 = pF4->x0/4+128;
+					pF4->x1 = pF4->x1/4+128;
+					pF4->x2 = pF4->x2/4+128;
+					pF4->x3 = pF4->x3/4+128;
+
+					pF4->y0 = pF4->y0/4+60;
+					pF4->y1 = pF4->y1/4+60;
+					pF4->y2 = pF4->y2/4+60;
+					pF4->y3 = pF4->y3/4+60;
+					break;
+				case 0x2c :
+				// ft4
+		      	pFT4 = (POLY_FT4 *)pPrim;
+					pFT4->x0 = pFT4->x0/4+128;
+					pFT4->x1 = pFT4->x1/4+128;
+					pFT4->x2 = pFT4->x2/4+128;
+					pFT4->x3 = pFT4->x3/4+128;
+
+					pFT4->y0 = pFT4->y0/4+60;
+					pFT4->y1 = pFT4->y1/4+60;
+					pFT4->y2 = pFT4->y2/4+60;
+					pFT4->y3 = pFT4->y3/4+60;
+					break;
+				case 0x38 :
+				// g4
+		      	pG4 = (POLY_G4 *)pPrim;
+					pG4->x0 = pG4->x0/4+128;
+					pG4->x1 = pG4->x1/4+128;
+					pG4->x2 = pG4->x2/4+128;
+					pG4->x3 = pG4->x3/4+128;
+
+					pG4->y0 = pG4->y0/4+60;
+					pG4->y1 = pG4->y1/4+60;
+					pG4->y2 = pG4->y2/4+60;
+					pG4->y3 = pG4->y3/4+60;
+					break;
+				case 0x3c :
+				// gt4
+		      	pGT4 = (POLY_GT4 *)pPrim;
+					pGT4->x0 = pGT4->x0/4+128;
+					pGT4->x1 = pGT4->x1/4+128;
+					pGT4->x2 = pGT4->x2/4+128;
+					pGT4->x3 = pGT4->x3/4+128;
+
+					pGT4->y0 = pGT4->y0/4+60;
+					pGT4->y1 = pGT4->y1/4+60;
+					pGT4->y2 = pGT4->y2/4+60;
+					pGT4->y3 = pGT4->y3/4+60;
+					break;
+
+
+				case 0x60 :
+//					NumSetTile++;
+					break;
+				case 0x68 :
+//					NumTile1++;
+					break;
+				default :
+					break;
+					//if (NumOther < 20)
+					//	printf("%lx\n",(int)(Tri->code & 0x7c));
+			}
+         pPrim=(P_TAG*)(pPrim->addr);
+         ASSERT((((Uint32)pPrim)&0xff000000)==0,"eh?");
+      }
+   }
+#endif
+}
+
+
+
+// reset the viewports to correct values
+// as they may have been trashed by the video replay code
+SViewport	ApocalypseViewport  = {512,SCREENHEIGHT,0,0,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+//SViewport	ApocalypseViewport  = {512+32,SCREENHEIGHT+32,-32,-32,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		LeftViewport        = {256-2,SCREENHEIGHT,  0,0,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		RightViewport       = {512,SCREENHEIGHT,256+2,0,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+
+SViewport		TopViewport         = {512,SCREENHEIGHT/2-2,  0,0,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		BottomViewport      = {512,SCREENHEIGHT,0,SCREENHEIGHT/2+2,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+
+SViewport		TopLeftViewport     = {256,SCREENHEIGHT/2,  0,0,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		BottomRightViewport = {512,SCREENHEIGHT,256,SCREENHEIGHT/2,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		TopLeftBigViewport =  {BIGW,BIGH,  0,0,10,30000,3413};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+SViewport		BottomRightBigViewport = {512,SCREENHEIGHT,512-BIGW,SCREENHEIGHT-BIGH,10,30000};	// xR,yB,xL,yT,Hither,Yon,TanHalf
+
+
+#define	MAX_VIEWPORT_MODE 3
+
+int	ViewportMode = 0;
+
+Display_Viewport(SViewport *pViewport, int ViewportNumber)
+{
+   //   M3dUtils_MaintainOrigins( (CBody *)EnvironmentalObjectList );
+   //   M3dLight_MaintainLights();
+
+
+//   SCACHE_ON;
+   P_TAG* pEnvPolysStart;
+
+
+	Camera_CurrentMikeCamera = ViewportNumber;
+	pDoubleBuffer->ViewportOT = pDoubleBuffer->OrderingTable + (OTSIZE*ViewportNumber);
+
+   M3d_RenderSetup( &(MikeCamera[ViewportNumber]), pViewport, pDoubleBuffer->OrderingTable + OTSIZE*ViewportNumber);
+
+   if (!DEBUG || (DEBUG &&  T[DISPLAYLEVEL]))
+   {
+//#if TWEAK
+//      if (!TweakMode)
+//#endif
+	extern void M3d_RenderQuick(void	*p);
+
+//	#if MICK
+//         M3d_RenderQuick(EnviroList);
+//	#else
+			Mick_MapDoit = Mick_MapMode;
+         M3d_Render(EnviroList);
+//         M3d_RenderQuick(EnviroList);
+			Mick_MapDoit = 0;
+//	#endif
+
+   }
+#if DEBUG
+   ProfileReadCount(60,0,0);			   // environment Darker red =
+#endif
+//#if TWEAK
+//   if (!TweakMode)
+//#endif
+      M3d_Render(EnvironmentalObjectList);
+//   SCACHE_OFF;
+#if DEBUG
+   ProfileReadCount(120,0,0);				   // brighter red = enviro objects (usualy very little)
+#endif
+
+//   SCACHE_ON;
+	GSkater1->TempTransform();
+	if (GSkater2)
+		GSkater2->TempTransform();
+
+
+	// store the pushback values
+	int t1 = M3d_OTPushback;
+	int t2 = M3d_OTPushback2;
+
+	// set them to zero from now.  Ideally they world be set on a player basis
+	// depending on the angle of the face normal of the bottom of the board
+	// for now we simple clear them, so bob's wheels will magically re-appear
+
+	// if Skater1 is not on the ground, and not in a bail, then we set the pushback flags
+	// specifically to push bach the soles of their feet
+	// so they don't sort so bad with the board
+	// noting else should be flagged as pushback  
+	if (GSkater1->mPhysicsState != PHYSICS_ON_GROUND && !GSkater1->mInBail)
+	{
+	   M3d_OTPushback  = 128;
+	   M3d_OTPushback2 = 128;
+	}
+	else
+	{
+	   M3d_OTPushback  = 0;
+	   M3d_OTPushback2 = 0;
+	}
+
+
+   M3d_Render( MechList );
+
+
+	GSkater1->TempRestore();
+	if (GSkater2)
+		GSkater2->TempRestore();
+
+	M3d_OTPushback = t1;
+	M3d_OTPushback2 = t2;
+
+
+   Bit_Display();
+
+   /*
+   	if (ViewportMode)
+   	{
+   		MechList->mPos.vx += 256<<FRACBITS;
+   		M3d_Render( MechList );
+   		MechList->mPos.vx -= 256<<FRACBITS;
+   	}
+   */
+//   SCACHE_OFF;
+
+#if DEBUG
+   ProfileReadCount(255,255,0);
+#endif
+
+//   SCACHE_ON;
+//#if TWEAK
+//   if (!TweakMode)
+//   {
+//#endif
+      M3d_Render(BaddyList);
+
+#if DEBUG
+      ProfileReadCount(50,50,150);
+#endif
+
+
+      M3d_Render(PowerUpList);
+//#if TWEAK
+//   }
+//#endif
+
+
+//   SCACHE_OFF;
+
+
+   if (ViewportMode == 0)
+      M3d_RenderBackground(BackgroundList);
+
+
+#if DEBUG
+   ProfileReadCount(0,0,0x40);
+#endif
+
+   M3d_RenderCleanup();
+
+
+
+
+}
+
+
+
+// Middle patch will (eventually) patch the join in the 
+// middle of the screen so the overalpping screens get equal areas.
+// props & greetz to Christer for the idea, but letting me do the hard work
+
+#define OVERLAP 64
+
+int 	PatchX = 16;
+int	PatchY = 150;
+
+
+
+// Hmm, this makes my head hurt.
+// The idea is to insert primitives into the OT
+// so that after the bottom right buffer has finished drawing
+// we copy out the overlapping rectangle to some area of VRAM
+// and then after the top left rectangle has finished, 
+// we re-draw a triangle, so both buffers are the same size.
+// complications include calculations of TPages 
+Middle_Patch()
+{
+		#if 0
+		RECT Window;
+
+		// Add a regular DR_AREA primitive first.
+      // this will be the off screen buffer
+		DR_AREA *p_clip;
+/*
+		Window.x	= 0;
+		Window.y	= 0 + pDoubleBuffer->Draw.clip.y;
+		Window.w	= 512;
+		Window.h	= 240;    // <<<<< temp, fix up later for PAL
+
+		p_clip =	(DR_AREA	*)pPoly;
+		SetDrawArea( p_clip, &Window );
+		pPoly	= (Uint32 *)( p_clip + 1 );
+		addPrim( pDoubleBuffer->OrderingTable + OTSIZE - 1, p_clip );
+*/
+		int MidX = SCREENWIDTH/2;  // middle of the screen
+		int MidY = SCREENHEIGHT/2; 
+
+		// Add two polys to the back of the first OT.
+		for (int i=0;i<2;i++)
+		{
+			POLY_FT4 * p_poly = (POLY_FT4 *)pPoly;
+			pPoly	= (Uint32 *)( p_poly + 1 );
+			setPolyFT4( p_poly );
+
+			int SourceX = (MidX + (OVERLAPX/2)*(i-1));		// left side of source rectangle
+			int SourceY = (MidY - OVERLAPY/2);
+			int TpageX = SourceX&~0x3f;					// tpage for this
+			SourceX = SourceX - TpageX;					// convert to offset in tpage		
+
+			setUV4( p_poly, SourceX, SourceY,
+								 SourceX + OVERLAPX, SourceY,
+								 SourceX, SourceY+OVERLAPY,
+								 SourceX+OVERLAPX, SourceY+OVERLAPY );
+
+
+			setXY4( p_poly, PatchX, PatchY,
+								 PatchX + OVERLAPX, PatchY,
+								 PatchX, PatchY+OVERLAPY,
+								 PatchX+OVERLAPX, PatchY+OVERLAPY);
+
+			setRGB0( p_poly, 0x80, 0x80, 0x80 );
+			if( pDoubleBuffer == &DoubleBuffer[0] )				// need to get the same TPage as buffer we are drawing to
+				setTPage( p_poly, 2, 0, TpageX, 0 );
+			else
+				setTPage( p_poly, 2, 0, TpageX, 256 );
+			addPrim( pDoubleBuffer->OrderingTable + OTSIZE - 1, p_poly );
+
+			// Add a DR_AREA primitive which allows us to draw offscreen.
+			Window.x	= 0;
+			Window.y	= 0;
+			Window.w	= SCREENWIDTH;
+			Window.h	= SCREENHEIGHT;
+
+			p_clip =	(DR_AREA	*)pPoly;
+			SetDrawArea( p_clip, &Window );
+			pPoly	= (Uint32 *)( p_clip + 1 );
+			addPrim( pDoubleBuffer->OrderingTable + OTSIZE - 1, p_clip );
+
+
+		}
+
+
+// Now add the appropiate triangle to copy it back after drawing the other buffer
+// it's the last things done, so goes at the head of the OT
+		POLY_FT3 * p_poly = (POLY_FT3 *)pPoly;
+		pPoly	= (Uint32 *)( p_poly + 1 );
+		setPolyFT3( p_poly );
+
+		int DestX = (MidX - OVERLAPX/2);		// left side of source rectangle
+		int DestY = (MidY - OVERLAPY/2);
+
+		int TpageX = PatchX&~0x3f;					// tpage for patch
+		int PatchU = PatchX - TpageX;				// convert to offset in tpage		
+
+		setUV3( p_poly, PatchU + OVERLAPX, PatchY,
+							 PatchU + OVERLAPX, PatchY+OVERLAPY,
+							 PatchU, PatchY+OVERLAP);
+
+
+		setXY3( p_poly, DestX + OVERLAPX, DestY,
+							 DestX + OVERLAPX, DestY+OVERLAPY,
+							 DestX, DestY+OVERLAPY);
+
+		setRGB0( p_poly, 0x80, 0x80, 0x80 );
+		setTPage( p_poly, 2, 0, TpageX, 0 );
+		addPrim( pDoubleBuffer->OrderingTable, p_poly );
+
+		// Add a DR_AREA primitive which allows us to draw onscreen
+		Window.x	= 0;
+		Window.y	= 0 + pOtherBuffer->Draw.clip.y;
+		Window.w	= 512;
+		Window.h	= 256;
+
+		p_clip =	(DR_AREA	*)pPoly;
+		SetDrawArea( p_clip, &Window );
+		pPoly	= (Uint32 *)( p_clip + 1 );
+		addPrim( pDoubleBuffer->OrderingTable + OTSIZE - 1, p_clip );
+
+
+/*			
+		// Add one more (flat black) poly to the back of the OT (this fixes problem with transparent source pixel copy).
+		POLY_F4 * p_poly = (POLY_F4 *)pPoly;
+		pPoly	= (Uint32 *)( p_poly + 1 );
+		setPolyF4( p_poly );
+		setXY4( p_poly, GameFMV_StartX, GameFMV_StartY,
+							 GameFMV_StartX + GameFMV_Width - 1, GameFMV_StartY,
+							 GameFMV_StartX, GameFMV_StartY + GameFMV_Height - 1,
+							 GameFMV_StartX + GameFMV_Width - 1, GameFMV_StartY + GameFMV_Height - 1 );
+		setRGB0( p_poly, 0x00, 0x00, 0x00 );
+		addPrim( pDoubleBuffer->OrderingTable + OTSIZE - 1, p_poly );
+*/
+
+		#endif
+}
+
+void Draw_Rect(int X0,int Y0,int X1,int Y1,int X2,int Y2,int X3,int Y3, int c)
+{
+        register POLY_F4 *pF4 = (POLY_F4 *)pPoly;
+
+			Uint8 *newppoly=(Uint8*)(pF4+1);
+
+        *((long *)&pF4->r0) = c;  // code/b0/g0/r0
+        pF4->x0 = X0;
+        pF4->y0 = Y0;
+        pF4->x1 = X1+1;
+        pF4->y1 = Y1;
+        pF4->x3 = X2+1;
+        pF4->y3 = Y2+1;
+        pF4->x2 = X3;
+        pF4->y2 = Y3+1;
+        SetPolyF4((void *)pPoly);
+        addPrim(pDoubleBuffer->OrderingTable, pPoly);
+   	  pPoly=(Uint32*)newppoly;
+
+}
+
+void BlackOut(int x, int y, int w, int h)
+{
+//	printf ("Balckout (%d,%d,%d,%d)\n",x,y,w,h);
+	Draw_Rect(x,y,x+w,y,x+w,y+h,x,y+h,0x40000000);
+}
+
+
+void Display()
+{
+   RECORDRA;
+
+
+   if (pAutoTestRestartName)
+   {
+      Mess_SetRGB(255,0,0);
+      Mess_SetScale(256);
+      Mess_SetTextJustify(CENTREJUSTIFY);
+      Mess_DrawText(256,60,pAutoTestRestartName);
+   }
+
+// Dont think this does anything any more
+   ApocalypseViewport.Zoom = ((CCamera*)CameraList)->GetZoom();
+
+//   Proctex_MoveProceduralTexture();
+
+
+#if DEBUG
+   ProfileReadCount(255,0,0);
+#endif
+
+	if (!GameFrozen || Cheat_ScreenShots)
+   Ob_AI(&CameraList); // Note that this is here rather than in Logic()!
+
+#if DEBUG
+   ProfileReadCount(0,0,0);
+#endif
+
+
+	if (!Cheat_ScreenShots)
+	{
+		static int Released = 1;
+		if (Pad[0].Select.Pressed)
+		{
+			if (Released)
+			{
+				Released = 0;
+			   if (GNumberOfPlayers == 2 && GGame != GAME_HORSE)
+				{
+			      ViewportMode += 1;
+			      if (ViewportMode > MAX_VIEWPORT_MODE)
+			         ViewportMode = 0;
+				}
+				else
+				{
+					CloseCam^=1;
+				}
+			}
+
+		}
+		else
+			Released = 1;
+
+	   if (Pad[1].Select.Triggered)
+	   {
+	      Pad[1].Select.Triggered = 0;
+	      ViewportMode += 1;
+	      if (ViewportMode > MAX_VIEWPORT_MODE)
+	         ViewportMode = 0;
+	   }
+	}
+   // Skip viewport 0 for two players
+   if (GNumberOfPlayers == 2 && ViewportMode == 0  && GGame != GAME_HORSE)
+      ViewportMode = 1;
+
+extern int camDist;
+extern int camPitch;
+extern int camYOffset;
+
+	#if DEBUG&&MICKMAP
+	if (Mick_MapMode)
+	{
+		// x,y is you
+		int x = GSkater1->mPos.vx>>FRACBITS;
+		int y = GSkater1->mPos.vz>>FRACBITS;
+
+		// x1,y1 is camera
+		int x1 = GSkater1->mpCamera->mPos.vx>>FRACBITS;
+		int y1 = GSkater1->mpCamera->mPos.vz>>FRACBITS;
+		Mick_Line(x-250,y,x+250,y,0x00ff);	// red cross = you
+		Mick_Line(x,y-250,x,y+250,0x00ff);
+		Mick_Line(x1-150,y1,x1+150,y1,0x00ff00);  // smaller green cross = camera
+		Mick_Line(x1,y1-150,x1,y1+150,0x00ff00);
+		Mick_Line(x1,y1,x1+(x-x1)*10,y1+(y-y1)*10,0xffffff);   // Wite line = Direction of camera
+
+	}
+	#endif
+
+
+
+   switch (ViewportMode)
+   {
+   case	0:
+
+// this setting it directly may stop us from tweaking the camera
+// maybe should not do it if game is fozen
+
+		if (!GameFrozen)
+		{
+			if (CloseCam)
+			{
+				camDist = 386;
+				camPitch	= 30;			// was 75
+				camYOffset = -160;   // was 140
+			}
+			else
+			{
+				camDist = 290;
+				camPitch	= 150;
+				camYOffset = -108;
+			}
+		}
+
+      Display_Viewport(&ApocalypseViewport,0);
+      break;
+   case 1:
+		if (!GameFrozen)
+		{
+			camDist = 286;
+			camPitch	= 118;
+			camYOffset = -140;
+		}
+		BlackOut(SCREENWIDTH/2-2,0,4,SCREENHEIGHT);
+      Display_Viewport(&LeftViewport,0);
+      Display_Viewport(&RightViewport,1);
+      break;
+   case 2:
+		if (!GameFrozen)
+		{
+			camDist = 450;
+			camPitch	= 60;  // 4022
+			camYOffset = -120;		//204;
+		}
+		BlackOut(0,(SCREENHEIGHT/2-2),SCREENWIDTH,4);
+      Display_Viewport(&TopViewport,0);
+      Display_Viewport(&BottomViewport,1);
+      break;
+   case 3:
+		if (!GameFrozen)
+		{
+			camDist = 642;
+			camPitch	= 32;
+			camYOffset = -172;
+		}
+		BlackOut(SCREENWIDTH/2,0,SCREENWIDTH/2,SCREENHEIGHT/2);
+		BlackOut(0,SCREENHEIGHT/2,SCREENWIDTH/2,SCREENHEIGHT/2);
+      Display_Viewport(&TopLeftViewport,0);
+      Display_Viewport(&BottomRightViewport,1);
+      break;
+   case 4:
+
+		if (!GameFrozen)
+		{
+			camDist = 610;
+			camPitch	= 0;
+			camYOffset = -200;
+		}
+		BlackOut(SCREENWIDTH/2+OVERLAPX/2,0,SCREENWIDTH/2-OVERLAPX/2,SCREENHEIGHT/2-OVERLAPY/2);
+		BlackOut(0,SCREENHEIGHT/2+OVERLAPY/2,SCREENWIDTH/2-OVERLAPX/2,SCREENHEIGHT/2-OVERLAPY/2);
+      Display_Viewport(&TopLeftBigViewport,0);
+      Display_Viewport(&BottomRightBigViewport,1);
+//		Middle_Patch();
+      break;
+
+   }
+
+
+	#if DEBUG
+//	if (Mick_MapMode)
+//		Mick_Darken();
+	#endif
+
+
+
+#if DEBUG
+   if (Cheat_GameInfo)
+      PrimitiveCount = CountPrimitives();
+#endif
+
+
+	#if 0&&DEBUG&&MICK
+	if (Pad[0].Triangle.Pressed)
+		ShrinkPrimitives();
+	#endif
+
+
+#	if DEBUG
+   if( T[DUMPVRAM] )
+   {
+      VRAMDump();
+   }
+#	endif
+
+#if DEBUG
+   ProfileReadCount(0,80,0);
+#endif
+
+//      Bit_Display();
+
+#if DEBUG
+   ProfileReadCount(100,100,100);
+#endif
+
+   //   Post_PostProcessEffects();
+
+#	if DEBUG
+   if( T[PROFILERMODE] == OTPROFILE ) Debug_CheckOTDistribution();
+#	endif
+
+
+
+
+
+
+   Font_Display();
+
+#if DDBUG
+   printf("D16\n");
+#endif
+
+#if JK
+   CCamera::TweakDisplay();	// JK - uh oh! C++!
+#endif
+
+
+   Panel_Display();
+
+	#if DEBUG&&MICK
+	Tracers_Display();
+	#endif
+
+
+//#if TWEAK
+//   if (!TweakMode)
+//#endif
+//   {
+      Front_Display();
+//   }
+
+   Mess_Display();
+
+
+	// Draw a large semitrans poly over full screen to darken screen down
+	// the position of this is important, as it uses the panel OT, it must
+	// be the last thing draw in the panel OT, so it is then rendered first and does not obscure any panel.
+	extern EPausedStatus Status;
+	if (GamePaused && /*Status != STATUS_PAUSEDMENU &&*/ Status != STATUS_STARTHORSE)
+	{
+//		POLY_F4 *pF4 = Panel_DrawFlatShadedPoly(0,0,512,240, 64,64,64, 0);
+//		SetSemiTrans(pF4, 1);
+//		pF4->code |= 2;
+		extern void Mick_Darken();
+		Mick_Darken();
+
+	}
+	else
+	{
+		extern int Mick_Darkness;
+		Mick_Darkness = 0;
+	}
+
+
+#if DEBUG
+   ProfileAddPolyBuffIndicator();  // Adds Poly buffer indicator
+   Debug_DisplayTestBit();
+#endif
+
+//#if TWEAK
+//   Tweak_Display();
+//   TextWin_Display();
+//#endif
+
+   // Done last so that the panel appears on top of it even if they're in the same OT slot.
+   Flash_Display();
+
+   PolyBufferBytesUsed=((Uint32)pPoly&0x7fffffff)-(((Uint32)pDoubleBuffer->Polys)&0x7fffffff);
+
+#if DEBUG
+//   if (Cheat_GameInfo)
+//      PrimitiveCount = CountPrimitives();
+#endif
+
+   //   Post_DoFade();
+   //   Utils_FadeTrails();
+
+
+#if DEBUG
+   ProfileReadCount(0,0,0);
+#endif
+}
+
+int TimeScale;  // This is used to scale all the logic and animation
+int TimeScaleSquared;  // This is used to scale all the logic and animation
+int XFramesShifted;	// xframe stored to precision of 
+int XFrames;	    // increments by two for every frame, accurately
+
+
+
+extern volatile int DoDisplayDraw;
+static Uint32 LoopTimer=0;
+
+int LogicsCalled;
+int TargetLogics;
+
+#define FPSFRAMES 3			// number of frames to average out the timing
+int	FPS[FPSFRAMES];
+int FPSIndex = 0;
+int LastXblanks;
+
+
+#if DEBUG
+
+int	MickX;
+int MickY=0;
+
+Mick_Display(char *s)
+{
+   Font_String(MickX,MickY,s,100,30,30,1);
+   MickY+=10;
+}
+
+#if DEBUG
+char *Terrains[] = 
+{
+"0  T_CONCRETE",
+"1  T_TILE",                      
+"2  T_WOOD",                      
+"3  T_DIRT",                      
+"4  T_ASPHALT",                   
+"5  T_GRASS",                     
+"6  T_WATER",                     
+"7  T_CHAINLINK",
+"8 T_BRICK",
+"9  T_METALPOLE",
+"10  T_TINROOF",
+"11 T_POOL",
+"12 T_METAL",
+"13 T_ROCK",
+"14 T_GRAVEL"
+};                 
+#endif
+
+
+#if DEBUG
+
+void XMod(int *x, int up, int down)
+{
+	if (up) *x+= 0x40;
+	if (down) *x-= 0x40;
+	if (*x<0) *x = 0;
+	if (*x>0x1000) *x=0x1000; 
+}
+#endif
+
+
+mick_bug()
+{
+	#if DEBUG
+	
+	#if 0
+	if (Cheat_GameInfo)
+	{
+
+	   MickX = 20;
+	   MickY = 20;
+
+	   CBruce *pMan = (CBruce *)MechList;
+
+	   static char tmp1[100];
+	   sprintf(tmp1,"%d  Fast",GRenderedFast);
+	   Mick_Display(tmp1);
+
+	   static char tmp2[100];
+	   sprintf(tmp2,"%d  NonRotated ",GRenderedNonRotated);
+	   Mick_Display(tmp2);
+
+	   static char tmp3[100];
+	   sprintf(tmp3,"%d  Rotated",GRenderedRotated);
+	   Mick_Display(tmp3);
+
+	   static char tmp4[100];
+	   sprintf(tmp4,"%d  Invisible",GRenderedInvisible);
+	   Mick_Display(tmp4);
+
+	   static char tmp5[100];
+	   sprintf(tmp5,"%d  Culled",GRenderedCulled);
+	   Mick_Display(tmp5);
+
+
+	   static char tmp6[100];
+	   sprintf(tmp6,"%d  F3",NumPolyF3);
+	   Mick_Display(tmp6);
+
+	   static char tmp7[100];
+	   sprintf(tmp7,"%d  FT3",NumPolyFT3);
+	   Mick_Display(tmp7);
+
+	   static char tmp8[100];
+	   sprintf(tmp8,"%d  G3",NumPolyG3);
+	   Mick_Display(tmp8);
+
+	   static char tmp9[100];
+	   sprintf(tmp9,"%d  GT3",NumPolyGT3);
+	   Mick_Display(tmp9);
+
+	   static char tmp9a[100];
+	   sprintf(tmp9a,"%d  F4",NumPolyF4);
+	   Mick_Display(tmp9a);
+
+	   static char tmp10[100];
+	   sprintf(tmp10,"%d  FT4",NumPolyFT4);
+	   Mick_Display(tmp10);
+
+	   static char tmp11[100];
+	   sprintf(tmp11,"%d  G4",NumPolyG4);
+	   Mick_Display(tmp11);
+
+	   static char tmp12[100];
+	   sprintf(tmp12,"%d  GT4",NumPolyGT4);
+	   Mick_Display(tmp12);
+
+	   static char tmp13[100];
+	   sprintf(tmp13,"%d  DR_TWIN",NumSetTile);
+	   Mick_Display(tmp13);
+
+	   static char tmp14[100];
+	   sprintf(tmp14,"%d  tile1",NumTile1);
+	   Mick_Display(tmp14);
+
+	   static char tmp15[100];
+	   sprintf(tmp15,"%d  Other",NumOther);
+	   Mick_Display(tmp15);
+
+	   static char tmp16[100];
+	   sprintf(tmp16,"%d  Tot Polys",NumPolyF3+NumPolyFT3+NumPolyG3+NumPolyGT3+NumPolyF4+NumPolyFT4+NumPolyG4+NumPolyGT4);
+	   Mick_Display(tmp16);
+
+
+	//   static char tmp5[100];
+	//   sprintf(tmp5,"TimeScale = %d",TimeScale);
+	//   Mick_Display(tmp5);
+
+	}
+		#endif
+
+
+	#if 1
+//	else
+//	{
+	   MickX = 20;
+	   MickY = 20;
+
+	   CBruce *pMan = (CBruce *)MechList;
+
+
+//	   static char tmp1[100];
+//	   sprintf(tmp1,"%s",Terrains[pMan->mTerrain]);
+//	   Mick_Display(tmp1);
+
+//	   static char tmp2[100];
+//	   sprintf(tmp2,"%d mFrame",pMan->mFrame);
+//	   Mick_Display(tmp2);
+	
+
+//typedef struct
+//{
+//	Sint16 LightMatrix[3][3];
+//	Uint16 Pad1;
+//	Sint16 ColorMatrix[3][3];
+//	Uint16 Pad2;
+//	Sint32 BackColor[3];
+//}
+//SLight;
+
+		#if 0   // light tweaks
+
+		extern SLight Skater_DefaultLight;
+
+		int Back = Skater_DefaultLight.BackColor[0];
+		int Bot = Skater_DefaultLight.ColorMatrix[0][0];
+		int Top = Skater_DefaultLight.ColorMatrix[0][1];
+		int Left = Skater_DefaultLight.ColorMatrix[0][2];
+
+	   static char xtmp4[100];
+	   sprintf(xtmp4,"%lx Amb  Up Down",Back);
+	   Mick_Display(xtmp4);
+	   static char xtmp5[100];
+	   sprintf(xtmp5,"%lx Top  Left Right",Top);
+	   Mick_Display(xtmp5);
+	   static char xtmp6[100];
+	   sprintf(xtmp6,"%lx Bot Tri X",Bot);
+	   Mick_Display(xtmp6);
+	   static char xtmp7[100];
+	   sprintf(xtmp7,"%lx Left Square Circ",Left);
+	   Mick_Display(xtmp7);
+
+		XMod(&Back, Pad[1].Up.Pressed, Pad[1].Down.Pressed);
+		XMod(&Top, Pad[1].Right.Pressed, Pad[1].Left.Pressed);
+		XMod(&Bot, Pad[1].Triangle.Pressed, Pad[1].X.Pressed);
+		XMod(&Left, Pad[1].Circle.Pressed, Pad[1].Square.Pressed);
+
+
+		Skater_DefaultLight.BackColor[0] = Back;
+		Skater_DefaultLight.BackColor[1] = Back;
+		Skater_DefaultLight.BackColor[2] = Back;
+
+		Skater_DefaultLight.ColorMatrix[0][0] = Bot;
+		Skater_DefaultLight.ColorMatrix[1][0] = Bot;
+		Skater_DefaultLight.ColorMatrix[2][0] = Bot;
+
+		Skater_DefaultLight.ColorMatrix[0][1] = Top;
+		Skater_DefaultLight.ColorMatrix[1][1] = Top;
+		Skater_DefaultLight.ColorMatrix[2][1] = Top;
+
+		Skater_DefaultLight.ColorMatrix[0][2] = Left;
+		Skater_DefaultLight.ColorMatrix[1][2] = Left;
+		Skater_DefaultLight.ColorMatrix[2][2] = Left;
+		#endif
+
+//	}
+	#endif
+
+	#endif
+
+
+	GRenderedFast = 0;
+	GRenderedNonRotated = 0;
+	GRenderedRotated = 0;
+	GRenderedCulled = 0;
+	GRenderedInvisible = 0;
+
+
+
+}
+
+#endif
+
+FPS_Init()
+{
+   for (int i=0;i<FPSFRAMES;i++)
+      FPS[i]=2;
+   LastXblanks = Xblanks-2;	
+}
+
+
+FPS_Display()
+{
+	if (!GamePaused)
+	{
+	   FPS[FPSIndex] = Xblanks-LastXblanks;
+	   FPSIndex++;
+	   if (FPSIndex == FPSFRAMES)
+	      FPSIndex=0;
+	}
+   LastXblanks=Xblanks;
+   int Total=0;
+   for (int i=0;i<FPSFRAMES;i++)
+      Total+=FPS[i];
+   int AverageFPS = 60 * FPSFRAMES / Total ;   // Average frames /second 
+
+
+	if (Total > 5 * FPSFRAMES)
+		Total = 5 * FPSFRAMES;	   // Limit logic to 5 frames (12 FPS)
+
+	if (!GamePaused)
+	{
+		#if PAL
+		TimeScale = 256*6/5*Total/(2*FPSFRAMES);	
+		#else
+		TimeScale = 256*Total/(2*FPSFRAMES);		   // shoud be 256*,  reduce this for slowmo debugging
+		#endif
+
+		if (Cheat_SlowMo)
+		{
+			TimeScale = TimeScale/4;
+		}
+
+/*
+		if (!Cheat_PanelOn)
+			TimeScale/=4;				// 1/4 speed for debuggin animations
+
+		if (Cheat_InfiniteLives)
+			TimeScale = TimeScale*3/2;		  // 150% for twitchy people
+*/
+
+		TimeScaleSquared = (TimeScale*TimeScale)>>8;	
+		XFramesShifted += TimeScale*2;
+		XFrames = XFramesShifted>>8;	 
+	}
+
+
+//#if !CD
+if (Cheat_FPS)
+{
+	static int FPS_Pulse;
+
+	FPS_Pulse+=10;
+	FPS_Pulse &= 127;
+
+#define FPS_X 450
+#define FPS_Y 210
+   static char tmp1[100];
+   sprintf(tmp1," %d FPS",AverageFPS);
+	if (!GameFrozen)
+	{
+	   if (AverageFPS >= 25)
+		   Font_String(FPS_X,FPS_Y,tmp1,50,100,50,1);
+	   else if (AverageFPS >= 22)
+		   Font_String(FPS_X,FPS_Y,tmp1,100,100,50,1);
+		else
+		   Font_String(FPS_X,FPS_Y,tmp1,50+FPS_Pulse,50,50,1);
+	   Font_Display();
+	}
+}
+
+//#endif
+
+#if	DEBUG
+   NonRandom = 1;
+#endif
+
+
+#if DEBUG
+
+#if !MICK
+if (Cheat_GameInfo)
+#endif
+   mick_bug();
+
+#endif
+
+}
+
+
+PlayAway_Init()
+{
+
+#	if DEBUG
+   printf("\nEntering PlayAway_Init() ...\n");
+#	endif
+
+	// Added by RYAN
+	// Set in-game board texture
+	ASSERT(GNumberOfPlayers == 1 || GNumberOfPlayers == 2, "Wrong number of players"); 
+
+
+	GClear1 = 0;
+	GClear2 = 0;
+
+	// SelectedSkater lives in rfront.cpp
+	// SelectedSkater2 lives in this file
+	
+	// replace board textures
+	char tex[2][16];
+	// get proper names for in-game textures
+	strcpy(tex[0], Stats[SelectedSkater].Boards[GCareer.LastDeck[0]].BoardTexture);
+	strcpy(tex[1], Stats[SelectedSkater2].Boards[GCareer.LastDeck[1]].BoardTexture);
+	for (int i = 0; i < 2; i++)
+		tex[i][1] = '_';
+	
+	ReplaceTexture(Stats[SelectedSkater].BoardChecksum, tex[0]);	
+	
+	if (GNumberOfPlayers == 2) 
+		ReplaceTexture(Stats[SelectedSkater2].BoardChecksum, tex[1]);	
+
+
+
+	// replace wheel textures
+	// get proper names for in-game textures
+	char *wheels[] = 
+		{"W1blue01.bmp", "W1blue02.bmp", "W1blue03.bmp", "W1blue04.bmp", 
+		"W1brow01.bmp", "W1dark01.bmp", "W1gree01.bmp", "W1gree02.bmp", 
+		"W1gree03.bmp", "W1oran01.bmp", "W1purp01.bmp", "W1red_01.bmp", 
+		"W1red_02.bmp", "W1whit01.bmp", "W1yell01.bmp"};
+	for (int i = 0; i < 2; i++)
+	{
+		strcpy(tex[i], wheels[GCareer.LastWheel[i]]);
+		tex[i][1] = '_';
+	} 
+	
+	ReplaceTexture(Stats[SelectedSkater].WheelChecksum, tex[0]);	
+	#if RYAN
+	printf("\nReplacing wheel texture for skater %d with %s", SelectedSkater, tex[0]);
+	#endif
+
+	if (GNumberOfPlayers == 2) 
+	{
+		ReplaceTexture(Stats[SelectedSkater2].WheelChecksum, tex[1]);	
+		#if RYAN
+		printf("\nReplacing wheel texture for skater %d with %s", SelectedSkater2, tex[1]);
+		#endif
+	}
+
+
+	// replace truck texture
+	for (int i = 0; i < 2; i++)
+		tex[i][1] = 'T';
+	
+	ReplaceTexture(Stats[SelectedSkater].TruckChecksum, tex[0]);	
+	#if RYAN
+	printf("\nReplacing truck texture for skater %d with %s", SelectedSkater, tex[0]);
+	#endif
+	
+	if (GNumberOfPlayers == 2) 
+	{
+		ReplaceTexture(Stats[SelectedSkater2].TruckChecksum, tex[1]);	
+		#if RYAN
+		printf("\nReplacing wheel texture for skater %d with %s", SelectedSkater2, tex[1]);
+		#endif
+	}
+
+
+   CBruce *pMan = (CBruce *)MechList;
+
+	GState = GSTATE_NORMAL;
+
+
+
+
+
+
+// reset the viewports to correct values
+// as they may have been trashed by the video replay code
+	ApocalypseViewport.TanHalf  = 3413;
+	LeftViewport.TanHalf        = 3413*2/3;
+	RightViewport.TanHalf       = 3413*2/3;
+
+	TopViewport.TanHalf         = 3413;	
+	BottomViewport.TanHalf      = 3413;	
+
+	TopLeftViewport.TanHalf     = 3413*2/3;
+	BottomRightViewport.TanHalf = 3413*2/3;
+	TopLeftBigViewport.TanHalf =  3413*2/3;	
+	BottomRightBigViewport.TanHalf = 3413*2/3;	
+
+
+#if DEBUGLINES 	      // draw tracer lines
+	extern void Mech_InitLines(void);
+	Mech_InitLines();
+#endif
+
+#if LDBUG
+//   printf("Bruce_Sync\n");
+#endif
+//   Bruce_Sync();
+
+	XFramesShifted = 0;
+	XFrames = 0;
+   Vblanks = 0;
+   Xblanks = 0;
+   LastXblanks = Xblanks;
+   TTime = 0;
+   EveryOther = 0;
+
+   InShell = FALSE;
+#if LDBUG
+   printf("Pad_ClearAll\n");
+#endif
+   Pad_ClearAll();
+
+   WaterEffect = FALSE;
+   Warp = FALSE;
+
+   LogicsCalled = 0;
+   TargetLogics = 0;
+   EndCode=ENDCODE_NONE;
+
+
+#	if DEBUG
+   printf("\n\nEntering game loop ...\n\n");
+#	endif
+
+#if LDBUG
+   printf("Utils_InitialRand\n");
+#endif
+   Utils_InitialRand( RANDSEED );
+
+extern void M3dColij_FlushCache(void);
+	M3dColij_FlushCache();		  // Always need to do this 
+
+	GTimeFont = Mess_LoadFont("time.fnt",-1,-1,0);
+	GScoreFont = Mess_LoadFont("score.fnt",-1,-1,0);
+	GGameFont = Mess_LoadFont("ingame1.fnt",2,2);
+
+}
+
+
+void CreateSkatersAndCameras()
+{
+
+   // JK - now passing the bruce pointer to camera constructor...
+   //@@@ CCamera *pCam=new CCamera(new CBruce);
+   //@@@ pCam->SetMode(CAMERAMODE_NORMAL);
+
+ //	printf("\n***********************************Loading the skater\n");
+
+
+
+	
+   CBruce *pBruce = new CBruce;
+	GSkater1 = pBruce;
+	GSkater2 = NULL;
+	pBruce->mIndex = 0;			
+   CCamera *pCam = new CCamera(pBruce);
+   pCam->SetMode(CAMERAMODE_NORMAL);
+
+	// nows a good time to reset the TrickTip monitor
+	TrickTips_Init();
+
+ //	printf ("GVideoRestart.NumSkaters = %d\n",GVideoRestart.NumSkaters);
+
+	if (Levels[GLevel].isCompetition && (GGame == GAME_CAREER))
+	   if (GVideoRestart.NumSkaters == 0 && !GVideoReplay)
+			pCam->StartCompetitionIntro();
+
+
+	if (GGame != GAME_HORSE || GHorsePlayer == 0)
+		pBruce->mSkaterType = SelectedSkater;	  
+	else
+		pBruce->mSkaterType = SelectedSkater2;
+		
+
+	pBruce->mpCamera = pCam;
+	if (GNumberOfPlayers == 2 && GGame != GAME_HORSE)
+	   pBruce->InitItem(Stats[pBruce->mSkaterType].PSXName2);
+	else
+	   pBruce->InitItem(Stats[pBruce->mSkaterType].PSXName);
+
+	if (*Stats[pBruce->mSkaterType].Stance == 'R' ||
+		*Stats[pBruce->mSkaterType].Stance == 'r')
+	   pBruce->mExtraFlags |= EXTRAFLAGS_FLIPANIM;					 // flipped is actually regular, as our skaters are goofy by default.
+
+	pBruce->mpBoardStats = &GBoardStats[0];
+	pBruce->GetStats(0);
+
+	#include	"muska.psh"
+	// Frig to turn off Chad Muska's Boom box at the start of the game
+	if (Stats[pBruce->mSkaterType].ComboID == COMBO_MUSKA)
+	{
+			pBruce->mSubObjectDisplayMask |= (1 << MUSKAPART_BOOMBOX);			// mask off
+	}
+
+
+	CBruce *pBruce2;
+
+   if (GNumberOfPlayers == 2 && GGame != GAME_HORSE)
+   {
+      // Create a second player w/ camera
+      pBruce2 = new CBruce;
+		pBruce2->mIndex = 1;
+      CCamera *pCam = new CCamera(pBruce2);
+      pCam->SetMode(CAMERAMODE_NORMAL);
+
+
+		pBruce2->mSkaterType = SelectedSkater2;
+   	pBruce2->InitItem(Stats[pBruce2->mSkaterType].PSXName2);
+
+		if (*Stats[pBruce2->mSkaterType].Stance == 'R' ||
+			*Stats[pBruce2->mSkaterType].Stance == 'r')
+	   	pBruce2->mExtraFlags |= EXTRAFLAGS_FLIPANIM;	 			// P2 is Bob, Regular (Left foot forward)
+
+
+		// in two players, set up pointers in each player to the other player
+		pBruce->mpOtherPlayer = pBruce2;
+		pBruce2->mpOtherPlayer = pBruce;
+		pBruce2->mpCamera = pCam;
+		GSkater2 = pBruce2;
+
+		pBruce2->mpBoardStats = &GBoardStats[1];
+		pBruce2->GetStats(1);
+
+   }
+
+
+}
+
+
+
+//#if !CD
+
+#if !SUBMIT
+DumpSquare (int x, int y, int Solid)
+{
+   RECT rect;
+   rect.x = x-1;
+   rect.y = y-1;
+   rect.w = 5+2;
+   rect.h = 5+2;
+   ClearImage(&rect,50,0,0);
+   rect.y+=256;
+   ClearImage(&rect,50,0,0);
+
+   rect.x = x;
+   rect.y = y;
+   rect.w = 5;
+   rect.h = 5;
+   ClearImage(&rect,50,50+200*Solid,50+200*Solid);
+   rect.y+=256;
+   ClearImage(&rect,50,50+200*Solid,50+200*Solid);
+}
+
+
+#define	DSX 400
+#define  DSY 40
+#define	DSX2 (DSX+50)
+#define  DSGAP 6
+
+DumpController()
+{
+	// if you don't want this, return here
+	// as it's called in db.cpp
+
+
+	DumpSquare(DSX,DSY-DSGAP,Pad[0].Up.Pressed || Pad[0].AnalogueMoveForwardsBackwards<-ANALOGTRICKZONE);
+	DumpSquare(DSX,DSY+DSGAP,Pad[0].Down.Pressed || Pad[0].AnalogueMoveForwardsBackwards>ANALOGTRICKZONE);
+	DumpSquare(DSX-DSGAP,DSY,Pad[0].Left.Pressed || Pad[0].AnalogueMoveLeftRight<-ANALOGTRICKZONE);
+	DumpSquare(DSX+DSGAP,DSY,Pad[0].Right.Pressed || Pad[0].AnalogueMoveLeftRight>ANALOGTRICKZONE);
+
+	DumpSquare(DSX2,DSY-DSGAP,Pad[0].Triangle.Pressed);
+	DumpSquare(DSX2,DSY+DSGAP,Pad[0].X.Pressed);
+	DumpSquare(DSX2-DSGAP,DSY,Pad[0].Square.Pressed);
+	DumpSquare(DSX2+DSGAP,DSY,Pad[0].Circle.Pressed);
+}
+#endif
+
+//#endif
+
+
+int Profile_Bop;
+
+#if DEBUG&&MICK
+	STracer *pTracer1;
+	STracer *pTracer2;
+	STracer *pTracer3;
+#endif
+
+	Sprite*  pScoreSprite;
+	Sprite*  pSpecialSprite; 
+	Sprite*  pBarSprite;
+	Sprite*  pPausedSprite; 
+
+void PlayAway()
+{
+   RECORDRA;
+   PlayAway_Init();
+
+	int  Loops = 0;
+	int XStart = Xblanks; 
+
+	#if 0//MICK&DEBUG
+	extern void M3dZone_InitLines(void);   // debugging dispaly lines for collision
+	M3dZone_InitLines();
+	#endif
+
+	#if DEBUG&&MICK
+		pTracer1 = Tracer_New(0xff0000);
+		pTracer2 = Tracer_New(0x00ff00);
+//		pTracer3 = Tracer_New(0x0000ff);
+	#endif
+
+   Pause(1);								// Sync us up to a vblank so first frame start at same time
+
+	FPS_Init();
+
+	Crowd_Init();
+	Crowd_Start();
+
+	EndCode=ENDCODE_NONE;
+	ResetDemoTimer();
+
+
+	// Set the global video flags for SKATE and hidden tape
+	// if this is normal gameplay, then this value will be recorded and used
+	// if it's a replay, then it will be overwritten and used
+
+
+
+   #if TEST_VIDEO
+
+	// If we need to load video data off the memory card
+	// and if this is NOT a demo
+	if (GVideoRestart.NumSkaters > 0 && DemoTimer)
+	{
+
+		#if DEBUG && (RYAN||MICK)
+		printf("Now loading %ld-player video!\n", GVideoRestart.NumSkaters);
+		printf("GV1.pBS=$%lx\n", GVInfo1.pBlockStart);
+		printf("GV2.pBS=$%lx\n", GVInfo2.pBlockStart);
+		#endif
+
+		// Yes, must load video data
+		Front_SetLoadAction(LOAD_VIDEO); // Signal code to load full video (not just header)
+		int LoadError;
+
+		extern int VblankUpdateBar;
+		VblankUpdateBar = 1;
+
+		if (GVideoRestart.NumSkaters == 1)
+		{
+			LoadError = Card_Load(THPS_VIDEO_FILE, GVInfo1.pBlockStart); // HACKY THING, SHOULD REALLY DO FULL MENU STUFF -- JUST FOR NOW
+		}
+		else
+		{
+			LoadError = Card_Load(THPS_VIDEO_FILE, GVInfo1.pBlockStart, GVInfo2.pBlockStart); // HACKY THING, SHOULD REALLY DO FULL MENU STUFF -- JUST FOR NOW
+		}
+
+		VblankUpdateBar = 0;
+
+		if (LoadError)
+		{
+			Mess_SetCurrentFont("ingame1.fnt");
+			HiRes_ClearOTag();
+			ResetOT();
+
+			SetClippingBox(0, 0, 512, 240+16*PAL);
+			DrawColoredBox(0, 0, 512, 240+16*PAL, 0, 0, 0);
+			Mess_SetTextJustify(CENTREJUSTIFY);
+			Mess_SetScale(255);
+			#include "frontrgb.h"
+			Mess_SetRGB(MENUTEXT_PROMPT_R,MENUTEXT_PROMPT_G,MENUTEXT_PROMPT_B);
+			Mess_DrawText(256, 110, GameText.pLoadFailed, 1);
+			Mess_DrawText(256, 130, GameText.pPressXToContinue, 1);
+			
+			HiRes_DrawOTag();
+			//Mess_UnloadFont();
+
+			Pad_ClearTriggers(&Pad[0]);
+			Pad_ClearTriggers(&Pad[1]);
+			while(!Pad[0].X.Triggered && !Pad[1].X.Triggered &&
+				!Pad[0].Start.Triggered && !Pad[1].Start.Triggered)
+				Pad_Update();
+			
+			EndCode = ENDCODE_LOADVIDEOFAILED;
+			goto SKIP_MAIN_LOOP;
+		}
+		else
+		{
+			// Loaded OK, update stuff
+			SVideoHead *VH = (SVideoHead *)(GVInfo1.pBlockStart + sizeof(SCardHead)/4);
+
+			//GVideoRestart.NumSkaters = VH->NumSkaters;
+			//GVideoRestart.Skater = VH->Skater;
+			//GVideoRestart.Skater2 = VH->Skater2;
+			//GVideoRestart.Level = VH->Level;
+			//GVideoRestart.GGame = VH->GGame;
+
+			GVInfo1.NumFrames = VH->NumFrames;
+			for (int i = 0; i < MAX_HIGHLIGHTS; i++)
+				GVInfo1.Highlights[i] = VH->Highlights[i];
+
+			if (GVideoRestart.NumSkaters == 2)
+			{
+				SVideoHead *VH = (SVideoHead *)(GVInfo2.pBlockStart + sizeof(SCardHead)/4);
+				GVInfo2.NumFrames = VH->NumFrames;
+				for (int i = 0; i < MAX_HIGHLIGHTS; i++)
+					GVInfo2.Highlights[i] = VH->Highlights[i];
+			}
+		}
+
+		// Hack it negative so we won't reload it again if backend replay/highlights
+		GVideoRestart.NumSkaters = -GVideoRestart.NumSkaters;
+
+		GVideoReplay = -1; // It is a full replay
+	} // end if (GVideoRestart.NumSkaters > 0 && DemoTimer)
+
+	// Added by RYAN
+	// Test if we need to load video data off the CD (for demo mode)
+	if (!DemoTimer)
+	{
+
+		#if DEBUG && RYAN
+		printf("Now loading %ld-player video!\n", GVideoRestart.NumSkaters);
+		printf("GV1.pBS=$%lx\n", GVInfo1.pBlockStart);
+		printf("GV2.pBS=$%lx\n", GVInfo2.pBlockStart);
+		#endif
+
+		// Yes, must load video data
+		// Front_SetLoadAction(LOAD_VIDEO); // Signal code to load full video (not just header)
+		int LoadError;
+
+		extern int VblankUpdateBar;
+		VblankUpdateBar = 1;
+									 
+		LoadError = Card_LoadReplayFromCD(GVInfo1.pBlockStart, GVInfo2.pBlockStart, DemoName);		
+		
+		// cycle to name of next demo
+		if (++DemoName[4] > 'J') DemoName[4] = 'A';
+
+		VblankUpdateBar = 0;
+
+		if (LoadError)
+		{
+			EndCode = ENDCODE_LOADVIDEOFAILED;
+			goto SKIP_MAIN_LOOP;
+		}
+		else
+		{
+			// Loaded OK, update stuff
+			SVideoHead *VH = (SVideoHead *)(GVInfo1.pBlockStart + sizeof(SCardHead)/4);
+
+			GVideoRestart.NumSkaters = VH->NumSkaters;
+			GVideoRestart.Skater = VH->Skater;
+			GVideoRestart.Skater2 = VH->Skater2;
+			GVideoRestart.Level = VH->Level;
+			GVideoRestart.GGame = VH->GGame;
+
+			GVInfo1.NumFrames = VH->NumFrames;
+			for (int i = 0; i < MAX_HIGHLIGHTS; i++)
+				GVInfo1.Highlights[i] = VH->Highlights[i];
+
+			if (GVideoRestart.NumSkaters == 2)
+			{
+				SVideoHead *VH = (SVideoHead *)(GVInfo2.pBlockStart + sizeof(SCardHead)/4);
+				GVInfo2.NumFrames = VH->NumFrames;
+				for (int i = 0; i < MAX_HIGHLIGHTS; i++)
+					GVInfo2.Highlights[i] = VH->Highlights[i];
+			}
+		}
+
+		// Hack it negative so we won't reload it again if backend replay/highlights
+		GVideoRestart.NumSkaters = -GVideoRestart.NumSkaters;
+
+		GVideoReplay = -1; // It is a full replay
+	}
+
+
+	// If we are in career mode, then record if we have got the hidden tapes and SKATE letters
+	if (!GVideoReplay)
+	{
+		if (GGame == GAME_CAREER)
+		{
+			GVideoFlags = 0;
+			if (Career_Got(TAPE_HIDDEN))
+			{
+				GVideoFlags |= 1;
+				#if MICK&&DEBUG
+				printf("Saving that we have no hidden tape in the level\n");
+				#endif
+			}
+			else
+			{
+				#if MICK&&DEBUG
+				printf("Saving that we HAVE the hiddent tape in the level\n");
+				#endif
+			}
+
+			if (Career_Got(TAPE_SKATE))
+			{
+				GVideoFlags |= 2;
+				#if MICK&&DEBUG
+				printf("Saving that we have no SKATE letters in the level\n");
+				#endif
+			}	
+			else
+			{
+				#if MICK&&DEBUG
+				printf("Saving that we HAVE the SKATE letters in the level\n");
+				#endif
+			}
+		}
+		else
+		{
+			GVideoFlags = 3;	// default to no things, for the other game types 
+		}
+	}
+	else
+	{
+		GVideoFlags = ((SVideoHead *)(GVInfo1.pBlockStart + sizeof(SCardHead)/4))->VideoFlags;
+		#if MICK&&DEBUG
+		printf("***********************Got video Flags %d\n",GVideoFlags);
+		#endif
+	}
+
+	// At this point GVideoFlags is correct, so we may want to kill any SKATE letters or hidden tapes
+
+	if (GGame == GAME_CAREER && !Levels[GLevel].isCompetition)
+	{
+		if (GVideoFlags&2)
+		{
+			GPowS->mLifetime = 1;
+			GPowK->mLifetime = 1;
+			GPowA->mLifetime = 1;
+			GPowT->mLifetime = 1;
+			GPowE->mLifetime = 1;
+			#if MICK&&DEBUG
+			printf("*********************** Kiling SKATE letters %d\n");
+			#endif
+		}
+
+		if (GVideoFlags&1)
+		{
+			GPowTape->mLifetime = 1;
+			#if MICK&&DEBUG
+			printf("*********************** Killing hidden tape\n");
+			#endif
+		}
+	}
+	
+
+   // There's been a restart due to replay of video/highlights
+   if (GVideoReplay)
+   {
+      // Replay highlight
+
+      // This is a little bit tricky. In 2P, which player's highlight
+      // shall we replay? We can't replay different highlights due to
+      // how things are set up. At best we could merge the highlights
+      // in some way. For now, just replay the highlights of one of
+      // the players.
+      CBruce *pSkater = (CBruce *)MechList;
+      CBruce *pSkater2 = (CBruce *)(MechList->mNextItem);
+      if (GVideoReplay > 0)
+      {
+         GVInfo1.ReplayHighlight = GVideoReplay;
+         GVInfo2.ReplayHighlight = GVideoReplay;
+         Video_Start(pSkater, VIDEO_PLAYBACK, GVInfo1.Highlights[GVideoReplay - 1].FromFrame, GVInfo1.Highlights[GVideoReplay - 1].ToFrame);
+         if (pSkater2 != NULL)
+            Video_Start(pSkater2, VIDEO_PLAYBACK, GVInfo1.Highlights[GVideoReplay - 1].FromFrame, GVInfo1.Highlights[GVideoReplay - 1].ToFrame);
+
+         Video_SyncObsIfNeeded();
+      }
+      else
+      {
+         // Full replay
+
+         GVideoReplay = 0;
+         GVInfo1.ReplayHighlight = 0;
+         GVInfo2.ReplayHighlight = 0;
+         Video_Start(pSkater, VIDEO_PLAYBACK);
+         if (pSkater2 != NULL)
+            Video_Start(pSkater2, VIDEO_PLAYBACK);
+      }
+      //EndCode = ENDCODE_NONE;
+      GState = 0;
+      //Status = STATUS_NORMAL;
+      Flash_Reset();
+//		#if PAL
+//      ((CBruce *)MechList)->mPlayTime = Xblanks + 60*60*50 + 25;
+//      if (MechList->mNextItem != NULL)
+//	      ((CBruce *)(MechList->mNextItem))->mPlayTime = Xblanks + 60*60*50 + 25;
+//		#else
+      ((CBruce *)MechList)->mPlayTime = Xblanks + 60*60*60 + 30;
+      if (MechList->mNextItem != NULL)
+	      ((CBruce *)(MechList->mNextItem))->mPlayTime = Xblanks + 60*60*60 + 30;
+//		#endif
+   }
+   else
+   {
+      // Just a normal start. Start recording if time to do so
+
+      Video_Cleanup();
+
+      CBruce *pSkater = (CBruce *)MechList;
+      CBruce *pSkater2 = (CBruce *)(MechList->mNextItem);
+
+      if (GVInfo1.VideoMode == VIDEO_OFF)
+      {
+			// dont start recording until we're out of an competition
+			// intro stuff.
+			if(!((CCamera*)CameraList)->InCompetitionIntro())
+			{
+		      Video_Start(pSkater, VIDEO_RECORD);
+	         if (pSkater2 != NULL)
+	            Video_Start(pSkater2, VIDEO_RECORD);
+				// make sure the GVideo flags are saved
+				((SVideoHead *)(GVInfo1.pBlockStart + sizeof(SCardHead)/4))->VideoFlags = GVideoFlags;
+			}
+      }
+   }
+   #endif
+
+
+      #if 0 && DEBUG && CHRISTER // Start SN profiler when game starts
+      StartSNProfiler();
+      #endif
+
+	Loops = 0;
+	XStart = Xblanks; 
+
+	// If there is just one player, then disable the second pad
+	#if CD
+	if (GNumberOfPlayers == 1)
+			PadEnableCom(1);
+	#endif
+
+
+	// pretend we have some velocity
+	GSkater1->mVel.vx = GSkater1->mFront.vx*20;
+	GSkater1->mVel.vy = GSkater1->mFront.vy*20;
+	GSkater1->mVel.vz = GSkater1->mFront.vz*20;
+	// Let camera find it's way.
+	for (int i=0;i<10;i++)
+	{
+   	Ob_AI(&CameraList);
+	}
+	GSkater1->mVel.vx=0;
+	GSkater1->mVel.vy=0;
+	GSkater1->mVel.vz=0;
+
+
+	GameFade = 0;			// stop fading, just in case we still are. (unlikely)
+
+   ////////////////////////////////////////////////////////////////////
+   // ********************************************   START OF MAIN LOOP
+   while( !EndCode )
+   {
+		#if DEBUG&&MICK
+		if (!GamePaused)
+			Tracers_Advance();
+		#endif
+
+
+
+		#if DEBUG
+		if (Loops>=0)
+		{
+			Loops++;
+			if (Xblanks-XStart > 60*10)
+			{
+				//printf("BENCHMARK! \n%d Frames in 10 Seconds\n",Loops);
+				Loops = -1;
+			}
+		}
+		#endif
+
+		// trigger the profiler, so it always starts at the start of the main loop
+		#if !CD
+		Profile_Bop = (0x80010000);
+		#endif
+      int StartTime = Vblanks;
+
+      //#		if DEBUG
+      //		ProfileStartCount();
+      //#		endif
+      PollHost();
+
+
+		// If both skaters are on the ground, then
+		// we can check for the end of game, 
+		// thusly decrementing the counter
+		if (GSkater1->mPhysicsState == PHYSICS_ON_GROUND && (!GSkater2 || GSkater2->mPhysicsState == PHYSICS_ON_GROUND))
+		{
+			if (GState == GSTATE_STOP && --GSpin <= 0 	 )	
+			{
+				// Stop spinning, and end game, unless still counting down points, and it's not the Horse game.
+				if (GGame!=GAME_HORSE&&(GSkater1->mPanelData.mLandedTotal || GNumberOfPlayers==2 && GSkater1->mPanelData.mLandedTotal))
+				{
+					// if counting down points, then don't spin (set spin speed to 0), but keep in this state
+					GSpinSpeed = 0;
+					GSpin = 1;
+				}
+				else
+				{ 
+
+					// should switch off ALL the SFX here
+			      // Stop continuous sounds
+
+			      if (GSkater1->mSFXGrind != 0)
+			      {
+			         SFX_Stop(GSkater1->mSFXWallride);
+			         GSkater1->mSFXGrind = 0;
+			      }
+
+			      if (GSkater1->mSFXGrind != 0)
+			      {
+			         SFX_Stop(GSkater1->mSFXGrind);
+			         GSkater1->mSFXGrind = 0;
+			      }
+
+			      if (GSkater1->mSFXGround != 0)
+			      {
+			         SFX_Stop(GSkater1->mSFXGround);
+			         GSkater1->mSFXGround = 0;
+			      }
+
+			      if (GSkater2 && GSkater2->mSFXGrind != 0)
+			      {
+			         SFX_Stop(GSkater2->mSFXGrind);
+			         GSkater2->mSFXGrind = 0;
+			      }
+
+			      if (GSkater2 && GSkater2->mSFXGround != 0)
+			      {
+			         SFX_Stop(GSkater2->mSFXGround);
+			         GSkater2->mSFXGround = 0;
+			      }
+					
+					GState = 0;
+
+					// we're in a competition when we're in "career" mode AND a "competition" level
+					if (Levels[GLevel].isCompetition && (GGame == GAME_CAREER))
+						Front_SwitchOnEndHeat();
+					else
+				      Front_SwitchOnEndLevelMenu();
+
+				}
+		   }
+		}
+
+      // Start the profiling here, so PollHost does not mess stuff up
+#		if DEBUG
+      ProfileStartCount();
+#		endif
+
+		Crowd_Update();
+
+#		if DEBUG
+      Debug_InitPolyCounter();
+#		endif
+
+      CalcPolyBufferEnd();
+
+#		if DEBUG
+      ProfileReadCount(100,100,44);
+#		endif
+
+ #if !SUBMIT
+
+ extern DumpController();
+	if (Cheat_GameInfo)
+		 DumpController();
+#endif
+
+
+		SControl TempPad;
+
+		if (GGame == GAME_HORSE && GHorsePlayer == 1)
+		{
+			TempPad = Pad[0];
+			Pad[0] = Pad[1];
+			Pad[1] = TempPad;
+		}
+
+		Pad_Restore();
+		Pad_Update();
+		Pad_Remap();
+
+
+
+		if (GGame == GAME_HORSE && GHorsePlayer == 1)
+		{
+			TempPad = Pad[0];
+			Pad[0] = Pad[1];
+			Pad[1] = TempPad;
+		}
+
+		// funky clearing of the pad for the player that did not pause
+		if (GClear1) Pad_ClearAllOne(0);
+		if (GClear2) Pad_ClearAllOne(1);
+
+		Video_HandleStepping(); // Must be called after pad update
+
+
+
+		#if DEMODISK
+		if (ExitDemo())
+		{
+			Db_WaitRender();
+			DrawSync(0);
+			Db_Init();			// now reset the db stuff, which will also clear the screen 
+			return;
+		}
+		#endif						  
+
+		// if in stop state, and on the ground, then clear the pad, and hold "down" to brake
+		if (GState == GSTATE_STOP && !GamePaused)
+		{
+			if (GSkater1->mPhysicsState == PHYSICS_ON_GROUND)
+			{
+				// don't clear the circle button, as it is used to determin if you bail then the game ends and you are grabbing
+				int t = Pad[0].Circle.Pressed;
+				Pad_ClearAllOne(0);
+				Pad[0].Circle.Pressed = t;
+				Pad[0].Down.Pressed = 1;
+			}
+			if (GNumberOfPlayers == 2)	  // only do second pad if two players
+			{
+				if (GSkater2->mPhysicsState == PHYSICS_ON_GROUND)
+				{
+					// don't clear the circle button, as it is used to determin if you bail then the game ends and you are grabbing
+					int t = Pad[1].Circle.Pressed;
+					Pad_ClearAllOne(1);
+					Pad[1].Circle.Pressed = t;
+					Pad[1].Down.Pressed = 1;
+				}
+			}
+		}
+
+		// if it is a one player game, then clear the player 2 pad, so it can't pause or stuff
+		#if (!DEBUG)
+		if ((GNumberOfPlayers == 1  || ((GGame == GAME_HORSE && GHorseClearInput2)))  && !Cheat_ScreenShots)
+			Pad_ClearAllOne(1);		
+		#endif
+
+//			PadEnableCom(0);
+      // Do two logics. Every other Logic returns without doing anything.
+      Logic();
+      if( EndCode ) break;
+      Logic();
+      if( EndCode ) break;
+
+
+
+//		Pause(3);
+
+#		if DEBUG
+      ProfileReadCount(100,100,100);	    // White = end of Logic
+#		endif
+#if ASYNC
+		Db_WaitRender();
+#endif	
+#		if DEBUG
+      ProfileReadCount(0,0,0);				// BLACK = waiting for rendering to finish
+#		endif
+
+		
+//		if (Pad[0].Square.Pressed)
+//			PadEnableCom(0);
+
+      FPS_Display();
+      Display();
+
+//		if (Pad[0].Square.Pressed)
+//			PadEnableCom(3);
+
+
+		if (!GameFrozen && Cheat_FPS)
+	      Panel_DrawFlatShadedPoly(FPS_X-2,FPS_Y-2,54,18,0,0,0);
+
+#if !CD
+#if DEBUG
+		#if !MICK
+	if (Cheat_GameInfo)
+		#endif
+		if (MickY > 20)
+	      Panel_DrawFlatShadedPoly(18,20-2,150-16,(MickY)+3,0,0,0);
+#endif
+
+#endif
+
+		// added by RYAN
+		// if this is demo mode, display the word "demo"
+		if (!DemoTimer)
+		{
+			Front_PrintDemo();
+		}
+		
+//		printf("%d\n",GModelVideoDisplayed);
+
+		// in one player we downloaddata if video is on screen
+		if (Levels[GLevel].FMV && (GNumberOfPlayers == 1 || GGame == GAME_HORSE))	
+      	GameFMV_SyncFMV(GModelVideoDisplayed);
+		else		// in two player we never display video
+      	GameFMV_SyncFMV(0);
+		
+		GModelVideoDisplayed = 0;
+
+#		if DEBUG
+      ProfileReadCount(64,64,64);	// For CPU time bar
+      ProfileAddOT(0,0,0);				// Adds CPU bar to screen
+      ProfileAddMemoryOT();			// Adds Memory map to screen
+      ProfileAddHeapIndicator(0);		// Draw heap 0 indicator
+      ProfileAddHeapIndicator(1);		// Draw heap 1 indicator
+#		endif
+
+
+
+      if( Vblanks == StartTime )
+      {
+         // If < 1 frame has elapsed, then pause, with call to SSSeqCalledTByT.
+         Pause(1);
+      }
+
+#if !ASYNC
+
+      DoVblankProcessing = FALSE;
+      Pause(1);
+
+      while( DrawSync(1) )
+      {
+         Utils_VblankProcessing();
+         Pause(1);  				  // As DrawSync did something, we need to do a Pause again.
+      }
+
+#endif
+
+      // Try to get more accurate GPU indicator.
+#		if DEBUG
+      ProfileAddDrawOT();             // Adds GPU bar to screen
+#		endif
+
+      // Stuff that needs to be called AS CLOSE TO VBLANK AS POSSIBLE.
+      ASSERT(((int)(pPoly)&0x7fffffff)<=((int)(PolyBufferEnd)&0x7fffffff),"Undetected Poly Buffer Overflow");
+
+#if !ASYNC
+      Db_DisplayDraw();
+#else
+		Db_Render();					// Note, this does not wait for a vblank
+#endif
+
+      if( Vblanks == StartTime + 1 )			// if running better than 30 fps, then slow down
+      {
+         // If < 2 frame has elapsed, then pause
+         Pause(1);
+      }
+
+
+
+		// randomly restart, to test for memory leaks and stuff
+//		if (!Rnd(500))
+//			EndCode=ENDCODE_TWEAKJUMP;
+
+
+	// for horse, we want to swithc on the menu that is displayed at the start
+	  if (GGame == GAME_HORSE)
+	  {
+		  if (!GHorseWordChosen) {
+			  GHorseDoneStart = 1;	// make sure we don't fall through right away
+			  GHorseWordChosen = 1;
+			  Front_PrintHorseLetters();
+		  } else if (!GHorseDoneStart) {
+			  GHorseDoneStart = 1;
+			  Front_SwitchOnStartLevelMenu();
+		  }
+	  } 
+
+
+      // If Bruce has died, break out of the loop.
+      if (MechList->IsDead()) EndCode=ENDCODE_BRUCEDIED;
+
+   } // while( !EndCode )
+   // ********************************************   END OF MAIN LOOP
+   //////////////////////////////////////////////////////////////////
+
+
+SKIP_MAIN_LOOP:
+
+
+	// enable both pads when we exit
+	PadEnableCom(3);
+
+
+
+   // Wait for any CD loading to finish.
+   Spool_Sync();
+   // Reset pushback flag.
+   M3d_OTPushback = 1;
+
+   // Save state for continue.
+//   Front_SaveGameState();
+
+// Reset the double buffer, so Triple buffering works next time around
+
+	// There may be some stuff rendering, so wait for it
+	Db_WaitRender();
+	DrawSync(0);
+	Db_Init();			// now reset the db stuff, which will also clear the screen 
+
+#	if DEBUG
+   printf("\n\nLeft main loop with end code = ");
+   switch (EndCode)
+   {
+   case ENDCODE_BRUCEDIED:
+      printf("ENDCODE_BRUCEDIED\n");
+      break;
+   case ENDCODE_E3TIMEOUT:
+      printf("ENDCODE_E3TIMEOUT\n");
+      break;
+   case ENDCODE_ENDLEVELDOSAVE:
+      printf("ENDCODE_ENDLEVELDOSAVE\n");
+      break;
+   case ENDCODE_ENDLEVELNOSAVE:
+      printf("ENDCODE_ENDLEVELNOSAVE\n");
+      break;
+   case ENDCODE_PLAYERQUIT:
+      printf("ENDCODE_PLAYERQUIT\n");
+      break;
+   case ENDCODE_DEMOINTERRUPTED:
+      printf("ENDCODE_DEMOINTERRUPTED\n");
+      break;
+   case ENDCODE_DEMOENDED:
+      printf("ENDCODE_DEMOENDED\n");
+      break;
+   case ENDCODE_TWEAKJUMP:
+      printf("ENDCODE_TWEAKJUMP\n");
+      break;
+   case ENDCODE_LOADVIDEOFAILED:
+      printf("ENDCODE_LOADVIDEOFAILED\n");
+      break;
+   default:
+      printf("Unknown\n");
+      break;
+   }
+   printf("\n\nLogic: %d\n", LogicsCalled );
+#	endif
+	Crowd_Stop();
+
+	#if DEBUG&&MICK
+		Tracers_Delete();
+	#endif
+
+	Mess_SetCurrentFont(GScoreFont);
+	Mess_UnloadFont();
+	Mess_SetCurrentFont(GTimeFont);
+	Mess_UnloadFont();
+	Mess_SetCurrentFont(GGameFont);
+	Mess_UnloadFont();
+
+	// back to LaunchGame()
+	// after that, back to FrontEnd_Main()
+}
+
+
+
+int DemoDiskMode=0;           // Demo mode
+int DemoSize;
+
+// a mockup of what the task manager/single main loop might end up as
+
+
+class CTask
+{
+	virtual void Init();
+	virtual void Logic();
+	virtual void Display();
+	virtual void End();
+};
+
+class CTaskManager
+{
+	void MainLoop();	
+}
+
+CTaskManager GlobalTaskManager;
+
+CTask *pGlobalTasks;
+
+CTaskManager :: MainLoop()
+{
+
+	CTask * pTask;
+
+	while(1)
+	{
+// Do common logic routines, reading the pad, etc
+
+// Do all the logic Routines
+		pTask = mpGlobalTasks;
+		while (pTasks)
+		{
+			pTask->Logic();
+		}
+// Do all the Display routines
+		pTask = mpGlobalTasks;
+		while (pGlobalTasks)
+		{
+			pTask->Display();
+		}
+
+	}
+}
+
+
+
+#if LINKED_STARTUP            // If we have linked startup.obj
+
+
+int main(int argc, int* argv) // launcher will pass argc, argv to you.
+// argv is actually an array of integers.
+{
+   // The init code from the sample
+   // Note some of these things are duplicated later
+   // and possibility that PadInit() twice might fuck things up?
+   ResetCallback();
+   CdInit();
+
+   PadInit(0);
+   ResetGraph(0);
+   SetGraphDebug(0);
+   SetDispMask(1);
+
+   // Now our code starts here
+
+
+   RECORDRA;
+   int FirstDATrack;   // First DA track
+   int SectorOffset;   // Location of application directory
+
+   DemoDiskMode   = argv[0];
+   Timeout        = argv[1];
+   FirstDATrack   = argv[2];
+   SectorOffset   = argv[3];
+
+   printf("\n--------------- Sampler parameters ---------------\n");
+   printf("\nMode = %d",DemoDiskMode);
+   printf("\nTimeout = %d",Timeout);
+   printf("\nFirst DA Track = %d",FirstDATrack);
+   printf("\nSector Offset = %d\n",SectorOffset);
+
+	DemoDiskMode = 0;					// let it be zero, as we ahve no self running demo right now
+
+#else
+
+
+
+main()
+{
+
+	Options_Init();
+	Career_Init();
+	Init_AtStart(!DEMODISK);
+   Init_Restart(PACK512x240,SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+	Db_Init();
+	FrontEnd2_Main();
+
+}
+
+
+
+
+
+
+   int Oldmain() // Plain old main instead.
+   // PSX doesn't like argc, argv on its own
+   {
+
+#if DEMODISK
+      Timeout = 50000;			// nice short timeout for testing
+#endif
+      RECORDRA;
+#endif
+
+		#if SERIALPRINTF
+		printf("Before AddSIO\n");
+		AddSIO(115200);
+
+		printf("and after\n");
+		#endif
+
+
+		Options_Init();
+		Career_Init();
+
+      /////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////
+
+		// Initialization of harware, callbacks, and stuff that is only ever done once
+      Init_AtStart(!DEMODISK);		// initializes memcards amongst others
+      Init_Restart(PACK512x240,SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+		Db_Init();
+
+
+
+		#if CD
+
+		// Play intro movies, allow L1+L2 or Start pressed to skip them all 
+		Pad_Update();
+		if ( !Pad[0].Start.Pressed && ( !Pad[0].LeftOne.Pressed || !Pad[0].LeftTwo.Pressed) )
+			GameFMV_PlayMovie( -1 );			   // 0 = Activision Logo
+		Pad_Update();
+		if ( !Pad[0].Start.Pressed && ( !Pad[0].LeftOne.Pressed || !Pad[0].LeftTwo.Pressed) )
+			GameFMV_PlayMovie( -2 );			// 1 = Neversoft Logo
+		Pad_Update();
+		if ( !Pad[0].Start.Pressed && ( !Pad[0].LeftOne.Pressed || !Pad[0].LeftTwo.Pressed) )
+			GameFMV_PlayMovie( -25 );			// 24 = Intro movie
+
+		#endif
+
+
+#if DEMODISK
+      Vblanks = 0;
+      Xblanks = 0;
+#endif
+
+EFrontResult Result;
+
+LABEL_MAINMENU:
+
+      Init_Restart(PACK512x240,SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+		Db_Init();
+
+// Little Problem the above should not need to be called, but Skater will not be displayed in tehf ront end
+// if it is not.
+
+		GNumberOfPlayers = 1;
+      Init_Restart(PACK640x480,HIRES_SMALL_HEAP_SIZE);   // Resets all of memory, and vram
+      HiRes_Init();
+      HiRes_TitleScreen();
+
+		ASSERT(0,"Never got here!");
+
+
+#if 0
+      // Should never get to this point ...	except for the demo disk
+      Init_AtEnd();
+
+#if LINKED_STARTUP
+      printf("\nLeaving ProSkate main(), Bye!\n");
+#endif
+      return (0);
+
+#endif
+
+   }
+
+
+
+
+// ================================================================================
+// method added by Ryan, 3/24/99
+int LaunchGame()
+{
+	int Result = FRONTRESULT_PLAYGAME;
+	
+	Pack_Init(); // To avoid strangeness with Pack_Defragment()
+	Init_Restart(PACK512x240,SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+
+	SSaveGame tmp;
+	tmp = StartupGameState; // Init_ForGame resets it, ouch.
+	
+	// RYAN: Init_ForGame() calls Video_InitOnce(), which allocates block of memory
+	// for the replay video, pointed to by GVInfo1.pBlockStart
+	Init_ForGame();
+
+	StartupGameState = tmp;
+	Front_SetPreferences(StartupGameState.Preferences); //@@@### Was done in Front_MainMenu
+
+	switch (Result)
+	{
+		case FRONTRESULT_PLAYGAME:
+
+			LoadingScreen_Main();	
+
+			if (GAutoTest)
+				DumpAutoTest();			// draw debuggin numbers on screen for if autotest
+				
+    		Front_LoadGame(&StartupGameState);
+      	break;
+   	default:
+      	break;
+    }
+
+	// if triangle pressed on loading screen
+	if (BackOut)
+	{
+		// if not a demo, then we go backwards from the loading screen to the level screen
+		if (DemoTimer)
+			StartScreen = START_LEVEL;
+		// otherwise, back to the main menu
+		else
+			StartScreen = START_AFTER_DEMO;
+
+		BackOut = 0;
+		return(0);
+	}
+
+
+	if (GGame == GAME_HORSE)
+	{
+		extern void Horse_Reset();
+		Horse_Reset();
+	}
+
+LABEL_PLAYGAME:
+
+	// to stop X being buffered
+	Pad[0].X.Pressed = 1;
+	Pad[0].X.Triggered = 0;
+	Pad[1].X.Pressed = 1;
+	Pad[1].X.Triggered = 0;
+
+
+	CloseCam = 0;
+	ViewportMode = 0;				// default viewport
+	if (GNumberOfPlayers == 2 && GGame != GAME_HORSE)
+		ViewportMode = 1;
+
+
+  	PlayAway();
+	GClear1 = 0;
+	GClear2 = 0;
+
+
+	GHorseDoneStart = 0;				// and say again that we have not done the start text
+
+	switch (EndCode)
+	{
+		case ENDCODE_TWEAKJUMP:
+			printf("ENDCODE_TWEAKJUMP\n");
+			// Clear everything except the triggering system.
+			Init_Cleanup( SOFT_CLEANUP );
+
+			// Reparse the trigger file.
+			Trig_ParseTRGFile();
+
+			CreateSkatersAndCameras();
+
+			// Execute the restart node, which will set Bruce's start position and angles.
+			// The tweak menus will have set the restart node.
+			Trig_ExecuteRestart();
+
+			goto LABEL_PLAYGAME;  // Play again from last checkpoint.
+			break;
+
+      default:
+			printf("not .... ENDCODE_TWEAKJUMP\n");
+
+			Init_Restart(PACK512x240,SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+			Db_Init();
+
+			// Little Problem the above should not need to be called, but Skater will not be displayed in tehf ront end
+			// if it is not.
+
+			GNumberOfPlayers = 1;
+			Init_Restart(PACK640x480,HIRES_SMALL_HEAP_SIZE);    // Resets all of memory, and vram
+			// clears screen
+			HiRes_Init();
+
+			return(0);
+         	break;
+	} // end switch
+
+DIEDIEDIE:
+	#if DEBUG
+	printf ("DIEDIEDIEDIEIDIOEIIIEDIIEIDI\n");
+	#endif
+
+	#if !LINKED_STARTUP
+	printf("\noh shit!!!!");
+	#endif
+
+	// Should never get to this point ...	except for the demo disk
+//	Init_AtEnd();
+
+	#if LINKED_STARTUP
+	printf("\nLeaving ProSkate main(), Bye!\n");
+	#endif
+
+	return (0);
+} 
+

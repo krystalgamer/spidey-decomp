@@ -1,0 +1,83 @@
+; GLOBDEFS.S
+
+; This contains definitions which are required by both assembly code
+; (mainly Mike's engine) and the C code
+
+; If this file is modified, globdefs.h will automatically be regenerated
+; causing everything to be recompiled. (globdefs.h is included in globals.h)
+
+SK = 1
+SPIDEY = 0
+KENVIEWER = 0
+		
+PSXVERSION = $20004
+
+
+
+
+TWEAK = 1
+
+FRACBITS = 12     ; Number of fraction bits used in a fixed point number.
+OTSIZE   = 4096   ; Ordering table size (must be a power of two)
+
+MEMTOP    = $80200000
+STACKSIZE = 8192
+DUMPSPACE = $80600000   ; Where messages get dumped before saving out
+
+NEWENGINE = 0
+
+; ------------------ Flags for conditional compilation ----------------------
+
+CHEAT_ALLWEAPONS                = 0
+CHEAT_INVULNERABLE              = 0
+CHEAT_PANELON                   = 1
+CHEAT_L2KILLSBADDIES    = 0
+CHEAT_FLYAROUND         = 0
+CHEAT_LEVELSELECT               = 1
+CHEAT_AUTOTEST              = 1
+CHEAT_RESTARTSKIP               = 1
+CHEAT_GAMEINFO              = 0
+
+DEMONSTRATION = 0    ; If 1, then the code will compile as if
+		     ; SHOWTITLESCREENS (main.cpp) is 1 and 
+		     ; DORUNDEMOS (pad.cpp) is 1, whatever they are set to
+		     ; in the cpp files.
+
+DDX   = 0            ; If CD=0, whether to use the PC or DDX for loading
+
+SHOWDATE = 1
+CBSBURN = 0
+
+
+E3_BUILD = 0
+CHEATDEBUG = 0       ; If DEBUG=1, whether the secret key combination will
+		     ; enable debugging
+
+CREATE_DEBUG	=	0
+
+KEN    = 0           ; Just one of these must be 1, so we can each have
+MIKE   = 0           ; specific code for testing (In particular, pad settings)
+JASON  = 1
+DAVE   = 0
+JK     = 0
+MICK   = 0
+CHRISTER = 0
+RYAN = 0
+AARON = 0
+GARY = 0
+
+NEWEXCEPTIONHANDLER = 0	; exceptions are trapped
+SERIALPRINTF = 0		; printfs go to the serial port
+LOCKLEVELS = 0			; allow all the levels to be selected
+LOCKBOARDS = 1
+
+
+TRUCKDEMO = 0
+		   
+DEBUG  = 1            ; Whether debug code is to be compiled or not.
+SUBMIT = 0            ; True if this is the version we will submit
+CD     = 0            ; Whether to use CD for loading files
+PAL    = 0            ; PAL or NTSC
+DEMO   = 0
+
+SUPERMEMDEBUG = (0*DEBUG)

@@ -1,0 +1,39 @@
+; This contains definitions for various things that override those in globdefs.s
+; but is only included in those files that need it
+; I'll probably take out the things from globdefs.s
+; should make for quicker recompile
+;
+
+; In globdefs.s, will still need to set FINAL = 1 to remove
+; the 
+
+
+
+
+ENGLISH = 1
+FRENCH = 0														
+GERMAN = 0
+ITALIAN = 0
+LAME_ASS_GERMANS = 0
+
+; these are the three you will be changing
+
+
+DEMODISK = 0
+
+
+POLLHOST = DEBUG  ; Whether a PollHost will be put in the main loop
+		     ; (Set to 0 for a CD burn)
+
+TEST_FMV_BURN           = 0
+
+
+LINKED_STARTUP = (CD*DEMODISK)
+STANDALONE = 0
+SCREENHEIGHT = (240+16*PAL)
+
+MICKMAP =   (1-CD)
+
+E3DEMO = 1
+		  
+

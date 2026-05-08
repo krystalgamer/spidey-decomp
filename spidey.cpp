@@ -200,7 +200,7 @@ CPlayer::CPlayer(void)
 // @Test
 i32 CPlayer::CalculateIntermediateTrailSteps(CVector *a2,CVector * a3,CVector * a4)
 {
-	u32 v8 = Utils_Dist(a3, a2) >> 5;
+	u32 v8 = Utils_Dist(*a3, *a2) >> 5;
 	if (v8 > 1)
 		v8 = 1;
 

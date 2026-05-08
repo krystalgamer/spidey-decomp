@@ -1,0 +1,686 @@
+/***************************************************************************/
+/*                                                                         */
+/* Contains program init and frame init functions                          */
+/* KSH 8/28/96                                                             */
+/*                                                                         */
+/***************************************************************************/
+
+#include <libpad.h>
+#define	ASSERTIONS (!CD)
+#include "globals.h"
+#ifndef ENGLISH
+#include	"qdefs.h"
+#endif
+#include "timeouts.h"
+#include "m3dcolij.h"
+#include "m3dzone.h"
+#include "bit.h"
+#include "mech.h"
+#include "sfx.h"
+#include "panel.h"
+#include "m3dinit.h"
+#include "redbook.h"
+#include "powerup.h"
+#include "flash.h"
+#include "backgrnd.h"
+#include "gamefmv.h"
+#include "front.h"
+#include "card.h"
+#include "reloc.h"
+#include "mess.h"
+#include "bmr.h"
+#include "physics.h"
+
+#include "mips.h"
+#include "camera.h"
+#include "font.h"
+#include "profile.h"
+#include "db.h"
+#include "utils.h"
+#include "trig.h"
+#include "baddy.h"
+#include "fileio.h"
+#include "init.h"
+#include "mem.h"
+
+#include "trickob.h"
+#include "rail.h"
+#include "pack.h"
+
+#include "campt.h"
+#include "video.h"
+#include "shellutils.h"
+#include "create.h"
+#include	"spooler.h"
+#include "frontend2.h"
+
+#ifndef MICKMAP
+#define MICKMAP 0
+#endif
+
+#ifndef NEWEXCEPTIONHANDLER
+#define NEWEXCEPTIONHANDLER 0
+#endif
+
+extern SViewport ApocalypseViewport;
+
+
+#define PRINTOURCODESIZE 1
+
+// Heap 0 size must be less than a megabyte
+// and it has been nmoved to main.cpp as SMALL_HEAP_SIZE
+
+
+#if	SUPERMEMDEBUG		 		// super mem debugging adds a bunch to code size
+#define	SMDSIZE  (89660 + 40000)
+#else
+#define	SMDSIZE  (0)
+#endif
+
+#if ASSERTIONS&&!DEBUG
+#define	ASSERTSIZE  23952							// memory used by the Gameshark assertions
+#else
+#define	ASSERTSIZE	0
+#endif
+
+#if MICK
+#define DEBUGCODESIZE (208880+SMDSIZE)      
+#endif
+
+
+#ifndef DEBUGCODESIZE
+#define DEBUGCODESIZE (202460+SMDSIZE)      
+#endif
+
+#if DEBUG
+int	DebugCodeSize	= DEBUGCODESIZE;
+#endif
+
+#if !CD
+// Mimic the CD library code size to avoid nasty surprises later
+//Uint8 cdlibcodesize[34584];						// Added 1040 based on observed difference
+
+
+Uint8 cdlibcodesize[46308-ASSERTSIZE];						// modified again, afted discovering discrepencies
+#endif
+
+
+
+
+
+extern 	Sprite*  pScoreSprite;
+extern 	Sprite*  pSpecialSprite;
+extern 	Sprite*  pBarSprite;
+extern 	Sprite*  pPausedSprite;
+
+#define AUTOSQUEEZE 1
+extern Uint32 TopOfCode;
+
+//char* TrigFileName="cyn512_s";
+char* TrigFileName="prsn_t";
+
+int   NumContinues;
+char* ContinueTRG="********blaablaa";
+
+
+// Kills all the non-protected members of the list.
+static void DeleteList(CBody *pList)
+{
+   CBody* pNext;
+   if (pList) pNext=(CBody*)(pList->mNextItem);
+   while (pList)
+   {
+      if (!(pList->mCBodyFlags&CBODY_PROTECTED)) delete pList;
+      pList=pNext;
+      if (pList) pNext=(CBody*)(pList->mNextItem);
+   }
+}	
+
+// Kills all CBody's and all bits.
+// This assumes each object will delete anything
+// it has created in its destructor 
+void Init_KillAll()
+{
+   RECORDRA;
+	HEREIAM("");
+	// Kill all the non-protected members in all the CBody lists.
+
+   DeleteList(MechList);
+   DeleteList(CameraList);
+   DeleteList(BaddyList);
+   DeleteList(EnvironmentalObjectList);
+   DeleteList(BackgroundList);
+   DeleteList(PowerUpList);
+   DeleteList(SuspendedList);
+
+	// Any protected members should have been deleted by their parents, so assert if
+	// anything is left.
+	ASSERT(MechList==NULL,"Leftover protected members of MechList");
+	ASSERT(CameraList==NULL,"Leftover protected members of CameraList");
+	ASSERT(BaddyList==NULL,"Leftover protected members of BaddyList");
+	ASSERT(BackgroundList==NULL,"Leftover protected members of BackgroundList");
+	ASSERT(EnvironmentalObjectList==NULL,"Leftover protected members of EnvironmentalObjectList");
+	ASSERT(PowerUpList==NULL,"Leftover protected members of PowerUpList");
+	ASSERT(SuspendedList==NULL,"Leftover protected members of SuspendedList");
+
+    // Delete all trickable objects
+    TrickOb_DeleteAll();
+
+    // Delete all rail objects
+    Rail_DeleteAll();
+
+   // Now the objects are gone it's safe to kill the bits
+   // (The objects should have destroyed their child bits if they had any)
+   Bit_DeleteAll();
+	
+	// Delete any leftover zooming messages.
+	Mess_DeleteAll();
+	
+	// Better reinitialise the tints, otherwise those leftover from the last level
+	// will carry on trying to tint non-existent SItem's, which would be very bad.
+}
+
+// Kills all CBodies and bits and seeds, clears all environment PSXs, and
+// does general reinitialisation.
+// It does not do any resetting of the triggering system.
+void Init_Cleanup( int type )
+{
+	pCurrentViewport = &ApocalypseViewport;
+
+	HEREIAM("");
+	// Reset MIDI in case we came here from quitting the paused menu in the game.
+	SFX_ResetMIDIPausedPriorToPause();		  // Does nothing if no MIDI
+	// Resets various flags
+	SFX_LevelStart();								  // Just clears on flag
+
+//  	SpuSetKey( SPU_OFF, 0xFFFFFFFFUL );
+	SFX_StopAll();
+	FrontEnd2_MusicLoopVoice = 0;
+	
+	// Reset the camera zoom.
+	extern SViewport ApocalypseViewport;
+	ApocalypseViewport.Zoom=256;
+	
+	// Ensure no FMV playing.
+	GameFMV_StopFMV();
+	Redbook_XAStop();
+	
+	Init_KillAll();
+	Trig_DeleteCommandPoints();
+
+   CamPt_Cleanup(); // Always clean CamPt's up
+   
+	if( type == HARD_CLEANUP )
+	{
+		// Stop and clear out any currently playing MIDI.
+		SFX_MIDIStop();
+		SFX_SpoolOutMIDI();
+		SFX_ReverbOff();
+
+		// for now, disallow more than one create-a-skater
+		// because it causes problems when freeing up memory
+extern int SelectedSkater;
+extern int SelectedSkater2;
+		if (GNumberOfPlayers > 1)
+			ASSERT(!(Create_UseSkater(SelectedSkater)&&Create_UseSkater(SelectedSkater2)),"Too many custom skaters");
+		
+		// clean up create-a-skater
+		if (Create_UseSkater(SelectedSkater))
+		{
+			Create_FreeSkater();
+		}
+
+		if (GNumberOfPlayers > 1)
+		{
+			if (Create_UseSkater(SelectedSkater2))
+			{
+				Create_FreeSkater();
+			}
+		}
+		
+//		delete pSpecialSprite;
+//		delete pScoreSprite;
+//		delete pBarSprite;
+//		delete pPausedSprite;
+
+		Spool_ClearAllPSXs();
+		Trig_RemoveDualBuffer();
+		Trig_DeleteTrigFile();
+		Pack_DefragmentFully();
+		// This will make the main menu "continue" option restart at the start of the level.
+		LastGameState.State.RestartName[0]=0;
+	}
+	else if (type == SOFT_CLEANUP)
+	{
+		Spool_ClearEnvironmentRegions();
+	}
+	
+   Utils_InitialRand(RANDSEED);
+   #if TWEAK
+   Trig_ClearTrigMenu();
+   #endif
+  // Seed_Init();
+
+	// Reset any screen flashes or fades.
+	Flash_Reset();
+
+   // Reset the zone stuff ready for the new environments
+   if (type != LEVEL_EDITOR_CLEANUP)
+   {
+	   M3dZone_Init();
+	   TrickOb_Init();
+
+	   Rail_Init();
+   }
+	// Delete any background bits.
+//	Backgrnd_Delete();
+
+   // Set the gravity for the world
+//   CVector grav(0,WORLD_GRAVITY,0);
+//   Physics_SetGravity(grav);
+
+
+   TTime=0;     
+   Pad_ClearAll();
+	SuspendDistance=DEFAULT_SUSPEND_DISTANCE;
+
+	// Reset water damage.
+	CurrentWaterDamage = 0;	
+
+   // No water in level until script sets it
+   CurrentWaterLevel = 0x7fffffff;
+   CurrentWaterLevel2 = 0x7fffffff;
+}
+
+
+#if !SUBMIT
+long traphandler()
+{
+	Mips_RestoreGP();
+	printf("\nException occurred, re-booting ...");
+	_boot();
+}	
+#endif
+
+
+
+
+Init_ResetMemory(int Heap0Size)
+{
+	HEREIAM("");
+	
+   #if !DEBUG
+	
+	// Fixed size small heap.
+   HeapDefs[0][0]=TopOfCode;
+   HeapDefs[0][1]=HeapDefs[0][0]+Heap0Size;
+   
+	// and the big heap can have whatever is left.
+   HeapDefs[1][0]=HeapDefs[0][1];
+   HeapDefs[1][1]=MEMTOP-STACKSIZE;
+
+   if (HeapDefs[1][0]>HeapDefs[1][1]-100)
+   {
+#		if DEBUG
+      printf("\n\nDisaster! No space for a decent big heap!");
+      ASSERT(0,"Not enough space for big heap");
+#		endif
+   }
+	
+   #else
+
+   // We know here that the DDX is off, and DEBUG is on, so
+   // we can assume we have 8 megs to play with
+   // Note that this means a CD burn version can't have DEBUG on. However
+   // even if extended RAM is not used when DEBUG is on, we probably still
+   // couldn't have DEBUG on in a CD version because so much memory is used
+   // by the debug code. 
+
+   int BigHeapSize=MEMTOP-STACKSIZE-TopOfCode-Heap0Size+DEBUGCODESIZE;
+   #if MICKMAP
+   HeapDefs[0][0]=0x80200000;	// 1M for the small heap.
+   HeapDefs[0][1]=0x80300000;
+   
+   HeapDefs[1][0]=0x80300000; // 3M for the big heap.
+   HeapDefs[1][1]=0x80300000 + BigHeapSize + 1000000;			// extra million bytes for mickmap polybuffer
+	#else
+   // Calculate the size available to the big heap (heap 1) if DEBUG were
+   // off, then allocate all the heaps from the extended RAM.
+	// This is therefore emulating the memory that would be available if DEBUG were off.
+
+   HeapDefs[0][0]=0x80200000;
+   HeapDefs[0][1]=0x80200000+Heap0Size;
+   
+   HeapDefs[1][0]=0x80200000+Heap0Size;
+   HeapDefs[1][1]=0x80200000+Heap0Size+BigHeapSize;
+							
+	// The HIGSPEEDCACHE heap is statically defined in mem.cpp.
+   #endif
+   #endif
+
+   Mem_Init();    // Init memory manager
+
+	extern int TotalCClassUsage;
+	TotalCClassUsage = 0;
+	extern int TotalCommandPointMemory;
+	TotalCommandPointMemory = 0;
+	extern int	TotalPaletteUsage;
+	TotalPaletteUsage = 0;
+	extern int	TotalPackUsage;
+	TotalPackUsage = 0;
+	extern int	TotalTextureUsage;
+	TotalTextureUsage = 0;
+	extern int	TotalVabUsage;
+	TotalVabUsage = 0;
+	extern int	TotalBitUsage;
+	TotalBitUsage = 0;
+
+
+
+
+}
+
+
+
+
+void Init_Restart(EPackInitType Mode, int SmallHeapSize)
+{
+	HEREIAM("");
+
+	
+	extern char *pBMR;		// Reset the BMR, as there may ahve been one loaded
+	pBMR = NULL;
+	extern Uint16 *pCompressedBMR;	 // unlikely, but lets get rid of the compressed one as well
+	pCompressedBMR = NULL;
+
+
+// if there was anything in memory, then Init_Cleanup will tidy up, reset lists
+// stop FMV, clear flags and suchlike
+   Init_Cleanup(HARD_CLEANUP);	// clean up as much as possible, stop FMV, etc
+	Init_ResetMemory(SmallHeapSize);
+	Db_Reset();
+
+   #if DEBUG
+   Debug_InitDiagnostics();
+   #endif
+
+   Spool_Init();
+	TitleTimeout=TITLETIMEOUT_REGULAR;
+
+	Flash_Reset();		// clear any flashes, or black rectangles.
+
+   if (Mode == PACK640x480)
+      Pack_Init640x480();
+   else
+      Pack_Init();
+
+   SFX_InitAtStart();
+   Pal_Init();
+   Font_Reset();
+
+	Pad_LockAnalog();			// lock the pads into analog mode
+
+
+/////
+}
+
+
+void Init_ForGame()
+{
+	HEREIAM("");
+
+	pCurrentViewport = &ApocalypseViewport;
+	
+	Db_Init();
+
+	Front_Init(); // Don't do any file loading before this.
+
+   Video_InitOnce();
+   CamPt_Init();
+   Video_Init();
+
+}
+
+void Init_DebugStuff()
+{
+	HEREIAM("");
+	
+   extern Uint32 *__text_org,*memset,*memcpy;
+	Uint32* pCodeStart=(Uint32*)&__text_org;
+	Uint32* pCodeEnd=(Uint32*)&EndOfOurCode__Fv;
+
+   #if DEBUG
+	// Note: Maybe this should be done the same way that memset's are checked for above?
+   // Install the "built in new" patch, which asserts if the default
+   // C++ new operator ever gets called, which we don't want to happen
+   // cos it'll trash the heaps
+   Uint32* pPatch=(Uint32*)(void (*)())Mips_BuiltInNewPatch;
+   extern Uint32* __builtin_new;
+   Uint32* pDest=(Uint32*)&__builtin_new;
+   for (int i=0; i<7; ++i) *pDest++=*pPatch++;
+	
+   pPatch=(Uint32*)(void (*)())Mips_BuiltInDeletePatch;
+   extern Uint32* __builtin_delete;
+   pDest=(Uint32*)&__builtin_delete;
+   for (int i=0; i<7; ++i) *pDest++=*pPatch++;
+
+   // TopOfCode is the address of the first thing above all code and
+   // static data. It is defined in address.s
+   ASSERT(TopOfCode<MEMTOP-STACKSIZE,"Blimey, code has reached the stack");
+
+	// This is put here instead of right at the start, because ASSERT's don't seem
+	// to work properly until the various GPU init functions have been called.
+	// ----------------------------------------------------------------------------
+	//              Search the code for any memset or memcpy calls.
+	// ----------------------------------------------------------------------------
+	
+	// Calculate the machine code instructions to look for.
+	Uint32 MemsetCall=0x0c000000|((((Uint32)&memset)&0xffffff)>>2);
+	Uint32 MemcpyCall=0x0c000000|((((Uint32)&memcpy)&0xffffff)>>2);
+	Uint32 NewCall=0x0c000000|((((Uint32)&__builtin_new)&0xffffff)>>2);
+	Uint32 DeleteCall=0x0c000000|((((Uint32)&__builtin_delete)&0xffffff)>>2);
+	
+	// Choose the address range to search.
+	// The dummy function EndOfOurCode() is used to limit the search to our code, because
+	// if the linker generated __text_orgend were used instead it would find all the
+	// memcpy's contained in the library functions. (Such as PutDrawEnv and PutDispEnv)
+	// Do the search.
+	for (Uint32 *pInstruction=pCodeStart; pInstruction<pCodeEnd; ++pInstruction)
+	{
+		if (*pInstruction==MemsetCall)
+		{
+			sprintf(AssertString,"\n Address = %lx",pInstruction);
+			ASSERT(0,"Eeeeeeek! Memset call!!!");
+		}	
+		if (*pInstruction==MemcpyCall)
+		{
+			sprintf(AssertString,"\n Address = %lx",pInstruction);
+			ASSERT(0,"Eeeeeeek! Memcpy call!!!");
+		}	
+		
+		if (*pInstruction==NewCall)
+		{
+			sprintf(AssertString,"\n Address = %lx",pInstruction);
+			ASSERT(0,"Eeeeeeek! BuitIn new call!!!");
+		}	
+		if (*pInstruction==DeleteCall)
+		{
+			sprintf(AssertString,"\n Address = %lx",pInstruction);
+			ASSERT(0,"Eeeeeeek! BuiltIn delete call!!!");
+		}
+			
+	}
+	
+	// ----------------------------------------------------------------------------
+	// Check class offsets & sizes, to make sure they haven't changed from
+	// what they are assumed to be in some places.
+
+	Debug_CheckClasses();
+   ProfileInit(1);
+   // The wierd cast is to stop a warning
+//   DrawSyncCallback((void (*)(...))Profile_DrawingDone);
+   Debug_Init();
+   #endif
+
+	// Whilst we're here, maybe print our code size, which could be handy.
+	#if PRINTOURCODESIZE&&(DEBUG||(MICK&&!CD))
+	printf("Our code size = %ld bytes.\n",((Uint32)pCodeEnd)-((Uint32)pCodeStart));
+	#endif
+
+
+}
+
+
+void Init_AtStart()
+{
+   RECORDRA;
+	HEREIAM("");
+
+
+#	if NEWEXCEPTIONHANDLER||(CD&&!SUBMIT)
+//   Mips_InstallExceptionHandler();
+#	endif
+	
+   ResetCallback();
+
+#	if !DEMODISK
+	Card_Init(1);
+#	endif
+
+#	if PAL
+	SetVideoMode( MODE_PAL );
+#	endif
+
+
+	pCurrentViewport = &ApocalypseViewport;
+		
+   Pad_InitAtStart();
+   InitGeom();
+   ResetGraph(0);
+   SetGraphDebug(0);
+	Db_InitAtStart();
+   RECT screen={0,0,1024,512};
+   ClearImage(&screen,0,0,0);						// Clear all of VRAM to black
+   VSyncCallback((void (*)(...))MyVSync);		// Install the Vblank interrup handler
+   SetDispMask(1);									// Turn the screen on (will be black)
+	Init_DebugStuff();								// <<<< needs to be here
+   Camera_InitialRand(652973);
+   SFX_InitAtStart();
+   FileIO_Init();
+	GameFMV_Init();
+   M3dInit_InitAtStart();							// Just initializes some tables and stuff
+   Redbook_XAInit();
+}
+
+
+	#if DEMODISK	
+void Init_AtEnd( void )
+{
+   RECORDRA;
+	HEREIAM("");
+
+   SetDispMask(0);				  // turn display off, so we get some immediate feedback
+
+   // now we have to tidy everything up, so we can return to the calling program
+   // if any spooling is happeing, let it finish (should really be able to pre-emptivly stop the CD)
+   // er, no....   FileIO_Sync();
+   printf("\nStart of Init_AtEnd\n");
+
+  	Spooler::Cleanup();		  		// clean up the front end spooling.....
+
+	Spool_Sync();						// allow any spooling to finish
+   // Remove any callbacks and event handlers
+   // Clear reverb buffer in SPU ram
+	printf("1,");
+   #if DEBUG
+   ProfileCloseEvent();
+   #endif
+
+   DrawSync(0);      // Make sure any VRAM DMA's have finished
+	printf("2,");
+
+
+	Pause(1);
+	DoVblankProcessing = 0;
+//	SFX_Off();			// close the vab and stuff
+	SpuSetKey( SPU_OFF, 0xFFFFFFFFUL );
+	SpuQuit();
+
+
+
+	printf("3,");
+
+	// need to close down the Card, so it removed it's events
+	// otherwise, the Demo Shell world crash
+	#if !DEMODISK
+	Card_Stop();		// close down the card event
+	#endif
+
+
+//   StopCallback();   // Stop the CD callbacks
+//   DrawSync(0);      // let any drawing finish
+//	printf("5,");
+   Pause(1);      // and syncronize to vertical blank
+	printf("6,");
+
+   SetDispMask(0);   // turn off the display.....
+	printf("7,");
+
+//   SFX_Off();        // Turn off sound system
+//	printf("8,");
+
+   #if   CD
+   // Stop the CD regardless of whatever else is going on.
+   Pause(10);        // pauses are for any possible timing/DMA problems, unlikely
+	CdControlB(CdlStop, 0, 0);			// STOOOOOOP!
+	printf("9,");
+   Pause(20);        // allow enough time to stop
+   CdInit();        // does this start it again? is death that woman's mate?
+	printf("10,");
+   Pause(10);        // take a breather, who knows....
+   #endif
+	printf("11,");
+
+// Now for some rather dodgy code to clear Sound Ram reverb buffer
+// should probably use a more friendly bit of memeory, like the double buffer
+// but thie is the last things that the code does before returning
+// to bs.exe,  so all should be well.
+
+   char *Clear = (char *)(1024L*2048L - 120000L);            // FRIG it right in the middle of RAM!!!
+
+/*
+	int *p = (int*)Clear;
+	for (int i=0;i<25000;i++)
+		*p++ = 0;
+	printf("12,");
+		
+   SpuSetTransferStartAddr(512*1024-100000);  // Reverb buffer is at top of sound ram
+   int err = SpuWrite(Clear,100000);
+   // let any spu dma finish
+   SpuIsTransferCompleted(SPU_TRANSFER_WAIT);
+	printf("13,");
+*/
+
+	printf("13a,");
+   // kill the vsync callback, as it could be problomatic
+   VSyncCallback(0);
+	printf("14,");
+
+	PadStopCom();			// The new messiah!!!!!  Stop spurious interrupts crashing the bootstrap!!! (or does it...)
+
+   StopCallback();
+	printf("15,");
+   // reset them.... there are a few, do we have to restore them individually??
+	ResetCallback();
+	printf("16,");
+//   PadStop();        // Stop pad reading (MICK: taken this out 3/7/2000, as it was crashing, after I removed the PadInit(0) from main()
+	printf("17,");
+	ResetGraph(3);
+   printf("\nEnd of Init_AtEnd\n");
+	
+}
+
+#endif
+
+
+

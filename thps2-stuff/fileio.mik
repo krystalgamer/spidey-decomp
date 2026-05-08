@@ -1,0 +1,824 @@
+/***************************************************************************/
+/*                                                                         */
+/* FILEIO.CPP                                                              */
+/*                                                                         */
+/* File I/O routines                                                       */
+/* KSH 9/9/96                                                              */
+/*                                                                         */
+/***************************************************************************/
+
+#include "globals.h"
+#ifndef ENGLISH
+#include	"qdefs.h"
+#endif
+#include "fileio.h"
+#include "redbook.h"
+#include "gamefmv.h"
+#include "front.h"
+#include "pack.h"
+#include "utils.h"
+#include "mem.h"
+
+#if NEW_FRONT_END
+#include "LoadingScreen.h"
+#endif
+
+
+// Set this to true if you want to check if the file is in CD.HED, even when loading from PC
+#define	CDCHECK (DEBUG&!DAVE)
+
+
+// The number of times that CdReadSync is allowed to fail before giving up and going back
+// to seeking.
+#define MAXCDFAILURES 5
+
+// Make this 1 to printf the filenames as it tries to open them
+#define PRINTF_FILENAMES CD|MICK
+#define LOADMESSAGES 0
+
+// This is the next multiple of 2048 bigger than the size of cd.hed
+#define CDHEDSIZE 16384
+
+// globals.h is Big Guns specific and contains the CD, DEBUG, POLLHOST #defines.
+// (Each is defined to be either 0 or 1)
+// If fileio.cpp is used in other projects this include should be deleted
+// and replaced with whatever contains the CD and DEBUG defines, and
+// ASSERT and ASSUME macros for that project.
+
+
+// These two vars are only exported so that the memory profiler can show
+// the loading progress
+char* Where=NULL;
+int CurrentPos=0;
+
+int Loading=FALSE;
+
+int FileIO_Size;
+
+// FileName gets a file name tagged onto its end whilst FilePath remains
+// constant. It used to be that FileName was initialised to a string with
+// lots of ???'s on the end and then these got loaded over with the 
+// filename, but this made the Debug_SelfDiagnostics function report that
+// read only data had got corrupted. (Which it had!)
+
+static char* FilePath=FILE_DIRECTORY;
+static char  FileName[MAXFILENAMECHARS];
+
+
+static int   FirstChar;
+static short FileID;
+static int   FileSize;
+static int   Remainder;
+static int   NewLoad;
+static int   FileOpen=FALSE; // Whether a file is currently open
+
+static int   SectorsPerFrame=4;  // 8K per frame = roughly CD speed
+
+
+#if CD|CDCHECK
+char   Directory[CDHEDSIZE];          // space for the directory
+#endif
+
+#if CD
+static int    WadStart;
+static CdlLOC FileStart;
+static long unsigned int* Dest;
+static int    NumSectors;
+static int    Start; // The offset of the file within the WAD
+static int    ReadSyncFailures=0; // The number of times CdReadSync has failed
+											 // during the loading phase. Gives up and goes back
+											 // to seeking if this exceeds MAXCDFAILURES
+#endif
+
+
+// Emulate the loading from CD.HED and CD.WAD
+// so we can be sure we have all the files
+#if   CDCHECK
+
+
+// FileIO_OpenLoad  - a simple way of getting a file into memory
+// open a file, allocate memory for it, and load it in
+// then resize memory to account for the Sector padding
+
+
+char * FileIO_OpenLoad(char*pName)
+{
+	ASSERT(pName,"NULL Name passed to FileIO_OpenLoad");
+	int Sector_Size = FileIO_Open(pName);
+	ASSERT(Sector_Size>0 && Sector_Size<2000000,"Bad Size returned from FileIO_Open");
+	char *pMemory = (char*)Mem_New(Sector_Size,BIGHEAP);
+	ASSERT(pMemory>0,"Unable to allocate memory in FileIO_OpenLoad");
+	FileIO_Load(pMemory);					// Start it loading
+	FileIO_Sync();								// wait for it to load
+
+   Mem_Shrink(pMemory,FileIO_Size);	// Shrink memory back to original size
+
+	return pMemory;							// Return pointer to the file
+
+}
+
+
+int   CDEMU_Initted=0;
+
+void CDEMU_Init()
+{
+
+   if (!CDEMU_Initted)
+   {
+		#if AARON||JK
+      int file=PCopen("c:\\psx\\sk2\\cd.hed",0,0);
+		#else
+			#if  JASON
+	      int file=PCopen("j:\\psx\\sk2\\cd.hed",0,0);
+	      #else
+	      int file=PCopen("m:\\psx\\sk2\\cd.hed",0,0);
+			#endif
+		#endif
+      ASSERT(file >= 0,"cannot load CD.HED in CDEMU_Init");
+
+      int len = PClseek(file, 0, 2);
+	  ASSERT(len<CDHEDSIZE,"cd.hed is too big, increase CDHEDSIZE");
+      int where = (int)Directory;       // extra 2048 bytes for CD overrrun
+      PClseek(file, 0, 0);
+      while (len!=PCread(file,where,(len+2047)&~2047));
+      PCclose(file);
+      CDEMU_Initted = 1;
+   printf("CDEMU_Init() - Exiting OK\n");
+   }
+}
+
+int	CD_There(char *filename)
+{
+   char* header = Directory;  // first file in the directory
+   char* scan = filename;
+   while(*scan)
+   {
+      char letter=*scan++;
+      char checkletter=*header++;
+
+      // Convert to lower case
+      if (letter>='A' && letter<='Z') letter+='a'-'A';
+      if (checkletter>='A' && checkletter<='Z') checkletter+='a'-'A';
+
+      if ( checkletter != letter )
+      {
+         scan = filename;
+         while ( *header++) ;         // skip to end of file name
+         header = (char*)(((int)header+3)&0xfffffffc)+8;  // skip space, and long words
+
+         if (*header==255)
+         {	
+				return 0;
+         }
+      }
+      else
+      {
+         // Make sure it wont find "wibble" if looking for "wib"
+         if (*scan==0 && *header!=0)
+         {
+            scan = filename;
+            while ( *header++) ;         // skip to end of file name
+            header = (char*)(((int)header+3)&0xfffffffc)+8;  // skip space, and long words
+
+            if (*header==255)
+					return 0;
+         }
+      }
+   }
+	return 1;
+}
+
+#endif
+
+
+// This is the manager for all PRE files on the front end
+#include "ShellUtils.h"
+#define DEBUG_PRE 0
+
+PREManager *PREMgr = NULL;
+int LoadFromPRE = 0;
+char *ThePREFile = NULL;
+int ThePREFileSize = 0; 
+
+void FileIO_SetSectorsPerFrame(int n)
+{
+   RECORDRA;
+   SectorsPerFrame=n;
+}
+
+void FileIO_Init()
+{
+   RECORDRA;
+   int result;
+   Loading=FALSE;
+   
+   #if CD
+   // ------------------------------- CD stuff ----------------------------
+   CdlFILE fp;
+
+   ASSERT((((unsigned int)Directory)&3)==0,"Directory not lword aligned");
+   CdSetDebug(0);
+   while (!CdInit())
+	{
+		printf ("Retry CdInit\n");
+	 	WAITABIT;
+	}
+	
+	#if 0
+   while (!CdSearchFile(&fp, "\\APOC.EXE;1"))
+      printf("Retrying %s\n","APOC.EXE");
+
+   printf("**************** Sector %d *******\n",CdPosToInt(&fp.pos));
+	#endif
+
+
+
+	#if LINKED_STARTUP||DEMODISK
+   while (!CdSearchFile(&fp, "\\PROSKATE\\CD.HED;1"))
+	#else
+   while (!CdSearchFile(&fp, "\\CD.HED;1"))
+	#endif
+   {
+      while (!CdInit()) WAITABIT;
+      WAITABIT;      
+   }
+
+   int err;
+   int nsector = (fp.size+SECTORSIZE-1)/SECTORSIZE;
+   ASSERT(nsector<=CDHEDSIZE/2048,"CD.HED too big");
+   err=CdControl(CdlSetloc, (u_char *)&fp.pos, 0);
+   err=CdRead(nsector, (long unsigned int*)Directory, CdlModeSpeed);
+   while (CdReadSync(1, 0) > 0)
+   {
+		#if POLLHOST
+      PollHost();
+		#endif
+      VSync(0);                    // wait for CD to be initialized
+   }
+
+	#if LINKED_STARTUP||DEMODISK
+   while (!CdSearchFile(&fp, "\\PROSKATE\\CD.WAD;1")) WAITABIT;
+	#else
+   while (!CdSearchFile(&fp, "\\CD.WAD;1")) WAITABIT;
+	#endif
+   WadStart=CdPosToInt(&fp.pos);
+
+	ReadSyncFailures=0;
+   #else
+   // ----------------------------- PC stuff --------------------------
+
+   // Find where the filename part of the file path is for future reference
+   FirstChar=0;
+   char* from=FilePath;
+   char* to=FileName;
+   while(*from!='?')
+   {
+      FirstChar++;
+      *to++=*from++;
+   }
+   ASSERT(FirstChar+11<MAXFILENAMECHARS,"Too many characters in file name");
+
+   result=PCinit();
+   ASSERT(result==0,"PCinit error");
+
+   // 4 Sectors per 30th sec = 8192bytes per 30th, or 240K a second,
+   // which is roughly the CD transfer rate. (A bit less maybe)
+   FileIO_SetSectorsPerFrame(4);
+   #endif
+
+	#if   CDCHECK
+		CDEMU_Init();
+	#endif	
+
+
+}
+
+char *Opening;
+
+#if DEBUG
+char LastFile[16];
+#endif
+
+// Opens a file and returns the filesize, rounded up to a 
+// multiple of SECTORSIZE
+int FileIO_Open(const char *filename)
+{
+   RECORDRA;
+   CurrentPos=0;
+
+//	   printf("\n%d %s",Vblanks, filename);
+
+	DEBUGSTRING(filename);
+
+
+	#if DEBUG
+	strcpy(LastFile, filename);
+	#endif
+	
+	// check to see if file is loaded within PRE
+	// if so, then return the size and exit
+	LoadFromPRE = 0;
+	if (PREMgr)
+	{
+		// deliberate single '='
+		if (ThePREFile = PREMgr->getFile(filename, &ThePREFileSize)) 
+		{
+			#if DEBUG_PRE
+			printf("\nFile %s exists in PRE, size %d", filename, ThePREFileSize);
+			#endif
+			LoadFromPRE = 1;
+			FileOpen=TRUE;
+			return ThePREFileSize;
+		}
+	}
+
+	DEBUGSTRING(filename);
+	
+   #if DEBUG
+   if (FileOpen)
+   {
+      sprintf(AssertString,"\n Trying to open = %s, Already Open %s",filename,Opening);   
+      ASSERT(0,"Called FileIO_Open when a file was was already open");
+      return FALSE;
+   }
+   #endif
+
+	Opening = filename;
+
+	#if DEBUG
+   // A handy check when doing a burn
+	if (Pad[0].LeftTwo.Pressed||SERIALPRINTF)
+	{
+	   printf("\n%s",filename);
+	}
+	if (Pad[0].LeftOne.Pressed)
+	{
+		Pack_Report();
+	}
+	#endif
+
+   #if CD
+   // ------------------------------- CD stuff ----------------------------
+   char* header = Directory;  // first file in the directory
+   char* scan = filename;
+   while(*scan)
+   {
+      char letter=*scan++;
+      char checkletter=*header++;
+
+      // Convert to lower case
+      if (letter>='A' && letter<='Z') letter+='a'-'A';
+      if (checkletter>='A' && checkletter<='Z') checkletter+='a'-'A';
+
+      if ( checkletter != letter )
+      {
+         scan = filename;
+         while ( *header++) ;         // skip to end of file name
+         header = (char*)(((int)header+3)&0xfffffffc)+8;  // skip space, and long words
+
+         if (*header==255)
+         {
+            #if DEBUG
+            printf("\n%s missing!\n",filename);
+            sprintf(AssertString,"%s",filename);
+            ASSERT(0,"File missing from cd.s: ");
+            #endif
+
+            RECT rect={485,18,10,10};
+            ClearImage(&rect,0,0,255);
+            rect.y+=256;
+            ClearImage(&rect,0,0,255);
+         }
+      }
+      else
+      {
+         // Make sure it wont find "wibble" if looking for "wib"
+         if (*scan==0 && *header!=0)
+         {
+            scan = filename;
+            while ( *header++) ;         // skip to end of file name
+            header = (char*)(((int)header+3)&0xfffffffc)+8;  // skip space, and long words
+
+            if (*header==255)
+            {
+               #if DEBUG
+               sprintf(AssertString,"%s",filename);
+               ASSERT(0,"File missing from cd.s: ");
+               #endif
+
+               RECT rect={485,18,10,10};
+               ClearImage(&rect,0,0,255);
+               rect.y+=256;
+               ClearImage(&rect,0,0,255);
+            }
+         }
+      }
+   }
+
+   header = (char*)(((int)header+4)&0xfffffffc);  // skip space
+   Start = *((int*)header);        // get the start
+   header+=4;
+   int len = *((int*)header);          // get the length
+   FileIO_Size = *((int*)header);      // remember the original length
+
+   // Calculate the number of sectors and rounded up file size
+   NumSectors=(len+SECTORSIZE-1)/SECTORSIZE;
+   FileSize=NumSectors*SECTORSIZE;
+
+   #else
+   // ----------------------------- PC stuff --------------------------
+
+   const char *from;
+	char *to;
+   int result;
+
+   to=FileName+FirstChar;
+   from=filename;
+   while(*from) *to++=*from++;
+   *to=0;
+
+	#if CDCHECK	
+	// check to see if it is in CD.HED
+//	printf ("Checking %s\n",filename);
+	if ( !CD_There(filename) )
+	{
+		printf("\n\n\n**** %s not in CD.HED *****\n\n\n",filename);
+		char xx[50];
+		sprintf(xx,"%s not in CD.S",filename);
+		ASSERT(0,xx);
+	} 
+	#endif
+
+
+   // Open the new file
+   FileID=PCopen(FileName,0,0);
+
+   #if DEBUG
+   if (FileID==-1)
+   {
+      sprintf(AssertString,"%s\n",FileName);
+      ASSERT(0,"Could not open file ");
+   }
+   #endif
+
+   // The file size is rounded up to the nearest multiple of SECTORSIZE
+   // to emulate loading off the CD. The padding will get filled
+   // with zeros by PCread just like CD reading would do.
+   FileSize=PClseek(FileID, 0, 2);
+
+	FileIO_Size = FileSize;			// remember the original size
+
+   FileSize=SECTORSIZE*((FileSize+SECTORSIZE-1)/SECTORSIZE);
+
+   int retval=PClseek(FileID, 0, 0);
+
+   ASSERT(retval==0,"PClseek failed");
+
+   #endif
+
+   FileOpen=TRUE;
+
+   #if DEBUG
+   if (FileSize==0)
+   {
+      printf("\n%s has zero size",filename);
+      ASSERT(0,"");
+   }
+   #endif
+
+   MESSAGE("File opened");
+	   // A handy check when doing a burn
+	if (Pad[0].LeftTwo.Pressed)
+	   printf("(%d) ",FileSize);
+
+	DEBUGSTRING(filename);
+
+   return FileSize;
+}
+
+void FileIO_Load(void *where)
+{
+   RECORDRA;
+   ASSERT(FileOpen,"FileIO_Load called without a file open");
+   ASSERT((((unsigned int)where)&3)==0,"Destination pointer not lword aligned");
+
+	#include "mem.h"
+
+
+	// if file is in PRE
+	if (PREMgr && LoadFromPRE)
+	{
+		// copy to memory buffer
+		// (can't use evil memcpy)
+		#if DEBUG_PRE
+		printf("\nLoading from PRE");
+		#endif
+		Mem_Copy(where, ThePREFile, ThePREFileSize);
+		FileOpen = FALSE; 
+		return;
+	}
+
+	int Free0=(HeapDefs[0][1]-HeapDefs[0][0]-Used[0]);
+	int Free1=(HeapDefs[1][1]-HeapDefs[1][0]-Used[1]);
+	if (Pad[0].LeftTwo.Pressed || SERIALPRINTF)
+		printf (" Heaps: Small(0) %d, Large(1) %d",Free0,Free1);
+
+
+	// Just to be on the safe side.
+	GameFMV_StopFMV();
+
+   #if CD
+   // ------------------------------- CD stuff ----------------------------
+
+   Dest=(long unsigned int*)where;
+   // reet, now for a little calculation to get the actual start position
+   // which is simply relative to WadStart, the sector that the Wad starts on.
+   CdIntToPos(Start/SECTORSIZE + WadStart, &FileStart);
+   Loading=SEEKING;
+
+	// Stop XA sector checking in the VSync callback.
+	Redbook_XACheckSectorOnVSync = FALSE;
+	Redbook_XAPlayComplete = TRUE;
+	Redbook_XAModeSet = FALSE;
+
+   #else
+   // ----------------------------- PC stuff --------------------------
+   ASSERT(!Loading,"Tried to start a new load before the last had finished");
+
+   Where=(char*)where;
+	Loading=PCLOADING;
+	
+   NewLoad=TRUE;
+   #endif
+	
+   CurrentPos=0;
+
+	FileIO_Continue();			// start seeking, issue read command, and load immediatly
+
+}
+
+
+// Loads just part of a file
+// (For future spooling in of big canned animation files)
+#if 0
+long FileIO_LoadPartial(char *filename, char *where, int StartSector, int NumSectors)
+{
+   #if CD
+   ASSERT(0,"Haven't written FileIO_LoadPartial for CD yet");
+   #else
+
+   FileIO_Load(filename, where);
+   PClseek(FileID, StartSector*SECTORSIZE, 0);
+   FileSize=NumSectors*SECTORSIZE;
+   
+   #endif
+
+   return FileSize;
+}
+#endif
+
+
+int LastLoading;
+
+void FileIO_Continue()
+{
+   RECORDRA;
+
+	if (LoadFromPRE) 
+	{
+		Loading = 0;
+		return;
+	}
+	
+	if (Loading != LastLoading)
+	{
+    //	printf("\n%d %d",Vblanks, Loading);
+	}
+	LastLoading = Loading;
+
+   int ReadError=FALSE;
+
+   #if CD
+   // ------------------------------- CD stuff ----------------------------
+   unsigned char result[100];
+   int status;
+
+   switch (Loading)
+   {
+      case SEEKING:
+   		CurrentPos=0; // No bytes have been loaded yet.
+			
+         if (CdControl(CdlSetloc, (u_char *)&FileStart, 0))
+            Loading=STARTREAD;
+				// note: deliberate drop-through
+         else
+         {
+            ReadError=TRUE;
+            ASSERT(0,"CdlSetLoc failed");
+	         break;
+         }
+         MESSAGE("Seeking");
+
+      case STARTREAD:
+         if (CdRead(NumSectors, Dest, CdlModeStream|CdlModeSpeed))
+            Loading=LOADING;
+				// note: deliberate drop-through
+         else
+         {
+            ASSERT(0,"CdRead failed");
+            ReadError=TRUE;
+				Loading=SEEKING; // Start all over again.
+	         break;
+         }
+
+         #if DEBUG & LOADMESSAGES
+         MESSAGE("Starting read");
+         #endif
+
+      case LOADING:
+	      if (CurrentPos==FileSize)
+			{
+	         Loading=NOTLOADING;
+	         FileOpen=FALSE;
+			}
+			else
+			{
+
+				Pad_Update();					// make sure pad is update whilst loading
+
+	         status=CdReadSync(1,result);
+	      
+	         if (status>0)
+	         {
+	            #if DEBUG & LOADMESSAGES
+	            MESSAGE("Loading");
+	            #endif
+					ReadSyncFailures=0;
+	         }
+	         else
+				{
+	            if (status<0)
+	            {
+	               MESSAGE("------ Read error ------");
+						++ReadSyncFailures;
+						if (ReadSyncFailures>=MAXCDFAILURES)
+						{
+							ReadSyncFailures=0;
+							Loading=SEEKING;
+						}	
+	               ReadError=TRUE;
+	            }
+	            else
+	            {
+						// This is to make CurrentPos valid for use by Front_UpdateProgress()
+						// Really CurrentPos should be maintained during loading instead of
+						// jumping from 0 to filesize, but I'm not sure how to do this yet.
+						CurrentPos=FileSize;
+	            }
+				}	
+			}	
+         break;
+
+      case NOTLOADING:
+         break;
+
+      default:
+         break;
+   }
+
+   #else
+   // ----------------------------- PC stuff --------------------------
+
+   int Chunk,result;
+   static int Silly=0;
+
+   // NewLoad is to prevent FileIO_Continue from doing anything if
+   // FileIO_Load was called in the same frame. This ensures that PCopen
+   // and PCread's are done in different frames, so keeps the timing bar
+   // more steady. (PCopen takes quite a long time to execute)
+
+   if (Loading && !NewLoad)
+   {
+      if (CurrentPos==FileSize)
+      {
+         // Close the file
+         result=PCclose(FileID);
+
+         ASSERT(result>=0,"PCclose failed");
+      
+         #if DEBUG & LOADMESSAGES
+         MESSAGE("Closed");
+         #endif
+
+         Loading=FALSE;
+         FileOpen=FALSE;
+         Silly=0;
+
+		 #if NEW_FRONT_END	
+//		 	LoadingScreen_UpdateProgress();
+         #else
+		 	Front_UpdateProgress();
+		 #endif
+         return;
+      }
+
+		Pad_Update();					// make sure pad is update whilst loading
+
+      // Read a block of data
+      if (CurrentPos+SectorsPerFrame*SECTORSIZE>FileSize)
+      {
+         Chunk=FileSize-CurrentPos;    // Remainder of the file
+         if (PCread(FileID,Where+CurrentPos,Chunk)!=-1)
+         {
+            #if DEBUG & LOADMESSAGES
+            MESSAGE("Loading");
+            #endif
+
+            CurrentPos+=Chunk;
+            Silly=0;
+         }
+         else
+         {
+            ++Silly;
+            if (Silly<60)
+               MESSAGE("------ Read error ------");
+            else
+               MESSAGE("------ Aaaargh!!! ------");
+            ReadError=TRUE;
+         }
+      }
+      else
+      {
+         Chunk=SectorsPerFrame*SECTORSIZE;    // One block
+         if (PCread(FileID,Where+CurrentPos,Chunk)!=-1)
+         {
+            #if DEBUG & LOADMESSAGES
+            MESSAGE("Loading");
+            #endif
+            CurrentPos+=Chunk;
+            Silly=0;
+         }
+         else
+         {
+            ++Silly;
+            if (Silly<60)
+               MESSAGE("------ Read error ------");
+            else
+               MESSAGE("------ Aaaargh!!! ------");
+            ReadError=TRUE;
+         }
+      }
+   }   
+
+
+   NewLoad=FALSE;
+   #endif
+
+
+   #if DEBUG
+   if (Loading)
+   {
+//      RECT rect={485,18,10,10};
+//      ClearImage(&rect,0,255,0);
+//      rect.y+=256;
+//      ClearImage(&rect,0,255,0);
+   }
+   #endif
+   if (ReadError)
+   {
+      RECT rect={485,18,10,10};
+      ClearImage(&rect,255,0,0);
+      rect.y+=256;
+      ClearImage(&rect,255,0,0);
+   }
+	
+	// Notify the front end so that it can display a progress gauge if required.
+	#if NEW_FRONT_END
+		//Loading = FALSE;	
+//		LoadingScreen_UpdateProgress();
+	#else
+		Front_UpdateProgress();
+	#endif
+}
+
+// Waits for loading to finish
+// Used with FileIO_SetSectorsPerFrame before main loop, when startup files 
+// need to be loaded quickly
+void FileIO_Sync()
+{
+   if (LoadFromPRE)
+   {
+		Loading = 0;
+		LoadFromPRE = 0;
+		return;
+   }
+
+   RECORDRA;
+   while (Loading)
+   {  
+   		FileIO_Continue();
+//			LoadingScreen_UpdateProgress();
+   }
+   FileIO_Continue();  // just so it prints out at the end
+}
+

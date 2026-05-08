@@ -609,7 +609,7 @@ CCopBulletTracer::CCopBulletTracer(
 	}
 
 	CVector v37 = *a2;
-	u32 v18 = Utils_Dist(&v37, a3);
+	u32 v18 = Utils_Dist(v37, *a3);
 
 	if (v18 > 0x3E8)
 	{

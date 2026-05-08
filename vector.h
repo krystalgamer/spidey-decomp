@@ -75,13 +75,40 @@ class CVector
 		EXPORT i32 LengthSquared(void);
 
 		EXPORT int Length(void);
+
+		// @Bogus
+		INLINE i32 SquaredLength(void) const { return this->vx * this->vx + this->vy * this->vy + this->vz * this->vz; }
 };
 
 EXPORT CVector operator/(const CVector& lhs, const int& other);
-EXPORT CVector operator-(const CVector& lhs, const CVector& other);
+
+// @Ok
+INLINE CVector operator-(const CVector& lhs, const CVector& other)
+{
+	CVector res;
+
+	res.vx = lhs.vx - other.vx;
+	res.vy = lhs.vy - other.vy;
+	res.vz = lhs.vz - other.vz;
+
+	return res;
+}
+
 EXPORT CVector operator*(const CVector& lhs, const int& other);
 EXPORT CVector operator*(const CVector& lhs, const CVector& other);
-EXPORT CVector operator>>(const CVector& lhs, const int& other);
+
+// @Ok
+INLINE CVector operator>>(const CVector& lhs, const int& other)
+{
+	CVector res;
+
+	res.vx = lhs.vx >> other;
+	res.vy = lhs.vy >> other;
+	res.vz = lhs.vz >> other;
+
+	return res;
+}
+
 EXPORT CVector operator+(const CVector& lhs, const CVector& other);
 
 EXPORT CVector operator*(const int& lhs, const CVector& other);

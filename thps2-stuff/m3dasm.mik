@@ -1,0 +1,10036 @@
+
+
+
+	section	.text
+
+	opt	l.
+
+
+	include globdefs.s
+	ifnd ENGLISH
+        include qdefs.s
+	endif
+	include	\psx\include\gtereg.h
+	include	m3dgpu.inc
+	include	m3dasm.inc
+
+
+
+	xdef	M3dAsm_TransformAndOutcodeBlockVertices__FP7SVECTORiP6VECTOR
+	xdef	M3dAsm_TransformAndOutcodeItemVertices__FP7SVECTORi
+
+	xdef	M3dAsm_TransformTwice__FP7SVectorP7SMatrixP6MATRIX
+	xdef	M3dAsm_SetTransVector__FP6Vector
+	xdef	M3dAsm_NewSetRotTransMatrix__FP7SMatrix
+	xdef	M3dAsm_TransformAndOutcodeBackgroundVertices__FP7SVECTORi
+;	xdef	M3dAsm_BridgeOT__FPUi
+	xdef	M3dAsm_LineColijPreprocessItems__FP4ItemiP9SLineInfoUs
+	xdef	M3dAsm_LineColijPreprocessItemsZoned__FPP4ItemiP9SLineInfoUs
+
+
+	xref	rcossin_tbl
+	xref	Hither
+	xref	Yon
+	xref	pPoly,PolyBufferEnd
+	xref	Vertices
+	xref	PSXRegion
+	xref	Inquiry
+	xref	FreeStitchVertex
+	xref	pColourTable
+	xref	FrustumNormals,FrustumMatrix1,FrustumMatrix2
+	xref	pCurrentCamera,pCurrentViewport,CurrentOrderingTable
+	xref	ProjectedVertices, RotatedVertices
+	xref	M3d_OTPushback,M3d_OTPushback2
+
+	if DEBUG
+	xref	TestCount
+	endif
+
+
+
+SUBDIVON	equ	1		; switches on subdivision0
+CHECKERON	equ	1		; switches on checkerboard effect if subdivision is on
+CONTINUOUS_SUBDIVISION	equ	SK
+STRONG_Z_CULL	equ	0
+AREASHIFT	equ	11		; see next line
+AREA		equ	1<<AREASHIFT	; a poly subdivides when it reaches half this area on the screen
+
+
+
+;-----------------------------------------------------------------------
+; #if SK
+; void M3dAsm_EnvBoundingSpherePreprocessing(SItem *pItem, int WhichInactiveFlag);
+; #else
+; void M3dAsm_EnvBoundingSpherePreprocessing(SItem *pItem);
+; #endif
+
+QUITE_LARGE	EQU	32767
+DOWNSHIFT       EQU     1               ; to avoid overflow
+
+
+
+	if 0
+
+M3dAsm_EnvBoundingSpherePreprocessing
+
+        xdef    M3dAsm_EnvBoundingSpherePreprocessing
+
+; a0: pItem
+
+	beqz	a0,.Ret
+	lui	v0,$1F80		; v0 = base of scratchpad
+
+        addiu   sp,sp,-32
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+        sw      s6,24(sp)
+        sw      fp,28(sp)
+
+        if SK
+        move    fp,a1                   ; ITEMFLAGS_INACTIVE or ITEMFLAGS_INACTIVE2
+        ori     fp,ITEMFLAGS_INVISIBLE
+        endif
+
+	; set up bounding box vertex selection addresses
+	cfc2	t0,C2_L11L12
+	cfc2	t1,C2_L13L21
+	cfc2	t2,C2_L22L23
+	cfc2	t3,C2_L31L32
+	cfc2	t4,C2_L33
+
+	srl	s0,t0,12		; x-bits from 1st matrix
+	andi	s0,s0,8
+	srl	s1,t1,28
+	andi	s1,s1,8
+	srl	s2,t3,12
+	andi	s2,s2,8
+
+	srl	t9,t0,27		; y-bits from 1st matrix
+	andi	t9,t9,16
+	or	s0,s0,t9
+	srl	t9,t2,11
+	andi	t9,t9,16
+	or	s1,s1,t9
+	srl	t9,t3,27
+	andi	t9,t9,16
+	or	s2,s2,t9
+
+	srl	t9,t1,10		; z-bits from 1st matrix
+	andi	t9,t9,32
+	or	s0,s0,t9
+	srl	t9,t2,26
+	andi	t9,t9,32
+	or	s1,s1,t9
+	srl	t9,t4,10
+	andi	t9,t9,32
+	or	s2,s2,t9
+
+	cfc2	t0,C2_LR1LR2
+	cfc2	t1,C2_LR3LG1
+	cfc2	t2,C2_LG2LG3
+        cfc2    t3,C2_LB1LB2
+	cfc2	t4,C2_LB3
+
+	la	a1,pCurrentCamera
+	lw	a1,(a1)
+
+	srl	s3,t0,12		; x-bits from 2nd matrix
+	andi	s3,s3,8
+	srl	s4,t1,28
+	andi	s4,s4,8
+	srl	s5,t3,12
+	andi	s5,s5,8
+
+	srl	t9,t0,27		; y-bits from 2nd matrix
+	andi	t9,t9,16
+	or	s3,s3,t9
+	srl	t9,t2,11
+	andi	t9,t9,16
+	or	s4,s4,t9
+	srl	t9,t3,27
+	andi	t9,t9,16
+	or	s5,s5,t9
+
+	srl	t9,t1,10		; z-bits from 2nd matrix
+	andi	t9,t9,32
+	or	s3,s3,t9
+	srl	t9,t2,26
+	andi	t9,t9,32
+	or	s4,s4,t9
+	srl	t9,t4,10
+	andi	t9,t9,32
+	or	s5,s5,t9
+
+	addu	s0,s0,v0
+	addu	s1,s1,v0
+	addu	s2,s2,v0
+	addu	s3,s3,v0
+	addu	s4,s4,v0
+	addu	s5,s5,v0
+
+	lw	t4,4(a1)		; get cam pos
+	lw	t5,8(a1)
+	lw	t6,12(a1)
+
+        ; In Skate, we only have one environment psx so objects must
+        ; all be in the same region, so fetch this stuff once only
+        lbu     v1,ITEM_REGION(a0)
+	la	a2,PSXRegion
+        sll     v1,v1,6                 ; shift -> PSXRegion array offset
+        addu    v1,v1,a2                ; add base address of array
+        lw      v1,PSXREGION_LOCALMODELTABLE(v1)        ; get model table
+        nop
+        subi    v1,v1,4                 ; adjust for prestepping of ptr
+
+; t4-t6: camera	position
+
+.Loop	lhu	a1,ITEM_FLAGS(a0)	; need to check the item is active
+        lw      s6,ITEM_NEXTITEM(a0)
+        addu    v1,v1,4                 ; prestep pointer to next model
+
+        if SK
+        and     t0,a1,fp                ; gp = ITEMFLAGS_INACTIVE[2] | ITEMFLAGS_INVISIBLE
+        else
+        andi    t0,a1,ITEMFLAGS_INACTIVE|ITEMFLAGS_INVISIBLE
+        endif
+	bnez	t0,.Reject
+        nop
+
+        lw      t1,ITEM_X(a0)           ; get envobj X coord
+        lw      t2,ITEM_Y(a0)           ; get envobj Y coord
+        lw      t3,ITEM_Z(a0)           ; get envobj Z coord
+
+        sra     t1,t1,FRACBITS          ; convert X coord to integer
+        subu    t7,t1,t4                ; and subtract camera X
+
+        slti    t0,t7,QUITE_LARGE       ; x range test
+        beqz    t0,.Reject
+	slti	t0,t7,-QUITE_LARGE
+        bnez    t0,.Reject
+
+        sra     t3,t3,FRACBITS          ; convert Z coord to integer
+        subu    t9,t3,t6                ; and subtract camera Z
+
+	slti	t0,t9,QUITE_LARGE	; z range test
+        beqz    t0,.Reject
+	slti	t0,t9,-QUITE_LARGE
+        bnez    t0,.Reject
+
+        sra     t2,t2,FRACBITS          ; convert Y coord to integer
+        subu    t8,t2,t5                ; and subtract camera Y
+
+	slti	t0,t8,QUITE_LARGE	; y range test
+        beqz    t0,.Reject
+	slti	t0,t8,-QUITE_LARGE
+        bnez    t0,.Reject
+
+        lw      a3,0(v1)                ; get pointer to model for this object
+
+        sra     t1,t7,DOWNSHIFT         ; halve the relative position to avoid overflow on rotation
+	andi	t1,t1,$FFFF
+        sra     t2,t8,DOWNSHIFT
+	sll	t2,t2,16
+	or	t1,t1,t2
+        sra     t2,t9,DOWNSHIFT
+	mtc2	t1,C2_VXY0		; put halved values in gte registers
+	mtc2	t2,C2_VZ0
+
+	lw	t0,MODEL_RADIUS(a3)
+	andi	t1,a1,ITEMFLAGS_SCALED
+
+	MVMVA	1,1,0,1,0		; dot with 1st 3 normals
+
+        bnez    t1,.Scale               ; if item scaled, go adjust radius
+        srl     t0,t0,FRACBITS+DOWNSHIFT ; t0 = bounding radius/2
+.scaled
+	subu	t0,zero,t0
+
+	mfc2	t1,C2_MAC1		; get 1st 3 plane distances
+        mfc2    t2,C2_MAC2
+	mfc2	t3,C2_MAC3
+
+	MVMVA	1,2,0,3,0		; dot with 2nd 3 normals
+
+	slt	t1,t1,t0		; 1st 3	plane tests
+	bnez	t1,.Reject
+	slt	t1,t2,t0
+	bnez	t1,.Reject
+	slt	t1,t3,t0
+	bnez	t1,.Reject
+	nop
+
+	mfc2	t1,C2_MAC1		; get 2nd 3 plane distances
+	mfc2	t2,C2_MAC2
+
+	slt	t1,t1,t0		; 2nd 3	plane tests
+	bnez	t1,.Reject
+
+	mfc2	t3,C2_MAC3
+
+	slt	t1,t2,t0
+	bnez	t1,.Reject
+	slt	t1,t3,t0
+	bnez	t1,.Reject
+	nop
+
+;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+; bounding box test
+
+;	xref	T			; do BB test conditionally on T[0]
+;	lw	t0,T
+;	nop
+;	bnez	t0,.Accept
+;	nop
+
+	lw	t0,ITEM_RX(a0)		; accept if rotated, scaled or a superitem
+	lhu	t1,ITEM_RZ(a0)
+	andi	t2,a1,ITEMFLAGS_SCALED|ITEMFLAGS_ISSUPER
+	or	t0,t0,t1
+	or	t0,t0,t2
+	bnez	t0,.Accept
+
+	lw	t1,MODEL_BOX_X(a3)
+	lw	t2,MODEL_BOX_Y(a3)
+	lw	t3,MODEL_BOX_Z(a3)
+
+	; calculate halved coords of bounding box vertices and store to scratchpad
+	addu	t0,t7,t1		; store max x's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$00(v0)
+	sh	t0,$10(v0)
+	sh	t0,$20(v0)
+	sh	t0,$30(v0)
+
+	sra	t1,t1,16		; store min x's
+	addu	t0,t7,t1
+	sra	t0,t0,1
+	sh	t0,$08(v0)
+	sh	t0,$18(v0)
+	sh	t0,$28(v0)
+	sh	t0,$38(v0)
+
+	addu	t0,t8,t2		; store max y's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$02(v0)
+	sh	t0,$0A(v0)
+	sh	t0,$22(v0)
+	sh	t0,$2A(v0)
+
+	sra	t2,t2,16		; store min y's
+	addu	t0,t8,t2
+	sra	t0,t0,1
+	sh	t0,$12(v0)
+	sh	t0,$1A(v0)
+	sh	t0,$32(v0)
+	sh	t0,$3A(v0)
+
+	addu	t0,t9,t3		; store max z's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$04(v0)
+	sh	t0,$0C(v0)
+	sh	t0,$14(v0)
+	sh	t0,$1C(v0)
+
+	sra	t3,t3,16		; store min z's
+	addu	t0,t9,t3
+	sra	t0,t0,1
+	sh	t0,$24(v0)
+	sh	t0,$2C(v0)
+	sh	t0,$34(v0)
+	sh	t0,$3C(v0)
+
+	lwc2	C2_VXY0,(s0)		; yon plane dot product
+	lwc2	C2_VZ0,4(s0)
+	nop
+	nop
+	MVMVA	1,1,0,1,0
+	mfc2	t1,C2_IR1
+
+	lwc2	C2_VXY1,(s1)		; hither plane dot product
+	lwc2	C2_VZ1,4(s1)
+	bltz	t1,.Reject
+	nop
+	MVMVA	1,1,1,1,0
+	mfc2	t2,C2_IR2
+
+	lwc2	C2_VXY2,(s2)		; top plane dot product
+	lwc2	C2_VZ2,4(s2)
+	bltz	t2,.Reject
+	nop
+	MVMVA	1,1,2,1,0
+	mfc2	t3,C2_IR3
+
+	lwc2	C2_VXY0,(s3)		; bottom plane dot product
+	lwc2	C2_VZ0,4(s3)
+	bltz	t3,.Reject
+	nop
+	MVMVA	1,2,0,3,0
+	mfc2	t1,C2_IR1
+
+	lwc2	C2_VXY1,(s4)		; left plane dot product
+	lwc2	C2_VZ1,4(s4)
+	bltz	t1,.Reject
+	nop
+	MVMVA	1,2,1,3,0
+	mfc2	t2,C2_IR2
+
+	lwc2	C2_VXY2,(s5)		; right plane dot product
+	lwc2	C2_VZ2,4(s5)
+	bltz	t2,.Reject
+	nop
+	MVMVA	1,2,2,3,0
+	mfc2	t3,C2_IR3
+	nop
+	bltz	t3,.Reject
+	nop
+
+;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+.Accept ;lw      t1,ITEM_NEXTITEM(a0)
+	andi	a1,a1,ITEMFLAGS_CULL^$FFFF
+	sh	a1,ITEM_FLAGS(a0)
+        bnez    s6,.Loop
+        move    a0,s6
+
+	j	.Done
+	nop
+
+.Reject ;lw      t1,ITEM_NEXTITEM(a0)
+	ori	a1,a1,ITEMFLAGS_CULL
+	sh	a1,ITEM_FLAGS(a0)
+        bnez    s6,.Loop
+        move    a0,s6 ; was t1
+
+.Done	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+        lw      s6,24(sp)
+        lw      fp,28(sp)
+        addiu   sp,sp,32
+
+.Ret	jr	ra
+	nop
+
+.Scale  lh      t1,ITEM_XSCALE(a0)      ; scale radius by largest X/Y/Z scale
+	lh	t2,ITEM_YSCALE(a0)
+	lh	t3,ITEM_ZSCALE(a0)
+
+	subu	t2,t2,t1
+	blez	t2,.skip1
+	nop
+	addu	t1,t2,t1
+.skip1
+	subu	t3,t3,t1
+	blez	t3,.skip2
+	nop
+	addu	t1,t3,t1
+.skip2
+	mult	t0,t1
+	mflo	t0
+	j	.scaled
+	srl	t0,t0,$C
+
+	endif
+
+
+;-----------------------------------------------------------------------
+; #if SK
+; void M3dAsm_BoundingSpherePreprocessing(SItem *pItem, int WhichInactiveFlag);
+; #else
+; void M3dAsm_BoundingSpherePreprocessing(SItem *pItem);
+; #endif
+
+
+M3dAsm_BoundingSpherePreprocessing
+
+        xdef    M3dAsm_BoundingSpherePreprocessing
+
+; a0: pItem
+
+	beqz	a0,.Ret
+	lui	v0,$1F80		; v0 = base of scratchpad
+
+        addiu   sp,sp,-28
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+        sw      fp,24(sp)
+
+        if SK
+        move    fp,a1                   ; ITEMFLAGS_INACTIVE or ITEMFLAGS_INACTIVE2
+        ori     fp,ITEMFLAGS_INVISIBLE
+        endif
+
+	; set up bounding box vertex selection addresses
+	cfc2	t0,C2_L11L12
+	cfc2	t1,C2_L13L21
+	cfc2	t2,C2_L22L23
+	cfc2	t3,C2_L31L32
+	cfc2	t4,C2_L33
+
+	srl	s0,t0,12		; x-bits from 1st matrix
+	andi	s0,s0,8
+	srl	s1,t1,28
+	andi	s1,s1,8
+	srl	s2,t3,12
+	andi	s2,s2,8
+
+	srl	t9,t0,27		; y-bits from 1st matrix
+	andi	t9,t9,16
+	or	s0,s0,t9
+	srl	t9,t2,11
+	andi	t9,t9,16
+	or	s1,s1,t9
+	srl	t9,t3,27
+	andi	t9,t9,16
+	or	s2,s2,t9
+
+	srl	t9,t1,10		; z-bits from 1st matrix
+	andi	t9,t9,32
+	or	s0,s0,t9
+	srl	t9,t2,26
+	andi	t9,t9,32
+	or	s1,s1,t9
+	srl	t9,t4,10
+	andi	t9,t9,32
+	or	s2,s2,t9
+
+	cfc2	t0,C2_LR1LR2
+	cfc2	t1,C2_LR3LG1
+	cfc2	t2,C2_LG2LG3
+	cfc2	t3,C2_LB1LB2
+	cfc2	t4,C2_LB3
+
+	srl	s3,t0,12		; x-bits from 2nd matrix
+	andi	s3,s3,8
+	srl	s4,t1,28
+	andi	s4,s4,8
+	srl	s5,t3,12
+	andi	s5,s5,8
+
+	srl	t9,t0,27		; y-bits from 2nd matrix
+	andi	t9,t9,16
+	or	s3,s3,t9
+	srl	t9,t2,11
+	andi	t9,t9,16
+	or	s4,s4,t9
+	srl	t9,t3,27
+	andi	t9,t9,16
+	or	s5,s5,t9
+
+	srl	t9,t1,10		; z-bits from 2nd matrix
+	andi	t9,t9,32
+	or	s3,s3,t9
+	srl	t9,t2,26
+	andi	t9,t9,32
+	or	s4,s4,t9
+	srl	t9,t4,10
+	andi	t9,t9,32
+	or	s5,s5,t9
+
+	addu	s0,s0,v0
+	addu	s1,s1,v0
+	addu	s2,s2,v0
+	addu	s3,s3,v0
+	addu	s4,s4,v0
+	addu	s5,s5,v0
+
+	la	a1,pCurrentCamera
+	lw	a1,(a1)
+
+	la	a2,PSXRegion
+
+	lw	t4,4(a1)		; get cam pos
+	lw	t5,8(a1)
+	lw	t6,12(a1)
+
+; t4-t6: camera	position
+
+.Loop	lhu	a1,ITEM_FLAGS(a0)	; need to check the item is active
+        nop
+
+        if SK
+
+        and     t0,a1,fp                ; gp = ITEMFLAGS_INACTIVE[2] | ITEMFLAGS_INVISIBLE
+	bnez	t0,.Reject
+        nop
+
+        else
+
+        andi    t0,a1,ITEMFLAGS_INACTIVE|ITEMFLAGS_INVISIBLE
+	bnez	t0,.Reject
+        nop
+
+        endif
+
+        lw      t1,ITEM_X(a0)           ; get envobj X coord
+        lw      t2,ITEM_Y(a0)           ; get envobj Y coord
+        lw      t3,ITEM_Z(a0)           ; get envobj Z coord
+
+        sra     t1,t1,FRACBITS          ; convert X coord to integer
+        subu    t7,t1,t4                ; and subtract camera coord
+
+        slti    t0,t7,QUITE_LARGE       ; x range test
+        beqz    t0,.Reject
+	slti	t0,t7,-QUITE_LARGE
+        bnez    t0,.Reject
+
+        sra     t3,t3,FRACBITS          ; convert Z coord to integer
+        subu    t9,t3,t6                ; and subtract camera coord
+
+		andi    v1,a1,ITEMFLAGS_IGNOREDPQ	; v1 is tested to skip large z testing for objects
+		bnez	v1,.SkippedLargeZTest		; with ITEMFLAGS_IGNOREDPQ set
+		slti	t0,t9,QUITE_LARGE			; z range test
+        beqz    t0,.Reject
+.SkippedLargeZTest
+		slti	t0,t9,-QUITE_LARGE
+        bnez    t0,.Reject
+
+        sra     t2,t2,FRACBITS          ; convert Y coord to integer
+        subu    t8,t2,t5                ; and subtract camera coord
+
+	slti	t0,t8,QUITE_LARGE	; y range test
+        beqz    t0,.Reject
+	slti	t0,t8,-QUITE_LARGE
+        bnez    t0,.Reject
+
+	sra	t1,t7,1			; halve the relative position to avoid overflow on rotation
+	andi	t1,t1,$FFFF
+	sra	t2,t8,1
+	sll	t2,t2,16
+	or	t1,t1,t2
+	sra	t2,t9,1
+	mtc2	t1,C2_VXY0		; put halved values in gte registers
+	mtc2	t2,C2_VZ0
+
+	lhu	a3,ITEM_MODEL(a0)	; get model number and region number
+	lbu	t0,ITEM_REGION(a0)
+
+	MVMVA	1,1,0,1,0		; dot with 1st 3 normals
+
+	; Horrid Ken addition
+	;----------------------------------------------------------------
+	if KENVIEWER
+	sll	t0,t0,8			; shift	-> PSXRegion array offset
+	else
+	sll	t0,t0,6			; shift	-> PSXRegion array offset
+	endif
+	addu	t0,t0,a2		; add base address of array
+	lw	t0,PSXREGION_LOCALMODELTABLE(t0)	; get model table
+	
+	sll	a3,a3,2			; shift	-> model tab offset
+	addu	a3,a3,t0		; a3=SModelInfo*
+	lw	a3,0(a3)		; a3=SModel*
+	;----------------------------------------------------------------
+
+	andi	t1,a1,ITEMFLAGS_SCALED
+	lw	t0,MODEL_RADIUS(a3)
+
+	bnez	t1,.Scale
+	srl	t0,t0,FRACBITS+1	; t0 = bounding	radius/2
+.scaled
+	mfc2	t1,C2_MAC1		; get 1st 3 plane distances
+	mfc2	t2,C2_MAC2
+	mfc2	t3,C2_MAC3
+
+	MVMVA	1,2,0,3,0		; dot with 2nd 3 normals
+
+	subu	t0,zero,t0
+
+	bnez	v1,.Skipped1stPlaneTest
+	slt	t1,t1,t0		; 1st 3	plane tests
+	bnez	t1,.Reject
+.Skipped1stPlaneTest
+	slt	t1,t2,t0
+	bnez	t1,.Reject
+	slt	t1,t3,t0
+	bnez	t1,.Reject
+	nop
+
+	mfc2	t1,C2_MAC1		; get 2nd 3 plane distances
+	mfc2	t2,C2_MAC2
+	mfc2	t3,C2_MAC3
+
+	slt	t1,t1,t0		; 2nd 3	plane tests
+	bnez	t1,.Reject
+	slt	t1,t2,t0
+	bnez	t1,.Reject
+	slt	t1,t3,t0
+	bnez	t1,.Reject
+	nop
+
+
+;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+; bounding box test
+
+;	xref	T			; do BB test conditionally on T[0]
+;	lw	t0,T
+;	nop
+;	bnez	t0,.Accept
+;	nop
+
+	lw	t0,ITEM_RX(a0)		; accept if rotated, scaled or a superitem
+	lhu	t1,ITEM_RZ(a0)
+	andi	t2,a1,ITEMFLAGS_SCALED|ITEMFLAGS_ISSUPER
+	or	t0,t0,t1
+	or	t0,t0,t2
+	bnez	t0,.Accept
+
+	lw	t1,MODEL_BOX_X(a3)
+	lw	t2,MODEL_BOX_Y(a3)
+	lw	t3,MODEL_BOX_Z(a3)
+
+	; calculate halved coords of bounding box vertices and store to scratchpad
+	addu	t0,t7,t1		; store max x's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$00(v0)
+	sh	t0,$10(v0)
+	sh	t0,$20(v0)
+	sh	t0,$30(v0)
+
+	sra	t1,t1,16		; store min x's
+	addu	t0,t7,t1
+	sra	t0,t0,1
+	sh	t0,$08(v0)
+	sh	t0,$18(v0)
+	sh	t0,$28(v0)
+	sh	t0,$38(v0)
+
+	addu	t0,t8,t2		; store max y's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$02(v0)
+	sh	t0,$0A(v0)
+	sh	t0,$22(v0)
+	sh	t0,$2A(v0)
+
+	sra	t2,t2,16		; store min y's
+	addu	t0,t8,t2
+	sra	t0,t0,1
+	sh	t0,$12(v0)
+	sh	t0,$1A(v0)
+	sh	t0,$32(v0)
+	sh	t0,$3A(v0)
+
+	addu	t0,t9,t3		; store max z's
+	sll	t0,t0,16
+	sra	t0,t0,17
+	sh	t0,$04(v0)
+	sh	t0,$0C(v0)
+	sh	t0,$14(v0)
+	sh	t0,$1C(v0)
+
+	sra	t3,t3,16		; store min z's
+	addu	t0,t9,t3
+	sra	t0,t0,1
+	sh	t0,$24(v0)
+	sh	t0,$2C(v0)
+	sh	t0,$34(v0)
+	sh	t0,$3C(v0)
+
+	bnez	v1,.SkippedYonPlaneTest
+	lwc2	C2_VXY0,(s0)		; yon plane dot product
+	lwc2	C2_VZ0,4(s0)
+	nop
+	nop
+	MVMVA	1,1,0,1,0
+	mfc2	t1,C2_IR1
+	nop
+	nop
+	bltz	t1,.Reject
+
+.SkippedYonPlaneTest
+	lwc2	C2_VXY1,(s1)		; hither plane dot product
+	lwc2	C2_VZ1,4(s1)
+	nop
+	nop
+	MVMVA	1,1,1,1,0
+	mfc2	t2,C2_IR2
+
+	lwc2	C2_VXY2,(s2)		; top plane dot product
+	lwc2	C2_VZ2,4(s2)
+	bltz	t2,.Reject
+	nop
+	MVMVA	1,1,2,1,0
+	mfc2	t3,C2_IR3
+
+	lwc2	C2_VXY0,(s3)		; bottom plane dot product
+	lwc2	C2_VZ0,4(s3)
+	bltz	t3,.Reject
+	nop
+	MVMVA	1,2,0,3,0
+	mfc2	t1,C2_IR1
+
+	lwc2	C2_VXY1,(s4)		; left plane dot product
+	lwc2	C2_VZ1,4(s4)
+	bltz	t1,.Reject
+	nop
+	MVMVA	1,2,1,3,0
+	mfc2	t2,C2_IR2
+
+	lwc2	C2_VXY2,(s5)		; right plane dot product
+	lwc2	C2_VZ2,4(s5)
+	bltz	t2,.Reject
+	nop
+	MVMVA	1,2,2,3,0
+	mfc2	t3,C2_IR3
+	nop
+	bltz	t3,.Reject
+	nop
+
+;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.Accept	lw	t1,ITEM_NEXTITEM(a0)
+	andi	a1,a1,ITEMFLAGS_CULL^$FFFF
+	sh	a1,ITEM_FLAGS(a0)
+        bnez    t1,.Loop
+	move	a0,t1
+
+	j	.Done
+	nop
+
+.Reject	lw	t1,ITEM_NEXTITEM(a0)
+	ori	a1,a1,ITEMFLAGS_CULL
+	sh	a1,ITEM_FLAGS(a0)
+        bnez    t1,.Loop
+	move	a0,t1
+
+.Done	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+        lw      fp,24(sp)
+        addiu   sp,sp,28
+
+.Ret	jr	ra
+	nop
+
+.Scale  lh      t1,ITEM_XSCALE(a0)      ; scale radius by largest X/Y/Z scale
+	lh	t2,ITEM_YSCALE(a0)
+	lh	t3,ITEM_ZSCALE(a0)
+
+	subu	t2,t2,t1
+	blez	t2,.skip1
+	nop
+	addu	t1,t2,t1
+.skip1
+	subu	t3,t3,t1
+	blez	t3,.skip2
+	nop
+	addu	t1,t3,t1
+.skip2
+	mult	t0,t1
+	mflo	t0
+	j	.scaled
+	srl	t0,t0,$C
+
+
+;------------------------------------------------------------------------------------------------------
+
+;-----------------------------------------------;
+;                                               ;
+; Vertex transformation and outcoding functions ;
+;                                               ;
+;-----------------------------------------------;
+
+
+
+;-------------------------------------------------------------------------;
+;									  ;
+; Given	the vertices in	a model, this function calculates the world and	  ;
+; screen coordinates, in the workspace buffers called RotatedVertices and ;
+; ProjectedVertices respectively.					  ;
+; Outcodes are also calculated and placed in ProjectedVertices.		  ;
+; This is the "block" form of the function which only applies to	  ;
+; objects without orientation.						  ;
+; The position of the object relative to the camera must be specified,	  ;
+; because the translation is performed before inverse camera rotation,	  ;
+; in order to maintain a constistent transformation between neighbouring  ;
+; objects and hence eliminate tearing.					  ;
+; This version doesn't support stitching because CBlocks are not	  ;
+; stitchable.								  ;
+;									  ;
+;-------------------------------------------------------------------------;
+
+;; MOVED TO BELOW, commet left here intentionally
+
+; end of M3dAsm_TransformAndOutcodeBlockVertices__FP7SVECTORiP6VECTOR
+
+
+
+
+
+;-------------------------------------------------------------------------;
+;									  ;
+; Given	the vertices in	a model, this function calculates the world and	  ;
+; screen coordinates, in the workspace buffers called RotatedVertices and ;
+; ProjectedVertices respectively.					  ;
+; Outcodes are also calculated and placed in ProjectedVertices.		  ;
+; This is the "item" form of the function which	only applies to		  ;
+; objects with non-zero	local rotation.					  ;
+;									  ;
+;-------------------------------------------------------------------------;
+
+
+M3dAsm_TransformAndOutcodeItemVertices__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be the camera-inverse rotated relative posn
+
+; Returns with:
+; v0: cumulative outcode
+
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	li	v0,$00FF
+
+
+	 ; stack registers s0-s7
+
+	addiu	sp,sp,-32
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+	sw	s6,24(sp)
+	sw	s7,28(sp)
+
+
+	 ; get viewport	boundaries
+
+	lw	s5,pCurrentViewport
+	nop
+
+	lw	s0,0(s5)
+	lw	s1,4(s5)
+	lw	s4,8(s5)
+	srl	s2,s0,16	; all these quantities are non-negative
+	andi	s0,s0,$FFFF
+	srl	s3,s1,16
+	andi	s1,s1,$FFFF
+	srl	s5,s4,16
+	andi	s4,s4,$FFFF
+
+	 ; now have s0=xR, s1=xL, s2=yB, s3=yT,	s4=Hither, s5=Yon
+
+	li	s7,$FFFF	; cumulative outcode
+
+
+	lw	v0,ProjectedVertices
+	lw	v1,RotatedVertices
+
+	lw	t1,0(a0)	; get first vertex
+	lw	t2,4(a0)
+
+
+.loop	mtc2	t1,C2_VXY0	; move vertex to gte
+	mtc2	t2,C2_VZ0
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+	lw	t1,0(a0)	; get next vertex
+	lw	t2,4(a0)
+
+	mfc2	t7,C2_IR1
+	mfc2	t8,C2_IR2
+	mfc2	t9,C2_IR3
+
+	andi	t7,t7,$FFFF
+	sll	t8,t8,16
+	or	t7,t7,t8
+	sw	t7,0(v1)	; store	rotated	x,y
+
+	mfc2	t7,C2_SXY2
+
+	sh	t9,4(v0)	; store	rotated	z
+;	sh	t9,4(v1)	; store	rotated	z (again???)
+
+	sw	t7,0(v0)	; store	(X,Y)
+	sra	t8,t7,16	; Y in t8
+	sll	t7,t7,16
+	sra	t7,t7,16	; X in t7
+
+	slt	t0,s0,t7	; X>xR?
+
+	slt	t7,t7,s1	; X<xL?
+	sll	t7,t7,1
+	or	t0,t0,t7
+
+	slt	t7,s2,t8	; Y>yB?
+	sll	t7,t7,2
+	or	t0,t0,t7
+
+	slt	t7,t8,s3	; Y<yT?
+	sll	t7,t7,3
+	or	t0,t0,t7
+
+	slt	t7,t9,s4	; z<Hither?
+	sll	t7,t7,4
+	or	t0,t0,t7
+
+	slt	t7,s5,t9	; z>Yon?
+	sll	t7,t7,5
+	or	t0,t0,t7
+
+	bgez	t9,.notnot
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnot
+
+	sll	t7,t0,8
+	xori	t7,t7,$FF00
+	or	t0,t0,t7
+
+	sh	t0,6(v0)	; store	outcode
+;	sh	t0,6(v1)	; store	outcode
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+
+.Next	addiu	v0,v0,8		; step destination pointers
+	addiu	v1,v1,8
+
+	bnez	a1,.loop
+	nop
+
+	; save output vertex pointer in case of clipping
+	lui	t0,$1F80
+	sw	v0,SCRATCH_FREEVERTEX(t0)
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+	lw	s6,24(sp)
+	lw	s7,28(sp)
+
+	addiu	sp,sp,32
+
+.Done	jr	ra
+	nop
+
+
+; end of M3dAsm_TransformAndOutcodeItemVertices__FP7SVECTORi
+
+
+
+
+;-------------------------------------------------------------------------;
+;									  ;
+; Given	the vertices in	a model, this function calculates the world and	  ;
+; screen coordinates, in the workspace buffers called RotatedVertices and ;
+; ProjectedVertices respectively.					  ;
+; Outcodes are also calculated and placed in ProjectedVertices.	    	  ;
+; Blah blah blah.							  ;
+; This is also the version which supports stitching.			  ;
+;									  ;
+;-------------------------------------------------------------------------;
+
+; this is a poor name because really it's the stitching	version	- stitching should be useable on non-superitems
+
+
+M3dAsm_TransformAndOutcodeSuperVertices__FP7SVECTORi
+
+	xdef	M3dAsm_TransformAndOutcodeSuperVertices__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be the camera-inverse rotated relative posn
+
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	li	v0,$00FF
+
+
+	 ; stack registers s0-s7
+
+	addiu	sp,sp,-32
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+;	sw	s6,24(sp)
+	sw	s7,28(sp)
+
+
+	 ; get viewport	boundaries
+
+	lw	s5,pCurrentViewport
+	nop
+
+	lw	s0,0(s5)
+	lw	s1,4(s5)
+	lw	s4,8(s5)
+	srl	s2,s0,16	; all these quantities are non-negative
+	andi	s0,s0,$FFFF
+	srl	s3,s1,16
+	andi	s1,s1,$FFFF
+	srl	s5,s4,16
+	andi	s4,s4,$FFFF
+
+	 ; now have s0=xR, s1=xL, s2=yB, s3=yT,	s4=Hither, s5=Yon
+
+	li	s7,$FFFF	; cumulative outcode
+
+
+	lw	v0,ProjectedVertices
+	lw	v1,RotatedVertices
+	move	t3,v0
+	addiu	t3,t3,(MAXVERTICES-1)*8
+	lw	a2,FreeStitchVertex
+
+	lw	t1,0(a0)	; get first vertex
+	lw	t2,4(a0)
+
+
+.loop
+
+;----------------------------------------------------------------------------
+	sra	t0,t1,20
+	sll	t0,t0,16
+	sll	t1,t1,16
+	sra	t1,t1,4
+	srl	t1,t1,16
+	or	t1,t1,t0
+
+	srl	t0,t2,16
+	sll	t0,t0,16
+	sll	t2,t2,16
+	sra	t2,t2,4
+	srl	t2,t2,16
+	or	t2,t2,t0
+;----------------------------------------------------------------------------
+
+	mtc2	t1,C2_VXY0	; move vertex to gte
+	mtc2	t2,C2_VZ0
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+	srl	t9,t2,16	; get vertex flags
+
+	andi	t0,t9,VERTEXFLAGS_GHOST
+	bnez	t0,.ReferencingVertex
+	nop
+
+	lw	t1,0(a0)	; get next vertex
+	lw	t2,4(a0)
+
+	mfc2	t4,C2_IR1
+	mfc2	t5,C2_IR2
+	mfc2	t6,C2_IR3	; rotated z in t6
+
+	andi	t4,t4,$FFFF
+	sll	t5,t5,16
+	or	t4,t4,t5	; rotated (x,y)	in t4
+
+	mfc2	t5,C2_SXY2	; projected (X,Y) in t5
+	nop
+
+	sll	t7,t5,16
+	sra	t7,t7,16	; X in t7
+	sra	t8,t5,16	; Y in t8
+
+	slt	t0,s0,t7	; X>xR?
+
+	slt	t7,t7,s1	; X<xL?
+	sll	t7,t7,1
+	or	t0,t0,t7
+
+	slt	t7,s2,t8	; Y>yB?
+	sll	t7,t7,2
+	or	t0,t0,t7
+
+	slt	t7,t8,s3	; Y<yT?
+	sll	t7,t7,3
+	or	t0,t0,t7
+
+	slt	t7,t6,s4	; z<Hither?
+	sll	t7,t7,4
+	or	t0,t0,t7
+
+	slt	t7,s5,t6	; z>Yon?
+	sll	t7,t7,5
+	or	t0,t0,t7
+
+	bgez	t6,.notnot
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnot
+
+	sll	t7,t0,8
+	xori	t7,t7,$FF00
+	or	t0,t0,t7
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+	sll	t0,t0,16
+	andi	t6,t6,$FFFF
+	or	t0,t0,t6	; (Outcode,z) in t0
+
+	sw	t5,0(v0)	; store	(X,Y) to projected vertices
+	sw	t0,4(v0)	; store	(o,z) to projected vertices
+	sw	t4,0(v1)	; store	(x,y) to rotated vertices
+;	sw	t0,4(v1)	; store	(o,z) to rotated vertices
+
+	andi	t9,t9,VERTEXFLAGS_STITCH
+	beqz	t9,.Next
+	nop
+
+
+	sw	t5,0(a2)	; copy to top of buffer	if it's	a stitch vertex
+	sw	t0,4(a2)
+	addu	t9,a2,v1
+	subu	t9,t9,v0
+	sw	t4,0(t9)
+;	sw	t0,4(t9)
+	addiu	a2,a2,-8	; decrement free stitch	vertex pointer
+
+
+.Next	addiu	v0,v0,8		; step destination pointers
+	addiu	v1,v1,8
+
+	bnez	a1,.loop
+	nop
+
+	la	t0,FreeStitchVertex
+	sw	a2,(t0)
+
+	; save output vertex pointer in case of clipping
+	lui	t0,$1F80
+	sw	v0,SCRATCH_FREEVERTEX(t0)
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+;	lw	s6,24(sp)
+	lw	s7,28(sp)
+
+	addiu	sp,sp,32
+
+.Done	jr	ra
+	nop
+
+
+.ReferencingVertex
+
+	 ; this	assumes	that psx parsing has replaced the referencing information in the vertex	with
+	 ; the offset within the projected/rotated vertices buffer of the stitching vertex being referenced.
+	 ; Bullshit.
+
+	lw	t1,-8(a0)	; get referenced vertex again
+	nop
+	subu	t1,t3,t1
+	lw	t7,0(t1)	; get (X,Y) from stitch	vertex
+	lw	t8,4(t1)	; get (Outcode,z) from stitch vertex
+
+	addu	t1,t1,v1
+	subu	t1,t1,v0
+	lw	t9,0(t1)	; get rotated x	and y from stitch vertex
+
+	sw	t7,0(v0)	; store	projected info to referencing vertex
+	sw	t8,4(v0)
+
+	sw	t9,0(v1)	; store	rotated	info to	referencing vertex
+;	sw	t8,4(v1)
+
+	srl	t0,t8,16
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+	lw	t1,0(a0)	; get next vertex
+	j	.Next
+	lw	t2,4(a0)
+
+; end of M3dAsm_TransformAndOutcodeSuperVertices__FP7SVECTORi
+
+
+
+
+M3dAsm_TransformAndOutcodeSuperVerticesDewibbled__FP7SVECTORi
+
+	xdef	M3dAsm_TransformAndOutcodeSuperVerticesDewibbled__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be the camera-inverse rotated relative posn
+
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	li	v0,$00FF
+
+
+	 ; stack registers s0-s7
+
+	addiu	sp,sp,-32
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+;	sw	s6,24(sp)
+	sw	s7,28(sp)
+
+
+	 ; get viewport	boundaries
+
+	lw	s5,pCurrentViewport
+	nop
+
+	lw	s0,0(s5)
+	lw	s1,4(s5)
+	lw	s4,8(s5)
+	srl	s2,s0,16	; all these quantities are non-negative
+	andi	s0,s0,$FFFF
+	srl	s3,s1,16
+	andi	s1,s1,$FFFF
+	srl	s5,s4,16
+	andi	s4,s4,$FFFF
+
+	 ; now have s0=xR, s1=xL, s2=yB, s3=yT,	s4=Hither, s5=Yon
+
+	li	s7,$FFFF	; cumulative outcode
+
+
+	lw	v0,ProjectedVertices
+	lw	v1,RotatedVertices
+	move	t3,v0
+	addiu	t3,t3,(MAXVERTICES-1)*8
+	lw	a2,FreeStitchVertex
+
+	lw	t1,0(a0)	; get first vertex
+	lw	t2,4(a0)
+
+
+.loop	mtc2	t1,C2_VXY0	; move vertex to gte
+	mtc2	t2,C2_VZ0
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+	srl	t9,t2,16	; get vertex flags
+
+	andi	t0,t9,VERTEXFLAGS_GHOST
+	bnez	t0,.ReferencingVertex
+	nop
+
+	lw	t1,0(a0)	; get next vertex
+	lw	t2,4(a0)
+
+	mfc2	t4,C2_IR1
+	mfc2	t5,C2_IR2
+	mfc2	t6,C2_IR3	; rotated z in t6
+
+;--------------------------------------------------------------------------
+	sra	t4,t4,4
+	sra	t5,t5,4
+	sra	t6,t6,4
+;--------------------------------------------------------------------------
+
+	andi	t4,t4,$FFFF
+	sll	t5,t5,16
+	or	t4,t4,t5	; rotated (x,y)	in t4
+
+	mfc2	t5,C2_SXY2	; projected (X,Y) in t5
+	nop
+
+	sll	t7,t5,16
+	sra	t7,t7,16	; X in t7
+	sra	t8,t5,16	; Y in t8
+
+	slt	t0,s0,t7	; X>xR?
+
+	slt	t7,t7,s1	; X<xL?
+	sll	t7,t7,1
+	or	t0,t0,t7
+
+	slt	t7,s2,t8	; Y>yB?
+	sll	t7,t7,2
+	or	t0,t0,t7
+
+	slt	t7,t8,s3	; Y<yT?
+	sll	t7,t7,3
+	or	t0,t0,t7
+
+	slt	t7,t6,s4	; z<Hither?
+	sll	t7,t7,4
+	or	t0,t0,t7
+
+	slt	t7,s5,t6	; z>Yon?
+	sll	t7,t7,5
+	or	t0,t0,t7
+
+	bgez	t6,.notnot
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnot
+
+	sll	t7,t0,8
+	xori	t7,t7,$FF00
+	or	t0,t0,t7
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+	sll	t0,t0,16
+	andi	t6,t6,$FFFF
+	or	t0,t0,t6	; (Outcode,z) in t0
+
+	sw	t5,0(v0)	; store	(X,Y) to projected vertices
+	sw	t0,4(v0)	; store	(o,z) to projected vertices
+	sw	t4,0(v1)	; store	(x,y) to rotated vertices
+;	sw	t0,4(v1)	; store	(o,z) to rotated vertices
+
+	andi	t9,t9,VERTEXFLAGS_STITCH
+	beqz	t9,.Next
+	nop
+
+
+	sw	t5,0(a2)	; copy to top of buffer	if it's	a stitch vertex
+	sw	t0,4(a2)
+	addu	t9,a2,v1
+	subu	t9,t9,v0
+	sw	t4,0(t9)
+;	sw	t0,4(t9)
+	addiu	a2,a2,-8	; decrement free stitch	vertex pointer
+
+
+.Next	addiu	v0,v0,8		; step destination pointers
+	addiu	v1,v1,8
+
+	bnez	a1,.loop
+	nop
+
+	la	t0,FreeStitchVertex
+	sw	a2,(t0)
+
+	; save output vertex pointer in case of clipping
+	lui	t0,$1F80
+	sw	v0,SCRATCH_FREEVERTEX(t0)
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+;	lw	s6,24(sp)
+	lw	s7,28(sp)
+
+	addiu	sp,sp,32
+
+.Done	jr	ra
+	nop
+
+
+.ReferencingVertex
+
+	 ; this	assumes	that psx parsing has replaced the referencing information in the vertex	with
+	 ; the offset within the projected/rotated vertices buffer of the stitching vertex being referenced.
+	 ; Bullshit.
+
+	subu	t1,t3,t1
+	lw	t7,0(t1)	; get (X,Y) from stitch	vertex
+	lw	t8,4(t1)	; get (Outcode,z) from stitch vertex
+
+	addu	t1,t1,v1
+	subu	t1,t1,v0
+	lw	t9,0(t1)	; get rotated x	and y from stitch vertex
+
+	sw	t7,0(v0)	; store	projected info to referencing vertex
+	sw	t8,4(v0)
+
+	sw	t9,0(v1)	; store	rotated	info to	referencing vertex
+;	sw	t8,4(v1)
+
+	srl	t0,t8,16
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+	lw	t1,0(a0)	; get next vertex
+	j	.Next
+	lw	t2,4(a0)
+
+; end of M3dAsm_TransformAndOutcodeSuperVerticesDewibbled__FP7SVECTORi
+
+
+
+
+
+
+;-------------------------------------------------------------;
+; Fast stitching version using scratchpad and Aplin outcoding ;
+;-------------------------------------------------------------;
+
+M3dAsm_TransformAndOutcodeSuperVerticesFast__FP7SVECTORi
+
+	xdef	M3dAsm_TransformAndOutcodeSuperVerticesFast__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be the camera-inverse rotated relative posn
+
+; Returns with:
+; v0: cumulative outcode
+
+	lw	t4,pCurrentViewport
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	lui	v0,$6000
+
+	ori	v0,v0,$6000	; cumulative outcode = $60006000
+	lui	v1,$1F80	; transformed vertices go on scratchpad
+
+	lui	a3,$1F80	; keep a pointer to the top vertex on the scratchpad for use by referencing vertices
+	addiu	a3,a3,$3F8
+  
+	lh	t6,10(t4)	; t6 = Yon
+	lw	t4,0(t4)	; (xR,yB)
+
+	lui	t5,$BFFF
+	ori	t5,t5,$BFFF	; mask for B & R Aplin outcode bits
+
+	lw	a2,FreeStitchVertex
+
+	lui	t7,$7FFF
+	ori	t7,t7,$7FFF	; mask for Yon & ~Yon bits
+
+	lui	t2,$8000
+	addu	t6,t6,t2	; toggle top bit of t6
+
+
+.loop	lw	t0,0(a0)	; get source vertex
+	lw	t1,4(a0)
+
+;----------------------------------------------------------------------------
+	sra	t2,t0,20
+	sll	t2,t2,16
+	sll	t0,t0,16
+	sra	t0,t0,4
+	srl	t0,t0,16
+	or	t0,t0,t2
+
+	srl	t2,t1,16
+	sll	t2,t2,16
+	sll	t1,t1,16
+	sra	t1,t1,4
+	srl	t1,t1,16
+	or	t1,t1,t2
+;----------------------------------------------------------------------------
+
+	mtc2	t0,C2_VXY0	; move vertex to gte
+	mtc2	t1,C2_VZ0
+
+	nop
+	nop
+
+	RTPS			; transform
+
+	srl	t8,t1,16	; get vertex flags
+
+	andi	t9,t8,VERTEXFLAGS_GHOST
+	bnez	t9,.ReferencingVertex
+	nop
+
+	mfc2	t2,C2_SXY2	; get transformed vertex
+	mfc2	t3,C2_IR3
+
+	subu	t9,t2,t4	; Aplin outcoding
+	nor	t9,t9,t5
+	and	t2,t2,t5
+	or	t2,t2,t9
+
+	subu	t9,t3,t6	; put in Yon and ~Yon bits (15 and 31)
+	nor	t9,t9,t7
+	and	t2,t2,t7
+	or	t2,t2,t9
+
+	andi	t9,t8,VERTEXFLAGS_STITCH
+	beqz	t9,.Store
+	nop
+
+	sw	t2,0(a2)	; copy to top of buffer	if it's	a stitch vertex
+	sh	t3,6(a2)
+	addiu	a2,a2,-8	; decrement free stitch	vertex pointer
+
+.Store	sw	t2,0(v1)	; store	(X,Y)
+	sh	t3,6(v1)	; store	rotated	z
+
+	and	v0,v0,t2	; 'and'	onto cumulative	outcode
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; dec loop counter
+	bnez	a1,.loop
+	addiu	v1,v1,8		; step destination pointer
+
+	la	t0,FreeStitchVertex
+	sw	a2,(t0)
+
+.Done	jr	ra
+	nop
+
+
+
+.ReferencingVertex
+
+	lw	t0,0(a0)	; get referenced vertex again
+	nop
+	subu	t0,a3,t0
+	lw	t2,0(t0)	; get (X,Y) from stitch	vertex
+	lh	t3,6(t0)	; get z from stitch vertex
+	j	.Store
+	nop
+
+; end of M3dAsm_TransformAndOutcodeSuperVerticesFast__FP7SVECTORi
+
+
+
+
+
+
+M3dAsm_TransformAndOutcodeSuperVerticesFastDewibbled__FP7SVECTORi
+
+	xdef	M3dAsm_TransformAndOutcodeSuperVerticesFastDewibbled__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be the camera-inverse rotated relative posn
+
+; Returns with:
+; v0: cumulative outcode
+
+	lw	t4,pCurrentViewport
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	lui	v0,$6000
+
+	ori	v0,v0,$6000	; cumulative outcode = $60006000
+	lui	v1,$1F80	; transformed vertices go on scratchpad
+
+	lui	a3,$1F80	; keep a pointer to the top vertex on the scratchpad for use by referencing vertices
+	addiu	a3,a3,$3F8
+  
+	lh	t6,10(t4)	; t6 = Yon
+	lw	t4,0(t4)	; (xR,yB)
+
+	lui	t5,$BFFF
+	ori	t5,t5,$BFFF	; mask for B & R Aplin outcode bits
+
+	lw	a2,FreeStitchVertex
+
+	lui	t7,$7FFF
+	ori	t7,t7,$7FFF	; mask for Yon & ~Yon bits
+
+	lui	t2,$8000
+	addu	t6,t6,t2	; toggle top bit of t6
+
+
+.loop	lw	t0,0(a0)	; get source vertex
+	lw	t1,4(a0)
+
+	mtc2	t0,C2_VXY0	; move vertex to gte
+	mtc2	t1,C2_VZ0
+
+	nop
+	nop
+
+	RTPS			; transform
+
+	srl	t8,t1,16	; get vertex flags
+
+	andi	t9,t8,VERTEXFLAGS_GHOST
+	bnez	t9,.ReferencingVertex
+	nop
+
+	mfc2	t2,C2_SXY2	; get transformed vertex
+	mfc2	t3,C2_IR3
+
+	subu	t9,t2,t4	; Aplin outcoding
+	nor	t9,t9,t5
+	and	t2,t2,t5
+	or	t2,t2,t9
+
+;--------------------------------------------------------------------------
+	sra	t3,t3,4		; scale rotated z down again
+;--------------------------------------------------------------------------
+
+	subu	t9,t3,t6	; put in Yon and ~Yon bits (15 and 31)
+	nor	t9,t9,t7
+	and	t2,t2,t7
+	or	t2,t2,t9
+
+	andi	t9,t8,VERTEXFLAGS_STITCH
+	beqz	t9,.Store
+	nop
+
+	sw	t2,0(a2)	; copy to top of buffer	if it's	a stitch vertex
+	sh	t3,6(a2)
+	addiu	a2,a2,-8	; decrement free stitch	vertex pointer
+
+.Store	sw	t2,0(v1)	; store	(X,Y)
+	sh	t3,6(v1)	; store	rotated	z
+
+	and	v0,v0,t2	; 'and'	onto cumulative	outcode
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; dec loop counter
+	bnez	a1,.loop
+	addiu	v1,v1,8		; step destination pointer
+
+	la	t0,FreeStitchVertex
+	sw	a2,(t0)
+
+.Done	jr	ra
+	nop
+
+
+
+.ReferencingVertex
+
+	subu	t0,a3,t0
+	lw	t2,0(t0)	; get (X,Y) from stitch	vertex
+	lh	t3,6(t0)	; get z from stitch vertex
+	j	.Store
+	nop
+
+; end of M3dAsm_TransformAndOutcodeSuperVerticesFastDewibbled__FP7SVECTORi
+
+
+
+;-------------------------------------------------------------------------
+;
+; void   M3dAsm_OutcodeVerticesInWater(int NumVerts, EWaterClip ClipWhat);
+;
+; a0: NumVerts = Number of vertices
+; a1: ClipWhat = 
+;       WATER_CLIP_ABOVE = 0x0000 (remove stuff above water)
+;       WATER_CLIP_BELOW = 0xffff (remove stuff below water)
+;
+
+M3dAsm_OutcodeVerticesInWater
+
+   xdef  M3dAsm_OutcodeVerticesInWater
+;        xref    CurrentWaterLevel
+
+	lw	t0,pCurrentCamera
+	lw	v0,ProjectedVertices
+	lw	v1,RotatedVertices
+
+	lw	t1,$38(t0)	; get middle row of camera's forward transform (normal to water plane in eye coords)
+	lw	t2,$3C(t0)
+;	lw	t3,$4C(t0)	; get camera's y-coord
+;	lw	t4,CurrentWaterLevel
+
+	la	t0,WaterNormal
+	lh	t3,6(t0)
+
+	ctc2	t1,C2_R13R21	; set up middle row of rot matrix
+	ctc2	t2,C2_R22R23
+
+;	sra	t4,t4,FRACBITS
+;	subu	t3,t3,t4	; distance of camera from water plane
+	subu	t3,zero,t3
+	ctc2	t3,C2_TRY
+
+
+.loop	lw	t1,0(v1)	; get rotated vertex
+	lw	t2,4(v0)
+
+	mtc2	t1,C2_VXY0	; move it to gte
+	mtc2	t2,C2_VZ0
+
+	srl	t2,t2,16	; get outcode calculated when vertex was transformed
+	nop
+
+	MVMVA	1,0,0,0,0	; perform plane test
+
+	mfc2	t0,C2_IR2	; makes sense to use the y-component!
+	nop
+	srl	t0,t0,16	; all 0's or all 1's depending on sign
+
+;;;;   xori  t0,t0,$FFFF ; Mike's original line
+        xor     t0,t0,a1        ; ffff or 0000 depending on argument
+
+	andi	t0,t0,$8080	; water bit
+	xor	t2,t2,t0	; put into outcode
+
+	sh	t2,6(v0)	; store it back again
+;	sh	t2,6(v1)
+
+	addiu	v0,v0,8		; step pointers
+	addiu	v1,v1,8
+
+	addiu	a0,a0,-1	; dec counter
+	bnez	a0,.loop
+	nop
+
+	jr	ra
+	nop
+
+; end of M3dAsm_OutcodeVerticesInWater__Fi
+
+
+
+
+
+
+M3dAsm_TransformAndOutcodeBackgroundVertices__FP7SVECTORi
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; gte translation vector should	be zero
+
+; Returns with:
+; v0: cumulative outcode
+
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	li	v0,$00FF
+
+	; set zero translation vector
+	ctc2	zero,C2_TRX
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+
+	 ; stack registers s0-s7
+
+	addiu	sp,sp,-32
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s6,24(sp)
+	sw	s7,28(sp)
+
+
+	 ; get viewport	boundaries
+
+	lw	s4,pCurrentViewport
+	nop
+
+	lw	s0,0(s4)
+	lw	s1,4(s4)
+	lw	s4,8(s4)
+	srl	s2,s0,16	; all these quantities are non-negative
+	andi	s0,s0,$FFFF
+	srl	s3,s1,16
+	andi	s1,s1,$FFFF
+	andi	s4,s4,$FFFF
+
+	 ; now have s0=xR, s1=xL, s2=yB, s3=yT,	s4=Hither
+
+	li	s7,$FFFF	; cumulative outcode
+
+
+	lw	v0,ProjectedVertices
+
+	lw	t1,0(a0)	; get first vertex
+	lw	t2,4(a0)
+
+	li		t3,$7FFF	; force z to be 32767
+
+.loop	mtc2	t1,C2_VXY0	; move vertex to gte
+	mtc2	t2,C2_VZ0
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+
+	lw	t1,0(a0)	; get next vertex
+	lw	t2,4(a0)
+	sw	t3,4(v0)	; force z to 32767 (CE: Moved this up)
+
+	mfc2	t7,C2_SXY2
+	mfc2	t9,C2_IR3
+
+	sw	t7,0(v0)	; store	(X,Y)
+	sra	t8,t7,16	; Y in t8
+	sll	t7,t7,16
+	sra	t7,t7,16	; X in t7
+
+	slt	t0,s0,t7	; X>xR?
+
+	slt	t7,t7,s1	; X<xL?
+	sll	t7,t7,1
+	or	t0,t0,t7
+
+	slt	t7,s2,t8	; Y>yB?
+	sll	t7,t7,2
+	or	t0,t0,t7
+
+	slt	t7,t8,s3	; Y<yT?
+	sll	t7,t7,3
+	or	t0,t0,t7
+
+	slt	t7,t9,s4	; z<Hither?
+	sll	t7,t7,4
+	or	t0,t0,t7
+
+	bgez	t9,.notnot
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnot
+
+	sll	t7,t0,8
+	xori	t7,t7,$FF00
+	or	t0,t0,t7
+
+	sh	t0,6(v0)	; store	outcode
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+
+.Next	addiu	v0,v0,8		; step destination pointers
+
+	bnez	a1,.loop
+	nop
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s6,24(sp)
+	lw	s7,28(sp)
+
+	addiu	sp,sp,32
+
+.Done	jr	ra
+	nop
+
+
+; end of M3dAsm_TransformAndOutcodeBackgroundVertices__FP7SVECTORi
+
+
+
+
+;-------------------------------------------------------------------------------------------------------------
+
+
+
+;--------------------------------------;
+;                                      ;
+; preprocessing for reflection mapping ;
+; calculates uv's for each vertex      ;
+;                                      ;
+;--------------------------------------;
+
+
+M3dAsm_GetReflectionMapping__FP6MATRIXPlPUi
+
+	xdef	M3dAsm_GetReflectionMapping__FP6MATRIXPlPUi
+
+; a0: pointer to object's world rotation matrix
+; a1: pointer to object's position relative to camera (3 longwords)
+; a2: pModel
+
+
+	lui	v0,$1F80		; v0 = &scratchpad
+
+	 ; put TRX,TRY,TRZ,OFX,OFY and H on scratchpad
+
+	cfc2	t0,C2_TRX
+	cfc2	t1,C2_TRY
+	cfc2	t2,C2_TRZ
+	cfc2	t3,C2_OFX
+	cfc2	t4,C2_OFY
+	cfc2	t5,C2_H
+	sw	t0,$00(v0)
+	sw	t1,$04(v0)
+	sw	t2,$08(v0)
+	sw	t3,$0C(v0)
+	sw	t4,$10(v0)
+	sw	t5,$14(v0)
+
+	 ; set TRX,TRY,TRZ,OFX,OFY and H
+
+	ctc2	zero,C2_TRX
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+	ctc2	zero,C2_OFX
+	ctc2	zero,C2_OFY
+	li	t0,1024
+	ctc2	t0,C2_H
+
+	 ; put llm on scratchpad
+
+	cfc2	t5,C2_L11L12
+	cfc2	t6,C2_L13L21
+	cfc2	t7,C2_L22L23
+	cfc2	t8,C2_L31L32
+	cfc2	t9,C2_L33
+	sw	t5,$18(v0)
+	sw	t6,$1C(v0)
+	sw	t7,$20(v0)
+	sw	t8,$24(v0)
+	sw	t9,$28(v0)
+
+	 ; get rot
+
+	cfc2	t0,C2_R11R12
+	cfc2	t1,C2_R13R21
+	cfc2	t2,C2_R22R23
+	cfc2	t3,C2_R31R32
+	cfc2	t4,C2_R33
+
+	 ; store it on scratchpad
+
+	sw	t0,$2C(v0)
+	sw	t1,$30(v0)
+	sw	t2,$34(v0)
+	sw	t3,$38(v0)
+	sw	t4,$3C(v0)
+
+	 ; set llm to rot
+
+	ctc2	t0,C2_L11L12
+	ctc2	t1,C2_L13L21
+	ctc2	t2,C2_L22L23
+	ctc2	t3,C2_L31L32
+	ctc2	t4,C2_L33
+
+	 ; invert rotation (compensating for aspect ratio)
+
+	li	v0,2560		; 4096*320/521
+
+	lui	t9,$FFFF
+	andi	t5,t0,$FFFF	; t5 = r11---
+
+	sll	t5,t5,16
+	sra	t5,t5,16
+	mult	v0,t5		; blah
+	mflo	t5
+	sra	t5,t5,12
+	andi	t5,t5,$FFFF
+
+	and	t6,t1,t9	; t6 = ---r21
+	or	t5,t5,t6	; t5 = r11r21
+	andi	t6,t3,$FFFF	; t6 = r31---
+	and	t7,t0,t9	; t7 = ---r12
+
+	sra	t7,t7,16	; blah
+	mult	v0,t7
+	mflo	t7
+	sra	t7,t7,12
+	sll	t7,t7,16
+
+	or	t6,t6,t7	; t6 = r31r12
+	andi	t7,t2,$FFFF	; t7 = r22---
+	and	t8,t3,t9	; t8 = ---r32
+	or	t7,t7,t8	; t7 = r22r32
+	andi	t8,t1,$FFFF	; t8 = r13---
+
+	sll	t8,t8,16
+	sra	t8,t8,16
+	mult	v0,t8		; blah
+	mflo	t8
+	sra	t8,t8,12
+	andi	t8,t8,$FFFF
+
+	and	t9,t2,t9	; t9 = ---r23
+	or	t8,t8,t9	; t8 = r13r23
+
+	 ; set llm to inverse
+
+	ctc2	t5,C2_L11L12
+	ctc2	t6,C2_L13L21
+	ctc2	t7,C2_L22L23
+	ctc2	t8,C2_L31L32
+	ctc2	t4,C2_L33
+
+	 ; set rot to object's world rotation
+
+	lw	t0,$00(a0)
+	lw	t1,$04(a0)
+	lw	t2,$08(a0)
+	lw	t3,$0C(a0)
+	lw	t4,$10(a0)
+
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+
+	 ; get camera position relative	to object centre
+
+	lw	t7,0(a1)		; load object position
+	lw	t8,4(a1)
+	lw	t9,8(a1)
+	subu	t7,zero,t7		; negate it
+	subu	t8,zero,t8
+	subu	t9,zero,t9
+	mtc2	t7,C2_IR1
+	mtc2	t8,C2_IR2
+	mtc2	t9,C2_IR3
+
+	 ; transform camera into model space coords
+
+	xref	RefMapU0V0
+	lw	v0,RefMapU0V0		; get topleft texcoords to fill the nops
+	nop
+
+	MVMVA	1,1,3,3,0
+
+	 ; set pointers	and counter
+
+	if PSXVERSION>=$20004
+	lh	t0,MODEL_NUMVERTS(a2)	; t0 = NumVerts
+	else
+	lw	t0,MODEL_NUMVERTS(a2)	; t0 = NumVerts
+	endif
+
+	addiu	a0,a2,MODEL_VERTS	; a0 = pVerts
+	sll	t1,t0,3			; t1 = NumVerts*8
+	addu	a1,a0,t1		; a1 = pNorms
+	move	a3,t0			; a3 = NumVerts
+
+	 ; get transformed camera position
+
+	mfc2	t7,C2_MAC1
+	mfc2	t8,C2_MAC2
+	mfc2	t9,C2_MAC3
+
+	andi	t7,t7,$FFFF		; pack into SVECTOR (t8,t9)
+	sll	t8,t8,16
+	or	t8,t7,t8
+
+	 ; set llm to identity (no need to set L11L12 or L13L21 cos they just get overwritten anyway)
+
+	li	t0,$1000
+	ctc2	t0,  C2_L22L23
+	ctc2	zero,C2_L31L32
+	ctc2	t0,  C2_L33
+
+	lw	a2,ProjectedVertices
+	lw	v1,FreeStitchVertex
+
+	move	t3,a2
+	addiu	t3,t3,(MAXVERTICES-1)*8
+
+
+ ; a0 =	address	of vertex in psx
+ ; a1 =	address	of normal in psx
+ ; a2 =	address	to store calculated uv in buffer
+ ; a3 =	counter
+
+
+ ; assumes llm rows 2 and 3 are	(0,1,0)	and (0,0,1)
+ ; assumes TRX,TRY,TRZ,OFX,OFY have been set to	zero and H set appropriately
+ ; and assumes rot matrix has been set to the model's rotation
+
+ ; (t8,t9) = eye coords in model space as SVECTOR
+
+.Loop	lw	t1,4(a0)	; get vertex coords and	flags
+	lw	t0,0(a0)
+
+	srl	t2,t1,16
+;	andi	t4,t2,VERTEXFLAGS_REFLECTIONMAPPED
+;	beqz	t4,.Next
+;	nop
+
+	andi	t4,t2,VERTEXFLAGS_GHOST
+	bnez	t4,.Ref
+	nop
+
+	lw	t4,0(a1)	; get normal as	SVECTOR	in t4,t5
+	lw	t5,4(a1)
+
+	subu	t6,t8,t0	; subtract vertex from camera (inaccurate because x may carry into y)
+	subu	t7,t9,t1
+	andi	t7,t7,$FFFF	; zero pad
+
+	ctc2	t6,C2_L11L12	; move it to 1st row of	local light matrix
+	ctc2	t7,C2_L13L21
+
+	mtc2	t4,C2_VXY0	; move normal to V0 column vec
+	mtc2	t5,C2_VZ0
+
+	nop
+	nop
+
+	MVMVA	1,1,0,3,0	; take dot product
+
+	mfc2	t5,C2_IR1	; get dot product result
+	mtc2	t4,C2_IR1	; normal now in	IR1-IR3
+
+	sll	t5,t5,1
+	mtc2	t5,C2_IR0	; set scale factor to equal twice dot product
+
+	nop			; wait for it...
+	nop	   
+
+	GPF	1		; scale	normal by dot product
+
+	mfc2	t4,C2_IR1	; get scaled vector as SVECTOR
+	mfc2	t5,C2_IR2
+	andi	t4,t4,$FFFF
+	sll	t5,t5,16
+	or	t4,t4,t4
+	mfc2	t5,C2_IR3
+
+	subu	t4,t4,t6	; subtract eye-rel-vtx coords to get reflected ray
+	subu	t5,t5,t7	; (not a normalised one, but it doesn't matter)
+
+	mtc2	t4,C2_VXY0	; move it to V0	column vec
+	mtc2	t5,C2_VZ0
+
+	nop			; wait for it...
+	nop
+
+	RTPS
+
+	mfc2	t4,C2_SXY2
+	nop
+
+	srl	t5,t4,5
+	addiu	t5,t5,$20
+	andi	t5,t5,$3F
+	srl	t6,t4,13
+	addiu	t6,t6,$2000
+	andi	t6,t6,$3F00
+	or	t4,t5,t6
+	add	t4,t4,v0	; add (u0,v0)
+
+	sw	t4,8*MAXVERTICES+4(a2)	; store	(u,v)
+
+	andi	t2,t2,NORMALFLAGS_STITCH
+	beqz	t2,.Next
+	nop
+
+	sw	t4,8*MAXVERTICES+4(v1)
+	addiu	v1,v1,-8
+
+.Next	addiu	a0,a0,8		; step pointers	and counter, loop back
+	addiu	a1,a1,8
+	addiu	a2,a2,8
+	addiu	a3,a3,-1
+
+	bnez	a3,.Loop
+	nop
+
+
+	lui	v0,$1F80		; a0 = &scratchpad
+
+	 ; restore TRX,TRY,TRZ,OFX,OFY and H
+
+	lw	t0,$00(v0)
+	lw	t1,$04(v0)
+	lw	t2,$08(v0)
+	lw	t3,$0C(v0)
+	lw	t4,$10(v0)
+	lw	t5,$14(v0)
+	ctc2	t0,C2_TRX
+	ctc2	t1,C2_TRY
+	ctc2	t2,C2_TRZ
+	ctc2	t3,C2_OFX
+	ctc2	t4,C2_OFY
+	ctc2	t5,C2_H
+
+	 ; restore llm
+
+	lw	t0,$18(v0)
+	lw	t1,$1C(v0)
+	lw	t2,$20(v0)
+	lw	t3,$24(v0)
+	lw	t4,$28(v0)
+	ctc2	t0,C2_L11L12
+	ctc2	t1,C2_L13L21
+	ctc2	t2,C2_L22L23
+	ctc2	t3,C2_L31L32
+	ctc2	t4,C2_L33
+
+	 ; restore rot
+
+	lw	t0,$2C(v0)
+	lw	t1,$30(v0)
+	lw	t2,$34(v0)
+	lw	t3,$38(v0)
+	lw	t4,$3C(v0)
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+
+	  ; done
+
+	jr	ra
+	nop
+
+
+.Ref	subu	t0,t3,t0
+	lw	t4,8*MAXVERTICES+4(t0)
+	j	.Next
+	sw	t4,8*MAXVERTICES+4(a2)
+
+
+;------------------------------------;
+;                                    ;
+; preprocessing for dynamic lighting ;
+; calculates rgb's for each normal   ;
+;                                    ;
+;------------------------------------;
+
+M3dAsm_GetDynamicLighting__FP7SVECTORi
+
+	xdef	M3dAsm_GetDynamicLighting__FP7SVECTORi
+
+; a0: pNormal
+; a1: NumNormals
+
+	lw	v0,ProjectedVertices
+	lw	v1,FreeStitchVertex
+
+	move	t3,v0
+	addiu	t3,t3,(MAXVERTICES-1)*8
+
+	lui	t0,0xFF
+	ori	t0,t0,0xFFFF
+	mtc2	t0,C2_RGB		; zero the gpu code, set rgb to (255,255,255)
+
+	lw	t0,0(a0)		; get first normal
+	lw	t1,4(a0)
+
+.Loop	mtc2	t0,C2_VXY0
+	mtc2	t1,C2_VZ0
+
+	addiu	a0,a0,8
+	addiu	a1,a1,-1
+
+	NCCS
+
+	srl	t2,t1,16
+
+	andi	t9,t2,NORMALFLAGS_GHOST
+	bnez	t9,.Ref
+	nop
+
+	lw	t0,0(a0)
+	lw	t1,4(a0)
+
+	mfc2	t7,C2_IR1
+	mfc2	t8,C2_IR2
+	mfc2	t9,C2_IR3
+
+	andi	t7,t7,$FFE0
+	andi	t8,t8,$FFE0
+	andi	t9,t9,$FFE0
+	srl	t7,t7,5
+	sll	t8,t8,6
+	sll	t9,t9,17
+	or	t7,t7,t8
+	or	t7,t7,t9
+	sw	t7,8*MAXVERTICES+4(v0)
+
+	andi	t2,t2,NORMALFLAGS_STITCH
+	beqz	t2,.Next
+	nop
+
+	sw	t7,8*MAXVERTICES+4(v1)
+	addiu	v1,v1,-8
+
+.Next	bgtz	a1,.Loop
+	addiu	v0,v0,8
+
+	jr	ra
+	nop
+
+
+.Ref	subu	t0,t3,t0
+	lw	t7,8*MAXVERTICES+4(t0)
+	lw	t0,0(a0)
+	sw	t7,8*MAXVERTICES+4(v0)
+	j	.Next
+	lw	t1,4(a0)
+
+
+
+
+;-----------------------------------------------------------------------------------------------------------------
+
+
+; this is part of M3dAsm_TransformAndOutcodeBlockVertices
+; but has been moved here, as it is not called very often
+; and this will improve the cache usage
+
+
+AlwaysFacing_Block_Vertices
+
+	addiu	a0,a0,-8
+	addiu	a1,a1,1
+
+	 ; we've done all ordinary vertices so we can change some gte registers now (but keep C2_H)
+
+	li	t0,$28F5
+	ctc2	t0,C2_R11R12
+	ctc2	zero,C2_R13R21
+	li	t0,$1000
+	ctc2	t0,C2_R22R23
+	ctc2	zero,C2_R31R32
+	ctc2	t0,C2_R33
+
+;	cfc2	s6,C2_OFX
+;	cfc2	s7,C2_OFY
+
+	ctc2	zero,C2_OFX	; offset to zero
+	ctc2	zero,C2_OFY
+
+
+	 ; a0 and v0 are needed by the square root function, so...
+
+	move	a2,a0		; a2 takes over from a0
+	move	a3,v0		; a3 takes over from v0
+
+	lw	v1,ProjectedVertices
+				; we don't need v1 for storing 3D coords because afp's won't be subdivided
+
+
+.AFPloop
+
+	lw	t1,0(a2)	; get afp vertex data
+	lw	t3,4(a2)
+
+	srl	t2,t1,16	; offset of other-end vertex
+
+	andi	t1,t1,$FFFF	; offset of this-end vertex
+	addu	t1,t1,v1	; add base of projected vertices
+        addu    t2,t2,v1        ; add base of projected vertices (CE: moved this up)
+	lw	t4,0(t1)	; t4 = (X0,Y0)
+	lw	t6,4(t1)	; t6 = (z0,o0)
+	lw	t7,0(t2)	; t7 = (X1,Y1)
+
+	sra	t5,t4,16	; t5 = Y0
+	sll	t4,t4,16
+	sra	t4,t4,16	; t4 = X0
+
+        sll     t6,t6,16        ; sign extend z0 (CE: moved this up)
+	sra	t6,t6,16
+
+	sra	t8,t7,16	; t8 = Y1
+	sll	t7,t7,16
+	sra	t7,t7,16	; t7 = X1
+
+	subu	t7,t7,t4	; t7 = dX
+	subu	t8,t5,t8	; t8 = -dY
+
+	mtc2	t7,C2_IR1	; IR1 = dX
+	mtc2	t8,C2_IR2	; IR2 = -dY
+
+	nop
+	nop
+
+	SQR	0
+
+	mfc2	t1,C2_MAC1	; t1 = dX^2
+	mfc2	t2,C2_MAC2	; t2 = dY^2
+
+	jal	M3dMaths_SquareRoot0__Fi
+	addu	a0,t1,t2	; argument = dX^2 + dY^2
+
+	sll	t7,t7,12	; t7 = dX in 20.12 format
+	div	t7,v0
+	mflo	t2		; t2 = X-component of unit vector in 20.12 format
+
+	nop
+	nop			; this nop not needed
+
+	sll	t8,t8,12	; t8 = -dY in 20.12 format
+	div	t8,v0
+	mflo	t1		; t1 = Y-component of unit vector in 20.12 format
+
+	mtc2	t1,C2_IR1	; put unit vector in gte regs
+	mtc2	t2,C2_IR2
+	mtc2	t3,C2_IR0	; scale factor R
+
+	nop
+	nop
+
+	GPF	1		; scale it
+
+	mfc2	t1,C2_MAC1	; get R times unit vector in (t1,t2)
+	mfc2	t2,C2_MAC2
+
+	andi	t1,t1,$FFFF	; pack into SVECTOR format
+	sll	t2,t2,16
+	or	t1,t1,t2
+	mtc2	t1,C2_VXY0	; R*(-dY,dX)
+	mtc2	t6,C2_VZ0	; z of this-end point
+
+	nop
+	nop
+
+	RTPS
+
+	mfc2	t1,C2_SXY2	; get offset from this-end point
+	nop
+
+	sra	t2,t1,16	; expand to VECTOR format
+	sll	t1,t1,16
+	sra	t1,t1,16
+
+	addu	t1,t1,t4	; add X of this-end point
+	addu	t2,t2,t5	; add Y of this-end point
+
+	 ; outcode the new point
+
+	slt	t0,s0,t1	; X>xR?
+
+	slt	t9,t1,s1	; X<xL?
+	sll	t9,t9,1
+	or	t0,t0,t9
+
+	slt	t9,s2,t2	; Y>yB?
+	sll	t9,t9,2
+	or	t0,t0,t9
+
+	slt	t9,t2,s3	; Y<yT?
+	sll	t9,t9,3
+	or	t0,t0,t9
+
+	slt	t9,t6,s4	; z<Hither?
+	sll	t9,t9,4
+	or	t0,t0,t9
+
+	slt	t9,s5,t6	; z>Yon?
+	sll	t9,t9,5
+	or	t0,t0,t9
+
+	bgez	t6,.notnotAFP
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnotAFP
+	sll	t9,t0,8
+	xori	t9,t9,$FF00
+	or	t0,t0,t9
+
+	 ; outcode ready
+
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+	sll	t0,t0,16	; outcode in upper 16
+	andi	t6,t6,$FFFF	; z in lower 16
+	or	t0,t0,t6
+
+	andi	t1,t1,$FFFF	; pack (X,Y) into SVECTOR format
+	sll	t2,t2,16
+	or	t1,t1,t2
+
+	sw	t1,0(a3)	; store (X,Y) of afp vertex
+	sw	t0,4(a3)	; store (z,o) of afp vertex
+
+	addiu	a2,a2,8		; step pointers
+	addiu	a3,a3,8
+
+	addiu	a1,a1,-1
+	bnez	a1,.AFPloop
+	nop
+
+
+	 ; restore gte regs
+
+;	ctc2	s6,C2_OFX
+;	ctc2	s7,C2_OFY
+	lw	t0,pCurrentViewport
+	nop
+	lw	t0,16(t0)
+	nop
+	srl	t1,t0,16
+	sll	t0,t0,16
+	sll	t1,t1,16
+	ctc2	t0,C2_OFX
+	ctc2	t1,C2_OFY
+
+;	j	.Done
+;	nop
+
+.Done
+	; save output vertex pointer in case of clipping
+	lui	t0,$1F80
+	sw	v0,SCRATCH_FREEVERTEX(t0)
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+	lw	s6,24(sp)
+	lw	s7,28(sp)
+	lw	ra,32(sp)
+	addiu	sp,sp,36
+
+.Ret	jr	ra
+	nop
+
+
+
+; Mick moved here to improved cache coherency with ProcessPolys
+
+;-------------------------------------------------------------------------;
+;									  ;
+; Given	the vertices in	a model, this function calculates the world and	  ;
+; screen coordinates, in the workspace buffers called RotatedVertices and ;
+; ProjectedVertices respectively.					  ;
+; Outcodes are also calculated and placed in ProjectedVertices.		  ;
+; This is the "block" form of the function which only applies to	  ;
+; objects without orientation.						  ;
+; The position of the object relative to the camera must be specified,	  ;
+; because the translation is performed before inverse camera rotation,	  ;
+; in order to maintain a constistent transformation between neighbouring  ;
+; objects and hence eliminate tearing.					  ;
+; This version doesn't support stitching because CBlocks are not	  ;
+; stitchable.								  ;
+;									  ;
+;-------------------------------------------------------------------------;
+
+
+M3dAsm_TransformAndOutcodeBlockVertices__FP7SVECTORiP6VECTOR
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; a2: VECTOR *pPosnRelCam (integer format)
+
+; Returns with:
+; v0: cumulative outcode
+
+	xref	M3dMaths_SquareRoot0__Fi
+
+
+	beq	a1,zero,.Ret	; quit if there	aint no	point
+	li	v0,$00FF
+
+	 ; stack registers s0-s7
+
+	addiu	sp,sp,-36
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	sw	s3,12(sp)
+	sw	s4,16(sp)
+	sw	s5,20(sp)
+	sw	s6,24(sp)
+	sw	s7,28(sp)
+	sw	ra,32(sp)
+
+
+	 ; get viewport	boundaries
+
+	lw	s5,pCurrentViewport
+	nop
+
+	lw	s0,0(s5)
+	lw	s1,4(s5)
+	lw	s4,8(s5)
+	srl	s2,s0,16	; all these quantities are non-negative
+	andi	s0,s0,$FFFF
+	srl	s3,s1,16
+	andi	s1,s1,$FFFF
+	srl	s5,s4,16
+	andi	s4,s4,$FFFF
+
+	 ; now have s0=xR, s1=xL, s2=yB, s3=yT,	s4=Hither, s5=Yon
+
+	li	s7,$FFFF	; cumulative outcode
+
+
+	lw	t4,0(a2)	; get object position relative to camera
+	lw	t5,4(a2)
+	lw	t6,8(a2)
+
+	ctc2	zero,C2_TRX	; not using gte	translation in rtps
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+
+	lw	v0,ProjectedVertices
+	lw	v1,RotatedVertices
+
+	lw	t1,0(a0)	; get 1st vertex
+	lw	t3,4(a0)
+	sra	t2,t1,16
+
+	addu	t1,t1,t4	; add object position minus camera position
+	addu	t2,t2,t5
+	addu	t3,t3,t6
+
+	andi	t1,t1,$FFFF	; convert to SVECTOR format
+	sll	t2,t2,16
+	or	t1,t1,t2
+
+
+.loop	mtc2	t1,C2_VXY0	; move it to gte
+	mtc2	t3,C2_VZ0
+
+	lh	t0,6(a0)	; get flags
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+	andi	t0,t0,VERTEXFLAGS_ALWAYSFACING
+	bnez	t0,AlwaysFacing_Block_Vertices
+	nop
+
+        lw      t1,0(a0)        ; get next vertex (y|x)
+        lw      t3,4(a0)        ; get next vertex (?|z)
+        sra     t2,t1,16        ; t2 = sign|y
+
+	addu	t1,t1,t4	; add object position minus camera position
+        addu    t2,t2,t5        ; add object position minus camera position
+
+	andi	t1,t1,$FFFF	; convert to SVECTOR format
+	sll	t2,t2,16
+	or	t1,t1,t2
+
+        addu    t3,t3,t6        ; add object position minus camera position (CE: moved down to remove stall)
+
+	mfc2	t7,C2_IR1
+	mfc2	t8,C2_IR2
+	mfc2	t9,C2_IR3
+
+	andi	t7,t7,$FFFF
+	sll	t8,t8,16
+	or	t7,t7,t8
+	sw	t7,0(v1)	; store	rotated	x,y
+
+	mfc2	t7,C2_SXY2	; get (X,Y)
+
+	sh	t9,4(v0)	; store	rotated	z
+;	sh	t9,4(v1)	; store	rotated	z (again???)
+
+	sw	t7,0(v0)	; store	(X,Y)
+	sra	t8,t7,16	; Y in t8
+	sll	t7,t7,16
+	sra	t7,t7,16	; X in t7
+
+	slt	t0,s0,t7	; X>xR?
+
+	slt	t7,t7,s1	; X<xL?
+	sll	t7,t7,1
+	or	t0,t0,t7
+
+	slt	t7,s2,t8	; Y>yB?
+	sll	t7,t7,2
+	or	t0,t0,t7
+
+	slt	t7,t8,s3	; Y<yT?
+	sll	t7,t7,3
+	or	t0,t0,t7
+
+	slt	t7,t9,s4	; z<Hither?
+	sll	t7,t7,4
+	or	t0,t0,t7
+
+	slt	t7,s5,t9	; z>Yon?
+	sll	t7,t7,5
+	or	t0,t0,t7
+
+	bgez	t9,.notnot
+	nop
+	xori	t0,$F		; invert X,Y-outcode bits if z<0
+.notnot
+	cfc2	t7,C2_FLAG
+	nop
+;	srl	t7,t7,13
+;	andi	t7,t7,$33	; flags	C-limiter, div-oflw, D1-limiter, D2-limiter
+;	beqz	t7,.projnOK
+	bgez	t7,.projnOK
+	nop
+	ori	t0,t0,$40
+.projnOK
+
+	sll	t7,t0,8
+	xori	t7,t7,$FF00
+	or	t0,t0,t7
+
+	sh	t0,6(v0)	; store	outcode
+;	sh	t0,6(v1)	; store	outcode
+	and	s7,s7,t0	; 'and'	onto cumulative	outcode
+
+
+.Next	addiu	v0,v0,8		; step destination pointers
+	addiu	v1,v1,8
+
+	bnez	a1,.loop
+	nop
+
+.Done
+	; save output vertex pointer in case of clipping
+	lui	t0,$1F80
+	sw	v0,SCRATCH_FREEVERTEX(t0)
+
+	move	v0,s7		; return value is cumulative outcode
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+	lw	s3,12(sp)
+	lw	s4,16(sp)
+	lw	s5,20(sp)
+	lw	s6,24(sp)
+	lw	s7,28(sp)
+	lw	ra,32(sp)
+	addiu	sp,sp,36
+
+.Ret	jr	ra
+	nop
+
+;
+; (MICK) Note, .AlwaysFacing used to be here, but as it's not used much
+; I moved it to BEFORE this routine to improve cache coherency with the following routine
+;
+
+
+; end of M3dAsm_TransformAndOutcodeBlockVertices__FP7SVECTORiP6VECTOR
+
+
+
+
+
+; Mick moved this here to improve instruction cache coherency
+M3dAsm_SetAmbient__FPi
+
+	xdef	M3dAsm_SetAmbient__FPi
+
+; a0: pointer to array of 3 longs
+
+	lw	t0,(a0)
+	lw	t1,4(a0)
+	lw	t2,8(a0)
+	ctc2	t0,C2_RBK
+	ctc2	t1,C2_GBK
+	ctc2	t2,C2_BBK
+	jr	ra
+	nop
+
+
+
+;-------------------------;
+;			  ;
+; The face rendering loop ;
+;			  ;
+;-------------------------;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function M3dAsm_ProcessPolys
+;
+; Description:
+; Iterates over the faces in a model and adds corresponding primitives to the gpu list,
+; along the way performing outcode rejection, backface culling, lighting and subdivision as necessary.
+;
+; Arguments:
+; a0 = address of first face in model data
+; a1 = dummy argument (pass anything!) (originally used for normals pointer)
+; a2 = number of faces
+;
+; Return value:
+; none
+;
+; Side effects:
+; Adds primitives to gpu list
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+M3dAsm_ProcessPolys__FPUiP7SVECTORi
+
+	xdef  M3dAsm_ProcessPolys__FPUiP7SVECTORi
+
+
+	beq	a2,zero,Ret		; finish if no polys to render
+;	nop
+
+	addiu	a3,a2,-1		; pre-adjust loop counter
+;	move	a2,a1
+
+	la	a1,CurrentOrderingTable
+	lw	a1,(a1)			; a1 points to base of ot
+
+
+	addiu	sp,sp,-40		; stack ra,s0-s7 and at
+	sw	ra,0(sp)
+	sw	s0,4(sp)
+	sw	s1,8(sp)
+	sw	s2,12(sp)
+	sw	s3,16(sp)
+	sw	s4,20(sp)
+	sw	s5,24(sp)
+	sw	s6,28(sp)
+	sw	s7,32(sp)
+	sw	at,36(sp)
+
+	lw	v0,pPoly		; v0 = free location in gpu poly buffer
+	lw	v1,ProjectedVertices	; v1 = base of projected vertex buffer
+	lw	s4,pColourTable		; s4 = base of vertex colour table
+	lui	s7,$1F80
+	lw	at,PolyBufferEnd
+
+	sll	v0,v0,$08		; reset	top byte of v0
+	srl	v0,v0,$08		; for addPrim stuff
+
+	addiu	at,at,-100		; fudgefactor
+
+	ctc2	zero,C2_TRX		; zero these for xyz interpolation
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+
+	 ; set DQA and DQB to values used by subdivision code
+	 ; (where the function of the GPF instruction is simply	to pack
+	 ;  3 bytes into a longword)
+
+	lui	t0,$1000		; set scale for	GPF instruction
+	ctc2	t0,C2_DQB		; like this because RPTS will set IR0
+	ctc2	zero,C2_DQA
+
+	 ; set up new poly pointer in case of clipping
+	la	t0,ClippedFaceBuffer
+	sw	t0,SCRATCH_CLIPPEDFACE(s7)
+	sh	zero,SCRATCH_CLIPCOUNT(s7)
+
+PolyLoop
+
+; Registers used in loop:
+; v0 = pPoly
+; v1 = ProjectedVertices
+
+; s4 = pColourTable
+; s7 = $1F800000 (base of scratchpad)
+
+        if 0    ;--- Mike's version ------------------------------------
+
+	; get vertex offsets, flace flags/length, and global face flags
+	lw	t9,SCRATCH_GLOBALFACEFLAGS(s7)
+	lw	t8,FACE_FLAGS(a0)
+	sra	t0,t9,16
+	andi	t9,t9,$FFFF
+	lw	s1,FACE_P0P1(a0)
+	and	t8,t8,t0
+	or	t8,t8,t9
+	lw	s3,FACE_P2P3(a0)
+
+	; unpack the vertex offsets and convert to pointers, and get 1st 3 vertex (X,Y)'s
+	andi	s0,s1,$FFFF
+	addu	t0,s0,v1
+	lwc2	C2_SXY0,0(t0)
+	srl	s1,s1,16
+	addu	t1,s1,v1
+	lwc2	C2_SXY1,0(t1)
+	andi	s2,s3,$FFFF
+	addu	t2,s2,v1
+	lwc2	C2_SXY2,0(t2)
+	srl	s3,s3,16
+	addu	t3,s3,v1
+	NCLIP				; backface cull operation for 1st 3 vertices
+
+	 ; get z's and outcodes, and do outcode culling and invisibility check
+	lw	t0,4(t0)
+	andi	t9,t8,FF_TRN|FF_TRL
+	lw	t1,4(t1)
+	beqz	t9,Reject		; invisibility check
+	lw	t2,4(t2)
+	and	t7,t0,t1
+	swc2	C2_SXY0,xy0_f4(v0)	; same offset for all poly types
+	lwc2	C2_SXYP,0(t3)
+	mfc2	t9,C2_MAC0		; prepare for bfc
+	lw	t3,4(t3)
+
+	NCLIP				; set off 2nd nclip for non-planar quads
+	and	t7,t7,t2
+	and	t7,t7,t3
+	srl	t7,t7,16
+	xori	t7,t7,$FF00
+	andi	t6,t7,$20FF
+	bnez	t6,Reject
+;	nop
+
+	 ; determine what type of bfc is needed
+
+	andi	t6,t7,$5000		; extract partly-hither	and bad-projection bits
+	bnez	t6,SpecialBFC
+;	nop
+
+	 ; nclip backface culling
+
+	lhu	t6,SCRATCH_REFLECTED(s7); check for reflected geometry
+	mfc2	t4,C2_MAC0
+	bnez	t6,.FaceReflected
+	nop
+
+	bgtz	t9,BFCaccept
+	nop
+	bgez	t4,Reject
+	subu	t9,zero,t4
+	j	BFCaccept
+	nop
+
+        else    ;--- Christer's load optimized version (7 upto 49c faster) ---
+
+        ; get vertex offsets, flace flags/length, and global face flags
+        lw      t9,SCRATCH_GLOBALFACEFLAGS(s7)  ; get flags and face length
+        lw      t8,FACE_FLAGS(a0)
+        lw      s1,FACE_P0P1(a0)        ; get vertex offsets
+        sra     t0,t9,16                ; fiddle with flags and face length
+        andi    t9,t9,$FFFF
+        and     t8,t8,t0
+        or      t8,t8,t9
+
+        andi    t9,t8,FF_TRN|FF_TRL
+        beqz    t9,Reject               ; invisibility check
+        ; nop
+
+		; ----------------------- Ken addition -----------------------------------
+		if PSXVERSION>=$20004
+		; Ooh, the vertices are packed into bytes, which means they're all in s1
+		; in the order (v3,v2,v1,v0)
+
+		; Calculate t0,t1,t2,t3 and load s0,s1,s2 as in the original word-vertices
+		; code.
+		andi	s0,s1,$FF	; Mask off vertex 0 and put it in s0
+		sll		s0,s0,3		; Need to shift left by 3 since this won't have been done already
+							; as with the word vertices.
+		addu	t0,s0,v1	; t0 is now the corresponding vertices array address. s0 is the index.
+		lw		t9,0(t0)	; Load t9 as in the word-vertices code below.
+		srl		s1,s1,8
+		andi	t5,s1,$FF
+		sll		t5,t5,3
+		addu	t1,t5,v1	; That's t1 done. t5 is the index and will get put in s1 a bit later ...
+		srl		s1,s1,8
+		andi	s2,s1,$FF
+		sll		s2,s2,3
+		addu	t2,s2,v1	; That's t2 and s2 done.
+		srl		s3,s1,8		; No need for the 'and' instruction since the upper 24 bits will be 0.       
+		sll		s3,s3,3
+		addu	t3,s3,v1	; That's t3 and s3 done.
+		move	s1,t5		; That's s1 done.
+		; ------------------------------------------------------------------------
+		else
+        lw      s3,FACE_P2P3(a0)        ; get vertex offsets
+
+        ; unpack the vertex offsets and convert to pointers, and get 1st 3 vertex (X,Y)'s
+        andi    s0,s1,$FFFF
+        addu    t0,s0,v1
+        srl     s1,s1,16
+        addu    t1,s1,v1
+        lw      t9,0(t0)                ; get projected XY for vertex 0
+        andi    s2,s3,$FFFF
+        addu    t2,s2,v1
+        srl     s3,s3,16
+        addu    t3,s3,v1
+		endif
+
+        lwc2    C2_SXY1,0(t1)           ; projected XY for vertex 1
+        mtc2    t9,C2_SXY0              ; store projected XY for vertex 0
+        lwc2    C2_SXY2,0(t2)           ; projected XY for vertex 2
+
+        lw      t0,4(t0)                ; vertex 0 outcode/z (outcode=31..16, z=15..0)
+        lw      t1,4(t1)                ; vertex 1 outcode/z (outcode=31..16, z=15..0)
+        lw      t2,4(t2)                ; vertex 2 outcode/z (outcode=31..16, z=15..0)
+
+        NCLIP                           ; backface cull operation for 1st 3 vertices
+
+        lwc2    C2_SXYP,0(t3)           ; projected XY for vertex 3
+        sw      t9,xy0_f4(v0)           ; same offset for all poly types
+        mfc2    t9,C2_MAC0              ; prepare for bfc
+        lw      t3,4(t3)                ; vertex 3 outcode/z (outcode=31..16, z=15..0)
+        and     t7,t0,t1
+
+        NCLIP                           ; set off 2nd nclip for non-planar quads
+        and     t7,t7,t2
+        and     t7,t7,t3
+        srl     t7,t7,16
+        xori    t7,t7,$FF00
+        andi    t6,t7,$20FF
+
+;;        mfc2    t9,C2_MAC0              ; prepare for bfc
+
+        bnez    t6,Reject               ; outcode culling
+;	nop
+
+        ; determine what type of bfc is needed
+
+        andi    t6,t7,$5000             ; extract partly-hither and bad-projection bits
+        bnez    t6,SpecialBFC
+;	nop
+
+        ; nclip backface culling
+
+        lhu     t6,SCRATCH_REFLECTED(s7); check for reflected geometry
+        mfc2    t4,C2_MAC0
+        bnez    t6,.FaceReflected
+        nop
+
+
+        bgtz    t9,BFCaccept
+        nop
+        bgez    t4,Reject
+;m        subu    t9,zero,t4
+		nop	; m
+				
+        j       BFCaccept
+        nop
+
+        endif   ;-------------------------------------------------------
+
+.FaceReflected
+	bltz	t9,BFCaccept
+;m	subu	t9,zero,t9
+	nop	;m
+	blez	t4,Reject
+	nop	;m
+;m	move	t9,t4
+
+
+BFCaccept
+; t9 and t4 are now unchanged
+; so, abs them, add them, and move them into C2_MAC0 
+; dunno if this code is optimal, probably not as it's the first MIPS I've ever written
+
+	bgez	t9,t9ok
+	nop
+	subu	t9,zero,t9
+t9ok
+	bgez	t4,t4ok
+	nop
+	subu	t4,zero,t4
+t4ok
+
+	addu	t9,t9,t4
+
+; try just taking the largest
+	subu 	t6,t9,t4
+	bgtz	t6,t9biggest
+	mtc2	t9,C2_MAC0
+	mtc2	t4,C2_MAC0
+t9biggest
+
+	 ; check for poly buffer overflow
+
+	sltu	t9,v0,at
+	beqz	t9,Done
+;	nop
+
+	 ; water clipping test
+
+	andi	t9,t7,$8000
+	bnez	t9,WaterClip
+;	nop
+
+	 ; get max of 4	z's (in	t6)
+
+	sll	t6,t0,16
+	sll	t1,t1,16
+	subu	t9,t6,t1
+	bgez	t9,.max1
+	sll	t2,t2,16
+	move	t6,t1
+.max1	subu	t9,t6,t2
+	bgez	t9,.max2
+	sll	t3,t3,16
+	move	t6,t2
+.max2	subu	t9,t6,t3
+	bgez	t9,.max3
+	sra	t6,t6,16
+	sra	t6,t3,16
+.max3
+	; get fade colour
+	lw	t1,SCRATCH_FADECOLOUR(s7)
+
+	; test for depthcueing
+	lh	t7,SCRATCH_DPQMIN(s7)
+	lh	t9,SCRATCH_DPQSHIFT(s7)
+	subu	t7,t6,t7
+	blez	t7,.setdpq
+	move	t0,zero
+
+	bltz	t1,.nofadepoly
+	nop
+
+	; if depthcued, set to transparent 100:100
+	ori	t8,t8,FF_TRN|FF_TRL|FF_TRH
+	xori	t8,t8,FF_TRH
+	; and save vertex coords on scratchpad
+	lw	t1,xy0_f4(v0)
+	swc2	C2_SXY0,SCRATCH_SXY1(s7)
+	swc2	C2_SXY1,SCRATCH_SXY2(s7)
+	swc2	C2_SXY2,SCRATCH_SXY3(s7)
+	sw	t1,SCRATCH_SXY0(s7)
+.nofadepoly
+
+	; calculate dpq
+	bltz	t9,.rshift
+	subu	t0,zero,t9
+	j	.setdpq
+	sll	t0,t7,t9
+.rshift	sra	t0,t7,t0
+
+	; set depthcueing
+.setdpq	mtc2	t0,C2_IR0
+	sh	t0,SCRATCH_DPQ(s7)
+
+	; get rgb
+	lw	t7,FACE_RGB(a0)
+
+	; triangle or quad?
+	andi	t9,t8,FF_TRI
+	beqz	t9,Quad
+	andi	t9,t8,FACEFLAGS_VERTEXCOLOURS
+
+Tri	; face- or vertex-coloured?
+	bnez	t9,Vertex3
+	andi	t9,t8,FACEFLAGS_LIT
+
+	; face-coloured
+	mtc2	t7,C2_RGB
+
+	; lit?
+	bnez	t9,LitFace3
+	andi	t9,t8,FACEFLAGS_GOURAUD
+
+	; unlit - copy or tint?
+	bnez	t9,TintFace3
+	nop
+
+	; copy
+	DPCS
+
+FlatTri	; textured?
+	andi	t9,t8,FACEFLAGS_TEXTURED
+	bnez	t9,.FT3
+;	nop
+
+	; reflection mapped?
+	andi	t9,t8,FACEFLAGS_RELATIVEUVS
+	bnez	t9,ReflectionMap3
+	nop
+
+.F3	; POLY_F3
+
+	; transfer last 2 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_f3(v0)
+	swc2	C2_SXY1,xy2_f3(v0)
+
+	; transfer rgb and code
+	mfc2	t0,C2_RGB2
+	jal	StoreRgb0
+	lui	t9,code_f3<<8
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideF3
+	nop
+ endif
+
+	 ; set gpu packet length, and jump
+
+	j	Link
+	lui	t2,len_f3<<8
+
+
+.FT3	; POLY_FT3
+
+	; get texture coords
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	 ; transfer last 2 (X,Y)'s to gpu-list primitive
+GotReflectionMap3
+	swc2	C2_SXY0,xy1_ft3(v0)
+	swc2	C2_SXY1,xy2_ft3(v0)
+
+	 ; set transparency rate
+
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+	 ; store texture coords
+
+	sw	t1,uv0_ft3(v0)		; u0,v0,clut
+	sw	t2,uv1_ft3(v0)		; u1,v1,tpage
+	sw	t3,uv2_ft3(v0)		; u2,v2,pad1
+
+	 ; transfer rgb and code
+
+	mfc2	t0,C2_RGB2
+
+	jal	StoreRgb0
+	lui	t9,code_ft3<<8
+
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideFT3
+	nop
+ endif
+
+	 ; set gpu packet length, and jump
+
+	j	Link
+	lui	t2,len_ft3<<8
+
+
+Vertex3	; lit?
+	bnez	t9,LitVertex3
+	andi	t9,t8,FACEFLAGS_GOURAUD
+
+	; unlit - copy or tint?
+	bnez	t9,TintVertex3
+	nop
+
+        if      0 ;--- Mike's code (42c/12 instrs) ------------
+	; copy
+	jal	GetVertexColour
+	sll	t0,t7,2
+	mtc2	t0,C2_RGB0
+
+	jal	GetVertexColour
+	srl	t0,t7,6
+	mtc2	t0,C2_RGB1
+
+	jal	GetVertexColour
+	srl	t0,t7,14
+	mtc2	t0,C2_RGB2
+
+	nop
+	nop
+	DPCT
+        else    ;--- Christer's code (30c/18 instrs) ----------
+	; copy
+        sll     t1,t7,2
+        andi    t1,t1,$3FC
+        addu    t1,t1,s4
+
+        lw      t1,(t1)
+
+        srl     t2,t7,6
+        andi    t2,t2,$3FC
+        addu    t2,t2,s4
+
+        srl     t0,t7,14
+        andi    t0,t0,$3FC
+        addu    t0,t0,s4
+
+        lw      t2,(t2)
+        lw      t0,(t0)
+
+        mtc2    t1,C2_RGB0
+        mtc2    t2,C2_RGB1
+        mtc2    t0,C2_RGB2
+
+	nop
+	nop
+        DPCT
+        endif   ;---------------------------------------------
+
+GouraudTri
+
+	; textured?
+	andi	t9,t8,FACEFLAGS_TEXTURED
+	bnez	t9,.GT3
+	nop
+
+.G3	; POLY_G3
+
+	; transfer last 2 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_g3(v0)
+	swc2	C2_SXY1,xy2_g3(v0)
+
+	; transfer rgb's and code
+	mfc2	t0,C2_RGB0
+	jal	StoreRgb0
+	lui	t9,code_g3<<8
+	swc2	C2_RGB1,rgb1_g3(v0)
+	swc2	C2_RGB2,rgb2_g3(v0)
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideG3
+	nop
+ endif
+
+	; set gpu packet length, and jump
+	j	Link
+	lui	t2,len_g3<<8
+
+.GT3	; POLY_GT3
+
+	; transfer last 2 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_gt3(v0)
+	swc2	C2_SXY1,xy2_gt3(v0)
+
+	; get and transfer texture coords
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	; set transparency rate
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+	sw	t1,uv0_gt3(v0)		; u0,v0,clut
+	sw	t2,uv1_gt3(v0)		; u1,v1,tpage
+	sw	t3,uv2_gt3(v0)		; u2,v2,pad1
+
+	; transfer rgb's and code
+	mfc2	t0,C2_RGB0
+	jal	StoreRgb0
+	lui	t9,code_gt3<<8
+	swc2	C2_RGB1,rgb1_gt3(v0)
+	swc2	C2_RGB2,rgb2_gt3(v0)
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideGT3
+	nop
+ endif
+
+	; set gpu packet length, and jump
+	j	Link
+	lui	t2,len_gt3<<8
+
+
+Quad	; face- or vertex-coloured?
+	bnez	t9,Vertex4
+	andi	t9,t8,FACEFLAGS_LIT
+
+	; face-coloured
+	mtc2	t7,C2_RGB
+
+	; lit?
+	bnez	t9,LitFace4
+	andi	t9,t8,FACEFLAGS_GOURAUD
+
+	; unlit - copy or tint?
+	bnez	t9,TintFace4
+	nop
+
+	; copy
+	DPCS
+
+FlatQuad
+
+	; textured?
+	andi	t9,t8,FACEFLAGS_TEXTURED
+	bnez	t9,.FT4
+;	nop
+
+	; reflection mapped?
+
+	andi	t9,t8,FACEFLAGS_RELATIVEUVS
+	bnez	t9,ReflectionMap4
+	nop
+
+.F4	; POLY_F4
+
+	; transfer last 3 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_f4(v0)
+	swc2	C2_SXY1,xy2_f4(v0)
+	swc2	C2_SXY2,xy3_f4(v0)
+
+	; transfer rgb and code
+	mfc2	t0,C2_RGB2
+	jal	StoreRgb0
+	lui	t9,code_f4<<8
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideF4
+	nop
+ endif
+
+	; set gpu packet length, and jump
+	j	Link
+	lui	t2,len_f4<<8
+
+
+.FT4	; POLY_FT4
+
+	; get texture coords
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	; transfer last 3 (X,Y)'s to gpu-list primitive
+GotReflectionMap4
+	swc2	C2_SXY0,xy1_ft4(v0)
+	swc2	C2_SXY1,xy2_ft4(v0)
+	swc2	C2_SXY2,xy3_ft4(v0)
+
+	; set transparency rate
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+	; store texture coords
+	sw	t1,uv0_ft4(v0)		; u0,v0,clut
+	sw	t2,uv1_ft4(v0)		; u1,v1,tpage
+	sw	t3,uv2_ft4(v0)		; u2,v2,pad1
+	srl	t3,t3,16
+	sw	t3,uv3_ft4(v0)		; u3,v3,pad2
+
+	; transfer rgb and code
+	mfc2	t0,C2_RGB2
+	jal	StoreRgb0
+	lui	t9,code_ft4<<8
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideFT4
+	nop
+ endif
+
+	; set gpu packet length, and jump
+	j	Link
+	lui	t2,len_ft4<<8
+
+
+Vertex4	; lit?
+	bnez	t9,LitVertex4
+	andi	t9,t8,FACEFLAGS_GOURAUD
+
+	; unlit - copy or tint?
+	bnez	t9,TintVertex4
+	nop
+
+        if      0 ;--- Mike's code (19 instrs/59 cycles) ---------
+	; copy
+        jal     GetVertexColour
+	sll	t0,t7,2
+	mtc2	t0,C2_RGB
+
+	nop
+	nop
+	DPCS
+
+        jal     GetVertexColour
+	srl	t0,t7,6
+	mtc2	t0,C2_RGB0
+
+        jal     GetVertexColour
+	srl	t0,t7,14
+	mtc2	t0,C2_RGB1
+
+        jal     GetVertexColour
+	srl	t0,t7,22
+	mfc2	t3,C2_RGB2
+	mtc2	t0,C2_RGB2
+
+	move	t0,t3
+	nop
+	DPCT
+
+        else    ;--- Christer's unfolded (26 instrs/41 cycles) -------
+
+	; copy
+        sll     t0,t7,2
+        andi    t0,t0,$3FC
+        addu    t0,t0,s4
+        lw      t0,(t0)         ; fetch vertex color (t0)
+
+        srl     t1,t7,6
+        andi    t1,t1,$3FC
+        addu    t1,t1,s4
+
+        srl     t2,t7,14
+        andi    t2,t2,$3FC
+
+        mtc2    t0,C2_RGB
+	nop
+
+        lw      t1,(t1)         ; fetch vertex color (t1)
+
+        DPCS                    ; 8c
+
+        addu    t2,t2,s4
+
+        srl     t3,t7,22
+        andi    t3,t3,$3FC
+        addu    t3,t3,s4
+        lw      t2,(t2)         ; fetch vertex color (t2)
+        lw      t3,(t3)         ; fetch vertex color (t3)
+
+        mtc2    t1,C2_RGB0
+        mtc2    t2,C2_RGB1
+
+        mfc2    t9,C2_RGB2
+        mtc2    t3,C2_RGB2
+
+        move    t0,t9           ; this can be optimized away (with gw+)
+	nop
+        DPCT                    ; 17c
+
+        endif   ;--------------------------------
+
+GouraudQuad
+
+	; textured?
+	andi	t9,t8,FACEFLAGS_TEXTURED
+	bnez	t9,.GT4
+	nop
+
+.G4	; POLY_G4
+
+	; transfer last 3 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_g4(v0)
+	swc2	C2_SXY1,xy2_g4(v0)
+	swc2	C2_SXY2,xy3_g4(v0)
+
+	; transfer rgb's and code
+	jal	StoreRgb0
+	lui	t9,code_g4<<8
+	swc2	C2_RGB0,rgb1_g4(v0)
+	swc2	C2_RGB1,rgb2_g4(v0)
+	swc2	C2_RGB2,rgb3_g4(v0)
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideG4
+	nop
+ endif
+
+	; set gpu packet length, and jump
+	j	Link
+	lui	t2,len_g4<<8
+
+.GT4	; POLY_GT4
+
+	; transfer last 3 (X,Y)'s to gpu-list primitive
+	swc2	C2_SXY0,xy1_gt4(v0)
+	swc2	C2_SXY1,xy2_gt4(v0)
+	swc2	C2_SXY2,xy3_gt4(v0)
+
+	; get and transfer texture coords
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	; set transparency rate
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+	sw	t1,uv0_gt4(v0)		; u0,v0,clut
+	sw	t2,uv1_gt4(v0)		; u1,v1,tpage
+	sw	t3,uv2_gt4(v0)		; u2,v2,pad1
+	srl	t3,t3,16
+	sw	t3,uv3_gt4(v0)		; u3,v3,pad2
+
+	; transfer rgb's and code
+	jal	StoreRgb0
+	lui	t9,code_gt4<<8
+	swc2	C2_RGB0,rgb1_gt4(v0)
+	swc2	C2_RGB1,rgb2_gt4(v0)
+	swc2	C2_RGB2,rgb3_gt4(v0)
+
+ if SUBDIVON
+	sll	t0,t8,19		; *** relies on value of FF_SDV
+	bltzal	t0,SubdivTest
+	nop
+	bltz	t0,SubdivideGT4
+	nop
+ endif
+
+	; set gpu packet length
+;	j	Link
+	lui	t2,len_gt4<<8
+
+
+Link	INCPOLYCOUNTER
+
+	; test pushback flags
+        andi    t9,t8,FF_PRI|FF_PRI2    ; is either flag set?
+        beqz    t9,.nopush              ; no, just skip this stuff
+        andi    t9,t8,FF_PRI            ; yes, fetch appropriate push value in t1
+	bnez	t9,.addit
+	lh	t1,SCRATCH_OTPUSHBACK(s7)
+	lh	t1,SCRATCH_OTPUSHBACK2(s7)
+.addit  nop                             ; push it by fetched value
+        addu    t6,t6,t1                ; (t6 is originally max of the z values)
+        bgez    t6,.nopush
+        nop
+        move    t6,zero                 ; don't allow value to go negative
+.nopush
+
+	sltiu	t1,t6,OTSIZE*4
+	bnez	t1,.z_ok
+	andi	t1,t6,$FFFC
+	li	t1,(OTSIZE-1)*4
+.z_ok	add	t0,t1,a1		; t0 = addr of ot slot head pointer
+	andi	t9,t8,FF_TIL
+	bnez	t9,Linktwin
+	lw	t1,0(t0)		; t1 = ot slot head pointer
+	sw	t3,0(t0)		; setaddr(ot, p);
+	or	t1,t1,t2		; merge	addr and len fields
+	sw	t1,0(v0)		; setaddr(p, getaddr(ot));
+
+
+	srl	t2,t2,22
+
+	; check for non-textured semi-transparent
+	andi	t9,t8,FF_TRN|FF_TEX
+	xori	t9,t9,FF_TRN
+	beqz	t9,Linktpage
+	addu	t2,t2,4
+
+	addu	v0,v0,t2		; step pPoly
+
+Fade	; need a fade poly?
+	lh	t1,SCRATCH_DPQ(s7)
+	lw	t2,SCRATCH_FADECOLOUR(s7)
+	beqz	t1,Reject
+	lw	s0,SCRATCH_SXY0(s7)
+	lw	s1,SCRATCH_SXY1(s7)
+	lw	s2,SCRATCH_SXY2(s7)
+	bgezal	t2,AddFadePoly
+	lw	s3,SCRATCH_SXY3(s7)
+
+Reject	srl	t8,t8,16
+	addu	a0,a0,t8
+
+	bnez	a3,PolyLoop
+	addiu	a3,a3,-1
+
+
+	 ; if faces were clipped, go round again
+	lhu	a3,SCRATCH_CLIPCOUNT(s7)
+	nop
+	beqz	a3,Done
+	addiu	a3,a3,-1		; pre-adjust loop counter
+	la	a0,ClippedFaceBuffer
+	j	PolyLoop
+	sh	zero,SCRATCH_CLIPCOUNT(s7)
+
+Done	la	t0,pPoly
+	sw	v0,(t0)
+
+	lw	ra,0(sp)
+	lw	s0,4(sp)
+	lw	s1,8(sp)
+	lw	s2,12(sp)
+	lw	s3,16(sp)
+	lw	s4,20(sp)
+	lw	s5,24(sp)
+	lw	s6,28(sp)
+	lw	s7,32(sp)
+	lw	at,36(sp)
+	addiu	sp,sp,40
+
+Ret	jr	ra
+	nop
+
+
+StoreRgb0
+
+	or	t0,t0,t9		; put gpu code into upper byte of rgb
+
+	andi	t9,t8,FF_TRN		; is it semi-transparent?
+	sll	t9,t9,19		; bit 1	of the gpu code	byte
+	or	t0,t0,t9
+
+	sw	t0,rgb0_f3(v0)		; all poly types have their rgb0 at the same offset
+
+	jr	ra
+	move	t3,v0
+
+
+GetVertexColour
+
+	andi	t0,t0,$3FC
+	addu	t0,t0,s4
+	lw	t0,(t0)
+	jr	ra
+	nop			; can't remove this nop cos t0 is used at the branch destination
+
+
+Linktwin
+
+; t3 = address of first	tag in chain to	be linked
+; v0 = address of last	tag in chain to	be linked
+; t2 = len << 24
+; t0 = address	of ot slot head	pointer
+; t1 = contents	of ot slot head	pointer
+
+	lui	t9,3<<8			; restoring tw has 3 longwords
+	addu	t2,t2,t9		; augment gpu prim length
+	lw	t9,FACE_TEXWIN(a0)
+	or	t1,t1,t2		; merge	addr and len fields
+	sw	t1,0(v0)		; set tag of last poly in chain
+
+	srl	t2,t2,22		; get actual length in bytes
+	addiu	t2,t2,4			; add 4	for the	tag
+	addu	v0,v0,t2		; step pPoly to	main tw
+
+	sw	v0,0(t0)		; new ot list head pointer
+	lui	t1,2<<8			; len field for	a tw
+	or	t3,t3,t1		; merge	for tag	of main	tw
+
+	lui	t1,$E200		; the restoring	tw
+	sw	zero,-12(v0)
+	sw	t1,-8(v0)
+	sw	zero,-4(v0)
+
+	sw	t3,0(v0)		; the main tw
+	sw	t9,4(v0)
+	sw	zero,8(v0)
+
+	j	Fade
+	addiu	v0,v0,12		; step pPoly past main tw
+
+
+
+Linktpage
+	andi	t9,t8,FF_TRH|FF_TRL
+	srl	t9,t9,2
+	lui	t1,$E100		; gpu code
+	or	t9,t9,t1		; or with transparency rate
+	ori	t9,t9,$200		; set dither flag
+
+	addu	t1,v0,t2
+	sw	t9,4(t1)
+
+	lui	t9,1<<8			; 1 longword (not including tag)
+	or 	t9,t9,v0
+	sw	t9,0(t1)
+
+	sw	t1,(t0)
+
+	j	Fade
+	addu	v0,t1,8			; step pPoly past dr_tpage
+
+
+
+AddFadePoly
+; t0 = slot pointer
+; t1 = source dpq value
+; t2 = fade colour
+; v0 = gpu poly pointer
+
+	; move fade colour to gte
+	mtc2	t2,C2_RGB
+
+	; if fade-to-transparent, marge a dr_tpage at start of destination poly
+	srl	t2,t2,24
+	andi	t2,t2,2			; semitrans bit of gpu code
+	move	t5,zero
+	beqz	t2,.opaque
+	move	t3,v0
+
+	lui	t2,$E100
+	ori	t2,t2,$0240
+	sw	t2,4(t3)
+	sw	zero,8(t3)
+	addiu	v0,v0,8
+	j	.transp
+	li	t5,2
+.opaque
+	; calculate 1-dpq
+	subu	t1,zero,t1
+	addiu	t1,0x1000
+.transp
+	; set dpq value for destination poly
+	mtc2	t1,C2_IR0
+
+	; get old slot pointer
+	lw	t2,(t0)
+
+	; set slot pointer to point to destination poly
+	sw	t3,(t0)			; now t0 is freed up
+
+	; depth-cue the fade colour
+	DPCS
+
+	; store sxy's into destination poly
+	sw	s0,xy0_f4(v0)
+	sw	s1,xy1_f4(v0)
+	sw	s2,xy2_f4(v0)
+	sw	s3,xy3_f4(v0)
+
+	andi	t9,t8,FF_TRI		; extract triangle bit from flags
+	srl	t9,t9,1			; shift into gpu code byte's quad bit position
+	xori	t1,t9,code_f4		; new code is for POLY_F3 or POLY_F4 (tri bit is flipped to quad bit)
+
+	; set destination poly's rgb/code
+	mfc2	t0,C2_RGB2		; get depth-cued rgb
+
+	sll	t1,t1,24		; shift into place
+	or	t0,t0,t1		; OR to get new poly's rgb/code
+	sw	t0,rgb0_f3(v0)
+
+	beqz	t9,.link
+	addiu	t5,t5,len_f4		; set len byte for a quad
+	addiu	t5,t5,len_f3-len_f4	; set len byte for a triangle
+
+	; link destination poly into ot slot
+.link	sll	t5,t5,24
+	or	t2,t2,t5		; assemble destination poly's tag word
+	sw	t2,tag_f3(t3)
+
+	; step pPoly past destination poly
+	srl	t2,t2,22		; get len byte (#words) times 4 (-> #bytes)
+	addu	t2,t2,4			; add 4 for tag word
+	addu	v0,v0,t2		; add to poly pointer
+
+	jr	ra
+	nop
+
+
+
+TintFace3
+
+	jal	GetAndTransferTint
+	nop
+	DCPL
+	j	FlatTri
+	nop
+
+LitFace3
+	; flat- or gouraud-shaded?
+	bnez	t9,GouraudShadeFace3
+	nop
+
+FlatShadeFace3
+
+	lhu	t3,FACE_NORMAL(a0)
+	jal	GetAndTransferPrelighting
+	addu	t3,t3,v1
+	DCPL
+	j	FlatTri
+	nop
+
+LitVertex3
+	; flat- or gouraud-shaded?
+	bnez	t9,GouraudShadeVertex3
+	nop
+	lhu	t3,FACE_NORMAL(a0)
+	jal	GetPrelighting
+	addu	t3,t3,v1
+	j	FlatShadeVertex3
+	nop
+
+TintVertex3
+
+	jal	GetAndTransferTint
+	nop
+
+FlatShadeVertex3
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	sll	t0,t7,2
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	srl	t0,t7,6
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	srl	t0,t7,14
+	DCPL
+
+	j	GouraudTri
+	nop
+
+GouraudShadeVertex3
+
+	sll	t0,t7,2
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s0,v1
+
+	srl	t0,t7,6
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s1,v1
+
+	srl	t0,t7,14
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s2,v1
+	DCPL
+
+	j	GouraudTri
+	nop
+
+GouraudShadeFace3
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s0,v1
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s1,v1
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s2,v1
+	DCPL
+
+	j	GouraudTri
+	nop
+
+TintFace4
+
+	jal	GetAndTransferTint
+	nop
+	DCPL
+	j	FlatQuad
+	nop
+
+LitFace4
+
+	; flat- or gouraud-shaded?
+
+	bnez	t9,GouraudShadeFace4
+	nop
+
+FlatShadeFace4
+
+	lhu	t3,FACE_NORMAL(a0)
+	jal	GetAndTransferPrelighting
+	addu	t3,t3,v1
+	DCPL
+
+	j	FlatQuad
+	nop
+
+LitVertex4
+
+	; flat- or gouraud-shaded?
+
+	andi	t9,t8,FACEFLAGS_GOURAUD
+	bnez	t9,GouraudShadeVertex4
+	nop
+
+ 	lhu	t3,FACE_NORMAL(a0)
+
+	jal	GetPrelighting
+	addu	t3,t3,v1
+
+	j	FlatShadeVertex4
+	nop
+
+TintVertex4
+
+	jal	GetAndTransferTint
+	nop
+
+FlatShadeVertex4
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	sll	t0,t7,2
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	srl	t0,t7,6
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	srl	t0,t7,14
+
+	jal	GetVertexColourTransferColourAndPrelighting
+	srl	t0,t7,22
+	mfc2	t0,C2_RGB0
+	DCPL
+
+	j	GouraudQuad
+	nop
+
+GouraudShadeVertex4
+
+	sll	t0,t7,2
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s0,v1
+
+	srl	t0,t7,6
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s1,v1
+
+	srl	t0,t7,14
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s2,v1
+
+	srl	t0,t7,22
+	jal	GetAndTransferVertexColourAndPrelighting
+	addu	t3,s3,v1
+	mfc2	t0,C2_RGB0
+	DCPL
+
+	j	GouraudQuad
+	nop
+
+GouraudShadeFace4
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s0,v1
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s1,v1
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s2,v1
+
+	jal	GetAndTransferPrelighting
+	addu	t3,s3,v1
+	mfc2	t0,C2_RGB0
+	DCPL
+
+	j	GouraudQuad
+	nop
+
+ReflectionMap3
+
+	addu	t1,s0,v1	; add base of special buffer
+	addu	t2,s1,v1
+	addu	t3,s2,v1
+
+	lw	s6,SCRATCH_REFMAPCLUT(s7)
+	lw	t1,8*MAXVERTICES+4(t1)	; get texture coords
+	lw	t2,8*MAXVERTICES+4(t2)
+	or	t1,t1,s6	; put clut in the upper	16 bits	of t1
+	lw	s6,SCRATCH_REFMAPTPAGE(s7)
+	lw	t3,8*MAXVERTICES+4(t3)
+	or	t2,t2,s6	; put tpage in the upper 16 bits of t2
+
+	j	GotReflectionMap3
+	nop
+
+ReflectionMap4
+
+	addu	t1,s0,v1	; add base of special buffer
+	addu	t2,s1,v1
+	addu	t3,s2,v1
+	addu	t9,s3,v1
+
+	lw	s6,SCRATCH_REFMAPCLUT(s7)
+	lw	t1,8*MAXVERTICES+4(t1)	; get texture coords
+	lw	t2,8*MAXVERTICES+4(t2)
+	or	t1,t1,s6	; put clut in the upper	16 bits	of t1
+	lw	s6,SCRATCH_REFMAPTPAGE(s7)
+	lw	t3,8*MAXVERTICES+4(t3)
+	lw	t9,8*MAXVERTICES+4(t9)
+	or	t2,t2,s6	; put tpage in the upper 16 bits of t2
+
+	sll	t9,t9,16
+	or	t3,t3,t9
+
+	j	GotReflectionMap4
+	nop
+
+
+
+
+GetPrelighting
+
+	lw	t1,8*MAXVERTICES+4(t3)
+	nop
+	srl	t2,t1,6
+	srl	t3,t1,17
+	jr	ra
+	sll	t1,t1,5
+
+GetAndTransferPrelighting
+
+	lw	t1,8*MAXVERTICES+4(t3)
+	DCPL
+	srl	t2,t1,6
+	srl	t3,t1,17
+	sll	t1,t1,5
+	mtc2	t1,C2_IR1
+	mtc2	t2,C2_IR2
+	mtc2	t3,C2_IR3
+	jr	ra
+	nop
+
+GetVertexColourTransferColourAndPrelighting
+
+	DCPL
+	andi	t0,t0,$3FC
+	addu	t0,t0,s4
+	lw	t0,(t0)
+	mtc2	t1,C2_IR1
+	mtc2	t2,C2_IR2
+	mtc2	t3,C2_IR3
+	mtc2	t0,C2_RGB
+	jr	ra
+	nop
+
+GetAndTransferVertexColourAndPrelighting
+
+	lw	t1,8*MAXVERTICES+4(t3)
+	DCPL
+	andi	t0,t0,$3FC
+	addu	t0,t0,s4
+	lw	t0,(t0)
+	srl	t2,t1,6
+	srl	t3,t1,17
+	sll	t1,t1,5
+	mtc2	t1,C2_IR1
+	mtc2	t2,C2_IR2
+	mtc2	t3,C2_IR3
+	mtc2	t0,C2_RGB
+	jr	ra
+	nop
+
+GetAndTransferTint
+
+	lw	t1,SCRATCH_TINT(s7)
+	nop
+	srl	t2,t1,6
+	srl	t3,t1,17
+	sll	t1,t1,5
+	mtc2	t1,C2_IR1
+	mtc2	t2,C2_IR2
+	mtc2	t3,C2_IR3
+	jr	ra
+	nop
+
+
+
+
+SpecialBFC
+	andi	t9,t8,FF_SDV
+	beqz	t9,Reject
+	nop
+
+	addu	t9,s0,v1		; get coords of	p0 rotated
+	lw	t4,0+MAXVERTICES*8(t9)
+	lw	t9,4(t9)
+	ctc2	t4,C2_R11R12
+	srl	t4,t4,16
+	ctc2	t4,C2_R22R23
+	ctc2	t9,C2_R33
+
+	addu	t9,s1,v1		; get coords of	p1 rotated
+	lw	t4,0+MAXVERTICES*8(t9)
+	lw	t9,4(t9)
+	mtc2	t4,C2_IR1
+	srl	t4,t4,16
+	mtc2	t4,C2_IR2
+	mtc2	t9,C2_IR3
+
+	addu	t9,s2,v1		; get coords of	p2 rotated
+	lwc2	C2_VXY0,0+MAXVERTICES*8(t9)
+	lwc2	C2_VZ0, 4(t9)
+
+	xref	M3dMaths_OriginAgainstPlaneTest
+	jal	M3dMaths_OriginAgainstPlaneTest
+	nop
+
+	bltz	t9,Reject
+	nop
+
+	j	BFCaccept
+	lui	t9,$7FFF		; acceptance value (force maximum subdivision)
+
+
+
+	
+; end of face rendering	code
+;----------------------------------------------------------------------
+
+
+  if SUBDIVON
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;			    ;;
+;; polygon subdivision code ;;
+;;			    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+; a nice transparent checkerboard effect for testing purposes!
+
+CHECKERBOARD	macro
+
+ if CHECKERON & DEBUG
+	addu	t0,t8,t9
+	andi	t0,t0,1
+	beqz	t0,.checkerlabel
+	lw	t0,rgb0_gt4(v0)
+	li	t1,$C08040
+	xor	t0,t0,t1
+	sw	t0,rgb0_gt4(v0)
+.checkerlabel
+ endif
+	endm
+
+
+
+
+
+INIT_OUTCODE macro
+
+	and	s5,t1,t4
+	and	s5,s5,s6
+
+	endm
+
+
+
+INNER_OUTCODE_TEST macro
+
+	and	s0,t1,t4
+	and	s5,s5,s0
+  if STRONG_Z_CULL
+	xori	s5,s5,$8000
+  endif
+	bnez	s5,.skip
+	and	s5,s0,s6
+
+	endm
+
+
+TRI_OUTCODE_TEST macro
+
+	and	s5,s5,t4
+  if STRONG_Z_CULL
+	xori	s5,s5,$8000
+  endif
+	bnez	s5,.skip
+	nop
+
+	endm
+
+
+
+
+  if CONTINUOUS_SUBDIVISION
+
+
+SubdivTest	; return t0>=0 if no subdiv needed, t0<0 if subdiv needed
+
+	mfc2	t9,C2_MAC0
+	li	t0,AREA
+	jr	ra
+	subu	t0,t0,t9
+
+
+
+SubdivSetup
+
+	 ; save	registers in unused words of the subdivision grid (quick because it's the S-cache)
+
+	sw	a0,GSPARE+1*GSIZE(t0)
+	sw	a1,GSPARE+2*GSIZE(t0)
+	sw	a2,GSPARE+3*GSIZE(t0)
+	sw	a3,GSPARE+4*GSIZE(t0)
+	sw	v0,GSPARE+5*GSIZE(t0)
+	sw	s7,GSPARE+6*GSIZE(t0)
+	sw	t6,GSPARE+7*GSIZE(t0)
+	sw	t8,GSPARE+8*GSIZE(t0)
+	sw	s6,GSPARE+9*GSIZE(t0)
+	sw	s5,GSPARE+10*GSIZE(t0)
+	sw	s4,GSPARE+11*GSIZE(t0)
+
+	; prepare for calculating number of subdivisions
+;	srl	t9,t9,AREASHIFT
+;	mtc2	t9,C2_LZCS
+
+	; set gpu code for quad-subpolys (triangles will override the code)
+	lw	t0,rgb0_f3(v0)
+	lui	t1,$800
+	or	t0,t0,t1		; force quad by default
+	mtc2	t0,C2_RGB                
+
+	; get the number of subdivisions and return to subdiv handler
+;	mfc2	t9,C2_LZCR
+;	li	a2,17
+;	srl	t9,t9,1
+;	subu	a2,a2,t9
+;	slti	t1,a2,8
+;	bnez	t1,.div
+;	li	t1,$1000
+;	li	a2,7			; max = 7x7
+;.div	divu	t1,a2			; calculate 1/N
+
+
+
+	; test the new subdiv stuff (replacing the two sets of commented out lines above)
+TESTSHIFT = 5
+	move	a0,t9
+	move	t9,ra
+	jal	M3dMaths_SquareRoot0__Fi
+	nop
+	move	ra,t9
+
+	move	a2,v0
+	lui	t0,$1F80
+	lw	a0,GSPARE+1*GSIZE(t0)
+	lw	v0,GSPARE+5*GSIZE(t0)
+
+	li	t1,7<<TESTSHIFT
+	subu	t1,t1,a2
+	bgtz	t1,.DontClamp
+	nop
+	li	a2,7<<TESTSHIFT
+.DontClamp
+
+	lw	s4,pCurrentViewport
+
+	li	t1,$1000<<TESTSHIFT
+	divu	t1,a2
+	addiu	a2,a2,(1<<TESTSHIFT)-1
+	srl	a2,a2,TESTSHIFT
+
+
+
+	; set up registers for Aplin outcoding in interpolation loop
+	lw	s4,0(s4)		; (xR,yB)
+	lui	s5,$BFFF
+	jr	ra
+	ori	s5,s5,$BFFF		; mask for B & R Aplin outcode bits
+
+
+
+  else
+
+
+; Apocalypse-style subdivision, ie whole number of subdivisions
+
+
+SubdivTest	; return t0>=0 if no subdiv needed, t0<0 if subdiv needed
+
+	mfc2	t9,C2_MAC0
+	li	t0,AREA
+	jr	ra
+	subu	t0,t0,t9
+
+
+
+SubdivSetup
+
+	 ; save	registers in unused words of the subdivision grid (quick because it's the S-cache)
+
+	sw	a0,GSPARE+1*GSIZE(t0)
+	sw	a1,GSPARE+2*GSIZE(t0)
+	sw	a2,GSPARE+3*GSIZE(t0)
+	sw	a3,GSPARE+4*GSIZE(t0)
+	sw	v0,GSPARE+5*GSIZE(t0)
+	sw	s7,GSPARE+6*GSIZE(t0)
+	sw	t6,GSPARE+7*GSIZE(t0)
+	sw	t8,GSPARE+8*GSIZE(t0)
+	sw	s6,GSPARE+9*GSIZE(t0)
+	sw	s5,GSPARE+10*GSIZE(t0)
+	sw	s4,GSPARE+11*GSIZE(t0)
+
+	; prepare for calculating number of subdivisions
+	srl	t9,t9,AREASHIFT
+	mtc2	t9,C2_LZCS
+
+	; set gpu code for quad-subpolys (triangles will override the code)
+	lw	t0,rgb0_f3(v0)
+	lui	t1,$800
+	or	t0,t0,t1		; force quad by default
+	mtc2	t0,C2_RGB                
+
+	lw	s4,pCurrentViewport
+
+	; get the number of subdivisions and return to subdiv handler
+	mfc2	t9,C2_LZCR
+	li	a2,17
+	srl	t9,t9,1
+	subu	a2,a2,t9
+	slti	t1,a2,8
+	bnez	t1,.div
+	li	t1,$1000
+	li	a2,7			; max = 7x7
+.div	divu	t1,a2			; calculate 1/N
+
+	; set up registers for Aplin outcoding in interpolation loop
+	lw	s4,0(s4)		; (xR,yB)
+	lui	s5,$BFFF
+	jr	ra
+	ori	s5,s5,$BFFF		; mask for B & R Aplin outcode bits
+
+
+  endif
+
+
+
+ ; setup the uv	interpolation matrix
+
+SetupUVs
+
+	lw	t1,uv0_ft3(t7)		; uv0
+	lw	t2,uv0_ft3(t8)		; uv1
+	lw	t3,uv0_ft3(t9)		; uv2
+
+	andi	t4,t1,$00FF		; u0
+	andi	t5,t2,$00FF		; u1
+	sll	t4,t4,4
+	sll	t5,t5,20
+	or	t4,t4,t5
+	ctc2	t4,C2_L11L12
+
+	andi	t4,t3,$00FF		; u2
+	andi	t5,t1,$FF00		; v0
+	sll	t4,t4,4
+	sll	t5,t5,12
+	or	t4,t4,t5
+	ctc2	t4,C2_L13L21
+
+	andi	t4,t2,$FF00		; v1
+	andi	t5,t3,$FF00		; v2
+	srl	t4,t4,4
+	sll	t5,t5,12
+	or	t4,t4,t5
+	ctc2	t4,C2_L22L23
+
+	ctc2	zero,C2_L31L32		; zero out clut/tpage controllers
+	ctc2	zero,C2_L33
+
+	jr	ra
+	nop
+
+
+
+
+ ; setup the rgb interpolation matrix
+
+SetupRGBs
+
+	lw	t1,rgb0_f3(t7)		; rgb0
+	lw	t2,rgb0_f3(t8)		; rgb1
+	lw	t3,rgb0_f3(t9)		; rgb2
+
+	andi	t4,t1,$00FF		; r0
+	andi	t5,t2,$00FF		; r1
+	sll	t4,t4,4
+	sll	t5,t5,20
+	or	t4,t4,t5
+	ctc2	t4,C2_LR1LR2
+
+	andi	t4,t3,$00FF		; r2
+	andi	t5,t1,$FF00		; g0
+	sll	t4,t4,4
+	sll	t5,t5,12
+	or	t4,t4,t5
+	ctc2	t4,C2_LR3LG1
+
+	andi	t4,t2,$FF00		; g1
+	andi	t5,t3,$FF00		; g2
+	srl	t4,t4,4
+	sll	t5,t5,12
+	or	t4,t4,t5
+	ctc2	t4,C2_LG2LG3
+
+	srl	t4,t1,12
+	srl	t5,t2,12
+	andi	t4,t4,$FF0		; b0
+	andi	t5,t5,$FF0		; b1
+	sll	t5,t5,16
+	or	t4,t4,t5
+	ctc2	t4,C2_LB1LB2
+
+	srl	t4,t3,12
+	andi	t4,t4,$FF0		; b2
+	ctc2	t4,C2_LB3
+
+	jr	ra
+	nop
+
+
+SetupXYs
+	lhu	t4,4(t1)
+	lw	t1,0+MAXVERTICES*8(t1)
+
+	lhu	t5,4(t2)
+	lw	t2,0+MAXVERTICES*8(t2)
+
+	lhu	t6,4(t3)
+	lw	t3,0+MAXVERTICES*8(t3)
+
+	andi	t7,t1,$FFFF		; move coords to column	vecs of	rot
+	sll	t8,t2,16
+	or	t7,t7,t8
+	ctc2	t7,C2_R11R12
+
+	xor	t7,t3,t1
+	andi	t7,t7,$FFFF
+	xor	t7,t7,t1
+	ctc2	t7,C2_R13R21
+
+	srl	t7,t2,16
+	srl	t8,t3,16
+	sll	t8,t8,16
+	or	t7,t7,t8
+	ctc2	t7,C2_R22R23
+
+	sll	t8,t5,16
+	or	t7,t4,t8
+	ctc2	t7,C2_R31R32
+
+	ctc2	t6,C2_R33
+
+	jr	ra
+	nop
+
+
+
+ ; loop	for interpolating everything!
+ ; we can trash s0 at this point
+
+Interpolate
+
+.outer	move	a0,a1			; save row pointer
+
+	bnez	t6,.Blt1		; on final outer pass set B=1 (ie t3=1-B=0)
+	li	t1,$1000		; unconditionally set up 1 (fixed point) in t1
+	move	t3,zero
+.Blt1
+	subu	t1,t1,t3		; initialise B-A to B
+	move	t2,zero			; initialise A to 0
+	mtc2	t1,C2_VXY0		; move (B-A,A) to gte
+	mtc2	t3,C2_VZ0		; move 1-B to gte
+
+	subu	a1,a1,t4		; pre-adjust a1	due to optimisations
+	subu	t7,a2,t6		; inner	loop counter = (N+1)-outer (adjusted)
+
+.inner	RTPS				; project interpolated vertex
+	addu	a1,a1,t4		; step gridpoint
+	subu	t1,t1,a3		; B-A -= 1/N
+	addu	t2,t2,a3		; A += 1/N
+
+	sll	t0,t2,16
+	or	t0,t0,t1
+
+	addiu	s0,t7,-1		; on final inner pass of final outer pass set A=1
+	or	s0,s0,t6
+	bnez	s0,.Alt1
+	nop
+	lui	t0,$1000
+.Alt1
+
+	mfc2	s0,C2_SXY2
+	cfc2	t8,C2_FLAG
+
+	MVMVA	1,1,0,3,1		; interpolate the uv unconditionally because most polys are textured
+					; and because almost all of the delay slots are filled with necessary stuff
+
+	subu	t9,s0,s4		; Aplin outcoding
+	nor	t9,t9,s5
+	and	s0,s0,s5
+	or	s0,s0,t9
+	lui	t9,$FFFF
+	ori	t9,t9,$7FFF
+	and	s0,s0,t9		; zero out bit 15
+
+	GPF	1			; pack uv into bytes in	the RGB	fifo
+
+	srl	t8,t8,2			; shift 'half viewplane distance' bit H into bit 15
+	andi	t8,t8,$8000
+  if STRONG_Z_CULL
+	xori	t8,t8,$8000		; flip the state of H
+  endif
+	or	s0,s0,t8		; dBTTTTYYYYYYYYYY:HRLLLLXXXXXXXXXX (d=don't care)
+	sw	s0,GXY(a1)
+
+	mfc2	t9,C2_RGB2
+
+.noUV	bgez	s6,.noRGB
+	sw	t9,GUV(a1)
+
+	MVMVA	1,2,0,3,1		; interpolate the rgb
+	GPF	1			; pack rgb into	bytes in the RGB fifo
+	swc2	C2_RGB2,GRGB(a1)
+.noRGB
+
+	mtc2	t0,C2_VXY0		; move (B-A,A) to gte
+
+	bnez	t7,.inner
+	addiu	t7,t7,-1		; dec inner loop counter
+
+	subu	t3,t3,a3		; 1-B -= 1/N
+	addu	a1,a0,t5		; skip gridpoint to next row
+	bnez	t6,.outer
+	addiu	t6,t6,-1		; dec outer loop counter
+
+	jr	ra
+	nop
+
+
+
+
+GetUpper
+
+	move	s7,ra
+
+	sll	t1,s6,1
+	bltzal	t1,SetupUVs
+	nop
+
+	bltzal	s6,SetupRGBs
+	nop
+
+	addu	t1,s0,v1		; address of p0
+	addu	t2,s2,v1		; address of p2
+	jal	SetupXYs
+	addu	t3,s1,v1		; address of p1
+
+	li	t3,$1000
+
+	li	t4,GSIZE		; Du and change	in end of row skipsize
+	li	t5,GROWSIZE
+	move	t6,a2			; outer	loop counter N+1 (adjusted)
+	mflo	a3
+
+	lui	a1,$1F80		; scratchpad
+	j	Interpolate
+	move	ra,s7
+
+
+
+
+GetLower
+
+	move	s7,ra
+
+	sll	t1,s6,1
+	bltzal	t1,SetupUVs
+	nop
+
+	bltzal	s6,SetupRGBs
+	nop
+
+	addu	t1,s3,v1		; address of p3
+	addu	t2,s2,v1		; address of p2
+	jal	SetupXYs
+	addu	t3,s1,v1		; address of p1
+
+	li	t3,$1000
+	subu	t3,t3,a3
+
+	li	t4,GROWSIZE		; Du and change	in end of row skipsize
+	li	t5,GSIZE
+	addiu	t6,a2,-1		; outer	loop counter N (adjusted)
+
+	lui	a1,$1F80
+	addiu	a1,a1,GSIZE		; don't duplicate points on the diagonal
+	j	Interpolate		; interpolate over lower triangle
+	move	ra,s7
+
+
+
+
+ExpandEdge
+
+	subu	t9,t9,t8		; p1-p0
+	andi	t8,t9,$2000		; 0 if x1>=x0, $2000 if x1<x0
+	addiu	t8,t8,-$1000		; -$1000 if x1>=x0, $1000 if x1<x0
+	sll	t8,t8,4			; -$10000 if x1>=x0, $10000 if x1<x0
+	sra	t9,t9,28		; bits 30 & 31 may have been altered by Aplin outcoding, so shift 29 down to 1
+	andi	t9,t9,2			; 0 if y1>=y0, 2 if y1<y0
+	addiu	t9,t9,-1		; -1 if y1>=y0, 1 if y1<y0, long
+	subu	t9,t8,t9		; put x and y adjustments into a longword
+
+	addu	a0,a0,t6		; skip p0 of parent
+	addu	t8,a2,-1		; stop 1 short of p1 of parent
+
+.loop	lw	t7,GXY(a0)
+	addiu	t8,t8,-1
+	addu	t7,t7,t9
+	sw	t7,GXY(a0)
+	bgtz	t8,.loop
+	addu	a0,a0,t6
+
+	jr	ra
+	nop
+
+
+ExpandTri
+
+	move	s7,ra
+	lui	a0,$1F80
+
+	lui	s6,$6000		; set up outcode testing mask
+	ori	s6,s6,$E000
+
+	move	t8,t1
+	move	t9,t2
+	jal	ExpandEdge		; edge p1->p2
+	li	t6,GROWSIZE+GSIZE
+
+	move	t8,t2
+	move	t9,t0
+	jal	ExpandEdge		; edge p2->p0
+	li	t6,-GSIZE
+
+	move	t8,t0
+	move	t9,t1
+	li	t6,-GROWSIZE
+	j	ExpandEdge		; edge p0->p1
+	move	ra,s7
+
+
+
+ExpandQuad
+
+	move	s7,ra
+	lui	a0,$1F80
+
+	lui	s6,$6000		; set up outcode testing mask
+	ori	s6,s6,$E000
+
+	move	t8,t1
+	move	t9,t3
+	jal	ExpandEdge		; edge p1->p3
+	li	t6,GSIZE
+
+	move	t8,t3
+	move	t9,t2
+	jal	ExpandEdge		; edge p3->p2
+	li	t6,GROWSIZE
+
+	move	t8,t2
+	move	t9,t0
+	jal	ExpandEdge		; edge p2->p0
+	li	t6,-GSIZE
+
+	move	t8,t0
+	move	t9,t1
+	li	t6,-GROWSIZE
+	j	ExpandEdge		; edge p0->p1
+	move	ra,s7
+
+
+
+
+Finner	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	sw	t3,rgb0_f4(v0)		; store	to p0, p1
+	sw	t1,xy0_f4(v0)
+	sw	t4,xy1_f4(v0)
+
+	CHECKERBOARD
+
+	lw	t4,GXY+GSIZE(a0)	; load from next pair of gridpoints
+	lw	t1,GXY+GSIZE+GROWSIZE(a0)
+
+	addiu	a0,a0,GSIZE		; step pointer to right side
+
+	INNER_OUTCODE_TEST
+
+	addiu	v0,v0,size_f4		; step pPoly
+	lui	s4,len_f4<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_f4-size_f4(v0)	; link it in
+
+	sw	t1,xy2_f4-size_f4(v0)	; store	to p2, p3
+	sw	t4,xy3_f4-size_f4(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_f4		; size of last subpoly added
+
+.skip	bnez	t9,Finner
+	addiu	t9,t9,-1
+
+	jr	ra
+	nop
+
+
+
+
+SubdivideF3
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of projected interpolated xyz's
+
+	jal	GetUpper
+	move	s6,zero			; signal no uv's or rgb's needed
+
+	lw	t0,xy0_f3(v0)
+	lw	t1,xy1_f3(v0)
+	jal	ExpandTri
+	lw	t2,xy2_f3(v0)
+
+ ; traverse grid, building new POLY_F4's & POLY_F3's
+
+	mfc2	t3,C2_RGB		; get rgb0 (quad forced)
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t4,GXY(a0)		; load from first pair of gridpoints
+	lw	t1,GXY+GROWSIZE(a0)
+
+	subu	t9,a2,t8
+	addiu	t9,t9,-2		; inner=N-outer (pre-adjusted)
+
+	INIT_OUTCODE
+	bgezal	t9,Finner
+	nop
+
+	sw	t1,xy0_f3(v0)		; store	to p0, p1
+	sw	t4,xy1_f3(v0)
+	lw	t4,GXY+GSIZE+GROWSIZE(a0); load from next lower gridpoint
+
+	lui	t9,0x0800
+	xor	t9,t9,t3		; swap to code for an F3
+	sw	t9,rgb0_f3(v0)
+
+	TRI_OUTCODE_TEST
+
+	addiu	v0,v0,size_f3		; step pPoly
+	lui	s4,len_f3<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_f3-size_f3(v0)	; link it in
+
+	sw	t4,xy2_f3-size_f3(v0)	; store to p2
+
+	INCPOLYCOUNTER
+
+	li	s4,size_f3		; size of last subpoly added
+
+.skip	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+
+SubdivideF4
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of projected interpolated xyz's
+
+	jal	GetUpper
+	move	s6,zero			; signal no uv's or rgb's needed
+
+	jal	GetLower
+	nop
+
+	lw	t0,xy0_f4(v0)
+	lw	t1,xy1_f4(v0)
+	lw	t2,xy2_f4(v0)
+	jal	ExpandQuad
+	lw	t3,xy3_f4(v0)
+
+ ; traverse grid, building new POLY_F4's
+
+	mfc2	t3,C2_RGB		; get rgb0 (quad forced)
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t4,GXY(a0)		; load from first pair of gridpoints
+	lw	t1,GXY+GROWSIZE(a0)
+
+	addiu	t9,a2,-1		; inner loop counter N, pre-adjusted
+
+	INIT_OUTCODE
+	jal	Finner
+	nop
+
+	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+Ginner	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	sw	t0,rgb0_g4(v0)		; store	to p0, p1
+	sw	t1,xy0_g4(v0)
+	sw	t3,rgb1_g4(v0)
+	sw	t4,xy1_g4(v0)
+
+	CHECKERBOARD
+
+	lw	t3,GRGB+GSIZE(a0)	; load from next pair of gridpoints
+	lw	t4,GXY+GSIZE(a0)
+	lw	t0,GRGB+GSIZE+GROWSIZE(a0)
+	lw	t1,GXY+GSIZE+GROWSIZE(a0)
+
+	addiu	a0,a0,GSIZE		; step pointer	to right side
+
+	INNER_OUTCODE_TEST
+
+	addiu	v0,v0,size_g4		; step pPoly
+	lui	s4,len_g4<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_g4-size_g4(v0)	; link it in
+
+	sw	t0,rgb2_g4-size_g4(v0)	; store	to p2, p3
+	sw	t1,xy2_g4-size_g4(v0)
+	sw	t3,rgb3_g4-size_g4(v0)
+	sw	t4,xy3_g4-size_g4(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_g4
+
+.skip	bnez	t9,Ginner
+	addiu	t9,t9,-1
+
+	jr	ra
+	nop
+
+
+
+
+SubdivideG3
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated rgb's and projected interpolated xyz's
+
+	lui	s6,$8000		; signal rgb's but no uv's needed
+
+	addiu	t7,v0,rgb0_g3-rgb0_g3
+	addiu	t8,v0,rgb2_g3-rgb0_g3
+	addiu	t9,v0,rgb1_g3-rgb0_g3
+	jal	GetUpper
+	nop
+
+	lw	t0,xy0_g3(v0)
+	lw	t1,xy1_g3(v0)
+	jal	ExpandTri
+	lw	t2,xy2_g3(v0)
+
+ ; traverse grid, building new POLY_G4's & POLY_G3's
+
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t3,GRGB(a0)		; load from first pair of gridpoints
+	lw	t4,GXY(a0)
+	lw	t0,GRGB+GROWSIZE(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+
+	subu	t9,a2,t8
+	addiu	t9,t9,-2		; need to skip quad loop on last row (also pre-adjusted loop counter)
+
+	INIT_OUTCODE
+	bgezal	t9,Ginner
+	nop
+
+	lui	t9,0x0800
+	xor	t0,t0,t9		; swap back to code for	a G3
+
+	sw	t0,rgb0_g3(v0)		; store	to p0, p1
+	sw	t1,xy0_g3(v0)
+	sw	t3,rgb1_g3(v0)
+	sw	t4,xy1_g3(v0)
+
+	lw	t4,GRGB+GSIZE+GROWSIZE(a0)
+	lw	t3,GXY+GSIZE+GROWSIZE(a0); load from next lower gridpoint
+
+	TRI_OUTCODE_TEST
+
+	addiu	v0,v0,size_g3		; step pPoly
+	lui	s4,len_g3<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_g3-size_g3(v0)	; link it in
+
+	sw	t3,rgb2_g3-size_g3(v0)	; store	to p2
+	sw	t4,xy2_g3-size_g3(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_g3
+
+.skip	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+
+SubdivideG4
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated rgb's and projected interpolated xyz's
+
+	lui	s6,$8000		; signal rgb's but no uv's needed
+
+	addiu	t7,v0,rgb0_g4-rgb0_g4
+	addiu	t8,v0,rgb2_g4-rgb0_g4
+	addiu	t9,v0,rgb1_g4-rgb0_g4
+	jal	GetUpper
+	nop
+
+	addiu	t7,v0,rgb3_g4-rgb0_g4
+	addiu	t8,v0,rgb2_g4-rgb0_g4
+	addiu	t9,v0,rgb1_g4-rgb0_g4
+	jal	GetLower
+	nop
+
+	lw	t0,xy0_g4(v0)
+	lw	t1,xy1_g4(v0)
+	lw	t2,xy2_g4(v0)
+	jal	ExpandQuad
+	lw	t3,xy3_g4(v0)
+
+ ; traverse grid, building new POLY_G4's
+
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t3,GRGB(a0)		; load from first pair of gridpoints
+	lw	t4,GXY(a0)
+	lw	t0,GRGB+GROWSIZE(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+
+	addiu	t9,a2,-1		; inner	loop counter N, pre-adjusted
+
+	INIT_OUTCODE
+	jal	Ginner
+	nop
+
+	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+
+FTinner	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	or	t2,t2,t6		; set clut for uv0
+	or	t5,t5,t7		; set tpage for	uv1
+
+	sw	t3,rgb0_ft4(v0)		; store	to p0, p1
+	sw	t1,xy0_ft4(v0)
+	sw	t2,uv0_ft4(v0)
+	sw	t4,xy1_ft4(v0)
+	sw	t5,uv1_ft4(v0)
+
+	CHECKERBOARD
+
+	lw	t4,GXY+GSIZE(a0)	; load from next pair of gridpoints
+	lhu	t5,GUV+GSIZE(a0)
+	lw	t1,GXY+GSIZE+GROWSIZE(a0)
+	lhu	t2,GUV+GSIZE+GROWSIZE(a0)
+
+	addiu	a0,a0,GSIZE		; step pointers	to right side
+
+	INNER_OUTCODE_TEST
+
+	addiu	v0,v0,size_ft4		; step pPoly
+	lui	s4,len_ft4<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_ft4-size_ft4(v0)	; link it in
+
+	sw	t1,xy2_ft4-size_ft4(v0)		; store	to p2, p3
+	sw	t2,uv2_ft4-size_ft4(v0)
+	sw	t4,xy3_ft4-size_ft4(v0)
+	sw	t5,uv3_ft4-size_ft4(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_ft4		; size of last subpoly added
+
+.skip	bnez	t9,FTinner
+	addiu	t9,t9,-1
+
+	jr	ra
+	nop
+
+
+
+
+SubdivideFT3
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated uv's and projected interpolated xyz's
+
+	lui	s6,$4000		; signal uv's but no rgb's needed
+
+	addiu	t7,v0,uv0_ft3-uv0_ft3
+	addiu	t8,v0,uv2_ft3-uv0_ft3
+	addiu	t9,v0,uv1_ft3-uv0_ft3
+	jal	GetUpper
+	nop
+
+	lw	t0,xy0_ft3(v0)
+	lw	t1,xy1_ft3(v0)
+	jal	ExpandTri
+	lw	t2,xy2_ft3(v0)
+
+ ; traverse grid, building new POLY_FT4's & POLY_FT3's
+
+	lh	t6,uv0_ft3+2(v0)	; get clut
+	lh	t7,uv1_ft3+2(v0)	; get tpage
+	mfc2	t3,C2_RGB		; get rgb0 (quad forced)
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+	sll	t6,t6,16
+	sll	t7,t7,16
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t4,GXY(a0)		; load from first pair of gridpoints
+	lhu	t5,GUV(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+	lhu	t2,GUV+GROWSIZE(a0)
+
+	subu	t9,a2,t8
+	addiu	t9,t9,-2		; need to skip quad loop on last row (also pre-adjusted loop counter)
+
+	INIT_OUTCODE
+	bgezal	t9,FTinner
+	nop
+
+	lui	t9,$0800		; end the row with a triangle...
+	xor	t9,t9,t3		; swap to code for an FT3
+	or	t2,t2,t6		; set clut for uv0
+	or	t5,t5,t7		; set tpage for	uv1
+	
+	sw	t9,rgb0_ft3(v0)		; store	to p0, p1
+	sw	t1,xy0_ft3(v0)
+	sw	t2,uv0_ft3(v0)
+	sw	t4,xy1_ft3(v0)
+	sw	t5,uv1_ft3(v0)
+
+	lw	t4,GXY+GSIZE+GROWSIZE(a0); load from next lower gridpoint
+	lhu	t5,GUV+GSIZE+GROWSIZE(a0)
+
+	TRI_OUTCODE_TEST
+
+	addiu	v0,v0,size_ft3		; step pPoly
+	lui	s4,len_ft3<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_ft3-size_ft3(v0)	; link it in
+
+	sw	t4,xy2_ft3-size_ft3(v0)	; store	to p2
+	sw	t5,uv2_ft3-size_ft3(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_ft3		; size of last subpoly added
+
+.skip	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+
+SubdivideFT4
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated uv's and projected interpolated xyz's
+
+	lui	s6,$4000		; signal uv's but no rgb's needed
+
+	addiu	t7,v0,uv0_ft4-uv0_ft4
+	addiu	t8,v0,uv2_ft4-uv0_ft4
+	addiu	t9,v0,uv1_ft4-uv0_ft4
+	jal	GetUpper
+	nop
+
+	addiu	t7,v0,uv3_ft4-uv0_ft4
+	addiu	t8,v0,uv2_ft4-uv0_ft4
+	addiu	t9,v0,uv1_ft4-uv0_ft4
+	jal	GetLower
+	nop
+
+	lw	t0,xy0_ft4(v0)
+	lw	t1,xy1_ft4(v0)
+	lw	t2,xy2_ft4(v0)
+	jal	ExpandQuad
+	lw	t3,xy3_ft4(v0)
+
+ ; traverse grid, building new POLY_FT4's
+
+	lh	t6,uv0_ft4+2(v0)	; get clut
+	lh	t7,uv1_ft4+2(v0)	; get tpage
+	mfc2	t3,C2_RGB		; get rgb0 (quad forced)
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+	sll	t6,t6,16
+	sll	t7,t7,16
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t4,GXY(a0)		; load from first pair of gridpoints
+	lhu	t5,GUV(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+	lhu	t2,GUV+GROWSIZE(a0)
+
+	addiu	t9,a2,-1		; inner	loop counter N, pre-adjusted
+
+	INIT_OUTCODE
+	jal	FTinner
+	nop
+
+	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+GTinner	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	or	t2,t2,t6		; set clut for uv0
+	or	t5,t5,t7		; set tpage for	uv1
+
+	sw	t0,rgb0_gt4(v0)		; store	to p0, p1
+	sw	t1,xy0_gt4(v0)
+	sw	t2,uv0_gt4(v0)
+	sw	t3,rgb1_gt4(v0)
+	sw	t4,xy1_gt4(v0)
+	sw	t5,uv1_gt4(v0)
+
+	CHECKERBOARD
+
+	lw	t3,GRGB+GSIZE(a0)	; load from next pair of gridpoints
+	lw	t4,GXY+GSIZE(a0)
+	lhu	t5,GUV+GSIZE(a0)
+	lw	t0,GRGB+GSIZE+GROWSIZE(a0)
+	lw	t1,GXY+GSIZE+GROWSIZE(a0)
+	lhu	t2,GUV+GSIZE+GROWSIZE(a0)
+
+	addiu	a0,a0,GSIZE		; step pointer to right side
+
+	INNER_OUTCODE_TEST
+
+	addiu	v0,v0,size_gt4		; step pPoly
+	lui	s4,len_gt4<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_gt4-size_gt4(v0)	; link it in
+
+	sw	t0,rgb2_gt4-size_gt4(v0); store	to p2, p3
+	sw	t1,xy2_gt4-size_gt4(v0)
+	sw	t2,uv2_gt4-size_gt4(v0)
+	sw	t3,rgb3_gt4-size_gt4(v0)
+	sw	t4,xy3_gt4-size_gt4(v0)
+	sw	t5,uv3_gt4-size_gt4(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_gt4
+
+.skip	bnez	t9,GTinner
+	addiu	t9,t9,-1
+
+	jr	ra
+	nop
+
+
+
+SubdivideGT3
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated uv's and	rgb's and projected interpolated xyz's
+
+	lui	s6,$C000		; signal uv's and rgb's needed
+
+	addiu	t7,v0,uv0_gt3-uv0_gt3
+	addiu	t8,v0,uv2_gt3-uv0_gt3
+	addiu	t9,v0,uv1_gt3-uv0_gt3
+	jal	GetUpper
+	nop
+
+	lw	t0,xy0_gt3(v0)
+	lw	t1,xy1_gt3(v0)
+	jal	ExpandTri
+	lw	t2,xy2_gt3(v0)
+
+ ; traverse grid, building new POLY_GT4's & POLY_GT3's
+
+	lh	t6,uv0_gt3+2(v0)	; get clut
+	lh	t7,uv1_gt3+2(v0)	; get tpage
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+	sll	t6,t6,16
+	sll	t7,t7,16
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t3,GRGB(a0)		; load from first pair of gridpoints
+	lw	t4,GXY(a0)
+	lhu	t5,GUV(a0)
+	lw	t0,GRGB+GROWSIZE(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+	lhu	t2,GUV+GROWSIZE(a0)
+
+	subu	t9,a2,t8
+	addiu	t9,t9,-2		; need to skip quad loop on last row (also pre-adjusted loop counter)
+
+	INIT_OUTCODE
+	bgezal	t9,GTinner
+	nop
+
+	lui	t9,0x0800
+	xor	t0,t0,t9		; swap back to code for	a GT3
+	or	t2,t2,t6		; set clut for uv0
+	or	t5,t5,t7		; set tpage for	uv1
+
+	sw	t0,rgb0_gt3(v0)		; store	to p0, p1
+	sw	t1,xy0_gt3(v0)
+	sw	t2,uv0_gt3(v0)
+	sw	t3,rgb1_gt3(v0)
+	sw	t4,xy1_gt3(v0)
+	sw	t5,uv1_gt3(v0)
+
+	lw	t3,GRGB+GSIZE+GROWSIZE(a0); load from next lower gridpoint
+	lw	t4,GXY+GSIZE+GROWSIZE(a0)
+	lhu	t5,GUV+GSIZE+GROWSIZE(a0)
+
+	TRI_OUTCODE_TEST
+
+	addiu	v0,v0,size_gt3		; step pPoly
+	lui	s4,len_gt3<<8		; len byte at top of tag word
+	addu	s4,s4,v0		; pointer to next subpoly in low 24 bits
+	sw	s4,tag_gt3-size_gt3(v0)	; link it in
+
+	sw	t3,rgb2_gt3-size_gt3(v0); store	to p2
+	sw	t4,xy2_gt3-size_gt3(v0)
+	sw	t5,uv2_gt3-size_gt3(v0)
+
+	INCPOLYCOUNTER
+
+	li	s4,size_gt3
+
+.skip	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+	j	SubdivisionDone
+	nop
+
+
+
+
+
+SubdivideGT4
+
+; a0: pFace
+
+	jal	SubdivSetup
+	lui	t0,$1F80		; scratchpad
+
+ ; set up grid of interpolated uv's and	rgb's and projected interpolated xyz's
+
+	lui	s6,$C000		; signal uv's and rgb's needed
+
+	addiu	t7,v0,uv0_gt4-uv0_gt4
+	addiu	t8,v0,uv2_gt4-uv0_gt4
+	addiu	t9,v0,uv1_gt4-uv0_gt4
+	jal	GetUpper
+	nop
+
+	addiu	t7,v0,uv3_gt4-uv0_gt4
+	addiu	t8,v0,uv2_gt4-uv0_gt4
+	addiu	t9,v0,uv1_gt4-uv0_gt4
+	jal	GetLower
+	nop
+
+	lw	t0,xy0_gt4(v0)
+	lw	t1,xy1_gt4(v0)
+	lw	t2,xy2_gt4(v0)
+	jal	ExpandQuad
+	lw	t3,xy3_gt4(v0)
+
+ ; traverse grid, building new POLY_GT4's
+
+	lh	t6,uv0_gt4+2(v0)	; get clut
+	lh	t7,uv1_gt4+2(v0)	; get tpage
+	lui	a0,$1F80		; pointer to first grid	row (scratchpad)
+	addiu	t8,a2,-1		; outer	loop counter N (adjusted)
+	sll	t6,t6,16
+	sll	t7,t7,16
+
+.outer	sltu	s0,v0,at		; check for poly buffer overflow
+	beqz	s0,SubdivisionDone
+
+	lw	t3,GRGB(a0)		; load from first pair of gridpoints
+	lw	t4,GXY(a0)
+	lhu	t5,GUV(a0)
+	lw	t0,GRGB+GROWSIZE(a0)
+	lw	t1,GXY+GROWSIZE(a0)
+	lhu	t2,GUV+GROWSIZE(a0)
+
+	addiu	t9,a2,-1		; inner	loop counter N, pre-adjusted
+
+	INIT_OUTCODE
+	jal	GTinner
+	nop
+
+	ori	a0,a0,GROWSIZE-1
+	addiu	a0,a0,1			; skip to next row in grid
+
+	bnez	t8,.outer
+	addiu	t8,t8,-1
+
+
+SubdivisionDone
+
+ ; now get ready to go back and	link in	the new	polys...
+
+	mtc2	zero,C2_RGB			; restore (not quite sure why, but it's needed)
+	move	t2,s4				; size of last poly added
+	lui	t0,$1F80			; scratchpad
+
+	lw	a0,GSPARE+1*GSIZE(t0)
+	lw	a1,GSPARE+2*GSIZE(t0)
+	lw	a2,GSPARE+3*GSIZE(t0)
+	lw	a3,GSPARE+4*GSIZE(t0)
+	lw	t3,GSPARE+5*GSIZE(t0)		; v0 was stored	at this	location... gets put into t3
+	lw	s7,GSPARE+6*GSIZE(t0)
+	lw	t6,GSPARE+7*GSIZE(t0)
+	lw	t8,GSPARE+8*GSIZE(t0)
+	lw	s6,GSPARE+9*GSIZE(t0)
+	lw	s5,GSPARE+10*GSIZE(t0)
+	beq	v0,t3,Reject			; reject if no polys added
+	lw	s4,GSPARE+11*GSIZE(t0)
+
+	DECPOLYCOUNTER
+
+	subu	v0,v0,t2			; go back to last subpoly actually added
+	sub	t2,t2,4				; set up gpu prim len in top byte
+	j	Link
+	sll	t2,t2,22
+
+
+
+
+  endif
+
+
+;-----------------------------------------------------------------------------
+
+; water clipping code
+
+  if 1
+
+;   if (Tri)
+;   {
+;      DryCount = number of points above water;
+;      if (DryCount==1)
+;      {
+;         p = &(dry point);
+;	 output q=clip(p,p->nextpoint) to transformed vertex list;
+;	 output r=clip(p->nextpoint->nextpoint,p) to transformed vertex list;
+;	 make new source poly from p,q,r;
+;      }
+;      else if (DryCount==2)
+;      {
+;         p = &(1st dry point);
+;	 q = &p->nextpoint;
+;	 output r=clip(q,q->nextpoint) to transformed vertex list;
+;	 output s=clip(q->nextpoint,p) to transformed vertex list;
+;	 make new source quad from p,q,s,r;
+;      }
+;      else
+;         error("count inconsistent with outcode test");
+;   }
+;   else
+;   {
+;      DryCount = number of points above water;
+;      if (DryCount==1)
+;      {
+;         p = &(dry point);
+;	 output q=clip(p,p->nextpoint) to transformed vertex list;
+;	 output r=clip(p->nextpoint->nextpoint->nextpoint,p) to transformed vertex list;
+;	 make new source poly from p,q,r;
+;      }
+;      else if (DryCount==2)
+;      {
+;         p = &(1st dry point);
+;	 q = &p->nextpoint;
+;	 output r=clip(q,q->nextpoint) to transformed vertex list;
+;	 output s=clip(q->nextpoint->nextpoint,p) to transformed vertex list;
+;	 make new source quad from p,q,s,r;
+;      }
+;      else if (DryCount==3)
+;      {
+;         p = &(1st dry point);
+;	 q = &p->nextpoint;
+;	 r = &q->nextpoint;
+;	 output s=clip(r,r->nextpoint) to transformed vertex list;
+;	 output t=clip(r->nextpoint,p) to transformed vertex list;
+;	 make new source tri from p,q,r;
+;	 make new source quad from p,r,t,s;
+;      }
+;      else
+;         error("count inconsistent with outcode test");
+;   }
+
+
+	; possible optimisations...
+	; re-use the z's remaining in t0-t3 instead of re-reading them
+	; set up scratchpad copies of WaterNormal and CameraWaterDistance
+
+	xref	WaterNormal
+
+ClippedFaceBuffer
+	rept	512			; not sure how big this needs to be
+	dw	0			; maybe could use some vacant buffer lying around?
+	endr
+
+WaterClip
+	; get pointers
+
+	lw	s6,SCRATCH_FREEVERTEX(s7)
+	lw	a2,SCRATCH_CLIPPEDFACE(s7)
+
+	; extract wet bit from each outcode
+	lui	t7,$80
+	and	t4,t0,t7
+	and	t5,t1,t7
+	and	t6,t2,t7
+
+	; test for tri or quad
+	andi	t9,t8,FF_TRI
+	beqz	t9,.Quad
+	nop
+
+.Tri	; clip a triangle to the water plane
+
+	bnez	t4,.Tri0W
+	nop
+
+	bnez	t5,.Tri0D1W
+	nop
+
+	; vertex 2 is below water
+
+	jal	ClipEdge20		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge12		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s0
+	j	MakeClippedQuad
+	move	t1,s1
+
+
+.Tri0D1W
+	bnez	t6,.Tri0D12W
+	nop
+
+	; vertex 1 is below water
+
+	jal	ClipEdge12		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge01		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s2
+	j	MakeClippedQuad
+	move	t1,s0
+
+
+.Tri0W
+	bnez	t5,.Tri01W2D
+	nop
+
+	bnez	t6,.Tri02W1D
+	nop
+
+	; vertex 0 is below water
+
+	jal	ClipEdge01		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge20		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s1
+	j	MakeClippedQuad
+	move	t1,s2
+
+
+.Tri02W1D ; vertex 1 is above water
+
+	jal	ClipEdge12		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)	; copy dry texture coords
+
+	jal	ClipEdge01		; clip entering edge
+	nop
+
+	j	MakeClippedTri
+	move	t0,s1
+
+
+.Tri01W2D ; vertex 2 is above water
+
+	jal	ClipEdge20		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)	; copy dry texture coords
+
+	jal	ClipEdge12		; clip entering edge
+	nop
+
+	j	MakeClippedTri
+	move	t0,s2
+
+
+.Quad	; clip a quad to the water plane
+
+	and	t7,t3,t7		; vertex 3 wet bit
+
+	bnez	t4,.Quad0W
+	nop
+
+	bnez	t5,.Quad0D1W
+	nop
+
+	bnez	t6,.Quad01D2W
+	nop
+
+	; vertex 3 is below water
+
+	addu	t0,s0,v1		; force upper vertex dry (in case of concave or nonplanar quad)
+	lhu	t1,6(t0)
+	nop
+	andi	t1,t1,$FF7F
+	ori	t1,t1,$8000
+	sh	t1,6(t0)
+
+	jal	CopyTri
+	nop
+
+	if PSXVERSION>=$20004
+	; K: Version 20004 and above stores the vertex indices in single bytes.
+	srl	s0,s0,3	; K: Indices are stored unshifted.
+	srl	s1,s1,3
+	srl	s2,s2,3
+	sb	s2,FACE_VERTEXNUMS+0(a2)
+	sb	s0,FACE_VERTEXNUMS+1(a2)
+	sb	s1,FACE_VERTEXNUMS+2(a2)
+	sb	s1,FACE_VERTEXNUMS+3(a2)
+	sll	s0,s0,3	; Have to shift them back again because they're used later.
+	sll	s1,s1,3
+	sll	s2,s2,3
+	else
+	sh	s2,FACE_VERTEXNUMS+0(a2)
+	sh	s0,FACE_VERTEXNUMS+2(a2)
+	sh	s1,FACE_VERTEXNUMS+4(a2)
+	sh	s1,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	lhu	t0,FACE_TEXTURE+8(a0)
+	lhu	t1,FACE_TEXTURE(a0)
+	lhu	t2,FACE_TEXTURE+4(a0)
+	sh	t0,FACE_TEXTURE(a2)
+	sh	t1,FACE_TEXTURE+4(a2)
+	sh	t2,FACE_TEXTURE+8(a2)
+
+	srl	t0,t8,16
+	addu	a2,a2,t0
+
+	jal	ClipEdge32		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge13		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s2
+	j	MakeClippedQuad
+	move	t1,s1
+
+
+.Quad01D2W
+	bnez	t7,.Quad01D23W
+	nop
+
+	; vertex 2 is below water
+
+	addu	t0,s1,v1		; force upper vertex dry (in case of concave or nonplanar quad)
+	lhu	t1,6(t0)
+	nop
+	andi	t1,t1,$FF7F
+	ori	t1,t1,$8000
+	sh	t1,6(t0)
+
+	jal	CopyTri
+	nop
+
+	if PSXVERSION>=$20004
+	; Version 20004 and above stores the vertex indices in single bytes.
+	srl	s0,s0,3
+	srl	s1,s1,3
+	srl	s3,s3,3
+	sb	s0,FACE_VERTEXNUMS+0(a2)
+	sb	s1,FACE_VERTEXNUMS+1(a2)
+	sb	s3,FACE_VERTEXNUMS+2(a2)
+	sb	s3,FACE_VERTEXNUMS+3(a2)
+	sll	s0,s0,3
+	sll	s1,s1,3
+	sll	s3,s3,3
+	else
+	sh	s0,FACE_VERTEXNUMS+0(a2)
+	sh	s1,FACE_VERTEXNUMS+2(a2)
+	sh	s3,FACE_VERTEXNUMS+4(a2)
+	sh	s3,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	lhu	t0,FACE_TEXTURE(a0)
+	lhu	t1,FACE_TEXTURE+4(a0)
+	lhu	t2,FACE_TEXTURE+10(a0)
+	sh	t0,FACE_TEXTURE(a2)
+	sh	t1,FACE_TEXTURE+4(a2)
+	sh	t2,FACE_TEXTURE+8(a2)
+
+	srl	t0,t8,16
+	addu	a2,a2,t0
+
+	jal	ClipEdge20		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge32		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s0
+	j	MakeClippedQuad
+	move	t1,s3
+
+
+.Quad01D23W ; vertices 0 & 1 are above water
+
+	jal	ClipEdge20		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge13		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s0
+	j	MakeClippedQuad
+	move	t1,s1
+
+
+.Quad0D1W
+	bnez	t6,.Quad0D123W
+	nop
+
+	bnez	t7,.Quad02D13W
+	nop
+
+	; vertex 1 is below water
+
+	addu	t0,s2,v1		; force upper vertex dry (in case of concave or nonplanar quad)
+	lhu	t1,6(t0)
+	nop
+	andi	t1,t1,$FF7F
+	ori	t1,t1,$8000
+	sh	t1,6(t0)
+
+	jal	CopyTri
+	nop
+
+	if PSXVERSION>=$20004
+	; Version 20004 and above stores the vertex indices in single bytes.
+	srl	s0,s0,3
+	srl	s2,s2,3
+	srl	s3,s3,3
+	sb	s3,FACE_VERTEXNUMS+0(a2)
+	sb	s2,FACE_VERTEXNUMS+1(a2)
+	sb	s0,FACE_VERTEXNUMS+2(a2)
+	sb	s0,FACE_VERTEXNUMS+3(a2)
+	sll	s0,s0,3
+	sll	s2,s2,3
+	sll	s3,s3,3
+	else
+	sh	s3,FACE_VERTEXNUMS+0(a2)
+	sh	s2,FACE_VERTEXNUMS+2(a2)
+	sh	s0,FACE_VERTEXNUMS+4(a2)
+	sh	s0,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	lhu	t0,FACE_TEXTURE+10(a0)
+	lhu	t1,FACE_TEXTURE+8(a0)
+	lhu	t2,FACE_TEXTURE(a0)
+	sh	t0,FACE_TEXTURE(a2)
+	sh	t1,FACE_TEXTURE+4(a2)
+	sh	t2,FACE_TEXTURE+8(a2)
+
+	srl	t0,t8,16
+	addu	a2,a2,t0
+
+	jal	ClipEdge13		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge01		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s3
+	j	MakeClippedQuad
+	move	t1,s0
+
+
+.Quad02D13W ; vertices 0 & 2 are above water
+
+	jal	ClipEdge32		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge01		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s2
+	j	MakeClippedQuad
+	move	t1,s0
+
+
+.Tri0D12W ; vertex 0 is above water
+.Quad0D123W ; same code for tri and quad
+
+	jal	ClipEdge01		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge20		; clip entering edge
+	nop
+
+
+	j	MakeClippedTri
+	move	t0,s0
+
+
+.Quad0W
+	bnez	t5,.Quad01W
+	nop
+
+	bnez	t6,.Quad02W1D
+	nop
+
+	; vertex 0 is below water
+
+	addu	t0,s3,v1		; force upper vertex dry (in case of concave or nonplanar quad)
+	lhu	t1,6(t0)
+	nop
+	andi	t1,t1,$FF7F
+	ori	t1,t1,$8000
+	sh	t1,6(t0)
+
+	jal	CopyTri
+	nop
+
+	if PSXVERSION>=$20004
+	; Version 20004 and above stores the vertex indices in single bytes.
+	srl	s1,s1,3
+	srl	s2,s2,3
+	srl	s3,s3,3
+	sb	s1,FACE_VERTEXNUMS+0(a2)
+	sb	s3,FACE_VERTEXNUMS+1(a2)
+	sb	s2,FACE_VERTEXNUMS+2(a2)
+	sb	s2,FACE_VERTEXNUMS+3(a2)
+	sll	s1,s1,3
+	sll	s2,s2,3
+	sll	s3,s3,3
+	else
+	sh	s1,FACE_VERTEXNUMS+0(a2)
+	sh	s3,FACE_VERTEXNUMS+2(a2)
+	sh	s2,FACE_VERTEXNUMS+4(a2)
+	sh	s2,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	lhu	t0,FACE_TEXTURE+4(a0)
+	lhu	t1,FACE_TEXTURE+10(a0)
+	lhu	t2,FACE_TEXTURE+8(a0)
+	sh	t0,FACE_TEXTURE(a2)
+	sh	t1,FACE_TEXTURE+4(a2)
+	sh	t2,FACE_TEXTURE+8(a2)
+
+	srl	t0,t8,16
+	addu	a2,a2,t0
+
+	jal	ClipEdge01		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge20		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s1
+	j	MakeClippedQuad
+	move	t1,s2
+
+
+.Quad02W1D
+	bnez	t7,.Quad023W1D
+	nop
+
+	; vertices 1 & 3 are above water
+
+	jal	ClipEdge01		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge32		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s1
+	j	MakeClippedQuad
+	move	t1,s3
+
+
+.Quad023W1D ; vertex 1 is above water
+
+	jal	ClipEdge13		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge01		; clip entering edge
+	nop
+
+	j	MakeClippedTri
+	move	t0,s1
+
+
+.Quad01W
+	bnez	t6,.Quad012W3D
+	nop
+
+	bnez	t7,.Quad013W2D
+	nop
+
+	; vertices 2 & 3 are above water
+
+	jal	ClipEdge13		; clip entering edge
+	nop
+
+	srl	t7,t7,16
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge20		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE+4(a2)
+
+	move	t0,s3
+	j	MakeClippedQuad
+	move	t1,s2
+
+
+.Quad013W2D ; vertex 2 is above water
+
+	jal	ClipEdge20		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge32		; clip entering edge
+	nop
+
+	j	MakeClippedTri
+	move	t0,s2
+
+
+.Quad012W3D ; vertex 3 is above water
+
+	jal	ClipEdge32		; clip leaving edge
+	nop
+
+	sh	t7,FACE_TEXTURE(a2)
+
+	jal	ClipEdge13		; clip entering edge
+	nop
+
+	j	MakeClippedTri
+	move	t0,s3
+
+
+ClipEdge01
+
+	move	t0,s0
+	move	t1,s1
+	lhu	t2,FACE_TEXTURE(a0)
+	lhu	t3,FACE_TEXTURE+4(a0)
+	j	ClipEdge
+	nop
+
+ClipEdge12
+
+	move	t0,s1
+	move	t1,s2
+	lhu	t2,FACE_TEXTURE+4(a0)
+	lhu	t3,FACE_TEXTURE+8(a0)
+	j	ClipEdge
+	nop
+
+ClipEdge20
+
+	move	t0,s2
+	move	t1,s0
+	lhu	t2,FACE_TEXTURE+8(a0)
+	lhu	t3,FACE_TEXTURE(a0)
+	j	ClipEdge
+	nop
+
+ClipEdge13
+
+	move	t0,s1
+	move	t1,s3
+	lhu	t2,FACE_TEXTURE+4(a0)
+	lhu	t3,FACE_TEXTURE+10(a0)
+	j	ClipEdge
+	nop
+
+ClipEdge32
+
+	move	t0,s3
+	move	t1,s2
+	lhu	t2,FACE_TEXTURE+10(a0)
+	lhu	t3,FACE_TEXTURE+8(a0)
+	j	ClipEdge
+	nop
+
+
+ClipEdge ; to clip one edge p0->p1 (addresses in t0,t1; uv's in t2,t3)
+
+	sll	t7,t3,16		; pack texture coords for later
+	or	t7,t7,t2
+
+	addu	t2,t0,v1		; get p0...
+	lw	t0,0+MAXVERTICES*8(t2)	; x,y
+	lh	t2,4(t2)		; z
+	ctc2	t0,C2_R11R12
+	ctc2	t2,C2_R13R21
+
+	addu	t3,t1,v1		; get p1...
+	lw	t1,0+MAXVERTICES*8(t3)	; x,y
+	lh	t3,4(t3)		; z
+	ctc2	t1,C2_R31R32
+	ctc2	t3,C2_R33
+
+	la	t9,WaterNormal
+	lwc2	C2_VXY0,0(t9)
+	lwc2	C2_VZ0, 4(t9)
+
+	nop
+	nop
+
+	MVMVA	1,0,0,3,0
+
+	lh	t6,6(t9)		; -n.p
+
+	mfc2	t4,C2_MAC1		; n.p0
+	mfc2	t5,C2_MAC3		; n.p1
+
+	subu	t6,zero,t6
+	subu	t6,t6,t4		; n.(p-p0)
+	subu	t5,t5,t4		; n.(p1-p0)
+	sll	t6,t6,12		; 4096*n.(p-p0)
+	div	t6,t5
+
+	; convert vectors to 32-bit format and transfer to gte while waiting for divide result
+
+	sra	t4,t0,16		; y0
+	sll	t0,t0,16
+	sra	t0,t0,16		; x0
+
+	mtc2	t0,C2_MAC1
+	mtc2	t4,C2_MAC2
+	mtc2	t2,C2_MAC3
+
+	sra	t5,t1,16		; y1
+	sll	t1,t1,16
+	sra	t1,t1,16		; x1
+
+	subu	t1,t1,t0		; x1-x0
+	subu	t5,t5,t4		; y1-y0
+	subu	t3,t3,t2		; z1-z0
+
+	mtc2	t1,C2_IR1
+	mtc2	t5,C2_IR2
+	mtc2	t3,C2_IR3
+
+	; also set up rot and trans ready for projection of camera-relative coords
+
+	li	t9,$1000
+	ctc2	t9,C2_R11R12
+	ctc2	zero,C2_R13R21
+	ctc2	t9,C2_R22R23
+	ctc2	zero,C2_R31R32
+	ctc2	t9,C2_R33
+
+	ctc2	zero,C2_TRX
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+
+	mflo	t9			; n.(p-p0)/n.(p1-p0) with 12 bits of fraction
+	mtc2	t9,C2_IR0
+
+	nop
+	nop
+
+	; now do the interpolation for xyz
+
+	GPL	1
+
+	; and project to get the XY of the clipped point
+
+	mfc2	t1,C2_MAC1
+	mfc2	t2,C2_MAC2
+	mfc2	t3,C2_MAC3
+
+	andi	t1,t1,$FFFF
+	sll	t2,t2,16
+	or	t1,t1,t2
+
+	mtc2	t1,C2_VXY0
+	mtc2	t3,C2_VZ0
+
+	nop
+	nop
+
+	RTPS
+
+	sw	t1,0+8*MAXVERTICES(s6)	; store (x,y)
+	lui	t0,$FF00		; force outcode to by dry (amongst other things)
+	andi	t3,t3,$FFFF
+	or	t3,t3,t0
+	sw	t3,4(s6)		; store z and outcode
+
+	swc2	C2_SXY2,0(s6)		; store (X,Y)
+
+	addiu	s6,s6,8			; step new vertex pointer
+
+	; now interpolate uv
+
+	sll	t0,t7,4
+	andi	t0,t0,$FF0		; u0
+	srl	t1,t7,4
+	andi	t1,t1,$FF0		; v0
+
+	mtc2	t0,C2_MAC1
+	mtc2	t1,C2_MAC2
+
+	srl	t2,t7,12
+	andi	t2,t2,$FF0		; u1
+	srl	t3,t7,20
+	andi	t3,t3,$FF0		; v1
+
+	subu	t2,t2,t0		; u1-u0
+	subu	t3,t3,t1		; v1-v0
+
+	mtc2	t2,C2_IR1
+	mtc2	t3,C2_IR2
+
+	mtc2	t9,C2_IR0
+
+	nop
+	nop
+
+	GPL	1			; result will appear in C2_RGB2
+
+	jr	ra
+	nop
+
+
+
+; build a triangle using info from the source poly
+; remaining fields will be filled in with the clipped parameters
+
+MakeClippedTri
+
+	if PSXVERSION>=$20004
+	; store vertex indices in clipped triangle
+	lw	t9,ProjectedVertices
+	srl	t0,t0,3
+	sb	t0,FACE_VERTEXNUMS+0(a2)
+	subu	t9,s6,t9
+	addiu	t9,t9,-16
+	srl	t9,t9,3
+	sb	t9,FACE_VERTEXNUMS+1(a2)
+	addiu	t9,t9,1
+	sb	t9,FACE_VERTEXNUMS+2(a2)
+	sb	t9,FACE_VERTEXNUMS+3(a2)
+	else
+	; store vertex indices in clipped triangle
+	lw	t9,ProjectedVertices
+	sh	t0,FACE_VERTEXNUMS+0(a2)
+	subu	t9,s6,t9
+	addiu	t9,t9,-16
+	sh	t9,FACE_VERTEXNUMS+2(a2)
+	addiu	t9,t9,8
+	sh	t9,FACE_VERTEXNUMS+4(a2)
+	sh	t9,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	; store interpolated texture coords
+	mfc2	t1,C2_RGB0
+	mfc2	t2,C2_RGB2
+	sh	t1,FACE_TEXTURE+4(a2)
+	sh	t2,FACE_TEXTURE+8(a2)
+
+	; now copy all needed fields from the source poly
+	lw	t0,FACE_FLAGS(a0)
+	lw	t1,FACE_COLOUR(a0)
+	lw	t2,FACE_NORMAL(a0)
+	lh	t3,FACE_TEXTURE+2(a0)	; clut
+	lh	t4,FACE_TEXTURE+6(a0)	; tpage
+	lw	t5,FACE_TEXWIN(a0)	; may not be needed, but it's ok to copy it if not (it just gets overwritten)
+
+	ori	t0,t0,FACEFLAGS_TRIANGLE; force a triangle
+
+	sw	t0,FACE_FLAGS(a2)
+	sw	t1,FACE_COLOUR(a2)
+	sw	t2,FACE_NORMAL(a2)
+	sh	t3,FACE_TEXTURE+2(a2)
+	sh	t4,FACE_TEXTURE+6(a2)
+	sw	t5,FACE_TEXWIN(a2)
+
+	j	Countit
+	nop
+
+
+CopyTri
+	lw	t0,FACE_FLAGS(a0)
+	lw	t1,FACE_COLOUR(a0)
+	lw	t2,FACE_NORMAL(a0)
+	lh	t3,FACE_TEXTURE+2(a0)	; clut
+	lh	t4,FACE_TEXTURE+6(a0)	; tpage
+	lw	t5,FACE_TEXWIN(a0)	; may not be needed, but it's ok to copy it if not (it just gets overwritten)
+
+	ori	t0,t0,FACEFLAGS_TRIANGLE; force a triangle
+
+	sw	t0,FACE_FLAGS(a2)
+	sw	t1,FACE_COLOUR(a2)
+	sw	t2,FACE_NORMAL(a2)
+	sh	t3,FACE_TEXTURE+2(a2)
+	sh	t4,FACE_TEXTURE+6(a2)
+	sw	t5,FACE_TEXWIN(a2)
+
+	; count it
+	lhu	t9,SCRATCH_CLIPCOUNT(s7)
+	nop
+	addiu	t9,t9,1
+	sh	t9,SCRATCH_CLIPCOUNT(s7)
+
+	jr	ra
+	nop
+
+
+; build a quad using info from the source poly
+; remaining fields will be filled in with the clipped parameters
+
+MakeClippedQuad
+
+	if PSXVERSION>=$20004
+	; store vertex indices in clipped quad
+	lw	t9,ProjectedVertices
+	srl	t0,t0,3
+	srl	t1,t1,3
+	sb	t0,FACE_VERTEXNUMS+0(a2)
+	sb	t1,FACE_VERTEXNUMS+1(a2)
+	subu	t9,s6,t9
+	addiu	t9,t9,-16
+	srl	t9,t9,3
+	sb	t9,FACE_VERTEXNUMS+2(a2)
+	addiu	t9,t9,1
+	sb	t9,FACE_VERTEXNUMS+3(a2)
+	else
+	; store vertex indices in clipped quad
+	lw	t9,ProjectedVertices
+	sh	t0,FACE_VERTEXNUMS+0(a2)
+	sh	t1,FACE_VERTEXNUMS+2(a2)
+	subu	t9,s6,t9
+	addiu	t9,t9,-16
+	sh	t9,FACE_VERTEXNUMS+4(a2)
+	addiu	t9,t9,8
+	sh	t9,FACE_VERTEXNUMS+6(a2)
+	endif
+
+	; store interpolated texture coords
+	mfc2	t1,C2_RGB0
+	mfc2	t2,C2_RGB2
+	sh	t1,FACE_TEXTURE+8(a2)
+	sh	t2,FACE_TEXTURE+10(a2)
+
+	; now copy all needed fields from the source poly
+	lw	t0,FACE_FLAGS(a0)
+	lw	t1,FACE_COLOUR(a0)
+	lw	t2,FACE_NORMAL(a0)
+	lh	t3,FACE_TEXTURE+2(a0)	; clut
+	lh	t4,FACE_TEXTURE+6(a0)	; tpage
+	lw	t5,FACE_TEXWIN(a0)	; may not be needed, but it's ok to copy it if not (it just gets overwritten)
+
+	li	t9,FACEFLAGS_TRIANGLE
+	nor	t9,t9,zero
+	and	t0,t0,t9		; force a quad
+
+	sw	t0,FACE_FLAGS(a2)
+	sw	t1,FACE_COLOUR(a2)
+	sw	t2,FACE_NORMAL(a2)
+	sh	t3,FACE_TEXTURE+2(a2)
+	sh	t4,FACE_TEXTURE+6(a2)
+	sw	t5,FACE_TEXWIN(a2)
+
+	
+
+Countit	lhu	t9,SCRATCH_CLIPCOUNT(s7)
+	nop
+	addiu	t9,t9,1
+	sh	t9,SCRATCH_CLIPCOUNT(s7)
+
+Clipped	srl	t0,t8,16
+	addu	a2,a2,t0		; step new face pointer
+
+	; store pointers
+	sw	s6,SCRATCH_FREEVERTEX(s7)
+	sw	a2,SCRATCH_CLIPPEDFACE(s7)
+
+	; go to next poly, but don't actually add to the gpu list
+	j	Reject
+	nop	
+
+
+  endif
+
+
+;-----------------------------------------------------------------------------
+
+
+
+
+;---------------------------------------------------;
+; Fast version using scratchpad and Aplin outcoding ;
+; Max 1024/8=128 vertices                           ;
+;---------------------------------------------------;
+
+M3dAsm_TransformAndOutcodeVerticesFast__FP7SVECTORiP6VECTOR
+
+	xdef	M3dAsm_TransformAndOutcodeVerticesFast__FP7SVECTORiP6VECTOR
+
+; Registers on entry:
+; a0: input pointer
+; a1: number of	points
+; a2: SVECTOR *pPosnRelCam
+
+; Returns with:
+; v0: cumulative outcode
+
+
+	lw	t6,0(a2)	; get object minus cam coords
+	lw	t7,4(a2)
+	andi	t6,t6,$FFFF
+	sll	t7,t7,16	; y is left-shifted because y appears in the hi16 of packed vertex coords
+	lw	t8,8(a2)
+
+	ctc2	zero,C2_TRX	; not using gte	translation in rtps
+	ctc2	zero,C2_TRY
+	ctc2	zero,C2_TRZ
+
+	lw	t0,0(a0)	; get 1st vertex x,y
+	lw	t1,4(a0)	; get 1st vertex z
+
+	addu	t2,t0,t6	; add object position minus camera position
+	addu	t3,t0,t7
+	xor	t0,t2,t3
+	andi	t0,t0,$FFFF
+	xor	t0,t0,t3
+	addu	t1,t1,t8
+
+	mtc2	t0,C2_VXY0	; move to gte
+	mtc2	t1,C2_VZ0
+
+	beq	a1,zero,.Done	; quit if there	aint no	point
+	li	v0,-1
+
+	RTPS			; transform
+
+	lw	t4,pCurrentViewport
+
+	addiu	a0,a0,8		; step source pointer
+
+	lw	t0,0(a0)	; get 2nd vertex x,y
+	lw	t1,4(a0)	; get 2nd vertex z
+
+	addu	t2,t0,t6	; add object position minus camera position
+	addu	t3,t0,t7
+	xor	t0,t2,t3
+	andi	t0,t0,$FFFF
+	xor	t0,t0,t3
+	addu	t1,t1,t8
+
+;	addiu	a1,a1,-1	; don't step counter so the right # of points is stored (who cares if we do extra RTPS's)
+
+	lui	v1,$1F80	; transformed vertices go on scratchpad
+  
+	lh	a2,10(t4)	; a2 = Yon
+	lw	t4,0(t4)	; t4 = (xR,yB)
+
+	lui	t5,$BFFF
+	ori	t5,t5,$BFFF	; mask for B & R Aplin outcode bits
+
+	lui	a3,$7FFF
+	ori	a3,a3,$7FFF	; mask for Yon & ~Yon bits
+
+	lui	t2,$8000
+	addu	a2,a2,t2	; toggle top bit of a2
+
+.loop	mfc2	t2,C2_SXY2	; get transformed vertex
+	mfc2	t3,C2_IR3
+
+	mtc2	t0,C2_VXY0	; move new vertex to gte
+	mtc2	t1,C2_VZ0
+
+	addiu	a0,a0,8		; step source pointer
+	addiu	a1,a1,-1	; step counter
+
+	RTPS			; transform
+
+	lw	t0,0(a0)	; get next vertex x,y
+
+	subu	t9,t2,t4	; Aplin outcoding on previous vertex
+	nor	t9,t9,t5
+	and	t2,t2,t5
+	or	t2,t2,t9
+
+	subu	t9,t3,a2	; put in Yon and ~Yon bits (15 and 31)
+	nor	t9,t9,a3
+	and	t2,t2,a3
+	or	t2,t2,t9
+
+	sw	t2,0(v1)	; store	(X,Y)
+        sh      t3,6(v1)        ; store rotated z (CE: moved this up to avoid stall)
+
+	lw	t1,4(a0)	; get next vertex z
+
+	and	v0,v0,t2	; 'and'	onto cumulative	outcode
+
+	; add object position minus camera position ensuring no carry from x into y
+	addu	t2,t0,t6	; lo16 of t2 is lo16 of sum
+	addu	t3,t0,t7	; hi16 of t3 is hi16 of sum
+	xor	t0,t2,t3	; put 'em together...
+	andi	t0,t0,$FFFF
+	xor	t0,t0,t3
+	addu	t1,t1,t8
+
+	bnez	a1,.loop
+	addiu	v1,v1,8		; step destination pointer
+
+.Done	jr	ra
+	nop
+
+
+; end of M3dAsm_TransformAndOutcodeVerticesFast__FP7SVECTORi
+
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;  NOTE - These routine should be together, so they share cache
+; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+;------------------------------;
+; The fast face rendering loop ;
+; Vertices from scratchpad     ;
+; No subdivision or lighting   ;
+;------------------------------;
+
+
+M3dAsm_ProcessPolysFast__FPUiP7SVECTORi
+
+	xdef	M3dAsm_ProcessPolysFast__FPUiP7SVECTORi
+
+; a0 = pFace
+; a1 = Normals <-normals aren't needed
+; a2 = NumFaces
+
+
+; unused: t5
+
+
+	beq	a2,zero,DoneFast
+	addiu	a3,a2,-1		; pre-adjust loop counter
+	la	a1,CurrentOrderingTable
+	lw	a1,(a1)
+
+	addiu	sp,sp,-28
+	sw	ra,0(sp)
+	sw	s0,4(sp)
+	sw	s1,8(sp)
+	sw	s2,12(sp)
+	sw	s3,16(sp)
+	sw	s7,20(sp)
+	sw	at,24(sp)
+
+	lw	v0,pPoly
+	lw	a2,pColourTable
+	lw	at,PolyBufferEnd
+	lui	s7,$1F80
+
+	sll	v0,v0,$08		; reset	top byte of v0
+	srl	v0,v0,$08		; for addPrim stuff
+
+	addiu	at,at,-100		; fudgefactor
+
+	lui	t4,$6000		; Aplin outcode mask
+	ori	t4,t4,$E000
+
+
+PolyLoopFast
+
+        if      0 ; Mike's version -------------------------------
+
+	 ; get vertex offsets
+
+	lw	s1,FACE_P0P1(a0)
+	lw	s3,FACE_P2P3(a0)
+
+	 ; unpack the vertex offsets, convert to pointers, and get 1st 3 SXY's
+
+	andi	s0,s1,$FFFF
+	addu	t0,s0,s7
+	lw	s0,0(t0)
+
+	srl	s1,s1,16
+	addu	t1,s1,s7
+	lw	s1,0(t1)
+
+	andi	s2,s3,$FFFF
+	addu	t2,s2,s7
+	lw	s2,0(t2)
+
+	sll	t9,s0,2
+	mtc2	t9,C2_SXY0
+	sll	t9,s1,2
+	mtc2	t9,C2_SXY1
+	sll	t9,s2,2
+	mtc2	t9,C2_SXY2
+
+	srl	s3,s3,16
+	addu	t3,s3,s7
+
+	NCLIP				; backface culling operation
+
+	lw	s3,0(t3)		; get 4th vertex
+	lw	t8,FACE_FLAGS(a0)	; get flags and face length
+
+	and	t7,s0,s1		; outcode culling...
+	and	t7,t7,s2
+	and	t7,t7,s3
+	bgez	t7,RejectFast
+	and	t7,t7,t4
+	bnez	t7,RejectFast
+	nop
+
+	mfc2	t6,C2_MAC0		; prepare for bfc
+
+	sll	t9,s3,2
+	mtc2	t9,C2_SXYP
+
+        else    ;--- Christer's slightly load-optimized version (6c faster) --------
+
+    lw	s1,FACE_P0P1(a0)        ; get vertex offsets
+
+	 ; unpack the vertex offsets, convert to pointers, and get 1st 3 SXY's
+
+
+	; ----------------------- Ken addition -----------------------------------
+	if PSXVERSION>=$20004
+	nop	; To prevent a hazardous interaction
+
+	; Ooh, the vertices are packed into bytes, which means they're all in s1
+	; in the order (v3,v2,v1,v0)
+
+	; Calculate t0,t1,t2,t3 and load s0,s1,s2 as in the original word-vertices
+	; code.
+	andi	t0,s1,$FF	; Mask off vertex 0 and put it in t0
+	sll		t0,t0,3		; Need to shift left by 3 since this won't have been done already
+						; as with the word vertices.
+	addu	t0,t0,s7
+	lw		s0,0(t0)	; That's s0 done.
+	srl		s1,s1,8
+	andi	t1,s1,$FF
+	sll		t1,t1,3
+	addu	t1,t1,s7
+	; Don't load s1 yet cos we still need it.
+	srl		s1,s1,8
+	andi	t2,s1,$FF
+	sll		t2,t2,3
+	addu	t2,t2,s7
+	lw		s2,0(t2)	; That's s2 done.
+	srl		s1,s1,8
+	andi	t3,s1,$FF
+	lw		s1,0(t1)	; Finished with what was in s1, so get the new s1.
+	sll		t3,t3,3
+	addu	t3,t3,s7	; That's t3 calculated, but don't need to get s3 yet.
+
+	; ------------------------------------------------------------------------
+	else
+	lw	s3,FACE_P2P3(a0)
+	andi	s0,s1,$FFFF
+	addu	t0,s0,s7
+	srl	s1,s1,16
+	addu	t1,s1,s7
+	lw	s0,0(t0)
+	lw	s1,0(t1)
+
+	andi	s2,s3,$FFFF
+	addu	t2,s2,s7
+
+	srl	s3,s3,16
+	addu	t3,s3,s7
+
+	lw	s2,0(t2)
+	endif
+
+        sll     t7,s0,2
+        sll     t8,s1,2
+        mtc2    t7,C2_SXY0
+        mtc2    t8,C2_SXY1
+	sll	t9,s2,2
+	mtc2	t9,C2_SXY2
+
+	lw	s3,0(t3)		; get 4th vertex
+        and     t7,s0,s1                ; outcode cull v0
+        and     t7,t7,s2                ; outcode cull v1
+
+	NCLIP				; backface culling operation
+
+	lw	t8,FACE_FLAGS(a0)	; get flags and face length
+
+        and     t7,t7,s3                ; outcode cull v2
+	bgez	t7,RejectFast
+        and     t7,t7,t4                ; outcode cull mask
+	bnez	t7,RejectFast
+	nop
+
+	mfc2	t6,C2_MAC0		; prepare for bfc
+
+	sll	t9,s3,2
+	mtc2	t9,C2_SXYP
+
+        endif   ; ----------------------------------------------------
+
+	andi	t9,t8,FF_TRN|FF_TRL
+	nop
+	NCLIP				; set off 2nd nclip for non-planar quads
+
+	beqz	t9,RejectFast		; invisibility check
+	nop
+
+
+	 ; nclip backface culling
+
+	lhu	t9,SCRATCH_REFLECTED(s7); check for reflected geometry
+	mfc2	t7,C2_MAC0
+	bnez	t9,.FaceReflected
+	nop
+
+	bgtz	t6,.accept
+	nop
+	bgez	t7,RejectFast
+	nop
+	j	.accept
+	nop
+
+.FaceReflected
+	bltz	t6,.accept
+	nop
+	blez	t7,RejectFast
+	nop
+.accept
+	 ; check for poly buffer overflow
+
+	sltu	t9,v0,at
+	beqz	t9,Done
+
+	sw	s0,xy0_f3(v0)		; store 1st vertex (same offset for all poly types)
+
+	lh	t0,6(t0)		; get z's
+	lh	t1,6(t1)
+	lh	t2,6(t2)
+	lh	t3,6(t3)
+
+	move	t6,t0			; get max of 4 z's (in t6)
+	subu	t9,t6,t1
+	bgez	t9,.max1
+	nop
+	move	t6,t1
+.max1	subu	t9,t6,t2
+	bgez	t9,.max2
+	nop
+	move	t6,t2
+.max2	subu	t9,t6,t3
+	bgez	t9,.max3
+	nop
+	move	t6,t3
+.max3
+
+	; get fade colour
+	lw	t1,SCRATCH_FADECOLOUR(s7)
+
+	; test for depthcueing
+	lh	t7,SCRATCH_DPQMIN(s7)
+	lh	t9,SCRATCH_DPQSHIFT(s7)
+	subu	t7,t6,t7
+	blez	t7,.setdpq
+	move	t0,zero
+
+	bltz	t1,.nofadepoly
+	nop
+
+	; if depthcued, set to transparent 100:100
+	ori	t8,t8,FF_TRN|FF_TRL|FF_TRH
+	xori	t8,t8,FF_TRH
+.nofadepoly
+
+	; calculate dpq
+	bltz	t9,.rshift
+	subu	t0,zero,t9
+	j	.setdpq
+	sll	t0,t7,t9
+.rshift	sra	t0,t7,t0
+
+	; set depthcueing
+.setdpq	mtc2	t0,C2_IR0
+	sh	t0,SCRATCH_DPQ(s7)
+
+
+	andi	t9,t8,FACEFLAGS_VERTEXCOLOURS
+	bnez	t9,.Vertex
+	nop
+
+
+.Face	lwc2	C2_RGB,FACE_RGB(a0)
+
+	andi	t9,t8,FACEFLAGS_TEXTURED
+	nop
+	DPCS
+
+	bnez	t9,.FT
+	nop
+
+
+.F	sw	s1,xy1_f3(v0)
+	sw	s2,xy2_f3(v0)
+
+	mfc2	t0,C2_RGB2
+
+	andi	t9,t8,FF_TRI
+	beqz	t9,.F4
+	nop
+
+
+.F3	lui	t9,code_f3<<8
+	j	LinkFast
+	lui	t2,len_f3<<8
+
+
+.F4	sw	s3,xy3_f4(v0)
+	lui	t9,code_f4<<8
+	j	LinkFast
+	lui	t2,len_f4<<8
+
+
+
+.FT	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	sw	s1,xy1_ft3(v0)
+	sw	s2,xy2_ft3(v0)
+
+	andi	t9,t8,FF_TRL|FF_TRH	; set transparency rate...
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+	sw	t1,uv0_ft3(v0)		; u0,v0,clut
+	sw	t2,uv1_ft3(v0)		; u1,v1,tpage
+	sw	t3,uv2_ft3(v0)		; u2,v2,pad1
+
+	mfc2	t0,C2_RGB2
+
+	andi	t9,t8,FF_TRI
+	beqz	t9,.FT4
+	nop
+
+
+.FT3	lui	t9,code_ft3<<8
+	j	LinkFast
+	lui	t2,len_ft3<<8
+
+
+.FT4	sw	s3,xy3_ft4(v0)
+	srl	t3,t3,16
+	sw	t3,uv3_ft4(v0)
+	lui	t9,code_ft4<<8
+	j	LinkFast
+	lui	t2,len_ft4<<8
+
+
+
+.Vertex
+        if      0 ;--- Mike's version ---------
+
+        lw      t7,FACE_RGB(a0)
+	nop
+
+	sll	t0,t7,2
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+	lwc2	C2_RGB0,(t0)
+	srl	t0,t7,6
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+	lwc2	C2_RGB1,(t0)
+	srl	t0,t7,14
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+	lwc2	C2_RGB2,(t0)
+
+	andi	t9,t8,FF_TEX
+	nop
+
+        else    ;--- Christer's 2 cycle faster (oooh) version ---
+
+        lw      t7,FACE_RGB(a0)
+	nop
+
+	sll	t0,t7,2
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+        lw      t1,(t0)
+	srl	t0,t7,6
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+        lw      t2,(t0)
+	srl	t0,t7,14
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+        mtc2    t1,C2_RGB0
+        mtc2    t2,C2_RGB1
+	lwc2	C2_RGB2,(t0)
+
+	andi	t9,t8,FF_TEX
+	nop
+
+        endif   ;-----------------------
+
+	DPCT
+
+	bnez	t9,.GT
+	nop
+
+
+.G	sw	s1,xy1_g3(v0)
+	sw	s2,xy2_g3(v0)
+
+	srl	t0,t7,22
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+	lwc2	C2_RGB,(t0)
+
+	mfc2	t0,C2_RGB0
+	swc2	C2_RGB1,rgb1_g3(v0)
+	swc2	C2_RGB2,rgb2_g3(v0)
+
+	DPCS
+
+	andi	t9,t8,FF_TRI
+	beqz	t9,.G4
+	nop
+
+
+.G3	lui	t9,code_g3<<8
+	j	LinkFast
+	lui	t2,len_g3<<8
+
+
+.G4	sw	s3,xy3_g4(v0)
+	lui	t9,code_g4<<8
+	swc2	C2_RGB2,rgb3_g4(v0)
+	j	LinkFast
+	lui	t2,len_g4<<8
+
+
+        if      0 ;--- Mike's version ---------
+
+.GT	sw	s1,xy1_gt3(v0)
+	sw	s2,xy2_gt3(v0)
+
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+        else    ;--- Christer's version (no forced W-buffer flush, 4c faster)
+.GT
+	lw	t1,FACE_TEXTURE+0(a0)
+	lw	t2,FACE_TEXTURE+4(a0)
+	lw	t3,FACE_TEXTURE+8(a0)
+
+	andi	t9,t8,FF_TRL|FF_TRH
+	sll	t9,t9,14		; need to be bits 5 & 6	of the tpage
+	or	t2,t2,t9
+
+        sw      s1,xy1_gt3(v0)
+	sw	s2,xy2_gt3(v0)
+
+        endif   ;----------------------------
+
+	sw	t1,uv0_gt3(v0)		; u0,v0,clut
+	sw	t2,uv1_gt3(v0)		; u1,v1,tpage
+	sw	t3,uv2_gt3(v0)		; u2,v2,pad1
+
+	srl	t0,t7,22
+	andi	t0,t0,$3FC
+	addu	t0,t0,a2
+	lwc2	C2_RGB,(t0)
+
+	mfc2	t0,C2_RGB0
+	swc2	C2_RGB1,rgb1_gt3(v0)
+	swc2	C2_RGB2,rgb2_gt3(v0)
+
+	; Dave addition: 07/06/99
+	; The following 2 instructions clear the top 8 bits (the 'code' portion) of t0.
+	; This bits were occasionally remaining set such that polys were being incorrectly
+	; flagged as transparent, which was causing problems for the fade-to-transparent code.
+	sll		t0,8
+	srl		t0,8
+
+	DPCS
+
+	andi	t9,t8,FF_TRI
+	beqz	t9,.GT4
+	nop
+
+
+.GT3	lui	t9,code_gt3<<8
+	j	LinkFast
+	lui	t2,len_gt3<<8
+
+
+.GT4	sw	s3,xy3_gt4(v0)
+	srl	t3,t3,16
+	sw	t3,uv3_gt4(v0)		; u3,v3,pad2
+	lui	t9,code_gt4<<8
+	swc2	C2_RGB2,rgb3_gt4(v0)
+	j	LinkFast
+	lui	t2,len_gt4<<8
+
+
+
+
+
+LinkFast
+
+	or	t0,t0,t9		; put gpu code into upper byte of rgb
+	andi	t9,t8,FF_TRN		; is it semi-transparent?
+	sll	t9,t9,19		; bit 1	of the gpu code	byte
+	or	t0,t0,t9
+	sw	t0,rgb0_f3(v0)		; all poly types have their rgb0 at the same offset
+
+	INCPOLYCOUNTER
+
+	andi	t9,t8,FF_PRI|FF_PRI2	; test pushback flags
+	beqz	t9,.nopush
+	andi	t9,t8,FF_PRI
+	bnez	t9,.addit
+	lh	t1,SCRATCH_OTPUSHBACK(s7)
+	lh	t1,SCRATCH_OTPUSHBACK2(s7)
+.addit	nop
+	addu	t6,t6,t1
+        bgez    t6,.nopush
+        nop
+        move    t6,zero                 ; don't allow value to go negative
+.nopush
+	sltiu	t1,t6,OTSIZE*4
+	bnez	t1,.z_ok
+	andi	t1,t6,$FFFC
+	li	t1,(OTSIZE-1)*4
+.z_ok	add	t0,t1,a1		; t0 = addr of ot slot head pointer
+	andi	t9,t8,FF_TIL
+	bnez	t9,LinktwinFast
+	lw	t1,0(t0)		; t1 = ot slot head pointer
+	sw	v0,0(t0)		; setaddr(ot, p);
+	or	t1,t1,t2		; merge	addr and len fields
+	sw	t1,0(v0)		; setaddr(p, getaddr(ot));
+
+
+	srl	t2,t2,22
+
+	; check for non-textured semi-transparent
+	andi	t9,t8,FF_TRN|FF_TEX
+	xori	t9,t9,FF_TRN
+	beqz	t9,LinktpageFast
+	addu	t2,t2,4
+
+	addu	v0,v0,t2		; step pPoly
+
+
+FadeFast; need a fade poly?
+	lh	t1,SCRATCH_DPQ(s7)
+	lw	t2,SCRATCH_FADECOLOUR(s7)
+	beqz	t1,RejectFast
+	nop
+	bgezal	t2,AddFadePoly
+	nop
+
+RejectFast
+	srl	t8,t8,16
+	addu	a0,a0,t8
+
+	bnez	a3,PolyLoopFast
+	addiu	a3,a3,-1
+
+
+	la	t0,pPoly
+	sw	v0,(t0)
+
+	lw	ra,0(sp)
+	lw	s0,4(sp)
+	lw	s1,8(sp)
+	lw	s2,12(sp)
+	lw	s3,16(sp)
+	lw	s7,20(sp)
+	lw	at,24(sp)
+	addiu	sp,sp,28
+
+
+DoneFast
+	jr	ra
+	nop
+
+
+LinktwinFast
+
+	move	t3,v0
+
+; t3 = address of first	tag in chain to	be linked
+; v0 = address of last	tag in chain to	be linked
+; t2 = len << 24
+; t0 = address	of ot slot head	pointer
+; t1 = contents	of ot slot head	pointer
+
+	lui	t9,3<<8			; restoring tw has 3 longwords
+	addu	t2,t2,t9		; augment gpu prim length
+	lw	t9,FACE_TEXWIN(a0)
+	or	t1,t1,t2		; merge	addr and len fields
+	sw	t1,0(v0)		; set tag of last poly in chain
+
+	srl	t2,t2,22		; get actual length in bytes
+	addiu	t2,t2,4			; add 4	for the	tag
+	addu	v0,v0,t2		; step pPoly to	main tw
+
+	sw	v0,0(t0)		; new ot list head pointer
+	lui	t1,2<<8			; len field for	a tw
+	or	t3,t3,t1		; merge	for tag	of main	tw
+
+	lui	t1,$E200		; the restoring	tw
+	sw	zero,-12(v0)
+	sw	t1,-8(v0)
+	sw	zero,-4(v0)
+
+	sw	t3,0(v0)		; the main tw
+	sw	t9,4(v0)
+	sw	zero,8(v0)
+
+	j	FadeFast
+	addiu	v0,v0,12		; step pPoly past main tw
+
+
+
+LinktpageFast
+	andi	t9,t8,FF_TRH|FF_TRL
+	srl	t9,t9,2
+	lui	t1,$E100		; gpu code
+	or	t9,t9,t1		; or with transparency rate
+	ori	t9,t9,$200		; set dither flag
+
+	addu	t1,v0,t2
+	sw	t9,4(t1)
+
+	lui	t9,1<<8			; 1 longword (not including tag)
+	or 	t9,t9,v0
+	sw	t9,0(t1)
+
+	sw	t1,(t0)
+
+	j	FadeFast
+	addu	v0,t1,8			; step pPoly past dr_tpage
+
+
+
+; end of fast face rendering code
+;----------------------------------------------------------------------
+
+; Code by Jeppe Oland, JeppeO@stormfront.com
+; void CompactOTagR(unsigned long int *pOT, int iNumEntries);
+        xdef  CompactOTagR
+
+CompactOTagR
+        sll     a1,2                    ; a0 points to the end of the table
+        addu    a0,a1                   ;
+        lw      t0,-4(a0)               ; Preload OT registers
+        lw      t1,-8(a0)               ;
+        li      t2,$00FFFFFF            ; Fix OT address to low memory region
+        and     a0,t2                   ;
+        subiu   a0,4                    ;
+        move    a2,a0                   ; Initialize last used slot (if all empty)
+        subu    a1,a0,a1                ; a1 is the end-address of the OT
+        subiu   a0,4                    ; Adjust pointer for easy comparison
+
+.Unused1
+        beq     a0,a1,.DoneUnused2      ; Quit if at end of OT
+        lw      t2,-4(a0)               ; Preload next OT value
+.Unused1_Loop
+        beq     t0,a0,.Unused2          ; This was an unused pointer
+        addiu   a0,-4                   ; Increase pointer
+        sw      t0,(a2)                 ; Store this (used) address in last slot
+
+.Used2
+        beq     a0,a1,.DoneUsed         ; Quit if at end of OT
+        lw      t0,-4(a0)               ; Preload next OT value
+        bne     t1,a0,.Used3            ; This was a used pointer
+        addiu   a0,-4                   ; Increase pointer
+        addiu   a2,a0,8                 ; Update last slot address
+
+.Unused3
+        beq     a0,a1,.DoneUnused1      ; Quit if at end of OT
+        lw      t1,-4(a0)               ; Preload next OT value
+        beq     t2,a0,.Unused1          ; This was an unused pointer
+        addiu   a0,-4                   ; Increase pointer
+        sw      t2,(a2)                 ; Store this (used) address in last slot
+
+.Used1
+        beq     a0,a1,.DoneUsed         ; Quit if at end of OT
+        lw      t2,-4(a0)               ; Preload next OT value
+        bne     t0,a0,.Used2            ; This was a used pointer
+        addiu   a0,-4                   ; Increase pointer
+        addiu   a2,a0,8                 ; Update last slot address
+
+.Unused2
+        beq     a0,a1,.DoneUnused3      ; Quit if at end of OT
+        lw      t0,-4(a0)               ; Preload next OT value
+        beq     t1,a0,.Unused3          ; This was an unused pointer
+        addiu   a0,-4                   ; Increase pointer
+        sw      t1,(a2)                 ; Store this (used) address in last slot
+
+.Used3
+        beq     a0,a1,.DoneUsed         ; Quit if at end of OT
+        lw      t1,-4(a0)               ; Preload next OT value
+        bne     t2,a0,.Used1            ; This was a used pointer
+        addiu   a0,-4                   ; Increase pointer
+        addiu   a2,a0,8                 ; Update last slot address
+
+.Unused1_LoopStart
+        bne     a0,a1,.Unused1_Loop     ; Loop if NOT at end of OT
+        lw      t2,-4(a0)               ; Preload next OT value
+
+.DoneUnused2
+        sw      t0,(a2)                 ; Store address of termination entry
+        jr      ra                      ; Return
+        nop                             ;
+.DoneUnused1
+        sw      t2,(a2)                 ; Store address of termination entry
+        jr      ra                      ; Return
+        nop                             ;
+.DoneUnused3
+        sw      t1,(a2)                 ; Store address of termination entry
+.DoneUsed
+        jr      ra                      ; Return
+        nop                             ;
+
+
+
+;----------------------------------------------------------------------
+
+; Removed 5/26/99 (DaveC) as CompactOTagR used in preference.
+	if 0
+M3dAsm_BridgeOT__FPUi
+
+; in the C version, p1 steps through the list while p0 is held at the start
+; of a group of	empty slots. The variable 'Bridging' is	a boolean indicating
+; whether we're	currently traversing empty slots (Bridging=1) or full ones
+; (Bridging=0)
+
+; fairly optimised, but	can be further optimised by splitting the loop
+; into 2 loops,	one for	each state of 'Bridging'
+
+; a0: ot
+
+; t0: p0
+; t1: p1
+; t2: Bridging
+; t3: $FF000000	(len field)
+; t4: $00FFFFFF	(addr field)
+; t5: $80000000
+
+	move	t0,a0		; p0 = ot;
+	lw	t1,(t0)		; t1 = *p0;
+	li	t2,0		; Bridging = 0;
+	lui	t3,$FF00	; t3 = $FF000000; // mask for len field
+	nor	t4,t3,zero	; t4 = $00FFFFFF; // mask for addr field
+	lui	t5,$8000	; t5 = $80000000; // for physical address
+
+	and	t1,t1,t4	; t1 = p0->addr;
+	j	.entry
+	or	t1,t1,t5	; t1 = p0->addr|$80000000;
+
+
+.loop	beqz	t8,.else	; if (p1->len)
+	nop			; {
+
+	beqz	t2,.nobridge	;    if	(Bridging)
+	nop			;    {
+
+	lw	t7,(t0)		;	t7 = *p0;
+	and	t6,t1,t4	;	t6 = p1->addr;
+	and	t7,t7,t3	;	t7 = p0->len<<24;
+	or	t7,t6,t7	;	t7 = p0->len<<24 | p1->addr;
+	sw	t7,(t0)		;	p0->addr = p1;
+	li	t2,0		;	Bridging = 0;
+.nobridge			;    }
+	j	.next
+	move	t0,t1		;    p0	= p1;
+				; }
+.else	li	t2,1		; else Bridging	= 1;
+
+.next	and	t1,t9,t4	; t1 = p1->addr;
+	or	t1,t1,t5	; p1 = p1->addr|$80000000;
+
+.entry	lw	t9,(t1)		; t9 = *p1;
+	nop
+
+	addiu	t8,t9,1		; test for list	terminator
+	and	t8,t8,t4	; t8 = (p1->addr+1)&$00FFFFFF;
+	bnez	t8,.loop	; if non-terminal, go again
+	and	t8,t9,t3	; t8 = p1->len<<24;
+
+
+	beqz	t2,.done	; if (Bridging)
+	nop			; {
+
+	lw	t9,(t0)		;    t9	= *p0;
+	nop
+	or	t9,t9,t4	;    t9	= *p0|$00FFFFFF;
+	sw	t9,(t0)		;    p0->addr =	$00FFFFFF;
+				; }
+.done	jr	ra
+	nop
+	endif
+
+
+
+
+
+
+
+M3dAsm_TransformTwice__FP7SVectorP7SMatrixP6MATRIX
+
+; transform an SVECTOR by 2 MATRIX's in	succession
+; results are left in the gte registers
+
+; a0: SVECTOR *
+; a1: MATRIX  *	  transform by this
+; a2: MATRIX  *	  then this
+
+
+	LD_V0	a0
+	LD_ROT	a1
+	NLD_TRN	a1
+	LD_BK	a2		; more than fills the 2	nops
+
+	nop			; so I should be able to remove	these
+	nop			; but the assembler won't let me
+
+	MVMVA	1,0,0,0,0
+	LD_LLM	a2		; more than fills the 8	cycles of 1st MVMVA
+	nop
+	nop
+	MVMVA	1,1,3,1,0
+	jr	ra
+	nop
+
+
+
+
+
+M3dAsm_SetTransVector__FP6Vector
+
+; a0 = address of Vector
+
+	lw	t0,$0(a0)
+	lw	t1,$4(a0)
+	lw	t2,$8(a0)
+	sra	t0,t0,FRACBITS
+	sra	t1,t1,FRACBITS
+	sra	t2,t2,FRACBITS
+	ctc2	t0,C2_TRX
+	ctc2	t1,C2_TRY
+	ctc2	t2,C2_TRZ
+	jr	ra
+	nop
+
+
+
+M3dAsm_NewSetRotTransMatrix__FP7SMatrix
+
+; a0 = address of SMatrix
+
+	lw	t0,$00(a0)
+	lw	t1,$04(a0)
+	lw	t2,$08(a0)
+	lw	t3,$0C(a0)
+	lw	t4,$10(a0)
+	lh	t5,$12(a0)
+	lh	t6,$14(a0)
+	lh	t7,$16(a0)
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+	ctc2	t5,C2_TRX
+	ctc2	t6,C2_TRY
+	ctc2	t7,C2_TRZ
+	jr	ra
+	nop
+
+
+
+
+
+M3dAsm_SetSuperTransformsDewibbled__FP6MATRIXT0P7SMatrix
+
+	xdef	M3dAsm_SetSuperTransformsDewibbled__FP6MATRIXT0P7SMatrix
+
+; a0 pointer to	CinvM
+; a1 pointer to	LM
+; a2 pointer to	A
+
+
+	LD_ROT	a0		; set rot & trans to CinvM
+	LD_TRN	a0
+	LD_LLM	a1		; set llm to LM
+
+
+
+	lw	t0,$00(a2)	; get A
+	lw	t1,$04(a2)
+	lw	t2,$08(a2)
+	lw	t3,$0C(a2)
+	lw	t4,$10(a2)
+
+	xor	t5,t0,t1
+	andi	t5,t5,$FFFF
+	xor	t5,t5,t1
+	mtc2	t5,C2_VXY0
+	mtc2	t3,C2_VZ0
+
+	srl	t5,t0,$10
+	sll	t6,t2,$10
+	or	t5,t5,t6
+	srl	t3,t3,$10
+	mtc2	t5,C2_VXY1
+	mtc2	t3,C2_VZ1
+
+	xor	t5,t1,t2
+	andi	t5,t5,$FFFF
+	xor	t5,t5,t2
+	mtc2	t5,C2_VXY2
+	mtc2	t4,C2_VZ2
+
+
+	nop
+	nop
+
+	MVMVA	1,1,0,3,0	; set llm to LMA
+	mfc2	t0,C2_IR1	; this uses fewer registers...
+	mfc2	t1,C2_IR2
+	mfc2	t3,C2_IR3
+
+	MVMVA	1,1,1,3,0
+	mfc2	t2,C2_IR1
+	andi	t0,t0,$FFFF
+	sll	t2,t2,$10
+	or	t0,t0,t2
+	mfc2	t2,C2_IR2
+	mfc2	t4,C2_IR3
+	andi	t3,t3,$FFFF
+	sll	t4,t4,$10
+	or	t3,t3,t4
+
+	MVMVA	1,1,2,3,0
+	mfc2	t4,C2_IR1
+	sll	t1,t1,$10
+	andi	t4,t4,$FFFF
+	or	t1,t1,t4
+	mfc2	t4,C2_IR2
+	andi	t2,t2,$FFFF
+	sll	t4,t4,$10
+	or	t2,t2,t4
+	mfc2	t4,C2_IR3
+
+	ctc2	t0,C2_L11L12
+	ctc2	t1,C2_L13L21
+	ctc2	t2,C2_L22L23
+	ctc2	t3,C2_L31L32
+	ctc2	t4,C2_L33
+
+
+	nop
+	nop
+	MVMVA	1,0,0,3,0	; set rot and trans to CinvMA
+	mfc2	t0,C2_IR1	; ...but this fills up more delay slots
+	mfc2	t1,C2_IR2
+	mfc2	t3,C2_IR3
+
+	MVMVA	1,0,1,3,0
+	andi	t0,t0,$FFFF
+	sll	t1,t1,$10
+	andi	t3,t3,$FFFF
+	mfc2	t4,C2_IR1
+	mfc2	t2,C2_IR2
+	mfc2	t5,C2_IR3
+
+	MVMVA	1,0,2,3,0
+	sll	t4,t4,$10
+	andi	t2,t2,$FFFF
+	sll	t5,t5,$10
+	or	t0,t0,t4
+	or	t3,t3,t5
+	mfc2	t5,C2_IR1
+	mfc2	t6,C2_IR2
+	mfc2	t4,C2_IR3
+	andi	t5,t5,$FFFF
+	sll	t6,t6,$10
+	or	t1,t1,t5
+	or	t2,t2,t6
+
+	lh	t5,$12(a2)
+	lh	t6,$14(a2)
+	lh	t7,$16(a2)
+	andi	t5,t5,$FFFF
+	sll	t6,t6,$10
+	or	t5,t5,t6
+	mtc2	t5,C2_VXY0
+	mtc2	t7,C2_VZ0
+	nop
+	nop
+
+	MVMVA	1,0,0,0,0
+	mfc2	t5,C2_IR1
+	mfc2	t6,C2_IR2
+	mfc2	t7,C2_IR3
+
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+
+	ctc2	t5,C2_TRX
+	ctc2	t6,C2_TRY
+	ctc2	t7,C2_TRZ
+
+
+	jr	ra
+	nop
+
+
+
+M3dAsm_SetSuperTransforms__FP6MATRIXT0P7SMatrix
+
+	xdef	M3dAsm_SetSuperTransforms__FP6MATRIXT0P7SMatrix
+
+; a0 pointer to	CinvM
+; a1 pointer to	LM
+; a2 pointer to	A
+
+
+	LD_ROT	a0		; set rot & trans to CinvM
+	LD_TRN	a0
+	LD_LLM	a1		; set llm to LM
+
+
+
+	lw	t0,$00(a2)	; get A
+	lw	t1,$04(a2)
+	lw	t2,$08(a2)
+	lw	t3,$0C(a2)
+	lw	t4,$10(a2)
+
+	xor	t5,t0,t1
+	andi	t5,t5,$FFFF
+	xor	t5,t5,t1
+	mtc2	t5,C2_VXY0
+	mtc2	t3,C2_VZ0
+
+	srl	t5,t0,$10
+	sll	t6,t2,$10
+	or	t5,t5,t6
+	srl	t3,t3,$10
+	mtc2	t5,C2_VXY1
+	mtc2	t3,C2_VZ1
+
+	xor	t5,t1,t2
+	andi	t5,t5,$FFFF
+	xor	t5,t5,t2
+	mtc2	t5,C2_VXY2
+	mtc2	t4,C2_VZ2
+
+
+	nop
+	nop
+
+	MVMVA	1,1,0,3,0	; set llm to LMA
+	mfc2	t0,C2_IR1	; this uses fewer registers...
+	mfc2	t1,C2_IR2
+	mfc2	t3,C2_IR3
+
+	MVMVA	1,1,1,3,0
+	mfc2	t2,C2_IR1
+	andi	t0,t0,$FFFF
+	sll	t2,t2,$10
+	or	t0,t0,t2
+	mfc2	t2,C2_IR2
+	mfc2	t4,C2_IR3
+	andi	t3,t3,$FFFF
+	sll	t4,t4,$10
+	or	t3,t3,t4
+
+	MVMVA	1,1,2,3,0
+	mfc2	t4,C2_IR1
+	sll	t1,t1,$10
+	andi	t4,t4,$FFFF
+	or	t1,t1,t4
+	mfc2	t4,C2_IR2
+	andi	t2,t2,$FFFF
+	sll	t4,t4,$10
+	or	t2,t2,t4
+	mfc2	t4,C2_IR3
+
+	ctc2	t0,C2_L11L12
+	ctc2	t1,C2_L13L21
+	ctc2	t2,C2_L22L23
+	ctc2	t3,C2_L31L32
+	ctc2	t4,C2_L33
+
+
+	nop
+	nop
+	MVMVA	1,0,0,3,0	; set rot and trans to CinvMA
+	mfc2	t0,C2_IR1	; ...but this fills up more delay slots
+	mfc2	t1,C2_IR2
+	mfc2	t3,C2_IR3
+
+	MVMVA	1,0,1,3,0
+	andi	t0,t0,$FFFF
+	sll	t1,t1,$10
+	andi	t3,t3,$FFFF
+	mfc2	t4,C2_IR1
+	mfc2	t2,C2_IR2
+	mfc2	t5,C2_IR3
+
+	MVMVA	1,0,2,3,0
+	sll	t4,t4,$10
+	andi	t2,t2,$FFFF
+	sll	t5,t5,$10
+	or	t0,t0,t4
+	or	t3,t3,t5
+	mfc2	t5,C2_IR1
+	mfc2	t6,C2_IR2
+	mfc2	t4,C2_IR3
+	andi	t5,t5,$FFFF
+	sll	t6,t6,$10
+	or	t1,t1,t5
+	or	t2,t2,t6
+
+	lh	t5,$12(a2)
+	lh	t6,$14(a2)
+	lh	t7,$16(a2)
+;------------------------------------------------------
+	sra	t5,t5,4
+	sra	t6,t6,4
+	sra	t7,t7,4
+;------------------------------------------------------
+	andi	t5,t5,$FFFF
+	sll	t6,t6,$10
+	or	t5,t5,t6
+	mtc2	t5,C2_VXY0
+	mtc2	t7,C2_VZ0
+	nop
+	nop
+
+	MVMVA	1,0,0,0,0
+	mfc2	t5,C2_IR1
+	mfc2	t6,C2_IR2
+	mfc2	t7,C2_IR3
+
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+
+	ctc2	t5,C2_TRX
+	ctc2	t6,C2_TRY
+	ctc2	t7,C2_TRZ
+
+
+	jr	ra
+	nop
+
+
+
+;-------------------------------------------------------------------------------  
+
+
+
+;-----------------------------------;
+;                                   ;
+; Collision code assembly functions ;
+;                                   ;
+;-----------------------------------;
+
+
+
+GetLineSegment ; get the collision segment, sort and classify coords
+
+; entry: a2 = pInfo
+
+; exit:	 (s0,s1,s2) = (xmin,ymin,zmin) of line segment
+;	 (s3,s4,s5) = (xmax,ymax,zmax) of line segment
+;	 v1 = 3-bit flag (bit 0 says if the x's have been swapped, etc)
+
+	lw	s0,LINEINFO_START_X(a2)	; pInfo->StartCoords
+	lw	s1,LINEINFO_START_Y(a2)
+	lw	s2,LINEINFO_START_Z(a2)
+	sra	s0,s0,FRACBITS		; convert to integer
+	sra	s1,s1,FRACBITS
+	sra	s2,s2,FRACBITS
+
+	lw	s3,LINEINFO_END_X(a2)	; pInfo->EndCoords
+	lw	s4,LINEINFO_END_Y(a2)
+	lw	s5,LINEINFO_END_Z(a2)
+	sra	s3,s3,FRACBITS		; convert to integer
+	sra	s4,s4,FRACBITS
+	sra	s5,s5,FRACBITS
+
+	move	v1,zero
+
+SortLineSegmentCoords ; swap coords if necessary, and set up the gte regs which are constant in the loop
+
+	subu	t0,s3,s0
+	bgez	t0,.xok
+	nop
+	move	s3,s0
+	addu	s0,t0,s0
+	subu	t0,s3,s0
+	xori	v1,v1,1
+.xok	ctc2	t0,C2_R11R12
+
+	subu	t1,s4,s1
+	bgez	t1,.yok
+	nop
+	move	s4,s1
+	addu	s1,t1,s1
+	subu	t1,s4,s1
+	xori	v1,v1,2
+.yok	ctc2	t1,C2_R22R23
+
+	subu	t2,s5,s2
+	bgez	t2,.zok
+	nop
+	move	s5,s2
+	addu	s2,t2,s2
+	subu	t2,s5,s2
+	xori	v1,v1,4
+.zok	ctc2	t2,C2_R33
+
+	jr	ra
+	nop
+
+
+
+
+
+GetBoundingBox	; get the bb in model coords
+
+; entry: t8 = pModel
+;	 (s0,s1,s2) = (xmin,ymin,zmin) of line segment
+;	 (s3,s4,s5) = (xmax,ymax,zmax) of line segment
+;	 (t3,t4,t5) = offset to be added to bb coords
+;	 v1 = 3-bit flags (0x,1y,2z)
+
+; exit:	 (t0,t1,t2) = (xmin,ymin,zmin) \
+;	 (t3,t4,t5) = (xmax,ymax,zmax) /components may be modified according to flags
+
+  if DEBUG
+  if PSXVERSION>=$20004
+	lh	t2,MODEL_FLAGS(t8)
+  else
+	lw	t2,MODEL_FLAGS(t8)
+  endif
+  endif
+	lw	t0,MODEL_BOX_X(t8)
+	lw	t1,MODEL_BOX_Y(t8)
+
+  if DEBUG
+	andi	t2,t2,MODELFLAGS_NEWBOX
+	bnez	t2,.newbox
+  endif
+	lw	t2,MODEL_BOX_Z(t8)
+
+  if DEBUG
+	break	$666
+  endif
+
+;	; get old-style bounding box
+;
+;	sra	t6,t0,FRACBITS
+;	subu	t0,t3,t6
+;	addu	t3,t3,t6
+;	sra	t6,t1,FRACBITS
+;	subu	t1,t4,t6
+;	addu	t4,t4,t6
+;	sra	t6,t2,FRACBITS
+;	subu	t2,t5,t6
+;	j	.gotbox
+;	addu	t5,t5,t6
+
+.newbox	; get new-style bounding box
+
+	sll	t6,t0,16
+	sra	t6,t6,16
+	addu	t6,t6,t3
+	sra	t7,t0,16
+	addu	t0,t7,t3
+	move	t3,t6
+	sll	t6,t1,16
+	sra	t6,t6,16
+	addu	t6,t6,t4
+	sra	t7,t1,16
+	addu	t1,t7,t4
+	move	t4,t6
+	sll	t6,t2,16
+	sra	t6,t6,16
+	addu	t6,t6,t5
+	sra	t7,t2,16
+	addu	t2,t7,t5
+	move	t5,t6
+
+.gotbox
+	; expand by a couple o' units
+	addiu	t0,t0,-2
+	addiu	t1,t1,-2
+	addiu	t2,t2,-2
+	addiu	t3,t3,2
+	addiu	t4,t4,2
+	addiu	t5,t5,2
+
+	; modify according to flags
+	and	t6,v1,1			; is x-flag set?
+	beqz	t6,.xok
+	addu	t6,s0,s3		; x0+x1
+	subu	t7,t6,t0		; x0+x1-xL
+	subu	t0,t6,t3		; xL'=x0+x1-xH
+	move	t3,t7			; xH'=x0+x1-xL
+.xok	and	t6,v1,2			; is y-flag set?
+	beqz	t6,.yok
+	addu	t6,s1,s4		; y0+y1
+	subu	t7,t6,t1		; y0+y1-yL
+	subu	t1,t6,t4		; yL'=y0+y1-yH
+	move	t4,t7			; yH'=y0+y1-yL
+.yok	and	t6,v1,4			; is z-flag set?
+	beqz	t6,.zok
+	addu	t6,s2,s5		; z0+z1
+	subu	t7,t6,t2		; z0+z1-zL
+	subu	t2,t6,t5		; zL'=z0+z1-zH
+	move	t5,t7			; zH'=z0+z1-zL
+.zok
+	jr	ra
+	nop
+
+
+
+
+LineToBoxTest	; test line segment (x0,y0,z0)->(x1,y1,z1) for intersection with axis-aligned box (xL,yL,zL)->(xH,yH,zH)
+
+; entry: (t0,t1,t2) = (xL,yL,zL)
+;	 (t3,t4,t5) = (xH,yH,zH)
+;	 (s0,s1,s2) = (x0,y0,z0) }
+;	 (s3,s4,s5) = (x1,y1,z1) }
+;	 C2_R11R12  = x1-x0	 }- these will rarely change if testing each line against many boxes
+;	 C2_R22R23  = y1-y0	 }
+;	 C2_R33     = z1-z0	 }
+
+; exit:	 t0=0 if no intersection, 1 if intersection
+
+	; check max of line segment against min of box
+	subu	t6,s3,t0		; t6 = x1-xL
+	bltz	t6,.reject
+	subu	t6,s4,t1		; t6 = y1-yL
+	bltz	t6,.reject
+	subu	t6,s5,t2		; t6 = z1-zL
+	bltz	t6,.reject
+
+	; check min of line segment against max of box
+	subu	t3,t3,s0		; t3 = xH-x0
+	bltz	t3,.reject
+	subu	t4,t4,s1		; t4 = yH-y0
+	bltz	t4,.reject
+	subu	t5,t5,s2		; t5 = zH-z0
+	bltz	t5,.reject
+	nop
+
+	; identify first slab exit
+	mtc2	t3,C2_IR1
+	mtc2	t4,C2_IR2
+	mtc2	t5,C2_IR3
+
+	nop
+	nop
+
+	OP	0
+
+	subu	t0,t0,s0		; t0 = xL-x0
+	subu	t1,t1,s1		; t1 = yL-y0
+	subu	t2,t2,s2		; t2 = zL-z0
+
+	mfc2	t6,C2_MAC1		; t6 = (y1-y0)(zH-z0)-(yH-y0)(z1-z0)
+	mfc2	t7,C2_MAC2		; t7 = (z1-z0)(xH-x0)-(zH-z0)(x1-x0)
+	mfc2	t8,C2_MAC3		; t8 = (x1-x0)(yH-y0)-(xH-x0)(y1-y0)
+
+	; load registers for 2nd test, dependent on result of 1st
+	bltz	t6,.tHzLTtHy
+	nop
+	bltz	t8,.usetHy
+	nop
+.usetHx	mtc2	t3,C2_IR1		; xH-x0
+	mtc2	t1,C2_IR2		; yL-y0
+	mtc2	t2,C2_IR3		; zL-z0
+	nop
+	nop
+	OP	0
+	mfc2	t7,C2_IR2		; t7 = (z1-z0)(xH-x0)-(x1-x0)(zL-z0)
+	mfc2	t8,C2_IR3		; t8 = (x1-x0)(yL-y0)-(y1-y0)(xH-x0)
+	bltz	t7,.reject
+	nop
+	bgtz	t8,.reject
+	nop
+	jr	ra
+	li	t0,1
+.usetHy	mtc2	t0,C2_IR1		; xL-x0
+	mtc2	t4,C2_IR2		; yH-y0
+	mtc2	t2,C2_IR3		; zL-z0
+	nop
+	nop
+	OP	0
+	mfc2	t6,C2_IR1		; t6 = (y1-y0)(zL-z0)-(z1-z0)(yH-y0)
+	mfc2	t8,C2_IR3		; t8 = (x1-x0)(yH-y0)-(y1-y0)(xL-x0)
+	bgtz	t6,.reject
+	nop
+	bltz	t8,.reject
+	nop
+	jr	ra
+	li	t0,1
+.tHzLTtHy
+	bltz	t7,.usetHx
+	nop
+.usetHz	mtc2	t0,C2_IR1		; xL-x0
+	mtc2	t1,C2_IR2		; yL-y0
+	mtc2	t5,C2_IR3		; zH-z0
+	nop
+	nop
+	OP	0
+	mfc2	t6,C2_IR1		; t6 = (y1-y0)(zH-z0)-(z1-z0)(yL-y0)
+	mfc2	t7,C2_IR2		; t8 = (z1-z0)(xL-x0)-(x1-x0)(zH-z0)
+	bltz	t6,.reject
+	nop
+	bgtz	t7,.reject
+	nop
+
+	jr	ra
+	li	t0,1
+
+.reject	jr	ra
+	move	t0,zero
+
+
+
+
+
+; new version with superdooper box test
+
+M3dAsm_LineColijPreprocessItems__FP4ItemiP9SLineInfoUs
+
+; a0: pItem
+; a1: ModelTable (not really, actually 0)
+; a2: pInfo
+; a3: Inquiry
+
+	xref	M3dMaths_RotMatrixYXZ__FP7SVECTORP6MATRIX
+	xref	M3dMaths_TransposeMatrix__FP6MATRIX
+
+	la	a1,PSXRegion
+
+	; Make sure we have a first element
+	beqz	a0,.Ret
+	; nop
+
+	lui	t0,$1F80		; save s0-s5 on scratchpad
+	sw	s0,0(t0)
+	sw	s1,4(t0)
+	sw	s2,8(t0)
+	sw	s3,12(t0)
+	sw	s4,16(t0)
+	sw	s5,20(t0)
+
+	; Instead of re-reading these from RAM, cache them in scratchpad
+	move	t9,ra
+	jal	GetLineSegment
+	nop
+	move	ra,t9
+	lui	t0,$1F80		; save bounding box in scratchpad
+	sw	s0,60(t0)		; xmin
+	sw	s1,64(t0)		; xmax
+	sw	s2,68(t0)		; ymin
+	sw	s3,72(t0)		; ymax
+	sw	s4,76(t0)		; zmin
+	sw	s5,80(t0)		; zmax
+
+.loop	lw	t0,ITEM_FLAGS(a0)
+	lhu	t8,ITEM_MODEL(a0)	; get model number
+
+        if SK
+        andi    t9,t0,ITEMFLAGS_INACTIVE|ITEMFLAGS_INACTIVE2
+        xori    t9,ITEMFLAGS_INACTIVE|ITEMFLAGS_INACTIVE2
+        beqz    t9,.reject              ; reject if both flags set
+        andi    t9,t0,ITEMFLAGS_NONCOLLIDABLE
+        bnez    t9,.reject              ; also reject if noncollidable
+	nop
+        else
+	andi	t9,t0,ITEMFLAGS_INACTIVE|ITEMFLAGS_NONCOLLIDABLE
+	bnez	t9,.reject
+	nop
+        endif
+
+	srl	t1,t0,16		; get item's last collision inquiry number
+	beq	t1,a3,.next		; reject if inquiry matches
+	nop
+
+	lbu	t0,ITEM_REGION(a0)
+	nop
+	if KENVIEWER
+	sll	t0,t0,8			; shift	-> PSXRegion array offset
+	else
+	sll	t0,t0,6			; shift	-> PSXRegion array offset
+	endif
+	addu	t0,t0,a1
+	lw	t1,PSXREGION_LOCALMODELTABLE(t0)
+
+	sll	t8,t8,2			; convert model number to offset
+	addu	t8,t8,t1		; add local model table
+	lw	t8,(t8)			; t8 = model pointer
+
+	; get min and max coords of line segment relative to item
+;	move	t9,ra
+;	jal	GetLineSegment
+;	nop
+;	move	ra,t9
+	lui	t9,$1F80		; fetch x/y/z-min/max from scratchpad
+	lw	s0,60(t9)		; xmin
+	lw	s1,64(t9)		; xmax
+	lw	s2,68(t9)		; ymin
+	lw	s3,72(t9)		; ymax
+	lw	s4,76(t9)		; zmin
+	lw	s5,80(t9)		; zmax
+
+	lw	t0,ITEM_X(a0)
+	lw	t1,ITEM_Y(a0)
+	lw	t2,ITEM_Z(a0)
+	sra	t0,t0,FRACBITS
+	subu	s0,s0,t0		; xmin
+	subu	s3,s3,t0		; xmax
+	sra	t1,t1,FRACBITS
+	subu	s1,s1,t1		; ymin
+	subu	s4,s4,t1		; ymax
+	sra	t2,t2,FRACBITS
+	subu	s2,s2,t2		; zmin
+	subu	s5,s5,t2		; zmax
+
+	; if the item is rotated, inversely rotate collision segment
+	lw	t0,ITEM_RX(a0)
+	lhu	t1,ITEM_RZ(a0)
+	nop
+	or	t0,t0,t1
+	beqz	t0,.norot
+	nop
+
+	; To avoid doing expensive stuff (most of the time), try to
+	; quickly reject by checking bounding box of line segment
+	; against bounding box of item's bounding sphere
+	;
+	lw	t0,MODEL_RADIUS(t8)	; items no longer have radius stored
+	nop
+	sra	t0,t0,FRACBITS		; unshift radius
+	subu	t1,s0,t0
+	bgtz	t1,.reject		; xmin > radius
+	subu	t2,s1,t0
+	bgtz	t2,.reject		; ymin > radius
+	subu	t1,s2,t0
+	bgtz	t1,.reject		; zmin > radius
+	addu	t2,s3,t0
+	bltz	t2,.reject		; xmax < -radius aka xmax+radius < 0
+	addu	t1,s4,t0
+	bltz	t1,.reject		; ymax < -radius aka ymax+radius < 0
+	addu	t2,s5,t0
+	bltz	t2,.reject		; zmax < -radius aka zmax+radius < 0
+	; nop
+
+	lui	t0,$1F80		; save registers on scratchpad
+	sw	t8,24(t0)
+	sw	a0,28(t0)
+	sw	a1,32(t0)
+	sw	ra,36(t0)
+
+	addiu	a0,a0,ITEM_RX		; a0 = pAngles
+	jal	M3dMaths_RotMatrixYXZ__FP7SVECTORP6MATRIX
+	addiu	a1,t0,40		; a1 = pMatrix = 40-byte offset into scratchpad
+
+	jal	M3dMaths_TransposeMatrix__FP6MATRIX
+	move	a0,a1			; a0 = pMatrix
+
+	lui	t5,$1F80
+	lw	t0,40(t5)
+	lw	t1,44(t5)
+	lw	t2,48(t5)
+	lw	t3,52(t5)
+	lw	t4,56(t5)
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R13R21
+	ctc2	t2,C2_R22R23
+	ctc2	t3,C2_R31R32
+	ctc2	t4,C2_R33
+
+	mtc2	s0,C2_IR1
+	mtc2	s1,C2_IR2
+	mtc2	s2,C2_IR3
+
+	nop
+	nop
+
+	MVMVA	1,0,3,3,0		; rotate (x0,y0,z0)
+
+	mfc2	s0,C2_IR1
+	mfc2	s1,C2_IR2
+	mfc2	s2,C2_IR3
+
+	mtc2	s3,C2_IR1
+	mtc2	s4,C2_IR2
+	mtc2	s5,C2_IR3
+
+	nop
+	nop
+
+	MVMVA	1,0,3,3,0		; rotate (x1,y1,z1)
+
+	mfc2	s3,C2_IR1
+	mfc2	s4,C2_IR2
+	mfc2	s5,C2_IR3
+
+	jal	SortLineSegmentCoords	; ordering may have changed due to rotation
+	nop
+
+	lw	t8,24(t5)		; restore registers
+	lw	a0,28(t5)
+	lw	ra,36(t5)
+	lw	a1,32(t5)
+.norot
+
+	if 1	; reinstated these, as caching of line bbox invalidates GTE registers
+	; set up the gte regs needed by box test
+	subu	t0,s3,s0
+	subu	t1,s4,s1
+	subu	t2,s5,s2
+	ctc2	t0,C2_R11R12
+	ctc2	t1,C2_R22R23
+	ctc2	t2,C2_R33   
+	endif
+
+	; get the bounding box in model coords
+	move	t3,zero
+	move	t4,zero
+	move	t5,zero
+	move	t9,ra
+	jal	GetBoundingBox
+	nop
+	move	ra,t9
+
+	; is the item is scaled, multiply the bounding box dimensions
+	lw	t9,ITEM_FLAGS(a0)
+	nop
+	andi	t9,t9,ITEMFLAGS_SCALED
+	beqz	t9,.noscl
+	nop
+
+	lh	t9,ITEM_XSCALE(a0)	; scaling using mults - would be quicker with gte
+	nop
+	mult	t9,t0
+	mflo	t0
+	sra	t0,t0,12
+	nop
+	mult	t9,t3
+	mflo	t3
+	lh	t9,ITEM_YSCALE(a0)
+	sra	t3,t3,12
+	mult	t9,t1
+	mflo	t1
+	sra	t1,t1,12
+	nop
+	mult	t9,t4
+	mflo	t4
+	lh	t9,ITEM_ZSCALE(a0)
+	sra	t4,t4,12
+	mult	t9,t2
+	mflo	t2
+	sra	t2,t2,12
+	nop
+	mult	t9,t5
+	mflo	t5
+	sra	t5,t5,12
+.noscl
+
+	; test collision segment against bounding box
+	move	t9,ra
+	jal	LineToBoxTest
+	nop
+	move	ra,t9
+	bnez	t0,.next
+	nop
+
+.reject	sh	a3,ITEM_INQUIRY(a0)
+
+.next	lw	a0,ITEM_NEXTITEM(a0)	; get next item pointer
+	nop
+	bnez	a0,.loop		; loop if non-null
+	nop
+
+	lui	t0,$1F80		; restore s0-s5 from scratchpad
+	lw	s0,0(t0)
+	lw	s1,4(t0)
+	lw	s2,8(t0)
+	lw	s3,12(t0)
+	lw	s4,16(t0)
+	lw	s5,20(t0)
+
+.Ret	jr	ra
+	nop
+
+
+
+
+
+; new version with superdooper box test
+
+M3dAsm_LineColijPreprocessItemsZoned__FPP4ItemiP9SLineInfoUs
+
+; a0: ppItem
+; a1: ModelTable (not really, actually 0)
+; a2: pInfo
+; a3: Inquiry
+
+	lw	v0,0(a0)		; get first item pointer from zone's array
+	nop
+
+	beq	v0,zero,.Ret
+;	nop
+
+	lui	t0,$1F80		; save s0-s6 on scratchpad
+	sw	s0,0(t0)
+	sw	s1,4(t0)
+	sw	s2,8(t0)
+	sw	s3,12(t0)
+	sw	s4,16(t0)
+	sw	s5,20(t0)
+	sw	s6,24(t0)
+
+	; get min and max coords of line segment
+	move	t9,ra
+	jal	GetLineSegment
+	nop
+	move	ra,t9
+
+	; all items in zone belong to the same region, so calculate their model table address based on 1st item
+	lbu	t0,ITEM_REGION(v0)
+	nop
+	la	t9,PSXRegion
+	if KENVIEWER
+	sll	t0,t0,8			; shift	-> PSXRegion array offset
+	else
+	sll	t0,t0,6			; shift	-> PSXRegion array offset
+	endif
+	addu	t0,t0,t9
+	lw	s6,PSXREGION_LOCALMODELTABLE(t0)
+
+
+.loop	lw	t0,ITEM_FLAGS(v0)
+	lhu	t8,ITEM_MODEL(v0)	; get model number
+
+        if SK
+        andi    t9,t0,ITEMFLAGS_INACTIVE|ITEMFLAGS_INACTIVE2
+        xori    t9,ITEMFLAGS_INACTIVE|ITEMFLAGS_INACTIVE2
+        beqz    t9,.reject              ; reject if both flags set
+        andi    t9,t0,ITEMFLAGS_NONCOLLIDABLE
+        bnez    t9,.reject              ; also reject if noncollidable
+        else
+	andi	t9,t0,ITEMFLAGS_INACTIVE|ITEMFLAGS_NONCOLLIDABLE
+	bnez	t9,.reject
+        endif
+
+	srl	t0,t0,16		; get item's last collision inquiry number
+	beq	t0,a3,.next		; reject if inquiry matches
+	sll	t8,t8,2			; convert model number to offset
+	addu	t8,t8,s6		; add local model table
+	lw	t8,(t8)			; t8 = model pointer
+	nop
+
+	; get the bounding box in world coords
+	lw	t3,ITEM_X(v0)
+	lw	t4,ITEM_Y(v0)
+	lw	t5,ITEM_Z(v0)
+	sra	t3,t3,FRACBITS
+	sra	t4,t4,FRACBITS
+	sra	t5,t5,FRACBITS
+	move	t9,ra
+	jal	GetBoundingBox
+	nop
+	move	ra,t9
+
+	; test the collision segment against the bounding box
+	move	t9,ra
+	jal	LineToBoxTest
+	nop
+	move	ra,t9
+	bnez	t0,.next
+	nop
+
+.reject	sh	a3,ITEM_INQUIRY(v0)
+
+.next	lw	v0,4(a0)		; get next item pointer from zone's array of pointers
+	addiu	a0,a0,4			; step to next array element
+	bne	v0,zero,.loop		; loop if non-null
+	nop
+
+	lui	t0,$1F80		; restore s0-s6 from scratchpad
+	lw	s0,0(t0)
+	lw	s1,4(t0)
+	lw	s2,8(t0)
+	lw	s3,12(t0)
+	lw	s4,16(t0)
+	lw	s5,20(t0)
+	lw	s6,24(t0)
+
+.Ret	jr	ra
+	nop
+
+
+
+
+; Performs a parallel projection of an item's vertices in the direction
+; of the collision vector.
+
+M3dAsm_LineColijProcessVertices__FP6SModelP16SProjectedVertexiP6VECTOR
+
+	xdef	M3dAsm_LineColijProcessVertices__FP6SModelP16SProjectedVertexiP6VECTOR
+
+; a0: pModel
+; a1: Vertices
+; a2: pInfo->Length
+; a3: VECTOR *pPosnRelStart
+
+	lw	t7,0(a3)		; get object position minus line segment start position
+	lw	t8,4(a3)
+	lw	t9,8(a3)
+
+	if PSXVERSION>=$20004
+	lh	a3,MODEL_NUMVERTS(a0)	; loop counter
+	else
+	lw	a3,MODEL_NUMVERTS(a0)	; loop counter
+	endif
+
+	addu	a0,a0,MODEL_VERTS	; Vertices
+	li	v0,$060F		; 'And'	of outcodes
+
+	lw	t4,0(a0)		; get first vertex
+	lw	t6,4(a0)
+	sra	t5,t4,16
+
+	addu	t4,t4,t7		; add object position minus line segment start position
+	addu	t5,t5,t8
+	addu	t6,t6,t9
+
+.loop	mtc2	t4,C2_IR1		; move vertex to gte
+	mtc2	t5,C2_IR2
+	mtc2	t6,C2_IR3
+
+	addiu	a0,a0,8			; pVertex++;  \
+	addiu	a3,a3,-1		; i++;	      -	filling	the 2 nops
+
+	MVMVA	1,2,3,0,0		; transform vertex
+
+	lw	t4,0(a0)		; get next vertex
+	lw	t6,4(a0)
+	sra	t5,t4,16
+
+	addu	t4,t4,t7		; add object position minus line segment start position
+	addu	t5,t5,t8
+	addu	t6,t6,t9
+
+	mfc2	t1,C2_MAC1		; get transformed vertex
+	mfc2	t2,C2_MAC2
+	mfc2	t3,C2_MAC3
+
+	slt	v1,t1,zero		; generate outcode
+	sll	v1,v1,2
+	slt	t0,t2,zero
+	sll	t0,t0,1
+	or	v1,v1,t0
+	slt	t0,t3,zero
+	or	v1,v1,t0
+	slt	t0,a2,t3
+	sll	t0,t0,3
+	or	v1,v1,t0
+	slt	t0,zero,t1
+	sll	t0,t0,10
+	or	v1,v1,t0
+	slt	t0,zero,t2
+	sll	t0,t0,9
+	or	v1,v1,t0
+
+	andi	t1,t1,$FFFF		; store	transformed vertex
+	sll	t2,t2,16
+	or	t1,t1,t2
+	sw	t1,0(a1)
+	sw	t3,4(a1)
+
+	addiu	a1,a1,8			; pTfmdVertex++;
+
+	and	v0,v0,v1		; And &= Outcode
+
+	bnez	a3,.loop
+	sh	v1,-2(a1)		; store	outcode
+
+	jr	ra
+	nop
+
+
+
+
+
+M3dAsm_LineColijProcessFaces__FP6SModelP16SProjectedVertexP9SLineInfoP4Item
+
+	xdef	M3dAsm_LineColijProcessFaces__FP6SModelP16SProjectedVertexP9SLineInfoP4Item
+
+; a0: pModel
+; a1: Vertices
+; a2: pInfo
+; a3: pItem
+
+	addiu	sp,sp,-8
+	sw	s0,0(sp)
+	sw	s1,4(sp)
+
+	; set up constant part of 'dot prod' matrix
+	lw	t0,LINEINFO_LENGTH(a2)
+	ctc2	zero,C2_L31L32
+	addiu	t0,t0,2			; add a fudgefactor
+	ctc2	t0,C2_L33
+
+
+	; set up special case test masks
+
+	xref	M3dColij_ZeroMask;
+	xref	M3dColij_OneMask;
+
+	lw	s0,M3dColij_ZeroMask;
+	lw	s1,M3dColij_OneMask;
+
+	; get num faces, pointer to normals, and pointer to faces (at which point pModel is not needed)
+	if PSXVERSION>=$20004
+	lh	t0,MODEL_NUMVERTS(a0)
+	lh	t1,MODEL_NUMNORMS(a0)
+	lh	t8,MODEL_NUMFACES(a0)	; face loop counter
+	else
+	lw	t0,MODEL_NUMVERTS(a0)
+	lw	t1,MODEL_NUMNORMS(a0)
+	lw	t8,MODEL_NUMFACES(a0)	; face loop counter
+	endif
+	addiu	t9,a0,MODEL_VERTS	; t9 = pVerts
+	sll	t0,t0,3			; size of verts
+	addu	t9,t9,t0		; t9 = pNorms
+	sll	t1,t1,3			; size of norms
+	addu	a0,t9,t1		; a0 = pFace
+
+
+.loop   lw      v1,FACE_NORMAL(a0)      ; lo=normal, hi=face 'user' flags
+        lw      v0,FACE_FLAGS(a0)       ; lo=face 'engine' flags
+
+	; do special-case rejections
+	and	t0,v1,s1
+	bnez	t0,.Continue
+	nor	t0,v1,s0
+	bnez	t0,.Continue
+	srl	t0,v1,16
+	andi	t0,t0,FU_NONCOLLIDABLE|FU_TRIGGERZONE
+	xori	t0,t0,FU_NONCOLLIDABLE
+	beqz	t0,.Continue
+	nop
+
+	; get the vertex offsets
+	if PSXVERSION>=$20004
+	; Byte version.
+	lw	t0,FACE_P0P1(a0)		; t0 now contains (p3,p2,p1,p0)
+	nop
+	srl t3,t0,24
+	srl t2,t0,16
+	andi	t2,t2,$FF
+	srl t1,t0,8
+	andi	t1,t1,$FF
+	andi	t0,t0,$FF
+	sll	t0,t0,3					; The indices have not been pre-shifted, so shift 'em
+	sll	t1,t1,3
+	sll	t2,t2,3
+	sll	t3,t3,3
+	else
+	; Original word version.
+    lw	t0,FACE_P0P1(a0)        ; get p0-p3 (vertex indices)
+	lw	t2,FACE_P2P3(a0)
+	srl	t1,t0,16
+	andi	t0,t0,$FFFF
+	srl	t3,t2,16
+	andi	t2,t2,$FFFF
+	endif
+
+    addu    t0,t0,a1                ; get o0-o3 (outcodes)
+	addu	t1,t1,a1
+	addu	t2,t2,a1
+	addu	t3,t3,a1
+	lhu	t4,$6(t0)
+	lhu	t5,$6(t1)
+	lhu	t6,$6(t2)
+	lhu	t7,$6(t3)
+
+	; outcode testing
+	and	t4,t4,t5		; and 'em together
+	and	t4,t4,t6
+	and	t4,t4,t7
+
+	andi	t4,t4,$060F		; And &	$060F
+	bnez	t4,.Continue
+	nop
+
+	lw	t4,0(t0)		; Xvec.vx = pV0->X;  (only lower 16 bits need to be valid)
+	lw	t5,0(t1)		; Xvec.vy = pV1->X;
+	lw	t6,0(t2)		; Xvec.vz = pV2->X;
+
+	sra	t0,t4,16		; Yvec.vx = pV0->Y;
+	sra	t1,t5,16		; Yvec.vy = pV1->Y;
+	sra	t2,t6,16		; Yvec.vz = pV2->Y;
+
+	ctc2	t4,C2_R11R12		; load Xvec into opv1
+	ctc2	t5,C2_R22R23
+	ctc2	t6,C2_R33
+
+	mtc2	t0,C2_IR1		; load Yvec into opv2
+	mtc2	t1,C2_IR2
+	mtc2	t2,C2_IR3
+
+	nop
+	nop
+
+	OP	0
+
+	mfc2	t4,C2_MAC1
+	mfc2	t5,C2_MAC2
+	mfc2	t6,C2_MAC3
+
+	bgez	t4,.tri
+	andi	t0,v0,FF_TRI
+
+	bnez	t0,.Continue
+	nop
+
+	lw	t4,$0(t3)		; Xvec.vx = pV3->X;  (only lower 16 bits need to be valid)
+
+	mtc2	t1,C2_IR2		; load Yvec.vy into opv2.vy
+	mtc2	t2,C2_IR3		; load Yvec.vz into opv2.vz
+	ctc2	t4,C2_R11R12		; load Xvec.vx into opv1.vx
+	sra	t0,t4,16		; Yvec.vx = pV3->Y
+	mtc2	t0,C2_IR1		; load Yvec.vx into opv2.vx
+
+	nop
+	nop
+
+	OP	0			; cross	product
+
+	mfc2	t5,C2_MAC2
+	mfc2	t6,C2_MAC3
+	subu	t5,zero,t5
+	subu	t6,zero,t6
+
+.tri	or	t5,t5,t6
+	bltz	t5,.Continue
+;	nop
+
+	and	t0,v1,$FFFF		; get normal number
+	addu	t0,t0,t9		; address of normal
+
+	lwc2	C2_VXY0,$0(t0)		; get components of normal
+	lwc2	C2_VZ0,	$4(t0)
+
+	lw	t1,FACE_P0P1(a0)
+	nop
+	if PSXVERSION>=$20004
+	; Byte vertex version, so index 0 will be in the low byte of t1=(v3,v2,v1,v0)
+	andi	t1,t1,$FF
+	sll	t1,t1,3	; and it's not preshifted, so shift it.
+	else
+	; Word vertex version, so index 0 will be in low word of t1=(v1,v0)
+	andi	t1,t1,$FFFF
+	endif
+	addu	t1,t1,a1
+	lw	t0,$0(t1)		; get transformed V0
+	lhu	t1,$4(t1)
+
+	MVMVA	1,2,0,3,0		; transform normal
+
+	ctc2	t0,C2_L11L12
+	ctc2	t1,C2_L13L21
+
+	;--------------------------------------------------
+	nop
+	mfc2	t3,C2_IR3		; get n3'
+
+	MVMVA	0,1,3,3,0
+
+	mfc2	t0,C2_MAC1		; get V0.n'
+	mfc2	t1,C2_MAC3		; get (0,0,Length).n'
+	bgtz	t0,.Continue		; continue if intersection is outside the range 0<=z<=Length
+	slt	t2,t0,t1
+	bnez	t2,.Continue
+	div	t0,t3			; dp0 / n3'
+	;--------------------------------------------------
+
+
+	; Ken's triggerzone check
+	xref	CollidedTriggerModel
+	srl	t0,v1,16
+	andi	t0,t0,FU_TRIGGERZONE
+	beqz	t0,.NoTrigger
+	lbu	t0,LINEINFO_RECORDTRIGGERZONEHITS(a2)
+	nop
+	beqz	t0,.Continue
+	lhu	t1,ITEM_MODEL(a3)
+	la	t0,CollidedTriggerModel
+	j	.Continue
+	sw	t1,(t0)
+
+.NoTrigger
+
+
+	; if we've got this far, the intersection is in the collision segment so we've found a hit
+	lw	t0,LINEINFO_DISTANCE(a2)
+	mflo	t2			; get z of intersection point (in cst coords)
+	subu	t0,t0,t2
+	blez	t0,.Continue
+	nop
+
+	; record all the necessary collision info
+	sw	a3,LINEINFO_PITEM(a2)	; pInfo->pItem = pItem;
+	sw	t2,LINEINFO_DISTANCE(a2); pInfo->Distance = z;
+	sw	a0,LINEINFO_PFACE(a2)	; pInfo->pFace = pFace;
+	sw	t1,LINEINFO_MODEL(a2)	; pInfo->Model = pItem->Model;
+
+;	; record the world position
+;	lwc2	C2_MAC1,LINEINFO_START_X(a2)	; gte_ldlvnl(&pInfo->StartCoords);
+;	lwc2	C2_MAC2,LINEINFO_START_Y(a2)
+;	lwc2	C2_MAC3,LINEINFO_START_Z(a2)
+;	lw	t0,LINEINFO_WORLDCST+12(a2)
+;	lw	t1,LINEINFO_WORLDCST+16(a2)
+;	mtc2	t0,C2_IR1		; gte_ldsv(&pInfo->WorldCst.m[2][0]);
+;	srl	t0,t0,16
+;	mtc2	t0,C2_IR2
+;	mtc2	t1,C2_IR3
+;	mtc2	t2,C2_IR0		; gte_lddp(z);
+;	nop
+;	nop
+;	GPL	0
+;	swc2	C2_MAC1,LINEINFO_POSITION+0(a2)
+;	swc2	C2_MAC2,LINEINFO_POSITION+4(a2)
+;	swc2	C2_MAC3,LINEINFO_POSITION+8(a2)
+
+	; copy the address of the model-space normal
+	xref	NearestHit
+	and	t0,v1,$FFFF		; get normal offset
+	addu	t0,t0,t9		; address of normal
+	la	t1,NearestHit
+	sw	t0,SHIT_NORMAL(t1)	; store in NearestHit.Normal
+	sw	a0,SHIT_PFACE(t1)	; NearestHit.pFace = pFace;
+	
+
+
+.Continue
+	srl	v0,v0,16
+	addu	a0,a0,v0		; step pFace
+
+	addiu	t8,t8,-1		; dec loop counter
+	bnez	t8,.loop
+	nop
+
+	lw	s0,0(sp)
+	lw	s1,4(sp)
+	addiu	sp,sp,8
+
+	; record the world position
+	lw	t0,LINEINFO_DISTANCE(a2)
+	lw	t1,LINEINFO_LENGTH(a2)
+	sll	t0,t0,12
+	div	t0,t1
+	lw	t0,LINEINFO_START_X(a2)	; start coords
+	lw	t1,LINEINFO_START_Y(a2)
+	lw	t2,LINEINFO_START_Z(a2)
+	lw	t3,LINEINFO_END_X(a2)	; end coords
+	lw	t4,LINEINFO_END_Y(a2)
+	lw	t5,LINEINFO_END_Z(a2)
+	subu	t3,t3,t0		; difference
+	subu	t4,t4,t1
+	subu	t5,t5,t2
+	sra	t3,t3,12		; shifted difference
+	sra	t4,t4,12
+	sra	t5,t5,12
+	mtc2	t0,C2_MAC1		; constant coefficient
+	mtc2	t1,C2_MAC2
+	mtc2	t2,C2_MAC3
+	mtc2	t3,C2_IR1		; linear coefficient
+	mtc2	t4,C2_IR2
+	mtc2	t5,C2_IR3
+	mflo	t0
+	nop
+	mtc2	t0,C2_IR0		; linear variable
+	nop
+	nop
+	GPL	0
+	swc2	C2_MAC1,LINEINFO_POSITION+0(a2)
+	swc2	C2_MAC2,LINEINFO_POSITION+4(a2)
+	swc2	C2_MAC3,LINEINFO_POSITION+8(a2)
+
+	jr	ra
+	nop
+
+
+
+
+
+ if 0
+
+;SplitHiLo
+;	mfc2	t4,C2_MAC1		; get 32-bit results of dxa
+;	mfc2	t5,C2_MAC2
+;	mfc2	t6,C2_MAC3
+;
+;	andi	t0,t4,$FFFF		; move lower 16-bit parts to (t0L,t0H,t1L) with t1H=0
+;	sll	t9,t5,16
+;	or	t0,t0,t9
+;	andi	t1,t6,$FFFF
+;
+;	ori	t9,zero,$8000
+;	addu	t4,t4,t9		; treat 32-bit results so each can be split into signed 16-bit halves
+;	addu	t5,t5,t9
+;	addu	t6,t6,t9
+;
+;	lui	t9,$FFFF		; move upper 16's to (t1H,t2L,t2H)
+;	and	t4,t4,t9
+;	or	t1,t1,t4
+;	srl	t5,t5,16
+;	and	t6,t6,t9
+;	or	t2,t5,t6
+;
+;	jr	ra
+;	nop
+
+
+
+SplitHiLo
+	mfc2	t7,C2_MAC1		; get 32-bit results
+	mfc2	t8,C2_MAC2
+	mfc2	t9,C2_MAC3
+
+	andi	t1,t7,$FFFF		; move lower parts of x,y to t1L,t1H
+	sll	t0,t8,16
+	or	t1,t1,t0
+
+	andi	t2,t9,$FFFF		; move lower part of z to t2L (with t2H=0)
+
+	ori	t0,zero,$8000		; treat 32-bit results so each can be split into signed 16-bit halves
+	addu	t7,t7,t0
+	addu	t8,t8,t0
+	addu	t9,t9,t0
+
+	lui	t0,$FFFF		; move upper part of x to t2H                     
+	and	t7,t7,t0
+	or	t2,t2,t7
+
+	srl	t8,t8,16		; move upper parts of y,z to t3L,t3H
+	and	t9,t9,t0
+	or	t3,t8,t9
+
+	jr	ra
+	nop
+
+
+
+
+M3dAsm_LineColijProcessVerticesAccurately__FP6SModelP16SProjectedVertexP9SLineInfoP6VECTOR
+
+	xdef	M3dAsm_LineColijProcessVerticesAccurately__FP6SModelP16SProjectedVertexP9SLineInfoP6VECTOR
+
+; a0: pModel
+; a1: ProjectedVertices
+; a2: pInfo
+; a3: VECTOR *pPosnRelStart
+
+	move	v0,ra
+
+	lw	t4,0(a3)		; get object position minus line segment start position
+	lw	t5,4(a3)
+	lw	t6,8(a3)
+
+	if PSXVERSION>=$20004
+	lh	a3,MODEL_NUMVERTS(a0)	; loop counter
+	else
+	lw	a3,MODEL_NUMVERTS(a0)	; loop counter
+	endif
+	addu	a0,a0,MODEL_VERTS	; model vertex pointer
+
+	lw	t0,LINEINFO_END_X(a2)	; get end coords
+	lw	t1,LINEINFO_END_Y(a2)
+	lw	t2,LINEINFO_END_Z(a2)
+
+	sra	t0,t0,FRACBITS		; shift 'em down
+	sra	t1,t1,FRACBITS
+	sra	t2,t2,FRACBITS
+
+	lw	t7,LINEINFO_START_X(a2)	; get start coords
+	lw	t8,LINEINFO_START_Y(a2)
+	lw	t9,LINEINFO_START_Z(a2)
+
+	sra	t7,t7,FRACBITS		; shift 'em down
+	sra	t8,t8,FRACBITS
+	sra	t9,t9,FRACBITS
+
+	subu	t0,t0,t7		; subtract start from end to get difference vector d
+	subu	t1,t1,t8
+	subu	t2,t2,t9
+
+	ctc2	t0,C2_R11R12		; move it to the 1st operand vector for cross products
+	ctc2	t1,C2_R22R23		; (where it will remain constant during the subroutine)
+	ctc2	t2,C2_R33
+
+.loop	lw	t7,0(a0)		; get vertex
+	lw	t8,4(a0)
+	sra	t9,t4,16
+
+	addu	t7,t7,t4		; add object position minus line segment start position to get a
+	addu	t8,t8,t5
+	addu	t9,t9,t6
+
+	mtc2	t7,C2_IR1		; move difference vector a to gte
+	mtc2	t8,C2_IR2
+	mtc2	t9,C2_IR3
+
+	addiu	a0,a0,8			; pVertex++;
+	addiu	a3,a3,-1		; step counter
+
+	OP	0			; take cross product dxa
+
+	jal	SplitHiLo
+	nop
+
+	sw	t1,0(a1)		; store processed cross product
+	sw	t2,4(a1)		; partly in transformed vertices buffer
+	sw	t3,MAXVERTICES*8(a1)	; and partly in rotated vertices buffer
+
+	bnez	a3,.loop
+	addiu	a1,a1,8			; pTfmdVertex++;
+
+	jr	v0
+	nop
+
+
+
+
+
+GetA	lw	t7,0(t9)
+	lw	t9,4(t9)
+	srl	t8,t7,16
+	subu	t7,t7,s1
+	subu	t8,t8,s2
+	subu	t9,t9,s3
+	mtc2	t7,C2_IR1
+	mtc2	t8,C2_IR2
+	mtc2	t9,C2_IR3
+	jr	ra
+	nop
+
+;GetA	lw	t8,4(t9)	; (z,?)
+;	lw	t9,0(t9)	; (x,y)
+;	subu	t8,t8,s3	; (z-z0,?)
+;	mtc2	t8,C2_IR3
+;	subu	t8,t9,s1	; (x-x0,?)
+;	mtc2	t8,C2_IR1
+;	srl	t8,t9,16	; (y,?)
+;	subu	t8,t8,s2	; (y-y0,?)
+;	mtc2	t8,C2_IR2
+;	jr	ra
+;	nop
+
+GetAinOPV1
+	lw	t7,0(t9)
+	lw	t9,4(t9)
+	srl	t8,t7,16
+	subu	t7,t7,s1
+	subu	t8,t8,s2
+	subu	t9,t9,s3
+	ctc2	t7,C2_R11R12
+	ctc2	t8,C2_R13R21
+	ctc2	t9,C2_R22R23
+	jr	ra
+	nop
+
+;GetAinOPV1
+;	lw	t8,4(t9)	; (z,?)
+;	lw	t9,0(t9)	; (x,y)
+;	subu	t8,t8,s3	; (z-z0,?)
+;	ctc2	t8,C2_R22R23
+;	subu	t8,t9,s1	; (x-x0,?)
+;	ctc2	t8,C2_R11R12
+;	srl	t8,t9,16	; (y,?)
+;	subu	t8,t8,s2	; (y-y0,?)
+;	ctc2	t8,C2_R13R21
+;	jr	ra
+;	nop
+
+GetC	lw	t7,0(t9)
+	lw	t8,4(t9)
+	lw	t9,MAXVERTICES*8(t9)
+	ctc2	t7,C2_R11R12
+	ctc2	t8,C2_R13R21
+	ctc2	t9,C2_R22R23
+	jr	ra
+	nop
+
+;GetC	lw	t8,0(t9)
+;	nop
+;	ctc2	t8,C2_R11R12
+;	lw	t8,4(t9)
+;	lw	t9,MAXVERTICES*8(t9)
+;	ctc2	t8,C2_R13R21
+;	ctc2	t9,C2_R22R23
+;	jr	ra
+;	nop
+
+GetDot64
+	mfc2	t9,C2_MAC2		; get upper dot prod
+	mfc2	t8,C2_MAC1		; get lower dot prod
+	sll	t7,t9,16		; low 16 bits of upper dot prod, shifted into place
+	addu	t8,t8,t9		; add into lower dot prod
+	jr	ra
+	sra	t9,t9,16		; top 16 bits of upper dot prod, shifted into place
+
+;GetDot64
+;	mfc2	t9,C2_MAC2		; get upper dot prod
+;	mfc2	t8,C2_MAC1		; get lower dot prod
+;	sll	t9,t9,16		; low 16 bits of upper dot prod, shifted into place
+;	addu	t8,t8,t9		; add into lower dot prod
+;	mfc2	t9,C2_MAC2		; get upper dot prod again
+;	jr	ra
+;	sra	t9,t9,16		; top 16 bits of upper dot prod, shifted into place
+
+
+
+
+M3dAsm_LineColijProcessFacesAccurately__FP6SModelP16SProjectedVertexP9SLineInfoP4Item
+
+	xdef	M3dAsm_LineColijProcessFacesAccurately__FP6SModelP16SProjectedVertexP9SLineInfoP4Item
+
+
+; register usage:
+; a0 - pmodel/pface
+; a1 - transformed vertices buffer
+; a2 - pInfo
+; a3 - pItem
+; v0 - model vertices
+; v1 - face flags and length
+; t4 - loop counter
+; s0 - zero mask in lo16, ones mask in hi16
+; s1 - item x
+; s2 - item y
+; s3 - item z
+; s4 - stored numerator (lo)
+; s5 - stored numerator (hi)
+; s6 - stored denominator (lo)
+; s7 - stored denominator (hi)
+
+
+	addiu	sp,sp,-36
+	sw	ra,0(sp)
+	sw	s0,4(sp)
+	sw	s1,8(sp)
+	sw	s2,12(sp)
+	sw	s3,16(sp)
+	sw	s4,20(sp)
+	sw	s5,24(sp)
+	sw	s6,28(sp)
+	sw	s7,32(sp)
+
+	xref	M3dColij_ZeroOneMask
+	lw	s0,M3dColij_ZeroOneMask
+
+	if PSXVERSION>=$20004
+	lh	t0,MODEL_NUMVERTS(a0)
+	lh	t1,MODEL_NUMNORMS(a0)
+	lh	t4,MODEL_NUMFACES(a0)	; face loop counter
+	else
+	lw	t0,MODEL_NUMVERTS(a0)
+	lw	t1,MODEL_NUMNORMS(a0)
+	lw	t4,MODEL_NUMFACES(a0)	; face loop counter
+	endif
+	addiu	v0,a0,MODEL_VERTS	; v0 = pVerts
+	sll	t0,t0,3			; t0 = size of verts
+	addu	a0,v0,t0		; a0 = pNorms
+	sll	t1,t1,3			; t1 = size of norms
+	addu	a0,a0,t1		; a0 = pFace
+
+	lw	s1,ITEM_X(a3)
+	lw	s2,ITEM_Y(a3)
+	lw	s3,ITEM_Z(a3)
+
+	sra	s1,s1,FRACBITS
+	sra	s2,s2,FRACBITS
+	sra	s3,s3,FRACBITS
+
+	; initialise a t value of 1
+	li	t0,1
+	sw	t0,LINEINFO_TDENOM(a2)	; store t denominator
+	sw	zero,LINEINFO_TDENOM+4(a2)
+	sw	t0,LINEINFO_TNUMTR(a2)	; store t numerator
+	sw	zero,LINEINFO_TNUMTR+4(a2)
+
+
+.FaceLoop
+	lw	t1,FACE_NORMAL(a0)
+	lw	v1,FACE_FLAGS(a0)
+
+	; do special-case rejections
+;	and	t0,t1,s1
+;	bnez	t0,.Continue
+;	nor	t0,t1,s0
+;	bnez	t0,.Continue
+;	srl	t0,t1,16
+;	andi	t0,t0,FU_NONCOLLIDABLE|FU_TRIGGERZONE
+;	xori	t0,t0,FU_NONCOLLIDABLE
+;	beqz	t0,.Continue
+;	nop
+
+	srl	t0,t1,16
+	ori	t1,t1,$FFFF
+	xor	t1,t0,t1
+	and	t0,t1,s0
+	bnez	t0,.Continue
+	nop
+
+	andi	t0,t1,FU_NONCOLLIDABLE|FU_TRIGGERZONE
+	xori	t0,t0,FU_TRIGGERZONE
+	beqz	t0,.Continue
+	nop
+
+
+	; get the vertex offsets
+	if PSXVERSION>=$20004
+	; Byte version.
+	lw	t0,FACE_P0P1(a0)		; t0 now contains (p3,p2,p1,p0)
+	nop
+	srl t3,t0,24
+	srl t2,t0,16
+	andi	t2,t2,$FF
+	srl t1,t0,8
+	andi	t1,t1,$FF
+	andi	t0,t0,$FF
+	sll	t0,t0,3					; The indices have not been pre-shifted, so shift 'em
+	sll	t1,t1,3
+	sll	t2,t2,3
+	sll	t3,t3,3
+	else
+	; Original word version.
+	lw	t0,FACE_P0P1(a0)
+	lw	t2,FACE_P2P3(a0)
+	srl	t1,t0,16
+	andi	t0,t0,$FFFF
+	srl	t3,t2,16
+	andi	t2,t2,$FFFF
+	endif
+
+;	if (c1.a2<0)
+;	{		// test triangle 132
+;	   if (triangle)
+;	      reject;
+;	   if (c1.a3<0)
+;	      reject;
+;	   if (c2.a3>0)
+;	      reject;
+;	   if ([a1,a3,a2] < 0)
+;	      reject;
+;	   if ([a1,a3,a2] > c1.a3-c2.a3-c1.a2)
+;	      reject;
+;	   store t-value numerator and denominator;
+;	}
+;	else
+;	{		// test triangle 012
+;	   if (c1.a0>0)
+;	      reject;
+;	   if (c2.a0<0)
+;	      reject;
+;	   if ([a0,a1,a2] < 0)
+;	      reject;
+;	   if ([a0,a1,a2] > -c1.a0+c1.a2+c2.a0)
+;	      reject;
+;	   store t-value numerator and denominator;
+;	}
+
+
+	jal	GetA			; get a2
+	addu	t9,v0,t2
+
+	jal	GetC			; get c1
+	addu	t9,a1,t1
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get c1.a2
+	nop
+
+	move	t5,t8			; (t5,t6) will accumulate the denominator for t
+	move	t6,t9
+
+	bltz	t9,.OtherTri
+	nop
+
+	  ; test triangle 012
+
+	jal	GetA			; get a0
+	addu	t9,v0,t0
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get c1.a0
+	nop
+
+	bgtz	t9,.Continue
+	nop
+
+	subu	t6,t6,t9		; subtract off denominator-accumulator
+	sltu	t9,t5,t8
+	subu	t5,t5,t8
+	subu	t6,t6,t9
+
+	jal	GetA			; get a0 again
+	addu	t9,v0,t0		; which could be done by keeping a0 in registers from above
+
+	jal	GetC			; get c2
+	addu	t9,a1,t2
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get c2.a0
+	nop
+
+	bltz	t9,.Continue
+	nop
+
+	addu	t5,t5,t8		; add onto denominator-accumulator
+	sltu	t8,t5,t8
+	addu	t6,t6,t9
+	addu	t6,t6,t8
+
+	jal	GetAinOPV1
+	addu	t9,v0,t0		; get a0, put into opv1
+
+	jal	GetA
+	addu	t9,v0,t1		; get a1, put into opv2
+
+	OP	0
+
+	j	.BothTris
+	nop
+
+.OtherTri ; test triangle 132
+
+	andi	t9,v1,FF_TRI		; reject if face is a triangle
+	bnez	t9,.Continue
+	nop
+
+	jal	GetA			; get a3
+	addu	t9,v0,t3
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get c1.a3
+	nop
+
+	bltz	t9,.Continue
+	nop
+
+	subu	t6,t9,t6		; negate denominator-accumulator and add on current term
+	sltu	t9,t8,t5
+	subu	t5,t8,t5
+	subu	t6,t6,t9
+
+	jal	GetA			; get a3 again
+	addu	t9,v0,t3		; which could be done by keeping a0 in registers from above
+
+	jal	GetC			; get c2
+	addu	t9,a1,t2
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get c2.a3
+	nop
+
+	bgtz	t9,.Continue
+	nop
+
+	subu	t6,t6,t9		; subtract off denominator-accumulator
+	sltu	t9,t5,t8
+	subu	t5,t5,t8
+	subu	t6,t6,t9
+
+	jal	GetAinOPV1
+	addu	t9,v0,t1		; get a1, put into opv1
+
+	jal	GetA
+	addu	t9,v0,t3		; get a3, put into opv2
+
+	OP	0
+
+.BothTris	; code common to both triangles 012 and 132
+
+	jal	GetA			; get a2
+	addu	t9,v0,t2
+
+	jal	SplitHiLo
+	nop
+
+	ctc2	t1,C2_R11R12
+	ctc2	t2,C2_R13R21
+	ctc2	t3,C2_R22R23
+
+	nop
+	nop
+
+	MVMVA	0,0,3,3,0
+
+	jal	GetDot64		; get [a0,a1,a2]
+	nop
+
+	bltz	t9,.Continue		; is it backface culled with respect to the segment origin?
+	nop
+
+	sltu	t0,t8,t5		; 64-bit compare:
+	addu	t0,t0,t6		; does segment finish before reaching plane of triangle?
+	subu	t0,t0,t9
+
+	bltz	t0,.Continue
+	nop
+
+;---------------------------------------------------------------------------------------------------
+
+	  ; compare t values
+
+	lw	s4,LINEINFO_TDENOM(a2)	; get stored t denominator
+	lw	s5,LINEINFO_TDENOM+4(a2)
+	lw	s6,LINEINFO_TNUMTR(a2)	; get stored t numerator
+	lw	s7,LINEINFO_TNUMTR+4(a2)
+
+	move	t2,t8			; save current t denominator
+	move	t3,t9
+	move	t7,t5			; save current t numerator
+	move	at,t6
+
+; t8 - current numtr lo, Alo=t8
+; t9 - current numtr hi, Ahi=t9
+; t5 - current denom lo, Xlo=t5
+; t6 - current denom hi, Xhi=t6
+; s4 - stored  numtr lo, Ylo=s4
+; s5 - stored  numtr hi, Yhi=s5
+; s6 - stored  denom lo, Blo=s6
+; s7 - stored  denom hi, Bhi=s7
+
+.SortAB	sltu	t0,t8,s6	; generate (A-B)hi
+	subu	t0,t9,t0
+	subu	t0,t0,s7
+
+	bltz	t0,.SortXY
+	nop
+
+	move	t0,t8		; if A>B, swap A and B
+	move	t8,s6
+	move	s6,t0
+	move	t0,t9
+	move	t9,s7
+	move	s7,t0
+
+.SortXY	sltu	t0,t5,s4	; generate (X-Y)hi
+	subu	t0,t6,t0
+	subu	t0,t0,s5
+
+	bltz	t0,.DetLoop
+	nop
+
+	move	t0,t5		; if X>Y, swap X and Y
+	move	t5,s4
+	move	s4,t0
+	move	t0,t6
+	move	t6,s5
+	move	s5,t0
+
+.DetLoop
+	sltu	t0,t5,t8	; generate (X-A)hi
+	subu	t0,t6,t0
+	subu	t0,t0,t9
+
+	sltu	t1,s4,s6	; generate (Y-B)hi
+	subu	t1,s5,t1
+	subu	t1,t1,s7
+
+	bgez	t1,.BleY
+	nop
+
+.BgtY	bltz	t0,.Continue	; if B>Y and X<=A, AB-XY>=0 so current t is no closer
+	nop
+
+	subu	t5,t5,t8	; if B>Y and X>A, set X=X-A...
+	move	t6,t0
+
+	sltu	t0,s6,s4	; ...and B=B-Y
+	subu	s6,s6,s4
+	subu	s7,s7,s5
+	subu	s7,s7,t0
+
+	j	.SortAB
+	nop
+
+.BleY	bgez	t0,.Store	; if B<=Y and A<=X, AB-XY<=0 so current t is no further
+	nop
+
+	sltu	t0,t8,t5	; generate (A-X)hi
+	subu	t0,t9,t0
+	subu	t0,t0,t6
+
+	subu	t8,t8,t5	; if B<=Y and A>X, set A=A-X...
+	move	t9,t0
+
+	subu	s4,s4,s6	; ...and Y=Y-B
+	move	s5,t1
+
+	j	.SortXY
+	nop
+
+;---------------------------------------------------------------------------------------------------
+
+.Store	lhu	t0,FACE_NORMAL(a0)
+	lhu	t1,ITEM_MODEL(a3)
+
+	sw	t2,LINEINFO_TDENOM(a2)	; store t denominator
+	sw	t3,LINEINFO_TDENOM+4(a2)
+	sw	t7,LINEINFO_TNUMTR(a2)	; store t numerator
+	sw	at,LINEINFO_TNUMTR+4(a2)
+
+	sw	a3,LINEINFO_PITEM(a2)	; pInfo->pItem = pItem;
+	sw	a0,LINEINFO_PFACE(a2)	; pInfo->pFace = pFace;
+	sw	t1,LINEINFO_MODEL(a2)	; pInfo->Model = pItem->Model;
+	sw	t0,LINEINFO_NORMALOFFSET(a2)
+
+
+.Continue
+
+	srl	t0,v1,16		; get face length from upper half of flags word
+	addu	a0,a0,t0		; step pFace
+
+	addiu	t4,t4,-1		; dec loop counter
+	bnez	t4,.FaceLoop
+	nop
+
+
+;	sw	s4,LINEINFO_TDENOM(a2)	; store t denominator
+;	sw	s5,LINEINFO_TDENOM+4(a2)
+;	sw	s6,LINEINFO_TNUMTR(a2)	; store t numerator
+;	sw	s7,LINEINFO_TNUMTR+4(a2)
+
+
+
+	lw	ra,0(sp)
+	lw	s0,4(sp)
+	lw	s1,8(sp)
+	lw	s2,12(sp)
+	lw	s3,16(sp)
+	lw	s4,20(sp)
+	lw	s5,24(sp)
+	lw	s6,28(sp)
+	lw	s7,32(sp)
+	addiu	sp,sp,36
+
+	jr	ra
+	nop
+
+ endif
+
+
+
+
+
+M3dAsm_ClipLine__FP12SClipLineBuf
+
+	xdef	M3dAsm_ClipLine__FP12SClipLineBuf
+
+; a0: pClipLineBuf
+
+
+;   Outcode(p0);
+;   Outcode(p1);
+;
+;   if (p0->Outcode & p1->Outcode & 0x3F | (p0->Outcode | p1->Outcode) & 0x20)
+;      Reject();
+;
+;   p0->Alpha = 0;
+;   p1->Alpha = 0x1000;
+;
+;   for (Plane=0,Mask=1; Plane<6; Plane++,Mask<<=1)
+;   {
+;      if ((p0->Outcode ^ p1->Outcode) & Mask == 0)
+;         continue;
+;      Alpha = IntersectionAlpha(p0,p1,Plane);
+;      if (p0->Outcode&Mask)
+;      {
+;         if (Alpha>p0->Alpha)
+;            p0->Alpha = Alpha;
+;      }
+;      else
+;         if (Alpha<p1->Alpha)
+;            p1->Alpha = Alpha;
+;   }
+;
+;   if (p0->Alpha >= p1->Alpha)
+;      Reject();
+;
+;   if (p0->Alpha > 0)
+;      IntersectionProjection(p0,p1,p0->Alpha);
+;
+;   if (p1->Alpha < 0x1000)
+;      IntersectionProjection(p0,p1,p1->Alpha);
+;
+;   Accept();
+
+
+
+	; get camera position
+	lw	t5,pCurrentCamera
+	nop
+	lw	t3,SCAMERA_POSITION_X(t5)
+	lw	t4,SCAMERA_POSITION_Y(t5)
+	lw	t5,SCAMERA_POSITION_Z(t5)
+
+	; fetch and project point A
+	lw	t0,SCLIPLINEBUF_WORLDPOSA_X(a0)
+	lw	t1,SCLIPLINEBUF_WORLDPOSA_Y(a0)
+	lw	t2,SCLIPLINEBUF_WORLDPOSA_Z(a0)
+
+	sra	t0,t0,FRACBITS		; convert to integer
+	sra	t1,t1,FRACBITS
+	sra	t2,t2,FRACBITS
+
+	subu	t0,t0,t3		; subtract camera coords
+	subu	t1,t1,t4
+	subu	t2,t2,t5
+
+	andi	t0,t0,$FFFF		; pack into short format
+	sll	t1,t1,16
+	or	t0,t0,t1
+
+	mtc2	t0,C2_VXY0		; move to gte
+	mtc2	t2,C2_VZ0
+
+	nop
+	nop
+
+	RTPS				; project
+
+	; fetch point B
+	lw	t0,SCLIPLINEBUF_WORLDPOSB_X(a0)
+	lw	t1,SCLIPLINEBUF_WORLDPOSB_Y(a0)
+	lw	t2,SCLIPLINEBUF_WORLDPOSB_Z(a0)
+
+	sra	t0,t0,FRACBITS		; convert to integer
+	sra	t1,t1,FRACBITS
+	sra	t2,t2,FRACBITS
+
+	subu	t0,t0,t3		; subtract camera coords
+	subu	t1,t1,t4
+	subu	t2,t2,t5
+
+	andi	t0,t0,$FFFF
+	sll	t1,t1,16
+	or	t0,t0,t1
+
+	; get point A results
+	cfc2	v0,C2_FLAG
+	mfc2	a2,C2_SXY2
+	mfc2	t3,C2_MAC1
+	mfc2	t4,C2_MAC2
+	mfc2	t5,C2_MAC3
+
+	; project point B
+	mtc2	t0,C2_VXY0
+	mtc2	t2,C2_VZ0
+
+	nop
+	nop
+
+	RTPS
+
+	; store point A projection in case it's not clipped away
+	sw	a2,SCLIPLINEBUF_Y0X0A(a0)
+	sw	t5,SCLIPLINEBUF_ZA(a0)
+
+	; store alphas for an unclipped line
+	sw	zero,SCLIPLINEBUF_ALPHAA(a0)
+	li	t9,$1000
+	sw	t9,SCLIPLINEBUF_ALPHAB(a0)
+
+	; get point B results
+	cfc2	v1,C2_FLAG
+	mfc2	a3,C2_SXY2
+	mfc2	t6,C2_MAC1
+	mfc2	t7,C2_MAC2
+	mfc2	t8,C2_MAC3
+
+	; check for bad projections
+	or	t0,v0,v1
+	bltz	t0,.bad
+	nop
+
+	; check for line too long to render
+	subu	t0,a3,a2
+	sll	t0,t0,16
+	sra	t0,t0,16		; x1-x0
+	addiu	t1,t0,-1024
+	bgez	t1,.bad
+	addiu	t1,t0,1023
+	bltz	t1,.bad
+	sra	t0,a2,16
+	sra	t1,a3,16
+	subu	t0,t1,t0		; y1-y0
+	addiu	t1,t0,-512
+	bgez	t1,.bad
+	addiu	t1,t0,511
+	bgez	t1,.Accept
+
+.bad
+	; check for line too far from camera
+	srl	t0,t0,22
+	andi	t0,t0,7
+	bnez	t0,.Reject
+
+	; check for negative-z-culled lines
+	and	t0,t5,t8
+	bltz	t0,.Reject
+
+	; put rotated coords of A and B in gte vector registers for outcoding, plane dot prods, and interpolation
+	andi	t3,t3,$FFFF
+	sll	t4,t4,16
+	or	t3,t3,t4
+	mtc2	t3,C2_VXY0
+	mtc2	t5,C2_VZ0
+
+	andi	t6,t6,$FFFF
+	sll	t7,t7,16
+	or	t6,t6,t7
+	mtc2	t6,C2_VXY1
+	mtc2	t8,C2_VZ1
+
+	; set up frustum matrices in camera coords
+	la	t9,FrustumNormals
+
+	lw	t0,$00(t9)		; (x0,y0)
+	lw	t1,$04(t9)		; (z0,d0)
+	lw	t2,$08(t9)		; (x1,y1)
+	lw	t3,$0C(t9)		; (z1,d1)
+	lw	t4,$10(t9)		; (x2,y2)
+	lhu	t5,$14(t9)		; (z2,0)
+	sra	t6,t1,16		; d0
+	sra	t7,t3,16		; d1
+	ctc2	t0,C2_L11L12		; (x0,y0) to gte
+	sll	t0,t2,16		; (0,x1)
+	andi	t1,t1,$FFFF		; (z0,0)
+	or	t0,t0,t1		; (z0,x1)
+	ctc2	t0,C2_L13L21		; (z0,x1) to gte
+	srl	t0,t2,16		; (y1,0)
+	sll	t1,t3,16		; (0,z1)
+	or	t0,t0,t1		; (y1,z1)
+	ctc2	t0,C2_L22L23		; (y1,z1) to gte
+	ctc2	t4,C2_L31L32		; (x2,y2) to gte
+	ctc2	t5,C2_L33		; (z2,0) to gte
+
+	ctc2	t6,C2_RBK		; d0 to gte
+	ctc2	t7,C2_GBK		; d1 to gte
+	ctc2	zero,C2_BBK
+
+	lw	t0,$18(t9)		; (x3,y3)
+	lhu	t1,$1C(t9)		; (z3,0)
+	lw	t2,$30(t9)		; (x6,y6)
+	lhu	t3,$34(t9)		; (z6,0)
+	lw	t4,$38(t9)		; (x7,y7)
+	lhu	t5,$3C(t9)		; (z7,0)
+	ctc2	t0,C2_LR1LR2		; (x3,y3) to gte
+	sll	t0,t2,16		; (0,x6)
+	or	t0,t0,t1		; (z3,x6)
+	ctc2	t0,C2_LR3LG1		; (z3,x6) to gte
+	srl	t0,t2,16		; (y6,0)
+	sll	t1,t3,16		; (0,z6)
+	or	t0,t0,t1		; (y6,z6)
+	ctc2	t0,C2_LG2LG3		; (y6,z6) to gte
+	ctc2	t4,C2_LB1LB2		; (x7,y7) to gte
+	ctc2	t5,C2_LB3		; (z7,0) to gte
+	nop
+	nop
+
+	; outcode rotated point A and store dot prods
+	MVMVA	1,1,0,1,1
+	cfc2	v0,C2_FLAG
+	swc2	C2_MAC1,SCLIPLINEBUF_WORKSPACE+$00(a0)
+	swc2	C2_MAC2,SCLIPLINEBUF_WORKSPACE+$04(a0)
+	swc2	C2_MAC3,SCLIPLINEBUF_WORKSPACE+$08(a0)
+	srl	v0,v0,19
+	andi	v0,v0,$38
+
+	MVMVA	1,2,0,3,1
+	cfc2	t0,C2_FLAG
+	swc2	C2_MAC1,SCLIPLINEBUF_WORKSPACE+$0C(a0)
+	swc2	C2_MAC2,SCLIPLINEBUF_WORKSPACE+$10(a0)
+	swc2	C2_MAC3,SCLIPLINEBUF_WORKSPACE+$14(a0)
+	srl	t0,t0,22
+	andi	t0,t0,$07
+
+	or	v0,v0,t0		; outcode of point A
+
+	; outcode rotated point B and store dot prods
+	MVMVA	1,1,1,1,1
+	cfc2	v1,C2_FLAG
+	swc2	C2_MAC1,SCLIPLINEBUF_WORKSPACE+$18(a0)
+	swc2	C2_MAC2,SCLIPLINEBUF_WORKSPACE+$1C(a0)
+	swc2	C2_MAC3,SCLIPLINEBUF_WORKSPACE+$20(a0)
+	srl	v1,v1,19
+	andi	v1,v1,$38
+
+	MVMVA	1,2,1,3,1
+	cfc2	t0,C2_FLAG
+	swc2	C2_MAC1,SCLIPLINEBUF_WORKSPACE+$24(a0)
+	swc2	C2_MAC2,SCLIPLINEBUF_WORKSPACE+$28(a0)
+	swc2	C2_MAC3,SCLIPLINEBUF_WORKSPACE+$2C(a0)
+	srl	t0,t0,22
+	andi	t0,t0,$07
+
+	or	v1,v1,t0		; outcode of point B
+
+
+	; do trivial rejections
+	and	t0,v0,v1
+	bnez	t0,.Reject
+	or	t0,v0,v1
+	andi	t0,t0,$20
+	bnez	t0,.Reject
+	nop
+
+
+	; do the actual clipping
+	li	a1,$20			; initial Mask
+	move	a2,zero			; initial Alpha at A
+	li	a3,$1000		; initial Alpha at B
+	xor	t8,v0,v1		; p0->Outcode ^ p1->Outcode
+
+	; main loop
+
+	; v0 = p0->Outcode
+	; v1 = p1->Outcode
+
+	; a0 = base address for A & B plane dot prods
+	; a1 = Mask
+
+	; a2 = p0->Alpha
+	; a3 = p1->Alpha
+
+.Loop	and	t9,t8,a1		; (p0->Outcode ^ p1->Outcode) & Mask
+	beqz	t9,.NextPlane
+	nop
+
+	lw	t0,SCLIPLINEBUF_WORKSPACE(a0)		; n.p0
+	lw	t1,SCLIPLINEBUF_WORKSPACE+$18(a0)	; n.p1
+	sll	t2,t0,12
+	subu	t0,t0,t1		; n.p0-n.p1
+	div	t2,t0
+	and	t9,v0,a1
+	beqz	t9,.p1Outside
+	mflo	t0			; Alpha = (n.p0<<12)/(n.p0-n.p1)
+.p0Outside
+	subu	t9,t0,a2		; Alpha - p0->Alpha
+	blez	t9,.NextPlane
+	nop
+	move	a2,t0
+	j	.NextPlane
+	nop
+.p1Outside
+	subu	t9,t0,a3		; Alpha - p1->Alpha
+	bgez	t9,.NextPlane
+	nop
+	move	a3,t0
+
+.NextPlane
+	srl	a1,a1,1
+	bnez	a1,.Loop
+	addiu	a0,a0,4
+
+	addiu	a0,a0,-$18		; put a0 back to what it was
+
+
+	; has it all been clipped away?
+	; (could put this test inside loop for earlier rejection)
+	subu	t0,a2,a3		; p0->Alpha - p1->Alpha
+	bgez	t0,.Reject
+	nop
+
+	; store clipped alpha values
+	sw	a2,SCLIPLINEBUF_ALPHAA(a0)
+	sw	a3,SCLIPLINEBUF_ALPHAB(a0)
+
+	; interpolate and project new endpoints
+
+	cfc2	t5,C2_R11R12		; backup the rot matrix
+	cfc2	t6,C2_R13R21
+	cfc2	t7,C2_R22R23
+	cfc2	t8,C2_R31R32
+	cfc2	t9,C2_R33   
+
+	mfc2	t0,C2_VXY0		; (x0,y0)
+	mfc2	t1,C2_VZ0		; (z0,??)
+	mfc2	t2,C2_VXY1		; (x1,y1)
+	mfc2	t3,C2_VZ1		; (z1,??)
+
+	lui	v0,$FFF8		; scale points by 8 so gte will project them properly (what a hideous cheat)
+	ori	v0,v0,$FFF8
+	sll	t0,t0,3
+	and	t0,t0,v0
+	sll	t1,t1,3
+	sll	t2,t2,3
+	and	t2,t2,v0
+	sll	t3,t3,3
+
+	ctc2	t0,C2_R11R12		; (x0,??) to gte
+	ctc2	t2,C2_R22R23		; (??,y1) to gte
+	xor	t2,t0,t2		; (x0^x1,y0^y1)
+	andi	t2,t2,$FFFF		; (x0^x1,0)
+	xor	t2,t0,t2		; (x1,y0)
+	ctc2	t2,C2_R13R21		; (x1,y0) to gte
+	ctc2	t1,C2_R31R32		; (z0,??) to gte
+	ctc2	t3,C2_R33		; (z1,??) to gte
+
+
+	li	t1,$1000
+	subu	t2,t1,a2
+	mtc2	t2,C2_VXY0		; "1" - p0->Alpha (upper 16 bits are zero)
+	mtc2	a2,C2_VZ0		; p0->Alpha
+	subu	t3,t1,a3
+	nop
+	RTPS
+	mfc2	t0,C2_SXY2
+	mfc2	v0,C2_IR3
+
+	mtc2	t3,C2_VXY0		; "1" - p1->Alpha (upper 16 bits are zero)
+	mtc2	a3,C2_VZ0		; p1->Alpha
+	srl	v0,v0,3			; get true z0
+	nop
+	RTPS
+	sw	t0,SCLIPLINEBUF_Y0X0A(a0)
+	sw	v0,SCLIPLINEBUF_ZA(a0)
+	mfc2	t1,C2_SXY2
+	mfc2	v1,C2_IR3
+
+	sw	t1,SCLIPLINEBUF_Y0X0B(a0)
+	srl	v1,v1,3			; get true z1
+	sw	v1,SCLIPLINEBUF_ZB(a0)
+
+	ctc2	t5,C2_R11R12		; restore the rot matrix
+	ctc2	t6,C2_R13R21
+	ctc2	t7,C2_R22R23
+	ctc2	t8,C2_R31R32
+	ctc2	t9,C2_R33   
+
+	; return ot slot of minimum z
+	slt	t0,v0,v1
+	bnez	t0,.BoundsCheck
+	srl	v0,v0,2
+	j	.BoundsCheck
+	srl	v0,v1,2
+
+
+.Accept	sw	a3,SCLIPLINEBUF_Y0X0B(a0); store point B projection
+	sw	t8,SCLIPLINEBUF_ZB(a0)
+	slt	t0,t5,t8		; t0 = z0<z1
+	bnez	t0,.BoundsCheck
+	srl	v0,t5,2
+	srl	v0,t8,2
+
+.BoundsCheck
+	addiu	t0,v0,-OTSIZE
+	bltz	t0,.otok
+	nop
+	li	v0,OTSIZE-1
+.otok	jr	ra
+	nop
+
+.Reject	jr	ra
+	li	v0,-1
+
+
+
+
+
+ if 0 & DEBUG ; not used
+
+; modified versions of Ken's poly buffer checking functions in mips.s
+
+IncPolyCounter
+
+	xref	PolyCounter
+
+	addiu	sp,sp,-8
+	sw	s0,(sp)
+	sw	s1,4(sp)
+
+	la	s0,PolyCounter
+	lw	s1,(s0)
+	nop
+	addiu	s1,s1,1
+	sw	s1,(s0)
+
+	lw	s0,(sp)
+	lw	s1,4(sp)
+	jr	ra
+	addiu	sp,sp,8
+
+
+
+DecPolyCounter		; needed because a subdivided poly shouldn't count it's parent poly as a poly
+
+	xref	PolyCounter
+
+	addiu	sp,sp,-8
+	sw	s0,(sp)
+	sw	s1,4(sp)
+
+	la	s0,PolyCounter
+	lw	s1,(s0)
+	nop
+	addiu	s1,s1,-1
+	sw	s1,(s0)
+
+	lw	s0,(sp)
+	lw	s1,4(sp)
+	jr	ra
+	addiu	sp,sp,8
+
+
+ endif

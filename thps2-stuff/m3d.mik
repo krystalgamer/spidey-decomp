@@ -1,0 +1,5112 @@
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//  m3d.cpp                                                           //
+//                                                                    //
+//  Contains the global variables for the engine, and the main        //
+//  functions for performing rendering:                               //
+//  M3d_RenderSetup, M3d_Render, M3d_RenderCleanup                    //
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
+
+
+#include	"globals.h"
+#include "qdefs.h"
+#ifndef MICKMAP
+#define MICKMAP 0
+#endif
+
+
+#define NOPUSHBACK 0					// set this to 1 in order to disable all pushback settings 
+
+
+#ifndef WIREFRAME
+#define WIREFRAME	(SK||KENVIEWER)
+#endif
+
+#if WIREFRAME
+
+#define WIREFRAME_NONE		0		// No wireframe, just normal textured
+#define WIREFRAME_JUST		1		// Just wireframe
+#define WIREFRAME_HIDDEN	2		// wireframe plus hidden line removal
+#define WIREFRAME_TEXTURED	3		// wireframe plus regular textures
+
+int M3d_WireframeMode = 0;
+int M3d_WireframeLast = 0;
+#endif
+
+
+#if SK
+
+int	Patch_Black = 0;
+
+#if DEBUG
+extern int GRenderedFast;
+extern int GRenderedNonRotated;
+extern int GRenderedRotated;
+extern int GRenderedInvisible;
+extern int GRenderedCulled;
+#endif
+
+int GModelVideoDisplayed;
+// include files for Skate
+
+#include	"pad.h"
+#include	"pack.h"
+#include	"vram.h"
+#include	"m3d.h"
+#include	"m3dinit.h"
+#include	"m3dutils.h"
+#include	"m3dcolij.h"
+#include	"m3dasm.h"
+#include	"m3dmaths.h"
+#include	"m3dzone.h"
+#include "m3dgte.h"
+#include "m3delips.h"
+#include	"db.h"
+#include	"spool.h"
+#include	"post.h"
+#include	"debug.h"
+#include "checksum.h"
+#include "trig.h"
+#include "bit.h"
+#include "bits.h"
+#include "mech.h"
+#include "utils.h"
+#include "decomp.h"
+#include "powerup.h"
+#include "camera.h"
+
+#endif
+
+#if SPIDEY
+
+// include files for Spiderman
+
+#include <inline_c.h>
+#include <gtemac.h>
+#include <stdio.h>
+#include "pad.h"
+#include "pack.h"
+#include "vram.h"
+#include "m3d.h"
+#include "m3dutils.h"
+#include "m3dcolij.h"
+#include "m3dasm.h"
+#include "m3dinit.h"
+#include "m3dmaths.h"
+#include "m3dzone.h"
+#include "m3dgte.h"
+#include "m3delips.h"
+#include "db.h"
+#include "spool.h"
+#include "post.h"
+#include "debug.h"
+#include "checksum.h"
+#include "trig.h"
+#include "bit.h"
+#include "bits.h"
+#if !KENVIEWER
+#include "spidey.h"
+#endif
+#include "utils.h"
+#include "main.h"
+#include "decomp.h"
+#include "backgrnd.h"
+
+#endif
+
+
+#ifndef POLYOVERFLOWINDICATOR
+#define POLYOVERFLOWINDICATOR NULL
+#endif
+
+
+#if SPIDEY && !KENVIEWER
+// If RecordRenderedFaces is true, then M3dAsm_ProcessPolys (& M3dAsm_ProcessPolysFast) will
+// record the faces of a model that were rendered. The bits in the pRenderedFaces array are
+// used to indicate whether a particular face was rendered or not.
+int RecordRenderedFaces=FALSE;
+Uint32 pRenderedFaces[2];
+#endif
+
+// prototypes for functions which aren't to be external
+
+void RenderSuperItem(SItem *pItem);
+void RenderModel(SModel *pModel);
+void RenderBackgroundModel(SModel *pModel);
+void RenderModelFast(SModel *pModel, VECTOR *pPosnRelCam);
+void RenderModelInSuper(SModel *pModel);
+void RenderModelInSuperFast(SModel *pModel);
+void RenderModelNonRotated(SModel *pModel, VECTOR	*pPosnRelCam);
+void RenderBackgroundModelNonRotated(SModel *pModel);
+
+#if SPIDEY
+
+typedef struct
+{
+	Sint16	X, Y;
+	Sint32	z;
+	Sint16	world_x, world_y;	// Essentially the values from RotatedVertex.x and RotatedVertex.y. 
+	Uint32	rgb;
+	Uint32	uv;
+}
+SProjectedClipVertex;
+
+void ProcessPolysNearZClipped( SModel *p_model, Uint32 *pFace, SVECTOR *Normals, int NumFaces );
+void ClipHitherSide2( Uint32 new_index, Uint32 out, Uint32 in );
+void ClipPositiveVerticalSide2( Uint32 new_index, Uint32 out, Uint32 in );
+void ClipNegativeVerticalSide2( Uint32 new_index, Uint32 out, Uint32 in );
+void ClipPositiveHorizontalSide2( Uint32 new_index, Uint32 out, Uint32 in );
+void ClipNegativeHorizontalSide2( Uint32 new_index, Uint32 out, Uint32 in );
+void RenderClippedPoly2( int num_verts );
+void RenderClippedTri2( int v0, int v1, int v2 );
+void RenderClippedQuad2( int v0, int v1, int v2, int v3 );
+#endif
+
+EWaterClip WaterClipValue = WATER_CLIP_BELOW;
+
+
+//------------------------------------------------------------------------------
+// global variables
+
+
+//	vertex array and pointers into it
+SVertex				Vertices[2*MAXVERTICES];
+SProjectedVertex	*ProjectedVertices;	// will be set to (SProjectedVertex *)Vertices;
+SRotatedVertex		*RotatedVertices;		// will be set to (SRotatedVertex *)ProjectedVertices + MAXVERTICES;
+SProjectedVertex	*FreeStitchVertex;	// for filling the stitch vertex buffer
+
+
+// lighting control
+//MATRIX LightMatrix = {{{     0,0x1000,		 0},	// the rows are direction vectors of lights 0,1,2
+//							  {     0,0xF000,		 0},
+//							  {	  0,		0,0x1000}}};
+//MATRIX ColorMatrix =	{{{0x1000,0x0800,0x0A00},	// the columns are rgb's of lights 0,1,2
+//							  {0x0800,0x0C00,0x0A00},
+//							  {0x0200,0x1000,0x0A00}}};
+//SVECTOR BackColor	= {0,0,0};	// ambient light colour for lit objects
+
+SLight M3d_DefaultLight = {{{     0,0x1000,		 0},
+									 {     0,0xF000,		 0},
+									 {		0,		0,0x1000}},
+									0,
+									{{0x1000,0x0900,0x0800},
+									 {0x0800,0x0D00,0x0800},
+									 {0x0200,0x1000,0x0800}},
+									0,
+									{0x200,0x200,0x200}};
+
+// depthcueing control
+Sint32 DpqMin, DpqMax, DpqShift;	// use M3dInit_SetFoggingParams to set these
+Sint32 DpqInterpTime, DpqInterpDeltaMin, DpqInterpDeltaMax;
+SVECTOR FarColor	= {0,0,0};		// depthcue fade colour - always black!
+Uint32 M3d_FadeColour;				// colour to fog to
+//for fade-to-black (no extra polys!), set M3d_FadeColour to 0x80000000
+//for fade-to-rbg, ..........................................0x00bbggrr
+//for fade-to-transparent, ..................................0x02FFFFFF
+
+// vertex colour table base
+Uint32 *pColourTable;
+
+// camera, viewport and ot for current render
+SCamera	 *pCurrentCamera;
+SViewport *pCurrentViewport;
+Uint32	 *CurrentOrderingTable;
+
+// clut, tpage and topleft coords of reflection map texture (which must be 32x32)
+Uint32 RefMapClut, RefMapTpage, RefMapU0V0;
+
+#if DEBUG
+// use this to force the face flags for debugging purposes
+// 1 in bit i (0<=i<16) ... set faceflag i for all faces
+// 0 in bit i (16<=i<32) ... reset faceflag i-16 for all faces
+Uint32 DebugFaceFlags = 0xFFFF0000;	// (hence this value leaves flags untouched)
+#endif
+
+// fudgey z-adjustments for polygons with pushback flags set
+Sint16 M3d_OTPushback=0,M3d_OTPushback2=0;
+
+
+// texture wibble offset tables: 16 tables of 1<<WIBBLETABLESHIFT halfwords each.
+// There is one table for each amplitude 0-15.
+Sint16 WibbleTables[1<<(WIBBLETABLESHIFT+4)];
+
+
+// screen resolution settings
+Uint32	Xres,Yres;						// resolution
+Sint32	PixelAspectX,PixelAspectY;	// derived values to account for pixel aspect ratio
+
+// Value for widescreen effect.
+int		M3d_Widescreen = 0;
+
+// frame and Xblank counters
+Uint32 FrameNo=0, XblanksNow, XblanksThen=0;
+
+
+// set by the engine
+int SubObjectMasked, TestTheWater;
+SVECTOR WaterNormal;
+int Fast, Dewibble;
+
+
+// default distance used by level-of-detail models (can be overriden by model data)
+Sint16 M3d_DefaultLODDistance=6000;
+
+int ForceWireFrameColor = 0;
+
+//------------------------------------------------------------------------------
+
+
+#if WIREFRAME
+
+void M3d_Line(int x0, int y0, int x1, int y1, int Color, int z)
+{
+	RECORDRA;
+
+	// ignore points
+	if (x0==x1 && y0==y1)
+		return;
+	// Clipping
+	int t;   // temp var for swapping
+
+	if (x0>x1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (x1<0 || x0>511)
+		return;
+
+	if (x0<0)
+	{
+		y0 = (0-x0)*(y1-y0)/(x1-x0)+y0;
+		x0 = 0;
+	}
+	if (x1>511)
+	{
+		y1 = (511-x0)*(y1-y0)/(x1-x0)+y0;
+		x1 = 511;
+	}
+
+	if (y0>y1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (y1<0 || y0>239)
+		return;
+	if (y0<0)
+	{
+		x0 = (0-y0)*(x1-x0)/(y1-y0)+x0;
+		y0 = 0;
+	}
+	if (y1>239)
+	{
+		x1 = (239-y0)*(x1-x0)/(y1-y0)+x0;
+		y1 = 239;
+	}
+
+
+	
+   LINE_F2* aline=(LINE_F2*)pPoly;
+	Uint8 *newppoly=(Uint8*)(aline+1);
+	if ((int)aline>(int)PolyBufferEnd) { return;} // See ya
+   pPoly=(Uint32*)newppoly;
+	
+   aline->tag=0x03000000;
+	*(Uint32*)&aline->r0=0x40000000 + Color;
+	aline->x0=x0;
+	aline->y0=y0;
+	aline->x1=x1;
+	aline->y1=y1;
+	addPrim(pDoubleBuffer->OrderingTable+M3d_OTPriority0(z),aline);
+//	addPrim(pDoubleBuffer->OrderingTable,aline);
+}
+
+
+// Quick and dirty display of a list of faces in wireframe mode
+Wireframe_ProcessPolys(Uint32 * pFaceX, int Num, int color)
+{
+	if (ForceWireFrameColor) color = ForceWireFrameColor;
+
+	SProjectedVertex*	pVertices;
+	pVertices = ProjectedVertices;
+
+	int FaceR = 0;
+	int FaceG = 0;
+	int FaceB = 0;
+	
+
+
+	for (int i=0; i<Num; i++,pFaceX+=FACELEN(pFaceX))
+   {
+      SFace *pFace = (SFace*)pFaceX;		// to simplify casting, which hurts my head.
+
+
+
+      Uint16   *pFaceFlags=(Uint16*)pFace;
+      Uint8    *pVertexIndex=(Uint8*)(pFaceFlags+CFACE_VERTEXNUMS*2); // Byte vertex indices which are not shifted
+
+      int x0 =   pVertices[pVertexIndex[0]].X; 
+      int y0 =   pVertices[pVertexIndex[0]].Y;
+      int z0 =   pVertices[pVertexIndex[0]].z;
+
+      int x1 =   pVertices[pVertexIndex[1]].X;
+      int y1 =   pVertices[pVertexIndex[1]].Y;
+      int z1 =   pVertices[pVertexIndex[0]].z;
+
+      int x2 =   pVertices[pVertexIndex[2]].X;
+      int y2 =   pVertices[pVertexIndex[2]].Y;
+      int z2 =   pVertices[pVertexIndex[0]].z;
+	
+		// hidden face removal
+		if ((x1-x0)*(y2-y0) < (x2-x0)*(y1-y0))
+			continue;
+		
+		int zmax = z0;
+		if (z1>zmax) zmax = z1;
+		if (z2>zmax) zmax = z2;
+
+
+
+
+      // if not a triangular face and not an invisible face
+      if (! (pFace->Flags&FACEFLAGS_TRIANGLE) &&
+      	((pFace->Flags&FACEFLAGS_TRANSPARENT) || (pFace->Flags&FACEFLAGS_TRANSRATELO)))
+      {
+         int x3 =   pVertices[pVertexIndex[3]].X;
+         int y3 =   pVertices[pVertexIndex[3]].Y;
+     	 	int z3 =   pVertices[pVertexIndex[0]].z;
+			if (z3>zmax) zmax = z3;
+
+
+			int color2 = color;
+			if (color2 ==	0x800080)
+			{
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH)	  
+					color2 = 0x008000;		// green = push, smoothing group 17
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH2)
+					color2 = 0x000080;		// red = push2, smoothing 16
+			}
+
+			M3d_Line(x0,y0,x1,y1,color2,zmax);
+			M3d_Line(x1,y1,x3,y3,color2,zmax);
+			M3d_Line(x2,y2,x3,y3,color2,zmax);
+			M3d_Line(x2,y2,x0,y0,color2,zmax);
+
+			if (M3d_WireframeMode == WIREFRAME_HIDDEN && !((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) &FU_NONCOLLIDABLE))
+			{
+
+				FaceR = 0;
+				FaceG = 0;
+				FaceB = 0;
+//				if ((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_NONSKATEABLE)
+//					FaceR=0x20;													  // Non-skatable red
+//		      if (((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_NONWALLRIDE))
+//					FaceG=0x20;													  // Non-Wallride Green
+//				if ((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_STICKTOTAGGED)
+//					FaceB=0x20;													  // Stick to Blue
+
+
+
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH)	 
+				{
+					int push = ((Sint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]/32;
+					if (push<-255) push = -255;
+					if (push>255) push = 255;
+					if (push<0)
+						FaceG-=push;									
+					else
+						FaceR+=push;									
+				}
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH2)
+				{
+					int push = ((Sint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]/32;
+					if (push<-255) push = -255;
+					if (push>255) push = 255;
+					if (push<0)
+						FaceG-=push;									
+					else
+						FaceR+=push;									
+				}
+
+
+
+				POLY_F4 * p_poly = (POLY_F4 *)pPoly;
+				if( (Uint8 *)p_poly > PolyBufferEnd )
+				{
+					#if DEBUG
+					POLYOVERFLOWINDICATOR;
+					#endif
+					return;
+				}
+				pPoly	= (Uint32 *)( p_poly + 1 );
+				setPolyF4( p_poly );
+				setXY4( p_poly, x0, y0, x1,y1, x2,y2,x3,y3);
+				setRGB0( p_poly, FaceR, FaceG, FaceB );
+				addPrim( pDoubleBuffer->OrderingTable + M3d_OTPriority0(zmax), p_poly );
+			}
+      }
+		// if a triangular face and not invisible
+		else if ((pFace->Flags&FACEFLAGS_TRANSPARENT) || (pFace->Flags&FACEFLAGS_TRANSRATELO))
+		{
+			int color2 = color;
+			if (color2 ==	0x800080)
+			{
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH)	  
+					color2 = 0x008000;		// green = push, smoothing group 17
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH2)
+					color2 = 0x000080;		// red = push2, smoothing 16
+			}
+			
+			M3d_Line(x0,y0,x1,y1,color2,zmax);
+			M3d_Line(x1,y1,x2,y2,color2,zmax);
+			M3d_Line(x2,y2,x0,y0,color2,zmax);
+
+			if (M3d_WireframeMode == WIREFRAME_HIDDEN  && !((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) &FU_NONCOLLIDABLE))
+			{
+
+				FaceR = 0;
+				FaceG = 0;
+				FaceB = 0;
+//				if ((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_NONSKATEABLE)
+//					FaceR=0x20;													  // Non-skatable red
+//		      if (((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_NONWALLRIDE))
+//					FaceG=0x20;													  // Non-Wallride Green
+//				if ((((Uint32*)(pFace))[CFACE_NORMAL] >> 16) & FU_STICKTOTAGGED)
+//					FaceB=0x20;													  // Stick to Blue
+				
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH)	 
+				{
+					int push = ((Sint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]/32;
+					if (push<-255) push = -255;
+					if (push>255) push = 255;
+					if (push<0)
+						FaceG-=push;									
+					else
+						FaceR+=push;									
+				}
+				if (pFace->Flags&FACEFLAGS_PRIORITYPUSH2)
+				{
+					int push = ((Sint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]/32;
+					if (push<-255) push = -255;
+					if (push>255) push = 255;
+					if (push<0)
+						FaceG-=push;									
+					else
+						FaceR+=push;									
+				}
+
+				POLY_F3 * p_poly = (POLY_F3 *)pPoly;
+				if( (Uint8 *)p_poly > PolyBufferEnd )
+				{
+					#if DEBUG
+					POLYOVERFLOWINDICATOR;
+					#endif
+					return;
+				}
+				pPoly	= (Uint32 *)( p_poly + 1 );
+				setPolyF3( p_poly );
+				setXY3( p_poly, x0, y0, x1,y1, x2,y2);
+				setRGB0( p_poly, FaceR, FaceG, FaceB );
+				addPrim( pDoubleBuffer->OrderingTable + M3d_OTPriority0(zmax), p_poly );
+			}
+		}
+   }
+}
+
+
+/*
+
+DR_PRIO bollocks - does not work, and is not allowed by sony
+
+// The first parameter (pbc) tells GPU to spit out all pixels with the STP (0x8000) bit set.
+// It is good for taking a texture with no transparency and having it turned on
+// without having to draw into VRAM.
+// The 2nd parameter (pbw) tells the GPU to read each pixel being written to, 
+// and if the STP-bit is set no drawing will be done, and if it is clear the pixel is drawn.
+
+// DR_PRIO stuff for testing
+typedef struct {
+    u_long    tag;
+    u_long    code[2];
+} DR_PRIO;                    // Priority 
+
+// *  DR_PRIO  |  3   |   -   |   -   |   -   | Drawing Priority
+
+void SetPriority(DR_PRIO *p, int pbc, int pbw)
+{
+    setlen((u_long *)p, 2);
+    ((u_long *)p)[1] = 0xe6000000|(pbc?0x02:0)|(pbw? 0x01:0);
+    ((u_long *)p)[2] = 0;
+}
+
+*/
+
+
+// Quick and dirty display of a list of faces as flat black polys
+Black_ProcessPolys(Uint32 * pFaceX, int Num, int color)
+{
+	SProjectedVertex*	pVertices;
+	pVertices = ProjectedVertices;
+
+//	if (Pad[0].Circle.Pressed)
+//		return;
+
+
+	for (int i=0; i<Num; i++,pFaceX+=FACELEN(pFaceX))
+   {
+      SFace *pFace = (SFace*)pFaceX;		// to simplify casting, which hurts my head.
+
+      Uint16   *pFaceFlags=(Uint16*)pFace;
+      Uint8    *pVertexIndex=(Uint8*)(pFaceFlags+CFACE_VERTEXNUMS*2); // Byte vertex indices which are not shifted
+
+		Uint32	Indices = *(Uint32*)pVertexIndex;
+		Uint32	Index3 = Indices>>24;	
+		Uint32	Index2 = (Indices>>16)&0xff;	
+		Uint32	Index1 = (Indices>>8)&0xff;	
+		Uint32	Index0 = (Indices)&0xff;	
+
+
+		int z0 =   pVertices[Index0].z;
+      int z1 =   pVertices[Index1].z;
+      int z2 =   pVertices[Index2].z;
+		int zmax = z0;
+		if (z1>zmax) zmax = z1;
+		if (z2>zmax) zmax = z2;
+
+
+#define	SHADOW_TRANS  0			// set to 1 to see what it looks liek transparent
+
+
+#if	SHADOW_TRANS	
+#define	SHADOW_DARKNESS 24
+#else
+#define	SHADOW_DARKNESS 0
+#endif
+
+
+      // if not a triangular face and not an invisible face
+      if (! (pFace->Flags&FACEFLAGS_TRIANGLE) /* &&
+      	((pFace->Flags&FACEFLAGS_TRANSPARENT) || (pFace->Flags&FACEFLAGS_TRANSRATELO))*/)
+      {
+
+//			Uint32	x3y3	= *(Uint32*)(&pVertices[pVertexIndex[3]]);
+     	 	int z3 =   pVertices[Index3].z;
+			if (z3>zmax) zmax = z3;
+			
+			Uint32* OTPos = pDoubleBuffer->OrderingTable + M3d_OTPriority0(zmax);
+			
+			POLY_F4 * p_poly = (POLY_F4 *)pPoly;
+			if( (Uint8 *)p_poly > PolyBufferEnd )
+			{
+				return;
+			}
+			#if SHADOW_TRANS
+			DR_TPAGE* ptpage=(DR_TPAGE*)(p_poly+1);
+			pPoly	= (Uint32 *)( ptpage + 1 );
+			#else
+			pPoly	= (Uint32 *)( p_poly + 1 );
+			#endif
+			
+			/*
+tag_f4          equ     $00
+rgb0_f4         equ     $04
+xy0_f4          equ     $08
+xy1_f4          equ     $0C
+xy2_f4          equ     $10
+xy3_f4          equ     $14
+size_f4         equ     $18
+code_f4         equ     $28
+len_f4          equ     $05
+*/
+			Uint32* pp = (Uint32*)p_poly;
+			*pp++ = 0x05000000;			// set size 
+			*pp++ = 0x28000000;			// code (0x28 = F4) and color 0
+			*pp++ = *(Uint32*)(&pVertices[Index0]);
+			*pp++ = *(Uint32*)(&pVertices[Index1]);
+			*pp++ = *(Uint32*)(&pVertices[Index2]);
+			*pp++ = *(Uint32*)(&pVertices[Index3]);
+			addPrim( OTPos, p_poly );
+			
+			#if SHADOW_TRANS
+	      ptpage->tag=0x01000000;
+	      ptpage->code[0]=0xe1000640; // Subtractive transparency
+   //   	ptpage->code[0]=0xe1000620; // 50:50 transparency
+			addPrim(OTPos,ptpage);
+			#endif
+		
+		
+		}
+		// if a triangular face and not invisible
+		else/* if ((pFace->Flags&FACEFLAGS_TRANSPARENT) || (pFace->Flags&FACEFLAGS_TRANSRATELO))*/
+		{
+			
+// this BFC test does not really make much difference
+//			if ((x1-x0)*(y2-y0) < (x2-x0)*(y1-y0))
+//				continue;
+			
+
+			Uint32* OTPos = pDoubleBuffer->OrderingTable + M3d_OTPriority0(zmax);
+						
+
+			POLY_F3 * p_poly = (POLY_F3 *)pPoly;
+			if( (Uint8 *)p_poly > PolyBufferEnd )
+			{
+				return;
+			}
+			#if SHADOW_TRANS
+			DR_TPAGE* ptpage=(DR_TPAGE*)(p_poly+1);
+			pPoly	= (Uint32 *)( ptpage + 1 );
+			#else
+			pPoly	= (Uint32 *)( p_poly + 1 );
+			#endif
+			
+			Uint32* pp = (Uint32*)p_poly;
+
+			*pp++ = 0x04000000;			// set size 
+			*pp++ = 0x20000000;			// code (0x20 = F3) and color 0
+			*pp++ = *(Uint32*)(&pVertices[Index0]);
+			*pp++ = *(Uint32*)(&pVertices[Index1]);
+			*pp++ = *(Uint32*)(&pVertices[Index2]);
+
+
+			/*
+			setPolyF3( p_poly );
+			#if SHADOW_TRANS
+			p_poly->code|=0x02; // Semitransparent
+			#endif
+			setXY3( p_poly, x0, y0, x1,y1, x2,y2);
+			setRGB0( p_poly, SHADOW_DARKNESS,SHADOW_DARKNESS,SHADOW_DARKNESS );
+			*/
+
+			addPrim( OTPos, p_poly );
+			#if SHADOW_TRANS
+	      ptpage->tag=0x01000000;
+	      ptpage->code[0]=0xe1000640; // Subtractive transparency
+   //   	ptpage->code[0]=0xe1000620; // 50:50 transparency
+			addPrim(OTPos,ptpage);
+			#endif
+		
+
+
+
+		}
+   }
+}
+
+
+
+#endif
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+// Function M3d_RenderSetup
+//
+// Description: setup function to be called once per frame, before rendering
+//
+// Arguments:
+// pCamera = address of SCamera structure defining the camera view
+// pViewport = pointer to viewport defining the screen area to render to
+// ot = address of slot in ordering table
+//
+// Return value:
+// none
+//
+// Side effects:
+////////////////////////////////////////////////////////////////////////////////////
+
+#if DEBUG
+//	debugging variables to make sure	calling sequence is correct
+int RenderCleanupCalled=1;	//	set to 1	for first frame
+int RenderSetupCalled=0;
+#endif
+
+SVECTOR FrustumNormals[10];				// normals to planes of view frustum in camera coords
+MATRIX FrustumMatrix1, FrustumMatrix2;	// used to store above normals transformed into world coords
+
+void M3d_RenderSetup(SCamera *pCamera,	SViewport *pVP, Uint32 *ot)
+{
+	RECORDRA;
+
+	#if WIREFRAME
+	#if !CD
+	static int released = 1;
+	if (Pad[0].LeftTwo.Pressed && Pad[0].LeftOne.Pressed)
+	{
+		if (released)
+		{
+			released = 0;
+			Pad[0].LeftTwo.Triggered = 0;
+			M3d_WireframeMode++;
+			if (M3d_WireframeMode == 4)
+				M3d_WireframeMode = 0;
+		}
+	}
+	else
+		released = 1;
+	#endif
+	#endif
+
+	#if DEBUG
+	RenderSetupCalled=1;
+	ASSERT(RenderCleanupCalled, "Must call	M3d_RenderCleanup() after last call	to	M3d_Render()");
+	RenderCleanupCalled=0;
+	#endif
+
+	// Xblanks is like Vblanks but doesn't increment during a pause
+	XblanksThen = XblanksNow;
+	XblanksNow = Xblanks;
+	if (XblanksThen!=XblanksNow)
+		FrameNo++;
+
+#	if SPIDEY
+	if( DpqInterpTime > 0 )
+	{
+		--DpqInterpTime;
+		DpqMin += DpqInterpDeltaMin;
+		DpqMax += DpqInterpDeltaMax;
+	}
+#	endif
+
+	pCurrentCamera			= pCamera;
+	pCurrentViewport		= pVP;
+	pCurrentViewport->Yon= DpqMax;
+
+#	if DAVE && DEBUG
+	pCurrentViewport->Hither = T[1] + 16;
+#	endif
+
+	CurrentOrderingTable	= ot;
+
+	#if SPIDEY
+	M3dInit_SetResolution(512,240);
+	#endif
+
+	// restore the viewport after this render
+	RECT Window;
+	Window.x	= 0;
+	Window.y	= pDoubleBuffer->Draw.clip.y;
+	Window.w	= Xres;
+	Window.h	= Yres;
+	DR_AREA *pClipArea;
+	pClipArea =	(DR_AREA	*)pPoly;
+	// NOTE: ALLOW PolyBuffer overflow here (into "safe" 100 bytes), to ensure correct clipping 
+	// (actually this is right at the start, so no check needed)
+	SetDrawArea(pClipArea,&Window);
+	pPoly	= (Uint32 *)(pClipArea+1);
+	addPrim(CurrentOrderingTable,pClipArea);
+
+	// calculate derived members of the viewport structure
+	pVP->Zoom = (pVP->xR - pVP->xL >> 1 << 12) / pVP->TanHalf * 4096 / PixelAspectY;
+	pVP->xC = pVP->xL + pVP->xR >> 1;
+	pVP->yC = pVP->yT + pVP->yB >> 1;
+
+	// set the (inward facing) frustum normals for the given viewport
+	Uint32 opp,adj,hyp;
+
+	// yon
+	FrustumNormals[0].vx	 =	0;
+	FrustumNormals[0].vy	 =	0;
+	FrustumNormals[0].vz	 =	0xF000;
+	FrustumNormals[0].pad =	pVP->Yon;
+
+	// hither
+	FrustumNormals[1].vx	 =	0;
+	FrustumNormals[1].vy	 =	0;
+	FrustumNormals[1].vz	 =	0x1000;
+	FrustumNormals[1].pad =	-pVP->Hither;
+
+	// true top and bottom
+	opp = pVP->xR - pVP->xL << 11;
+	adj = pVP->Zoom * PixelAspectX;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp>>12,adj>>12));
+
+	FrustumNormals[2].vx	 =	0;
+	FrustumNormals[2].vy	 =	adj/hyp;
+	FrustumNormals[2].vz	 =	opp/hyp;
+	FrustumNormals[2].pad =	0;
+
+	FrustumNormals[3].vx	 =	0;
+	FrustumNormals[3].vy	 =	-FrustumNormals[2].vy;
+	FrustumNormals[3].vz	 =	FrustumNormals[2].vz;
+	FrustumNormals[3].pad =	0;
+
+	// true left and right
+	opp = pVP->xR - pVP->xL << 11;
+	adj = pVP->Zoom * PixelAspectY;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp>>12,adj>>12));
+
+	FrustumNormals[4].vx	 =	adj/hyp;
+	FrustumNormals[4].vy	 =	0;
+	FrustumNormals[4].vz	 =	opp/hyp;
+	FrustumNormals[4].pad =	0;
+
+	FrustumNormals[5].vx	 =	-FrustumNormals[4].vx;
+	FrustumNormals[5].vy	 =	0;
+	FrustumNormals[5].vz	 =	FrustumNormals[4].vz;
+	FrustumNormals[5].pad =	0;
+
+	// adjusted top and bottom
+	opp = pVP->yB - pVP->yT >> 1;
+	adj = pVP->Zoom;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp,adj));
+
+	FrustumNormals[6].vx	 =	0;
+	FrustumNormals[6].vy	 =	(adj<<12)/hyp;
+	FrustumNormals[6].vz	 =	(opp<<12)/hyp;
+	FrustumNormals[6].pad =	0;
+
+	FrustumNormals[7].vx	 =	0;
+	FrustumNormals[7].vy	 =	-FrustumNormals[6].vy;
+	FrustumNormals[7].vz	 =	FrustumNormals[6].vz;
+	FrustumNormals[7].pad =	0;
+
+	// adjusted left and right
+	opp = pVP->xR - pVP->xL >> 1;
+	adj = pVP->Zoom;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp,adj));
+
+	FrustumNormals[8].vx	 =	(adj<<12)/hyp;
+	FrustumNormals[8].vy	 =	0;
+	FrustumNormals[8].vz	 =	(opp<<12)/hyp;
+	FrustumNormals[8].pad =	0;
+
+	FrustumNormals[9].vx	 =	-FrustumNormals[8].vx;
+	FrustumNormals[9].vy	 =	0;
+	FrustumNormals[9].vz	 =	FrustumNormals[8].vz;
+	FrustumNormals[9].pad =	0;
+
+	// set up view frustum matrices using the given camera
+	gte_SetRotMatrix( &pCamera->Transform );
+	for (int i=0; i<3; i++)
+	{
+		// The following is equivalent to 2 calls to gte_ApplyMatrixSV, but without having to reload
+		// the rotation matrix from within the loop.
+//		gte_ApplyMatrixSV(&pCamera->Transform, &FrustumNormals[i], (SVECTOR *)&FrustumMatrix1.m[i]);
+//		gte_ApplyMatrixSV(&pCamera->Transform, &FrustumNormals[i+3], (SVECTOR *)&FrustumMatrix2.m[i]);
+		gte_ldv0( &FrustumNormals[i] );
+		gte_rtv0();
+		gte_stsv( &FrustumMatrix1.m[i] );
+
+		gte_ldv0( &FrustumNormals[i + 3] );
+		gte_rtv0();
+		gte_stsv( &FrustumMatrix2.m[i] );
+	}
+
+	//	set GTE control registers
+	SetGeomScreen(pVP->Zoom);
+	SetGeomOffset(pVP->xC, pVP->yC);
+
+	//	invert the camera	transform
+	M3dMaths_TransposeMat((XMat*)&pCamera->Transform, (XMat*)&pCamera->Inverse);
+
+	// set up camera's view matrix (which accounts for the pixel aspect ratio)
+	for (int i=0; i<3; i++)
+	{
+		pCamera->View.m[0][i] =	pCamera->Inverse.m[0][i] * PixelAspectY >> 12;
+		pCamera->View.m[1][i] =	pCamera->Inverse.m[1][i] * PixelAspectX >> 12;
+		pCamera->View.m[2][i] =	pCamera->Inverse.m[2][i];
+	}
+
+
+		// set up reflection map texture info
+
+	STexture *pTex = Spool_FindTextureEntry(SMOKECHECKSUM);
+	RefMapClut  = pTex->clut<<16;
+	RefMapTpage = pTex->tpage<<16;
+	RefMapU0V0  = pTex->u0 | pTex->v0<<8;
+
+
+	// pulse them colours
+	M3d_PreprocessPulsingColours(EnvRegions[0]);
+	M3d_PreprocessPulsingColours(EnvRegions[1]);
+	M3d_PreprocessPulsingColours(CurrentObjFileRegion);
+   #if !KENVIEWER
+	M3d_PreprocessPulsingColours(CurrentItemsFileRegion);
+   #endif
+
+
+	// wibble wibbly textures
+	M3d_PreprocessWibblyTextures(CurrentObjFileRegion);
+   #if !KENVIEWER
+	M3d_PreprocessWibblyTextures(CurrentItemsFileRegion);
+   #endif
+
+	// set the clipping plane
+	WaterNormal.vx = -pCurrentCamera->Transform.m[1][0];
+	WaterNormal.vy = -pCurrentCamera->Transform.m[1][1];
+	WaterNormal.vz = -pCurrentCamera->Transform.m[1][2];
+	WaterNormal.pad = (CurrentWaterLevel >> FRACBITS) - pCurrentCamera->Position.vy;
+}
+
+
+
+void M3d_RenderSetupCamera(SCamera *pCamera)
+{
+	RECORDRA;
+
+	pCurrentCamera			= pCamera;
+	SViewport *pVP = pCurrentViewport;
+	pCurrentViewport->Yon= DpqMax;
+	Uint32 *ot = CurrentOrderingTable;
+	// calculate derived members of the viewport structure
+	pVP->Zoom = (pVP->xR - pVP->xL >> 1 << 12) / pVP->TanHalf * 4096 / PixelAspectY;
+	pVP->xC = pVP->xL + pVP->xR >> 1;
+	pVP->yC = pVP->yT + pVP->yB >> 1;
+
+	// set the (inward facing) frustum normals for the given viewport
+	Uint32 opp,adj,hyp;
+
+	// yon
+	FrustumNormals[0].vx	 =	0;
+	FrustumNormals[0].vy	 =	0;
+	FrustumNormals[0].vz	 =	0xF000;
+	FrustumNormals[0].pad =	pVP->Yon;
+
+	// hither
+	FrustumNormals[1].vx	 =	0;
+	FrustumNormals[1].vy	 =	0;
+	FrustumNormals[1].vz	 =	0x1000;
+	FrustumNormals[1].pad =	-pVP->Hither;
+
+	// true top and bottom
+	opp = pVP->xR - pVP->xL << 11;
+	adj = pVP->Zoom * PixelAspectX;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp>>12,adj>>12));
+
+	FrustumNormals[2].vx	 =	0;
+	FrustumNormals[2].vy	 =	adj/hyp;
+	FrustumNormals[2].vz	 =	opp/hyp;
+	FrustumNormals[2].pad =	0;
+
+	FrustumNormals[3].vx	 =	0;
+	FrustumNormals[3].vy	 =	-FrustumNormals[2].vy;
+	FrustumNormals[3].vz	 =	FrustumNormals[2].vz;
+	FrustumNormals[3].pad =	0;
+
+	// true left and right
+	opp = pVP->xR - pVP->xL << 11;
+	adj = pVP->Zoom * PixelAspectY;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp>>12,adj>>12));
+
+	FrustumNormals[4].vx	 =	adj/hyp;
+	FrustumNormals[4].vy	 =	0;
+	FrustumNormals[4].vz	 =	opp/hyp;
+	FrustumNormals[4].pad =	0;
+
+	FrustumNormals[5].vx	 =	-FrustumNormals[4].vx;
+	FrustumNormals[5].vy	 =	0;
+	FrustumNormals[5].vz	 =	FrustumNormals[4].vz;
+	FrustumNormals[5].pad =	0;
+
+	// adjusted top and bottom
+	opp = pVP->yB - pVP->yT >> 1;
+	adj = pVP->Zoom;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp,adj));
+
+	FrustumNormals[6].vx	 =	0;
+	FrustumNormals[6].vy	 =	(adj<<12)/hyp;
+	FrustumNormals[6].vz	 =	(opp<<12)/hyp;
+	FrustumNormals[6].pad =	0;
+
+	FrustumNormals[7].vx	 =	0;
+	FrustumNormals[7].vy	 =	-FrustumNormals[6].vy;
+	FrustumNormals[7].vz	 =	FrustumNormals[6].vz;
+	FrustumNormals[7].pad =	0;
+
+	// adjusted left and right
+	opp = pVP->xR - pVP->xL >> 1;
+	adj = pVP->Zoom;
+	hyp = M3dMaths_SquareRoot0(SQ2(opp,adj));
+
+	FrustumNormals[8].vx	 =	(adj<<12)/hyp;
+	FrustumNormals[8].vy	 =	0;
+	FrustumNormals[8].vz	 =	(opp<<12)/hyp;
+	FrustumNormals[8].pad =	0;
+
+	FrustumNormals[9].vx	 =	-FrustumNormals[8].vx;
+	FrustumNormals[9].vy	 =	0;
+	FrustumNormals[9].vz	 =	FrustumNormals[8].vz;
+	FrustumNormals[9].pad =	0;
+
+	// set up view frustum matrices using the given camera
+	gte_SetRotMatrix( &pCamera->Transform );
+	for (int i=0; i<3; i++)
+	{
+		// The following is equivalent to 2 calls to gte_ApplyMatrixSV, but without having to reload
+		// the rotation matrix from within the loop.
+//		gte_ApplyMatrixSV(&pCamera->Transform, &FrustumNormals[i], (SVECTOR *)&FrustumMatrix1.m[i]);
+//		gte_ApplyMatrixSV(&pCamera->Transform, &FrustumNormals[i+3], (SVECTOR *)&FrustumMatrix2.m[i]);
+		gte_ldv0( &FrustumNormals[i] );
+		gte_rtv0();
+		gte_stsv( &FrustumMatrix1.m[i] );
+
+		gte_ldv0( &FrustumNormals[i + 3] );
+		gte_rtv0();
+		gte_stsv( &FrustumMatrix2.m[i] );
+	}
+
+	//	set GTE control registers
+	SetGeomScreen(pVP->Zoom);
+	SetGeomOffset(pVP->xC, pVP->yC);
+
+	//	invert the camera	transform
+	M3dMaths_TransposeMat((XMat*)&pCamera->Transform, (XMat*)&pCamera->Inverse);
+
+	// set up camera's view matrix (which accounts for the pixel aspect ratio)
+	for (int i=0; i<3; i++)
+	{
+		pCamera->View.m[0][i] =	pCamera->Inverse.m[0][i] * PixelAspectY >> 12;
+		pCamera->View.m[1][i] =	pCamera->Inverse.m[1][i] * PixelAspectX >> 12;
+		pCamera->View.m[2][i] =	pCamera->Inverse.m[2][i];
+	}
+}
+
+
+
+
+void M3d_RenderCleanup(void)
+{
+	RECORDRA;
+
+	#if DEBUG
+	RenderCleanupCalled=1;
+	ASSERT(RenderSetupCalled, "Musn't call	M3d_RenderCleanup() before	M3d_RenderSetup()");
+	RenderSetupCalled=0;	//	ready	for next	frame
+	#endif
+
+	//	Set the viewport for this render.
+	RECT Window;
+	Window.x	= pCurrentViewport->xL;
+	Window.y	= pCurrentViewport->yT+pDoubleBuffer->Draw.clip.y + M3d_Widescreen;
+	Window.w	= pCurrentViewport->xR-pCurrentViewport->xL;
+	Window.h	= pCurrentViewport->yB-pCurrentViewport->yT - ( 2 * M3d_Widescreen );
+	DR_AREA *pClipArea;
+	pClipArea =	(DR_AREA	*)pPoly;
+	SetDrawArea(pClipArea,&Window);
+	pPoly	= (Uint32 *)(pClipArea+1);
+	
+	// NOTE - Allow safe poly buffer overflow
+	#if DEBUG&&SK
+	PolyBufferEnd+=100;
+	#endif
+	addPrim(CurrentOrderingTable+OTSIZE-1,pClipArea);
+	#if DEBUG&&SK
+	PolyBufferEnd-=100;
+	#endif
+
+	// And add top and bottom black polys to mask the background when not black.
+	if( M3d_Widescreen )
+	{
+		for( int i = 0; i < 2; ++i )
+		{
+			POLY_F4 *p_polyF4 = (POLY_F4 *)pPoly;
+			pPoly	= (Uint32 *)( p_polyF4 + 1 );
+			*(Uint32 *)&( p_polyF4->r0 ) = 0;
+			setPolyF4( p_polyF4 );
+
+			if( i )
+				setXY4( p_polyF4, 0, 0, SCREENWIDTH, 0, 0, M3d_Widescreen, SCREENWIDTH, M3d_Widescreen );
+			else
+				setXY4( p_polyF4, 0, SCREENHEIGHT, SCREENWIDTH, SCREENHEIGHT, 0, SCREENHEIGHT - M3d_Widescreen, SCREENWIDTH, SCREENHEIGHT - M3d_Widescreen );
+
+			addPrim( CurrentOrderingTable + OTSIZE - 1, p_polyF4 );
+		}
+	}
+}
+
+
+#if DEBUG && MICKMAP
+extern Mick_ItemOutline(SItem * pItem, int color);
+extern Mick_Item(SItem * pItem, int color);
+extern int Mick_MapDoit;
+#endif
+
+#define DEFZOOM 	191
+
+void M3d_Render(void	*p)
+{
+	RECORDRA;
+
+	int	 i;
+	SItem	 *pItem;
+	VECTOR Position, PosnRelCam;
+	MATRIX Transform,	WorldTransform, TempMatrix;
+	SModel *pModel;
+	STexture	*pTex;
+	POLY_F4 *pFrame;
+	Uint32 GlobalFaceFlags;
+
+	Uint16 yon;
+
+
+	#if DEBUG
+	ASSERT(RenderSetupCalled,	  "Either M3d_Render	called before M3d_RenderSetup(),\n or M3d_Render()	called after M3d_RenderCleanup");
+	#endif
+
+	pItem=(SItem*)p;
+
+	if	(!pItem)	return;
+
+		//	do	bounding	sphere preprocessing
+
+	gte_SetLightMatrix(&FrustumMatrix1);
+	gte_SetColorMatrix(&FrustumMatrix2);
+	gte_ldbkdir((long)FrustumNormals[0].pad>>1,(long)FrustumNormals[1].pad>>1,0);
+
+   #if SPIDEY
+   M3dAsm_BoundingSpherePreprocessing(pItem);
+   #else
+
+   if (p != BaddyList)
+   {
+// if (p == EnviroList)
+//      M3dAsm_EnvBoundingSpherePreprocessing(pItem);
+      M3dAsm_BoundingSpherePreprocessing(pItem, Camera_CurrentMikeCamera ? ITEMFLAGS_INACTIVE2 : ITEMFLAGS_INACTIVE);
+   }
+   else
+      M3dAsm_BoundingSpherePreprocessing(pItem, ITEMFLAGS_INACTIVE);
+   #endif
+
+	#if SK&&DEBUG
+  //  ProfileReadCount(128,80,80);			   // pink = bounding sphere
+	#endif
+
+
+		// wibble them textures (at this point to make use of bounding sphere culling)
+
+	if (pItem == EnviroList)
+	{
+		M3d_PreprocessWibblyTextures(EnvRegions[0]);		// one call for each of the two environment regions
+		M3d_PreprocessWibblyTextures(EnvRegions[1]);
+	}
+
+
+
+//	#if SPIDEY
+//	MechList[0].mpLight = &DefaultLight;
+//	#else
+//	MechList[0].mpLight = &DefaultLight;
+//	MechList[1].mpLight = &DefaultLight;
+//	extern CPlayer *GSkater1,*GSkater2;
+//	GSkater1->mpLight = &DefaultLight;
+//	GSkater2->mpLight = &DefaultLight;
+//	#endif
+		// set up scratchpad vars
+
+	((Uint16 *)0x1F800000)[SCRATCH_DPQMIN>>1]				= DpqMin;
+	((Uint16 *)0x1F800000)[SCRATCH_DPQSHIFT>>1]			= DpqShift;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+	((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1]			= 0;
+
+	((Uint32 *)0x1F800000)[SCRATCH_REFMAPCLUT>>2]		= RefMapClut;
+	((Uint32 *)0x1F800000)[SCRATCH_REFMAPTPAGE>>2]		= RefMapTpage;
+	((Uint32 *)0x1F800000)[SCRATCH_FADECOLOUR>>2]		= M3d_FadeColour;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+		//	add everything	in	the world to the display list
+
+	#if SK&WIREFRAME
+	M3d_WireframeLast = M3d_WireframeMode;
+	#endif
+	for (	; pItem;	pItem=pItem->NextItem)
+	{
+	#if SK&WIREFRAME
+	M3d_WireframeMode = M3d_WireframeLast;
+	#endif
+
+//		if (pItem==(SItem *)MechList)
+//		{
+//			pItem->Flags |= ITEMFLAGS_REFLECTIONMAPPED;
+//			pItem->Flags |= ITEMFLAGS_RGB;
+//			pItem->RGB = 0x102080;
+//		}
+
+#		if DEBUG
+		if	(pItem->Flags & (ITEMFLAGS_CULL))
+		{
+#			if SK
+			GRenderedCulled++;
+#			endif
+
+#			if MICKMAP
+			if	(!(pItem->Flags & (ITEMFLAGS_INACTIVE)))
+			{
+				if (Mick_MapDoit)
+					Mick_ItemOutline(pItem,0x404040);
+			}
+#			endif
+		}
+#		if SK
+		if	(pItem->Flags & (ITEMFLAGS_INACTIVE))
+			GRenderedInvisible++;
+#		endif
+#		endif
+
+// Do not need to check inactive flag here, as cull flag will have
+// been set for any inactive object by the bounding sphere
+// preprocessing, and indeed, checking for the inactive flag will
+// screw up the 2-player visilibity boxes (unless the correct
+// inactive flag is checked for). So, just don't do it.
+//      if (pItem->Flags & (ITEMFLAGS_CULL|ITEMFLAGS_INACTIVE))
+      if (pItem->Flags & ITEMFLAGS_CULL)
+		{
+#			if SPIDEY
+			if( pItem->Flags & ITEMFLAGS_ISSUPER )
+				( (CSuper *)pItem )->mpPolyStart = ( (CSuper *)pItem )->mpPolyEnd = NULL;
+#			endif
+			continue;
+		}
+
+		//	Added	by	Ken (will slow	things down	a tad	but only	with DEBUG on)
+		#if DEBUG
+		if	(pItem->Model>=(Uint32)PSXRegion[pItem->Region].ppModels[-1])
+		{
+			sprintf(AssertString,"\n %s Model %d",PSXRegion[pItem->Region].Filename,pItem->Model);
+			ASSERT(0,"Bad model in pItem");
+		}
+		#endif
+
+
+		//	don't	draw if PSX	file is currently	being	spooled in
+		if	(!PSXRegion[pItem->Region].Usable)
+		{
+			MESSAGE("PSX not usable");
+			continue;
+		}
+
+
+		// set up the display modes for this item (lighting, tint and transparency)
+		#if DEBUG
+		GlobalFaceFlags = DebugFaceFlags;
+		#else
+		GlobalFaceFlags = 0xFFFF0000;
+		#endif
+
+		if (pItem->Flags & ITEMFLAGS_LIT)
+		{
+			GlobalFaceFlags |= FACEFLAGS_LIT;
+			if (pItem->Flags & ITEMFLAGS_GOURAUD)
+				GlobalFaceFlags |= FACEFLAGS_GOURAUD;
+			else
+				GlobalFaceFlags &= ~(FACEFLAGS_GOURAUD<<16);
+		}
+		else if (pItem->Flags & ITEMFLAGS_RGB)
+		{
+			GlobalFaceFlags &= ~(FACEFLAGS_LIT<<16);
+			GlobalFaceFlags |= FACEFLAGS_GOURAUD;
+
+			((Uint32 *)0x1F800000)[SCRATCH_TINT>>2] = (((CItem *)pItem)->mRGB&0x0000FF)<<2|
+																	(((CItem *)pItem)->mRGB&0x00FF00)<<5|
+																	(((CItem *)pItem)->mRGB&0xFF0000)<<8;
+		}
+
+		if (pItem->Flags & ITEMFLAGS_REFLECTIONMAPPED)
+		{
+//			printf("Item Reflection %lx\n",(int)pItem);
+			GlobalFaceFlags |= FACEFLAGS_RELATIVEUVS;
+			GlobalFaceFlags &= ~(FACEFLAGS_TEXTURED<<16);
+			GlobalFaceFlags &= ~(FACEFLAGS_TILED<<16);
+		}
+		else
+		{
+			GlobalFaceFlags &= ~FACEFLAGS_RELATIVEUVS;
+			GlobalFaceFlags |= FACEFLAGS_TEXTURED<<16;
+			GlobalFaceFlags |= FACEFLAGS_TILED<<16;
+		}
+
+
+		if (pItem->Flags & ITEMFLAGS_TRN)
+			GlobalFaceFlags = GlobalFaceFlags & ~(FF_TRL|FF_TRH) | FF_TRN | ((CItem *)pItem)->mTRN & (FF_TRL|FF_TRH);
+
+		((Uint32 *)0x1F800000)[SCRATCH_GLOBALFACEFLAGS>>2]	= GlobalFaceFlags;
+
+
+		// see whether this object is requesting control of the lighting matrices.
+//		if	(pItem->Flags & ITEMFLAGS_LIT)
+//			( (CBody	*)pItem )->DoLightingSetup();
+
+		// are we testing against the water level?
+		TestTheWater = pItem->Flags & ITEMFLAGS_INWATER ? 1 : 0;
+
+		if	(pItem->Flags & ITEMFLAGS_ISSUPER)
+		{
+#			if SPIDEY
+			( (CSuper *)pItem )->mpPolyStart = (P_TAG *)pPoly;
+#			endif
+
+			P_TAG * p_poly_start = (P_TAG *)pPoly;
+
+#			if 1
+//         if ((void *)pItem == (void *)&MechList[0])
+            WaterNormal.pad = (CurrentWaterLevel >> FRACBITS) - pCurrentCamera->Position.vy;
+//         else
+//            WaterNormal.pad = (CurrentWaterLevel2 >> FRACBITS) - pCurrentCamera->Position.vy;
+#			endif
+
+#			if SPIDEY
+			// Store the current global pushback flags.
+			Sint16 stored_ot_pushback1 = ((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1];
+			Sint16 stored_ot_pushback2 = ((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1];
+
+			// Set the superitem-specific pushback flags.
+			((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]	= ( (CSuper *)pItem )->mOTPushback1;
+			((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]	= ( (CSuper *)pItem )->mOTPushback2;
+#			endif
+
+			RenderSuperItem( pItem );
+
+#			if SPIDEY
+			// Reset the superitem-specific pushback flags.
+			((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]	= stored_ot_pushback1;
+			((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]	= stored_ot_pushback2;
+#			endif
+
+#			if SK
+			if( TestTheWater )
+         {
+				// Do a double rendering in water to get lower body submerged.
+				int tmp = pItem->Flags;
+            pItem->Flags |= ITEMFLAGS_RGB;
+            pItem->Flags &= ~ITEMFLAGS_LIT;
+
+            int r, g, b; 
+            
+				if (GLevel==0)
+				{
+	            b = 0xa;
+	            g = 0xd;
+	            r = 0x8;
+				}
+				else
+				{
+	            b = 0x22;
+	            g = 0x20;
+	            r = 0x20;
+            }
+            pItem->RGB = b << 16 | g << 8 | r;
+
+
+            WaterClipValue = WATER_CLIP_ABOVE; // Clip stuff above water surface
+         
+            GlobalFaceFlags &= ~(FACEFLAGS_LIT<<16);
+            GlobalFaceFlags |= FACEFLAGS_GOURAUD;
+         
+				((Uint32 *)0x1F800000)[SCRATCH_TINT>>2] =
+               (pItem->RGB&0x0000FF) << 2 |
+               (pItem->RGB&0x00FF00) << 5 |
+               (pItem->RGB&0xFF0000) << 8;
+         
+            // GlobalFaceFlags = GlobalFaceFlags & ~(FF_TRL|FF_TRH) | FF_TRN | FF_TRH | FF_TRL;
+            ((Uint32 *)0x1F800000)[SCRATCH_GLOBALFACEFLAGS>>2] = GlobalFaceFlags;
+
+				// Second rendering, below water surface.
+            RenderSuperItem(pItem);
+
+				// Restore it to clip below water.
+            WaterClipValue = WATER_CLIP_BELOW;
+
+            pItem->Flags = tmp;
+         }
+#			endif
+
+#			if SPIDEY
+			( (CSuper *)pItem )->mpPolyEnd = (P_TAG *)pPoly;
+//			if( pItem->Flags & ITEMFLAGS_PREDATOREFFECT )
+//				Post_ApplyPredatorEffect( (CBody *)pItem, p_poly_start, (P_TAG *)pPoly );
+#			endif
+
+			continue;
+		}
+
+		// get model pointer
+		pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+
+		if (pModel->Flags & MODELFLAGS_INVISIBLE)
+			continue;
+
+		#if SK
+		if (pModel->Flags & MODELFLAGS_VIDEO)
+			GModelVideoDisplayed = 1;
+		#endif
+
+		#if SK&&WIREFRAME
+		if (pModel->Flags & MODELFLAGS_WIREFRAME)
+			M3d_WireframeMode = WIREFRAME_JUST;			
+		#endif
+
+
+		//	get camera's view transform in rot matrix
+		gte_SetRotMatrix(&pCurrentCamera->View);
+		m3d_ZeroTransVector();
+
+		//	transform item's local origin
+		PosnRelCam.vx = (pItem->Position.vx	>>	FRACBITS) -	pCurrentCamera->Position.vx;
+		PosnRelCam.vy = (pItem->Position.vy	>>	FRACBITS) -	pCurrentCamera->Position.vy;
+		PosnRelCam.vz = (pItem->Position.vz	>>	FRACBITS) -	pCurrentCamera->Position.vz;
+		gte_ldlv0(&PosnRelCam);
+		gte_rtv0();
+		gte_stlvnl(&Position);
+
+		// level of detail
+		#if DEBUG
+		if (!Pad[1].Triangle.Pressed)
+		#endif
+		{
+
+
+			#if SK
+			if (((Sint16)(pModel->zMax)) < 0)	  // negative zMax indicates it's a fraction of DpqMax 
+			{
+				while (Position.vz>-(((Sint16)(pModel->zMax*pCurrentViewport->Zoom/DEFZOOM))*DpqMax>>10) && pModel->NextLOD!=0xFFFF)
+					pModel=PSXRegion[pItem->Region].ppModels[pModel->NextLOD];
+
+				// got to he last model, or to a correct LOD 
+				// need to check again for -ve
+				if (((Sint16)(pModel->zMax)) < 0)	  // negative zMax indicates it's a fraction of DpqMax 
+				{
+					if (Position.vz>-(((Sint16)(pModel->zMax*pCurrentViewport->Zoom/DEFZOOM))*DpqMax>>10) && pModel->NextLOD==0xFFFF)
+						continue;
+				}
+				else
+				{
+					if (Position.vz>pModel->zMax*pCurrentViewport->Zoom/DEFZOOM && pModel->NextLOD==0xFFFF)
+						continue;
+				}
+			}
+			else
+			#endif
+			{
+				while (
+					(
+					Position.vz>pModel->zMax*pCurrentViewport->Zoom/DEFZOOM
+					#if DEBUG&&JASON
+					|| Pad[1].X.Pressed
+					#endif
+					)
+				 && pModel->NextLOD!=0xFFFF)
+				{
+
+					pModel=PSXRegion[pItem->Region].ppModels[pModel->NextLOD];
+					#if DEBUG&&JASON
+					if (Pad[1].Square.Pressed)
+						goto DONTDRAW;
+					#endif
+				}
+				if (Position.vz>pModel->zMax*pCurrentViewport->Zoom/DEFZOOM && pModel->NextLOD==0xFFFF)
+					continue;
+			}
+		}
+
+		if( ( pModel->NumVertices <= 100 ) &&
+			 ( ( pModel->Flags & MODELFLAGS_ALWAYSFACING ) == 0 ) &&
+			 ( ( pItem->Flags & ( ITEMFLAGS_LIT | ITEMFLAGS_GOURAUD | ITEMFLAGS_SCALED ) ) == 0 ) &&
+			 ( ( ( ( pModel->Flags & ( MODELFLAGS_SUBDIVIDABLE ) == 0 ) && ( pModel->Radius < ( Position.vz << FRACBITS ) ) ) ||
+			   ( Position.vz - ( pModel->Radius >> FRACBITS ) > pCurrentViewport->Yon / 10 ) ) &&
+			 ( ( pItem->Angles.vx | pItem->Angles.vy | pItem->Angles.vz ) == 0 ) ) )
+			Fast = 1;
+		else
+			Fast = 0;
+
+
+		//	set rotation (if non-zero)
+		if (pItem->Angles.vx || pItem->Angles.vy || pItem->Angles.vz)
+		{
+			#if SK
+			extern int M3d_RotateZXY;
+			if (M3d_RotateZXY)
+				RotMatrixZXY((SVECTOR *)(&pItem->Angles),	&WorldTransform);
+			else
+			#endif
+				M3dMaths_RotMatrixYXZ((SVECTOR *)(&pItem->Angles),	&WorldTransform);
+			if (pItem->Flags&ITEMFLAGS_SCALED)
+				M3dMaths_ScaleMatrix(pItem,&WorldTransform);
+			M3dMaths_MulRotMatrix(&WorldTransform,&Transform);
+			gte_SetRotMatrix(&Transform);
+		}
+		else
+		{
+			M3dMaths_SetIdentityRotation(&WorldTransform);
+			if (pItem->Flags&ITEMFLAGS_SCALED)
+			{
+				M3dMaths_ScaleMatrix(pItem,&WorldTransform);
+				M3dMaths_MulRotMatrix(&WorldTransform,&Transform);
+				gte_SetRotMatrix(&Transform);
+			}
+		}
+
+		pColourTable = PSXRegion[pItem->Region].pColourTable;
+
+		if	(pModel->Flags & MODELFLAGS_REFLECTIONMAPPED || pItem->Flags & ITEMFLAGS_REFLECTIONMAPPED)
+		{
+//			printf("Model Refl %lx\n",(int)pModel);
+//			pItem->Flags |= ITEMFLAGS_RGB;    // frig to see if we can get it working
+//			pItem->Flags |= ITEMFLAGS_REFLECTIONMAPPED; // make the item also be reflection mapped
+			M3dAsm_GetReflectionMapping(&WorldTransform, (long *)&Position, (Uint32 *)pModel);
+		}
+		else if (pModel->Flags & MODELFLAGS_LIT || pItem->Flags & ITEMFLAGS_LIT)
+		{
+			#if KENVIEWER
+			// In the viewer, it may be that the lit item being rendered is in the dummy list
+			// of items in the PSX, so it cannot be cast up to a CItem. Use the Spidey_DefaultLight
+			// defined in viewer.cpp instead.
+			extern SLight Spidey_DefaultLight;
+			if (pItem->Angles.vx || pItem->Angles.vy || pItem->Angles.vz)
+			{
+				gte_MulMatrix0((MATRIX *)&Spidey_DefaultLight.LightMatrix, &WorldTransform, &TempMatrix);
+				gte_SetLightMatrix(&TempMatrix);
+			}
+			else
+				gte_SetLightMatrix((MATRIX *)&Spidey_DefaultLight.LightMatrix);
+
+			gte_SetColorMatrix((MATRIX *)&Spidey_DefaultLight.ColorMatrix);
+			M3dAsm_SetAmbient(Spidey_DefaultLight.BackColor);
+
+			#else
+			if (pItem->Angles.vx || pItem->Angles.vy || pItem->Angles.vz)
+			{
+				gte_MulMatrix0((MATRIX *)&((CItem *)pItem)->mpLight->LightMatrix, &WorldTransform, &TempMatrix);
+				gte_SetLightMatrix(&TempMatrix);
+			}
+			else
+				gte_SetLightMatrix((MATRIX *)&((CItem *)pItem)->mpLight->LightMatrix);
+
+			gte_SetColorMatrix((MATRIX *)&((CItem *)pItem)->mpLight->ColorMatrix);
+			M3dAsm_SetAmbient(((CItem *)pItem)->mpLight->BackColor);
+			#endif
+			M3dAsm_GetDynamicLighting(pModel->Vertices+pModel->NumVertices,pModel->NumNormals);
+		}
+
+#define PUSHSCALE  32  // scale of the item level push flags, signed byte, so -128/127  goes to -1024/992  of scale is 32
+
+		yon = pCurrentViewport->Yon;
+		if( pItem->Flags & ITEMFLAGS_IGNOREDPQ )
+		{
+			// Force no depthcueing, and no distance clipping.
+			( (Uint16 *)0x1F800000 )[SCRATCH_DPQMIN >> 1]		= 0x7FFF;
+			( (Uint16 *)0x1F800000 )[SCRATCH_REFLECTED >> 1]	= 0;
+			pCurrentViewport->Yon = 0x7FFFU;			
+		}
+
+		if (Fast)
+		{
+			#if DEBUG&&SK
+			GRenderedFast++;
+			#endif
+			#if DEBUG&&MICKMAP
+			if (Mick_MapDoit)
+				Mick_Item(pItem,0x008000);
+			#endif
+
+			if (pItem->Frame || pItem->Anim)
+			{
+				if (pItem->Frame)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= PUSHSCALE*((Sint8)(pItem->Frame));
+				if (pItem->Anim)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= PUSHSCALE*((Sint8)(pItem->Anim));
+					RenderModelFast(pModel,&PosnRelCam);
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+			}
+			else
+				RenderModelFast(pModel,&PosnRelCam);
+
+			if( pItem->Flags & ITEMFLAGS_IGNOREDPQ )
+			{
+				// Restore depthcueing.
+				( (Uint16 *)0x1F800000 )[SCRATCH_DPQMIN >> 1]		= DpqMin;
+				( (Uint16 *)0x1F800000 )[SCRATCH_REFLECTED >> 1]	= 0;
+				pCurrentViewport->Yon = yon;
+			}
+			continue;
+		}
+
+		if	(pItem->Angles.vx==0	&&	pItem->Angles.vy==0 && pItem->Angles.vz==0 && !(pItem->Flags&ITEMFLAGS_SCALED))
+		{
+			#if DEBUG&&SK
+			GRenderedNonRotated++;
+			#endif
+
+			if (pItem->Frame || pItem->Anim)
+			{
+				if (pItem->Frame)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= PUSHSCALE*((Sint8)(pItem->Frame));
+				if (pItem->Anim)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= PUSHSCALE*((Sint8)(pItem->Anim));
+				RenderModelNonRotated(pModel,&PosnRelCam);
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+			}
+			else
+				RenderModelNonRotated(pModel,&PosnRelCam);
+
+
+			#if DEBUG&&MICKMAP
+			if (Mick_MapDoit)
+				Mick_Item(pItem,0x800000);
+			#endif
+		}
+		else
+		{
+			#if DEBUG&&SK
+			GRenderedRotated++;
+			#endif
+			gte_SetTransVector(&Position);
+			if (pItem->Frame || pItem->Anim)
+			{
+				if (pItem->Frame)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= PUSHSCALE*((Sint8)(pItem->Frame));
+				if (pItem->Anim)
+					((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= PUSHSCALE*((Sint8)(pItem->Anim));
+				RenderModel(pModel);
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+				((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+			}
+			else
+				RenderModel(pModel);
+		}
+
+		if( pItem->Flags & ITEMFLAGS_IGNOREDPQ )
+		{
+			// Restore depthcueing.
+			( (Uint16 *)0x1F800000 )[SCRATCH_DPQMIN >> 1]		= DpqMin;
+			( (Uint16 *)0x1F800000 )[SCRATCH_REFLECTED >> 1]	= 0;
+			pCurrentViewport->Yon = yon;
+		}
+
+
+	DONTDRAW:
+		;
+	}
+	#if SK&WIREFRAME
+	M3d_WireframeMode = M3d_WireframeLast;
+	#endif
+
+}
+
+
+
+
+
+
+#if SK
+
+void RenderSuperItemShadow(SItem *pItem);
+
+// we assume that m3d_render has already been called once
+void M3d_RenderSuperQuick(void	*p)
+{
+	RECORDRA;
+
+	int	 i;
+	SItem	 *pItem;
+	VECTOR Position, PosnRelCam;
+	MATRIX Transform,	WorldTransform, TempMatrix;
+	SModel *pModel;
+	STexture	*pTex;
+	POLY_F4 *pFrame;
+	Uint32 GlobalFaceFlags;
+
+	Uint16 yon;
+
+
+	#if DEBUG
+	ASSERT(RenderSetupCalled,	  "Either M3d_Render	called before M3d_RenderSetup(),\n or M3d_Render()	called after M3d_RenderCleanup");
+	#endif
+
+	pItem=(SItem*)p;
+
+	if	(!pItem)	return;
+
+	//	do	bounding	sphere preprocessing
+
+	gte_SetLightMatrix(&FrustumMatrix1);
+	gte_SetColorMatrix(&FrustumMatrix2);
+	gte_ldbkdir((long)FrustumNormals[0].pad>>1,(long)FrustumNormals[1].pad>>1,0);
+
+   M3dAsm_BoundingSpherePreprocessing(pItem, Camera_CurrentMikeCamera ? ITEMFLAGS_INACTIVE2 : ITEMFLAGS_INACTIVE);
+		// set up scratchpad vars
+
+	((Uint16 *)0x1F800000)[SCRATCH_DPQMIN>>1]				= DpqMin;
+	((Uint16 *)0x1F800000)[SCRATCH_DPQSHIFT>>1]			= DpqShift;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+	((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1]			= 0;
+
+	((Uint32 *)0x1F800000)[SCRATCH_REFMAPCLUT>>2]		= RefMapClut;
+	((Uint32 *)0x1F800000)[SCRATCH_REFMAPTPAGE>>2]		= RefMapTpage;
+	((Uint32 *)0x1F800000)[SCRATCH_FADECOLOUR>>2]		= M3d_FadeColour;
+
+	for (	; pItem;	pItem=pItem->NextItem)
+	{
+
+
+// Do not need to check inactive flag here, as cull flag will have
+// been set for any inactive object by the bounding sphere
+// preprocessing, and indeed, checking for the inactive flag will
+// screw up the 2-player visilibity boxes (unless the correct
+// inactive flag is checked for). So, just don't do it.
+//      if (pItem->Flags & (ITEMFLAGS_CULL|ITEMFLAGS_INACTIVE))
+      if (pItem->Flags & ITEMFLAGS_CULL)
+		{
+			continue;
+		}
+		
+
+		// are we testing against the water level?
+		TestTheWater = pItem->Flags & ITEMFLAGS_INWATER ? 1 : 0;
+
+
+		P_TAG * p_poly_start = (P_TAG *)pPoly;
+
+#			if 1
+          WaterNormal.pad = (CurrentWaterLevel >> FRACBITS) - pCurrentCamera->Position.vy;
+#			endif
+
+			RenderSuperItemShadow( pItem );
+			//RenderSuperItemShadow( pItem );
+
+	DONTDRAW:
+		;
+	}
+	#if SK&WIREFRAME
+	M3d_WireframeMode = M3d_WireframeLast;
+	#endif
+
+}
+
+void RenderSuperItemShadow(SItem *pItem)
+{
+	RECORDRA;
+
+	Uint32  NumParts, *pAnimFile, Rgb;
+	VECTOR  Position;
+	SMatrix *pAnimTransform;
+	MATRIX  Transform, SuperTransform,
+			  WorldTransform, SuperLightTransform;
+	int	  i,Type;
+	SModel  *pModel, **ppModels;
+	SAnimFrame *pAnimTex;
+	Uint16	Scale;
+	Sint16	OTPushback;
+	Uint32	ItemFlags = pItem->Flags;
+
+   
+	if (!PSXRegion[pItem->Region].Fastable || ItemFlags & (ITEMFLAGS_TRN|ITEMFLAGS_RGB|ITEMFLAGS_LIT))
+		Fast = 0;
+	else
+		Fast = 1;
+
+
+	//	Just to be sure
+	ASSERT(PSXRegion[pItem->Region].Usable,"Tried to render superitem	without PSX");
+
+	// flip anim if necessary
+	if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_FLIPANIM)
+	{
+		((CSuper *)pItem)->mTransform.m[0][0] = -((CSuper *)pItem)->mTransform.m[0][0];
+		((CSuper *)pItem)->mTransform.m[1][0] = -((CSuper *)pItem)->mTransform.m[1][0];
+		((CSuper *)pItem)->mTransform.m[2][0] = -((CSuper *)pItem)->mTransform.m[2][0];
+		((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1] = 1;
+	}
+	else
+	{
+		// make sure flag is cleared, otherwise it will affect later superitems in this itemlist
+		((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1] = 0;
+	}
+		//	set up the superitem	transform in eye coords
+
+	gte_SetRotMatrix(&pCurrentCamera->View);
+	M3dMaths_MulRotMatrix(&((CSuper *)pItem)->mTransform, &SuperTransform);
+
+		//	transform superitem's local origin
+
+	Position.vx	= (pItem->Position.vx >> FRACBITS) - pCurrentCamera->Position.vx;
+	Position.vy	= (pItem->Position.vy >> FRACBITS) - pCurrentCamera->Position.vy;
+	Position.vz	= (pItem->Position.vz >> FRACBITS) - pCurrentCamera->Position.vz;
+	gte_ldlvl(&Position);
+	gte_rtir();
+	gte_stlvnl(&SuperTransform.t);
+
+	// Need this temporary variable because SuperTransform.t[] gets multiplied by
+	// 16 for near objects (dewibbling).
+	Sint16 super_dist = SuperTransform.t[2];
+
+	/*
+	if (super_dist < 1000)
+	{
+		Dewibble=1;
+		Position.vx	= (pItem->Position.vx >> FRACBITS-4) - (pCurrentCamera->Position.vx<<4);
+		Position.vy	= (pItem->Position.vy >> FRACBITS-4) - (pCurrentCamera->Position.vy<<4);
+		Position.vz	= (pItem->Position.vz >> FRACBITS-4) - (pCurrentCamera->Position.vz<<4);
+		gte_ldlvl(&Position);
+		gte_rtir();
+		gte_stlvnl(&SuperTransform.t);
+	}
+	else
+	*/	
+		Dewibble=0;
+
+
+
+	ASSERT(pItem->Model==0, "I thought the model number was always 0 for a superitem");
+	ppModels = PSXRegion[pItem->Region].ppModels;
+	NumParts = PSXRegion[pItem->Region].NumParts;
+
+	// get animation pointer...
+
+	// if posed, used pose buffer
+	if	(ItemFlags & ITEMFLAGS_POSED)
+		pAnimTransform	= ((CSuper *)pItem)->mpPoseBuffer;
+	else
+		pAnimTransform=Decomp_GetAnimTransform((CSuper *)pItem);
+
+	SMatrix* pFirstTransform = pAnimTransform;
+	
+	// set up lighting stuff
+	gte_MulMatrix0((MATRIX *)&((CItem *)pItem)->mpLight->LightMatrix, &((CSuper *)pItem)->mTransform, &SuperLightTransform);
+
+	// get ellipsoid stuff
+	if ((Type = ((CSuper *)pItem)->mEllipsoidRGB>>24) & 0x7F)
+	{
+		int Lookup = (Type-1)&0x7F;
+//		if (Lookup>QB_FIRECYCL)
+//			Lookup=QB_FIRECYCL;
+		if (Lookup<0)
+			Lookup=0;
+		pAnimTex = QuickAnimLookup[Lookup];
+	   #if DEBUG && SPIDEY
+   	if (pAnimTex==NULL)
+	   {
+   		sprintf(AssertString,"%s",AnimNames[Lookup]);
+   		ASSERT(0,"Bits animation not loaded (RenderSuperItemShadow)");
+	   }
+   	#endif   
+		pAnimTex += FrameNo % ((int *)pAnimTex)[-1];
+		Rgb = ((CSuper *)pItem)->mEllipsoidRGB & 0xFFFFFF;
+		Scale = ((CSuper *)pItem)->mEllipsoidScale;
+		OTPushback = ((CSuper *)pItem)->mEllipsoidOTPushback;
+	}
+
+	FreeStitchVertex = Fast ? (SProjectedVertex *)0x1F8003F8 : &ProjectedVertices[MAXVERTICES-1];
+	pColourTable = PSXRegion[pItem->Region].pColourTable;
+
+	for (i=0; i<NumParts; i++,pAnimTransform++)
+	{
+			SubObjectMasked = (((CSuper *)pItem)->mSubObjectDisplayMask & 1<<i) ? 1 : 0;
+
+		pModel = ppModels[i];
+
+		// the following compensates for special models
+		// such as the create-a-skater, where the render
+		// order is not necessarily the animation order
+		if (((CSuper*)pItem)->mUseAnimOrder)
+		{
+			pAnimTransform = pFirstTransform + ((CSuper*)pItem)->mAnimOrder[i];
+		}
+		
+		// if the madel is flagged as invisible, then don't draw it
+		// this is used in the front end of Skate, in the create a skater
+		// we ahve more that 32 models, so can't use mSubObjectDisplayMask
+		// so we just set the invisible flag
+		if (pModel->Flags & MODELFLAGS_INVISIBLE)
+			SubObjectMasked = 1;
+
+		gte_MulMatrix0(&((CSuper *)pItem)->mTransform,(MATRIX *)pAnimTransform,&WorldTransform);
+
+		if (Dewibble)
+			M3dAsm_SetSuperTransformsDewibbled(&SuperTransform, &SuperLightTransform, pAnimTransform);
+		else
+			M3dAsm_SetSuperTransforms(&SuperTransform, &SuperLightTransform, pAnimTransform);
+
+      
+		// render the bodypart
+		if (!(Type&0x80))
+			if (Fast)
+				RenderModelInSuperFast(pModel);
+			else
+				RenderModelInSuper(pModel);
+            
+      
+
+		// nothing else to do if bodypart is masked off (it WAS rendered in case it had stitching vertices in it)
+//		if (SubObjectMasked)
+//			continue;
+
+
+	}
+
+	// unflip anim if necessary
+	if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_FLIPANIM)
+	{
+		((CSuper *)pItem)->mTransform.m[0][0] = -((CSuper *)pItem)->mTransform.m[0][0];
+		((CSuper *)pItem)->mTransform.m[1][0] = -((CSuper *)pItem)->mTransform.m[1][0];
+		((CSuper *)pItem)->mTransform.m[2][0] = -((CSuper *)pItem)->mTransform.m[2][0];
+	}
+   
+	#if SPIDEY
+   if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_OVERRIDEWATERLEVEL)
+     	WaterNormal.pad = OldWaterNormalPad;
+   #endif   
+}
+
+
+
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+// The quick version of the above, makes the following assumtions:
+//  No Rotation
+//  No lighting of any kind (just regular vertex or face colors)
+//  No reflection mappping
+//  No transparent objects
+//  No super items
+//  No water test
+//  No scaled items
+//  PSX file is in memory, so don't need to check it
+
+
+void M3d_RenderQuick(void	*p)
+{
+	RECORDRA;
+
+	int	 i;
+	SItem	 *pItem;
+	VECTOR Position, PosnRelCam;
+	MATRIX Transform,	WorldTransform, TempMatrix;
+	SModel *pModel;
+	STexture	*pTex;
+	POLY_F4 *pFrame;
+	Uint32 GlobalFaceFlags;
+
+	#if DEBUG
+	ASSERT(RenderSetupCalled,	  "Either M3d_Render	called before M3d_RenderSetup(),\n or M3d_Render()	called after M3d_RenderCleanup");
+	#endif
+
+	pItem=(SItem*)p;
+
+	if	(!pItem)	return;
+
+		//	do	bounding	sphere preprocessing
+
+	gte_SetLightMatrix(&FrustumMatrix1);
+	gte_SetColorMatrix(&FrustumMatrix2);
+	gte_ldbkdir((long)FrustumNormals[0].pad>>1,(long)FrustumNormals[1].pad>>1,0);
+
+   #if SPIDEY
+   M3dAsm_BoundingSpherePreprocessing(pItem);
+   #else
+   if (p != BaddyList)
+   {
+// if (p == EnviroList)
+//      M3dAsm_EnvBoundingSpherePreprocessing(pItem);
+      M3dAsm_BoundingSpherePreprocessing(pItem, Camera_CurrentMikeCamera ? ITEMFLAGS_INACTIVE2 : ITEMFLAGS_INACTIVE);
+   }
+   else
+      M3dAsm_BoundingSpherePreprocessing(pItem, ITEMFLAGS_INACTIVE);
+   #endif
+
+
+	// wibble them textures (at this point to make use of bounding sphere culling)
+
+	if (pItem == EnviroList)
+	{
+		M3d_PreprocessWibblyTextures(EnvRegions[0]);		// one call for each of the two environment regions
+		M3d_PreprocessWibblyTextures(EnvRegions[1]);
+	}
+
+		//	add everything	in	the world to the display list
+
+
+
+		// set up scratchpad vars
+		((Uint16 *)0x1F800000)[SCRATCH_DPQMIN>>1]				= DpqMin;
+		((Uint16 *)0x1F800000)[SCRATCH_DPQSHIFT>>1]			= DpqShift;
+		((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= M3d_OTPushback;
+		((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= M3d_OTPushback2;
+
+		((Uint32 *)0x1F800000)[SCRATCH_REFMAPCLUT>>2]		= RefMapClut;
+		((Uint32 *)0x1F800000)[SCRATCH_REFMAPTPAGE>>2]		= RefMapTpage;
+		((Uint32 *)0x1F800000)[SCRATCH_REFLECTED>>2]			= 0;
+
+		// set up the display modes for this item (lighting, tint and transparency)
+		GlobalFaceFlags = 0xFFFF0000;
+		((Uint32 *)0x1F800000)[SCRATCH_GLOBALFACEFLAGS>>2]	= GlobalFaceFlags;
+
+
+		TestTheWater = 0;
+
+		M3dMaths_SetIdentityRotation(&WorldTransform);
+
+	for (	; pItem;	pItem=pItem->NextItem)
+	{
+
+#		if DEBUG
+		if	(pItem->Flags & (ITEMFLAGS_CULL))
+		{
+#			if SK
+			GRenderedCulled++;
+#			endif
+
+#			if MICKMAP
+			if	(!(pItem->Flags & (ITEMFLAGS_INACTIVE)))
+			{
+				if (Mick_MapDoit)
+					Mick_ItemOutline(pItem,0x404040);
+			}
+#			endif
+		}
+
+#		if SK
+		if	(pItem->Flags & (ITEMFLAGS_INACTIVE))
+			GRenderedInvisible++;
+#		endif
+#		endif
+
+
+// Do not need to check inactive flag here, as cull flag will have
+// been set for any inactive object by the bounding sphere
+// preprocessing, and indeed, checking for the inactive flag will
+// screw up the 2-player visilibity boxes (unless the correct
+// inactive flag is checked for). So, just don't do it.
+//      if (pItem->Flags & (ITEMFLAGS_CULL|ITEMFLAGS_INACTIVE))
+      if (pItem->Flags & ITEMFLAGS_CULL)
+			continue;
+
+
+		//	Added	by	Ken (will slow	things down	a tad	but only	with DEBUG on)
+		#if DEBUG
+		if	(pItem->Model>=(Uint32)PSXRegion[pItem->Region].ppModels[-1])
+		{
+			sprintf(AssertString,"\n %s Model %d",PSXRegion[pItem->Region].Filename,pItem->Model);
+			ASSERT(0,"Bad model in pItem");
+		}
+		#endif
+
+		// get model pointer
+		pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+
+		if (pModel->Flags & MODELFLAGS_INVISIBLE)
+			continue;
+
+		//	get camera's view transform in rot matrix
+		gte_SetRotMatrix(&pCurrentCamera->View);
+		m3d_ZeroTransVector();
+
+		//	transform item's local origin
+		PosnRelCam.vx = (pItem->Position.vx	>>	FRACBITS) -	pCurrentCamera->Position.vx;
+		PosnRelCam.vy = (pItem->Position.vy	>>	FRACBITS) -	pCurrentCamera->Position.vy;
+		PosnRelCam.vz = (pItem->Position.vz	>>	FRACBITS) -	pCurrentCamera->Position.vz;
+		gte_ldlv0(&PosnRelCam);
+		gte_rtv0();
+		gte_stlvnl(&Position);
+
+		// level of detail
+		#if DEBUG
+		if (!Pad[1].Triangle.Pressed)
+		#endif
+		{
+			#if SK
+			if (pModel->zMax < 0)	  // negative zMax indicates it's a fraction of DpqMax 
+			{
+				while (Position.vz>-(((Sint16)(pModel->zMax*pCurrentViewport->Zoom/DEFZOOM))*DpqMax>>10) && pModel->NextLOD!=0xFFFF)
+					pModel=PSXRegion[pItem->Region].ppModels[pModel->NextLOD];
+				if (Position.vz>-(((Sint16)(pModel->zMax*pCurrentViewport->Zoom/DEFZOOM))*DpqMax>>10) && pModel->NextLOD==0xFFFF)
+					continue;
+			}
+			else
+			#endif
+			{
+				while (Position.vz>pModel->zMax*pCurrentViewport->Zoom/DEFZOOM && pModel->NextLOD!=0xFFFF)
+					pModel=PSXRegion[pItem->Region].ppModels[pModel->NextLOD];
+				if (Position.vz>pModel->zMax*pCurrentViewport->Zoom/DEFZOOM && pModel->NextLOD==0xFFFF)
+					continue;
+			}
+		}
+
+		if (pModel->NumVertices <= 100
+			 && (pItem->Flags & (ITEMFLAGS_LIT|ITEMFLAGS_GOURAUD)) == 0
+			 && ((pModel->Flags&MODELFLAGS_SUBDIVIDABLE)==0 && pModel->Radius < (Position.vz<<FRACBITS) ||
+				 Position.vz-(pModel->Radius>>FRACBITS) > pCurrentViewport->Yon/2)
+			 && !(pItem->Angles.vx|pItem->Angles.vy|pItem->Angles.vz))
+			Fast = 1;
+		else
+			Fast = 0;
+
+		pColourTable = PSXRegion[pItem->Region].pColourTable;
+
+		if (Fast)
+		{
+			#if DEBUG&&SK
+			GRenderedFast++;
+			#endif
+			#if DEBUG&&MICKMAP
+			if (Mick_MapDoit)
+				Mick_Item(pItem,0x008000);
+			#endif
+			RenderModelFast(pModel,&PosnRelCam);
+			continue;
+		}
+
+		if	(pItem->Angles.vx==0	&&	pItem->Angles.vy==0 && pItem->Angles.vz==0 && !(pItem->Flags&ITEMFLAGS_SCALED))
+		{
+			#if DEBUG&&SK
+			GRenderedNonRotated++;
+			#endif
+			RenderModelNonRotated(pModel,&PosnRelCam);
+			#if DEBUG&&MICKMAP
+			if (Mick_MapDoit)
+				Mick_Item(pItem,0x800000);
+			#endif
+		}
+		else
+		{
+			#if DEBUG&&SK
+			GRenderedRotated++;
+			#endif
+			gte_SetTransVector(&Position);
+			RenderModel(pModel);
+		}
+	}
+}
+
+
+
+void M3d_RenderBackground(void *p)
+{
+	RECORDRA;
+
+	int	 i;
+	SItem	 *pItem;
+	VECTOR Position, PosnRelCam;
+	MATRIX Transform,	WorldTransform;
+	SModel *pModel;
+	STexture	*pTex;
+	POLY_F4 *pFrame;
+	Uint32 GlobalFaceFlags;
+
+
+	pItem=(SItem*)p;
+
+	if	(!pItem)	return;
+
+	// force no depthcueing and reset various other scratchpad vars
+	((Uint16 *)0x1F800000)[SCRATCH_DPQMIN>>1]		= 0x7FFF;
+	((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1]	= 0;
+
+	//	add everything	in	the background to the display list
+	for (	; pItem;	pItem=pItem->NextItem)
+	{
+		if	(pItem->Flags & (ITEMFLAGS_CULL|ITEMFLAGS_INACTIVE))
+			continue;
+
+		//	Added	by	Ken (will slow	things down	a tad	but only	with DEBUG on)
+		#if DEBUG
+		if	(pItem->Model>=(Uint32)PSXRegion[pItem->Region].ppModels[-1])
+		{
+			sprintf(AssertString,"\n %s Model %d",PSXRegion[pItem->Region].Filename,pItem->Model);
+			ASSERT(0,"Bad model in pItem");
+		}
+		#endif
+
+		//	don't	draw if PSX	file is currently	being	spooled in
+		if	(!PSXRegion[pItem->Region].Usable)
+		{
+			MESSAGE("PSX not usable");
+			continue;
+		}
+
+		#if DEBUG
+		GlobalFaceFlags = DebugFaceFlags;
+		#else
+		GlobalFaceFlags = 0xFFFF0000;
+		#endif
+
+		((Uint32 *)0x1F800000)[SCRATCH_GLOBALFACEFLAGS>>2]	= GlobalFaceFlags;
+
+		//	get camera's view transform in rot matrix
+		gte_SetRotMatrix(&pCurrentCamera->View);
+
+		//	set rotation (if non-zero)
+		if (pItem->Angles.vx || pItem->Angles.vy || pItem->Angles.vz)
+		{
+			M3dMaths_RotMatrixYXZ((SVECTOR *)(&pItem->Angles),	&WorldTransform);
+			M3dMaths_MulRotMatrix(&WorldTransform,&Transform);
+			gte_SetRotMatrix(&Transform);
+		}
+		else
+			M3dMaths_SetIdentityRotation(&WorldTransform);
+
+		pColourTable = PSXRegion[pItem->Region].pColourTable;
+		pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+
+		if	(pItem->Angles.vx==0	&&	pItem->Angles.vy==0 && pItem->Angles.vz==0)
+			RenderBackgroundModelNonRotated(pModel);
+		else
+			RenderBackgroundModel(pModel);
+	}
+
+	// restore depthcueing
+	((Uint16 *)0x1F800000)[SCRATCH_DPQMIN>>1] = DpqMin;
+}
+
+#if KENVIEWER
+int TestModel=-1;
+#endif
+void RenderSuperItem(SItem *pItem)
+{
+	RECORDRA;
+
+	Uint32  NumParts, *pAnimFile, Rgb;
+	VECTOR  Position;
+	SMatrix *pAnimTransform;
+	MATRIX  Transform, SuperTransform,
+			  WorldTransform, SuperLightTransform;
+	int	  i,Type;
+	SModel  *pModel, **ppModels;
+	SAnimFrame *pAnimTex;
+	Uint16	Scale;
+	Sint16	OTPushback;
+	Uint32	ItemFlags = pItem->Flags;
+
+	#if SPIDEY
+   // An ugly hack. When symbiotes die they melt into the ground using the water clipping
+   // to clip them. Trouble is, two might die at once at different y's, so we really need
+   // different water levels for different instances.
+   // This hack stores the old water level, then restores it at the end of the function.
+   int OldWaterNormalPad;
+   if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_OVERRIDEWATERLEVEL)
+   {
+   	OldWaterNormalPad=WaterNormal.pad;
+     	WaterNormal.pad = ((CSuper *)pItem)->mWaterLevel - pCurrentCamera->Position.vy;
+   }
+   #endif   
+      
+   
+	if (!PSXRegion[pItem->Region].Fastable || ItemFlags & (ITEMFLAGS_TRN|ITEMFLAGS_RGB|ITEMFLAGS_LIT))
+		Fast = 0;
+	else
+		Fast = 1;
+
+	#if KENVIEWER
+	Fast=0;
+	#endif
+
+	//	Just to be sure
+	ASSERT(PSXRegion[pItem->Region].Usable,"Tried to render superitem	without PSX");
+
+	// flip anim if necessary
+	if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_FLIPANIM)
+	{
+		((CSuper *)pItem)->mTransform.m[0][0] = -((CSuper *)pItem)->mTransform.m[0][0];
+		((CSuper *)pItem)->mTransform.m[1][0] = -((CSuper *)pItem)->mTransform.m[1][0];
+		((CSuper *)pItem)->mTransform.m[2][0] = -((CSuper *)pItem)->mTransform.m[2][0];
+		((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1] = 1;
+	}
+	else
+	{
+		// make sure flag is cleared, otherwise it will affect later superitems in this itemlist
+		((Uint16 *)0x1F800000)[SCRATCH_REFLECTED>>1] = 0;
+	}
+		//	set up the superitem	transform in eye coords
+
+	gte_SetRotMatrix(&pCurrentCamera->View);
+	M3dMaths_MulRotMatrix(&((CSuper *)pItem)->mTransform, &SuperTransform);
+
+		//	transform superitem's local origin
+
+	Position.vx	= (pItem->Position.vx >> FRACBITS) - pCurrentCamera->Position.vx;
+	Position.vy	= (pItem->Position.vy >> FRACBITS) - pCurrentCamera->Position.vy;
+	Position.vz	= (pItem->Position.vz >> FRACBITS) - pCurrentCamera->Position.vz;
+	gte_ldlvl(&Position);
+	gte_rtir();
+	gte_stlvnl(&SuperTransform.t);
+
+	// Need this temporary variable because SuperTransform.t[] gets multiplied by
+	// 16 for near objects (dewibbling).
+	Sint16 super_dist = SuperTransform.t[2];
+
+	if (super_dist < 1000)
+	{
+		Dewibble=1;
+		Position.vx	= (pItem->Position.vx >> FRACBITS-4) - (pCurrentCamera->Position.vx<<4);
+		Position.vy	= (pItem->Position.vy >> FRACBITS-4) - (pCurrentCamera->Position.vy<<4);
+		Position.vz	= (pItem->Position.vz >> FRACBITS-4) - (pCurrentCamera->Position.vz<<4);
+		gte_ldlvl(&Position);
+		gte_rtir();
+		gte_stlvnl(&SuperTransform.t);
+	}
+	else
+		Dewibble=0;
+
+	ASSERT(pItem->Model==0, "I thought the model number was always 0 for a superitem");
+	ppModels = PSXRegion[pItem->Region].ppModels;
+	NumParts = PSXRegion[pItem->Region].NumParts;
+
+	// get animation pointer...
+
+	// if posed, used pose buffer
+	if	(ItemFlags & ITEMFLAGS_POSED)
+		pAnimTransform	= ((CSuper *)pItem)->mpPoseBuffer;
+	else
+		pAnimTransform=Decomp_GetAnimTransform((CSuper *)pItem);
+
+	#if SK
+	SMatrix* pFirstTransform = pAnimTransform;
+	#endif
+	
+	// set up lighting stuff
+	gte_MulMatrix0((MATRIX *)&((CItem *)pItem)->mpLight->LightMatrix, &((CSuper *)pItem)->mTransform, &SuperLightTransform);
+
+	// get ellipsoid stuff
+	if ((Type = ((CSuper *)pItem)->mEllipsoidRGB>>24) & 0x7F)
+	{
+		int Lookup = (Type-1)&0x7F;
+//		if (Lookup>QB_FIRECYCL)
+//			Lookup=QB_FIRECYCL;
+		if (Lookup<0)
+			Lookup=0;
+		pAnimTex = QuickAnimLookup[Lookup];
+	   #if DEBUG && SPIDEY
+   	if (pAnimTex==NULL)
+	   {
+   		sprintf(AssertString,"%s",AnimNames[Lookup]);
+   		ASSERT(0,"Bits animation not loaded (RenderSuperItem)");
+	   }
+   	#endif   
+		pAnimTex += FrameNo % ((int *)pAnimTex)[-1];
+		Rgb = ((CSuper *)pItem)->mEllipsoidRGB & 0xFFFFFF;
+		Scale = ((CSuper *)pItem)->mEllipsoidScale;
+		OTPushback = ((CSuper *)pItem)->mEllipsoidOTPushback;
+	}
+
+	FreeStitchVertex = Fast ? (SProjectedVertex *)0x1F8003F8 : &ProjectedVertices[MAXVERTICES-1];
+	pColourTable = PSXRegion[pItem->Region].pColourTable;
+
+	for (i=0; i<NumParts; i++,pAnimTransform++)
+	{
+#		if SK
+			SubObjectMasked = (((CSuper *)pItem)->mSubObjectDisplayMask & 1<<i) ? 1 : 0;
+#		else
+		if( i > 31 )
+			SubObjectMasked = (((CSuper *)pItem)->mSubObjectDisplayMask2 & 1<<(i-32)) ? 1 : 0;
+		else
+			SubObjectMasked = (((CSuper *)pItem)->mSubObjectDisplayMask & 1<<i) ? 1 : 0;
+#		endif
+
+		pModel = ppModels[i];
+
+		#if SK
+		// the following compensates for special models
+		// such as the create-a-skater, where the render
+		// order is not necessarily the animation order
+		if (((CSuper*)pItem)->mUseAnimOrder)
+		{
+			pAnimTransform = pFirstTransform + ((CSuper*)pItem)->mAnimOrder[i];
+		}
+		
+		// if the madel is flagged as invisible, then don't draw it
+		// this is used in the front end of Skate, in the create a skater
+		// we ahve more that 32 models, so can't use mSubObjectDisplayMask
+		// so we just set the invisible flag
+		if (pModel->Flags & MODELFLAGS_INVISIBLE)
+			SubObjectMasked = 1;
+		#endif
+
+#		if SPIDEY
+		// Determine the correct LOD model pointer.
+		while( ( super_dist > pModel->zMax*pCurrentViewport->Zoom/DEFZOOM ) && ( pModel->NextLOD != 0xFFFF ) )
+			pModel = PSXRegion[pItem->Region].ppModels[pModel->NextLOD];
+
+		// Clip if too far away.
+		if( ( super_dist > pModel->zMax*pCurrentViewport->Zoom/DEFZOOM ) && ( pModel->NextLOD == 0xFFFF ) )
+			continue;
+#		endif
+
+		gte_MulMatrix0(&((CSuper *)pItem)->mTransform,(MATRIX *)pAnimTransform,&WorldTransform);
+
+		if (Dewibble)
+			M3dAsm_SetSuperTransformsDewibbled(&SuperTransform, &SuperLightTransform, pAnimTransform);
+		else
+			M3dAsm_SetSuperTransforms(&SuperTransform, &SuperLightTransform, pAnimTransform);
+
+		if	(pModel->Flags	& MODELFLAGS_REFLECTIONMAPPED || pItem->Flags & ITEMFLAGS_REFLECTIONMAPPED)
+		{
+//			gte_MulMatrix0(&((CSuper *)pItem)->mTransform,(MATRIX *)pAnimTransform,&WorldTransform);
+#if DEBUG
+			ASSERT(!PSXRegion[pItem->Region].Fastable, "Reflection-mapped models should not be fastable");
+#endif
+			M3dAsm_GetReflectionMapping(&WorldTransform, SuperTransform.t, (Uint32 *)pModel);
+		}
+		else if (pModel->Flags & MODELFLAGS_LIT || ItemFlags & ITEMFLAGS_LIT)
+		{
+			gte_SetColorMatrix((MATRIX *)&((CItem *)pItem)->mpLight->ColorMatrix);
+			M3dAsm_SetAmbient(((CItem *)pItem)->mpLight->BackColor);
+#if DEBUG
+			ASSERT(!PSXRegion[pItem->Region].Fastable, "Dynamically lit models should not be fastable");
+#endif
+			M3dAsm_GetDynamicLighting(pModel->Vertices+pModel->NumVertices,pModel->NumNormals);
+		}
+
+		#if SPIDEY && !KENVIEWER
+      // Set the RecordRenderedFaces flag according to whether the superitem requires it.
+      if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_DRAWOUTLINE)
+      {
+      	RecordRenderedFaces=TRUE;
+         // Initialise the bitfield.
+         pRenderedFaces[0]=0;
+         pRenderedFaces[1]=0;
+      }   
+	   #endif
+      
+		// render the bodypart
+		if (!(Type&0x80))
+			if (Fast)
+				RenderModelInSuperFast(pModel);
+			else
+				RenderModelInSuper(pModel);
+            
+	  	#if SPIDEY && !KENVIEWER
+		if (RecordRenderedFaces)
+	   {
+      	// Call the draw outline function, then reset the flag.
+         // DrawModelOutline uses the pRenderedFaces bitfield that has just been calculated.
+   		((CSuper *)pItem)->DrawModelOutline(i,pModel);
+			RecordRenderedFaces=FALSE;
+   	}
+	   #endif
+      
+      #if KENVIEWER
+      // A quick hack to display the vertex numbers of a particular model superimposed
+      // on it. Used for choosing suitable vertices to do the symbiote skin effect on
+      // Venom in the Spidey project.
+      extern void Viewer_DisplayModelVertexIndices(SModel *pModel);
+      if (i==TestModel) Viewer_DisplayModelVertexIndices(pModel);
+      #endif
+
+		// nothing else to do if bodypart is masked off (it WAS rendered in case it had stitching vertices in it)
+//		if (SubObjectMasked)
+//			continue;
+
+		// Ellipsoid effects and shadow(s) for this bodypart.
+		int DoEllipsoids = Type & 0x7F;
+#		if SPIDEY && !KENVIEWER
+		// Can mask the ellipsoid effect of individual bodyparts.
+		DoEllipsoids = DoEllipsoids && !( ( (CSuper *)pItem )->mSubObjectEllipsoidDisplayMask & ( 1 << i ) );
+#		endif
+
+		int DoShadows = ( (CSuper *)pItem )->mShadowLights > 0;
+#		if SPIDEY && !KENVIEWER
+		// Can mask the shadows of individual bodyparts.
+		DoShadows = DoShadows && !( ( (CSuper *)pItem )->mSubObjectShadowDisplayMask & ( 1 << i ) );
+#		endif
+
+		if (DoEllipsoids||DoShadows)
+		{
+//			gte_MulMatrix0(&((CSuper *)pItem)->mTransform,(MATRIX *)pAnimTransform,&WorldTransform);
+			gte_ldsv(&pAnimTransform->t);
+			M3dMaths_TransformLastVec((XMat *)&((CSuper *)pItem)->mTransform.m);
+			gte_stlvnl(&WorldTransform.t);
+
+#			if SCALED_OFFSETS
+			// Scale the translation vector back down.
+			WorldTransform.t[0] >>= 4;
+			WorldTransform.t[1] >>= 4;
+			WorldTransform.t[2] >>= 4;
+#			endif
+
+			WorldTransform.t[0] += pItem->Position.vx>>FRACBITS;
+			WorldTransform.t[1] += pItem->Position.vy>>FRACBITS;
+			WorldTransform.t[2] += pItem->Position.vz>>FRACBITS;
+		}
+
+#		if !KENVIEWER
+		if (DoEllipsoids && (!TestTheWater || WorldTransform.t[1]<(CurrentWaterLevel>>FRACBITS)-40))
+			M3dElips_RenderEllipsoid(pModel, &WorldTransform, Rgb, Scale, OTPushback, pAnimTex->pTexture);
+      #if SK   
+		if (DoShadows)
+			for (int s=0; s<((CSuper *)pItem)->mShadowLights; s++)
+			{								  
+				if (!SubObjectMasked)
+				M3dElips_RenderShadow(pModel, &WorldTransform, &((CSuper *)pItem)->mShadowNormal, &((CSuper *)pItem)->mShadowPos,
+											 &((CSuper *)pItem)->mpShadowSource[s], ((CSuper *)pItem)->mpShadowRGB[s]);
+				
+			}
+		#endif
+		#endif
+	}
+
+	// unflip anim if necessary
+	if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_FLIPANIM)
+	{
+		((CSuper *)pItem)->mTransform.m[0][0] = -((CSuper *)pItem)->mTransform.m[0][0];
+		((CSuper *)pItem)->mTransform.m[1][0] = -((CSuper *)pItem)->mTransform.m[1][0];
+		((CSuper *)pItem)->mTransform.m[2][0] = -((CSuper *)pItem)->mTransform.m[2][0];
+	}
+   
+	#if SPIDEY
+   if (((CSuper *)pItem)->mExtraFlags & EXTRAFLAGS_OVERRIDEWATERLEVEL)
+     	WaterNormal.pad = OldWaterNormalPad;
+   #endif   
+}
+
+		 
+
+
+void RenderModel(SModel *pModel)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	Outcode = M3dAsm_TransformAndOutcodeItemVertices(pGeom,Num);
+	if (TestTheWater)
+      M3dAsm_OutcodeVerticesInWater(Num, WaterClipValue);
+	pGeom+=Num;
+
+	if	(Outcode	& 0xBF)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	SetFarColor(FarColor.vx, FarColor.vy, FarColor.vz);
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+		Wireframe_ProcessPolys(pFace,Num,0x000080);	
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+	#endif
+   
+
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+}
+
+
+
+void RenderModelFast(SModel *pModel,VECTOR *pPosnRelCam)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num, NumVerts;
+	SVECTOR	*pGeom;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	pGeom	= pModel->Vertices;
+	NumVerts =	pModel->NumVertices;
+	ASSERT(pModel->NumVertices<200,"Eh?");
+	Outcode = M3dAsm_TransformAndOutcodeVerticesFast(pGeom,NumVerts,pPosnRelCam);
+	pGeom+=NumVerts;
+
+	if	(Outcode	& 0x6000E000)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	SetFarColor(FarColor.vx, FarColor.vy, FarColor.vz);
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+	{
+		M3dAsm_TransformAndOutcodeBlockVertices(pModel->Vertices,NumVerts,pPosnRelCam);
+		Wireframe_ProcessPolys(pFace,Num,0x008000);
+	}
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+//	Outcode = M3dAsm_TransformAndOutcodeVerticesFast(pGeom,NumVerts,pPosnRelCam);
+	#endif
+	M3dAsm_ProcessPolysFast(pFace,pGeom,Num);		//	add faces to display	buffer
+}
+
+
+
+void RenderBackgroundModel(SModel *pModel)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	Outcode = M3dAsm_TransformAndOutcodeBackgroundVertices(pGeom,Num);
+	pGeom+=Num;
+
+	if	(Outcode	& 0xBF)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+		Wireframe_ProcessPolys(pFace,Num,0x008000);
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+	#endif
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+}
+
+
+
+
+
+void RenderModelInSuper(SModel *pModel)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	if (Dewibble)
+		Outcode = M3dAsm_TransformAndOutcodeSuperVerticesDewibbled(pGeom,Num);
+	else
+		Outcode = M3dAsm_TransformAndOutcodeSuperVertices(pGeom,Num);
+	if (TestTheWater)
+      M3dAsm_OutcodeVerticesInWater(Num, WaterClipValue);
+	pGeom+=Num;
+
+	if (SubObjectMasked)
+		return;
+
+	if	(Outcode	& 0xBF)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+		Wireframe_ProcessPolys(pFace,Num,0x800080);
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+	#endif
+	{
+		#if SK
+		if (Patch_Black)
+			Black_ProcessPolys(pFace,Num,0x800080);
+		else
+		#endif
+			M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+	}
+}
+
+
+
+void RenderModelInSuperFast(SModel *pModel)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	ASSERT(pModel->NumVertices<200,"Eh?");
+	if (Dewibble)
+		Outcode = M3dAsm_TransformAndOutcodeSuperVerticesFastDewibbled(pGeom,Num);
+	else
+		Outcode = M3dAsm_TransformAndOutcodeSuperVerticesFast(pGeom,Num);
+	pGeom+=Num;
+
+	if (SubObjectMasked)
+		return;
+
+	if	(Outcode	& 0x60006000)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+//	Wireframe_ProcessPolys(pFace,Num,0);
+	#endif
+	{
+		#if SK
+		if (Patch_Black)
+			Black_ProcessPolys(pFace,Num,0x800080);
+		else
+		#endif
+		M3dAsm_ProcessPolysFast(pFace,pGeom,Num);		//	add faces to display	buffer
+	}
+}
+
+
+
+void RenderModelNonRotated(SModel *pModel, VECTOR	*pPosnRelCam)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	Outcode = M3dAsm_TransformAndOutcodeBlockVertices(pGeom,Num,pPosnRelCam);
+	if (TestTheWater)
+      M3dAsm_OutcodeVerticesInWater(Num, WaterClipValue);
+	pGeom+=Num;
+
+	if	(Outcode	& 0xBF)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	SetFarColor(FarColor.vx, FarColor.vy, FarColor.vz);
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+		Wireframe_ProcessPolys(pFace,Num,0x008080);
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+	#endif
+
+#	if SK
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+#	elif DAVE && DEBUG && 0
+	if( T[3] )
+	{
+		// If any polys of this object are nearer then d/2, render it using the near z clipping plane code.
+		for( int i = 0; i < pModel->NumVertices; ++i )
+		{
+			if( ProjectedVertices[i].z <= ( pCurrentViewport->Zoom / 2 ) )
+			{
+				ProcessPolysNearZClipped( pModel, pFace, pGeom, Num );
+				return;
+			}
+		}
+	}
+
+	// No near z clipped polys, so just use the regular routine.
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+#	else
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+#	endif
+}
+
+
+void RenderBackgroundModelNonRotated(SModel *pModel)
+{
+	RECORDRA;
+
+	Uint32	Outcode,	*pFace, Num;
+	SVECTOR	*pGeom;
+
+	pGeom	= pModel->Vertices;
+	Num =	pModel->NumVertices;
+	Outcode = M3dAsm_TransformAndOutcodeBackgroundVertices(pGeom,Num);
+	pGeom+=Num;
+
+	if	(Outcode	& 0xBF)		//	do	all outcodes have	a common	bit?
+		return;
+
+	pFace	= (Uint32 *)(pGeom+pModel->NumNormals);
+	Num =	pModel->NumFaces;
+
+	#if NOPUSHBACK
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK>>1]		= 0;
+	((Uint16 *)0x1F800000)[SCRATCH_OTPUSHBACK2>>1]		= 0;
+	#endif
+
+	#if WIREFRAME
+	if (M3d_WireframeMode)
+		Wireframe_ProcessPolys(pFace,Num,0x202060);
+	if (M3d_WireframeMode == WIREFRAME_NONE || M3d_WireframeMode == WIREFRAME_TEXTURED)  
+	#endif
+
+	M3dAsm_ProcessPolys(pFace,pGeom,Num);		//	add faces to display	buffer
+}
+
+
+
+
+#if 0
+
+int MapScale = 256;
+
+void debugLineXZ( int x0, int y0, int x1, int y1, int Color )
+{
+	RECORDRA;
+
+	x0 /= 4;
+	x1 /= 4;
+	y0 /= 4;
+	y1 /= 4;
+
+	x0 += 256;		
+	x1 += 256;		
+
+	y0 = -y0 + 160;
+	y1 = -y1 + 160;
+
+	// ignore points
+	if (x0==x1 && y0==y1)
+		return;
+
+	// Clipping
+	int t;   // temp var for swapping
+
+	if (x0>x1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (x1<0 || x0>511)
+		return;
+
+	if (x0<0)
+	{
+		y0 = (0-x0)*(y1-y0)/(x1-x0)+y0;
+		x0 = 0;
+	}
+	if (x1>511)
+	{
+		y1 = (511-x0)*(y1-y0)/(x1-x0)+y0;
+		x1 = 511;
+	}
+
+	if (y0>y1)
+	{
+		t = x0;
+		x0=x1;
+		x1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (y1<0 || y0>239)
+		return;
+	if (y0<0)
+	{
+		x0 = (0-y0)*(x1-x0)/(y1-y0)+x0;
+		y0 = 0;
+	}
+	if (y1>239)
+	{
+		x1 = (239-y0)*(x1-x0)/(y1-y0)+x0;
+		y1 = 239;
+	}
+	
+   LINE_F2* aline=(LINE_F2*)pPoly;
+	Uint8 *newppoly=(Uint8*)(aline+1);
+	if (newppoly>PolyBufferEnd) return;
+   pPoly=(Uint32*)newppoly;
+
+   aline->tag=0x03000000;
+	*(Uint32*)&aline->r0=0x42000000 + Color;
+	aline->x0=x0;
+	aline->y0=y0;
+	aline->x1=x1;
+	aline->y1=y1;
+	addPrim( pDoubleBuffer->OrderingTable, aline );
+}
+
+
+void debugLineYZ( int y0, int z0, int y1, int z1, int Color )
+{
+	RECORDRA;
+
+	y0 /= 4;
+	y1 /= 4;
+	z0 /= 4;
+	z1 /= 4;
+
+	z0 += 256;		
+	z1 += 256;		
+
+	y0 = -y0 + 160;
+	y1 = -y1 + 160;
+
+	// ignore points
+	if (z0==z1 && y0==y1)
+		return;
+
+	// Clipping
+	int t;   // temp var for swapping
+
+	if (z0>z1)
+	{
+		t = z0;
+		z0=z1;
+		z1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (z1<0 || z0>511)
+		return;
+
+	if (z0<0)
+	{
+		y0 = (0-z0)*(y1-y0)/(z1-z0)+y0;
+		z0 = 0;
+	}
+	if (z1>511)
+	{
+		y1 = (511-z0)*(y1-y0)/(z1-z0)+y0;
+		z1 = 511;
+	}
+
+	if (y0>y1)
+	{
+		t = z0;
+		z0=z1;
+		z1=t;
+		t = y0;
+		y0=y1;
+		y1=t;
+	}
+
+	if (y1<0 || y0>239)
+		return;
+	if (y0<0)
+	{
+		z0 = (0-y0)*(z1-z0)/(y1-y0)+z0;
+		y0 = 0;
+	}
+	if (y1>239)
+	{
+		z1 = (239-y0)*(z1-z0)/(y1-y0)+z0;
+		y1 = 239;
+	}
+	
+   LINE_F2* aline=(LINE_F2*)pPoly;
+	Uint8 *newppoly=(Uint8*)(aline+1);
+	if (newppoly>PolyBufferEnd) return;
+   pPoly=(Uint32*)newppoly;
+	
+   aline->tag=0x03000000;
+	*(Uint32*)&aline->r0=0x42000000 + Color;
+	aline->x0=z0;
+	aline->y0=y0;
+	aline->x1=z1;
+	aline->y1=y1;
+	addPrim( pDoubleBuffer->OrderingTable, aline );
+}
+
+
+// The following code is taken from Graphics Gems II.
+#define DONT_INTERSECT	0
+#define DO_INTERSECT		1
+#define COLLINEAR			2
+
+#define SAME_SIGNS( a, b )	( ( (long)( (unsigned long)a ^ (unsigned long)b ) ) >= 0 )
+
+int lines_intersect( long x1, long y1, long x2, long y2, long x3, long y3, long x4, long y4, long *x, long *y )
+{
+	RECORDRA;
+
+	CVector L1Start, L1End, L2Start, L2End, PointL1, PointL2;
+	int t1, t2;
+
+	L1Start.vx	= x1 << 12;
+	L1Start.vy	= y1 << 12;
+	L1Start.vz	= 0;
+	L1End.vx		= x2 << 12;
+	L1End.vy		= y2 << 12;
+	L1End.vz		= 0;
+
+	L2Start.vx	= x3 << 12;
+	L2Start.vy	= y3 << 12;
+	L2Start.vz	= 0;
+	L2End.vx		= x4 << 12;
+	L2End.vy		= y4 << 12;
+	L2End.vz		= 0;
+
+	int result = M3dUtils_LineLineClosestPoints( &L1Start, &L1End, &L2Start, &L2End, &PointL1, &t1, &PointL2, &t2 );
+	if( result > 16 )
+		printf( "M3dUtils_LineLineClosestPoints returned d of: %d\n", result );
+	
+	// Want to return PointL1, which is the closest point on the line to the frustrum plane.
+	*x = PointL1.vx >> 12;	
+	*y = PointL1.vy >> 12;
+	return t1;
+
+	// Calculate a1, b1, c1, where line joinging points 1 and 2 is a1x + b1y + c1 = 0.
+	long a1 = y2 - y1;
+	long b1 = x1 - x2;
+	long c1 = x2 * y1 - x1 * y2;
+
+	// Calculate r3 and r4.
+	long r3 = a1 * x3 + b1 * y3 + c1;
+	long r4 = a1 * x4 + b1 * y4 + c1;
+
+	// Check signs of r3 and r4. If both point 3 and point 4 lie on same side of line 1, the line segments do not intersect.
+	if( r3 && r4 && SAME_SIGNS( r3, r4 ) )
+		return DONT_INTERSECT;
+
+	// Calculate a2, b2, c2.
+	long a2 = y4 - y3;
+	long b2 = x3 - x4;
+	long c2 = x4 * y3 - x3 * y4;
+
+	// Calculate r1 and r2.
+	long r1 = a2 * x1 + b2 * y1 + c2;
+	long r2 = a2 * x2 + b2 * y2 + c2;
+
+	// Check signs of r1 and r2. If both point 1 and point 2 lie on same side of line 2, the line segments do not intersect.
+	if( r1 && r2 && SAME_SIGNS( r1, r2 ) )
+		return DONT_INTERSECT;
+
+	// Line segments intersect. Calculate intersection point.
+	long denom = a1 * b2 - a2 * b1;
+	if( denom == 0 )
+		return COLLINEAR;
+	long offset = ( denom < 0 ) ? -denom / 2 : denom / 2;
+
+	// The denom / 2 is to get rounding rather than truncating. It is added or subtracted to the numerator, depending upon the sign of the numerator.
+	long num = b1 * c2 - b2 * c1;
+	*x = ( num < 0 ? num - offset : num + offset ) / denom;
+
+	num = a2 * c1 - a1 * c2;
+	*y = ( num < 0 ? num - offset : num + offset ) / denom;
+	
+	return DO_INTERSECT;
+}
+
+
+// These are allocated and destroyed over the course of creating a near-z clipped face.
+Uint32					*pClipVertexColors;
+Uint32					*pClipUVs;
+SModel					*pClipModel;
+Uint32					*pClipFace;
+Uint8						new_vertex[8];
+SProjectedClipVertex	clip_vertex[8];
+Uint32					maxClipZ;
+
+
+
+SProjectedClipVertex	clip_vertex_a[16];
+SProjectedClipVertex	clip_vertex_b[16];
+SProjectedClipVertex *p_current_read_array;
+SProjectedClipVertex *p_current_write_array;
+
+
+// A type definition of a pointer to a clipping function.
+typedef void (*clipping_function_type)( Uint32, Uint32, Uint32 );
+
+// An array of pointers to clipping functions.
+clipping_function_type clipping_functions[] = { ClipHitherSide2, ClipPositiveVerticalSide2, ClipNegativeVerticalSide2, ClipPositiveHorizontalSide2, ClipNegativeHorizontalSide2 };
+
+
+void AddClipVertex( int index, int vertex, int v0v4 )
+{
+	RECORDRA;
+
+	new_vertex[index]				= vertex;
+	clip_vertex[index].X			= ProjectedVertices[vertex].X;
+	clip_vertex[index].Y			= ProjectedVertices[vertex].Y;
+	clip_vertex[index].z			= ProjectedVertices[vertex].z;
+
+	clip_vertex[index].world_x = RotatedVertices[vertex].x;
+	clip_vertex[index].world_y = RotatedVertices[vertex].y;
+
+	Uint32 flags = *pClipFace;
+
+	// Decide whether this vertex is clipped or non-clipped.
+	bool clip = vertex >= pClipModel->NumVertices;
+
+	if( flags & FF_VXC )
+	{
+		if( clip )
+		{
+			clip_vertex[index].rgb = pClipVertexColors[vertex - pClipModel->NumVertices];
+		}
+		else
+		{
+			Uint32 vxc_index;
+
+			if( v0v4 == 0 )
+				vxc_index = pClipFace[2] & 0xFF;
+			else if( v0v4 == 1 )
+				vxc_index = ( pClipFace[2] >> 8 ) & 0xFF;
+			else if( v0v4 == 2 )
+				vxc_index = ( pClipFace[2] >> 16 ) & 0xFF;
+			else
+				vxc_index = ( pClipFace[2] >> 24 ) & 0xFF;
+
+			clip_vertex[index].rgb = pColourTable[vxc_index];
+		}
+	}
+
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		if( clip )
+		{
+			clip_vertex[index].uv = pClipUVs[vertex - pClipModel->NumVertices];
+		}
+		else
+		{
+			if( v0v4 == 0 )
+				clip_vertex[index].uv = pClipFace[4] & 0xFFFF;
+			else if( v0v4 == 1 )
+				clip_vertex[index].uv = pClipFace[5] & 0xFFFF;
+			else if( v0v4 == 2 )
+				clip_vertex[index].uv = pClipFace[6] & 0xFFFF;
+			else
+				clip_vertex[index].uv = ( pClipFace[6] >> 16 ) & 0xFFFF;
+		}
+//		printf( "AddClipVertex: %d uv: %x\n", index, clip_vertex[index].uv );
+	}
+}
+
+
+
+
+void AddClipVertex2( int new_index, int vertex )
+{
+	RECORDRA;
+
+	p_current_write_array[new_index] = p_current_read_array[vertex];
+}
+
+
+
+void ProcessPolysNearZClipped( SModel *p_model, Uint32 *pFace, SVECTOR *Normals, int NumFaces )
+{
+	RECORDRA;
+
+	if( T[4] == 1 )
+	{
+		debugLineXZ( 0, 0,  2560, 2760, 0x00202020 );
+		debugLineXZ( 0, 0, -2560, 2760, 0x00202020 );
+		debugLineXZ( -512, pCurrentViewport->Hither, 512, pCurrentViewport->Hither, 0x00202020 );
+		debugLineXZ( -512, pCurrentViewport->Zoom, 512, pCurrentViewport->Zoom, 0x00202020 );
+		debugLineXZ( -512, pCurrentViewport->Zoom /2, 512, pCurrentViewport->Zoom / 2, 0x00202020 );
+	}
+	else if( T[4] == 2 )
+	{
+		debugLineYZ( 0, 0,  1200, 2760, 0x00202020 );
+		debugLineYZ( 0, 0, -1200, 2760, 0x00202020 );
+		debugLineYZ( -512, pCurrentViewport->Hither, 512, pCurrentViewport->Hither, 0x00202020 );
+		debugLineYZ( -512, pCurrentViewport->Zoom, 512, pCurrentViewport->Zoom, 0x00202020 );
+		debugLineYZ( -512, pCurrentViewport->Zoom / 2, 512, pCurrentViewport->Zoom / 2, 0x00202020 );
+	}
+
+	Uint32 gff, gff_mod;
+
+	for( Uint32 face = 0; face < NumFaces; ++face )
+	{
+		register Uint32 flags = *pFace;
+
+		// If face is not visible, skip it.
+		if( !( flags & FF_VIS ) )
+		{
+			pFace += ( ( flags >> 16 ) / 4 );
+			continue;
+		}
+
+		// If the face is a floor poly, just render it. Have to get the normal first to decide.
+		SVECTOR *p_normal = p_model->Vertices + p_model->NumVertices + face;
+		if( p_normal->vy <= -4000 )
+		{
+			// Render normally.
+			M3dAsm_ProcessPolys( pFace, Normals, 1 );
+			pFace += ( ( flags >> 16 ) / 4 );
+			continue;
+		}
+
+		// This variable is referenced by other functions.
+		pClipFace = pFace;
+
+		// It is important to remember that the vertex order for rendering is not be the one we need for
+		// clipping, in the case of quads. They are ordered 0->1->3->2, when we want to clip 0->1->2->3.
+		// So reorder in the case of quads.
+		register Uint32 verts = *( pFace + 1 );
+		register Uint32 v[4];
+		v[0] = verts & 0xFF;
+		v[1] = ( verts >> 8 ) & 0xFF;
+		if( flags & FF_TRI )
+			v[2] = ( verts >> 16 ) & 0xFF;
+		else
+		{
+			v[2] = ( verts >> 24 ) & 0xFF;
+			v[3] = ( verts >> 16 ) & 0xFF;
+		}
+
+		// If this face does not intersect the d/2 plane, then just render it normally.
+		bool outside_half_d = true;
+
+		Uint32 cumulative_outcode = 0x3FU;
+		for( int i = 0; i < 4; ++i )
+		{
+			if( ( i == 3 ) && ( flags & FF_TRI ) ) break;
+
+			// Checks for all vertices being outside view frustrum.
+			cumulative_outcode &= ProjectedVertices[v[i]].Outcode;
+
+			if( outside_half_d && ( ProjectedVertices[v[i]].z <= ( pCurrentViewport->Zoom / 2 ) ) )
+				outside_half_d = false;
+		}
+
+		if( cumulative_outcode )
+		{
+			// Poly not visible.
+			pFace += ( ( flags >> 16 ) / 4 );
+			continue;
+		}
+
+		if( outside_half_d )
+		{
+			// Render normally.
+			M3dAsm_ProcessPolys( pFace, Normals, 1 );
+			pFace += ( ( flags >> 16 ) / 4 );
+			continue;
+		}
+
+		// Draw the unclipped poly outline in white.
+//		debugLineXZ( RotatedVertices[v[0]].x, ProjectedVertices[v[0]].z, RotatedVertices[v[1]].x, ProjectedVertices[v[1]].z, 0x00FFFFFF );
+//		debugLineXZ( RotatedVertices[v[1]].x, ProjectedVertices[v[1]].z, RotatedVertices[v[2]].x, ProjectedVertices[v[2]].z, 0x00FFFFFF );
+//		if( !( flags & FF_TRI ) )
+//		{
+//			debugLineXZ( RotatedVertices[v[2]].x, ProjectedVertices[v[2]].z, RotatedVertices[v[3]].x, ProjectedVertices[v[3]].z, 0x00FFFFFF );
+//			debugLineXZ( RotatedVertices[v[3]].x, ProjectedVertices[v[3]].z, RotatedVertices[v[0]].x, ProjectedVertices[v[0]].z, 0x00FFFFFF );
+//		}
+//		else
+//		{
+//			debugLineXZ( RotatedVertices[v[2]].x, ProjectedVertices[v[2]].z, RotatedVertices[v[0]].x, ProjectedVertices[v[0]].z, 0x00FFFFFF );
+//		}
+
+		// Copy the current vertices into clip_vertex_a[] array.
+		for( int vert = 0; vert < 4; ++vert )
+		{
+			if( ( vert == 3 ) && ( flags & FF_TRI ) ) break;
+
+			clip_vertex_a[vert].world_x = RotatedVertices[v[vert]].x;
+			clip_vertex_a[vert].world_y = RotatedVertices[v[vert]].y;
+			clip_vertex_a[vert].z = ProjectedVertices[v[vert]].z;
+
+			// Since these are still based on render order...
+			Uint32 v0v4 = vert;
+			if( !( flags & FF_TRI ) )
+			{
+				if( vert == 2 ) v0v4 = 3;
+				else if( vert == 3 ) v0v4 = 2;
+			}
+						
+			if( flags & FF_VXC )
+			{
+				Uint32 vxc_index;
+				if( v0v4 == 0 )
+					vxc_index = pClipFace[2] & 0xFF;
+				else if( v0v4 == 1 )
+					vxc_index = ( pClipFace[2] >> 8 ) & 0xFF;
+				else if( v0v4 == 2 )
+					vxc_index = ( pClipFace[2] >> 16 ) & 0xFF;
+				else
+					vxc_index = ( pClipFace[2] >> 24 ) & 0xFF;
+				clip_vertex_a[vert].rgb = pColourTable[vxc_index];
+			}
+
+			if( flags & ( FF_TEX | FF_ARB ) )
+			{
+				Uint32 uv;
+				if( v0v4 == 0 )
+					uv = pClipFace[4] & 0xFFFF;
+				else if( v0v4 == 1 )
+					uv = pClipFace[5] & 0xFFFF;
+				else if( v0v4 == 2 )
+					uv = pClipFace[6] & 0xFFFF;
+				else
+					uv = ( pClipFace[6] >> 16 ) & 0xFFFF;
+				clip_vertex_a[vert].uv = uv;
+			}
+		}
+
+		p_current_read_array = clip_vertex_a;		// These are the vertices to be clipped.
+		p_current_write_array = clip_vertex_b;		// This is where they will get clipped to.
+
+		// Seed the starting number of vertices in this face.
+		int number_verts = ( flags & FF_TRI ) ? 3 : 4;
+
+		// Now clip against all view frustrum planes.
+		for( int i = 0; i < 5; ++i )
+		{
+			// Calculate outcode for clipped vertices, for the frustrum plane we are considering.
+			Uint32 outcode = 0;
+
+			for( int vert = 0; vert < number_verts; ++vert )
+			{
+				int x = p_current_read_array[vert].world_x;
+				int y = p_current_read_array[vert].world_y;
+				int z = p_current_read_array[vert].z;
+
+				switch( i )
+				{
+					case 0:
+					{
+						// Check for hither plane.
+						if( z < pCurrentViewport->Hither )
+							outcode |= ( 1 << vert );
+						break;
+					}
+
+					case 1:
+					{
+						// Check for positive vertical plane.
+						if( ( x * 2760 ) > ( z * 2560 ) )
+							outcode |= ( 1 << vert );
+						break;
+					}
+
+					case 2:
+					{
+						// Check for negative vertical plane.
+						if( ( x * -2760 ) > ( z * 2560 ) )
+							outcode |= ( 1 << vert );
+						break;
+					}
+
+					case 3:
+					{
+						// Check for positive horizontal plane.
+						if( ( y * 2760 ) > ( z * 1200 ) )
+							outcode |= ( 1 << vert );
+						break;
+					}
+
+					case 4:
+					{
+						// Check for negative horizontal plane.
+						if( ( y * -2760 ) > ( z * 1200 ) )
+							outcode |= ( 1 << vert );
+					}
+				}
+			}
+
+//			if( ( i == 0 ) && ( outcode == 0 ) )
+//			{
+//				// No hither clipping, so render normally.
+//				M3dAsm_ProcessPolys( pFace, Normals, 1 );
+//				goto SKIP_TO_NEXT_FACE;
+//			}
+
+			if( outcode == ( ( 1 << number_verts ) - 1 ) )
+			{
+				// All available bits are set - face is outside frustrum at this point.
+				goto SKIP_TO_NEXT_FACE;
+			}
+
+			Uint32 new_vertex_index = 0;
+
+			// Now clip each side in turn.
+			for( int side = 0; side < number_verts; ++side )
+			{
+				// Set up some booleans for testing later.
+				bool first_side = ( side == 0 );
+				bool last_side = ( side == ( number_verts - 1 ) );
+
+				// Calculate composite outcode for the 2 vertices comprising this side...
+				Uint32 oc = ( outcode >> side ) & 0x03;
+
+				// ...Remembering wraparound for last side.
+				if( last_side ) oc |= ( ( outcode & 0x01 ) << 1 );
+
+				int v0 = side;
+				int v1 = ( last_side ) ? 0 : ( v0 + 1 );
+
+				switch( oc )
+				{
+					case 0x00:
+					{
+						if( first_side )
+						{
+							// Both non-clipped.
+							AddClipVertex2( new_vertex_index, v0 );
+							++new_vertex_index;
+			
+							AddClipVertex2( new_vertex_index, v1 );
+							++new_vertex_index;
+						}
+						else if( !last_side )
+						{
+							// Both non-clipped. So the first vertex here will already be in the list.
+							AddClipVertex2( new_vertex_index, v1 );
+							++new_vertex_index;
+						}
+						else
+						{
+							// Both non-clipped. So both vertices here will already be in the list.
+						}
+						break;
+					}
+	
+					case 0x01:
+					{
+						if( !last_side )
+						{
+							// 0 clipped, 1 non-clipped.
+			
+							// Vertex 0.
+							clipping_functions[i]( new_vertex_index, v1, v0 );
+							++new_vertex_index;
+								
+							AddClipVertex2( new_vertex_index, v1 );
+							++new_vertex_index;
+						}
+						else
+						{
+							// 0 clipped, 1 non-clipped. So the second vertex will already be in the list.
+							clipping_functions[i]( new_vertex_index, v1, v0 );
+							++new_vertex_index;
+						}
+						break;
+					}
+		
+					case 0x02:
+					{
+						if( first_side )
+						{
+							// 0 non-clipped, 1 clipped.
+							AddClipVertex2( new_vertex_index, v0 );
+							++new_vertex_index;
+			
+							clipping_functions[i]( new_vertex_index, v0, v1 );
+							++new_vertex_index;
+						}
+						else
+						{
+							// 0 non-clipped, 1 clipped. So the first vertex here will already be in the list.
+							clipping_functions[i]( new_vertex_index, v0, v1 );
+							++new_vertex_index;
+						}
+						break;
+					}
+		
+					case 0x03:
+					{
+						// Both clipped.
+						break;
+					}
+				}
+			}
+
+			// Clipped all sides against this plane. Reset the number of vertices in the newly clipped face.
+			number_verts = new_vertex_index;
+			if( ( number_verts <= 2 ) || ( number_verts >= 12 ) )
+			{
+				printf( "Bad number of clip vertices: %d\n", number_verts );
+			}
+
+			// Switch read and write buffers.
+			SProjectedClipVertex *p_temp = p_current_read_array;
+			p_current_read_array = p_current_write_array;
+			p_current_write_array = p_temp;
+		}
+
+		// At this stage, the face is fully clipped against all frustrum planes.
+		// However, if none of the clipped vertices fall within z <= ( d / 2 ), then it is still
+		// safe to render it using the engine.
+		outside_half_d = true;
+		for( int i = 0; i < number_verts; ++i )
+		{
+			if( p_current_read_array[i].z <= ( pCurrentViewport->Zoom / 2 ) )
+			{
+				outside_half_d = false;
+				break;
+			}
+		}
+
+		if( outside_half_d )
+		{
+			// Render normally.
+			M3dAsm_ProcessPolys( pFace, Normals, 1 );
+			pFace += ( ( flags >> 16 ) / 4 );
+			continue;
+		}
+
+		RenderClippedPoly2( number_verts );
+
+		SKIP_TO_NEXT_FACE:
+
+		// Skip to the next face (using face length).
+		pFace += ( ( flags >> 16 ) / 4 );
+	}
+}
+
+
+
+
+
+// Clip side (world coordinates) to hither plane.
+void ClipHitherSide2( Uint32 new_index, Uint32 out, Uint32 in )
+{
+	RECORDRA;
+
+	if( p_current_read_array[out].z < pCurrentViewport->Hither )
+	{
+		printf( "bad out %d %d\n", out, p_current_read_array[out].z );
+	}
+	if( p_current_read_array[in].z > pCurrentViewport->Hither )
+	{
+		printf( "bad in %d %d\n", in, p_current_read_array[in].z );
+	}
+
+	// On entry to this function, we know that the 'out' point is not z-clipped, and that the 'in' point is.
+	// So, express the 'out' portion of the z distance as a fraction of the total z distance between these 2 points.
+	int mult = ( ( p_current_read_array[out].z - pCurrentViewport->Hither ) * 4096 ) / ( p_current_read_array[out].z - p_current_read_array[in].z );
+
+	ASSERT( mult < 4096, "Bad multiplier in ClipHitherSide()" );
+
+	int z = pCurrentViewport->Hither;
+	int x = p_current_read_array[out].world_x + ( ( ( p_current_read_array[in].world_x - p_current_read_array[out].world_x ) * mult ) >> 12 );
+	int y = p_current_read_array[out].world_y + ( ( ( p_current_read_array[in].world_y - p_current_read_array[out].world_y ) * mult ) >> 12 );
+
+	// Store the newly calculated x and y values in the write array.
+	p_current_write_array[new_index].world_x = x;
+	p_current_write_array[new_index].world_y = y;
+	p_current_write_array[new_index].z = z;
+
+	register Uint32 flags = *pClipFace;
+
+	// If the face is texture mapped, we need to clip the UV coordinates too.
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		int u0 = ( p_current_read_array[out].uv ) & 0xFF;
+		int v0 = ( p_current_read_array[out].uv ) >> 8;
+		int u1 = ( p_current_read_array[in].uv ) & 0xFF;
+		int v1 = ( p_current_read_array[in].uv ) >> 8;
+
+		int uc = u0 + ( ( ( u1 - u0 ) * mult ) >> 12 );
+		int vc = v0 + ( ( ( v1 - v0 ) * mult ) >> 12 );
+
+//		printf( "(%d %d) -> (%d %d) by %d = (%d %d)\n", u0, v0, u1, v1, mult, uc, vc );
+
+		// Store this interpolated UV.
+		p_current_write_array[new_index].uv = (Uint32)( (Uint16)uc | ( (Uint16)vc << 8 ) );
+	}
+
+	// If the face is vertex colored, we need to clip the rgb values too.
+	if( flags & FF_VXC )
+	{
+		Uint32 rgb0 = p_current_read_array[out].rgb;
+		Uint32 rgb1 = p_current_read_array[in].rgb;
+
+		int r0 = rgb0 & 0xFF;
+		int g0 = ( rgb0 >> 8 ) & 0xFF;
+		int b0 = ( rgb0 >> 16 ) & 0xFF;
+		int r1 = rgb1 & 0xFF;
+		int g1 = ( rgb1 >> 8 ) & 0xFF;
+		int b1 = ( rgb1 >> 16 ) & 0xFF;
+
+		r0 += ( ( r1 - r0 ) * mult ) >> 12;
+		g0 += ( ( g1 - g0 ) * mult ) >> 12;
+		b0 += ( ( b1 - b0 ) * mult ) >> 12;
+
+		// Store this interpolated color.
+		p_current_write_array[new_index].rgb = (Uint32)( ( b0 << 16 ) | ( g0 << 8 ) | ( r0 ) );
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Clip side (world coordinates) to positive vertical plane.
+void ClipPositiveVerticalSide2( Uint32 new_index, Uint32 out, Uint32 in )
+{
+	RECORDRA;
+
+	if( ( p_current_read_array[out].world_x * 2760 ) > ( p_current_read_array[out].z * 2560 ) )
+	{
+		printf( "bad out %d %d %d\n", out, p_current_read_array[out].world_x, p_current_read_array[out].z );
+	}
+	if( ( p_current_read_array[in].world_x * 2760 ) < ( p_current_read_array[in].z * 2560 ) )
+	{
+		printf( "bad in %d %d %d\n", in, p_current_read_array[in].world_x, p_current_read_array[in].z );
+	}
+
+	// Start at a specific multiplier, and increase until the point goes outside the view frustrum, and then use that multiplier.
+	int mult = 32;
+	int x_delta = p_current_read_array[in].world_x - p_current_read_array[out].world_x;
+	int z_delta = p_current_read_array[in].z - p_current_read_array[out].z;
+	for( ;; )
+	{
+		int new_x = p_current_read_array[out].world_x + ( ( x_delta * mult ) >> 12 );
+		int new_z = p_current_read_array[out].z + ( ( z_delta * mult ) >> 12 );
+
+		// Has this new point gone outside the frustrum?
+		if( ( new_x * 2760 ) > ( new_z * 2560 ) )
+		{
+			// Yes it has.
+			break;
+		}
+		mult += 32;
+	}
+
+	ASSERT( mult <= 4096, "Error" );
+
+	// So now we have the multiplier that takes the point just out of the frustrum.
+	int x = p_current_read_array[out].world_x + ( ( ( p_current_read_array[in].world_x - p_current_read_array[out].world_x ) * mult ) >> 12 );
+	int y = p_current_read_array[out].world_y + ( ( ( p_current_read_array[in].world_y - p_current_read_array[out].world_y ) * mult ) >> 12 );
+	int z = p_current_read_array[out].z + ( ( ( p_current_read_array[in].z - p_current_read_array[out].z ) * mult ) >> 12 );
+
+	// Store the newly calculated x and y values in the write array.
+	p_current_write_array[new_index].world_x = x;
+	p_current_write_array[new_index].world_y = y;
+	p_current_write_array[new_index].z = z;
+
+	register Uint32 flags = *pClipFace;
+
+	// If the face is texture mapped, we need to clip the UV coordinates too.
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		int u0 = ( p_current_read_array[out].uv ) & 0xFF;
+		int v0 = ( p_current_read_array[out].uv ) >> 8;
+		int u1 = ( p_current_read_array[in].uv ) & 0xFF;
+		int v1 = ( p_current_read_array[in].uv ) >> 8;
+
+		int uc = u0 + ( ( ( u1 - u0 ) * mult ) >> 12 );
+		int vc = v0 + ( ( ( v1 - v0 ) * mult ) >> 12 );
+
+		// Store this interpolated UV.
+		p_current_write_array[new_index].uv = (Uint32)( (Uint16)uc | ( (Uint16)vc << 8 ) );
+	}
+
+	// If the face is vertex colored, we need to clip the rgb values too.
+	if( flags & FF_VXC )
+	{
+		Uint32 rgb0 = p_current_read_array[out].rgb;
+		Uint32 rgb1 = p_current_read_array[in].rgb;
+
+		int r0 = rgb0 & 0xFF;
+		int g0 = ( rgb0 >> 8 ) & 0xFF;
+		int b0 = ( rgb0 >> 16 ) & 0xFF;
+		int r1 = rgb1 & 0xFF;
+		int g1 = ( rgb1 >> 8 ) & 0xFF;
+		int b1 = ( rgb1 >> 16 ) & 0xFF;
+
+		r0 += ( ( r1 - r0 ) * mult ) >> 12;
+		g0 += ( ( g1 - g0 ) * mult ) >> 12;
+		b0 += ( ( b1 - b0 ) * mult ) >> 12;
+
+		// Store this interpolated color.
+		p_current_write_array[new_index].rgb = (Uint32)( ( b0 << 16 ) | ( g0 << 8 ) | ( r0 ) );
+	}
+}
+
+
+
+
+
+// Clip side (world coordinates) to positive vertical plane.
+void ClipNegativeVerticalSide2( Uint32 new_index, Uint32 out, Uint32 in )
+{
+	RECORDRA;
+
+	if( ( p_current_read_array[out].world_x * -2760 ) > ( p_current_read_array[out].z * 2560 ) )
+	{
+		printf( "bad out %d %d %d\n", out, p_current_read_array[out].world_x, p_current_read_array[out].z );
+	}
+	if( ( p_current_read_array[in].world_x * -2760 ) < ( p_current_read_array[in].z * 2560 ) )
+	{
+		printf( "bad in %d %d %d\n", in, p_current_read_array[in].world_x, p_current_read_array[in].z );
+	}
+
+	// Start at a specific multiplier, and increase until the point goes outside the view frustrum, and then use that multiplier.
+	int mult = 32;
+	int x_delta = p_current_read_array[in].world_x - p_current_read_array[out].world_x;
+	int z_delta = p_current_read_array[in].z - p_current_read_array[out].z;
+	for( ;; )
+	{
+		int new_x = p_current_read_array[out].world_x + ( ( x_delta * mult ) >> 12 );
+		int new_z = p_current_read_array[out].z + ( ( z_delta * mult ) >> 12 );
+
+		// Has this new point gone outside the frustrum?
+		if( ( new_x * -2760 ) > ( new_z * 2560 ) )
+		{
+			// Yes it has.
+			break;
+		}
+		mult += 32;
+	}
+
+	ASSERT( mult <= 4096, "Error" );
+
+	// So now we have the multiplier that takes the point just out of the frustrum.
+	int x = p_current_read_array[out].world_x + ( ( ( p_current_read_array[in].world_x - p_current_read_array[out].world_x ) * mult ) >> 12 );
+	int y = p_current_read_array[out].world_y + ( ( ( p_current_read_array[in].world_y - p_current_read_array[out].world_y ) * mult ) >> 12 );
+	int z = p_current_read_array[out].z + ( ( ( p_current_read_array[in].z - p_current_read_array[out].z ) * mult ) >> 12 );
+
+	// Store the newly calculated x and y values in the write array.
+	p_current_write_array[new_index].world_x = x;
+	p_current_write_array[new_index].world_y = y;
+	p_current_write_array[new_index].z = z;
+
+	register Uint32 flags = *pClipFace;
+
+	// If the face is texture mapped, we need to clip the UV coordinates too.
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		int u0 = ( p_current_read_array[out].uv ) & 0xFF;
+		int v0 = ( p_current_read_array[out].uv ) >> 8;
+		int u1 = ( p_current_read_array[in].uv ) & 0xFF;
+		int v1 = ( p_current_read_array[in].uv ) >> 8;
+
+		int uc = u0 + ( ( ( u1 - u0 ) * mult ) >> 12 );
+		int vc = v0 + ( ( ( v1 - v0 ) * mult ) >> 12 );
+
+		// Store this interpolated UV.
+		p_current_write_array[new_index].uv = (Uint32)( (Uint16)uc | ( (Uint16)vc << 8 ) );
+	}
+
+	// If the face is vertex colored, we need to clip the rgb values too.
+	if( flags & FF_VXC )
+	{
+		Uint32 rgb0 = p_current_read_array[out].rgb;
+		Uint32 rgb1 = p_current_read_array[in].rgb;
+
+		int r0 = rgb0 & 0xFF;
+		int g0 = ( rgb0 >> 8 ) & 0xFF;
+		int b0 = ( rgb0 >> 16 ) & 0xFF;
+		int r1 = rgb1 & 0xFF;
+		int g1 = ( rgb1 >> 8 ) & 0xFF;
+		int b1 = ( rgb1 >> 16 ) & 0xFF;
+
+		r0 += ( ( r1 - r0 ) * mult ) >> 12;
+		g0 += ( ( g1 - g0 ) * mult ) >> 12;
+		b0 += ( ( b1 - b0 ) * mult ) >> 12;
+
+		// Store this interpolated color.
+		p_current_write_array[new_index].rgb = (Uint32)( ( b0 << 16 ) | ( g0 << 8 ) | ( r0 ) );
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Clip side (world coordinates) to positive horizontal plane.
+void ClipPositiveHorizontalSide2( Uint32 new_index, Uint32 out, Uint32 in )
+{
+	RECORDRA;
+
+	if( ( p_current_read_array[out].world_y * 2760 ) > ( p_current_read_array[out].z * 1200 ) )
+	{
+		printf( "bad out %d %d %d\n", out, p_current_read_array[out].world_y, p_current_read_array[out].z );
+	}
+	if( ( p_current_read_array[in].world_y * 2760 ) < ( p_current_read_array[in].z * 1200 ) )
+	{
+		printf( "bad in %d %d %d\n", in, p_current_read_array[in].world_y, p_current_read_array[in].z );
+	}
+
+	// Start at a specific multiplier, and increase until the point goes outside the view frustrum, and then use that multiplier.
+	int mult = 32;
+	int y_delta = p_current_read_array[in].world_y - p_current_read_array[out].world_y;
+	int z_delta = p_current_read_array[in].z - p_current_read_array[out].z;
+	for( ;; )
+	{
+		int new_y = p_current_read_array[out].world_y + ( ( y_delta * mult ) >> 12 );
+		int new_z = p_current_read_array[out].z + ( ( z_delta * mult ) >> 12 );
+
+		// Has this new point gone outside the frustrum?
+		if( ( new_y * 2760 ) > ( new_z * 1200 ) )
+		{
+			// Yes it has.
+			break;
+		}
+		mult += 32;
+	}
+
+	ASSERT( mult <= 4096, "Error" );
+
+	// So now we have the multiplier that takes the point just out of the frustrum.
+	int x = p_current_read_array[out].world_x + ( ( ( p_current_read_array[in].world_x - p_current_read_array[out].world_x ) * mult ) >> 12 );
+	int y = p_current_read_array[out].world_y + ( ( ( p_current_read_array[in].world_y - p_current_read_array[out].world_y ) * mult ) >> 12 );
+	int z = p_current_read_array[out].z + ( ( ( p_current_read_array[in].z - p_current_read_array[out].z ) * mult ) >> 12 );
+
+	// Store the newly calculated x and y values in the write array.
+	p_current_write_array[new_index].world_x = x;
+	p_current_write_array[new_index].world_y = y;
+	p_current_write_array[new_index].z = z;
+
+	register Uint32 flags = *pClipFace;
+
+	// If the face is texture mapped, we need to clip the UV coordinates too.
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		int u0 = ( p_current_read_array[out].uv ) & 0xFF;
+		int v0 = ( p_current_read_array[out].uv ) >> 8;
+		int u1 = ( p_current_read_array[in].uv ) & 0xFF;
+		int v1 = ( p_current_read_array[in].uv ) >> 8;
+
+		int uc = u0 + ( ( ( u1 - u0 ) * mult ) >> 12 );
+		int vc = v0 + ( ( ( v1 - v0 ) * mult ) >> 12 );
+
+		// Store this interpolated UV.
+		p_current_write_array[new_index].uv = (Uint32)( (Uint16)uc | ( (Uint16)vc << 8 ) );
+	}
+
+	// If the face is vertex colored, we need to clip the rgb values too.
+	if( flags & FF_VXC )
+	{
+		Uint32 rgb0 = p_current_read_array[out].rgb;
+		Uint32 rgb1 = p_current_read_array[in].rgb;
+
+		int r0 = rgb0 & 0xFF;
+		int g0 = ( rgb0 >> 8 ) & 0xFF;
+		int b0 = ( rgb0 >> 16 ) & 0xFF;
+		int r1 = rgb1 & 0xFF;
+		int g1 = ( rgb1 >> 8 ) & 0xFF;
+		int b1 = ( rgb1 >> 16 ) & 0xFF;
+
+		r0 += ( ( r1 - r0 ) * mult ) >> 12;
+		g0 += ( ( g1 - g0 ) * mult ) >> 12;
+		b0 += ( ( b1 - b0 ) * mult ) >> 12;
+
+		// Store this interpolated color.
+		p_current_write_array[new_index].rgb = (Uint32)( ( b0 << 16 ) | ( g0 << 8 ) | ( r0 ) );
+	}
+}
+
+
+
+
+
+
+
+// Clip side (world coordinates) to negative horizontal plane.
+void ClipNegativeHorizontalSide2( Uint32 new_index, Uint32 out, Uint32 in )
+{
+	RECORDRA;
+
+	if( ( p_current_read_array[out].world_y * -2760 ) > ( p_current_read_array[out].z * 1200 ) )
+	{
+		printf( "bad out %d %d %d\n", out, p_current_read_array[out].world_y, p_current_read_array[out].z );
+	}
+	if( ( p_current_read_array[in].world_y * -2760 ) < ( p_current_read_array[in].z * 1200 ) )
+	{
+		printf( "bad in %d %d %d\n", in, p_current_read_array[in].world_y, p_current_read_array[in].z );
+	}
+
+	// Start at a specific multiplier, and increase until the point goes outside the view frustrum, and then use that multiplier.
+	int mult = 32;
+	int x_delta = p_current_read_array[in].world_y - p_current_read_array[out].world_y;
+	int z_delta = p_current_read_array[in].z - p_current_read_array[out].z;
+	for( ;; )
+	{
+		int new_y = p_current_read_array[out].world_y + ( ( x_delta * mult ) >> 12 );
+		int new_z = p_current_read_array[out].z + ( ( z_delta * mult ) >> 12 );
+
+		// Has this new point gone outside the frustrum?
+		if( ( new_y * -2760 ) > ( new_z * 1200 ) )
+		{
+			// Yes it has.
+			break;
+		}
+		mult += 32;
+	}
+
+	ASSERT( mult <= 4096, "Error" );
+
+	// So now we have the multiplier that takes the point just out of the frustrum.
+	int x = p_current_read_array[out].world_x + ( ( ( p_current_read_array[in].world_x - p_current_read_array[out].world_x ) * mult ) >> 12 );
+	int y = p_current_read_array[out].world_y + ( ( ( p_current_read_array[in].world_y - p_current_read_array[out].world_y ) * mult ) >> 12 );
+	int z = p_current_read_array[out].z + ( ( ( p_current_read_array[in].z - p_current_read_array[out].z ) * mult ) >> 12 );
+
+	// Store the newly calculated x and y values in the write array.
+	p_current_write_array[new_index].world_x = x;
+	p_current_write_array[new_index].world_y = y;
+	p_current_write_array[new_index].z = z;
+
+	register Uint32 flags = *pClipFace;
+
+	// If the face is texture mapped, we need to clip the UV coordinates too.
+	if( flags & ( FF_TEX | FF_ARB ) )
+	{
+		int u0 = ( p_current_read_array[out].uv ) & 0xFF;
+		int v0 = ( p_current_read_array[out].uv ) >> 8;
+		int u1 = ( p_current_read_array[in].uv ) & 0xFF;
+		int v1 = ( p_current_read_array[in].uv ) >> 8;
+
+		int uc = u0 + ( ( ( u1 - u0 ) * mult ) >> 12 );
+		int vc = v0 + ( ( ( v1 - v0 ) * mult ) >> 12 );
+
+		// Store this interpolated UV.
+		p_current_write_array[new_index].uv = (Uint32)( (Uint16)uc | ( (Uint16)vc << 8 ) );
+	}
+
+	// If the face is vertex colored, we need to clip the rgb values too.
+	if( flags & FF_VXC )
+	{
+		Uint32 rgb0 = p_current_read_array[out].rgb;
+		Uint32 rgb1 = p_current_read_array[in].rgb;
+
+		int r0 = rgb0 & 0xFF;
+		int g0 = ( rgb0 >> 8 ) & 0xFF;
+		int b0 = ( rgb0 >> 16 ) & 0xFF;
+		int r1 = rgb1 & 0xFF;
+		int g1 = ( rgb1 >> 8 ) & 0xFF;
+		int b1 = ( rgb1 >> 16 ) & 0xFF;
+
+		r0 += ( ( r1 - r0 ) * mult ) >> 12;
+		g0 += ( ( g1 - g0 ) * mult ) >> 12;
+		b0 += ( ( b1 - b0 ) * mult ) >> 12;
+
+		// Store this interpolated color.
+		p_current_write_array[new_index].rgb = (Uint32)( ( b0 << 16 ) | ( g0 << 8 ) | ( r0 ) );
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void RenderClippedPoly2( int num_verts )
+{
+	RECORDRA;
+
+	// Perform perspective divide.
+	for( int i = 0; i < num_verts; ++i )
+	{
+		int x = p_current_read_array[i].world_x;
+		int y = p_current_read_array[i].world_y;
+		int z = p_current_read_array[i].z;
+
+		p_current_read_array[i].X = ( ( x * pCurrentViewport->Zoom ) / z ) + 256;
+		p_current_read_array[i].Y = ( ( y * pCurrentViewport->Zoom ) / z ) + 120;
+
+		if( i == 2 )
+		{
+			// Can do trivial nclip reject here.
+			int opz;
+			gte_ldsxy0( *(Uint32 *)&p_current_read_array[0].X );
+			gte_ldsxy1( *(Uint32 *)&p_current_read_array[1].X );
+			gte_ldsxy2( *(Uint32 *)&p_current_read_array[2].X );
+			gte_nclip();
+			gte_stopz( &opz );
+			if( opz < 0 ) return;
+		}
+	}
+
+	if( T[4] == 1 )
+	{
+		for( int i = 0; i < num_verts - 1; ++i )
+		{
+			debugLineXZ( p_current_read_array[i].world_x, p_current_read_array[i].z, p_current_read_array[i + 1].world_x, p_current_read_array[i + 1].z, 0x00404000 );
+		}
+		debugLineXZ( p_current_read_array[num_verts - 1].world_x, p_current_read_array[num_verts - 1].z, p_current_read_array[0].world_x, p_current_read_array[0].z, 0x00404000 );
+	}
+	else if( T[4] == 2 )
+	{
+		for( int i = 0; i < num_verts - 1; ++i )
+		{
+			debugLineYZ( p_current_read_array[i].world_y, p_current_read_array[i].z, p_current_read_array[i + 1].world_y, p_current_read_array[i + 1].z, 0x00404000 );
+		}
+		debugLineYZ( p_current_read_array[num_verts - 1].world_y, p_current_read_array[num_verts - 1].z, p_current_read_array[0].world_y, p_current_read_array[0].z, 0x00404000 );
+	}
+
+	switch( num_verts )
+	{
+		case 3:
+		{
+			// Tri [0,1,2].
+			RenderClippedTri2( 0, 1, 2 );
+			break;
+		}
+
+		case 4:
+		{
+			// Quad [0,1,3,2].
+			RenderClippedQuad2( 0, 1, 3, 2 );
+			break;
+		}
+
+		case 5:
+		{
+			// Tri [0,1,2] and quad [0,2,4,3].
+			RenderClippedTri2( 0, 1, 2 );
+			RenderClippedQuad2( 0, 2, 4, 3 );
+			break;
+		}
+
+		case 6:
+		{
+			// Two quads [0,1,3,2] and [0,3,5,4].
+			RenderClippedQuad2( 0, 1, 3, 2 );
+			RenderClippedQuad2( 0, 3, 5, 4 );
+			break;
+		}
+
+		case 7:
+		{
+			// Two quads [0,1,3,2] and [0,3,5,4] and a tri [0,5,6].
+			RenderClippedQuad2( 0, 1, 3, 2 );
+			RenderClippedQuad2( 0, 3, 5, 4 );
+			RenderClippedTri2( 0, 5, 6 );
+			break;
+		}
+
+		default:
+		{
+			printf( "vertices: %d\n", num_verts );
+			break;
+		}
+	}
+}
+
+
+const int SUBDIV_LEVEL = 4;
+
+
+void RenderClippedTri2( int v0, int v1, int v2 )
+{
+	RECORDRA;
+
+	if( T[2] )
+	{
+	   POLY_F3* aline=(POLY_F3*)pPoly;
+		Uint8 *newppoly=(Uint8*)(aline+1);
+		if (newppoly>PolyBufferEnd) return;
+	   pPoly=(Uint32*)newppoly;
+	
+		setPolyF3( aline );
+
+		aline->r0 = Rnd( 256 );
+		aline->g0 = Rnd( 256 );
+		aline->b0 = Rnd( 256 );
+
+		*(Uint32 *)&( aline->x0 ) = *(Uint32 *)&( p_current_read_array[v0].X );
+		*(Uint32 *)&( aline->x1 ) = *(Uint32 *)&( p_current_read_array[v1].X );
+		*(Uint32 *)&( aline->x2 ) = *(Uint32 *)&( p_current_read_array[v2].X );
+		addPrim( pDoubleBuffer->OrderingTable, aline );
+	}
+	else
+	{
+		// Pointer to current color table.
+		Uint32 *p_stored_color_table = pColourTable;
+		Uint32 flags = *pClipFace;
+
+		bool subdiv = true;
+
+		if( subdiv )
+		{
+			Uint32 dummy_face[SUBDIV_LEVEL * SUBDIV_LEVEL][8];
+			Uint32 dummy_color_table[( SUBDIV_LEVEL * SUBDIV_LEVEL ) - 1];
+			Uint16 uv[( SUBDIV_LEVEL * SUBDIV_LEVEL ) - 1];
+
+			Uint32 face_mapping[] = {	0x000102, 0x010304, 0x010402, 0x020405, 0x030607, 0x030704, 0x040708, 0x040805,
+												0x050809, 0x060A0B, 0x060B07, 0x070B0C, 0x070C08, 0x080C0D, 0x080D09, 0x090D0E };
+
+			int index = 128;
+
+			for( int i = 0; i <= SUBDIV_LEVEL; ++i )
+			{
+				// Calculate first axis delta.
+				int		x_start, y_start, z_start;
+				int		x_delta, y_delta, z_delta;
+				Uint32	uv_start, uv_end;
+				Uint32	rgb_start, rgb_end;
+
+				// Need to work out start and end points along v0->v1 and v0->v2.
+				int end;
+
+				if( i == 0 )
+				{
+					x_start	= p_current_read_array[v0].world_x;
+					y_start	= p_current_read_array[v0].world_y;
+					z_start	= p_current_read_array[v0].z;
+					x_delta	= y_delta = z_delta = 0;
+	
+					uv_start = p_current_read_array[v0].uv;
+//					u_start	= p_current_read_array[v0].uv & 0xFF;
+//					v_start	= p_current_read_array[v0].uv >> 8;
+//					u_delta	= v_delta = 0;
+	
+					if( flags & FF_VXC )
+					{
+						rgb_start = rgb_end = p_current_read_array[v0].rgb;
+//						r_start	= p_current_read_array[v0]. rgb & 0xFF;
+//						g_start	= ( ( p_current_read_array[v0].rgb >> 8 ) & 0xFF );
+//						b_start	= ( ( p_current_read_array[v0].rgb >> 16 ) & 0xFF );
+//						r_delta	= g_delta = b_delta = 0;
+					}
+				}
+				else
+				{
+					x_start	= ( p_current_read_array[v0].world_x << 12 ) + ( ( ( ( p_current_read_array[v1].world_x << 12 ) - ( p_current_read_array[v0].world_x << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( p_current_read_array[v0].world_x << 12 ) + ( ( ( ( p_current_read_array[v2].world_x << 12 ) - ( p_current_read_array[v0].world_x << 12 ) ) * i ) / SUBDIV_LEVEL );
+					x_delta	= ( end - x_start ) / i;
+					y_start	= ( p_current_read_array[v0].world_y << 12 ) + ( ( ( ( p_current_read_array[v1].world_y << 12 ) - ( p_current_read_array[v0].world_y << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( p_current_read_array[v0].world_y << 12 ) + ( ( ( ( p_current_read_array[v2].world_y << 12 ) - ( p_current_read_array[v0].world_y << 12 ) ) * i ) / SUBDIV_LEVEL );
+					y_delta	= ( end - y_start ) / i;
+					z_start	= ( p_current_read_array[v0].z << 12 ) + ( ( ( ( p_current_read_array[v1].z << 12 ) - ( p_current_read_array[v0].z << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( p_current_read_array[v0].z << 12 ) + ( ( ( ( p_current_read_array[v2].z << 12 ) - ( p_current_read_array[v0].z << 12 ) ) * i ) / SUBDIV_LEVEL );
+					z_delta	= ( end - z_start ) / i;
+					x_start >>= 12;
+					y_start >>= 12;
+					z_start >>= 12;
+	
+					// Load up the depth queuing value.
+					gte_lddp( ( i * 4096 ) / SUBDIV_LEVEL );
+
+					gte_ldrgb( &p_current_read_array[v0].uv );
+					gte_SetFarColor( p_current_read_array[v1].uv & 0xFF, ( p_current_read_array[v1].uv >> 8 ) & 0xFF, 0 );
+					gte_dpcs();
+					gte_strgb( &uv_start );
+	
+					gte_ldrgb( &p_current_read_array[v0].uv );
+					gte_SetFarColor( p_current_read_array[v2].uv & 0xFF, ( p_current_read_array[v2].uv >> 8 ) & 0xFF, 0 );
+					gte_dpcs();
+					gte_strgb( &uv_end );
+
+					if( flags & FF_VXC )
+					{
+						gte_ldrgb( &p_current_read_array[v0].rgb );
+						gte_SetFarColor( p_current_read_array[v1].rgb & 0xFF, ( p_current_read_array[v1].rgb >> 8 ) & 0xFF, ( p_current_read_array[v1].rgb >> 16 ) & 0xFF );
+						gte_dpcs();
+						gte_strgb( &rgb_start );
+
+						gte_ldrgb( &p_current_read_array[v0].rgb );
+						gte_SetFarColor( p_current_read_array[v2].rgb & 0xFF, ( p_current_read_array[v2].rgb >> 8 ) & 0xFF, ( p_current_read_array[v2].rgb >> 16 ) & 0xFF );
+						gte_dpcs();
+						gte_strgb( &rgb_end );
+					}
+				}
+
+				for( int j = 0; j <= i; ++j )
+				{
+					RotatedVertices[index].Special = 0;
+
+					// World coordinate interpolation.
+					RotatedVertices[index].x = x_start + ( ( j * x_delta ) >> 12 );
+					RotatedVertices[index].y = y_start + ( ( j * y_delta ) >> 12 );
+	
+					// Z world coordinate plus outcode.
+					ProjectedVertices[index].z = z_start + ( ( j * z_delta ) >> 12 );
+					ProjectedVertices[index].Outcode = 0xFF00U;
+
+					// UV interpolation.
+					gte_lddp( ( j * 4096 ) / i );
+					gte_ldrgb( &uv_start );
+					gte_SetFarColor( uv_end & 0xFF, ( uv_end >> 8 ) & 0xFF, 0 );
+					gte_dpcs();
+					Uint32 uv_temp;
+					gte_strgb( &uv_temp );
+					uv[index - 128] = (Uint16)uv_temp;
+
+					// RGB interpolation.
+					if( flags & FF_VXC )
+					{
+						gte_lddp( ( j * 4096 ) / i );
+						gte_ldrgb( &rgb_start );
+						gte_SetFarColor( rgb_end & 0xFF, ( rgb_end >> 8 ) & 0xFF, ( rgb_end >> 16 ) & 0xFF );
+						gte_dpcs();
+						gte_strgb( &dummy_color_table[index - 128] );
+					}
+
+//					printf( "clipped: %d ( %d, %d, %d )\n", index - 128, RotatedVertices[index].x, RotatedVertices[index].y, ProjectedVertices[index].z );
+
+					// Perspective projection.
+					ProjectedVertices[index].X = ( ( RotatedVertices[index].x * pCurrentViewport->Zoom ) / ProjectedVertices[index].z ) + 256;
+					ProjectedVertices[index].Y = ( ( RotatedVertices[index].y * pCurrentViewport->Zoom ) / ProjectedVertices[index].z ) + 120;
+
+//					printf( "clipped: %d ( %d, %d )\n", index - 128, ProjectedVertices[index].X, ProjectedVertices[index].Y );
+					
+					++index;
+				}
+			}
+
+			// Ensure flags indicate that this is a tri.
+			flags |= FF_TRI;
+			flags &= ~FF_SDV;
+
+			// Set up face array.
+			index = 0;
+			for( int i = 0; i < ( SUBDIV_LEVEL * SUBDIV_LEVEL ); ++i )
+			{
+				// First word consists of face flags, and length of face (which assumes textured at this stage).
+				dummy_face[index][0] = 0x00200000UL | ( flags & 0xFFFFUL );
+
+				// Second word contains vertex indices.
+				Uint32 first			= 128 + ( ( face_mapping[index] >> 16 ) & 0xFF );
+				Uint32 second			= 128 + ( ( face_mapping[index] >> 8 ) & 0xFF );
+				Uint32 third			= 128 + ( ( face_mapping[index] >> 0 ) & 0xFF );
+				dummy_face[index][1]	= first | ( second << 8 ) | ( third << 16 ) | ( third << 24 );
+
+				// Third word is RGB0 for face color (in which case just copy from actual face),
+				// or 4 color table indices. In this case, we have to construct the dummy color table.
+				if( flags & FF_VXC )
+				{
+					dummy_face[index][2] = ( first - 128 ) | ( ( second - 128 ) << 8 ) | ( ( third - 128 ) << 16 );
+					pColourTable = dummy_color_table;
+				}
+				else
+					dummy_face[index][2] = pClipFace[2];
+
+				// Fourth word is normal index and user face flags - just copy directly from actual face.
+				dummy_face[index][3] = pClipFace[3];
+					
+				// Fifth word is uv0 and CLUT (just copy directly from actual face).
+  				dummy_face[index][4] = uv[first - 128] | ( pClipFace[4] & 0xFFFF0000UL );
+					
+				// Sixth word is uv1 and TPAGE (just copy directly from actual face).
+				dummy_face[index][5] = uv[second - 128] | ( pClipFace[5] & 0xFFFF0000UL );
+				
+				// Seventh word is uv2.
+				dummy_face[index][6] = ( uv[third - 128] & 0x0000FFFFUL );
+				
+				// Eighth word is texture window.
+				dummy_face[index][7] = pClipFace[7];
+
+				++index;
+			}
+
+			// Render the clipped, subdivided poly.
+			M3dAsm_ProcessPolys( &dummy_face[0][0], NULL, 16 );
+		}
+		else
+		{
+#			if 0
+			Uint32 dummy_face[8];
+			Uint32 dummy_color_table[3];
+	
+			// Set up Rotated/ProjectedVertices[128,130] as the 3 clipped vertices we will index.
+			*(Uint32 *)&( ProjectedVertices[128].X ) = *(Uint32 *)&( p_current_read_array[v0].X );
+			*(Uint32 *)&( ProjectedVertices[128].z ) = 0xFF000000UL | p_current_read_array[v0].z;
+			*(Uint32 *)&( ProjectedVertices[129].X ) = *(Uint32 *)&( p_current_read_array[v1].X );
+			*(Uint32 *)&( ProjectedVertices[129].z ) = 0xFF000000UL | p_current_read_array[v1].z;
+			*(Uint32 *)&( ProjectedVertices[130].X ) = *(Uint32 *)&( p_current_read_array[v2].X );
+			*(Uint32 *)&( ProjectedVertices[130].z ) = 0xFF000000UL | p_current_read_array[v2].z;
+		
+			RotatedVertices[128].x = p_current_read_array[v0].world_x;
+			RotatedVertices[128].y = p_current_read_array[v0].world_y;
+			RotatedVertices[128].Special = 0;
+			RotatedVertices[129].x = p_current_read_array[v1].world_x;
+			RotatedVertices[129].y = p_current_read_array[v1].world_y;
+			RotatedVertices[129].Special = 0;
+			RotatedVertices[130].x = p_current_read_array[v2].world_x;
+			RotatedVertices[130].y = p_current_read_array[v2].world_y;
+			RotatedVertices[130].Special = 0;
+		
+			// Ensure flags indicate that this is a tri.
+			flags |= FF_TRI;
+			flags &= ~FF_SDV;
+		
+			// First word consists of face flags, and length of face (which assumes textured at this stage).
+			dummy_face[0] = 0x001C0000UL | ( flags & 0xFFFFUL );
+		
+			// Second word contains vertex indices (3rd vertex is doubled up).
+			dummy_face[1] = 0x82828180;
+			
+			// Third word is RGB0 for face color (in which case just copy from actual face),
+			// or 4 color table indices. In this case, we have to construct the dummy color table.
+			if( flags & FF_VXC )
+			{
+				dummy_color_table[0] = p_current_read_array[v0].rgb;
+				dummy_color_table[1] = p_current_read_array[v1].rgb;
+				dummy_color_table[2] = p_current_read_array[v2].rgb;
+				dummy_face[2] = 0x00020100;
+				pColourTable = dummy_color_table;
+			}
+			else
+				dummy_face[2] = pClipFace[2];
+		
+			// Fourth word is normal index and user face flags - just copy directly from actual face.
+			dummy_face[3] = pClipFace[3];
+			
+			// Fifth word is uv0 and CLUT (just copy directly from actual face).
+			dummy_face[4] = p_current_read_array[v0].uv | ( pClipFace[4] & 0xFFFF0000 );
+			
+			// Sixth word is uv1 and TPAGE (just copy directly from actual face).
+			dummy_face[5] = p_current_read_array[v1].uv | ( pClipFace[5] & 0xFFFF0000 );
+		
+			// Seventh word is uv2 and uv3.
+			dummy_face[6] = p_current_read_array[v2].uv & 0x0000FFFFUL;
+		
+			// Eighth word is texture window.
+			dummy_face[7] = pClipFace[7];
+		
+			// Render the clipped poly.
+			M3dAsm_ProcessPolys( dummy_face, NULL, 1 );
+#			endif
+		}
+
+		// Restore the colour table pointer.	
+		pColourTable = p_stored_color_table;
+	}
+}
+
+
+
+void RenderClippedQuad2( int v0, int v1, int v2, int v3 )
+{
+	RECORDRA;
+
+	if( T[2] )
+	{
+	   POLY_F4* aline=(POLY_F4*)pPoly;
+		Uint8 *newppoly=(Uint8*)(aline+1);
+		if (newppoly>PolyBufferEnd) return;
+	   pPoly=(Uint32*)newppoly;
+	
+		setPolyF4( aline );
+
+		aline->r0 = Rnd( 256 );
+		aline->g0 = Rnd( 256 );
+		aline->b0 = Rnd( 256 );
+
+		*(Uint32 *)&( aline->x0 ) = *(Uint32 *)&( p_current_read_array[v0].X );
+		*(Uint32 *)&( aline->x1 ) = *(Uint32 *)&( p_current_read_array[v1].X );
+		*(Uint32 *)&( aline->x2 ) = *(Uint32 *)&( p_current_read_array[v2].X );
+		*(Uint32 *)&( aline->x3 ) = *(Uint32 *)&( p_current_read_array[v3].X );
+		addPrim( pDoubleBuffer->OrderingTable, aline );
+	}
+	else
+	{
+		ASSERT( pClipModel->NumVertices <= 128, "vertex overflow" );
+
+		// Pointer to current color table.
+		Uint32 *p_stored_color_table = pColourTable;
+		Uint32 flags = *pClipFace;
+
+		bool subdiv = true;
+
+		if( subdiv )
+		{
+//			printf( "original: 0 ( %d, %d, %d )\n", p_current_read_array[v0].world_x, p_current_read_array[v0].world_y, p_current_read_array[v0].z );
+//			printf( "original: 1 ( %d, %d, %d )\n", p_current_read_array[v1].world_x, p_current_read_array[v1].world_y, p_current_read_array[v1].z );
+//			printf( "original: 2 ( %d, %d, %d )\n", p_current_read_array[v2].world_x, p_current_read_array[v2].world_y, p_current_read_array[v2].z );
+//			printf( "original: 3 ( %d, %d, %d )\n", p_current_read_array[v3].world_x, p_current_read_array[v3].world_y, p_current_read_array[v3].z );
+
+			Uint32 dummy_face[SUBDIV_LEVEL * SUBDIV_LEVEL][8];
+			Uint32 dummy_color_table[( SUBDIV_LEVEL + 1 ) * ( SUBDIV_LEVEL + 1 )];
+			Uint16 uv[( SUBDIV_LEVEL + 1 ) * ( SUBDIV_LEVEL + 1 )];
+
+			for( int i = 0; i <= SUBDIV_LEVEL; ++i )
+			{
+				// Calculate first axis delta.
+				int x_start, y_start, z_start;
+				int u_start, v_start;
+				int r_start, g_start, b_start;
+				int x_delta, y_delta, z_delta;
+				int u_delta, v_delta;
+				int r_delta, g_delta, b_delta;
+
+				// Need to work out start and end points along v0->v2 and v1->v3.
+				int end;
+
+				x_start	= ( p_current_read_array[v0].world_x << 12 ) + ( ( ( ( p_current_read_array[v2].world_x << 12 ) - ( p_current_read_array[v0].world_x << 12 ) ) * i ) / SUBDIV_LEVEL );
+				end		= ( p_current_read_array[v1].world_x << 12 ) + ( ( ( ( p_current_read_array[v3].world_x << 12 ) - ( p_current_read_array[v1].world_x << 12 ) ) * i ) / SUBDIV_LEVEL );
+				x_delta	= ( end - x_start ) / SUBDIV_LEVEL;
+				y_start	= ( p_current_read_array[v0].world_y << 12 ) + ( ( ( ( p_current_read_array[v2].world_y << 12 ) - ( p_current_read_array[v0].world_y << 12 ) ) * i ) / SUBDIV_LEVEL );
+				end		= ( p_current_read_array[v1].world_y << 12 ) + ( ( ( ( p_current_read_array[v3].world_y << 12 ) - ( p_current_read_array[v1].world_y << 12 ) ) * i ) / SUBDIV_LEVEL );
+				y_delta	= ( end - y_start ) / SUBDIV_LEVEL;
+				z_start	= ( p_current_read_array[v0].z << 12 ) + ( ( ( ( p_current_read_array[v2].z << 12 ) - ( p_current_read_array[v0].z << 12 ) ) * i ) / SUBDIV_LEVEL );
+				end		= ( p_current_read_array[v1].z << 12 ) + ( ( ( ( p_current_read_array[v3].z << 12 ) - ( p_current_read_array[v1].z << 12 ) ) * i ) / SUBDIV_LEVEL );
+				z_delta	= ( end - z_start ) / SUBDIV_LEVEL;
+				x_start >>= 12;
+				y_start >>= 12;
+				z_start >>= 12;
+
+				u_start	= ( ( p_current_read_array[v0].uv & 0xFF ) << 12 ) + ( ( ( ( ( p_current_read_array[v2].uv & 0xFF ) << 12 ) - ( ( p_current_read_array[v0].uv & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+				end		= ( ( p_current_read_array[v1].uv & 0xFF ) << 12 ) + ( ( ( ( ( p_current_read_array[v3].uv & 0xFF ) << 12 ) - ( ( p_current_read_array[v1].uv & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+				u_delta	= ( end - u_start ) / SUBDIV_LEVEL;
+				v_start	= ( ( p_current_read_array[v0].uv >> 8 ) << 12 ) + ( ( ( ( ( p_current_read_array[v2].uv >> 8 ) << 12 ) - ( ( p_current_read_array[v0].uv >> 8 ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+				end		= ( ( p_current_read_array[v1].uv >> 8 ) << 12 ) + ( ( ( ( ( p_current_read_array[v3].uv >> 8 ) << 12 ) - ( ( p_current_read_array[v1].uv >> 8 ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+				v_delta	= ( end - v_start ) / SUBDIV_LEVEL;
+				u_start >>= 12;
+				v_start >>= 12;
+
+				if( flags & FF_VXC )
+				{
+					r_start	= ( ( p_current_read_array[v0].rgb & 0xFF ) << 12 ) + ( ( ( ( ( p_current_read_array[v2].rgb & 0xFF ) << 12 ) - ( ( p_current_read_array[v0].rgb & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( ( p_current_read_array[v1].rgb & 0xFF ) << 12 ) + ( ( ( ( ( p_current_read_array[v3].rgb & 0xFF ) << 12 ) - ( ( p_current_read_array[v1].rgb & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					r_delta	= ( end - r_start ) / SUBDIV_LEVEL;
+					g_start	= ( ( ( p_current_read_array[v0].rgb >> 8 ) & 0xFF ) << 12 ) + ( ( ( ( ( ( p_current_read_array[v2].rgb >> 8 ) & 0xFF ) << 12 ) - ( ( ( p_current_read_array[v0].rgb >> 8 ) & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( ( ( p_current_read_array[v1].rgb >> 8 ) & 0xFF ) << 12 ) + ( ( ( ( ( ( p_current_read_array[v3].rgb >> 8 ) & 0xFF ) << 12 ) - ( ( ( p_current_read_array[v1].rgb >> 8 ) & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					g_delta	= ( end - g_start ) / SUBDIV_LEVEL;
+					b_start	= ( ( ( p_current_read_array[v0].rgb >> 16 ) & 0xFF ) << 12 ) + ( ( ( ( ( ( p_current_read_array[v2].rgb >> 16 ) & 0xFF ) << 12 ) - ( ( ( p_current_read_array[v0].rgb >> 16 ) & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					end		= ( ( ( p_current_read_array[v1].rgb >> 16 ) & 0xFF ) << 12 ) + ( ( ( ( ( ( p_current_read_array[v3].rgb >> 16 ) & 0xFF ) << 12 ) - ( ( ( p_current_read_array[v1].rgb >> 16 ) & 0xFF ) << 12 ) ) * i ) / SUBDIV_LEVEL );
+					b_delta	= ( end - b_start ) / SUBDIV_LEVEL;
+					r_start >>= 12;
+					g_start >>= 12;
+					b_start >>= 12;
+				}
+
+				for( int j = 0; j <= SUBDIV_LEVEL; ++j )
+				{
+					int index = 128 + ( i * ( SUBDIV_LEVEL + 1 ) ) + j;
+					RotatedVertices[index].Special = 0;
+
+					// World coordinate interpolation.
+					RotatedVertices[index].x = x_start + ( ( j * x_delta ) >> 12 );
+					RotatedVertices[index].y = y_start + ( ( j * y_delta ) >> 12 );
+	
+					// Z world coordinate plus outcode.
+					ProjectedVertices[index].z = z_start + ( ( j * z_delta ) >> 12 );
+					ProjectedVertices[index].Outcode = 0xFF00U;
+
+					// UV interpolation.
+					int u = u_start + ( ( j * u_delta ) >> 12 );
+					int v = v_start + ( ( j * v_delta ) >> 12 );
+					uv[index - 128] = u | ( v << 8 );
+
+					// RGB interpolation.
+					if( flags & FF_VXC )
+					{
+						int r = r_start + ( ( j * r_delta ) >> 12 );
+						int g = g_start + ( ( j * g_delta ) >> 12 );
+						int b = b_start + ( ( j * b_delta ) >> 12 );
+						dummy_color_table[index - 128] = r | ( g << 8 ) | ( b << 16 );
+					}
+
+//					printf( "clipped: %d ( %d, %d, %d )\n", index - 128, RotatedVertices[index].x, RotatedVertices[index].y, ProjectedVertices[index].z );
+
+					// Perspective projection.
+					ProjectedVertices[index].X = ( ( RotatedVertices[index].x * pCurrentViewport->Zoom ) / ProjectedVertices[index].z ) + 256;
+					ProjectedVertices[index].Y = ( ( RotatedVertices[index].y * pCurrentViewport->Zoom ) / ProjectedVertices[index].z ) + 120;
+
+//					printf( "clipped: %d ( %d, %d )\n", index - 128, ProjectedVertices[index].X, ProjectedVertices[index].Y );
+
+				}
+			}
+
+			// Ensure flags indicate that this is a quad.
+			flags &= ~FF_TRI;
+			flags &= ~FF_SDV;
+
+			// Set up face array.
+			for( int i = 0; i < SUBDIV_LEVEL; ++i )
+			{
+				for( int j = 0; j < SUBDIV_LEVEL; ++j )
+				{
+					int index = ( i * SUBDIV_LEVEL ) + j;
+
+					// First word consists of face flags, and length of face (which assumes textured at this stage).
+					dummy_face[index][0] = 0x00200000UL | ( flags & 0xFFFFUL );
+
+					// Second word contains vertex indices.
+					Uint32 first = 128 + ( i * ( SUBDIV_LEVEL + 1 ) ) + j;
+					Uint32 second = first + 1;
+					Uint32 third = first + ( SUBDIV_LEVEL + 1 );
+					Uint32 fourth = third + 1;
+					dummy_face[index][1] = first | ( second << 8 ) | ( third << 16 ) | ( fourth << 24 );
+
+					// Third word is RGB0 for face color (in which case just copy from actual face),
+					// or 4 color table indices. In this case, we have to construct the dummy color table.
+					if( flags & FF_VXC )
+					{
+//						dummy_color_table[0] = p_current_read_array[v0].rgb;
+//						dummy_color_table[1] = p_current_read_array[v1].rgb;
+//						dummy_color_table[2] = p_current_read_array[v2].rgb;
+//						dummy_color_table[3] = p_current_read_array[v3].rgb;
+//						dummy_face[index][2] = 0x03020100;
+						dummy_face[index][2] = ( first - 128 ) | ( ( second - 128 ) << 8 ) | ( ( third - 128 ) << 16 ) | ( ( fourth - 128 ) << 24 );
+						pColourTable = dummy_color_table;
+					}
+					else
+						dummy_face[index][2] = pClipFace[2];
+
+					// Fourth word is normal index and user face flags - just copy directly from actual face.
+					dummy_face[index][3] = pClipFace[3];
+					
+					// Fifth word is uv0 and CLUT (just copy directly from actual face).
+//					dummy_face[index][4] = p_current_read_array[v0].uv | ( pClipFace[4] & 0xFFFF0000UL );
+					dummy_face[index][4] = uv[first - 128] | ( pClipFace[4] & 0xFFFF0000UL );
+					
+					// Sixth word is uv1 and TPAGE (just copy directly from actual face).
+//					dummy_face[index][5] = p_current_read_array[v1].uv | ( pClipFace[5] & 0xFFFF0000UL );
+					dummy_face[index][5] = uv[second - 128] | ( pClipFace[5] & 0xFFFF0000UL );
+				
+					// Seventh word is uv2 and uv3.
+//					dummy_face[index][6] = ( p_current_read_array[v2].uv & 0x0000FFFFUL ) | ( p_current_read_array[v3].uv << 16 );
+					dummy_face[index][6] = ( uv[third - 128] & 0x0000FFFFUL ) | ( uv[fourth - 128] << 16 );
+				
+					// Eighth word is texture window.
+					dummy_face[index][7] = pClipFace[7];
+				}
+			}
+
+			// Render the clipped, subdivided poly.
+			M3dAsm_ProcessPolys( &dummy_face[0][0], NULL, 16 );
+		}
+		else
+		{
+#			if 0
+			Uint32 dummy_face[8];
+			Uint32 dummy_color_table[4];
+			
+			// Set up Rotated/ProjectedVertices[128,131] as the 4 clipped vertices we will index.
+			*(Uint32 *)&( ProjectedVertices[128].X ) = *(Uint32 *)&( p_current_read_array[v0].X );
+			*(Uint32 *)&( ProjectedVertices[128].z ) = 0xFF000000UL | p_current_read_array[v0].z;
+			*(Uint32 *)&( ProjectedVertices[129].X ) = *(Uint32 *)&( p_current_read_array[v1].X );
+			*(Uint32 *)&( ProjectedVertices[129].z ) = 0xFF000000UL | p_current_read_array[v1].z;
+			*(Uint32 *)&( ProjectedVertices[130].X ) = *(Uint32 *)&( p_current_read_array[v2].X );
+			*(Uint32 *)&( ProjectedVertices[130].z ) = 0xFF000000UL | p_current_read_array[v2].z;
+			*(Uint32 *)&( ProjectedVertices[131].X ) = *(Uint32 *)&( p_current_read_array[v3].X );
+			*(Uint32 *)&( ProjectedVertices[131].z ) = 0xFF000000UL | p_current_read_array[v3].z;;
+		
+			RotatedVertices[128].x = p_current_read_array[v0].world_x;
+			RotatedVertices[128].y = p_current_read_array[v0].world_y;
+			RotatedVertices[128].Special = 0;
+			RotatedVertices[129].x = p_current_read_array[v1].world_x;
+			RotatedVertices[129].y = p_current_read_array[v1].world_y;
+			RotatedVertices[129].Special = 0;
+			RotatedVertices[130].x = p_current_read_array[v2].world_x;
+			RotatedVertices[130].y = p_current_read_array[v2].world_y;
+			RotatedVertices[130].Special = 0;
+			RotatedVertices[131].x = p_current_read_array[v3].world_x;
+			RotatedVertices[131].y = p_current_read_array[v3].world_y;
+			RotatedVertices[131].Special = 0;
+		
+			// Ensure flags indicate that this is a quad.
+			flags &= ~FF_TRI;
+			flags &= ~FF_SDV;
+		
+			// First word consists of face flags, and length of face (which assumes textured at this stage).
+			dummy_face[0] = 0x001C0000UL | ( flags & 0xFFFFUL );
+		
+			// Second word contains vertex indices.
+			dummy_face[1] = 0x83828180UL;
+			
+			// Third word is RGB0 for face color (in which case just copy from actual face),
+			// or 4 color table indices. In this case, we have to construct the dummy color table.
+			if( flags & FF_VXC )
+			{
+				dummy_color_table[0] = p_current_read_array[v0].rgb;
+				dummy_color_table[1] = p_current_read_array[v1].rgb;
+				dummy_color_table[2] = p_current_read_array[v2].rgb;
+				dummy_color_table[3] = p_current_read_array[v3].rgb;
+				dummy_face[2] = 0x03020100;
+				pColourTable = dummy_color_table;
+			}
+			else
+				dummy_face[2] = pClipFace[2];
+		
+			// Fourth word is normal index and user face flags - just copy directly from actual face.
+			dummy_face[3] = pClipFace[3];
+			
+			// Fifth word is uv0 and CLUT (just copy directly from actual face).
+			dummy_face[4] = p_current_read_array[v0].uv | ( pClipFace[4] & 0xFFFF0000UL );
+			
+			// Sixth word is uv1 and TPAGE (just copy directly from actual face).
+			dummy_face[5] = p_current_read_array[v1].uv | ( pClipFace[5] & 0xFFFF0000UL );
+		
+			// Seventh word is uv2 and uv3.
+			dummy_face[6] = ( p_current_read_array[v2].uv & 0x0000FFFFUL ) | ( p_current_read_array[v3].uv << 16 );
+		
+			// Eighth word is texture window.
+			dummy_face[7] = pClipFace[7];
+		
+			// Render the clipped poly.
+			M3dAsm_ProcessPolys( dummy_face, NULL, 1 );
+#			endif
+		}
+	
+		// Restore the colour table pointer.	
+		pColourTable = p_stored_color_table;
+	}
+}
+
+#endif
+
+
+
+
+
+
+//	Build	the transform for	a CSuper.
+//	This must be called once per frame for	each CSuper, before any
+//	geometric stuff is done	on	it.
+
+
+void M3d_BuildTransform(CSuper *pSuper)
+{
+	RECORDRA;
+
+	SItem	*pItem =	(SItem *)pSuper;
+
+	if (pSuper->mExtraFlags & EXTRAFLAGS_USEMATRIX)
+	{
+		#if !SPIDEY		// Spidey builds his mTransform in his AI
+		// copy the matrix
+		M3dMaths_CopyMat((XMat *)&((CBruce *)pSuper)->mRotationMatrix, (XMat *)&pSuper->mTransform);
+		#endif
+
+		#if SK			// skate uses a left-handed set of basis vectors
+		// negate the centre column (from up-vec to down-vec)
+		pSuper->mTransform.m[0][1] = -pSuper->mTransform.m[0][1];
+		pSuper->mTransform.m[1][1] = -pSuper->mTransform.m[1][1];
+		pSuper->mTransform.m[2][1] = -pSuper->mTransform.m[2][1];
+		#endif
+	}
+	else
+		M3dMaths_RotMatrixYXZ((SVECTOR *)&pItem->Angles, &pSuper->mTransform);
+
+	if	(pItem->Flags & ITEMFLAGS_SCALED)
+		M3dMaths_ScaleMatrix(pItem, &pSuper->mTransform);
+	pSuper->mTransform.t[0]	= pItem->Position.vx	>>	FRACBITS;
+	pSuper->mTransform.t[1]	= pItem->Position.vy	>>	FRACBITS;
+	pSuper->mTransform.t[2]	= pItem->Position.vz	>>	FRACBITS;
+}
+
+Sint32 BasePhase;
+
+Sint32 uWibble(STexWibVertInfo *pTexWibVertInfo)
+{
+	RECORDRA;
+
+	Sint16 *pWibbleTable;
+	Sint32 Amplitude, Phase;
+	int	 Index;
+
+	Amplitude = pTexWibVertInfo->uAmpPhase >> 4;			// get amplitude and phase from 4-bit fields
+
+	if (Amplitude)
+	{
+		Phase = pTexWibVertInfo->uAmpPhase & 15;
+		Index = (BasePhase + (Phase<<(WIBBLETABLESHIFT-4))) & (1<<WIBBLETABLESHIFT)-1;
+		pWibbleTable = WibbleTables + (Amplitude<<WIBBLETABLESHIFT);
+		return pWibbleTable[Index];
+	}
+
+	return 0;
+}
+
+
+Sint32 vWibble(STexWibVertInfo *pTexWibVertInfo)
+{
+	RECORDRA;
+
+	Sint16 *pWibbleTable;
+	Sint32 Amplitude, Phase;
+	int	 Index;
+
+	Amplitude = pTexWibVertInfo->vAmpPhase >> 4;			// get amplitude and phase from 4-bit fields
+
+	if (Amplitude)
+	{
+		Phase = pTexWibVertInfo->vAmpPhase & 15;
+		Index = (BasePhase + (Phase<<(WIBBLETABLESHIFT-4))) & (1<<WIBBLETABLESHIFT)-1;
+		pWibbleTable = WibbleTables + (Amplitude<<WIBBLETABLESHIFT);
+
+		return pWibbleTable[Index];
+	}
+
+	return 0;
+}
+
+
+
+void M3d_PreprocessWibblyTextures(int Region)
+{
+	RECORDRA;
+
+	Uint32 *pData, *pPSX, *pFace;
+	STexWibItemInfo *pTexWibItemInfo;
+	STexWibFaceInfo *pTexWibFaceInfo;
+	SItem *pItem;
+	SModel *pModel;
+	int NumFaces, i;
+	Sint32 uScroll,vScroll, TileWidth,TileHeight;
+	Sint32 u0,v0,u1,v1,u2,v2,u3,v3,And,Or;
+
+	#if 1 // Used to be if DEBUG
+	int Count;
+	#endif
+   
+	// check the region exists
+	if (Region == -1)
+		return;
+
+	// check there's a texture wibble packet
+	pData = PSXRegion[Region].pTexWibData;
+	if (!pData)
+		return;
+	ASSERT(pData[-2]==PK_TEXTUREWIBBLE, "Pointer doesn't point to a texture-wibble packet");
+
+	pPSX = PSXRegion[Region].pPSX;
+
+	while (*pData)
+	{
+		 // get pointer to wibble info
+		pTexWibItemInfo = (STexWibItemInfo *)pData;
+
+		 // get the item and model info
+		pItem = (SItem *)((char *)pPSX + pTexWibItemInfo->ItemOffset);
+
+		pTexWibFaceInfo = (STexWibFaceInfo *)(pTexWibItemInfo + 1);
+		NumFaces = pTexWibItemInfo->NumFaces;
+
+		if (pItem->Flags & ITEMFLAGS_CULL)
+		{
+			pData = (Uint32 *)(pTexWibFaceInfo + NumFaces);
+			continue;
+		}
+
+		pModel=PSXRegion[pItem->Region].ppModels[pItem->Model];
+		pFace = (Uint32 *)(pModel->Vertices + pModel->NumVertices + pModel->NumNormals);
+
+		uScroll	  = (Sint32)XblanksNow * (Sint32)pTexWibItemInfo->uVel	>> 4;
+		vScroll	  = (Sint32)XblanksNow * (Sint32)pTexWibItemInfo->vVel	>> 4;
+		BasePhase  = (Sint32)XblanksNow * pTexWibItemInfo->Frequency		>> (16-WIBBLETABLESHIFT);
+      int ZeroUAmplitudes=pTexWibItemInfo->ZeroUAmplitudes;
+      int ZeroVAmplitudes=pTexWibItemInfo->ZeroVAmplitudes;
+
+		for (i=0; i<NumFaces; i++,pFace+=FACELEN(pFace),pTexWibFaceInfo++)
+		{
+			ASSERT(pFace[CFACE_FLAGS]&FACEFLAGS_TEXTURED, "Wibbling a non-textured face");
+
+			ASSERT(!(uScroll||vScroll) || (pFace[CFACE_FLAGS]&FACEFLAGS_TILED), "Scrolling a non-tiled texture");
+//			if ((uScroll||vScroll) && !(pFace[CFACE_FLAGS]&FACEFLAGS_TILED))
+//				continue;
+
+				// get tile data
+
+			TileWidth  = ((-(pFace[CFACE_TEXWIN] & 0x001F) << 3) & 0xFF) << 8;
+			TileHeight = ((-(pFace[CFACE_TEXWIN] & 0x03E0) >> 2) & 0xFF) << 8;
+
+			
+
+				// get initial values
+
+			u0 = pTexWibFaceInfo->p0.u << 8;
+			v0 = pTexWibFaceInfo->p0.v << 8;
+			u1 = pTexWibFaceInfo->p1.u << 8;
+			v1 = pTexWibFaceInfo->p1.v << 8;
+			u2 = pTexWibFaceInfo->p2.u << 8;
+			v2 = pTexWibFaceInfo->p2.v << 8;
+			u3 = pTexWibFaceInfo->p3.u << 8;
+			v3 = pTexWibFaceInfo->p3.v << 8;
+
+				// scroll 'em
+
+			if (uScroll)
+			{
+				u0 += uScroll;
+				u1 += uScroll;
+				u2 += uScroll;
+				u3 += uScroll;
+			}
+
+			if (vScroll)
+			{
+				v0 += vScroll;
+				v1 += vScroll;
+				v2 += vScroll;
+				v3 += vScroll;
+			}
+
+				// wibble 'em
+            // ... but only if need be.
+			if (!ZeroUAmplitudes)
+         {
+				u0 += uWibble(&pTexWibFaceInfo->p0);
+				u1 += uWibble(&pTexWibFaceInfo->p1);
+				u2 += uWibble(&pTexWibFaceInfo->p2);
+				u3 += uWibble(&pTexWibFaceInfo->p3);
+         }
+			if (!ZeroVAmplitudes)
+         {
+				v0 += vWibble(&pTexWibFaceInfo->p0);
+				v1 += vWibble(&pTexWibFaceInfo->p1);
+				v2 += vWibble(&pTexWibFaceInfo->p2);
+				v3 += vWibble(&pTexWibFaceInfo->p3);
+         }
+				// check for partial wraparound
+
+			And = u0&u1&u2&u3;
+			Or  = u0|u1|u2|u3;
+
+			// This line used to be if DEBUG. Changed to always compile, since sometimes
+         // infinite loops can occur.
+			#if 1
+			Count = 0;
+			while ((And^Or)&0x10000 && Count<16)
+			#else
+			while ((And^Or)&0x10000)
+			#endif
+			{
+				u0 += TileWidth;
+				u1 += TileWidth;
+				u2 += TileWidth;
+				u3 += TileWidth;
+				And = u0&u1&u2&u3;
+				Or  = u0|u1|u2|u3;
+				#if 1
+				Count++;
+				#endif
+			}
+
+			#if DEBUG&0
+			if (Count>=16)
+	      	sprintf(AssertString,"\n U = (%d,%d,%d,%d) W = %d",u0/256,u1/256,u2/256,u3/256,TileWidth/256);   
+			ASSERT(Count<16, "U wibble overflow, poly maybe too big?");
+			#endif
+
+			And = v0&v1&v2&v3;
+			Or  = v0|v1|v2|v3;
+
+			#if 1
+			Count = 0;
+			while ((And^Or)&0x10000 && Count<16)
+			#else
+			while ((And^Or)&0x10000)
+			#endif
+			{
+				v0 += TileHeight;
+				v1 += TileHeight;
+				v2 += TileHeight;
+				v3 += TileHeight;
+				And = v0&v1&v2&v3;
+				Or  = v0|v1|v2|v3;
+				#if 1
+				Count++;
+				#endif
+			}
+			#if DEBUG&0
+			if (Count>=16)
+	      	sprintf(AssertString,"\n V = (%d,%d,%d,%d) H = %d",v0/256,v1/256,v2/256,v3/256,TileHeight/256);   
+			ASSERT(Count<16, "V Wibble Overflow, poly maybe too big?");
+			#endif
+
+				// just take the 2nd byte of each
+
+			u0 = (u0 & 0xFF00) >> 8;
+			v0 = (v0 & 0xFF00) >> 8;
+			u1 = (u1 & 0xFF00) >> 8;
+			v1 = (v1 & 0xFF00) >> 8;
+			u2 = (u2 & 0xFF00) >> 8;
+			v2 = (v2 & 0xFF00) >> 8;
+			u3 = (u3 & 0xFF00) >> 8;
+			v3 = (v3 & 0xFF00) >> 8;
+
+				// write uv's to model data
+
+			*(Uint16*)&pFace[CFACE_TEXTURENUM] = u0|v0<<8;
+			*(Uint16*)&pFace[CFACE_UV01] = u1|v1<<8;
+			pFace[CFACE_UV23] = u2|v2<<8|u3<<16|v3<<24;
+		}
+
+		pData = (Uint32 *)pTexWibFaceInfo;
+	}
+}
+
+
+
+
+struct SRGBI
+{
+	Uint8 r,g,b,Interval;
+};
+
+
+struct SColourPulseInfo
+{
+	Uint8 VertexColourIndex;
+	Uint8 ListLen;
+	Uint8 ListPos;
+	Uint8 t;
+	SRGBI RGBs[1];
+};
+
+
+
+void M3d_PreprocessPulsingColours(int Region)
+{
+	RECORDRA;
+
+	Uint32 *pData, *pEnd, dt, ListLen, ListPos, OldListPos;
+	int t, rgb0[3], drgb[3];
+	SRGBI  *RGBs;
+	SColourPulseInfo *pColourPulseInfo;
+
+
+	// check the region exists
+	if (Region == -1)
+		return;
+
+	// check there's a colour pulsing packet
+	pData = PSXRegion[Region].pColourPulseData;
+	if (!pData)
+		return;
+	ASSERT(pData[-2]==PK_COLOURPULSE, "Pointer doesn't point to a colour pulsing packet");
+
+	// get pointer to end of data
+	pEnd = (Uint32 *)((Uint8 *)pData+pData[-1]);
+
+	// get corresponding colour table pointer
+	pColourTable = PSXRegion[Region].pColourTable;
+	ASSERT(pColourTable, "Pulsing a non-existent colour table");
+
+	// find time since last calculation
+	if( XblanksNow < XblanksThen )
+		dt = 1;	// This shouldn't happen should it? Ensure some movement anyway.
+	else
+		dt = XblanksNow - XblanksThen;
+
+	// loop over colours to be pulsed
+	while (pData < pEnd)
+	{
+		// set up pointer to colour pulse info
+		pColourPulseInfo = (SColourPulseInfo *)pData;
+
+		// check for stupid values
+		ASSERT( pColourPulseInfo->ListLen, "Zero list length" );
+
+		// get some stuff from the info
+		RGBs = pColourPulseInfo->RGBs;
+		ListLen = pColourPulseInfo->ListLen;
+
+		// get last position in script
+		ListPos = pColourPulseInfo->ListPos;
+		t = pColourPulseInfo->t;
+
+		// find current position in script
+		t += dt;
+		while (t >= RGBs[ListPos].Interval)
+		{
+			t -= RGBs[ListPos].Interval;
+			ListPos++;
+
+			if (ListPos==ListLen)
+				ListPos=0;
+		}
+		pColourPulseInfo->ListPos = ListPos;
+		pColourPulseInfo->t = t;
+
+		// interpolate to get rgb
+		rgb0[0] = RGBs[ListPos].r << 4;
+		rgb0[1] = RGBs[ListPos].g << 4;
+		rgb0[2] = RGBs[ListPos].b << 4;
+
+		OldListPos = ListPos;
+
+		ListPos++;
+
+		// adjust for daft zero RGB entry.
+		if (ListPos==ListLen)
+			ListPos=0;
+
+		drgb[0] = ((int)RGBs[ListPos].r<<4) - rgb0[0];
+		drgb[1] = ((int)RGBs[ListPos].g<<4) - rgb0[1];
+		drgb[2] = ((int)RGBs[ListPos].b<<4) - rgb0[2];
+
+		ASSERT( RGBs[ListPos].Interval, "Zero interval" );
+
+		m3d_ldrgb(0);													// set code to zero
+		gte_lddp((t<<12)/RGBs[OldListPos].Interval);			// load the interpolation parameter
+		gte_ldlvnl(&rgb0);											// constant term
+		gte_ldlvl(&drgb);												// linear coefficient
+		gte_gpl12();													// interpolate
+		gte_strgb(&pColourTable[pColourPulseInfo->VertexColourIndex]);
+
+//		r = r0+((t*(r1-r0))/RGBs[OldListPos].Interval);		// this can be greatly sped up using the gte
+//		g = g0+((t*(g1-g0))/RGBs[OldListPos].Interval);
+//		b = b0+((t*(b1-b0))/RGBs[OldListPos].Interval);
+
+		// just to make sure...
+//		r &= 0xFF;
+//		g &= 0xFF;
+//		b &= 0xFF;
+
+		// set colour table entry
+//		pColourTable[pColourPulseInfo->VertexColourIndex] = r|g<<8|b<<16;
+
+		// increment pData
+		pData = (Uint32 *)(pColourPulseInfo+1) + ListLen-1;		// subtract 1 for the 1-element array in SColourPulseData
+	}
+}

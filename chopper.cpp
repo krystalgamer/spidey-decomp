@@ -739,7 +739,7 @@ void CChopperMissile::Explode(void)
 		Chunk_ChunkItemByChecksum(this->field_11C);
 	}
 
-	u32 v2 = Utils_Dist(&this->mPos, &MechList->mPos);
+	u32 v2 = Utils_Dist(this->mPos, MechList->mPos);
 
 	if (v2 < 0x19A)
 	{

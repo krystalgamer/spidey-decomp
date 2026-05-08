@@ -1,0 +1,601 @@
+/* RAIL.CPP - Handling the setting up and detecting of rails
+ 
+A Rail is a grindable line in the game.  This is set up as a series of linked nodes.
+(See trig.cpp for more on nodes).  Each rail node is linked to one other rail node
+except for the the last node, which has no links to rails.
+ 
+A rail is usually co-incident with a piece of geometry, like an actual metal rail
+or the edge of a halfpipe, or pool.
+ 
+There are two possible types of rail, normal and a looped.
+ 
+A normal rail is just a list of nodes, each one linked ot the next
+ 
+A looped rail is a single loop of nodes.  Each node only links to one other node
+ 
+The format of a rail node would be:
+ 
+ dw RAILDEF or RAILPOINT
+ ... links, angles, etc
+ dw Flags
+
+the format of flags is 
+	Bit 15
+	Bit 14
+	Bit 13
+	Bit 12
+	Bit 11
+	Bit 10
+	Bit 9
+	Bit 8
+	Bit 7
+	Bit 6
+	Bit 4+5  - Number of players 
+	Bits 3-0 - Terrain Type
+ 
+ 
+ 
+*/
+
+
+
+#include "globals.h"
+#include "bit.h"
+#include "bit2.h"
+#include "rail.h"
+#include "mech.h"
+#include "m3dutils.h"
+#include "trig.h"
+#include "symbols.h"
+#include "physics.h"
+
+#define DISPLAYRAILS 1
+
+#define FRACBITS_2   (FRACBITS >> 1)
+#include  "m3dmaths.h"
+#include  "mips.h"
+
+#if DEBUG
+// shoud return a string combines the string passed with info about the node, like position
+// but just returns the string alone for now, until I need it.  
+char * NodeDebug(Uint16 Node, char *p)
+{
+	return p;
+}
+#endif
+
+// Get the rail flags word from a node
+Uint16 Rail_Flags(Uint16 Node)
+{
+
+   CVector Dummy;
+   Sint16* pRailDef=(Sint16*)Trig_GetPosition(Dummy,Node);
+   pRailDef+=3; // Skip over the angles.
+   // should now be at the magic word after the angles, so should be -1 if old format
+   // or the flags word, if if it a new rail type
+   if (*pRailDef == -1)
+      return 0;
+   else
+   {
+      return *pRailDef;
+   }
+}
+
+
+// Rail_IsRailNode(node) - returns true if this a rail node, and the number of players matches the flags
+int Rail_IsRailNode(Uint16 Node)
+{
+   if( *OffsetList[Node] == RAILDEF || *OffsetList[Node] == RAILPOINT)
+	{
+		Uint16 Flags = Rail_Flags(Node);
+		Flags &= 0x0030;												// extract the two buts that are the number of players
+		Flags >>= 4;
+		if (!Flags || (Flags & GNumberOfPlayers))
+			return 1;
+	}
+	return 0;	
+}
+
+// Give a node and a link number, then return the node number of that link
+// assert if the index is outside the range of the links
+Uint16 Rail_GetLink( Uint16 Node, Sint16 Link)
+{
+   ASSERT(Node < NumNodes,"Node Index wrong");
+//   ASSERT(*OffsetList[Node] == RAILDEF || *OffsetList[Node] == RAILPOINT,"Non-Rail node");
+
+   Uint16* pLinks = Trig_GetLinksPointer(Node);
+	ASSERT(Link>=0 && Link<pLinks[0], "Link number to big")
+   return (pLinks[Link+1]);
+}
+
+
+// Rail_NumLinks(node)  - return the number of links a node has
+Uint16 Rail_NumLinks( Uint16 Node)
+{
+   ASSERT(Node < NumNodes,"Node Index wrong");
+//   ASSERT(*OffsetList[Node] == RAILDEF || *OffsetList[Node] == RAILPOINT,"Non-Rail node");
+
+   Uint16* pLinks = Trig_GetLinksPointer(Node);
+   return (pLinks[0]);
+}
+
+// Rail_NextNode(node) - returns the next rail node, or 0 if none 
+Uint16 Rail_NextNode( Uint16 Node )
+{
+	Uint16 Links = Rail_NumLinks(Node);
+	if ( Links == 0)
+		return 0;
+	int NextRailNode = 0 ;
+	for (int Link = 0; Link<Links; Link++)
+	{
+		Uint16 LinkedNode = Rail_GetLink(Node,Link);
+		if (Rail_IsRailNode(LinkedNode))
+		{
+			ASSERT(NextRailNode == 0, NodeDebug(Node,"Rail node linked to more that one other rail node"));
+			NextRailNode = LinkedNode;
+		}
+	}
+	return NextRailNode;
+} 
+
+
+// return the index of the parent of this Node, or 0 if no parent 
+Uint16 Rail_PrevNode( Uint16 Node)
+{
+   ASSERT(Node < NumNodes,"Node Index wrong");
+//   ASSERT(*OffsetList[Node] == RAILDEF || *OffsetList[Node] == RAILPOINT,"Non-Rail node");
+
+	Uint16 PrevNode = 0;
+// a rather brute force approach, we scan ALL the nodes, and find on that has a pointer to this one
+	for (int Prev = 1; Prev < NumNodes; Prev++)
+	{
+		if (Rail_IsRailNode(Prev) && Rail_NextNode(Prev) == Node)		// if the next node of the "Prev" node is the node we are looking for
+		{
+			ASSERT(PrevNode == 0, "More than one node linked to this node");
+			PrevNode = Prev;		
+			#if !DEBUG								// Little optimization, return immediatly
+			return PrevNode;			
+			#endif				
+		}
+	}
+	return PrevNode;	
+}
+
+
+// Given that we've loaded a .trg file with a bunch of rail nodes in it, then create all the rails
+// First we set all nodes that are RAILDEF or RAILPOINT to RAILPOINT
+// Then we find each RAILPOINT, then find the first node in the rail (or use this if they loop)
+// then call new CRail, which will mark all the nodes as RAILDEF, to show they have been used
+// in addition, 
+void Rail_CreateRails()
+{
+   ASSERT(NumNodes>0,"Bad value for NumNodes");
+
+	printf("Called Rail_CreateRails\n");
+
+// we can't have the first node being a rail, as this is used as the null node
+// this should be the AUTOEXEC, but best to check anyway.
+   Sint16 *pFirstNode=OffsetList[0];
+	ASSERT(*pFirstNode != RAILDEF && *pFirstNode != RAILPOINT, "First node in .trg is a RAIL, please fix");
+
+   // Scan the trigger file, resetting all rail nodes to RAILPOINTs to say they have not been processed yet
+   for (Uint16 Node=0; Node<NumNodes; Node++)
+   {
+      switch (*OffsetList[Node])
+      {
+      case RAILDEF:
+      case RAILPOINT:
+			*OffsetList[Node] = RAILPOINT;
+			break;
+			
+      default:
+         break;
+      }
+   }
+
+	Uint16 Prev;
+	Uint16 First;
+   // Scan the trigger file, looking for all rail type nodes
+   for (Uint16 Node=0; Node<NumNodes; Node++)
+   {
+      // we have now found a node that is in a rail
+      // we need to find the first node in the rail, or find if it is cyclic
+		// Most rails wil not be cyclic, so it's reasonably efficient
+		// to jog backwards until we either loop, or we find the first node
+		if (Rail_IsRailNode(Node))	// check for it being a rail, and correct number of players
+		{
+			First = Node;
+			Prev = Rail_PrevNode(Node);
+			ASSERT(Prev>0 || Rail_NextNode(Node), NodeDebug(Node,"Solitary rail node"));	
+			ASSERT(Prev != Node, NodeDebug(Node,"Rail Node linked to itself"));
+			while (Prev != 0 && Prev != Node)
+			{
+				First = Prev;
+				Prev = Rail_PrevNode(Prev);
+			}
+			// Now "First" is either the first node in a linear normal rail
+			// or it's a random node in a looped rail
+			// So let's create the rail..... 
+			printf("Node %d, Starts %d \n", Node, First);
+			new CRail(First);
+		}
+   }
+
+}
+
+
+
+// RailList is a global that points to the linked list of CRail instances.
+// Initially it is NULL, as there are no rails
+// each new CRail is allocated off the heap
+// so they would each need to be removed at the end of the level
+CRail *RailList = NULL;
+
+
+// Rail_GetNextNodeFromLinks takes a parameter of a pointer to the links part of a rail node
+// it returns the node number of the next node that this is linked to (could be NULL)
+// the code is complicated as the order of links is not defined, so the link for a RAILDEF
+// could be either the first or second link
+// Note pLinks[0] is the nubmer of links, not referenced here
+// and we assume that pLinks[-1] is the node type, meaning that the Link Info is the first thing in the node.
+/*
+Uint16 Rail_GetNextNodeFromLinks(Uint16 *pLinks)
+{
+	
+   if (pLinks[-1] == RAILDEF)							// The short before pLinks is the node type
+   {
+      if (*OffsetList[pLinks[1]] == RAILPOINT)	// if the first node is a rail point
+         return pLinks[1];								// then resturn the first node in the links
+      else
+         return pLinks[2];								// else return the second node in the links
+   }
+   else
+   {
+      return pLinks[1];									// a RAILPOINT always only has one link
+   }
+}
+*/
+
+
+// Rail_Init - delete all entries in the RailList linked list
+// Looks a bit dodgy to me
+void Rail_Init(void)
+{
+   RECORDRA;
+   while (RailList) delete RailList;
+   RailList = NULL;
+}
+
+// like, how is this different to the above?
+void Rail_DeleteAll(void)
+{
+   RECORDRA;
+   CRail *pRail = RailList;
+   while (pRail)
+   {
+      CRail *pNext = pRail->mpNext;
+      delete pRail;
+      pRail = pNext;
+   }
+}
+
+// CRail constructor,  take a node index as a paramenter
+// This will be a RAILPOINT (now always a RAILPOINT)
+CRail :: CRail(int node_index)
+{
+   RECORDRA;
+
+   // Insert us first in rail list
+   if (RailList)
+      RailList->mpPrevious = this;
+   mpNext = RailList;
+   mpPrevious = NULL;
+   RailList = this;
+
+#if DEBUG
+   // Set up the assert string in case one of the following asserts fails
+   sprintf(AssertString,"\n Node = %d", node_index);
+#endif
+
+   ASSERT(node_index >= 0 && node_index < NumNodes,"Bad node sent to CRail");
+   ASSERT(*OffsetList[node_index] == RAILDEF || *OffsetList[node_index] == RAILPOINT,"Start node not raildef or railpoint");
+
+   Uint16 *pLinks = Trig_GetLinksPointer(node_index);
+
+   mStartNode = node_index;
+
+	mType = Rail_Flags(mStartNode);
+
+   // Build bounding box
+   mBBoxMin.vx = mBBoxMin.vy = mBBoxMin.vz = 0x7fffffff;
+   mBBoxMax.vx = mBBoxMax.vy = mBBoxMax.vz = 0x80000000;
+   CVector NodePos;
+   int CurrentNode = mStartNode;
+	*OffsetList[mStartNode] = RAILDEF;			// set it as a raildef, to indicate it's been processed
+
+   while (1)
+   {
+      Trig_GetPosition(NodePos, CurrentNode);
+      if (NodePos.vx < mBBoxMin.vx) mBBoxMin.vx = NodePos.vx;
+      if (NodePos.vy < mBBoxMin.vy) mBBoxMin.vy = NodePos.vy;
+      if (NodePos.vz < mBBoxMin.vz) mBBoxMin.vz = NodePos.vz;
+      if (NodePos.vx > mBBoxMax.vx) mBBoxMax.vx = NodePos.vx;
+      if (NodePos.vy > mBBoxMax.vy) mBBoxMax.vy = NodePos.vy;
+      if (NodePos.vz > mBBoxMax.vz) mBBoxMax.vz = NodePos.vz;
+//      pLinks = Trig_GetLinksPointer(CurrentNode);
+		Uint16 NextNode = Rail_NextNode(CurrentNode);
+      if (NextNode != 0 && NextNode != mStartNode)			// check for end of rail or loop back to start
+      {
+         CurrentNode = NextNode;
+			*OffsetList[CurrentNode] = RAILDEF;			// set it as a raildef, to indicate it's been processed
+
+#if DEBUG && DISPLAYRAILS
+         CVector NextPos;
+         Trig_GetPosition(NextPos, CurrentNode);
+         mpLine = new CPolyLine(1);
+         ASSERT(mpLine, "No mem for rail line");
+         mpLine->SetStartAndEnd(NodePos, NextPos);
+         mpLine->mProtected = FALSE; // wot?
+         mpLine->mSegs[0].r = 0x80;
+         mpLine->mSegs[0].g = 0;
+         mpLine->mSegs[0].b = 0;
+#endif
+ 			NextNode = Rail_NextNode(CurrentNode);
+      }
+      else
+         break;
+   }
+
+
+#if DEBUG
+   AssertString[0] = 0;
+#endif
+
+}
+
+
+CRail::~CRail(void)
+{
+   RECORDRA;
+
+#if 0 // DEBUG
+   if (mpLine) delete mpLine;
+#endif
+
+   // Relink list around this object
+   if (RailList == this)
+      RailList = this->mpNext;
+   if (mpPrevious)
+      mpPrevious->mpNext = mpNext;
+   if (mpNext)
+      mpNext->mpPrevious = mpPrevious;
+}
+
+
+void Rail_Update(void)
+{
+   RECORDRA;
+
+   int s, t;
+   Uint16 *pLinks;
+
+   // Declare these as ints instead of CVector to force compiler to keep
+   // (some of them) in registers instead of reloading from memory
+   register int SkaterMin_vx, SkaterMin_vy, SkaterMin_vz;
+   register int SkaterMax_vx, SkaterMax_vy, SkaterMax_vz;
+
+   CVector SegMin, SegMax, SegFrom, SegTo;
+   CVector SkaterPos, RailPos;
+
+   // As we now can have 2 skaters, better go through whole list
+   for (CBody *MLCopy = MechList; MLCopy != NULL; MLCopy = (CBody *)(MLCopy->mNextItem))
+   {
+
+      // Declare this to make code a little tidier
+      CBruce *pSkater = (CBruce *)MLCopy;
+
+      // Cannot stick to rail when on ground
+      //      if (pSkater->mPhysicsState == PHYSICS_ON_GROUND)
+      //         continue;
+
+      // Cannot stick to rail if triangle button not pressed
+      if (!pSkater->mPad->Triangle.Pressed)
+      {
+         pSkater->mRailInhibit = 0;
+         continue;
+      }
+      // If skater already on rail, do nothing
+      if (pSkater->mOnRail) continue;
+
+      // If skater is bailing, do nothing
+      if (pSkater->mInBail) continue;
+
+      // if skater's rail inhibit is set, then do nothing
+      if (pSkater->mRailInhibit) continue;
+
+
+      // If skater isn't jumping, do nothing
+      //     if (!pSkater->mManIsJumping) continue;
+
+      // If skater is moving up through air, do nothing
+      //     if (pSkater->mVel.vy < 0 && (pSkater->mLastJumpStrength == FRAMES_TO_MAX_JUMP_STRENGTH)) continue;
+
+      // Now check skater's bbox against rail bbox
+      SkaterMin_vx = pSkater->mOldPos.vx;
+      SkaterMin_vy = pSkater->mOldPos.vy;
+      SkaterMin_vz = pSkater->mOldPos.vz;
+      SkaterMax_vx = pSkater->mPos.vx;
+      SkaterMax_vy = pSkater->mPos.vy;
+      SkaterMax_vz = pSkater->mPos.vz;
+
+      // Get bounding box for skater's movement
+      if (SkaterMin_vx > SkaterMax_vx)
+         t = SkaterMin_vx, SkaterMin_vx = SkaterMax_vx, SkaterMax_vx = t;
+      if (SkaterMin_vy > SkaterMax_vy)
+         t = SkaterMin_vy, SkaterMin_vy = SkaterMax_vy, SkaterMax_vy = t;
+      if (SkaterMin_vz > SkaterMax_vz)
+         t = SkaterMin_vz, SkaterMin_vz = SkaterMax_vz, SkaterMax_vz = t;
+
+      // Expand bounding box slightly (for straight rails)
+      SkaterMin_vx -= SNAP_TO_RAIL_DIST << FRACBITS;
+      SkaterMax_vx += SNAP_TO_RAIL_DIST << FRACBITS;
+      SkaterMin_vy -= SNAP_TO_RAIL_DIST << FRACBITS;
+      SkaterMax_vy += SNAP_TO_RAIL_DIST << FRACBITS;
+      SkaterMin_vz -= SNAP_TO_RAIL_DIST << FRACBITS;
+      SkaterMax_vz += SNAP_TO_RAIL_DIST << FRACBITS;
+
+      // Loop over all rails
+      for (CRail *pRail = RailList; pRail; pRail = pRail->mpNext)
+      {
+         int CurrentNode, NextNode, Dist;
+
+         // Exit if it doesn't overlap the bounding box of the rail
+         if (SkaterMax_vx < pRail->mBBoxMin.vx || SkaterMin_vx > pRail->mBBoxMax.vx) continue;
+         if (SkaterMax_vy < pRail->mBBoxMin.vy || SkaterMin_vy > pRail->mBBoxMax.vy) continue;
+         if (SkaterMax_vz < pRail->mBBoxMin.vz || SkaterMin_vz > pRail->mBBoxMax.vz) continue;
+
+         // If we're not allowed to stick to this rail (again) yet, do nothing
+         if (pSkater->mDontStickTimer > 0 && pSkater->mDontStickRail == pRail->mStartNode) continue;
+
+         // Okay, we got here, so skater is within bounding box of rail, now
+         // check skater bbox against the bounding box of each rail segment
+         for (CurrentNode = pRail->mStartNode; ; CurrentNode = NextNode)
+         {
+
+            // If not linked, we're at end of rail, so exit
+            pLinks = Trig_GetLinksPointer(CurrentNode);
+            if (pLinks[0] == 0)
+               break;
+
+            // Get bounding box for current segment
+            Trig_GetPosition(SegFrom, CurrentNode);
+            //            NextNode = pLinks[1];
+            NextNode = Rail_NextNode(CurrentNode);
+
+            Trig_GetPosition(SegTo, NextNode);
+            SegMin = SegFrom;
+            SegMax = SegTo;
+            if (SegMin.vx > SegMax.vx)
+               t = SegMin.vx, SegMin.vx = SegMax.vx, SegMax.vx = t;
+            if (SegMin.vy > SegMax.vy)
+               t = SegMin.vy, SegMin.vy = SegMax.vy, SegMax.vy = t;
+            if (SegMin.vz > SegMax.vz)
+               t = SegMin.vz, SegMin.vz = SegMax.vz, SegMax.vz = t;
+
+            // Skip if skater and rail segment bboxes do not overlap
+            if (SkaterMax_vx < SegMin.vx || SkaterMin_vx > SegMax.vx) continue;
+            if (SkaterMax_vy < SegMin.vy || SkaterMin_vy > SegMax.vy) continue;
+            if (SkaterMax_vz < SegMin.vz || SkaterMin_vz > SegMax.vz) continue;
+
+            // At this point, the bounding box of the skater and the
+            // bounding box of the rail segment is overlapping.
+
+            // Now do a line segment-line segment closest points test.
+
+            // This should probably have some code checking if we got stuck at
+            // the endpoint of the rail segment while going towards the endpoint,
+            // in which case we should probably ignore the rail.
+
+            Dist = M3dUtils_LineLineClosestPoints(
+                      &(pSkater->mOldPos), &(pSkater->mPos),
+                      &SegFrom, &SegTo,
+                      &SkaterPos, &s,
+                      &RailPos, &t);
+
+            if (Dist < pSkater->mDistToCurrentRail)
+            {
+               if ((pSkater->mPhysicsState == PHYSICS_ON_GROUND ||
+                     pSkater->mPhysicsState == PHYSICS_ON_INVISIBLE) &&
+                     RailPos.vy < pSkater->mPos.vy)
+               {
+                  /* do nothing */
+               }
+               else
+               {
+
+                  //	printf ("Skater  = %lx,%lx,%lx\n",RailPos.vx,RailPos.vy,RailPos.vz);
+                  //	printf ("SegFrom = %lx,%lx,%lx\n",SegFrom.vx,SegFrom.vy,SegFrom.vz);
+                  //	printf ("SegTo   = %lx,%lx,%lx\n",SegTo.vx,SegTo.vy,SegTo.vz);
+
+                  CVector SegDir = SegTo - SegFrom;
+
+                  M3dUtils_NormaliseVector(&SegDir);   // get the unit vector of this rail segment
+
+                  int End = 0;
+
+                  // get the direction vector for the rail in the same direction as the velocity
+                  if (Mips_CVecDotProd(&SegDir, &pSkater->mVel)>=0)
+                  {
+                     pSkater->mRailDir = SegDir;
+                     // Now we are going from SegFrom to SegTo
+                     // if we are exactly at SegTo, then we might be past the end of the rail
+                     if (RailPos == SegTo)
+                     {
+                        //printf("SegTo Maybe End\n");
+                        End = 1;
+                     }
+                  }
+                  else
+                  {
+                     pSkater->mRailDir = -SegDir;
+                     // Now we are going from SegTo to SegFrom
+                     // if we are exactly  at SegFrom, then we might be past the end of the rail
+                     if (RailPos == SegFrom)
+                     {
+                        //printf("SegFrom Maybe End\n");
+                        End = 1;
+                     }
+                  }
+
+                  if (!End)
+                  {
+                     pSkater->mDistToCurrentRail = Dist;
+                     pSkater->mStickToRail = 1;
+                     pSkater->mCurrentRailStart = pRail->mStartNode;
+                     pSkater->mCurrentRailSegment = CurrentNode;
+                     pSkater->mRailPos = RailPos;
+                     pSkater->mRailType = pRail->mType;
+                  }
+
+
+
+                  /*
+                  // I tried re-projecting the resultant point back onto the line
+                  // but never got a correction of >1, so I'm just going to jeave it.
+                  // seems like errors were mostly in line layout, and optical illusions
+                  // due to camera positioning
+                                    
+                  // used to try projecting railpos back onto the rail
+                                    CVector SkaterOffset = RailPos - SegFrom; // get rail pos from start of line
+
+                  // let's try just projecting the skater's position onto the line
+                  //                CVector SkaterOffset = pSkater->mPos - SegFrom; // get stater offset from start of line
+
+
+                  // if you use the CVecDotProd, then you get overflows with some of the longer rail segments
+                  //                int SkaterOffsetLength1 = M3dMaths_SquareRoot0(Mips_CVecDotProd(&SkaterOffset, &SkaterOffset)) << FRACBITS_2;
+                  // so I use the Length, which is just interget length, but does not overflow
+                                    int SkaterOffsetLength = SkaterOffset.Length()<<FRACBITS;     // .Lenght() is the integer length
+                                    RailPos.vx = SegFrom.vx + (Mips_FixMul(SegDir.vx,SkaterOffsetLength));     // project vector along line
+                                    RailPos.vy = SegFrom.vy + (Mips_FixMul(SegDir.vy,SkaterOffsetLength));
+                                    RailPos.vz = SegFrom.vz + (Mips_FixMul(SegDir.vz,SkaterOffsetLength));
+
+                                    printf("Corrected %d,%d,%d\n", pSkater->mRailPos.vx - RailPos.vx,pSkater->mRailPos.vy - RailPos.vy,pSkater->mRailPos.vz - RailPos.vz);
+
+                                    pSkater->mRailPos = RailPos;
+                  */
+
+
+
+
+               }
+            }
+
+         } // end for all segments
+
+      } // end for all rails
+
+   } // end for all skaters
+
+}
+
