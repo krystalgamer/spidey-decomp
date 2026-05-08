@@ -42,34 +42,28 @@ struct SControl
 	SButton SmartBomb;
 	SButton SelectWeapon;
 
-	i32 field_140;
-	i32 field_144;
-	i32 field_148;
-	i32 field_14C;
+	u8 AnaloguePotMapping[4];
+	u8 RawAnalogueMoveForwardsBackwards;
+	u8 RawAnalogueMoveLeftRight;
+	u8 RawAnalogueAimForwardsBackwards;
+	u8 RawAnalogueAimLeftRight;
 
-	i32 field_150;
-	i32 field_154;
-	i32 field_158;
-	i32 field_15C;
+	i8 AnalogueMoveForwardsBackwards;
+	i8 AnalogueMoveLeftRight;
+	i8 AnalogueAimForwardsBackwards;
+	i8 AnalogueAimLeftRight;
 
-	u8 field_160;
-	u8 field_161;
-	u8 field_162;
-	u8 field_163;
+	i32 Type;
+	u32 ResetCounter;
 
-	PADDING(0x168-0x163-1);
 
-	u8 field_168;
-	u8 field_169;
-	u8 field_16A;
-	u8 field_16B;
+	u8 Motor0;
+	u8 Motor1;
+	u8 Lock;
 
-	i32 field_16C;
+	u8 AlignCalled;
 
-	i32 field_170;
-
-	PADDING(4);
-
+	PADDING(0x20);
 	u16 Motor0Timer;
 	u16 Motor1Timer;
 

@@ -1,0 +1,17 @@
+;Codewright Project Space File (do not remove or modify this line)
+[State]
+StateWindowFrame=622,43,951,1145,0x43097fc8
+_StateHistory=PROJECTS,'..\SK\skate1.pjt','.\Skate2.pjt'
+_RestoreProject='.\Skate2.pjt'
+
+[Project]
+ConfigSetUserWorkspace=''
+ConfigSetUserWorkspaceParser=''
+ConfigSetUserWorkspaceTimeStamp=0
+ConfigSetUserWorkspaceAutoSync=0
+
+
+[Project."..\SK\skate1.pjt"]
+
+[Project.".\Skate2.pjt"]
+

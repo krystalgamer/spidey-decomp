@@ -391,7 +391,7 @@ CSimpleTexturedRibbon::~CSimpleTexturedRibbon(void)
 
 // @Ok
 // @Matching
-INLINE CSimpleTexturedRibbon::CSimpleTexturedRibbon(void)
+CSimpleTexturedRibbon::CSimpleTexturedRibbon(void)
 {
 }
 
@@ -2020,7 +2020,7 @@ INLINE void CFT4Bit::SetTransDecay(i32 decay)
 
 // @Ok
 // @Matching
-INLINE CFlatBit::CFlatBit(void)
+CFlatBit::CFlatBit(void)
 {
 	this->AttachTo(reinterpret_cast<CBit**>(&FlatBitList));
 

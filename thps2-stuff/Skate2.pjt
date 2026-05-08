@@ -1,0 +1,342 @@
+;Codewright Project File (do not remove or modify this line)
+[ProjInit]
+ConfigSetExtMode=2
+ProjSetConfigFlags=0x04010140
+
+[State]
+SysSetCwd='C:\psx\SK'
+SrchSetFlags=0x0511602b
+FileSortMode=0x0
+_StateView='\\\Noddy2\QQQ\ss\temp\m3dzone.cpp',0,0,677,554,-1,-1,1,1,1,1,1,'',0x00100008,0,80,0,0,''
+_StateBuffer='\\\Noddy2\QQQ\ss\temp\m3dzone.cpp',0x0000048e,1,1,25,'4 7','',0x0,'',1,72,1
+_StateHistory=FILELIST,'C:\psx\sk2\stats.cpp','C:\psx\sk2\spool.h','C:\psx\sk2\decomp.cpp','C:\psx\sk2\tricks.s','C:\psx\sk2\sk2anim_anim.h','C:\psx\sk2\FrontEnd2.h','C:\psx\sk2\FontTools.h','\\\Ralph\D\Programmers2.txt','Q:\Programmers2.txt'
+_StateHistory=SEARCH,'','','','','','','','','main(','setsp'
+_StateHistory=REPLACE,'Tiling','255','mBailState','GSkater[0]','GSkater[1]','CSkater','DEF_MAX_SPEED','50','',' '
+_StateHistory=XSYMBOL,'MAX_TRICK_QUEUED','MAX_TRICKS_QUEUED','mTrickQueueTail','pTrick','mpTrick','UpdateQueue','Options_Init','HEREIAM','NEW_FRONT_END','FALSE'
+_StateHistory=EDITFILE,'C:\psx\sk2\front.cpp','C:\psx\sk2\decomp.cpp','C:\psx\sk2\tricks.s','C:\psx\sk2\sk2anim_anim.h','C:\psx\sk2\front.cpp','C:\psx\sk2\decomp.cpp','C:\psx\sk2\FrontEnd2.h','C:\psx\sk2\FontTools.h','C:\psx\sk2\main.cpp','\\\Ralph\D\Programmers2.txt'
+_StateHistory=DIRECTORY,'C:\Program Files\DevStudio\VC\lib','C:\Program Files\DevStudio\VC','C:\Program Files\DevStudio','C:\psx\include','C:\psx\spidey','C:\psx\sk2','C:\psx\SK'
+_StateHistory=GOTOMARK,'2','3','1','2','1','2','1','2','3','2'
+_StateHistory=TEMPLATE,'Wop'
+_StateHistory=DIFFFILE,'C:\psx\sk2\fileio.cpp','C:\psx\sk2\m3dasm.s','C:\psx\SK\main.cpp','C:\psx\sk2\physics.cpp'
+_StateHistory=DIFFTARGET,'C:\psx\sk2\fileio.cpp','C:\psx\sk2\m3dasm.s','C:\psx\SK\main.cpp','C:\psx\sk2\physics.cpp'
+_StateHistory=FUNCTIONFILTER,'BR_','CUA_',''
+
+[Editor]
+_RestoreSysFlags=0x43097fc8, 0xfffffffc, 0
+_RestoreSysFlags=0x00010001, 0xffffffff, 1
+CollapseMode=0x13080610
+VCSProject='"$/Skate2/code", WTGAAAAA'
+VCSProjectPath='\\Noddy2\Qqq\ss,'
+VCSProjectLocalPath='C:\PSX\SK2'
+ScrapSetCount=1
+ClipboardSetCount=1
+ClipboardEnableSepStr=1
+ClipboardSetSepStr='\r\n',0
+ClipboardEnableTermStr=1
+ClipboardSetTermStr='\r\n',0
+
+[Compiler]
+CompilerNewExt=.htm
+CompilerAssign='PsyQ Assembler','.s'
+CompilerAssign='Microsoft C(NT-i386)','.c'
+CompilerAssign='Microsoft C(NT-i386)','.h'
+CompilerNewExt=.pas
+CompilerNewExt=.ini
+CompilerNewExt=.html
+CompilerAssign='Microsoft C(NT-i386)','.cpp'
+CompilerAssign='Microsoft C(NT-i386)','.cxx'
+CompilerAssign='Microsoft C(NT-i386)','.hpp'
+CompilerNewExt=.txt
+CompilerNewExt=.java
+TagSetCmd='${HOME}${WTAGS} -oc -d -t${TAGFILE}.tag -p${TAGFILE}.ptg',0x8000060
+BrowseSetFile='C:\psx\sk2\Skate2.ptg'
+TagSetFile='C:\psx\sk2\Skate2.tag'
+CompilerAddCmdEx='PsyQ Assembler','${FTEE} kmake tricks.bin',1073742034,'${FTEE} kmake tricks.bin',1073742034,'',144,'',144,'',144,'',144,'',0,'',0,'','','','',''
+CompilerAddResponse='PsyQ Assembler',
+CompilerAddCmdEx='Sun Java','${FTEE} javac -O %r%e',1073741936,'${FTEE} javac -g %r%e',1073741936,'',144,'',144,'',144,'',144,'',0,'',0,'_JAVAErrorInfo','','','',''
+CompilerAddResponse='Sun Java',
+CompilerAddCmdEx='$_cw_proj_hash_$','',1073741824,'',0,'${FTEE} kmake asmnorun',176,'${FTEE} nmake',0,'${FTEE} nmake',176,'${FTEE} nmake',0,'',0,'',0,'_ErrorInfoDefault','','','proj.err','%x'
+CompilerAddResponse='$_cw_proj_hash_$',
+CompilerAddCmdEx='Microsoft C(NT-i386)','${FTEE} cl -DSTRICT -c -W3 -G3 -D_X86_=1 -DWIN32 %r%e',1073741936,'${FTEE} cl -DSTRICT -c -W3 -G3 -D_X86_=1 -DWIN32 %r%e',112,'',144,'',0,'',144,'',0,'',0,'',0,'_MicrosoftErrorInfo','','','',''
+CompilerAddResponse='Microsoft C(NT-i386)',
+
+[Files]
+.\panel.cpp
+.\exp.h
+.\ShellUtils.cpp
+.\cheat.h
+.\m3ddefs.s
+.\panel.h
+.\script.s
+.\mips.h
+.\camera.h
+.\video.h
+.\gamefmv.h
+.\fn.h
+.\sk.prj
+.\hires.cpp
+.\baddy.h
+.\mech.cpp
+.\PlayerSelect1.cpp
+.\MESS.CPP
+.\test2.s
+.\bmr.cpp
+.\LoadingScreen.h
+.\Image.cpp
+.\hcull.h
+.\symbols.s
+.\smoke.h
+.\car.h
+.\tapes.cpp
+.\pack.h
+.\trickob.cpp
+.\Spooler.cpp
+.\hires.h
+.\tint.h
+.\LoadingScreen.cpp
+.\pad.cpp
+.\LevelSelect.cpp
+.\m3delips.h
+.\types.h
+.\shell.cpp
+.\bit.h
+.\eqp2_4.s
+.\bit.cpp
+.\m3dmaths.h
+.\debug.h
+.\icons.h
+.\rail.cpp
+.\init.cpp
+.\front.cpp
+.\cd.s
+.\gaptrickh.h
+.\uncompr.cpp
+.\address.s
+.\post.cpp
+.\FontTools.h
+.\powerup.h
+.\TitleScreen.h
+.\eqp1_11.s
+.\front.h
+.\eqp2_5.s
+.\tweak.dat
+.\bmr.h
+.\competition.h
+.\mips.s
+.\trickob.h
+.\flash.h
+.\eqp2_9.s
+.\m3d.cpp
+.\card.cpp
+.\light.h
+.\PlayerSelect.h
+.\fileio.h
+.\MainScreen.cpp
+.\tint.cpp
+.\FrontEnd.h
+.\career.h
+.\music.txt
+.\eqp1_10.s
+.\eqp1_6.s
+.\font.cpp
+.\TESTVAR.CPP
+.\video.cpp
+.\timeouts.h
+.\bit2.cpp
+.\m3dasm.inc
+.\proctex.h
+.\init.h
+.\spool.h
+.\db.cpp
+.\db.h
+.\physics.h
+.\m3dcolij.h
+.\ob.h
+.\eqp1_2.s
+.\m3d.h
+.\screen.cpp
+.\eqp1_8.s
+.\m3dutils.cpp
+.\Menu.h
+.\eqp2_6.s
+.\SHATTER.CPP
+.\CARD.H
+.\redbook.cpp
+.\Menu.cpp
+.\Equipment.h
+.\m3dgpu.inc
+.\crowd.h
+.\profile.cpp
+.\spool.cpp
+.\mem.h
+.\camera.cpp
+.\backgrnd.cpp
+.\tweak.h
+.\main.cpp
+.\proctex.cpp
+.\sfx.cpp
+.\gamefmv.cpp
+.\fileio.cpp
+.\end.cpp
+.\platform.cpp
+.\quat.cpp
+.\eqp1_7.s
+.\exp.cpp
+.\spidey.h
+.\vector.h
+.\Spooler.h
+.\career.cpp
+.\ob.cpp
+.\eqp2_8.s
+.\MESS.H
+.\LevelSelect.h
+.\controls.h
+.\m3dzone.cpp
+.\camtweak.h
+.\gaptricks.h
+.\vram.h
+.\flash.cpp
+.\post.h
+.\eqp2_7.s
+.\stats.h
+.\powerup.cpp
+.\pal.h
+.\sqrttab.cpp
+.\Credits.h
+.\PlayerSelect2.cpp
+.\tricktips.cpp
+.\m3dinit.cpp
+.\rfront.cpp
+.\rfront.lnk
+.\debug.cpp
+.\profile.h
+.\FrontEnd.cpp
+.\quat.h
+.\localtxt.cpp
+.\SMOKE.CPP
+.\utils.cpp
+.\eqp1_5.s
+.\vram.cpp
+.\VLC_BIT.H
+.\eqp1_1.s
+.\rail.h
+.\medals.h
+.\hcull.cpp
+.\textwin.cpp
+.\pack.cpp
+.\main.h
+.\TitleScreen.cpp
+.\decomp.h
+.\vlc_bit.asm
+.\m3dasm.h
+.\m3dgte.h
+.\eqp1_3.s
+.\m3dutils.h
+.\campt.h
+.\redbook.h
+.\Image.h
+.\tricktips.h
+.\MiscTools.h
+.\bit2.h
+.\m3dzone.h
+.\checksum.h
+.\trig.h
+.\mem.cpp
+.\reloc.h
+.\backgrnd.h
+.\screen.h
+.\eqp2_10.s
+.\prefs.dat
+.\eqp1_9.s
+.\test.s
+.\mech.h
+.\tapes.h
+.\car.cpp
+.\eqp2_1.s
+.\eqp1_4.s
+.\ShellUtils.h
+.\pad.h
+.\pal.cpp
+.\bits.h
+.\platform.h
+.\Equipment1.cpp
+.\SHATTER.H
+.\eqp2_2.s
+.\shell.h
+.\stats.cpp
+.\m3dasm.s
+.\crowd.cpp
+.\Equipment2.cpp
+.\localtxt.h
+.\credits.txt
+.\rgb.h
+.\fn.cpp
+.\m3dmaths.s
+.\physics.cpp
+.\medals.cpp
+.\FontTools.cpp
+.\MainScreen.h
+.\test3.s
+.\trig.cpp
+.\MiscTools.cpp
+.\sfx.h
+.\light.cpp
+.\m3dcolij.cpp
+.\baddy.cpp
+.\globals.h
+.\eqp2_3.s
+.\sizes.s
+.\vector.cpp
+.\textwin.h
+.\m3delips.cpp
+.\m3dinit.h
+.\campt.cpp
+.\utils.h
+.\eqp2_11.s
+.\decomp.cpp
+.\frontrgb.h
+.\competition.cpp
+.\Credits.cpp
+.\font.h
+.\m3dface.h
+
+[Tools]
+ToolDeleteList 
+ToolAddCmd='$_custom_tool_$_1','API Database Editor',1342177312,'cwtedit.exe',0,'',0,'',0,'',0,'',0,'','','','',''
+ToolAddCmd='$_custom_tool_$_2','Paint',1342177312,'pbrush.exe',0,'',0,'',0,'',0,'',0,'','','','',''
+
+[VersionControl:SourceSafe]
+VCSSetCmd=VCS_CHECKIN_ID,'ss UPDATE -I- -C@%Q -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKINLOCK_ID,'ss UPDATE -I- -C@%Q -K -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKOUT_ID,'ss GET -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKOUTLOCK_ID,'ss CHECKOUT -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKLOCK_ID,'ss CHECKOUT -I- -G- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKUNLOCK_ID,'ss UNCHECKOUT -I- -G- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKLABEL_ID,'ss LABEL -I- -L"${VCSLABEL}" -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKLOG_ID,'ss HISTORY -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKPROP_ID,'ss PROPERTIES -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKDIFF_ID,'ss DIFF -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_CHECKMENU_ID,'ssexp',0x8000000
+VCSSetCmd=VCS_ADD_ID,'ss ADD -I- -Y${USER} %r%e',0x8000040
+VCSSetCmd=VCS_REMOVE_ID,'ss DELETE -I- -Y${USER} %r%e',0x8000040
+
+[Project]
+ConfigSetLinkDBFilename='C:\CW32\cwright.ldb'
+ConfigSetMarkDBFilename='C:\CW32\cwright.mrk'
+ConfigSetSymbolDBFilename='C:\psx\sk2\Skate2.sbl'
+EditSetPath=''
+
+[VersionControl:PVCS]
+VCSSetCmd=VCS_CHECKIN_ID,'put -n -T@%Q -M@%Q %b%e',0x8000040
+VCSSetCmd=VCS_CHECKINLOCK_ID,'put -n -T@%Q -M@%Q -l %b%e',0x8000040
+VCSSetCmd=VCS_CHECKOUT_ID,'get -y %b%e',0x8000040
+VCSSetCmd=VCS_CHECKOUTLOCK_ID,'get -y -l %b%e',0x8000040
+VCSSetCmd=VCS_CHECKLOCK_ID,'vcs -y -l %b%e',0x8000040
+VCSSetCmd=VCS_CHECKUNLOCK_ID,'vcs -y -u %b%e',0x8000040
+VCSSetCmd=VCS_CHECKLABEL_ID,'vcs -y -v"${VCSLABEL}" %b%e',0x8000040
+VCSSetCmd=VCS_CHECKLOG_ID,'vlog %b%e',0x8000040
+VCSSetCmd=VCS_CHECKPROP_ID,'vlog -b %b%e',0x8000040
+VCSSetCmd=VCS_CHECKDIFF_ID,'vdiff -r %b%e',0x8000040
+VCSSetCmd=VCS_CHECKMENU_ID,'pvcsvmwn',0x8000000
+VCSSetCmd=VCS_ADD_ID,'vcs -i -t@%Q %b%e',0x8000040
+VCSSetCmd=VCS_REMOVE_ID,'del /f %b%{??v|___}e',0x8000040

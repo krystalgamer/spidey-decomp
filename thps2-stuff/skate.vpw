@@ -1,0 +1,24 @@
+[CurrentProject]
+curproj=zutil.h C:\psx\sk2\baddy.h C:\psx\sk2\bit.h C:\psx\sk2\bit2.h C:\psx\sk2\bits.h C:\psx\sk2\bmr.h C:\psx\sk2\camera.h C:\psx\sk2\campt.h C:\psx\sk2\camtweak.h C:\psx\sk2\car.h C:\psx\sk2\CA
+[ProjectDates]
+vram.cpp C:\psx\sk2\baddy.cpp C:\psx\sk2\bit.cpp C:\psx\sk2\bit2.cpp C:\psx\sk2\bmr.cpp C:\psx\sk2\camera.cpp C:\psx\sk2\campt.cpp C:\psx\sk2\car.cpp C:\psx\sk2\card.cpp C:\psx\sk2\career.cpp C:\psx\sk2\competition.cpp C:\psx\sk2\create.cpp C:\=
+zutil.h C:\psx\sk2\baddy.h C:\psx\sk2\bit.h C:\psx\sk2\bit2.h C:\psx\sk2\bits.h C:\psx\sk2\bmr.h C:\psx\sk2\camera.h C:\psx\sk2\campt.h C:\psx\sk2\camtweak.h C:\psx\sk2\car.h C:\psx\sk2\CARD.H C:\psx\sk2\career.h C:\psx\sk2\cheat.h C:\psx\sk2\c=
+zutil.h C:\psx\sk2\baddy.h C:\psx\sk2\bit.h C:\psx\sk2\bit2.h C:\psx\sk2\bits.h C:\psx\sk2\bmr.h C:\psx\sk2\camera.h C:\psx\sk2\campt.h C:\psx\sk2\camtweak.h C:\psx\sk2\car.h C:\psx\sk2\CARD.H C:\psx\sk=
+zutil.h C:\psx\sk2\baddy.h C:\psx\sk2\bit.h C:\psx\sk2\bit2.h C:\psx\sk2\bits.h C:\psx\sk2\bmr.h C:\psx\sk2\camera.h C:\psx\sk2\campt.h C:\psx\sk2\camtweak.h C:\psx\sk2\car.h C:\psx\sk2\CA=
+[State]
+SCREEN: 1920 1080 0 3 950 1144 0 0 M 0 0 0 0 1306 643
+CWD: C:\Users\krystal\Documents\spidey-decomp\spidey-decomp\thps2-stuff
+FILEHIST: 9
+c:\dummy\DOSUtilsSource\makelib.cpp
+c:\dummy\DOSUtilsSource\makemake.cpp
+c:\dummy\DOSUtilsSource\makestr.cpp
+c:\dummy\DOSUtilsSource\mapclass.cpp
+c:\dummy\DOSUtilsSource\mapsort.cpp
+c:\dummy\DOSUtilsSource\merge.cpp
+c:\dummy\DOSUtilsSource\rle.cpp
+c:\dummy\DOSUtilsSource\skcheck.cpp
+C:\psx\sk2\main.cpp
+[ProjectFiles]
+\psx\sk2\vram.cpp C:\psx\sk2\baddy.cpp C:\psx\sk2\bit.cpp C:\psx\sk2\bit2.cpp C:\psx\sk2\bmr.cpp C:\psx\sk2\camera.cpp C:\psx\sk2\campt.cpp C:\psx\sk2\car.cpp C:\psx\sk2\card.cpp C:\psx\sk2\career.cpp C:\psx\sk2\competition.cpp C:\psx\sk2\create.cpp C:\
+[TreeExpansion]
+"\psx\sk2\vram.cpp C:\psx\sk2\baddy.cpp C:\psx\sk2\bit.cpp C:\psx\sk2\bit2.cpp C:\psx\sk2\bmr.cpp C:\psx\sk2\camera.cpp C:\psx\sk2\campt.cpp C:\psx\sk2\car.cpp C:\psx\sk2\card.cpp C:\psx\sk2\career.cpp C:\psx\sk2\competition.cpp C:\psx\sk2\create.cpp C:\" 0

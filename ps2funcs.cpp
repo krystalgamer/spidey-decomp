@@ -45,7 +45,7 @@ void MTC2(i32*, GTREGType)
 }
 
 // @Bogus
-INLINE void setPolyGT4(void)
+void setPolyGT4(void)
 {
 	if (!gPrintStubbed)
 		stubbed_printf("stubbed out: setPolyGT4");

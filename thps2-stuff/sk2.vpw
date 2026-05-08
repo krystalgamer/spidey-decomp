@@ -1,0 +1,21 @@
+[CurrentProject]
+curproj=sk2.vpj
+[ProjectDates]
+sk2.vpj=20260110193438000
+[ProjectFiles]
+sk2.vpj
+[State]
+SCREEN: 1920 1080 3 1 1053 1146 0 0 M 0 0 0 0 1306 643
+CWD: C:\Users\krystal\Documents\spidey-decomp\spidey-decomp\thps2-stuff
+FILEHIST: 9
+C:\psx\sk2\main.cpp
+C:\psx\sk2\front.cpp
+C:\psx\sk2\LoadingScreen.cpp
+C:\psx\sk2\EditorPieces.cpp
+C:\psx\sk2\symbols.h
+C:\psx\sk2\EditorPieces2.cpp
+C:\psx\sk2\edmod.cpp
+C:\psx\sk2\editorpieces.h
+C:\psx\sk2\sked1.psh
+[TreeExpansion]
+sk2.vpj 0

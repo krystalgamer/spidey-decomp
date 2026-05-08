@@ -68,8 +68,9 @@ u32* get_thunk_address(void* first,...);
 #define PATCH_PUSH_RET(addr, dest)
 #define PATCH_PUSH_RET_POLY(addr, dest, func_mangled)
 #define NOP_MEMORY(addr, num)
-#define PATCH_CALL_ADDR(addr, dest)
+#define PATCH_CALL_ADDR_VTABLE(addr, dest)
 #define PATCH_CALL_ADDR_POLY(addr, poly)
+#define PATCH_CALL(addr, x)
 
 #endif
 

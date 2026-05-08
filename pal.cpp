@@ -21,7 +21,7 @@ EXPORT u8 Free256Slots[MAXFREE256SLOTS];
 
 // @Ok
 // @Matching
-INLINE void Free16Slot(u16 a1)
+void Free16Slot(u16 a1)
 {
 	i32 i;
 	for (i = 0; i < MAXFREE16SLOTS; i++)

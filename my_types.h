@@ -44,7 +44,7 @@ typedef double f64;
 #ifdef _WIN32
 #define INLINE __inline
 #else
-#define INLINE
+#define INLINE inline
 #endif
 
 #ifndef _OLD_WINDOWS

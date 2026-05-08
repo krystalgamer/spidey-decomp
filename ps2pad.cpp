@@ -38,10 +38,12 @@ void Pad_ActuatorOff(u8 a1, u8)
 // @Matching
 INLINE void Pad_SetDigitalMapping(SControl *pControl, i32 a2, i32 a3, i32 a4, i32 a5)
 {
+	/*
 	pControl->field_140 = a2;
 	pControl->field_144 = a3;
 	pControl->field_148 = a4;
 	pControl->field_14C = a5;
+	*/
 }
 
 // @Ok
@@ -206,10 +208,12 @@ INLINE void Pad_Clear(SControl *pControl)
 		pButton[i].field_2 = 0;
 	}
 
+	/*
 	gSControl[0].field_168 = 0;
 	gSControl[0].field_169 = 0;
 	gSControl[0].field_16A = 0;
 	gSControl[0].field_16B = 0;
+	*/
 }
 
 // @Ok
@@ -228,11 +232,13 @@ INLINE void Pad_ClearAllOne(i32 a1)
 {
 	Pad_Clear(&gSControl[a1]);
 
+	/*
 	gSControl[a1].field_170 = 0;
 	gSControl[a1].field_16B = 0;
 	gSControl[a1].field_16A = 0;
 	gSControl[a1].field_169 = 0;
 	gSControl[a1].field_168 = 0;
+	*/
 }
 
 // @Ok
@@ -316,6 +322,7 @@ INLINE void Pad_SetAnalogueMapping(
 		i32 a8,
 		i32 a9)
 {
+	/*
 	pControl->field_160 = a2;
 	pControl->field_161 = a3;
 	pControl->field_162 = a4;
@@ -325,6 +332,7 @@ INLINE void Pad_SetAnalogueMapping(
 	pControl->field_154 = a7;
 	pControl->field_158 = a8;
 	pControl->field_15C = a9;
+	*/
 }
 
 void validate_SControl(void)
@@ -358,33 +366,26 @@ void validate_SControl(void)
 	VALIDATE(SControl, SmartBomb, 0x120);
 	VALIDATE(SControl, SelectWeapon, 0x130);
 
-	VALIDATE(SControl, field_140, 0x140);
-	VALIDATE(SControl, field_144, 0x144);
-	VALIDATE(SControl, field_148, 0x148);
+	VALIDATE(SControl, AnaloguePotMapping, 0x140);
 
-	VALIDATE(SControl, field_140, 0x140);
-	VALIDATE(SControl, field_144, 0x144);
-	VALIDATE(SControl, field_148, 0x148);
-	VALIDATE(SControl, field_14C, 0x14C);
+	VALIDATE(SControl, RawAnalogueMoveForwardsBackwards, 0x144);
+	VALIDATE(SControl, RawAnalogueMoveLeftRight, 0x145);
+	VALIDATE(SControl, RawAnalogueAimForwardsBackwards, 0x146);
+	VALIDATE(SControl, RawAnalogueAimLeftRight, 0x147);
 
-	VALIDATE(SControl, field_150, 0x150);
-	VALIDATE(SControl, field_154, 0x154);
-	VALIDATE(SControl, field_158, 0x158);
-	VALIDATE(SControl, field_15C, 0x15C);
+	VALIDATE(SControl, AnalogueMoveForwardsBackwards, 0x148);
+	VALIDATE(SControl, AnalogueMoveLeftRight, 0x149);
+	VALIDATE(SControl, AnalogueAimForwardsBackwards, 0x14A);
+	VALIDATE(SControl, AnalogueAimLeftRight, 0x14B);
 
-	VALIDATE(SControl, field_160, 0x160);
-	VALIDATE(SControl, field_161, 0x161);
-	VALIDATE(SControl, field_162, 0x162);
-	VALIDATE(SControl, field_163, 0x163);
+	VALIDATE(SControl, Type, 0x14C);
+	VALIDATE(SControl, ResetCounter, 0x150);
 
-	VALIDATE(SControl, field_168, 0x168);
-	VALIDATE(SControl, field_169, 0x169);
-	VALIDATE(SControl, field_16A, 0x16A);
-	VALIDATE(SControl, field_16B, 0x16B);
+	VALIDATE(SControl, Motor0, 0x154);
+	VALIDATE(SControl, Motor1, 0x155);
+	VALIDATE(SControl, Lock, 0x156);
 
-	VALIDATE(SControl, field_16C, 0x16C);
-
-	VALIDATE(SControl, field_170, 0x170);
+	VALIDATE(SControl, AlignCalled, 0x157);
 
 	VALIDATE(SControl, Motor0Timer, 0x178);
 	VALIDATE(SControl, Motor1Timer, 0x17A);

@@ -27,7 +27,8 @@ i32 Pad_Update(void)
 
 	for (i32 i = 0; i < NUM_CONTROLLERS; i++)
 	{
-		gSControl[i].field_16C = 65;
+		// @FIXME
+		// gSControl[i].field_16C = 65;
 		Pad_Button(&gSControl[i].Triangle, v3 & 0x80);
 		Pad_Button(&gSControl[i].Square, v3 & 0x40);
 		Pad_Button(&gSControl[i].Circle, v3 & 0x20);

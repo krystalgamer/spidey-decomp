@@ -635,7 +635,7 @@ i32 DXINPUT_StartForceFeedbackEffect(void)
 
 // @Ok
 // @Matching
-INLINE i32 DXINPUT_StopForceFeedbackEffect(void)
+i32 DXINPUT_StopForceFeedbackEffect(void)
 {
 #ifdef _WIN32
 	if (gDxInputRelated && gControllerRelated && gForceFeedbackRelated)
@@ -736,7 +736,7 @@ void DXPOLY_DrawPoly(
 }
 
 // @Ok
-INLINE void DXPOLY_EnableTexAlpha(bool a1)
+void DXPOLY_EnableTexAlpha(bool a1)
 {
 #ifdef _WIN32
 	if (a1 != gTexAlpha)
@@ -1081,7 +1081,7 @@ void DXPOLY_SetDepthCompare(u32 a1)
 
 // @Ok
 // @Matching
-INLINE void DXPOLY_SetDepthWriting(bool a1)
+void DXPOLY_SetDepthWriting(bool a1)
 {
 #ifdef _WIN32
 	if (gDxPolyRelated && a1 != gDepthWriting)
@@ -1100,7 +1100,7 @@ INLINE void DXPOLY_SetDepthWriting(bool a1)
 
 // @Ok
 // @Matching
-INLINE void DXPOLY_SetFilterMode(u32 filterIndex)
+void DXPOLY_SetFilterMode(u32 filterIndex)
 {
 #ifdef _WIN32
 	if (filterIndex != gCurrentFilterIndex)
@@ -1136,7 +1136,7 @@ void DXPOLY_SetOutlineColor(u32 a1)
 
 // @Ok
 // @Matching
-INLINE void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
+void DXPOLY_SetTexture(LPDIRECTDRAWSURFACE7 a1)
 {
 #ifdef _WIN32
 	if (a1 != gDDSurface7)
@@ -1429,7 +1429,7 @@ void loadWAV(char *,tWAVEFORMATEX *,long *)
 }
 
 // @Ok
-INLINE void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
+void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
 {
 #ifdef _WIN32
 	if (addressU != gAddressU)
@@ -1448,7 +1448,7 @@ INLINE void DXPOLY_SetAddressUAndV(DWORD addressU, DWORD addressV)
 
 // @NotOk
 // Missing low graphics
-INLINE void renderScene(void)
+void renderScene(void)
 {
 #ifdef _WIN32
 	if (gLowGraphics)

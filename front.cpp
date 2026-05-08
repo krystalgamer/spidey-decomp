@@ -217,7 +217,7 @@ INLINE void PrintPaused(void)
 
 // @NotOk
 // Globals
-INLINE void Front_GaugeOff(void)
+void Front_GaugeOff(void)
 {
 	gFrontGauge = 0;
 }

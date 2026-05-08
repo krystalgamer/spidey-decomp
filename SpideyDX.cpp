@@ -214,7 +214,7 @@ LRESULT CALLBACK SpideyWndProc(
 
 // @Ok
 // @Matching
-INLINE i32 WinYield(void)
+i32 WinYield(void)
 {
 #ifdef _WIN32
 	MSG msg;

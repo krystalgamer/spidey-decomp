@@ -88,7 +88,7 @@ INLINE CItem::CItem()
 
 // @Ok
 // @Matching
-INLINE CItem::~CItem()
+CItem::~CItem()
 {
 }
 
