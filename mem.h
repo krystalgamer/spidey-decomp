@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef MEM_H
+#define MEM_H
+
 #include "export.h"
 
 EXPORT extern u32 HeapDefs[2][2];
@@ -9,7 +12,7 @@ EXPORT extern i32 LowMemory;
 struct SHandle
 {
 	void* pWhatever;
-	i32 field_4;
+	u32 Id;
 };
 
 struct SNewBlockHeader {
@@ -39,3 +42,5 @@ EXPORT void *Mem_RecoverPointer(SHandle*);
 
 void validate_SBlockHeader(void);
 void validate_SHandle(void);
+
+#endif

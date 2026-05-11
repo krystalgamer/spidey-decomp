@@ -411,7 +411,7 @@ SHandle Mem_MakeHandle(void* a1)
 				if (pBlock->Size  >= 0x4 && pBlock->Size <= 0x200000)
 				{
 					SHandle result;
-					result.field_4 = pBlock->UniqueIdentifier;
+					result.Id = pBlock->UniqueIdentifier;
 					result.pWhatever = a1;
 					return result;
 				}
@@ -440,7 +440,7 @@ void *Mem_RecoverPointer(SHandle *a1)
 		v2 = *((char *)result - 1);
 		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
 		if ( v2 > ' ' || (v3 & 3) ||
-				(reinterpret_cast<SNewBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->field_4 )
+				(reinterpret_cast<SNewBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->Id )
 		{
 			a1->pWhatever = 0;
 			return 0;
@@ -456,7 +456,7 @@ void validate_SHandle(void){
 	VALIDATE_SIZE(SHandle, 8);
 
 	VALIDATE(SHandle, pWhatever, 0x0);
-	VALIDATE(SHandle, field_4, 0x4);
+	VALIDATE(SHandle, Id, 0x4);
 }
 
 void validate_SBlockHeader(void){

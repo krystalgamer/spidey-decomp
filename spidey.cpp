@@ -796,7 +796,7 @@ u8 CPlayer::IsInIndicatorList(SHandle &a2)
 {
 	for (i32 i = 0; i < 6; i++)
 	{
-		if (this->field_5F0[i].field_C.pWhatever && this->field_5F0[i].field_C.field_4 == a2.field_4)
+		if (this->field_5F0[i].field_C.pWhatever && this->field_5F0[i].field_C.Id == a2.Id)
 		{
 			return 1;
 		}
