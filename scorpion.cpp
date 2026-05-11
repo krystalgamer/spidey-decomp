@@ -189,7 +189,7 @@ void CScorpion::GetTrapped(void)
 		case 4:
 			if (this->field_128 >= 10)
 			{
-				if (this->field_104.field_0)
+				if (this->field_104.pWhatever)
 				{
 					CTrapWebEffect* pWeb = reinterpret_cast<CTrapWebEffect*>(
 							Mem_RecoverPointer(&this->field_104));
@@ -199,7 +199,7 @@ void CScorpion::GetTrapped(void)
 						pWeb->Burst();
 					}
 					
-					this->field_104.field_0 = 0;
+					this->field_104.pWhatever = 0;
 				}
 				this->field_31C.bothFlags = 12;
 				this->dumbAssPad++;
@@ -290,7 +290,7 @@ void CScorpion::DoIntroSequence(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						reinterpret_cast<CBody*>(this->hCurrentTarget.field_0),
+						reinterpret_cast<CBody*>(this->hCurrentTarget.pWhatever),
 						0,
 						2,
 						50,
@@ -365,7 +365,7 @@ void CScorpion::DetermineTarget(void)
 	}
 	else
 	{
-		if (!this->hCurrentTarget.field_0 || !Mem_RecoverPointer(&this->hCurrentTarget))
+		if (!this->hCurrentTarget.pWhatever || !Mem_RecoverPointer(&this->hCurrentTarget))
 		{
 			this->field_BF8 = 2;
 			this->hCurrentTarget = Mem_MakeHandle(MechList);

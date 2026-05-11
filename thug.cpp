@@ -725,7 +725,7 @@ void CThug::Acknowledge(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						reinterpret_cast<CBody*>(this->mHandleTwo.field_0),
+						reinterpret_cast<CBody*>(this->mHandleTwo.pWhatever),
 						0,
 						2,
 						70,
@@ -933,7 +933,7 @@ void CThug::GetReadyToShootHostage(CMessage *pMessage)
 		}
 		else
 		{
-			new CMessage(this, reinterpret_cast<CBaddy*>(pMessage->mHandle.field_0), 1, 0);
+			new CMessage(this, reinterpret_cast<CBaddy*>(pMessage->mHandle.pWhatever), 1, 0);
 		}
 
 		pMessage->field_10 |= 1;

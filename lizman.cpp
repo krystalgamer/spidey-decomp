@@ -138,7 +138,7 @@ void CLizMan::Acknowledge(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						reinterpret_cast<CBody*>(this->hLizHandle.field_0),
+						reinterpret_cast<CBody*>(this->hLizHandle.pWhatever),
 						0,
 						2,
 						70,

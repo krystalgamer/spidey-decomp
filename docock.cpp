@@ -265,7 +265,7 @@ void CDocOc::TakeHit(void)
 			if (pWeb)
 				pWeb->Burst();
 
-			this->field_104.field_0 = 0;
+			this->field_104.pWhatever = 0;
 
 			if (this->field_218 & 0x10)
 			{
@@ -344,7 +344,7 @@ void CDocOc::HangAndGetBeaten(void)
 				this->mCBodyFlags &= 0xFFEF;
 				this->mRMinor = 0;
 
-				if (this->field_104.field_0)
+				if (this->field_104.pWhatever)
 				{
 					CTrapWebEffect *pWeb = reinterpret_cast<CTrapWebEffect*>(
 							Mem_RecoverPointer(&this->field_104));
@@ -352,7 +352,7 @@ void CDocOc::HangAndGetBeaten(void)
 					if (pWeb)
 						pWeb->Burst();
 
-					this->field_104.field_0 = 0;
+					this->field_104.pWhatever = 0;
 				}
 
 				this->PlaySingleAnim(0x18, 0, -1);

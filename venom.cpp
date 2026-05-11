@@ -342,7 +342,7 @@ void INLINE CVenom::TugWeb(void)
 			if (this->field_218 & 0x200)
 			{
 				this->field_218 &= 0xFFFFFDFF;
-				if (this->field_10C.field_0)
+				if (this->field_10C.pWhatever)
 				{
 					CTrapWebEffect* pWeb = reinterpret_cast<CTrapWebEffect*>(
 							Mem_RecoverPointer(&this->field_10C));
@@ -350,7 +350,7 @@ void INLINE CVenom::TugWeb(void)
 					if (pWeb)
 						pWeb->Burst();
 
-					this->field_10C.field_0 = 0;
+					this->field_10C.pWhatever = 0;
 				}
 
 				this->field_31C.bothFlags = 32;

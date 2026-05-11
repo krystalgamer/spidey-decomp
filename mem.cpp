@@ -388,7 +388,7 @@ void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
 SHandle Mem_MakeHandle(void* a1)
 {
 	SHandle tmp;
-	tmp.field_0 = 0;
+	tmp.pWhatever = 0;
 
 	if (a1)
 	{
@@ -412,7 +412,7 @@ SHandle Mem_MakeHandle(void* a1)
 				{
 					SHandle result;
 					result.field_4 = pBlock->UniqueIdentifier;
-					result.field_0 = a1;
+					result.pWhatever = a1;
 					return result;
 				}
 				print_if_false(0, "Tried to make handle out of invalid pointer\n bad size");
@@ -435,18 +435,18 @@ void *Mem_RecoverPointer(SHandle *a1)
 	void *result; // eax
 	int v2; // edx
 
-	if (a1->field_0)
+	if (a1->pWhatever)
 	{
 		v2 = *((char *)result - 1);
 		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
 		if ( v2 > ' ' || (v3 & 3) ||
 				(reinterpret_cast<SNewBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->field_4 )
 		{
-			a1->field_0 = 0;
+			a1->pWhatever = 0;
 			return 0;
 		}
 		
-		return a1->field_0;
+		return a1->pWhatever;
 	}
 
 	return 0;
@@ -455,7 +455,7 @@ void *Mem_RecoverPointer(SHandle *a1)
 void validate_SHandle(void){
 	VALIDATE_SIZE(SHandle, 8);
 
-	VALIDATE(SHandle, field_0, 0x0);
+	VALIDATE(SHandle, pWhatever, 0x0);
 	VALIDATE(SHandle, field_4, 0x4);
 }
 

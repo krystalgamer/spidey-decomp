@@ -91,7 +91,7 @@ void CCop::Acknowledge(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						reinterpret_cast<CBody*>(this->field_34C.field_0),
+						reinterpret_cast<CBody*>(this->field_34C.pWhatever),
 						0,
 						2,
 						70,

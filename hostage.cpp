@@ -149,7 +149,7 @@ void CHostage::BegMotherfucker(void)
 			{
 				new CAIProc_LookAt(
 						this,
-						reinterpret_cast<CBody*>(this->field_32C.field_0),
+						reinterpret_cast<CBody*>(this->field_32C.pWhatever),
 						0,
 						0,
 						80,

@@ -180,7 +180,7 @@ int CJonah::LinkedHidingPlaceStillExists(i32 a2)
 	SLinkInfo infos[4];
 
 	i32 v3 = this->field_1F4;
-	this->field_364.field_0 = 0;
+	this->field_364.pWhatever = 0;
 
 	if (a2)
 	{
@@ -301,8 +301,8 @@ INLINE CBaddy* CJonah::FindScorp(void)
 		return 0;
 	}
 
-	DoAssert(reinterpret_cast<CBaddy*>(this->field_35C.field_0)->mType == 310, "What the fuck? Scorp ptr isn't scorp.");
-	return reinterpret_cast<CBaddy*>(this->field_35C.field_0);
+	DoAssert(reinterpret_cast<CBaddy*>(this->field_35C.pWhatever)->mType == 310, "What the fuck? Scorp ptr isn't scorp.");
+	return reinterpret_cast<CBaddy*>(this->field_35C.pWhatever);
 }
 
 // @Ok

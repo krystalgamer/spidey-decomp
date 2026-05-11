@@ -1284,7 +1284,7 @@ void CCarnage::TakeHit(void)
 			if (v4)
 				v4->Burst();
 
-			this->field_104.field_0 = 0;
+			this->field_104.pWhatever = 0;
 
 			if (this->field_218 & 0x40)
 			{
@@ -1477,12 +1477,12 @@ void CCarnage::TugWebTrapped(void)
 			if (v4 > 60)
 			{
 				this->RunAnim(0xBu, 0, -1);
-				if (this->field_10C.field_0)
+				if (this->field_10C.pWhatever)
 				{
 					CTrapWebEffect *v5 = static_cast<CTrapWebEffect*>(Mem_RecoverPointer(&this->field_10C));
 					if (v5)
 						v5->Burst();
-					this->field_10C.field_0 = 0;
+					this->field_10C.pWhatever = 0;
 				}
 				this->dumbAssPad++;
 			}
@@ -1494,13 +1494,13 @@ void CCarnage::TugWebTrapped(void)
 				if (this->field_218 & 0x80u)
 				{
 					this->field_218 &= 0xFFFFFF7F;
-					if (this->field_10C.field_0)
+					if (this->field_10C.pWhatever)
 					{
 						CTrapWebEffect *v7 = static_cast<CTrapWebEffect *>(
 								Mem_RecoverPointer(&this->field_10C));
 						if (v7)
 							v7->Burst();
-						this->field_10C.field_0 = 0;
+						this->field_10C.pWhatever = 0;
 					}
 
 					this->field_31C.bothFlags = 2;
