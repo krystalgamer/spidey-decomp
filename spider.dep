@@ -1144,6 +1144,7 @@
 	".\my_assert.h"\
 	".\my_bink.h"\
 	".\my_dx.h"\
+	".\my_patch.h"\
 	".\my_types.h"\
 	".\mysterio.h"\
 	".\non_win32.h"\
@@ -1225,8 +1226,10 @@
 	
 
 .\mem.cpp : \
+	".\directx\include\basetsd.h"\
 	".\export.h"\
 	".\mem.h"\
+	".\my_patch.h"\
 	".\my_types.h"\
 	".\validate.h"\
 	
@@ -1702,11 +1705,13 @@
 
 .\ps2funcs.cpp : \
 	".\bit.h"\
+	".\directx\include\basetsd.h"\
 	".\export.h"\
 	".\friction.h"\
 	".\m3dcolij.h"\
 	".\main.h"\
 	".\mem.h"\
+	".\my_patch.h"\
 	".\my_types.h"\
 	".\ob.h"\
 	".\pal.h"\
@@ -2479,12 +2484,14 @@
 .\utils.cpp : \
 	".\baddy.h"\
 	".\bit.h"\
+	".\directx\include\basetsd.h"\
 	".\export.h"\
 	".\friction.h"\
 	".\m3dcolij.h"\
 	".\m3dzone.h"\
 	".\main.h"\
 	".\mem.h"\
+	".\my_patch.h"\
 	".\my_types.h"\
 	".\ob.h"\
 	".\pal.h"\
