@@ -247,38 +247,33 @@ void Mem_Shrink(void* p, size_t newsize)
 }
 
 // @Ok
-// Slightly different register allocation
-void Mem_Copy(void* dst, void* src, int size)
+// @Matching
+// @Leak
+void Mem_Copy(void* dest, void* source, i32 bytes)
 {
-	print_if_false(((int)dst & 3) == 0, "Not long-aligned");
-	print_if_false(((int)src & 3) == 0, "Not long-aligned");
+	print_if_false(((i32)dest & 3) == 0, "Not long-aligned");
+	print_if_false(((i32)source & 3) == 0, "Not long-aligned");
 
-	int *dstF = reinterpret_cast<int*>(dst);
-	int *srcF = reinterpret_cast<int*>(src);
+	// copy 32 bits at a time, then 8 bits at a time
+	i32 num32 = bytes >> 2;
+	i32 num8 = bytes & 3;
 
-	int numFours = size >> 2;
-	int lastBytes = size & 3;
-	if (numFours > 0)
+	u32 *s1 = (u32 *) source;
+	u32 *d1 = (u32 *) dest;
+
+	while (num32 > 0)
 	{
-		while(numFours)
-		{
-			*dstF++ = *srcF++;
-			numFours--;
-		}
+		*(d1++) = *(s1++);
+		num32--;
 	}
 
-	unsigned char *dstS = reinterpret_cast<unsigned char*>(dstF);
-	unsigned char *srcS = reinterpret_cast<unsigned char*>(srcF);
+	u8 *s2 = (u8 *) s1;
+	u8 *d2 = (u8 *) d1;
 
-	if (lastBytes > 0)
+	while (num8 > 0)
 	{
-		while(lastBytes)
-		{
-			*dstS = *srcS;
-			dstS++;
-			srcS++;
-			lastBytes--;
-		}
+		*(d2++) = *(s2++);
+		num8--;
 	}
 }
 
@@ -495,4 +490,6 @@ void patch_mem(void)
 {
 	PATCH_PUSH_RET(0x00458050, Mem_ShrinkX);
 	PATCH_PUSH_RET(0x004582A0, Mem_Shrink);
+
+	PATCH_PUSH_RET(0x00458130, Mem_Copy);
 }
