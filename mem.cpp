@@ -3,14 +3,19 @@
 #include <cstring>
 #include "validate.h"
 
+#define FALSE 0
+#define TRUE 1
 
 EXPORT i32 Used[2];
 u32 HeapDefs[2][2];
 i32 LowMemory;
 EXPORT u32 CriticalBigHeapUsage;
-EXPORT SNewBlockHeader *FirstFreeBlock[2];
+EXPORT SBlockHeader *FirstFreeBlock[2];
 
 EXPORT i32 dword_54D55C = 1;
+
+// Proper definition is diff between debug def of SBlockHeader and SDebugBlockHeader
+#define MEMDIFF 32
 
 // @Ok
 // @Matching
@@ -22,10 +27,10 @@ void Mem_AlignedDelete(void *p)
 // @Ok
 // @CM: Different register allocation
 // but code matches perfect :D
-void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
+void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 {
-	SNewBlockHeader* pAfter = FirstFreeBlock[Heap];
-	SNewBlockHeader* pBefore = 0;
+	SBlockHeader* pAfter = FirstFreeBlock[Heap];
+	SBlockHeader* pBefore = 0;
 
 	while (reinterpret_cast<u32>(pAfter) < reinterpret_cast<u32>(pNewFreeBlock))
 	{
@@ -38,9 +43,9 @@ void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
 
 	if (pBefore)
 	{
-		if ( (SNewBlockHeader *)((char *)&pBefore[1] + pBefore->Size) == pNewFreeBlock )
+		if ( (SBlockHeader *)((char *)&pBefore[1] + pBefore->Size) == pNewFreeBlock )
 		{
-			if ( (SNewBlockHeader *)((char *)&pNewFreeBlock[1] + pNewFreeBlock->Size) == pAfter )
+			if ( (SBlockHeader *)((char *)&pNewFreeBlock[1] + pNewFreeBlock->Size) == pAfter )
 			{
 				pBefore->Next = pAfter->Next;
 				pBefore->Size = pBefore->Size + pNewFreeBlock->Size + pAfter->Size + 2*32;
@@ -91,7 +96,7 @@ void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
 		}
 	}
 
-	if ((SNewBlockHeader*)(reinterpret_cast<char*>(&pNewFreeBlock[1]) + pNewFreeBlock->Size) == pAfter)
+	if ((SBlockHeader*)(reinterpret_cast<char*>(&pNewFreeBlock[1]) + pNewFreeBlock->Size) == pAfter)
 	{
 		pNewFreeBlock->Next = pAfter->Next;
 		pNewFreeBlock->Size = pNewFreeBlock->Size + pAfter->Size + 32;
@@ -99,7 +104,7 @@ void AddToFreeList(SNewBlockHeader *pNewFreeBlock, int Heap)
 		if(dword_54D55C)
 		{
 			i32* dst = reinterpret_cast<i32*>(&pNewFreeBlock[1]);
-			for (i32 i = 0; i < (sizeof(SNewBlockHeader) >> 2); i++)
+			for (i32 i = 0; i < (sizeof(SBlockHeader) >> 2); i++)
 			{
 				dst[i] = 0x55555555;
 			}
@@ -126,7 +131,7 @@ void Mem_Init(void)
 	{
 		print_if_false(HeapDefs[Heap][0] + 32 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
 
-		SNewBlockHeader* pNewFreeBlock = reinterpret_cast<SNewBlockHeader*>(HeapDefs[Heap][0]);
+		SBlockHeader* pNewFreeBlock = reinterpret_cast<SBlockHeader*>(HeapDefs[Heap][0]);
 
 		i32 v4 = HeapDefs[Heap][1];
 		i32 HeapBottom = HeapDefs[Heap][0];
@@ -136,7 +141,7 @@ void Mem_Init(void)
 
 		pNewFreeBlock->Size = ((v4 - HeapBottom - 32));
 
-		AddToFreeList(reinterpret_cast<SNewBlockHeader*>(pNewFreeBlock), Heap);
+		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
 		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);
 	}
 
@@ -152,7 +157,7 @@ INLINE void Mem_DeleteX(void *p)
 {
 	print_if_false(p != 0, "NULL pointer sent to Mem_Delete");
 
-	SNewBlockHeader* v4 = (SNewBlockHeader*)(reinterpret_cast<i32>(p) - 32);
+	SBlockHeader* v4 = (SBlockHeader*)(reinterpret_cast<i32>(p) - 32);
 	i32 Heap = v4->ParentHeap;
 
 	if (Heap < 0 || Heap >= 2)
@@ -164,7 +169,7 @@ INLINE void Mem_DeleteX(void *p)
 		i32 newUsed = 32 + v4->Size;
 		Used[Heap] -= newUsed;
 		AddToFreeList(
-				reinterpret_cast<SNewBlockHeader*>(v4),
+				reinterpret_cast<SBlockHeader*>(v4),
 				Heap);
 
 		if (Heap == 1)
@@ -188,47 +193,57 @@ void Mem_Delete(void* a1)
 
 // @Ok
 // @Matching
-void Mem_ShrinkX(void* a1, u32 newSize)
+// @Leak
+void Mem_ShrinkX(void* p, size_t newsize)
 {
-	SNewBlockHeader* pBlock = reinterpret_cast<SNewBlockHeader*>(
-			reinterpret_cast<char*>(a1) - 32);
-
-	u32 v2 = pBlock->Size;
+	SBlockHeader* pBlock = GETBLOCKHEADER(p);
 	i32 Heap = pBlock->ParentHeap;
-	print_if_false(newSize <= v2, "Illegal newsize %ld sent to Mem_Shrink", newSize);
-	print_if_false((newSize & 3) == 0, "newsize %ld not lword aligned", newSize);
 
-	print_if_false(Heap >= 0 && Heap < 2, "Corrupt block header, parent heap (%d) out of range", Heap);
+	print_if_false(newsize <= pBlock->Size, "Illegal newsize %ld sent to Mem_Shrink", newsize);
+	print_if_false((newsize & 3) == 0, "newsize %ld not lword aligned", newsize);
 
-	if ( newSize < (pBlock->Size - 32))
+	print_if_false(Heap >= 0 && Heap < MAXHEAPS,
+			"Corrupt block header, parent heap (%d) out of range", Heap);
+
+	if ( newsize < (pBlock->Size - sizeof(SBlockHeader)) )
 	{
-		SNewBlockHeader* pNewFreeBlock = reinterpret_cast<SNewBlockHeader*>(
-				reinterpret_cast<i32>(a1) + newSize);
+		SBlockHeader *pNewFreeBlock=(SBlockHeader*)((char*)p+newsize);
+		pNewFreeBlock->Size=pBlock->Size-sizeof(SBlockHeader)-newsize;
 
-		pNewFreeBlock->Size = pBlock->Size - (newSize + + 32);
+		Used[Heap]-=pBlock->Size-newsize;
 
-		Used[Heap] += newSize - pBlock->Size;
-		pBlock->Size = newSize;
-		AddToFreeList((SNewBlockHeader *)((char *)a1 + newSize), Heap);
-		if ( Heap == 1 )
-			LowMemory = Used[1] >= CriticalBigHeapUsage;
+		pBlock->Size = newsize;
+		AddToFreeList(pNewFreeBlock,Heap);
+
+		if ( Heap == BIGHEAP )
+		{
+			if (Used[Heap] >= CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
+
+		}
 	}
 }
 
 // @Ok
-INLINE void Mem_CoreShrink(void* a1, u32 a2)
+// @Leak
+INLINE void Mem_CoreShrink(void* p, u32 newsize)
 {
-	if ( a2 <= 4 )
-		a2 = 8;
-	Mem_ShrinkX(a1, a2);
+	if ( newsize <= 4 )
+		newsize = 8;
+//	printf ("S %d\n",newsize);
+	Mem_ShrinkX(p, newsize);
 }
 
 // @Ok
-void Mem_Shrink(void* a1, u32 a2)
+// @AlmostMatching: weird logic, but close
+// @Leak
+void Mem_Shrink(void* p, size_t newsize)
 {
 	Mem_CoreShrink(
-			reinterpret_cast<char*>(a1) - *(reinterpret_cast<char *>(a1) - 1),
-			a2 + 32);
+			(char *)p - *((char *)p - 1),
+			newsize + MEMDIFF);
 }
 
 // @Ok
@@ -283,12 +298,12 @@ void *Mem_NewTop(unsigned int a1)
 	print_if_false(roundedSize != 0, "Zero size sent to Mem_New");
 	print_if_false(roundedSize < 0xFFFFFFF, "size exceeds 28 bit range");
 
-	SNewBlockHeader* pCurBlock = FirstFreeBlock[1];
-	SNewBlockHeader* pPrevIterBlock = 0;
-	SNewBlockHeader* pPrevBlock = 0;
+	SBlockHeader* pCurBlock = FirstFreeBlock[1];
+	SBlockHeader* pPrevIterBlock = 0;
+	SBlockHeader* pPrevBlock = 0;
 
 	for (
-			SNewBlockHeader* pIter = FirstFreeBlock[1];
+			SBlockHeader* pIter = FirstFreeBlock[1];
 			pIter;
 			pIter = pIter->Next)
 	{
@@ -310,7 +325,7 @@ void *Mem_NewTop(unsigned int a1)
 	if (v6 > roundedSize + 32)
 	{
 		pCurBlock->Size = v6 - roundedSize - 32;
-		SNewBlockHeader* pNewBlock = reinterpret_cast<SNewBlockHeader*>(
+		SBlockHeader* pNewBlock = reinterpret_cast<SBlockHeader*>(
 				reinterpret_cast<char*>(pCurBlock) + v6 - roundedSize);
 
 
@@ -393,7 +408,7 @@ SHandle Mem_MakeHandle(void* a1)
 	if (a1)
 	{
 		i32* v1 = (i32*)((char*)a1 - *((char*)a1 - 1));
-		SNewBlockHeader* pBlock = reinterpret_cast<SNewBlockHeader*>(v1 - 8);
+		SBlockHeader* pBlock = reinterpret_cast<SBlockHeader*>(v1 - 8);
 		u32 v2 = pBlock->UniqueIdentifier;
 		i32* v3 = v1 - 8;
 
@@ -440,7 +455,7 @@ void *Mem_RecoverPointer(SHandle *a1)
 		v2 = *((char *)result - 1);
 		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
 		if ( v2 > ' ' || (v3 & 3) ||
-				(reinterpret_cast<SNewBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->Id )
+				(reinterpret_cast<SBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->Id )
 		{
 			a1->pWhatever = 0;
 			return 0;
@@ -461,21 +476,23 @@ void validate_SHandle(void){
 
 void validate_SBlockHeader(void){
 
-	/*
 	VALIDATE_SIZE(SBlockHeader, 0x20);
 
-
-	VALIDATE(SBlockHeader, Next, 0x0);
-	VALIDATE(SBlockHeader, field_4, 0x4);
-	VALIDATE(SBlockHeader, field_8, 0x8);
-	*/
-
-	VALIDATE_SIZE(SNewBlockHeader, 0x20);
 	/*
-	VALIDATE(SNewBlockHeader, ParentHeap, 0x0);
-	VALIDATE(SNewBlockHeader, Size, 0x0);
+	VALIDATE(SBlockHeader, ParentHeap, 0x0);
+	VALIDATE(SBlockHeader, Size, 0x0);
 	*/
-	VALIDATE(SNewBlockHeader, Next, 0x4);
-	VALIDATE(SNewBlockHeader, UniqueIdentifier, 0x8);
-	//VALIDATE(SNewBlockHeader, padding, 0xC);
+	VALIDATE(SBlockHeader, Next, 0x4);
+	VALIDATE(SBlockHeader, UniqueIdentifier, 0x8);
+
+	//VALIDATE(SBlockHeader, padding, 0xC);
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_mem(void)
+{
+	PATCH_PUSH_RET(0x00458050, Mem_ShrinkX);
+	PATCH_PUSH_RET(0x004582A0, Mem_Shrink);
 }
