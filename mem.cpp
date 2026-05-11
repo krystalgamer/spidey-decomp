@@ -7,9 +7,10 @@
 #define TRUE 1
 
 EXPORT i32 Used[2];
-u32 HeapDefs[2][2];
-i32 LowMemory;
-EXPORT u32 CriticalBigHeapUsage;
+u32 HeapDefs[MAXHEAPS][2] = { {NULL, NULL}, {NULL, NULL}};
+
+i32 LowMemory = 0;
+EXPORT u32 CriticalBigHeapUsage = 0;
 EXPORT SBlockHeader *FirstFreeBlock[2];
 
 EXPORT i32 dword_54D55C = 1;
@@ -17,7 +18,11 @@ EXPORT i32 dword_54D55C = 1;
 // Proper definition is diff between debug def of SBlockHeader and SDebugBlockHeader
 #define MEMDIFF 32
 
+#define BIGHEAPOVERLOAD 98   // 2% left give about 20K
+#define PRINTHEAPSIZES 1
+
 // @Ok
+// @Leak
 // @Matching
 void Mem_AlignedDelete(void *p)
 {
@@ -119,34 +124,36 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
 }
 
 // @Ok
+// @Leak
 // @Matching
 void Mem_Init(void)
 {
 	printf_fancy("Heap sizes: ");
 
 	for (
-			i32 Heap = 0;
-			Heap < 2;
-			Heap++)
+			i32 i = 0;
+			i < 2;
+			i++)
 	{
-		print_if_false(HeapDefs[Heap][0] + 32 < HeapDefs[Heap][1], "Bad values for HEAPBOT and HEAPTOP");
+		print_if_false(HeapDefs[i][HBOT] + sizeof(SBlockHeader) < HeapDefs[i][HTOP], "Bad values for HEAPBOT and HEAPTOP");
 
-		SBlockHeader* pNewFreeBlock = reinterpret_cast<SBlockHeader*>(HeapDefs[Heap][0]);
+		// Initialise free list head pointer
+		FirstFreeBlock[i] = NULL;
+		Used[i] = 0;
 
-		i32 v4 = HeapDefs[Heap][1];
-		i32 HeapBottom = HeapDefs[Heap][0];
+		SBlockHeader *pAllFreeMem=(SBlockHeader*)HeapDefs[i][HBOT];
 
-		FirstFreeBlock[Heap] = 0;
-		Used[Heap] = 0;
+		pAllFreeMem->Size=HeapDefs[i][HTOP]-HeapDefs[i][HBOT]-sizeof(SBlockHeader);
 
-		pNewFreeBlock->Size = ((v4 - HeapBottom - 32));
-
-		AddToFreeList(reinterpret_cast<SBlockHeader*>(pNewFreeBlock), Heap);
-		printf_fancy("Heap %d: %ld bytes, ", Heap, HeapDefs[Heap][1] - HeapDefs[Heap][0]);
+		AddToFreeList(pAllFreeMem,i);
+#if PRINTHEAPSIZES
+		printf_fancy("Heap %d: %ld bytes, ",i,HeapDefs[i][HTOP]-HeapDefs[i][HBOT]);
+#endif
 	}
 
 	printf_fancy("\n");
-	CriticalBigHeapUsage = (0x62 * (HeapDefs[1][1] - HeapDefs[1][0])) / 0x64;
+	// Calculate the small heap usage above which the LowMemory global will be set to TRUE.	
+	CriticalBigHeapUsage=BIGHEAPOVERLOAD*(HeapDefs[BIGHEAP][HTOP]-HeapDefs[BIGHEAP][HBOT])/100;
 }
 
 // @Ok
@@ -499,4 +506,6 @@ void patch_mem(void)
 
 	PATCH_PUSH_RET(0x00458210, Mem_Delete);
 	PATCH_PUSH_RET(0x004582D0, Mem_AlignedDelete);
+
+	PATCH_PUSH_RET(0x00457E00, Mem_Init);
 }

@@ -45,6 +45,10 @@ void validate_SHandle(void);
 
 #define BIGHEAP 1
 #define MAXHEAPS 2
+
+
+#define HBOT 0 
+#define HTOP 1 
 #define GETBLOCKHEADER(p) (((SBlockHeader *)(p))-1)
 
 #endif
