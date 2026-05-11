@@ -149,35 +149,38 @@ void Mem_Init(void)
 	CriticalBigHeapUsage = (0x62 * (HeapDefs[1][1] - HeapDefs[1][0])) / 0x64;
 }
 
-unsigned int dword_60D208;
-
 // @Ok
+// @Leak
 // @Matching
 INLINE void Mem_DeleteX(void *p)
 {
 	print_if_false(p != 0, "NULL pointer sent to Mem_Delete");
 
-	SBlockHeader* v4 = (SBlockHeader*)(reinterpret_cast<i32>(p) - 32);
-	i32 Heap = v4->ParentHeap;
+	SBlockHeader *pBlock=GETBLOCKHEADER(p);
+	i32 Heap=pBlock->ParentHeap;
 
-	if (Heap < 0 || Heap >= 2)
+	if (!(Heap>=0 && Heap<MAXHEAPS))
 	{
 		print_if_false(0, "Invalid pointer sent to Mem_Delete");
+		return;
 	}
-	else
-	{
-		i32 newUsed = 32 + v4->Size;
-		Used[Heap] -= newUsed;
-		AddToFreeList(
-				reinterpret_cast<SBlockHeader*>(v4),
-				Heap);
 
-		if (Heap == 1)
-			LowMemory = Used[1] >= CriticalBigHeapUsage;
+	Used[Heap]-=sizeof(SBlockHeader)+pBlock->Size;
+
+	AddToFreeList(pBlock, Heap);
+
+	// Check if the LowMemory indicator needs to stay on or go off.
+	if (Heap==BIGHEAP)
+	{
+		if (Used[Heap]>=CriticalBigHeapUsage)
+			LowMemory=TRUE;
+		else	
+			LowMemory=FALSE;
 	}
 }
 
 // @Ok
+// @NoLeak
 // @Matching
 INLINE void Mem_CoreDelete(void* a1)
 {
@@ -185,6 +188,7 @@ INLINE void Mem_CoreDelete(void* a1)
 }
 
 // @Ok
+// @NoLeak
 // @Matching
 void Mem_Delete(void* a1)
 {
@@ -227,7 +231,7 @@ void Mem_ShrinkX(void* p, size_t newsize)
 }
 
 // @Ok
-// @Leak
+// @NoLeak
 INLINE void Mem_CoreShrink(void* p, u32 newsize)
 {
 	if ( newsize <= 4 )
@@ -492,4 +496,7 @@ void patch_mem(void)
 	PATCH_PUSH_RET(0x004582A0, Mem_Shrink);
 
 	PATCH_PUSH_RET(0x00458130, Mem_Copy);
+
+	PATCH_PUSH_RET(0x00458210, Mem_Delete);
+	PATCH_PUSH_RET(0x004582D0, Mem_AlignedDelete);
 }
