@@ -591,4 +591,5 @@ void patch_mem(void)
 
 	PATCH_PUSH_RET(0x00457ED0, Mem_CoreNew);
 	PATCH_PUSH_RET(0x004583F0, Mem_RecoverPointer);
+	PATCH_PUSH_RET(0x00458360, Mem_MakeHandle);
 }
