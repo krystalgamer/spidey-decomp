@@ -159,6 +159,16 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, i32 Heap)
 // @Matching
 void Mem_Init(void)
 {
+	// @FIXME: remove this when Init_AtStart is done
+	{
+		const u32 *real = (u32*)0x0060D214;
+
+		HeapDefs[0][0] = real[0];
+		HeapDefs[0][1] = real[1];
+		HeapDefs[1][0] = real[2];
+		HeapDefs[1][1] = real[3];
+	}
+
 	printf_fancy("Heap sizes: ");
 
 	for (
@@ -454,38 +464,56 @@ void *Mem_NewTop(size_t size)
 // @Ok
 // @Matching
 // @NoLeak
-void *Mem_CoreNew(unsigned int a1)
+void *Mem_NewX(u32 a1, i32 a2, i32 a3, void* a4)
 {
 	return Mem_NewTop(a1);
 }
 
-u32 dword_54D560;
+// @Ok
+// @Matching
+// @NoLeak
+void *Mem_CoreNew(u32 a1, i32 a2, i32 a3, void* a4)
+{
+	if (a1 <= 4)
+		a1 = 8;
+
+	if (!a4)
+		a4 = NULL;
+
+	void *res = Mem_NewX(a1, a2, a3, a4);
+	if (!res)
+		return NULL;
+
+	return res;
+}
+
+// @Ok - meh
+u32 dword_54D560 = 0x3039;
 
 // @Ok
-// Does not match, no need to revisit
-void *DCMem_New(unsigned int a1, int a2, int a3, void* a4, bool a5)
+// @AlmostMatching - maybe missing some inline shit
+// @NoLeak
+void *DCMem_New(u32 a1, i32 a2, i32 a3, void* a4, bool a5)
 {
-	int v5; // eax
-	void* v6; // eax
-	int v7; // edx
-	void *result; // eax
-
 	print_if_false(a4 == 0, "Bad Mem_new");
 	if (a5)
 		dword_54D560 = a5;
-	v5 = a1 + 32;
-	if ( v5 <= 4 )
-		v5 = 8;
-	v6 = Mem_CoreNew(v5);
-	v7 = (int)v6 & 0x1F;
-	result = (void*)((int)v6 + 32 - v7);
-	*((char *)result - 1) = 32 - v7;
+
+	void *v8 = Mem_CoreNew(a1 + sizeof(SBlockHeader), a2, a3, 0);
+
+	i32 v9 = sizeof(SBlockHeader) - ((u8)v8 & 0x1F);
+
+	void* result = reinterpret_cast<void*>(v9 + reinterpret_cast<i32>(v8));
+
+	*(reinterpret_cast<i8*>(result) - 1) = v9;
+
 	return result;
 }
 
 
 // @Ok
 // @Matching
+// @NoLeak
 SHandle Mem_MakeHandle(void* a1)
 {
 	SHandle tmp;
@@ -577,6 +605,7 @@ void validate_SBlockHeader(void){
 // @Bogus
 void patch_mem(void)
 {
+	/*
 	PATCH_PUSH_RET(0x00458050, Mem_ShrinkX);
 	PATCH_PUSH_RET(0x004582A0, Mem_Shrink);
 
@@ -589,7 +618,10 @@ void patch_mem(void)
 	PATCH_PUSH_RET(0x00457C90, AddToFreeList);
 	PATCH_PUSH_RET(0x00457EE0, Mem_NewTop);
 
-	PATCH_PUSH_RET(0x00457ED0, Mem_CoreNew);
+	PATCH_PUSH_RET(0x00457ED0, Mem_NewX);
+	PATCH_PUSH_RET(0x004581A0, DCMem_New);
+	*/
+
 	PATCH_PUSH_RET(0x004583F0, Mem_RecoverPointer);
 	PATCH_PUSH_RET(0x00458360, Mem_MakeHandle);
 }

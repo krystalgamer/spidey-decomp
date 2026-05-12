@@ -34,7 +34,7 @@ EXPORT void Mem_CoreShrink(void*, size_t);
 EXPORT void Mem_ShrinkX(void*, size_t);
 EXPORT void Mem_Copy(void*, void*, i32);
 EXPORT void *Mem_NewTop(size_t);
-EXPORT void *Mem_CoreNew(u32);
+EXPORT void *Mem_CoreNew(u32, i32, i32, void*);
 EXPORT void *DCMem_New(u32, i32, i32, void*, bool);
 EXPORT SHandle Mem_MakeHandle(void*);
 
@@ -52,5 +52,7 @@ void validate_SHandle(void);
 #define GETBLOCKHEADER(p) (((SBlockHeader *)(p))-1)
 
 #define SCRIBBLE 0x55555555
+
+void patch_mem(void);
 
 #endif
