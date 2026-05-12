@@ -195,6 +195,9 @@ void Mem_Init(void)
 	printf_fancy("\n");
 	// Calculate the small heap usage above which the LowMemory global will be set to TRUE.	
 	CriticalBigHeapUsage=BIGHEAPOVERLOAD*(HeapDefs[BIGHEAP][HTOP]-HeapDefs[BIGHEAP][HBOT])/100;
+
+	// @FIXME: remove me later
+	*reinterpret_cast<u32*>(0x0060D228) = CriticalBigHeapUsage;
 }
 
 // @Ok
@@ -605,7 +608,6 @@ void validate_SBlockHeader(void){
 // @Bogus
 void patch_mem(void)
 {
-	/*
 	PATCH_PUSH_RET(0x00458050, Mem_ShrinkX);
 	PATCH_PUSH_RET(0x004582A0, Mem_Shrink);
 
@@ -620,7 +622,6 @@ void patch_mem(void)
 
 	PATCH_PUSH_RET(0x00457ED0, Mem_NewX);
 	PATCH_PUSH_RET(0x004581A0, DCMem_New);
-	*/
 
 	PATCH_PUSH_RET(0x004583F0, Mem_RecoverPointer);
 	PATCH_PUSH_RET(0x00458360, Mem_MakeHandle);
