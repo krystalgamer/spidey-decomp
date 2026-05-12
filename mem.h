@@ -51,4 +51,6 @@ void validate_SHandle(void);
 #define HTOP 1 
 #define GETBLOCKHEADER(p) (((SBlockHeader *)(p))-1)
 
+#define SCRIBBLE 0x55555555
+
 #endif

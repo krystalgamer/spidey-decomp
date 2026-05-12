@@ -13,7 +13,11 @@ i32 LowMemory = 0;
 EXPORT u32 CriticalBigHeapUsage = 0;
 EXPORT SBlockHeader *FirstFreeBlock[2];
 
-EXPORT i32 dword_54D55C = 1;
+static i32 Scribble = 1;
+
+// Returns a pointer to the first byte after free block p
+// p is a pointer to a block header, not a pointer returned by Mem_New
+#define FREEAFTER(p) (SBlockHeader*)(((char*)((p)+1))+(p)->Size)
 
 // Proper definition is diff between debug def of SBlockHeader and SDebugBlockHeader
 #define MEMDIFF 32
@@ -30,93 +34,113 @@ void Mem_AlignedDelete(void *p)
 }
 
 // @Ok
-// @CM: Different register allocation
-// but code matches perfect :D
-void AddToFreeList(SBlockHeader *pNewFreeBlock, int Heap)
+// @Matching
+// @Leak
+void AddToFreeList(SBlockHeader *pNewFreeBlock, i32 Heap)
 {
-	SBlockHeader* pAfter = FirstFreeBlock[Heap];
-	SBlockHeader* pBefore = 0;
+	register SBlockHeader *pAfter=FirstFreeBlock[Heap];
+	register SBlockHeader *pBefore=NULL;
 
-	while (reinterpret_cast<u32>(pAfter) < reinterpret_cast<u32>(pNewFreeBlock))
+	i32	OriginalSize = pNewFreeBlock->Size;
+
+	// Find the blocks either side of pNewFreeBlock
+	while ((u32)pAfter<(u32)pNewFreeBlock && pAfter)
 	{
-		if (!pAfter)
-			break;
-
-		pBefore = pAfter;
-		pAfter = pAfter->Next;
+		pBefore=pAfter;
+		pAfter=pAfter->Next;
 	}
+	// Either of pBefore or pAfter could now be NULL
 
 	if (pBefore)
 	{
-		if ( (SBlockHeader *)((char *)&pBefore[1] + pBefore->Size) == pNewFreeBlock )
-		{
-			if ( (SBlockHeader *)((char *)&pNewFreeBlock[1] + pNewFreeBlock->Size) == pAfter )
-			{
-				pBefore->Next = pAfter->Next;
-				pBefore->Size = pBefore->Size + pNewFreeBlock->Size + pAfter->Size + 2*32;
 
-				if ( dword_54D55C )
+
+		if (FREEAFTER(pBefore)==pNewFreeBlock)
+		{
+			if (FREEAFTER(pNewFreeBlock)==pAfter)
+			{
+				// pNewFreeBlock is adjacent to pBefore and pAfter, so merge pNewFreeBlock
+				// and pAfter into pBefore
+				pBefore->Next=pAfter->Next;
+				pBefore->Size+=pNewFreeBlock->Size+pAfter->Size+2*sizeof(SBlockHeader);
+
+				// Scribble over the new free block and the headers on either side
+				// of it. We don't need to scribble over the other two free blocks
+				// because they will have already been scribbled over.
+
+				if (Scribble)
 				{
-					i32* dst = reinterpret_cast<i32*>(pNewFreeBlock);
-					i32 size = ((pNewFreeBlock->Size + 64) >> 2);
-					for (i32 i = 0; i < size; i++)
-					{
-						dst[i] = 0x55555555;
-					}
+					u32* pFree=(u32*)pNewFreeBlock;
+					i32 NumLWords=(pNewFreeBlock->Size+2*sizeof(SBlockHeader))/4;
+					for (i32 i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
 				}
-				return;
 			}
 			else
 			{
-				pBefore->Size = pBefore->Size + pNewFreeBlock->Size + 32;
-				if ( dword_54D55C )
+				// pNewFreeBlock is adjacent to pBefore, so merge it into pBefore by
+				// just increasing the size of pBefore
+				pBefore->Size+=pNewFreeBlock->Size+sizeof(SBlockHeader);
+
+				// Scribble over the new free block just merged, and its header
+
+				if (Scribble)
 				{
-					i32* dst = reinterpret_cast<i32*>(pNewFreeBlock);
-					i32 size = ((pNewFreeBlock->Size + 32) >> 2);
-					for (i32 i = 0; i < size; i++)
-					{
-						dst[i] = 0x55555555;
-					}
+					u32* pFree=(u32*)pNewFreeBlock;
+					i32 NumLWords=(pNewFreeBlock->Size+sizeof(SBlockHeader))/4;
+					for (i32 i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
 				}
-				return;
 			}
 
-			return;
+			return; // That's that
 		}
-
-		pBefore->Next = pNewFreeBlock;
+		else
+		{
+			// pNewFreeBlock isn't adjacent to pBefore, so insert it into the linked
+			// list after pBefore. pNewFreeBlock->Next isn't set yet though cos we still
+			// need to check if it is adjacent to pAfter
+			pBefore->Next=pNewFreeBlock;
+		}
 	}
 	else
 	{
+		// There is no pBefore, so insert pNewFreeBlock into the linked list by setting
+		// FirstFreeBlock equal to it. pNewFreeBlock->Next isn't set yet though cos we still
+		// need to check if it is adjacent to pAfter
 		FirstFreeBlock[Heap] = pNewFreeBlock;
 	}
 
-	if (dword_54D55C)
+	// Scribble over the memory contained in the new free block
+	// but only the original size
+	if (Scribble)
 	{
-		i32* dst = reinterpret_cast<i32*>(&pNewFreeBlock[1]);
-		i32 size = (pNewFreeBlock->Size >> 2);
-		for (i32 i = 0; i < size; i++)
-		{
-			dst[i] = 0x55555555;
-		}
+		u32* pFree=(u32*)(pNewFreeBlock+1);
+		i32 NumLWords=pNewFreeBlock->Size/4;
+		for (i32 i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
 	}
 
-	if ((SBlockHeader*)(reinterpret_cast<char*>(&pNewFreeBlock[1]) + pNewFreeBlock->Size) == pAfter)
+	// Note: pAfter could be NULL, but this bit will still work if it is
+	if (FREEAFTER(pNewFreeBlock)==pAfter)
 	{
-		pNewFreeBlock->Next = pAfter->Next;
-		pNewFreeBlock->Size = pNewFreeBlock->Size + pAfter->Size + 32;
+		// pNewFreeBlock is adjacent to pAfter, so merge pAfter with pNewFreeBlock by
+		// making pNewFreeBlock->Next jump over pAfter, then increase the size 
+		// of pNewFreeBlock to absorb pAfter
+		pNewFreeBlock->Next=pAfter->Next;
+		pNewFreeBlock->Size+=pAfter->Size+sizeof(SBlockHeader);
 
-		if(dword_54D55C)
+		// Scribble over pAfter's header, since it has become part of the
+		// free block
+
+		if (Scribble)
 		{
-			i32* dst = reinterpret_cast<i32*>(&pNewFreeBlock[1]);
-			for (i32 i = 0; i < (sizeof(SBlockHeader) >> 2); i++)
-			{
-				dst[i] = 0x55555555;
-			}
+			u32* pFree=(u32*)pAfter;
+			i32 NumLWords=sizeof(SBlockHeader)/4;
+			for (i32 i=0; i<NumLWords; ++i) *pFree++=SCRIBBLE;
 		}
 	}
 	else
 	{
+		// pNewFreeBlock is not adjacent to pAfter, so just set pNewFreeBlock->Next to
+		// point to pAfter
 		pNewFreeBlock->Next = pAfter;
 	}
 
@@ -508,4 +532,5 @@ void patch_mem(void)
 	PATCH_PUSH_RET(0x004582D0, Mem_AlignedDelete);
 
 	PATCH_PUSH_RET(0x00457E00, Mem_Init);
+	PATCH_PUSH_RET(0x00457C90, AddToFreeList);
 }
