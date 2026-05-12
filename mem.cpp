@@ -25,6 +25,15 @@ static i32 Scribble = 1;
 #define BIGHEAPOVERLOAD 98   // 2% left give about 20K
 #define PRINTHEAPSIZES 1
 
+#define ClearMem(p,n)                                 \
+         {                                            \
+            u32* pMem=(u32*)(p);                \
+            for (i32 ii=0; ii<(n)/4; ++ii) *pMem++=0x33333333; \
+         }
+
+// @Note: yes, there's a typo
+static u32 UniqueIndentifier = 0;
+
 // @Ok
 // @Leak
 // @Matching
@@ -53,8 +62,6 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, i32 Heap)
 
 	if (pBefore)
 	{
-
-
 		if (FREEAFTER(pBefore)==pNewFreeBlock)
 		{
 			if (FREEAFTER(pNewFreeBlock)==pAfter)
@@ -144,7 +151,7 @@ void AddToFreeList(SBlockHeader *pNewFreeBlock, i32 Heap)
 		pNewFreeBlock->Next = pAfter;
 	}
 
-	pNewFreeBlock->UniqueIdentifier = 0;
+	pNewFreeBlock->Id = 0;
 }
 
 // @Ok
@@ -312,89 +319,136 @@ void Mem_Copy(void* dest, void* source, i32 bytes)
 	}
 }
 
-EXPORT u32 UniqueIdentifier;
-
 // @Ok
-// what a goofy function. a1 aka the size already contains the space for the head but
-// then there's an extra +32 everywhere for some reason
-void *Mem_NewTop(unsigned int a1)
+// @Matching
+// @Leak
+void *Mem_NewTop(size_t size)
 {
-	UniqueIdentifier = (UniqueIdentifier + 1) & 0x7FFFFFFF;
-	if ( !UniqueIdentifier )
-		UniqueIdentifier = 1;
+	i32 Heap = 1;
+	UniqueIndentifier=(UniqueIndentifier+1)&0x7fffffff;
+	if ( !UniqueIndentifier )
+		UniqueIndentifier = 1;
 
-	u32 roundedSize = (a1 + 3) & 0xFFFFFFFC;
+	size=(size+3)&0xfffffffc;
 
-	print_if_false(roundedSize != 0, "Zero size sent to Mem_New");
-	print_if_false(roundedSize < 0xFFFFFFF, "size exceeds 28 bit range");
+	print_if_false(size != 0, "Zero size sent to Mem_New");
+	print_if_false(size < 0xFFFFFFF, "size exceeds 28 bit range");
 
-	SBlockHeader* pCurBlock = FirstFreeBlock[1];
-	SBlockHeader* pPrevIterBlock = 0;
-	SBlockHeader* pPrevBlock = 0;
+	// Search for a big enough free block (this is the slow bit)
+	register SBlockHeader* pBlock=FirstFreeBlock[Heap];
+	register SBlockHeader* pLast=NULL;
+	register SBlockHeader* pChoice = pBlock;
+	register SBlockHeader* pChoiceLast = NULL;
 
-	for (
-			SBlockHeader* pIter = FirstFreeBlock[1];
-			pIter;
-			pIter = pIter->Next)
+	// pChoice is the suitable block last in the heap 
+	// pChoiceLast is the one before pChoice
+	while (pBlock)
 	{
-		if (pIter->Size >= roundedSize)
-		{
-			pCurBlock = pIter;
-			pPrevBlock = pPrevIterBlock;
+		if (pBlock->Size >= size)
+			{ 
+			pChoice = pBlock;
+			pChoiceLast = pLast;
 		}
 
-		pPrevIterBlock = pIter;
+		pLast=pBlock;
+		pBlock=pBlock->Next;
+#if DEBUG & COUNTSEARCHS
+		++search;
+#endif
+	}
+	pBlock = pChoice;
+	pLast = pChoiceLast;
+
+	// if the found block is too small, error
+	if (pBlock->Size<size)
+	{
+		return NULL;
 	}
 
-	u32 v6 = pCurBlock->Size;
-	if (v6 < roundedSize)
+	if (pBlock->Size>size+sizeof(SBlockHeader))
 	{
-		return 0;
-	}
+		// The found block is sufficiently big to make a new free block
+		// out of the leftover space
+		// Sufficiently big=more than enough space for the block header
+		// pBlock->Size doesn't include space that is taken up by header
 
-	if (v6 > roundedSize + 32)
-	{
-		pCurBlock->Size = v6 - roundedSize - 32;
-		SBlockHeader* pNewBlock = reinterpret_cast<SBlockHeader*>(
-				reinterpret_cast<char*>(pCurBlock) + v6 - roundedSize);
+		// new block starts at current block ptr + current block header size + requested space size
+		i32 old_size = pBlock->Size;
 
+		SBlockHeader* pLeftOver = pBlock;
+		pLeftOver->Size = old_size - size - sizeof(SBlockHeader);
 
+		pBlock = (SBlockHeader*) ((char *)(pLeftOver+1) + old_size - size - sizeof(SBlockHeader));
+		pBlock->Size = size;
 
-		pNewBlock->Size = roundedSize;
-		pNewBlock->UniqueIdentifier = UniqueIdentifier;
-		pNewBlock->ParentHeap = 1;
+		// pBlock is now hanging in space
 
-		void* ret = &pNewBlock[1];
+		// set up info
+		pBlock->Id=UniqueIndentifier;	
+		pBlock->ParentHeap=Heap;
 
-		Used[1] += pNewBlock->Size + 32;
-		LowMemory = Used[1] >= CriticalBigHeapUsage;
+		Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
 
-		for (i32 i = 0; i < (roundedSize >> 2); i++)
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
 		{
-			reinterpret_cast<i32*>(ret)[i] = 0x33333333;
+			if (Used[Heap]>=CriticalBigHeapUsage)
+				LowMemory=TRUE;
+			else	
+				LowMemory=FALSE;
 		}
 
-		return ret;
-	}
 
-	if ( pPrevBlock )
-		pPrevBlock->Next = pCurBlock->Next;
+		ClearMem(pBlock+1,size);
+
+		// Return the newly allocated block
+#if RECORDEVERYTHING
+		Mem_Record(pBlock, ReturnAddress);
+#endif
+#if DEBUG&&BITFIELD
+		FlagLocationUsed((Uint32)(pBlock+1));
+#endif
+		return (void*)(pBlock+1);
+	}
+	// if there is enough room for the requested amount of space in pBlock,
+	// but not enough left over to form a new free block
 	else
-		FirstFreeBlock[1] = pCurBlock->Next;
-
-	pCurBlock->UniqueIdentifier = UniqueIdentifier;
-	pCurBlock->ParentHeap = 1;
-
-	void* ret = &pCurBlock[1];
-	Used[1] += pCurBlock->Size + 32;
-	LowMemory = Used[1] >= CriticalBigHeapUsage;
-	for (i32 i = 0; i < (roundedSize >> 2); i++)
 	{
-		reinterpret_cast<i32*>(ret)[i] = 0x33333333;
+		// Remove pBlock from the linked list and make it into a used block
+		if (pLast)
+			pLast->Next=pBlock->Next;
+		else
+			FirstFreeBlock[Heap]=pBlock->Next;
+
+		pBlock->Id=UniqueIndentifier;	
+		pBlock->ParentHeap=Heap;
+
+		// pBlock->Size is not changed, because we've had to allocate
+		// the whole block.
+
+		Used[Heap]+=sizeof(SBlockHeader)+pBlock->Size;
+
+		// Check if the LowMemory indicator needs to come on.
+		if (Heap==BIGHEAP)
+		{
+		if (Used[Heap]>=CriticalBigHeapUsage)
+			LowMemory=TRUE;
+		else	
+			LowMemory=FALSE;
+		}
+
+		// Return the newly allocated block
+		ClearMem(pBlock+1,size);
+
+#if RECORDEVERYTHING
+		Mem_Record(pBlock, ReturnAddress);
+#endif
+#if DEBUG&&BITFIELD
+		FlagLocationUsed((Uint32)(pBlock+1));
+#endif
+		return (void*)(pBlock+1);
 	}
 
-
-	return ret;
 }
 
 // @Ok
@@ -439,7 +493,7 @@ SHandle Mem_MakeHandle(void* a1)
 	{
 		i32* v1 = (i32*)((char*)a1 - *((char*)a1 - 1));
 		SBlockHeader* pBlock = reinterpret_cast<SBlockHeader*>(v1 - 8);
-		u32 v2 = pBlock->UniqueIdentifier;
+		u32 v2 = pBlock->Id;
 		i32* v3 = v1 - 8;
 
 		if (v2 & 0x80000000)
@@ -456,7 +510,7 @@ SHandle Mem_MakeHandle(void* a1)
 				if (pBlock->Size  >= 0x4 && pBlock->Size <= 0x200000)
 				{
 					SHandle result;
-					result.Id = pBlock->UniqueIdentifier;
+					result.Id = pBlock->Id;
 					result.pWhatever = a1;
 					return result;
 				}
@@ -485,7 +539,7 @@ void *Mem_RecoverPointer(SHandle *a1)
 		v2 = *((char *)result - 1);
 		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
 		if ( v2 > ' ' || (v3 & 3) ||
-				(reinterpret_cast<SBlockHeader*>(v3)[-1].UniqueIdentifier) != a1->Id )
+				(reinterpret_cast<SBlockHeader*>(v3)[-1].Id) != a1->Id )
 		{
 			a1->pWhatever = 0;
 			return 0;
@@ -513,7 +567,7 @@ void validate_SBlockHeader(void){
 	VALIDATE(SBlockHeader, Size, 0x0);
 	*/
 	VALIDATE(SBlockHeader, Next, 0x4);
-	VALIDATE(SBlockHeader, UniqueIdentifier, 0x8);
+	VALIDATE(SBlockHeader, Id, 0x8);
 
 	//VALIDATE(SBlockHeader, padding, 0xC);
 }
@@ -533,4 +587,5 @@ void patch_mem(void)
 
 	PATCH_PUSH_RET(0x00457E00, Mem_Init);
 	PATCH_PUSH_RET(0x00457C90, AddToFreeList);
+	PATCH_PUSH_RET(0x00457EE0, Mem_NewTop);
 }

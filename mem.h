@@ -20,7 +20,7 @@ struct SBlockHeader {
 	i32 ParentHeap: 4;
 	size_t Size: 28;
 	SBlockHeader* Next;
-	u32 UniqueIdentifier;
+	u32 Id;
 
 	PADDING(0x20-0x8-4);
 };
@@ -33,7 +33,7 @@ EXPORT void Mem_Shrink(void*, size_t);
 EXPORT void Mem_CoreShrink(void*, size_t);
 EXPORT void Mem_ShrinkX(void*, size_t);
 EXPORT void Mem_Copy(void*, void*, i32);
-EXPORT void *Mem_NewTop(u32);
+EXPORT void *Mem_NewTop(size_t);
 EXPORT void *Mem_CoreNew(u32);
 EXPORT void *DCMem_New(u32, i32, i32, void*, bool);
 EXPORT SHandle Mem_MakeHandle(void*);
