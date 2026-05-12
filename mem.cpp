@@ -452,6 +452,8 @@ void *Mem_NewTop(size_t size)
 }
 
 // @Ok
+// @Matching
+// @NoLeak
 void *Mem_CoreNew(unsigned int a1)
 {
 	return Mem_NewTop(a1);
@@ -529,15 +531,13 @@ SHandle Mem_MakeHandle(void* a1)
 
 // @Ok
 // @Matching
+// @NoLeak
 void *Mem_RecoverPointer(SHandle *a1)
 {
-	void *result; // eax
-	int v2; // edx
-
 	if (a1->pWhatever)
 	{
-		v2 = *((char *)result - 1);
-		u32 v3 = reinterpret_cast<u32>((char *)result - v2);
+		i32 v2 = *((char *)a1->pWhatever - 1);
+		u32 v3 = reinterpret_cast<u32>((char *)a1->pWhatever - v2);
 		if ( v2 > ' ' || (v3 & 3) ||
 				(reinterpret_cast<SBlockHeader*>(v3)[-1].Id) != a1->Id )
 		{
@@ -588,4 +588,7 @@ void patch_mem(void)
 	PATCH_PUSH_RET(0x00457E00, Mem_Init);
 	PATCH_PUSH_RET(0x00457C90, AddToFreeList);
 	PATCH_PUSH_RET(0x00457EE0, Mem_NewTop);
+
+	PATCH_PUSH_RET(0x00457ED0, Mem_CoreNew);
+	PATCH_PUSH_RET(0x004583F0, Mem_RecoverPointer);
 }
