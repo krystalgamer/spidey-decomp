@@ -1,6 +1,7 @@
 #include "pack.h"
 #include "mem.h"
 #include "validate.h"
+#include "my_assert.h"
 
 EXPORT SPack Pack_pFull;
 EXPORT u32 gPackRelated;
@@ -16,7 +17,7 @@ EXPORT u32 gInsidePackInitTwo;
 void Pack_Init(void)
 {
 	gFuckPackInit = 0;
-	print_if_false(!gPackInitRelatedOne && !gPackInitRelatedTwo, "Pack_Init called before cleanup");
+	ASSERT(!gPackInitRelatedOne && !gPackInitRelatedTwo, "Pack_Init called before cleanup");
 
 	gPackInitRelatedOne = 0;
 	gPackInitRelatedTwo = 0;
@@ -25,6 +26,7 @@ void Pack_Init(void)
 }
 
 // @Ok
+// @Matching
 SPack* Pack_Pack(
 		i32 Type,
 		i32 WW,
@@ -35,15 +37,11 @@ SPack* Pack_Pack(
 		i32,
 		u32)
 {
-	i32 v6 = WW;
+	ASSERT(Type < 0 || WW <= 512, "width out of range");
+	ASSERT(H <= 512, "height out of range");
 
-	print_if_false(Type < 0 || WW <= 512, "width out of range");
-	print_if_false(H <= 512, "height out of range");
 
-	if (BPP == 4 || BPP == 8 || BPP == 16)
-		print_if_false(1u, "Bad BPP param in pack_pack().");
-	else
-		print_if_false(0, "Bad BPP param in pack_pack().");
+	ASSERT(BPP == 4 || BPP == 8 || BPP == 16, "Bad BPP param in pack_pack().");
 
 	SPack* pPack = static_cast<SPack*>(
 			DCMem_New(sizeof(SPack), 0, 1, 0, 1));
@@ -60,17 +58,17 @@ SPack* Pack_Pack(
 	{
 		if (BPP == 8)
 		{
-			v6 >>= 1;
+			WW >>= 1;
 		}
 	}
 	else
 	{
-		v6 >>= 2;
+		WW >>= 2;
 	}
 
-	print_if_false(v6 > 0, "width too small");
+	ASSERT(WW > 0, "width too small");
 	
-	pPack->W = v6;
+	pPack->W = WW;
 	pPack->H = H;
 	pPack->pNext = Pack_pFull.pNext;
 	Pack_pFull.pNext = pPack;
@@ -83,6 +81,7 @@ SPack* Pack_Pack(
 void Pack_Unpack(SPack* a1)
 {
 	SPack* pPrev = &Pack_pFull;
+
 	for (SPack *pCur = pPrev->pNext;
 			pCur;
 			pCur = pCur->pNext)
@@ -97,7 +96,7 @@ void Pack_Unpack(SPack* a1)
 		pPrev = pCur;
 	}
 	
-	print_if_false(0, "Couldn't find pack structure.");
+	ASSERT(0, "Couldn't find pack structure.");
 	Mem_Delete(a1);
 }
 
@@ -110,4 +109,15 @@ void validate_SPack(void)
 	VALIDATE(SPack, W, 0x4);
 	VALIDATE(SPack, H, 0x6);
 	VALIDATE(SPack, pNext, 0x8);
+}
+
+
+#include "my_patch.h"
+
+void patch_pack(void)
+{
+	PATCH_PUSH_RET(0x004613B0, Pack_Init);
+
+	PATCH_PUSH_RET(0x00461500, Pack_Unpack);
+	PATCH_PUSH_RET(0x00461400, Pack_Pack);
 }

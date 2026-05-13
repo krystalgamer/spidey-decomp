@@ -20,4 +20,6 @@ EXPORT void Pack_Unpack(SPack *);
 
 void validate_SPack(void);
 
+void patch_pack(void);
+
 #endif

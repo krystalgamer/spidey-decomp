@@ -7,4 +7,6 @@
 
 EXPORT void DoAssert(u8, const char*, ...);
 
+#define ASSERT(cond, msg) DoAssert(cond, msg)
+
 #endif

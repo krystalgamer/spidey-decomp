@@ -635,6 +635,7 @@ void game_patches(void)
 
 	patch_pkr();
 	patch_pcdcMem();
+	patch_pack();
 }
 
 // @Bogus
