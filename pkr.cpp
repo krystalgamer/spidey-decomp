@@ -17,6 +17,12 @@ LIBPKR_HANDLE* gDataPkr;
 #define strcmpi strcasecmp
 #endif
 
+#ifdef _WIN32
+#define VSNPRINTF _vsnprintf
+#else
+#define VSNPRINTF vsnprintf
+#endif
+
 // @NB: the original was built as library and built in debug mode, I won't do the same
 // too much hassle for little gain
 
@@ -541,7 +547,7 @@ u8 PKR_ReportError(const char* a1, ...)
 	
 	va_list va;
 	va_start(va, a1);
-	_vsnprintf(reinterpret_cast<char*>(0x002E09BFC), 0x200, a1, va);
+	VSNPRINTF(reinterpret_cast<char*>(0x002E09BFC), 0x200, a1, va);
 	va_end(va);
 	return 1;
 }
