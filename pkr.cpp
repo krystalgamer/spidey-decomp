@@ -5,6 +5,9 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <cstdarg>
+#include <cstdio>
+
 #define PKRFILE_UNCOMPRESSED -2
 #define PKRFILE_COMPRESSED_ZLIB 2
 
@@ -218,6 +221,7 @@ void dirRemoveFromPKR(
 // @BIGTODO
 void flushPKR(LIBPKR_HANDLE*)
 {
+	// @FIXME
 	printf("void flushPKR(LIBPKR_HANDLE*)");
 }
 
@@ -361,10 +365,12 @@ u8 dirAddToPKR(LIBPKR_HANDLE* pHandle, PKR_DIRINFO dirInfo)
 }
 
 // @BIGTODO
-u8 PKR_GetLastError(char*)
+u8 PKR_GetLastError(char* a1)
 {
-	printf("u8 PKR_GetLastError(char*)");
-	return (u8)0x18082024;
+	typedef u8 (*func_ptr)(char*);
+	func_ptr func = (func_ptr)0x0051A2AD;
+
+	return func(a1);
 }
 
 // @Ok
@@ -526,9 +532,15 @@ u8* decompressZLIB(u8* src, u32 srcLen, u32 dstLen)
 }
 
 // @BIGTODO
-void PKR_ReportError(const char*, ...)
+u8 PKR_ReportError(const char* a1, ...)
 {
-	printf("void PKR_ReportError(const char*, ...)");
+	// @FIXME: use the proper
+	
+	va_list va;
+	va_start(va, a1);
+	_vsnprintf(reinterpret_cast<char*>(0x002E09BFC), 0x200, a1, va);
+	va_end(va);
+	return 1;
 }
 
 // @Ok
@@ -631,4 +643,19 @@ void validate_NODE_FILEINFO(void)
 	VALIDATE(NODE_FILEINFO, field_13C, 0x13C);
 	VALIDATE(NODE_FILEINFO, mNext, 0x144);
 	VALIDATE(NODE_FILEINFO, mPrev, 0x148);
+}
+
+#include "my_patch.h"
+
+void patch_pkr(void)
+{
+	PATCH_PUSH_RET(0x00517FE9, PKR_Open);
+	PATCH_PUSH_RET(0x005186D5, PKR_Close);
+
+	PATCH_PUSH_RET(0x005188D4, PKR_UnlockFile);
+	PATCH_PUSH_RET(0x00518883, PKR_LockFile);
+
+	PATCH_PUSH_RET(0x00518C88, PKR_GetFileInfo);
+
+	PATCH_PUSH_RET(0x00519194, PKR_ReadFile);
 }

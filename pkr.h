@@ -78,7 +78,7 @@ struct LIBPKR_HANDLE
 };
 
 EXPORT u8 fileCRCCheck(u8*, i32, u32);
-EXPORT void PKR_ReportError(const char*, ...);
+EXPORT u8 PKR_ReportError(const char*, ...);
 
 EXPORT u8* decompressZLIB(u8*, u32, u32);
 EXPORT u8* PKRComp_DecompressFile(PKR_FILEINFO*, u8*, i32);
@@ -106,5 +106,7 @@ void validate_LIBPKR_HANDLE(void);
 void validate_NODE_DIRINFO(void);
 void validate_PKR_HEADER(void);
 void validate_NODE_FILEINFO(void);
+
+void patch_pkr(void);
 
 #endif
