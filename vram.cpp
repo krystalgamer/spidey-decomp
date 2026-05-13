@@ -78,6 +78,7 @@ void validate_tagSVRAMRect(void)
 #include "my_patch.h"
 
 
+// @Bogus
 void patch_vram(void)
 {
 	PATCH_PUSH_RET(0x004F14B0, VRAMRectUnpack);

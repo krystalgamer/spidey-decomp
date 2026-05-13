@@ -656,6 +656,7 @@ void validate_NODE_FILEINFO(void)
 
 #include "my_patch.h"
 
+// @Bogus
 void patch_pkr(void)
 {
 	PATCH_PUSH_RET(0x00517FE9, PKR_Open);

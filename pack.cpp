@@ -114,6 +114,7 @@ void validate_SPack(void)
 
 #include "my_patch.h"
 
+// @Bogus
 void patch_pack(void)
 {
 	PATCH_PUSH_RET(0x004613B0, Pack_Init);

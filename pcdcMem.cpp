@@ -127,6 +127,7 @@ void validate_MEMORY_ALLOC(void)
 
 #include "my_patch.h"
 
+// @Bogus
 void patch_pcdcMem(void)
 {
 	PATCH_PUSH_RET(0x005053F0, syMallocInit);

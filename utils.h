@@ -57,6 +57,9 @@ EXPORT void Utils_VblankProcessing(void);
 //#define G_DIFFICULTY_LEVEL (DifficultyLevel)
 #define G_DIFFICULTY_LEVEL (*reinterpret_cast<i32*>(0x0054D474))
 
+#define Sine(a) ((*(SSinCos *)(&rcossin_tbl+((a)&4095))).Sin)
+#define Cosine(a) ((*(SSinCos *)(&rcossin_tbl+((a)&4095))).Cos)
+
 void patch_utils(void);
 
 #endif
