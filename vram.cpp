@@ -60,7 +60,7 @@ void VRAMRectUnpack(tagSVRAMRect *pRect)
 		v1 = &v3->p_next;
 	}
 
-	DoAssert(v2 != 0, "No packed texture matching specified coordinates.");
+	ASSERT(v2 != 0, "No packed texture matching specified coordinates.");
 }
 
 void validate_tagSVRAMRect(void)
@@ -73,4 +73,13 @@ void validate_tagSVRAMRect(void)
 	VALIDATE(tagSVRAMRect, update_type, 0xC);
 
 	VALIDATE(tagSVRAMRect, p_next, 0x10);
+}
+
+#include "my_patch.h"
+
+
+void patch_vram(void)
+{
+	PATCH_PUSH_RET(0x004F14B0, VRAMRectUnpack);
+	PATCH_PUSH_RET(0x004F1410, VRAMRectPack);
 }

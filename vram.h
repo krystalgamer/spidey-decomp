@@ -25,5 +25,6 @@ EXPORT tagSVRAMRect* VRAMRectPack(i32,i32,i32,i32 *,i32 *,i32,u8,u32);
 EXPORT void VRAMRectUnpack(tagSVRAMRect *);
 
 void validate_tagSVRAMRect(void);
+void patch_vram(void);
 
 #endif
