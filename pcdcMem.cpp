@@ -5,13 +5,37 @@
 
 EXPORT MEMORY_ALLOC* gSysMemory;
 
-// @SMALLTODO
-void syFree(void*)
+// @Ok
+// @Matching
+void syFree(void* a1)
 {
-	printf("void syFree(void*)");
+	if (!a1)
+	{
+		error("MEMORY FREE of NULL\n");
+		return;
+	}
+
+
+	MEMORY_ALLOC *i = gSysMemory;
+	while (i)
+	{
+		if (i->mAddress == a1)
+		{
+			removeMemoryAlloc(i);
+			break;
+		}
+
+		i = i->mNext;
+	}
+
+	if (!i)
+	{
+		error("MEMORY NOT FOUND: %08X\n", a1);
+	}
 }
 
 // @Ok
+// @AlmostMatching
 void *syMalloc(u32 size)
 {
 	if (!size)
@@ -99,4 +123,15 @@ void validate_MEMORY_ALLOC(void)
 	VALIDATE(MEMORY_ALLOC, mSize, 0x4);
 	VALIDATE(MEMORY_ALLOC, mNext, 0x8);
 	VALIDATE(MEMORY_ALLOC, mPrev, 0xC);
+}
+
+#include "my_patch.h"
+
+void patch_pcdcMem(void)
+{
+	PATCH_PUSH_RET(0x005053F0, syMallocInit);
+	PATCH_PUSH_RET(0x00505400, syMallocFinish);
+
+	PATCH_PUSH_RET(0x00505470, syMalloc);
+	PATCH_PUSH_RET(0x005054E0, syFree);
 }

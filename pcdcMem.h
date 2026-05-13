@@ -23,5 +23,6 @@ EXPORT void addMemoryAlloc(MEMORY_ALLOC *);
 EXPORT void removeMemoryAlloc(MEMORY_ALLOC *);
 
 void validate_MEMORY_ALLOC(void);
+void patch_pcdcMem(void);
 
 #endif

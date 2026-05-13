@@ -633,6 +633,7 @@ void game_patches(void)
 	patch_ps2funcs();
 
 	patch_pkr();
+	patch_pcdcMem();
 }
 
 // @Bogus
