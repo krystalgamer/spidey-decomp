@@ -219,10 +219,12 @@ void dirRemoveFromPKR(
 }
 
 // @BIGTODO
-void flushPKR(LIBPKR_HANDLE*)
+u8 flushPKR(LIBPKR_HANDLE* a1)
 {
 	// @FIXME
-	printf("void flushPKR(LIBPKR_HANDLE*)");
+	typedef u8 (*func_ptr)(LIBPKR_HANDLE*);
+	func_ptr func = (func_ptr)0x00517B8B;
+	return func(a1);
 }
 
 // @Ok
@@ -269,6 +271,7 @@ u8 fileAddToPKR(
 
 	memset(pRes, 0, sizeof(NODE_FILEINFO));
 	memcpy(&pRes->fileInfo, &fileInfo, sizeof(fileInfo));
+	pRes->pDirInfo = pDirInfo;
 
 	if (pName && strlen(pName))
 	{

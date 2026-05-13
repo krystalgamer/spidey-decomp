@@ -626,9 +626,10 @@ static int my_video_player(const char*, i32)
 void game_patches(void)
 {
 	PATCH_CALL(0x004707BE, my_video_player);
-	patch_mem();
 
 	patch_alloc();
+
+	patch_mem();
 	patch_utils();
 	patch_ps2funcs();
 
