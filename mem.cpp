@@ -504,7 +504,7 @@ void *DCMem_New(u32 a1, i32 a2, i32 a3, void* a4, bool a5)
 
 	void *v8 = Mem_CoreNew(a1 + sizeof(SBlockHeader), a2, a3, 0);
 
-	i32 v9 = sizeof(SBlockHeader) - ((u8)v8 & 0x1F);
+	i32 v9 = sizeof(SBlockHeader) - ((u32)v8 & 0x1F);
 
 	void* result = reinterpret_cast<void*>(v9 + reinterpret_cast<i32>(v8));
 
