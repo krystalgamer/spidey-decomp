@@ -73,6 +73,9 @@ EXPORT u8 gGiveDefaultTexture;
 
 EXPORT TextureEntry gTextureEntries[256];
 
+//#define G_TEXTUREENTRIES (gTextureEntries)
+#define G_TEXTUREENTRIES (reinterpret_cast<TextureEntry*>(0x006A90B8))
+
 EXPORT i32 HashIndex;
 EXPORT Texture* pCurrentTex;
 
@@ -1075,6 +1078,7 @@ Texture *Spool_FindTextureEntry(char *name)
 }
 
 // @Ok
+// @Matching
 u32 Spool_FindTextureChecksum(char *name)
 {
 	char localName[256];
@@ -1084,13 +1088,12 @@ u32 Spool_FindTextureChecksum(char *name)
 	i32 index;
 	for (index = 0; index < 256; index++)
 	{
-		TextureEntry *currentEntry = &gTextureEntries[index];
-		if (!strcmp(currentEntry->Name, localName) && currentEntry->Active)
+		if (!strcmp(G_TEXTUREENTRIES[index].Name, localName) && G_TEXTUREENTRIES[index].Active)
 			break;
 	}
 
 	if (index < 256)
-		return gTextureEntries[index].Checksum;
+		return G_TEXTUREENTRIES[index].Checksum;
 
 	return 0;
 }
@@ -1182,4 +1185,5 @@ void patch_spool(void)
 	PATCH_PUSH_RET(0x004C9430, Spool_GetModelChecksum);
 	PATCH_PUSH_RET(0x004CA750, Spool_ClearAllPSXs);
 	PATCH_PUSH_RET(0x004CA640, Spool_ClearPSX);
+	PATCH_PUSH_RET(0x004C95C0, Spool_FindTextureChecksum);
 }
