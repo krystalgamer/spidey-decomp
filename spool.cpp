@@ -883,9 +883,10 @@ void texLoadChecksums(char *pTexName)
 
 
 // @Ok
+// @Matching
 u32 Spool_GetModelChecksum(CItem *pItem)
 {
-	return PSXRegion[pItem->mRegion].pModelChecksums[pItem->mModel];
+	return G_PSXREGION[pItem->mRegion].pModelChecksums[pItem->mModel];
 }
 
 // @Ok
@@ -1166,4 +1167,5 @@ void validate_POLY_F3(void)
 void patch_spool(void)
 {
 	PATCH_PUSH_RET(0x004CA5A0, Spool_FindRegion);
+	PATCH_PUSH_RET(0x004C9430, Spool_GetModelChecksum);
 }
