@@ -979,29 +979,30 @@ void Spool_RemoveUnusedTextures(void)
 }
 
 // @Ok
+// @Matching
 void Spool_ClearPSX(const char* Filename)
 {
 
 	char v3[32]; // [esp+8h] [ebp-40h] BYREF
 	char v4[32]; // [esp+28h] [ebp-20h] BYREF
 
-	print_if_false(Filename != 0, "No FileName sent to Spool_PSX.");
-	Utils_CopyString(Filename, v3, 32);
+	ASSERT(Filename != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(Filename, v3, sizeof(v3));
 
-	if ( !lowGraphics && Utils_CompareStrings(v3, "spidey") )
-		Utils_CopyString(SuitNames[CurrentSuit], v3, 32);
+	if ( !G_LOWGRAPHICS && Utils_CompareStrings(v3, "spidey") )
+		Utils_CopyString(SuitNames[G_CURRENTSUIT], v3, 32);
 
-	print_if_false(v3 != 0, "No FileName sent to Spool_PSX.");
-	Utils_CopyString(v3, v4, 32);
+	ASSERT(v3 != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(v3, v4, sizeof(v4));
 
-	if ( !lowGraphics && Utils_CompareStrings(v4, "spidey") )
-		Utils_CopyString(SuitNames[CurrentSuit], v4, 32);
+	if ( !G_LOWGRAPHICS && Utils_CompareStrings(v4, "spidey") )
+		Utils_CopyString(SuitNames[G_CURRENTSUIT], v4, 32);
 
 	i32 index = 0;
 
 	while (1)
 	{
-		if (Utils_CompareStrings(v4, PSXRegion[index].Filename))
+		if (Utils_CompareStrings(v4, G_PSXREGION[index].Filename))
 			break;
 
 		index++;
@@ -1180,4 +1181,5 @@ void patch_spool(void)
 	PATCH_PUSH_RET(0x004CA5A0, Spool_FindRegion);
 	PATCH_PUSH_RET(0x004C9430, Spool_GetModelChecksum);
 	PATCH_PUSH_RET(0x004CA750, Spool_ClearAllPSXs);
+	PATCH_PUSH_RET(0x004CA640, Spool_ClearPSX);
 }
