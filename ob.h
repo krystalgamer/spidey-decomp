@@ -292,4 +292,17 @@ EXPORT extern u8 gWhatIf;
 
 EXPORT extern CVector ZeroVector;
 
+void patch_CItem(void);
+void patch_CBody(void);
+
+#define CBODY_SUSPENDED        (1<<0)
+#define CBODY_RADIALSUSPENSION (1<<1)
+#define CBODY_CANBESEEDED      (1<<2)
+#define CBODY_HASSHADOW        (1<<3)
+#define CBODY_TARGETTABLE      (1<<4)
+#define CBODY_PROTECTED        (1<<5)
+#define CBODY_ZOMBIE           (1<<6)
+#define CBODY_TIMETODIE        (1<<7)
+#define CBODY_HITBYSMARTBOMB   (1<<8)
+
 #endif

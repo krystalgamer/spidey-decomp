@@ -151,9 +151,9 @@ void CBody::ShadowOn(void){
 
 // @Ok
 // @Matching
-INLINE void CBody::KillShadow(void){
-
-	this->mCBodyFlags &= ~8u;
+void CBody::KillShadow(void)
+{
+	this->mCBodyFlags &= ~(CBODY_HASSHADOW);
 	if (this->mpShadow)
 	{
 		delete this->mpShadow;
@@ -810,4 +810,15 @@ void validate_SLight(void)
 	VALIDATE(SLight, ColorMatrix, 0x14);
 
 	VALIDATE(SLight, BackColor, 0x28);
+}
+
+#include "my_patch.h"
+
+void patch_CItem(void)
+{
+}
+
+void patch_CBody(void)
+{
+	PATCH_PUSH_RET(0x00460570, CBody::KillShadow);
 }

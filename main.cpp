@@ -637,6 +637,9 @@ void game_patches(void)
 	patch_pcdcMem();
 	patch_pack();
 	patch_vram();
+
+	patch_CItem();
+	patch_CBody();
 }
 
 // @Bogus
