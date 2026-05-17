@@ -1179,6 +1179,7 @@ void validate_POLY_F3(void)
 #include "my_patch.h"
 
 
+// @Bogus
 void patch_spool(void)
 {
 	PATCH_PUSH_RET(0x004CA5A0, Spool_FindRegion);

@@ -813,11 +813,13 @@ void validate_SLight(void)
 
 #include "my_patch.h"
 
+// @Bogus
 void patch_CItem(void)
 {
 	// @TODO - patch constructor
 }
 
+// @Bogus
 void patch_CBody(void)
 {
 	PATCH_PUSH_RET(0x00460570, CBody::KillShadow);
