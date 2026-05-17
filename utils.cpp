@@ -6,6 +6,7 @@
 #include "baddy.h"
 #include "spool.h"
 #include "m3dzone.h"
+#include "my_assert.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -572,6 +573,13 @@ u32 Utils_CrapXZDist(const CVector& a,const CVector& b) {
 // @Validate: added this with validation script
 int Utils_CompareStrings(const char* left, const char* right) {
 
+	// @FIXME
+	
+	typedef i32 (*func_ptr)(const char*, const char*);
+	func_ptr func = (func_ptr)0x004E6560;
+
+	return func(left, right);
+
     if (left == NULL && right == NULL){
         return 1;
     }
@@ -651,7 +659,7 @@ int Utils_CopyString(const char* src, char* dst, int maxSize)
 		}
 	}
 
-	print_if_false(total < maxSize, "Dest buffer overflow in Utils_CopyString");
+	ASSERT(total < maxSize, "Dest buffer overflow in Utils_CopyString");
 	*dst = 0;
 	return total;
 }

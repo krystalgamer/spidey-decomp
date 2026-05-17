@@ -79,7 +79,7 @@ void CItem::operator delete(void *ptr)
 
 // @Ok
 // @Matching
-INLINE CItem::CItem()
+CItem::CItem()
 {
 	this->mScale.Set(0x1000, 0x1000, 0x1000);
 
@@ -104,10 +104,9 @@ int CBody::Hit(SHitInfo*)
 }
 
 // @Ok
-void CItem::InitItem(const char * a1)
+void CItem::InitItem(const char * pName)
 {
-
-	int Region = Spool_FindRegion(a1);
+	int Region = Spool_FindRegion(pName);
 	this->mRegion = Region;
 	this->mModel = 0;
 
@@ -816,6 +815,7 @@ void validate_SLight(void)
 
 void patch_CItem(void)
 {
+	// @TODO - patch constructor
 }
 
 void patch_CBody(void)

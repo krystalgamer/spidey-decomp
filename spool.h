@@ -152,4 +152,6 @@ EXPORT extern SPSXRegion PSXRegion[MAXPSX];
 EXPORT extern i32 EnvRegions[2];
 EXPORT extern i32 gSpoolCurrentOpenSpot;
 
+void patch_spool(void);
+
 #endif

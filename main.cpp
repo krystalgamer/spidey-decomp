@@ -640,6 +640,8 @@ void game_patches(void)
 
 	patch_CItem();
 	patch_CBody();
+
+	patch_spool();
 }
 
 // @Bogus

@@ -51,13 +51,23 @@ EXPORT SAccess* gAccessRelated[MAXPSX];
 const i32 MAXITEMSPERCHECKSUM = 5;
 EXPORT i16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
 
-SPSXRegion PSXRegion[MAXPSX];
+EXPORT SPSXRegion PSXRegion[MAXPSX];
+
+//#define G_PSXREGION (PSXRegion)
+#define G_PSXREGION (reinterpret_cast<SPSXRegion*>(0x006B2440))
 
 #define TEXTURE_CHECKSUM_TABLE_SIZE (MAXTEXTUREENTRIES)
 EXPORT Texture* TextureChecksumHashTable[TEXTURE_CHECKSUM_TABLE_SIZE];
 
 EXPORT i32 lowGraphics;
+
+//#define G_LOWGRAPHICS (lowGraphics)
+#define G_LOWGRAPHICS (*reinterpret_cast<i32*>(0x006B78F8))
+
 EXPORT i32 CurrentSuit;
+
+//#define G_CURRENTSUIT (CurrentSuit)
+#define G_CURRENTSUIT (*reinterpret_cast<i32*>(0x005559DC))
 
 EXPORT u8 gGiveDefaultTexture;
 
@@ -908,22 +918,21 @@ CItem* Spool_FindEnviroItem(u32 Checksum)
 
 // @Ok
 // @Matching
-i32 Spool_FindRegion(const char *a1)
+i32 Spool_FindRegion(const char *pName)
 {
 	char fileName[0x20];
-	print_if_false(a1 != 0, "No FileName sent to Spool_PSX.");
-	Utils_CopyString(a1, fileName, sizeof(fileName));
+	ASSERT(pName != 0, "No FileName sent to Spool_PSX.");
+	Utils_CopyString(pName, fileName, sizeof(fileName));
 
-
-	if (!lowGraphics)
+	if (!G_LOWGRAPHICS)
 	{
 		if (Utils_CompareStrings(fileName, "spidey"))
-			Utils_CopyString(SuitNames[CurrentSuit], fileName, sizeof(fileName));
+			Utils_CopyString(SuitNames[G_CURRENTSUIT], fileName, sizeof(fileName));
 	}
 
 	for (i32 i = 0; i < MAXPSX; i++)
 	{
-		if (Utils_CompareStrings(fileName, PSXRegion[i].Filename))
+		if (Utils_CompareStrings(fileName, G_PSXREGION[i].Filename))
 		{
 			return i;
 		}
@@ -1148,4 +1157,13 @@ void validate_POLY_F3(void)
 
 	VALIDATE(POLY_F3, x2, 0x10);
 	VALIDATE(POLY_F3, y2, 0x12);
+}
+
+
+#include "my_patch.h"
+
+
+void patch_spool(void)
+{
+	PATCH_PUSH_RET(0x004CA5A0, Spool_FindRegion);
 }
