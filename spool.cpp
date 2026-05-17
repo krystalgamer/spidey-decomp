@@ -959,14 +959,24 @@ INLINE u32 *Spool_SkipPackets(u32 *pPSX)
 }
 
 // @BIGTODO
-void ClearRegion(i32, i32)
+void ClearRegion(i32 a1, i32 a2)
 {
-	printf("void ClearRegion(int, int)");
+	// @FIXME
+	typedef void (*func_ptr)(i32, i32);
+	func_ptr func = (func_ptr)0x004CA7A0;
+
+	func(a1, a2);
 }
 
 // @BIGTODO
 void Spool_RemoveUnusedTextures(void)
-{}
+{
+	// @FIXME
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x004C9680;
+
+	func();
+}
 
 // @Ok
 void Spool_ClearPSX(const char* Filename)
@@ -1006,11 +1016,12 @@ void Spool_ClearPSX(const char* Filename)
 }
 
 // @Ok
+// @Matching
 void Spool_ClearAllPSXs(void)
 {
 	for (i32 i = 0; i < MAXPSX; i++)
 	{
-		if (!PSXRegion[i].Protected)
+		if (!G_PSXREGION[i].Protected)
 			ClearRegion(i, 1);
 	}
 
@@ -1168,4 +1179,5 @@ void patch_spool(void)
 {
 	PATCH_PUSH_RET(0x004CA5A0, Spool_FindRegion);
 	PATCH_PUSH_RET(0x004C9430, Spool_GetModelChecksum);
+	PATCH_PUSH_RET(0x004CA750, Spool_ClearAllPSXs);
 }
