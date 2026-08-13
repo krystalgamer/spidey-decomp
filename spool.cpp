@@ -1221,4 +1221,5 @@ void patch_spool(void)
 	PATCH_PUSH_RET(0x004CA750, Spool_ClearAllPSXs);
 	PATCH_PUSH_RET(0x004CA640, Spool_ClearPSX);
 	PATCH_PUSH_RET(0x004C95C0, Spool_FindTextureChecksum);
+	PATCH_PUSH_RET(0x004C97B0, Spool_GetPalette);
 }
