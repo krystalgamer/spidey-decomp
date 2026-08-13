@@ -460,10 +460,44 @@ i32 Spool_GetEnvIndex(i32 a1)
 	return (a1 != EnvRegions[0]) ? -1 : 0;
 }
 
-// @SMALLTODO
-void Spool_GetPalette(u32,i32)
+// @Ok
+u32* Spool_GetPalette(u32 Checksum, i32 Region)
 {
-    printf("Spool_GetPalette(u32,i32)");
+	i32 numModels = reinterpret_cast<i32*>(G_PSXREGION[Region].ppModels)[-1];
+	// pModelChecksums has one extra trailing word after its numModels entries
+	u32 skip = G_PSXREGION[Region].pModelChecksums[numModels];
+	u32* pPSX = G_PSXREGION[Region].pPSX;
+
+	u32 *i;
+	for ( i = (u32 *)((char *)pPSX + pPSX[1]); *i != -1; )
+	{
+		i++;
+		i = (u32 *)((char *)i + i[0] + 4);
+	}
+
+	u32* pPalette = &i[skip + numModels + 2];
+	u32 numPalettes = *pPalette++;
+
+	for (u32 n16 = 0; n16 < numPalettes; n16++)
+	{
+		if (*pPalette == Checksum)
+			return pPalette + 1;
+
+		pPalette = (u32*)((char*)pPalette + 0x24);
+	}
+
+	numPalettes = *pPalette++;
+
+	for (u32 n256 = 0; n256 < numPalettes; n256++)
+	{
+		if (*pPalette == Checksum)
+			return pPalette + 1;
+
+		pPalette = (u32*)((char*)pPalette + 0x204);
+	}
+
+	print_if_false(0, "Unable to find palette.");
+	return 0;
 }
 
 // @Ok
