@@ -7,6 +7,8 @@
 #include "spool.h"
 #include "m3dzone.h"
 #include "my_assert.h"
+#include "ps2redbook.h"
+#include "SpideyDX.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -474,10 +476,68 @@ i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 	return ((a2 - a1) >> delta) + a1;
 }
 
-// @SMALLTODO
+static volatile i32 * const dword_6B4C9C = (volatile i32*)0x6B4C9C;
+static char * const byte_682770 = (char*)0x682770;
+static i32 * const dword_681D2C = (i32*)0x681D2C;
+static char * const byte_550D81 = (char*)0x550D81;
+static i32 * const dword_68276C = (i32*)0x68276C;
+static i32 * const dword_550D7C = (i32*)0x550D7C;
+static i32 * const dword_5FAE98 = (i32*)0x5FAE98;
+static i32 * const dword_681D3C = (i32*)0x681D3C;
+static i32 * const dword_681D40 = (i32*)0x681D40;
+static i32 * const dword_681D44 = (i32*)0x681D44;
+
+// @Ok
+// @AlmostMatching: 5FAE98 is compared from memory instead of a cached register,
+// and the Redbook_XAPlay argument loads use swapped registers (eax/edx)
 void Utils_VblankProcessing(void)
 {
-    printf("Utils_VblankProcessing(void)");
+	if (*dword_6B4C9C)
+	{
+		if (*dword_6B4C9C & 0xFFFF0000)
+			*dword_6B4C9C -= 0x10000;
+		else
+			--*dword_6B4C9C;
+	}
+
+	if (*byte_682770)
+	{
+		if (gsub_516090(*dword_681D2C) == 4)
+		{
+			*byte_682770 = 0;
+			*byte_550D81 = 1;
+			*dword_68276C = 30;
+			*dword_550D7C = -1;
+		}
+
+		return;
+	}
+
+	if (*dword_68276C)
+	{
+		if (*dword_5FAE98)
+			return;
+
+		if (--*dword_68276C)
+			return;
+
+		i32 xaThree = *dword_681D3C;
+		i32 xaTwo = *dword_681D40;
+		i32 xaOne = *dword_681D44;
+
+		if (xaOne | xaTwo | xaThree)
+		{
+			Redbook_XAPlay(xaThree, xaTwo, xaOne);
+
+			*dword_681D44 = 0;
+			*dword_681D40 = 0;
+			*dword_681D3C = 0;
+		}
+	}
+	else if (!*dword_5FAE98)
+	{
+		Redbook_XAReset();
+	}
 }
 
 // @Ok

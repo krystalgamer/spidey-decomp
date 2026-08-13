@@ -28,6 +28,7 @@ EXPORT void DXERR_printf(const char*, ...);
 
 EXPORT LRESULT CALLBACK SpideyWndProc(HWND, UINT, WPARAM, LPARAM);
 EXPORT i32 WinYield(void);
+EXPORT i32 gsub_516090(i32);
 
 EXPORT void debugSettings(void);
 EXPORT i32 mipmapOffset(u32,u32,f32);
