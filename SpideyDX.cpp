@@ -212,6 +212,13 @@ LRESULT CALLBACK SpideyWndProc(
 	return 0;
 }
 
+// @SMALLTODO
+i32 gsub_516090(i32)
+{
+    printf("i32 gsub_516090(i32)");
+    return 0x13082026;
+}
+
 // @Ok
 // @Matching
 i32 WinYield(void)
