@@ -123,7 +123,7 @@ EXPORT void Spool_AnimAccess(char *,SAnimFrame **);
 EXPORT void Spool_ClearEnvironmentRegions(void);
 EXPORT SAnimFrame* Spool_FindAnim(char *,i32);
 EXPORT i32 Spool_GetEnvIndex(i32);
-EXPORT void Spool_GetPalette(u32,i32);
+EXPORT u32* Spool_GetPalette(u32,i32);
 EXPORT void Spool_Init(void);
 EXPORT void Spool_InitialiseEnvModelHashTable(void);
 EXPORT void Spool_MaskFaceFlags(i32,u32,u32);
