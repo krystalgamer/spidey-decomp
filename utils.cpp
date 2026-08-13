@@ -1066,4 +1066,5 @@ void patch_utils(void)
 	PATCH_PUSH_RET(0x004E6520, Utils_GenerateCRC);
 	PATCH_PUSH_RET(0x004E6150, Utils_Dist);
 	PATCH_PUSH_RET(0x004E65E0, Utils_CopyString);
+	PATCH_PUSH_RET(0x004E5C10, Utils_VblankProcessing);
 }

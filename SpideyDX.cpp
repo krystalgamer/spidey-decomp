@@ -217,10 +217,13 @@ LRESULT CALLBACK SpideyWndProc(
 }
 
 // @SMALLTODO
-i32 gsub_516090(i32)
+i32 gsub_516090(i32 a1)
 {
-    printf("i32 gsub_516090(i32)");
-    return 0x13082026;
+	// @FIXME
+	typedef i32 (*func_ptr)(i32);
+	func_ptr func = (func_ptr)0x00516090;
+
+	return func(a1);
 }
 
 // @Ok
