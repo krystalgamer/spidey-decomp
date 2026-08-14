@@ -87,4 +87,6 @@ void validate_SLinkInfo(void);
 void validate_SCommandPoint(void);
 void validate_PendingListEntry(void);
 
+void patch_trig(void);
+
 #endif

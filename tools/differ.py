@@ -129,7 +129,7 @@ def main():
     tools_path = base_path.parents[0]
     proj_path = base_path.parents[1]
 
-    exe = ExeFile(proj_path / 'Release' / 'spider.exe')
+    exe = ExeFile(proj_path / 'Release' / 'spider.dll')
 
     export_symbols = dict(exe.export_symbols_generator())
     names_and_addresses = dict(name_generator(tools_path / 'names.json'))
@@ -139,6 +139,8 @@ def main():
 
 
     for entry in export_symbols.keys():
+
+        entry = entry.rstrip('\x00')
         if entry not in names_and_addresses:
             exported_but_missing.append(entry)
         else:

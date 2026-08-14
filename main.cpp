@@ -642,6 +642,7 @@ void game_patches(void)
 	patch_CBody();
 
 	patch_spool();
+	patch_trig();
 }
 
 // @Bogus

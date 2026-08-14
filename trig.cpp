@@ -18,9 +18,6 @@ EXPORT PendingListEntry PendingListArray[MAXPENDING];
 EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
 
-EXPORT char *MenuFileNamePointers[40];
-
-EXPORT i32 NumTrigMenuEntries;
 EXPORT i32 Restart;
 i32 RestartNode;
 i32 gReStartDeathRelated;
@@ -34,6 +31,16 @@ extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
 extern CBody* EnvironmentalObjectList;
 extern CBody* PowerUpList;
+
+
+EXPORT char *MenuFileNamePointers[40];
+
+//#define G_MENUFILENAMEPOINTERS (MenuFileNamePointers)
+#define G_MENUFILENAMEPOINTERS (reinterpret_cast<char**>(0x006B3844))
+
+EXPORT i32 NumTrigMenuEntries;
+//#define G_NUMTRIGMENUENTRIES (NumTrigMenuEntries)
+#define G_NUMTRIGMENUENTRIES (*reinterpret_cast<i32*>(0x006B467C))
 
 // @Bogus
 void trigLog(const char*, ...)
@@ -622,10 +629,10 @@ void Trig_ClearTrigMenu(void)
 {
 	for (i32 i = 0; i<40; i++)
 	{
-		MenuFileNamePointers[i] = 0;
+		G_MENUFILENAMEPOINTERS[i] = 0;
 	}
 
-	NumTrigMenuEntries = 0;
+	G_NUMTRIGMENUENTRIES = 0;
 }
 
 // @Ok
@@ -727,4 +734,12 @@ void validate_PendingListEntry(void)
 	VALIDATE(PendingListEntry, NodeIndex, 0x0);
 	VALIDATE(PendingListEntry, field_2, 0x2);
 	VALIDATE(PendingListEntry, pCommands, 0x4);
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_trig(void)
+{
+	PATCH_PUSH_RET(0x004DE750, Trig_ClearTrigMenu);
 }
