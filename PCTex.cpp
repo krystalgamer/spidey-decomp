@@ -1944,10 +1944,71 @@ void PCTex_UnloadTextures(void)
 	}
 }
 
-// @SMALLTODO
+// @Ok
+// @AlmostMatching: the original keeps zero in ebx for the stores, and the
+// PCTex_ReloadTextures call shows up inlined because it is still a printf stub
 void PCTex_UpdateForSoftwareRenderer(void)
 {
-    printf("PCTex_UpdateForSoftwareRenderer(void)");
+	if (gLowGraphics)
+	{
+		gMaxTextureAspectRatio = 0;
+		gMaxTextureWidth = 256;
+		gTextureHeight = 256;
+		gSquareOnly = 0;
+
+		for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
+		{
+			if (gPcTexContainer[i].field_28 & 2)
+				gPcTexContainer[i].field_28 |= 1;
+			else
+				gPcTexContainer[i].field_28 &= ~1;
+		}
+
+		gPcTexPvrAndSoftRendererRelated = 0;
+	}
+	else
+	{
+		for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
+		{
+			if (gPcTexContainer[i].field_28 & 4)
+				gPcTexContainer[i].field_28 |= 1;
+			else
+				gPcTexContainer[i].field_28 &= ~1;
+		}
+
+		if (gPcTexContainer[0].field_28 & 1)
+		{
+			gPcTexPvrAndSoftRendererRelated = 0;
+		}
+		else if (gPcTexContainer[4].field_28 & 1)
+		{
+			gPcTexPvrAndSoftRendererRelated = 4;
+		}
+		else if (gPcTexContainer[1].field_28 & 1)
+		{
+			gPcTexPvrAndSoftRendererRelated = 1;
+		}
+		else
+		{
+			for (i32 index = 0; index < NUM_PCTEX_CONTAINERS; index++)
+			{
+				if (gPcTexContainer[index].field_28 & 1)
+				{
+					gPcTexPvrAndSoftRendererRelated = index;
+					break;
+				}
+			}
+		}
+
+#ifdef _WIN32
+		gMaxTextureWidth = gD3DDevCaps.dwMaxTextureWidth;
+		gTextureHeight = gD3DDevCaps.dwMaxTextureHeight;
+		gMaxTextureAspectRatio = gD3DDevCaps.dwMaxTextureAspectRatio;
+		gSquareOnly = (gD3DDevCaps.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
+#endif
+	}
+
+	PCTex_ReloadTextures();
 }
 
 // @Ok
