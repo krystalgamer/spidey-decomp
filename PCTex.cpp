@@ -1554,10 +1554,82 @@ void PCTex_ReleaseTexture(i32 index, bool a2)
 	}
 }
 
-// @MEDIUMTODO
+// @Ok
+// @AlmostMatching: only register allocation differs (the low graphics flag and
+// the loop index use swapped registers), the inlined PCTex_LoadPcIcons matches
 void PCTex_ReloadTextures(void)
 {
-    printf("PCTex_ReloadTextures(void)");
+	i32 lowFlag = gLowGraphics ? 0x400 : 0;
+
+	PCTex_LoadPcIcons();
+
+	for (i32 index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
+	{
+		if (!(gGlobalTextures[index].mFlags & 0x8000))
+		{
+			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+				continue;
+
+			if ((gGlobalTextures[index].mFlags & 0x400) == lowFlag)
+				continue;
+		}
+
+		i32 type = gGlobalTextures[index].field_64;
+		u32 flags = ((gGlobalTextures[index].mFlags & 0x800u) | 0x80) >> 7;
+
+		switch (type)
+		{
+			case 0x100:
+				PCTex_CreateTexture256(
+						gGlobalTextures[index].mSizeOne,
+						gGlobalTextures[index].mSizeTwo,
+						gGlobalTextures[index].pTextureData,
+						reinterpret_cast<const u16*>(gGlobalTextures[index].field_60),
+						flags,
+						"RESTORED",
+						index,
+						gGlobalTextures[index].field_48);
+				break;
+			case 0x10:
+				PCTex_CreateTexture16(
+						gGlobalTextures[index].mSizeOne,
+						gGlobalTextures[index].mSizeTwo,
+						gGlobalTextures[index].pTextureData,
+						reinterpret_cast<const u16*>(gGlobalTextures[index].field_60),
+						"RELOADED",
+						index,
+						gGlobalTextures[index].field_48,
+						flags);
+				break;
+			case 0x10000:
+				if (!(gGlobalTextures[index].mFlags & 0x8000))
+					PCTex_ReleaseSysTexture(index, 0);
+
+				PCTex_CreateTexturePVRInId(
+						index,
+						gGlobalTextures[index].mSizeOne,
+						gGlobalTextures[index].mSizeTwo,
+						gGlobalTextures[index].field_60,
+						gGlobalTextures[index].pTextureData,
+						gGlobalTextures[index].mFlags & 0x1FF,
+						"RELOADED",
+						gGlobalTextures[index].field_48);
+				break;
+			case 0xFFFFFF:
+				if (!(gGlobalTextures[index].mFlags & 0x8000))
+					PCTex_ReleaseSysTexture(index, 0);
+
+				PCTex_LoadLtiTexture(
+						static_cast<const char*>(gGlobalTextures[index].pTextureData),
+						gGlobalTextures[index].field_48,
+						index,
+						gGlobalTextures[index].mFlags & 0x1FF);
+				break;
+			default:
+				print_if_false(0, "Invalid color count for original texture data: %i", type);
+				break;
+		}
+	}
 }
 
 // @Ok
