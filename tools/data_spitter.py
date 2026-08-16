@@ -23,6 +23,12 @@ def main():
     data = dict(data_generator())
 
     for k,v in data.items():
+
+        cur_bin = path / f'{k}.bin'
+
+        if cur_bin.exists():
+            continue
+
         with open(path / f'{k}.bin', 'wb') as fp:
             fp.write(v)
     print('Done')

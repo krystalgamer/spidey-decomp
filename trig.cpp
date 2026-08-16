@@ -14,13 +14,18 @@ i16 **gTrigNodes;
 i32 NumNodes;
 
 const i32 MAXPENDING = 16;
+
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
+//#define G_PENDINGLISTARRAY (PendingListArray)
+#define G_PENDINGLISTARRAY (reinterpret_cast<PendingListEntry*>(0x006B4688))
 
 EXPORT SCommandPoint* CommandPoints;
 //#define G_COMMANDPOINTS (CommandPoints)
 #define G_COMMANDPOINTS (*reinterpret_cast<SCommandPoint**>(0x006B4708))
 
 EXPORT SCommandPoint* HashTable[256];
+//#define G_HASHTABLE (HashTable)
+#define G_HASHTABLE (reinterpret_cast<SCommandPoint**>(0x006B4214))
 
 EXPORT i32 Restart;
 i32 RestartNode;
@@ -348,9 +353,14 @@ void Trig_DeleteTrigFile(void)
 }
 
 // @BIGTODO
-void ExecuteCommandList(u16*, i32, i32)
+void ExecuteCommandList(u16* pCommands, i32 Node, i32 WaitForSpooling)
 {
-	printf("ExecuteCommandList");
+
+	typedef void (*func_ptr)(u16*, i32, i32);
+
+	func_ptr func = (func_ptr)0x004E0210;
+
+	func(pCommands, Node, WaitForSpooling);
 }
 
 // @Ok
@@ -440,19 +450,20 @@ SCommandPoint* CreateCommandPoint(u32 checksum, u16 node, u16* pCommands)
 }
 
 // @Ok
+// @Matching
 void Trig_DeleteCommandPoints(void)
 {
 	for (i32 i = 0; i<256; i++)
-		HashTable[i] = 0;
+		G_HASHTABLE[i] = 0;
 
-	for (SCommandPoint *cur = CommandPoints; cur; )
+	for (SCommandPoint *cur = G_COMMANDPOINTS; cur; )
 	{
 		SCommandPoint *next = cur->pNext;
 		Mem_Delete(reinterpret_cast<void*>(cur));
 		cur = next;
 	}
 
-	CommandPoints = 0;
+	G_COMMANDPOINTS = 0;
 	Trig_ZeroPendingList();
 }
 
@@ -461,8 +472,8 @@ INLINE void Trig_ZeroPendingList(void)
 {
 	for (i32 i = 0; i<MAXPENDING; i++)
 	{
-		PendingListArray[i].NodeIndex = 0;
-		PendingListArray[i].pCommands = 0;
+		G_PENDINGLISTARRAY[i].NodeIndex = 0;
+		G_PENDINGLISTARRAY[i].pCommands = 0;
 	}
 }
 
@@ -750,4 +761,5 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE750, Trig_ClearTrigMenu);
 	PATCH_PUSH_RET(0x004DE890, Trig_ResetCPCollisionFlags);
 	PATCH_PUSH_RET(0x004DE8B0, Trig_ResetCPExecutedFlags);
+	PATCH_PUSH_RET(0x004DE840, Trig_DeleteCommandPoints);
 }
