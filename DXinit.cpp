@@ -472,9 +472,12 @@ HRESULT WINAPI MyD3DEnumCallback(
 }
 
 // @SMALLTODO
-void displayD3DError(long,char *,i32)
+void displayD3DError(long a1, char * a2, i32 a3)
 {
-    printf("displayD3DError(long,char *,i32)");
+	// @FIXME
+	typedef void (*func_ptr)(long, char*, i32);
+	func_ptr func = (func_ptr)0x004FC820;
+	func(a1, a2, a3);
 }
 
 // @SMALLTODO

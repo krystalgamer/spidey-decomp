@@ -711,8 +711,9 @@ INLINE i32 PCTex_CreateTexturePVR(
 	 return -1;
 }
 
-// @NotOk
-// Missing low graphics and other sliced stuff
+// @Ok
+// @AlmostMatching: register allocation and our line numbers in the error
+// macro differ, DXINIT_ShutDown gets inlined where the original calls it
 i32 PCTex_CreateTexturePVRInId(
 		i32 a1,
 		i32 a2,
@@ -730,24 +731,28 @@ i32 PCTex_CreateTexturePVRInId(
 	if (a4 & 0x1000)
 		return 0;
 
-	print_if_false(!gGlobalTextures[a1].mD3DTex && !gGlobalTextures[a1].mSplit, "texture slot already used");
+	print_if_false(!(gGlobalTextures[a1].mD3DTex || gGlobalTextures[a1].mSplit), "texture slot already used");
 
 	gGlobalTextures[a1].mHScale = 1.0f;
 	gGlobalTextures[a1].mWScale = 1.0f;
+	gGlobalTextures[a1].field_C = 1.0f / (f32)a2;
+
+	u32 format = a4 & 0xFF;
+	u32 v12 = a4 & 0xFF00;
+
 	gGlobalTextures[a1].mSizeOne = a2;
 	gGlobalTextures[a1].mSizeTwo = a3;
 	gGlobalTextures[a1].mFlags = a6;
 	gGlobalTextures[a1].mTexture = 0;
-	gGlobalTextures[a1].field_C = 1.0f / (f32)a2;
 	gGlobalTextures[a1].field_10 = 1.0f / (f32)a3;
 
 	char v13 = 0;
-	if (!a4 || a4 == 2 || a4 == 7)
+	if (!format || format == 2 || format == 7)
 		v13 = 1;
 
-	gGlobalTextures[a1].mAlpha ^= v13;
+	gGlobalTextures[a1].mAlpha ^= (gGlobalTextures[a1].mAlpha ^ v13) & 1;
 
-	if (!a7)
+	if (a7)
 		strncpy(gGlobalTextures[a1].field_28, a7, 0x1F);
 	else
 		gGlobalTextures[a1].field_28[0] = 0;
@@ -755,30 +760,30 @@ i32 PCTex_CreateTexturePVRInId(
 	gGlobalTextures[a1].field_48 = a8;
 
 	i32 v14;
-	if (!a4)
+	if (!format)
 	{
 		v14 = 0;
 	}
-	else if (a4 == 2)
+	else if (format == 2)
 	{
 		v14 = 1;
 	}
-	else if (a4 == 1)
+	else if (format == 1)
 	{
 		v14 = 2;
 	}
 	else
 	{
-		v14 = a4 == 7 ? 3 : -1;
+		v14 = format == 7 ? 3 : -1;
 	}
 
-	if (v14 == 3 || gPcTexContainer[v14].field_28 & 1)
+	if (v14 != 3 && gPcTexContainer[v14].field_28 & 1)
 	{
-		gGlobalTextures[a1].field_24 = gPcTexPvrAndSoftRendererRelated;
+		gGlobalTextures[a1].field_24 = v14;
 	}
 	else
 	{
-		gGlobalTextures[a1].field_24 = v14;
+		gGlobalTextures[a1].field_24 = gPcTexPvrAndSoftRendererRelated;
 	}
 
 	i32 v84;
@@ -787,17 +792,16 @@ i32 PCTex_CreateTexturePVRInId(
 	else
 		v84 = 2 * a2;
 
-	if (a4 == 7)
+	if (format == 7)
 		v84 *= 2;
 
-	u32 v12 = a4 & 0xFF00;
-	if (v12 == 0x100 || v12 == 0x200 || v12 == 0xD00)
+	if (v12 == 0x100 || v12 == 0xD00 || v12 == 0x200)
 	{
 		v83 = PVR_ConvertTwiddledToBMP(
 				a2,
 				a3,
 				reinterpret_cast<const u16*>(a5),
-				v12 == 512);
+				v12 == 0x200);
 	}
 	else if (v12 == 0x300 || v12 == 0x400)
 	{
@@ -805,16 +809,17 @@ i32 PCTex_CreateTexturePVRInId(
 				a2,
 				a3,
 				reinterpret_cast<const u16*>(a5),
-				v12 == 1024);
+				v12 == 0x400);
 	}
 
 	gGlobalTextures[a1].mD3DTex = 0;
 
-	if (a2 <= gMaxTextureWidth && a3 <= gTextureHeight)
+	if (a2 <= (i32)gMaxTextureWidth && a3 <= (i32)gTextureHeight)
 	{
 		gPvrCountRelated++;
-		i32 v19 = gGlobalTextures[a1].field_24;
 		gGlobalTextures[a1].field_50 = gPvrCountRelated;
+
+		i32 v19 = gGlobalTextures[a1].field_24;
 
 		i32 v20;
 		if (gPcTexContainer[v19].field_4 == 32)
@@ -828,46 +833,280 @@ i32 PCTex_CreateTexturePVRInId(
 
 		if (gLowGraphics)
 		{
-			// @FIXME: todo lol
+			u8* pSysTex = static_cast<u8*>(malloc(v20 * a3));
+			print_if_false(pSysTex != 0, "out of memory loading softrend textures!\r\n");
+			gGlobalTextures[a1].mD3DTex = reinterpret_cast<IDirectDrawSurface7*>(pSysTex);
+			gGlobalTextures[a1].mFlags |= 0x400;
+
+			if (v14 == gGlobalTextures[a1].field_24)
+			{
+				i32 rowBytes = v20;
+				if (!rowBytes)
+					rowBytes = 2 * a2;
+
+				const u8* pSrc = static_cast<const u8*>(v83);
+				u8* pDst = pSysTex;
+
+				for (i32 y = 0; y < a3; y++)
+				{
+					memcpy(pDst, pSrc, rowBytes);
+					pSrc += v84;
+					pDst += v20;
+				}
+			}
+			else
+			{
+				u8 converted = 0;
+				if (v14 == 1)
+				{
+					i32 threshold = 20 * (a2 * a3) / 100;
+					const u16* pRow = reinterpret_cast<const u16*>(v83);
+
+					for (i32 y = 0; y < a3; y++)
+					{
+						for (i32 x = 0; x < a2; x++)
+						{
+							u16 alpha = pRow[x] >> 12;
+							if (alpha > 0 && alpha < 0xF)
+							{
+								if (--threshold < 0)
+								{
+									gGlobalTextures[a1].mFlags |= 0x1000;
+									goto scannedSoft;
+								}
+							}
+						}
+
+						pRow = reinterpret_cast<const u16*>(
+								reinterpret_cast<const u8*>(pRow) + v84);
+					}
+scannedSoft:
+					converted = 1;
+				}
+
+				copyConvertBitmap(
+						v83,
+						v84,
+						v14,
+						pSysTex,
+						v20,
+						gGlobalTextures[a1].field_24,
+						a2,
+						a3,
+						converted);
+			}
 		}
 		else
 		{
-			downloadTexture(
-					&gGlobalTextures[a1], 
-					reinterpret_cast<u16*>(v83),
-					v84,
-					v14);
+#ifdef _WIN32
+			i32 width = gGlobalTextures[a1].mSizeOne;
+			i32 height = gGlobalTextures[a1].mSizeTwo;
+
+			DDSURFACEDESC2 desc;
+			memset(&desc, 0, sizeof(desc));
+			desc.dwSize = sizeof(desc);
+			desc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
+			desc.dwHeight = height;
+			desc.dwWidth = width;
+			memcpy(&desc.ddpfPixelFormat, &gPcTexContainer[v19].field_2C, sizeof(DDPIXELFORMAT));
+			desc.ddsCaps.dwCaps = DDSCAPS_TEXTURE | DDSCAPS_SYSTEMMEMORY;
+
+			IDirectDrawSurface7* pTempSurf;
+			HRESULT hr = lpDD->CreateSurface(&desc, &pTempSurf, 0);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+
+			hr = pTempSurf->Lock(0, &desc, DDLOCK_WRITEONLY, 0);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+
+			if (gGlobalTextures[a1].field_24 == v14)
+			{
+				i32 rowBytes;
+				if (gPcTexContainer[gGlobalTextures[a1].field_24].field_4 == 32)
+				{
+					rowBytes = 4 * width;
+				}
+				else
+				{
+					rowBytes = 2 * width;
+				}
+
+				if (!rowBytes)
+					rowBytes = 2 * width;
+
+				const u8* pSrc = static_cast<const u8*>(v83);
+				u8* pDst = static_cast<u8*>(desc.lpSurface);
+
+				for (i32 y = 0; y < height; y++)
+				{
+					memcpy(pDst, pSrc, rowBytes);
+					pSrc += v84;
+					pDst += desc.lPitch;
+				}
+			}
+			else
+			{
+				u8 converted = 0;
+				if (v14 == 1)
+				{
+					i32 threshold = 20 * (height * width) / 100;
+					const u16* pRow = reinterpret_cast<const u16*>(v83);
+
+					for (i32 y = 0; y < height; y++)
+					{
+						for (i32 x = 0; x < width; x++)
+						{
+							u16 alpha = pRow[x] >> 12;
+							if (alpha > 0 && alpha < 0xF)
+							{
+								if (--threshold < 0)
+								{
+									gGlobalTextures[a1].mFlags |= 0x1000;
+									goto scannedHard;
+								}
+							}
+						}
+
+						pRow = reinterpret_cast<const u16*>(
+								reinterpret_cast<const u8*>(pRow) + v84);
+					}
+scannedHard:
+					converted = 1;
+				}
+
+				copyConvertBitmap(
+						v83,
+						v84,
+						v14,
+						desc.lpSurface,
+						desc.lPitch,
+						gGlobalTextures[a1].field_24,
+						width,
+						height,
+						converted);
+			}
+
+			hr = pTempSurf->Unlock(0);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+
+			memset(&desc, 0, sizeof(desc));
+			desc.dwSize = sizeof(desc);
+			desc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
+			desc.dwHeight = height;
+			desc.dwWidth = width;
+			memcpy(&desc.ddpfPixelFormat, &gPcTexContainer[gGlobalTextures[a1].field_24].field_2C, sizeof(DDPIXELFORMAT));
+			desc.ddsCaps.dwCaps = DDSCAPS_TEXTURE;
+			desc.ddsCaps.dwCaps2 = DDSCAPS2_TEXTUREMANAGE;
+
+			hr = lpDD->CreateSurface(&desc, &gGlobalTextures[a1].mD3DTex, 0);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+
+			hr = gGlobalTextures[a1].mD3DTex->Blt(0, pTempSurf, 0, DDBLT_WAIT, 0);
+			D3D_ERROR_LOG_AND_QUIT(hr);
+
+			hr = pTempSurf->Release();
+			D3D_ERROR_LOG_AND_QUIT(hr);
+#endif
 		}
 
 		if (a6 & 0x200)
 		{
-			gGlobalTextures[a1].mFlags &= ~2;
-			gGlobalTextures[a1].mFlags |= 0x2006;
-
+			gGlobalTextures[a1].mFlags = (gGlobalTextures[a1].mFlags & ~0x200) | 0x2006;
 			gGlobalTextures[a1].pTextureData = a5;
 
-			u16* mClut;
 			if (gCreateTextureClut)
-				mClut = gCreateTextureClut->mClut;
-			else
-				mClut = reinterpret_cast<u16*>(a4);
-
-			gGlobalTextures[a1].field_60 = reinterpret_cast<i32>(mClut);
-
-			if (gCreateTextureClut)
+			{
+				gGlobalTextures[a1].field_60 = reinterpret_cast<i32>(gCreateTextureClut->mClut);
 				gGlobalTextures[a1].field_64 = gCreateTextureClut->mColorCount;
+			}
 			else
+			{
+				gGlobalTextures[a1].field_60 = a4;
 				gGlobalTextures[a1].field_64 = 0x10000;
+			}
+		}
+	}
+	else
+	{
+		i32 numX = a2 / (i32)gMaxTextureWidth;
+		if (numX * (i32)gMaxTextureWidth < a2)
+			numX++;
+
+		i32 numY = a3 / (i32)gTextureHeight;
+		if (numY * (i32)gTextureHeight < a3)
+			numY++;
+
+		i32 total = numY * numX;
+		gGlobalTextures[a1].mSplitCount = total;
+		gGlobalTextures[a1].mFlags |= 0x200;
+		gGlobalTextures[a1].mSplit = static_cast<i32*>(malloc(4 * total));
+
+		gPvrRelatedWidth = a2;
+
+		i32 splitIndex = 0;
+		for (i32 yOff = 0; yOff < a3; yOff += gTextureHeight)
+		{
+			i32 sliceH = a3 - yOff;
+			if (sliceH > (i32)gTextureHeight)
+				sliceH = gTextureHeight;
+
+			for (i32 xOff = 0; xOff < a2; xOff += gMaxTextureWidth)
+			{
+				i32 sliceW = a2 - xOff;
+				if (sliceW > (i32)gMaxTextureWidth)
+					sliceW = gMaxTextureWidth;
+
+				u16* pSlice = reinterpret_cast<u16*>(v83) + yOff * a2 + xOff;
+
+				print_if_false(
+						(reinterpret_cast<i32>(pSlice) & 3) == 0,
+						"texture data pointer must be aligned to 4 byte boundary");
+
+				i32 index;
+				for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
+				{
+					if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+						break;
+				}
+
+				if (index >= GLOBAL_TEXTURE_COUNT)
+					error("out of texture handles.");
+
+				print_if_false(1, "id must fit into 10 bits!");
+
+				i32 res = PCTex_CreateTexturePVRInId(
+						index,
+						sliceW,
+						sliceH,
+						a4 & 0xFF,
+						pSlice,
+						a6 | 0x200,
+						a7,
+						a8);
+
+				if (res)
+				{
+					gGlobalTextures[index].pTextureData = pSlice;
+					gGlobalTextures[index].field_60 = a4 & 0xFF;
+					gGlobalTextures[index].field_64 = 0x10000;
+				}
+				else
+				{
+					index = -1;
+				}
+
+				gGlobalTextures[a1].mSplit[splitIndex++] = index;
+			}
 		}
 
-
+		gPvrRelatedWidth = 0;
 	}
 
-	if (v12 == 256 || v12 == 512 || v12 == 768 || v12 == 1024 || v12 == 3328)
+	if (v12 == 0x100 || v12 == 0x200 || v12 == 0x300 || v12 == 0x400 || v12 == 0xD00)
 		free(v83);
 
 	return 1;
 }
+
 
 // @Ok
 INLINE i32 PCTex_FindUnusedTextureId(void)
