@@ -1277,9 +1277,17 @@ u8 CPlayer::IncreaseWebbing(i32 amount)
 	return 1;
 }
 
-// @Ok
+// @TODO - func done
 void CPlayer::SetStartOrientation(CSVector* pVector)
 {
+
+	typedef void (FASTCALL *func_ptr)(CPlayer*, i32, CSVector*);
+	func_ptr func = (func_ptr)0x004B9E50;
+
+	func(this, 0, pVector);
+	return;
+
+
 	SVECTOR a1;
 	MATRIX a2;
 

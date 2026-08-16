@@ -8,6 +8,8 @@
 #include "exp.h"
 #include "my_assert.h"
 
+#include <cstdarg>
+
 i32 gRunCinemaRelated;
 i32 gLevelStatus;
 
@@ -73,9 +75,21 @@ EXPORT i32 NumTrigMenuEntries;
 #define G_NUMTRIGMENUENTRIES (*reinterpret_cast<i32*>(0x006B467C))
 
 // @Bogus
-void trigLog(const char*, ...)
+void trigLog(const char* fmt, ...)
 {
-	printf("trigLog!");
+	static char buffer[512];
+
+	va_list lst;
+    va_start(lst, fmt);
+
+#ifdef _WIN32
+	_vsnprintf(buffer, sizeof(buffer), fmt, lst);
+#else
+	vsnprintf(buffer, sizeof(buffer), fmt, lst);
+#endif
+
+	va_end(lst);
+	printf("trigLog! %s\n", buffer);
 }
 
 // @NotOk
