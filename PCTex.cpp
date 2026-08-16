@@ -2522,7 +2522,7 @@ void patch_pctex(void)
 	PATCH_PUSH_RET(0x0050E880, PCTex_CreateTexture16);
 	PATCH_PUSH_RET(0x0050F4A0, copyConvertBitmap);
 	PATCH_PUSH_RET(0x0050F6D0, PCTex_CreateTexturePVRInId);
-	// PCTex_LoadLtiTexture, PCTex_ReloadTextures and PCTex_UpdateForSoftwareRenderer
-	// can not be hooked yet: they reach FileIO/PKR whose state is not shared with
-	// the game (needs G_* treatment in those files first)
+	PATCH_PUSH_RET(0x00510530, PCTex_ReloadTextures);
+	PATCH_PUSH_RET(0x00510770, PCTex_UpdateForSoftwareRenderer);
+	PATCH_PUSH_RET(0x00510940, PCTex_LoadLtiTexture);
 }
