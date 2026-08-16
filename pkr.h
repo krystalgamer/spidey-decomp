@@ -99,6 +99,9 @@ EXPORT u8 flushPKR(LIBPKR_HANDLE*);
 
 EXPORT extern LIBPKR_HANDLE* gDataPkr;
 
+//#define G_DATA_PKR (gDataPkr)
+#define G_DATA_PKR (*reinterpret_cast<LIBPKR_HANDLE**>(0x006BC43C))
+
 void validate_PKR_FILEINFO(void);
 void validate_PKR_FOOTER(void);
 void validate_PKR_DIRINFO(void);

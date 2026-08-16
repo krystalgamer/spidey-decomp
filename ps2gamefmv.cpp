@@ -10,6 +10,9 @@
 #include "validate.h"
 
 EXPORT i32 GameFMV_Active;
+
+//#define G_GAME_FMV_ACTIVE (GameFMV_Active)
+#define G_GAME_FMV_ACTIVE (*reinterpret_cast<i32*>(0x006151F8))
 EXPORT u8 GameFMV_CurrentTrack;
 
 EXPORT i32 gGameFmvOne;
@@ -47,7 +50,7 @@ u8 GameFMV_PlayMovie(
 
 	if (PCMOVIE_Play(movieDetails[a1].name, a3))
 	{
-		GameFMV_Active = 1;
+		G_GAME_FMV_ACTIVE = 1;
 		Front_ClearScreen();
 
 		i32 v4 = gGameState[11] * a4;
@@ -74,7 +77,7 @@ u8 GameFMV_PlayMovie(
 		Pad_ActuatorOff(0, 0);
 		Pad_ActuatorOff(0, 1);
 		Pad_ClearTriggers(gSControl);
-		GameFMV_Active = 0;
+		G_GAME_FMV_ACTIVE = 0;
 
 		Front_ClearScreen();
 		return 1;
@@ -106,10 +109,10 @@ void GameFMV_Init(void)
 // @Matching
 void GameFMV_SetStartTrack(u8 track)
 {
-	if ( !GameFMV_Active )
+	if ( !G_GAME_FMV_ACTIVE )
 	{
 		print_if_false(track < 27u, "Bad track");
-		print_if_false(GameFMV_Active == 0, "Track change when active");
+		print_if_false(G_GAME_FMV_ACTIVE == 0, "Track change when active");
 
 		GameFMV_CurrentTrack = track;
 
@@ -127,10 +130,10 @@ void GameFMV_SetStartTrack(u8 track)
 // @Matching
 INLINE void GameFMV_StopFMV(void)
 {
-	if (GameFMV_Active)
+	if (G_GAME_FMV_ACTIVE)
 	{
 		PCMOVIE_Stop();
-		GameFMV_Active = 0;
+		G_GAME_FMV_ACTIVE = 0;
 	}
 }
 
