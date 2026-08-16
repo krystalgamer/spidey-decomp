@@ -99,9 +99,9 @@ def main():
     print(f'byte-identical: {original == mine}')
 
     left = disassemble(original, address)
-    right = disassemble(mine, pe.OPTIONAL_HEADER.ImageBase + symbol.address)
+    right = disassemble(mine, address)
     for a, b in itertools.zip_longest(left, right, fillvalue=''):
-        mark = '   ' if a.split(' ')[0] == b.split(' ')[0] else '>>>'
+        mark = '   ' if a.split(' ') == b.split(' ') else '>>>'
         print(f'{mark} {a:<46} | {b}')
 
 
