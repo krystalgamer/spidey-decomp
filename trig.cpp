@@ -15,7 +15,11 @@ i32 NumNodes;
 
 const i32 MAXPENDING = 16;
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
+
 EXPORT SCommandPoint* CommandPoints;
+//#define G_COMMANDPOINTS (CommandPoints)
+#define G_COMMANDPOINTS (*reinterpret_cast<SCommandPoint**>(0x006B4708))
+
 EXPORT SCommandPoint* HashTable[256];
 
 EXPORT i32 Restart;
@@ -465,10 +469,10 @@ INLINE void Trig_ZeroPendingList(void)
 // @Ok
 void Trig_ResetCPExecutedFlags(void)
 {
-	for(SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+	for(SCommandPoint *pCP = CommandPoints; pCP; pCP = pCP->pNext)
 	{
-		if (cur->Executed && !cur->Collision)
-			cur->Executed = 0;
+		if (pCP->Executed && !pCP->Collision)
+			pCP->Executed = 0;
 	}
 }
 
@@ -646,9 +650,10 @@ unsigned char* SkipFlags(unsigned char* pFlags)
 
 
 // @Ok
+// @Matching
 void Trig_ResetCPCollisionFlags(void)
 {
-	for(SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+	for(SCommandPoint *cur = G_COMMANDPOINTS; cur; cur = cur->pNext)
 	{
 		cur->Collision = 0;
 	}
@@ -742,4 +747,5 @@ void validate_PendingListEntry(void)
 void patch_trig(void)
 {
 	PATCH_PUSH_RET(0x004DE750, Trig_ClearTrigMenu);
+	PATCH_PUSH_RET(0x004DE890, Trig_ResetCPCollisionFlags);
 }
