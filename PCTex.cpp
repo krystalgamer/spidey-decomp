@@ -957,11 +957,245 @@ void PCTex_InitSystemTextures(void)
 	PCTEX_Init();
 }
 
-// @MEDIUMTODO
-i32 PCTex_LoadLtiTexture(const char*,u32,i32,u32)
+// @Ok
+// @AlmostMatching: same structure and accesses, some locals live in registers
+// in our build where the original spills them (and the other way around)
+i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 {
-    printf("PCTex_LoadLtiTexture(char const *,u32,i32,u32)");
-	return 0x20082024;
+	i32 fileSize = FileIO_Open(a1);
+	print_if_false(fileSize > 0, "Error opening file: %s", a1);
+
+	u8* pFile = static_cast<u8*>(DCMem_New(fileSize, 0, 1, 0, 1));
+	print_if_false(pFile != 0, "Out of memory in game heap!");
+
+	FileIO_Load(pFile);
+
+	u8* pPixels = pFile + *reinterpret_cast<u32*>(pFile + 0xA);
+	print_if_false(
+			*reinterpret_cast<u16*>(pFile + 0x1C) == 32,
+			"Only 32bpp BMP files supported for replacement texturtes!");
+
+	print_if_false(
+			*reinterpret_cast<i32*>(pFile + 0x12) <= 256
+			&& *reinterpret_cast<i32*>(pFile + 0x16) <= 256,
+			"Replacement texture too big!");
+
+	i32 height = *reinterpret_cast<i32*>(pFile + 0x16);
+	i32 width = *reinterpret_cast<i32*>(pFile + 0x12);
+
+	if (height < 0)
+		height = -height;
+
+	i32 rounded_width;
+	if (width <= 8)
+	{
+		rounded_width = 8;
+	}
+	else if (width <= 16)
+	{
+		rounded_width = 16;
+	}
+	else if (width <= 32)
+	{
+		rounded_width = 32;
+	}
+	else if (width <= 64)
+	{
+		rounded_width = 64;
+	}
+	else if (width <= 128)
+	{
+		rounded_width = 128;
+	}
+	else if (width <= 256)
+	{
+		rounded_width = 256;
+	}
+	else if (width <= 512)
+	{
+		rounded_width = 512;
+	}
+	else
+	{
+		rounded_width = 1024;
+	}
+
+	i32 rounded_height;
+	if (height <= 8)
+	{
+		rounded_height = 8;
+	}
+	else if (height <= 16)
+	{
+		rounded_height = 16;
+	}
+	else if (height <= 32)
+	{
+		rounded_height = 32;
+	}
+	else if (height <= 64)
+	{
+		rounded_height = 64;
+	}
+	else if (height <= 128)
+	{
+		rounded_height = 128;
+	}
+	else if (height <= 256)
+	{
+		rounded_height = 256;
+	}
+	else if (height <= 512)
+	{
+		rounded_height = 512;
+	}
+	else
+	{
+		rounded_height = 1024;
+	}
+
+	if (gSquareOnly)
+	{
+		if (rounded_width > rounded_height)
+		{
+			rounded_height = rounded_width;
+		}
+		else
+		{
+			rounded_width = rounded_height;
+		}
+	}
+
+	i32 aspectRatio;
+	if (rounded_width > rounded_height)
+	{
+		aspectRatio = rounded_width / rounded_height;
+	}
+	else
+	{
+		aspectRatio = rounded_height / rounded_width;
+	}
+
+	if (gMaxTextureAspectRatio && aspectRatio > (i32)gMaxTextureAspectRatio)
+	{
+		if (rounded_width > rounded_height)
+		{
+			rounded_width = rounded_height * gMaxTextureAspectRatio;
+			if (rounded_width < width)
+				rounded_width = width;
+		}
+		else
+		{
+			rounded_height = rounded_width * gMaxTextureAspectRatio;
+			if (rounded_height < height)
+				rounded_height = height;
+		}
+	}
+
+	if (width != rounded_width || height != rounded_height)
+	{
+		i32 size = 4 * rounded_height * rounded_width;
+		u8* pNew = static_cast<u8*>(malloc(size));
+		memset(pNew, 0, size);
+
+		const u8* srcRow = pPixels;
+		u8* dstRow = pNew;
+
+		for (i32 y = 0; y < height; y++)
+		{
+			memcpy(dstRow, srcRow, 4 * width);
+			srcRow += 4 * width;
+			dstRow += 4 * rounded_width;
+		}
+
+		pPixels = pNew;
+	}
+
+	i32 result;
+	if (a3 == -1)
+	{
+		print_if_false(
+				(reinterpret_cast<i32>(pPixels) & 3) == 0,
+				"texture data pointer must be aligned to 4 byte boundary");
+
+		i32 index;
+		for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
+		{
+			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+				break;
+		}
+
+		if (index >= GLOBAL_TEXTURE_COUNT)
+			error("out of texture handles.");
+
+		print_if_false(1, "id must fit into 10 bits!");
+
+		i32 res = PCTex_CreateTexturePVRInId(
+				index,
+				rounded_width,
+				rounded_height,
+				0x907,
+				pPixels,
+				a4,
+				a1,
+				a2);
+
+		if (res)
+		{
+			gGlobalTextures[index].pTextureData = pPixels;
+			gGlobalTextures[index].field_60 = 0x907;
+			gGlobalTextures[index].field_64 = 0x10000;
+			result = index;
+		}
+		else
+		{
+			result = -1;
+		}
+	}
+	else
+	{
+		PCTex_CreateTexturePVRInId(
+				a3,
+				rounded_width,
+				rounded_height,
+				0x907,
+				pPixels,
+				a4,
+				a1,
+				a2);
+
+		result = a3;
+	}
+
+	if (!gGlobalTextures[result].pTextureData)
+	{
+		char* pName = static_cast<char*>(malloc(0x20));
+		gGlobalTextures[result].pTextureData = pName;
+		strcpy(pName, a1);
+		gGlobalTextures[result].field_60 = 0;
+		gGlobalTextures[result].field_64 = 0xFFFFFF;
+	}
+
+	print_if_false(result != -1, "Unable to load replacement texture!");
+
+	Mem_Delete(pFile);
+
+	if (width != rounded_width || height != rounded_height)
+		free(pPixels);
+
+	gGlobalTextures[result].mSizeOne = width;
+	gGlobalTextures[result].mSizeTwo = height;
+	gGlobalTextures[result].mFlags |= 0x4000;
+
+	f32 v40 = (f32)(u16)width;
+	f32 v38 = (f32)rounded_width;
+	gGlobalTextures[result].mWScale = v40 / v38;
+
+	f32 v41 = (f32)(u16)height;
+	f32 v43 = (f32)rounded_height;
+	gGlobalTextures[result].mHScale = v41 / v43;
+
+	return result;
 }
 
 // @Ok
