@@ -381,18 +381,19 @@ void Trig_DoPendingCommandLists(void)
 INLINE void Trig_AddCommandListToPending(u16 nodeIndex, u16* pCommands)
 {
 	i32 i;
-	for(i = 0; i < MAXPENDING && PendingListArray[i].pCommands; i++);
+	for(i = 0; i < MAXPENDING && G_PENDINGLISTARRAY[i].pCommands; i++);
 
 	print_if_false(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
 
-	PendingListArray[i].NodeIndex = nodeIndex;
-	PendingListArray[i].pCommands = pCommands;
+	G_PENDINGLISTARRAY[i].NodeIndex = nodeIndex;
+	G_PENDINGLISTARRAY[i].pCommands = pCommands;
 }
 
 // @Ok
+// @Matching
 SCommandPoint* Trig_TriggerCommandPoint(u32 checksum, bool assert)
 {
-	for (SCommandPoint *pSearch = HashTable[(checksum)&0xFF]; pSearch; pSearch = pSearch->pNextSimilar)
+	for (SCommandPoint *pSearch = G_HASHTABLE[(checksum)&0xFF]; pSearch; pSearch = pSearch->pNextSimilar)
 	{
 		if (pSearch->Checksum == checksum)
 		{
@@ -762,4 +763,5 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE890, Trig_ResetCPCollisionFlags);
 	PATCH_PUSH_RET(0x004DE8B0, Trig_ResetCPExecutedFlags);
 	PATCH_PUSH_RET(0x004DE840, Trig_DeleteCommandPoints);
+	PATCH_PUSH_RET(0x004DE8D0, Trig_TriggerCommandPoint);
 }
