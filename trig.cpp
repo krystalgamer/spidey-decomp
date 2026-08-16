@@ -467,9 +467,10 @@ INLINE void Trig_ZeroPendingList(void)
 }
 
 // @Ok
+// @Matching
 void Trig_ResetCPExecutedFlags(void)
 {
-	for(SCommandPoint *pCP = CommandPoints; pCP; pCP = pCP->pNext)
+	for(SCommandPoint *pCP = G_COMMANDPOINTS; pCP; pCP = pCP->pNext)
 	{
 		if (pCP->Executed && !pCP->Collision)
 			pCP->Executed = 0;
@@ -748,4 +749,5 @@ void patch_trig(void)
 {
 	PATCH_PUSH_RET(0x004DE750, Trig_ClearTrigMenu);
 	PATCH_PUSH_RET(0x004DE890, Trig_ResetCPCollisionFlags);
+	PATCH_PUSH_RET(0x004DE8B0, Trig_ResetCPExecutedFlags);
 }
