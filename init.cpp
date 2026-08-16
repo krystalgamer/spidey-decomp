@@ -145,7 +145,7 @@ u8 Init_AtStart(i32)
 	Front_Init();
 	FontManager::ResetCharMaps();
 	SFX_Init("spidey.kat");
-	gReStartDeathRelated = 0;
+	G_ISRESTARTDEATH = 0;
 
 	PutDispEnv();
 

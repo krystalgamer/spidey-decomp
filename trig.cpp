@@ -6,30 +6,58 @@
 #include "baddy.h"
 #include "spool.h"
 #include "exp.h"
+#include "my_assert.h"
 
 i32 gRunCinemaRelated;
 i32 gLevelStatus;
-EXPORT void* gTrigFile;
-i16 **gTrigNodes;
-i32 NumNodes;
 
+// @TODO: delete this shit
+EXPORT void* gTrigFile;
+
+// @TODO: delete this shit
+i16 **gTrigNodes;
+
+// @Ok
+i16 **OffsetList;
+//#define G_OFFSETLIST (OffsetList)
+#define G_OFFSETLIST (*reinterpret_cast<i16***>(0x006B466C))
+
+
+
+
+// @Ok
+EXPORT i32 NumNodes;
+//#define G_NUMNODES (NumNodes)
+#define G_NUMNODES (*reinterpret_cast<i32*>(0x006B4670))
+
+// @Ok
 const i32 MAXPENDING = 16;
 
+// @Ok
 EXPORT PendingListEntry PendingListArray[MAXPENDING];
 //#define G_PENDINGLISTARRAY (PendingListArray)
 #define G_PENDINGLISTARRAY (reinterpret_cast<PendingListEntry*>(0x006B4688))
 
+// @Ok
 EXPORT SCommandPoint* CommandPoints;
 //#define G_COMMANDPOINTS (CommandPoints)
 #define G_COMMANDPOINTS (*reinterpret_cast<SCommandPoint**>(0x006B4708))
 
+// @Ok
 EXPORT SCommandPoint* HashTable[256];
 //#define G_HASHTABLE (HashTable)
 #define G_HASHTABLE (reinterpret_cast<SCommandPoint**>(0x006B4214))
 
 EXPORT i32 Restart;
-i32 RestartNode;
-i32 gReStartDeathRelated;
+
+// @Ok
+EXPORT i32 RestartNode = 0xFFFF;
+//#define G_RESTARTNODE (RestartNode)
+#define G_RESTARTNODE (*reinterpret_cast<i32*>(0x0055804C))
+
+// @Ok
+EXPORT i32 IsRestartDeath;
+
 EXPORT i32 EndLevelNode;
 extern CSpecialDisplay *SpecialDisplayList;
 
@@ -300,32 +328,30 @@ void Trig_ExecuteRestart(void)
 }
 
 // @Ok
+// @Matching
 void Trig_SetRestart(char *pName)
 {
-	RestartNode = 0xFFFF;
-	for (i32 curNode = 0; curNode < NumNodes; curNode++)
+	G_RESTARTNODE = 0xFFFF;
+	for (i32 curNode = 0; curNode < G_NUMNODES; curNode++)
 	{
-		if (*gTrigNodes[curNode] == 8)
+		if (*G_OFFSETLIST[curNode] == 8)
 		{
 			CVector v3;
-			v3.vx = 0;
-			v3.vy = 0;
-			v3.vz = 0;
 
 			u16* Position = Trig_GetPosition(&v3, curNode);
 			
 			if (Utils_CompareStrings(reinterpret_cast<char*>(&Position[3]), pName))
 			{
-				RestartNode = curNode;
+				G_RESTARTNODE = curNode;
 				trigLog("Set RestartNode = %i", curNode);
 				if (!Utils_CompareStrings(pName, "re_start_death"))
-					gReStartDeathRelated = 1;
+					G_ISRESTARTDEATH = 1;
 				return;
 			}
 		}
 	}
 
-	print_if_false(0, "Restart point ");
+	ASSERT(0, "Restart point ");
 }
 
 // @Ok
@@ -538,9 +564,12 @@ int Trig_GetLevelID(void)
 }
 
 // @BIGTODO
-u16* Trig_GetPosition(CVector*, int)
+u16* Trig_GetPosition(CVector* pos, i32 node)
 {
-	return reinterpret_cast<u16*>(0x13072024);
+	typedef u16* (*func_ptr)(CVector*, i32);
+	func_ptr func = (func_ptr)0x004E3940;
+
+	return func(pos, node);
 }
 
 // @Ok
@@ -764,4 +793,5 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE8B0, Trig_ResetCPExecutedFlags);
 	PATCH_PUSH_RET(0x004DE840, Trig_DeleteCommandPoints);
 	PATCH_PUSH_RET(0x004DE8D0, Trig_TriggerCommandPoint);
+	PATCH_PUSH_RET(0x004DE970, Trig_SetRestart);
 }
