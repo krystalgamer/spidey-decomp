@@ -1277,7 +1277,8 @@ u8 CPlayer::IncreaseWebbing(i32 amount)
 	return 1;
 }
 
-// @TODO - func done
+// @SMALLTODO
+// @Note - func done
 void CPlayer::SetStartOrientation(CSVector* pVector)
 {
 
