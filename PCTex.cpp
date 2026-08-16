@@ -1154,10 +1154,96 @@ void copyBitmap(void const *,i32,void *,i32,i32,i32,i32)
     printf("copyBitmap(void const *,i32,void *,i32,i32,i32,i32)");
 }
 
-// @MEDIUMTODO
-void copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool)
+// @Ok
+// @AlmostMatching: gPcTexContainer goes through a pointer in our build, and our
+// build hoists the u8 mask promotions out of the loop
+void copyConvertBitmap(
+		const void* src,
+		i32 srcPitch,
+		i32 srcFormat,
+		void* dst,
+		i32 dstPitch,
+		i32 dstFormat,
+		i32 width,
+		i32 height,
+		bool forceAlpha)
 {
-    printf("copyConvertBitmap(void const *,i32,i32,void *,i32,i32,i32,i32,bool)");
+	SPCTexContainer* pSrc = &gPcTexContainer[srcFormat];
+	SPCTexContainer* pDst = &gPcTexContainer[dstFormat];
+
+	u8 dstAMask = (1 << pDst->field_8) - 1;
+	u8 dstRMask = (1 << pDst->field_C) - 1;
+	u8 dstGMask = (1 << pDst->field_10) - 1;
+	u8 dstBMask = (1 << pDst->field_14) - 1;
+
+	i32 shiftA = pSrc->field_18 + pSrc->field_8 - pDst->field_8;
+	i32 shiftR = pSrc->field_1C + pSrc->field_C - pDst->field_C;
+	i32 shiftG = pSrc->field_20 + pSrc->field_10 - pDst->field_10;
+	i32 shiftB = pSrc->field_24 + pSrc->field_14 - pDst->field_14;
+
+	for (i32 y = 0; y < height; y++)
+	{
+		for (i32 x = 0; x < width; x++)
+		{
+			u32 pixel;
+			if (pSrc->field_4 == 32)
+				pixel = static_cast<const u32*>(src)[x];
+			else
+				pixel = static_cast<const u16*>(src)[x];
+
+			u32 a = pixel & pSrc->field_48;
+			u32 r = pixel & pSrc->field_3C;
+			u32 g = pixel & pSrc->field_40;
+			u32 b = pixel & pSrc->field_44;
+
+			if (forceAlpha)
+			{
+				if (a > 0)
+					a = dstAMask;
+				else
+					a = 0;
+			}
+			else
+			{
+				if (shiftA >= 0)
+					a >>= shiftA;
+				else
+					a <<= -shiftA;
+				a &= dstAMask;
+			}
+
+			if (shiftR >= 0)
+				r >>= shiftR;
+			else
+				r <<= -shiftR;
+			r &= dstRMask;
+
+			if (shiftG >= 0)
+				g >>= shiftG;
+			else
+				g <<= -shiftG;
+			g &= dstGMask;
+
+			if (shiftB >= 0)
+				b >>= shiftB;
+			else
+				b <<= -shiftB;
+			b &= dstBMask;
+
+			u32 out = (b << pDst->field_24)
+				| (g << pDst->field_20)
+				| (a << pDst->field_18)
+				| (r << pDst->field_1C);
+
+			if (pDst->field_4 == 32)
+				static_cast<u32*>(dst)[x] = out;
+			else
+				static_cast<u16*>(dst)[x] = out;
+		}
+
+		src = static_cast<const u8*>(src) + srcPitch;
+		dst = static_cast<u8*>(dst) + dstPitch;
+	}
 }
 
 // @Ok
