@@ -9,10 +9,30 @@
 #include <cstdlib>
 #include <cstdio>
 
+//#define G_LOWGRAPHICS (gLowGraphics)
+#define G_LOWGRAPHICS (*reinterpret_cast<i32*>(0x006B78F8))
+
+//#define G_MOVIE_DD7 (g_MovieDD7)
+#define G_MOVIE_DD7 (*reinterpret_cast<LPDIRECTDRAW7*>(0x006B7900))
+
+//#define G_D3DDEV_CAPS (gD3DDevCaps)
+#define G_D3DDEV_CAPS (*reinterpret_cast<D3DDEVICEDESC7*>(0x006B5788))
+
 EXPORT i32 gPvrCountRelated;
+
+//#define G_PVR_COUNT_RELATED (gPvrCountRelated)
+#define G_PVR_COUNT_RELATED (*reinterpret_cast<i32*>(0x00ADB3BC))
+
 EXPORT i32 gPvrRelatedWidth;
 
+//#define G_PVR_RELATED_WIDTH (gPvrRelatedWidth)
+#define G_PVR_RELATED_WIDTH (*reinterpret_cast<i32*>(0x00ADB3B8))
+
 EXPORT ClutPC* gCreateTextureClut;
+
+//#define G_CREATE_TEXTURE_CLUT (gCreateTextureClut)
+#define G_CREATE_TEXTURE_CLUT (*reinterpret_cast<ClutPC**>(0x00ADB3A0))
+
 EXPORT i32 gCreateTextureArr[39] =
 {
   -1283256577,
@@ -56,7 +76,14 @@ EXPORT i32 gCreateTextureArr[39] =
   -465978652
 };
 
+//#define G_CREATE_TEXTURE_ARR (gCreateTextureArr)
+#define G_CREATE_TEXTURE_ARR (reinterpret_cast<i32*>(0x005689EC))
+
 EXPORT i32 gPcTexPvrAndSoftRendererRelated;
+
+//#define G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED (gPcTexPvrAndSoftRendererRelated)
+#define G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED (*reinterpret_cast<i32*>(0x00ADB36C))
+
 const i32 NUM_PCTEX_CONTAINERS = 5;
 
 u8 gPcTexContainerData[0x17C] =
@@ -103,19 +130,46 @@ u8 gPcTexContainerData[0x17C] =
 
 SPCTexContainer * const gPcTexContainer = reinterpret_cast<SPCTexContainer*>(&gPcTexContainerData[0]);
 
+//#define G_PC_TEX_CONTAINER (gPcTexContainer)
+#define G_PC_TEX_CONTAINER (reinterpret_cast<SPCTexContainer*>(0x00568870))
+
 EXPORT i32 gNumPixelFormats;
 
+//#define G_NUM_PIXEL_FORMATS (gNumPixelFormats)
+#define G_NUM_PIXEL_FORMATS (*reinterpret_cast<i32*>(0x00AC12B0))
+
 u32 gMaxTextureAspectRatio;
+
+//#define G_MAX_TEXTURE_ASPECT_RATIO (gMaxTextureAspectRatio)
+#define G_MAX_TEXTURE_ASPECT_RATIO (*reinterpret_cast<u32*>(0x00ADB3B0))
+
 u32 gMaxTextureWidth;
+
+//#define G_MAX_TEXTURE_WIDTH (gMaxTextureWidth)
+#define G_MAX_TEXTURE_WIDTH (*reinterpret_cast<u32*>(0x00ADB3A8))
+
 u32 gTextureHeight;
 
+//#define G_TEXTURE_HEIGHT (gTextureHeight)
+#define G_TEXTURE_HEIGHT (*reinterpret_cast<u32*>(0x00ADB3AC))
+
 EXPORT bool gSquareOnly;
+
+//#define G_SQUARE_ONLY (gSquareOnly)
+#define G_SQUARE_ONLY (*reinterpret_cast<bool*>(0x00ADB3B4))
 
 const i32 GLOBAL_TEXTURE_COUNT = 1024;
 EXPORT SPCTexture gGlobalTextures[GLOBAL_TEXTURE_COUNT];
 
+//#define G_GLOBAL_TEXTURES (gGlobalTextures)
+#define G_GLOBAL_TEXTURES (reinterpret_cast<SPCTexture*>(0x00AC12D8))
+
 const i32 PC_ICON_COUNT = 5;
 EXPORT i32 gPcIcons[PC_ICON_COUNT];
+
+//#define G_PC_ICONS (gPcIcons)
+#define G_PC_ICONS (reinterpret_cast<i32*>(0x00568A88))
+
 EXPORT const char *gPcIconNames[PC_ICON_COUNT] =
 {
 	"lti\\butlarrow.bmp",
@@ -125,15 +179,25 @@ EXPORT const char *gPcIconNames[PC_ICON_COUNT] =
 	"lti\\butminus.bmp",
 };
 
+//#define G_PC_ICON_NAMES (gPcIconNames)
+#define G_PC_ICON_NAMES (reinterpret_cast<const char**>(0x00568A9C))
+
 EXPORT ClutPC* gClutPcRelated;
+
+//#define G_CLUT_PC_RELATED (gClutPcRelated)
+#define G_CLUT_PC_RELATED (*reinterpret_cast<ClutPC**>(0x00ADB39C))
+
 EXPORT i32 gClutCount;
+
+//#define G_CLUT_COUNT (gClutCount)
+#define G_CLUT_COUNT (*reinterpret_cast<i32*>(0x00ADB3A4))
 
 // @Ok
 INLINE u8 CheckValidTexture(u32 index)
 {
 	if (index < GLOBAL_TEXTURE_COUNT)
 	{
-		if (gGlobalTextures[index].mD3DTex || gGlobalTextures[index].mSplit)
+		if (G_GLOBAL_TEXTURES[index].mD3DTex || G_GLOBAL_TEXTURES[index].mSplit)
 			return 1;
 	}
 
@@ -225,18 +289,18 @@ void PCTEX_Init(void)
 	for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
 	{
 		if (!i)
-			gPcTexContainer[i].field_28 = 2;
+			G_PC_TEX_CONTAINER[i].field_28 = 2;
 		else
-			gPcTexContainer[i].field_28 = 0;
+			G_PC_TEX_CONTAINER[i].field_28 = 0;
 	}
-	gNumPixelFormats = 0;
+	G_NUM_PIXEL_FORMATS = 0;
 
 #ifdef _WIN32
 	DDPIXELFORMAT v36[16];
 	g_D3DDevice7->EnumTextureFormats(enumPixelFormatsCB, v36);
 
-	//DXERR_printf("Got %d pixel formats\n", gNumPixelFormats);
-	for (i32 j = 0; j < gNumPixelFormats; j++)
+	//DXERR_printf("Got %d pixel formats\n", G_NUM_PIXEL_FORMATS);
+	for (i32 j = 0; j < G_NUM_PIXEL_FORMATS; j++)
 	{
 		if (v36[j].dwFlags & DDPF_RGB)
 		{
@@ -259,23 +323,23 @@ void PCTEX_Init(void)
 				if (containerIndex == 0)
 				{
 					DXERR_printf("PCTEX LOOP: %d\n", j);
-					DXERR_printf("field_4 == %d, %d", bBitCount == gPcTexContainer[containerIndex].field_4, bBitCount);
-					DXERR_printf("field_8 == %d, %d", rgbBitCount == gPcTexContainer[containerIndex].field_8, rgbBitCount);
+					DXERR_printf("field_4 == %d, %d", bBitCount == G_PC_TEX_CONTAINER[containerIndex].field_4, bBitCount);
+					DXERR_printf("field_8 == %d, %d", rgbBitCount == G_PC_TEX_CONTAINER[containerIndex].field_8, rgbBitCount);
 				}
 				*/
 
-				if ( bBitCount == gPcTexContainer[containerIndex].field_8
-					&& rgbBitCount == gPcTexContainer[containerIndex].field_C
-					&& rBitCount == gPcTexContainer[containerIndex].field_10
-					&& gBitCount == gPcTexContainer[containerIndex].field_14
-					&& bLeadingBitCount == gPcTexContainer[containerIndex].field_18
-					&& rgbLeadingBitCount == gPcTexContainer[containerIndex].field_1C
-					&& rLeadingBitCount == gPcTexContainer[containerIndex].field_20
-					&& gLeadingBitCount == gPcTexContainer[containerIndex].field_24)
+				if ( bBitCount == G_PC_TEX_CONTAINER[containerIndex].field_8
+					&& rgbBitCount == G_PC_TEX_CONTAINER[containerIndex].field_C
+					&& rBitCount == G_PC_TEX_CONTAINER[containerIndex].field_10
+					&& gBitCount == G_PC_TEX_CONTAINER[containerIndex].field_14
+					&& bLeadingBitCount == G_PC_TEX_CONTAINER[containerIndex].field_18
+					&& rgbLeadingBitCount == G_PC_TEX_CONTAINER[containerIndex].field_1C
+					&& rLeadingBitCount == G_PC_TEX_CONTAINER[containerIndex].field_20
+					&& gLeadingBitCount == G_PC_TEX_CONTAINER[containerIndex].field_24)
 				{
-					gPcTexContainer[containerIndex].field_28 |= 4;
+					G_PC_TEX_CONTAINER[containerIndex].field_28 |= 4;
 					memcpy(
-							&gPcTexContainer[containerIndex].field_2C,
+							&G_PC_TEX_CONTAINER[containerIndex].field_2C,
 							&v36[j],
 							sizeof(DDPIXELFORMAT));
 				}
@@ -284,47 +348,47 @@ void PCTEX_Init(void)
 	}
 #endif
 
-	if (gLowGraphics)
+	if (G_LOWGRAPHICS)
 	{
-		gPcTexContainer[0].field_28 |= 1;
-		if ((gPcTexContainer[0].field_28 & 4) == 0)
+		G_PC_TEX_CONTAINER[0].field_28 |= 1;
+		if ((G_PC_TEX_CONTAINER[0].field_28 & 4) == 0)
 		{
-			gPcTexContainer[0].field_2C = 32;
-			gPcTexContainer[0].field_30 = 65;
-			gPcTexContainer[0].field_34 = 0;
-			gPcTexContainer[0].field_38 = 16;
-			gPcTexContainer[0].field_3C = 31744;
-			gPcTexContainer[0].field_40 = 992;
-			gPcTexContainer[0].field_44 = 31;
-			gPcTexContainer[0].field_48 = 0x8000;
+			G_PC_TEX_CONTAINER[0].field_2C = 32;
+			G_PC_TEX_CONTAINER[0].field_30 = 65;
+			G_PC_TEX_CONTAINER[0].field_34 = 0;
+			G_PC_TEX_CONTAINER[0].field_38 = 16;
+			G_PC_TEX_CONTAINER[0].field_3C = 31744;
+			G_PC_TEX_CONTAINER[0].field_40 = 992;
+			G_PC_TEX_CONTAINER[0].field_44 = 31;
+			G_PC_TEX_CONTAINER[0].field_48 = 0x8000;
 		}
 	}
 	else
 	{
 		for (i32 k = 0; k < NUM_PCTEX_CONTAINERS; k++)
 		{
-			if (gPcTexContainer[k].field_28 & 4)
+			if (G_PC_TEX_CONTAINER[k].field_28 & 4)
 			{
-				gPcTexContainer[k].field_28 |= 1;
+				G_PC_TEX_CONTAINER[k].field_28 |= 1;
 			}
 			else
 			{
-				gPcTexContainer[k].field_28 &= ~1;
+				G_PC_TEX_CONTAINER[k].field_28 &= ~1;
 			}
 		}
 	}
 
-	if ( (gPcTexContainer[0].field_28 & 1) != 0 )
+	if ( (G_PC_TEX_CONTAINER[0].field_28 & 1) != 0 )
 	{
-		gPcTexPvrAndSoftRendererRelated = 0;
+		G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 0;
 	}
-	else if ( (gPcTexContainer[4].field_28 & 1) != 0 )
+	else if ( (G_PC_TEX_CONTAINER[4].field_28 & 1) != 0 )
 	{
-		gPcTexPvrAndSoftRendererRelated = 4;
+		G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 4;
 	}
-	else if ( (gPcTexContainer[1].field_28 & 1) != 0 )
+	else if ( (G_PC_TEX_CONTAINER[1].field_28 & 1) != 0 )
 	{
-		gPcTexPvrAndSoftRendererRelated = 1;
+		G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 1;
 	}
 	else
 	{
@@ -335,7 +399,7 @@ void PCTEX_Init(void)
 
 		for (index = 0; index < NUM_PCTEX_CONTAINERS; index++)
 		{
-			if (gPcTexContainer[index].field_28 & 1)
+			if (G_PC_TEX_CONTAINER[index].field_28 & 1)
 				break;
 		}
 
@@ -343,12 +407,12 @@ void PCTEX_Init(void)
 		{
 			printf_fancy(
 				"  Using alternate format: ARGB %i,%i,%i,%i\r\n",
-					gPcTexContainer[index].field_8,
-					gPcTexContainer[index].field_C,
-					gPcTexContainer[index].field_10,
-					gPcTexContainer[index].field_14);
+					G_PC_TEX_CONTAINER[index].field_8,
+					G_PC_TEX_CONTAINER[index].field_C,
+					G_PC_TEX_CONTAINER[index].field_10,
+					G_PC_TEX_CONTAINER[index].field_14);
 
-			gPcTexPvrAndSoftRendererRelated = index;
+			G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = index;
 			return;
 		}
 
@@ -401,7 +465,7 @@ i32 PCTex_CountActiveTextures(void)
 			id < GLOBAL_TEXTURE_COUNT;
 			id++)
 	{
-		if (gGlobalTextures[id].mD3DTex || gGlobalTextures[id].mSplit)
+		if (G_GLOBAL_TEXTURES[id].mD3DTex || G_GLOBAL_TEXTURES[id].mSplit)
 		{
 			count++;
 		}
@@ -435,9 +499,9 @@ u16* PCTex_CreateClut(i32 colorCount)
 		return 0;
 	}
 
-	clut->mNext = gClutPcRelated;
-	gClutPcRelated = clut;
-	gClutCount++;
+	clut->mNext = G_CLUT_PC_RELATED;
+	G_CLUT_PC_RELATED = clut;
+	G_CLUT_COUNT++;
 	
 	return clut->mClut;
 }
@@ -543,7 +607,7 @@ i32 PCTex_CreateTexture16(
 	ClutPC* pClut;
 	if (!a4)
 	{
-		pClut = gClutPcRelated;
+		pClut = G_CLUT_PC_RELATED;
 		print_if_false(pClut != 0, "No Palette!");
 		a4 = pClut->mClut;
 	}
@@ -554,7 +618,7 @@ i32 PCTex_CreateTexture16(
 
 	for (i32 i = 0; i < 0x27; i++)
 	{
-		if (gCreateTextureArr[i] == a7)
+		if (G_CREATE_TEXTURE_ARR[i] == a7)
 		{
 			a8 &= 0xFFFFFFFE;
 			break;
@@ -595,7 +659,7 @@ i32 PCTex_CreateTexture16(
 		i32 index;
 		for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
 		{
-			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+			if (!G_GLOBAL_TEXTURES[index].mD3DTex && !G_GLOBAL_TEXTURES[index].mSplit)
 				break;
 		}
 
@@ -616,9 +680,9 @@ i32 PCTex_CreateTexture16(
 
 		if (res)
 		{
-			gGlobalTextures[index].pTextureData = pBmpBuf;
-			gGlobalTextures[index].field_60 = flags;
-			gGlobalTextures[index].field_64 = 0x10000;
+			G_GLOBAL_TEXTURES[index].pTextureData = pBmpBuf;
+			G_GLOBAL_TEXTURES[index].field_60 = flags;
+			G_GLOBAL_TEXTURES[index].field_64 = 0x10000;
 		}
 		else
 		{
@@ -647,7 +711,7 @@ i32 PCTex_CreateTexture16(
 		textureHandleIndex = a6;
 	}
 
-	SPCTexture* pTex = &gGlobalTextures[textureHandleIndex];
+	SPCTexture* pTex = &G_GLOBAL_TEXTURES[textureHandleIndex];
 	pTex->mSizeOne = a1;
 	pTex->mSizeTwo = a2;
 	pTex->field_60 = (i32)a4;
@@ -670,7 +734,7 @@ i32 PCTex_CreateTexture16(
 	{
 		print_if_false(pClut->mColorCount == 16, "Clut has wrong color count!");
 		++pClut->mRefs;
-		gCreateTextureClut = pClut;
+		G_CREATE_TEXTURE_CLUT = pClut;
 	}
 
 	Mem_Delete(pBmpBuf);
@@ -762,7 +826,7 @@ i32 PCTex_CreateTexture256(
 		rounded_height = 1024;
 	}
 
-	if (gSquareOnly)
+	if (G_SQUARE_ONLY)
 	{
 		if (rounded_width > rounded_height)
 		{
@@ -784,17 +848,17 @@ i32 PCTex_CreateTexture256(
 		aspectRatio = rounded_height / rounded_width;
 	}
 
-	if (gMaxTextureAspectRatio && aspectRatio > (i32)gMaxTextureAspectRatio)
+	if (G_MAX_TEXTURE_ASPECT_RATIO && aspectRatio > (i32)G_MAX_TEXTURE_ASPECT_RATIO)
 	{
 		if (rounded_width > rounded_height)
 		{
-			rounded_width = rounded_height * gMaxTextureAspectRatio;
+			rounded_width = rounded_height * G_MAX_TEXTURE_ASPECT_RATIO;
 			if (rounded_width < a1)
 				rounded_width = a1;
 		}
 		else
 		{
-			rounded_height = rounded_width * gMaxTextureAspectRatio;
+			rounded_height = rounded_width * G_MAX_TEXTURE_ASPECT_RATIO;
 			if (rounded_height < a2)
 				rounded_height = a2;
 		}
@@ -818,7 +882,7 @@ i32 PCTex_CreateTexture256(
 	ClutPC* pClut;
 	if (!a4)
 	{
-		pClut = gClutPcRelated;
+		pClut = G_CLUT_PC_RELATED;
 		print_if_false(pClut != 0, "no palette!");
 		a4 = pClut->mClut;
 	}
@@ -829,7 +893,7 @@ i32 PCTex_CreateTexture256(
 
 	for (i32 i = 0; i < 0x27; i++)
 	{
-		if (gCreateTextureArr[i] == a8)
+		if (G_CREATE_TEXTURE_ARR[i] == a8)
 		{
 			a5 &= 0xFFFFFFFE;
 			break;
@@ -864,7 +928,7 @@ i32 PCTex_CreateTexture256(
 		i32 index;
 		for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
 		{
-			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+			if (!G_GLOBAL_TEXTURES[index].mD3DTex && !G_GLOBAL_TEXTURES[index].mSplit)
 				break;
 		}
 
@@ -885,9 +949,9 @@ i32 PCTex_CreateTexture256(
 
 		if (res)
 		{
-			gGlobalTextures[index].pTextureData = pBmpBuf;
-			gGlobalTextures[index].field_60 = flags;
-			gGlobalTextures[index].field_64 = 0x10000;
+			G_GLOBAL_TEXTURES[index].pTextureData = pBmpBuf;
+			G_GLOBAL_TEXTURES[index].field_60 = flags;
+			G_GLOBAL_TEXTURES[index].field_64 = 0x10000;
 		}
 		else
 		{
@@ -916,7 +980,7 @@ i32 PCTex_CreateTexture256(
 		textureHandleIndex = a7;
 	}
 
-	SPCTexture* v34 = &gGlobalTextures[textureHandleIndex];
+	SPCTexture* v34 = &G_GLOBAL_TEXTURES[textureHandleIndex];
 	v34->mSizeOne = a1;
 	v34->mSizeTwo = a2;
 	v34->field_60 = (int)a4;
@@ -939,7 +1003,7 @@ i32 PCTex_CreateTexture256(
 	{
 		print_if_false(pClut->mColorCount == 256, "Clut has wrong color count!");
 		++pClut->mRefs;
-		gCreateTextureClut = pClut;
+		G_CREATE_TEXTURE_CLUT = pClut;
 	}
 
 	Mem_Delete(pBmpBuf);
@@ -974,9 +1038,9 @@ INLINE i32 PCTex_CreateTexturePVR(
 
 	if (res)
 	{
-		gGlobalTextures[unusedId].pTextureData = pData;
-		gGlobalTextures[unusedId].field_60 = a3;
-		gGlobalTextures[unusedId].field_64 = 0x10000;
+		G_GLOBAL_TEXTURES[unusedId].pTextureData = pData;
+		G_GLOBAL_TEXTURES[unusedId].field_60 = a3;
+		G_GLOBAL_TEXTURES[unusedId].field_64 = 0x10000;
 
 		return unusedId;
 	}
@@ -1004,33 +1068,33 @@ i32 PCTex_CreateTexturePVRInId(
 	if (a4 & 0x1000)
 		return 0;
 
-	print_if_false(!(gGlobalTextures[a1].mD3DTex || gGlobalTextures[a1].mSplit), "texture slot already used");
+	print_if_false(!(G_GLOBAL_TEXTURES[a1].mD3DTex || G_GLOBAL_TEXTURES[a1].mSplit), "texture slot already used");
 
-	gGlobalTextures[a1].mHScale = 1.0f;
-	gGlobalTextures[a1].mWScale = 1.0f;
-	gGlobalTextures[a1].field_C = 1.0f / (f32)a2;
+	G_GLOBAL_TEXTURES[a1].mHScale = 1.0f;
+	G_GLOBAL_TEXTURES[a1].mWScale = 1.0f;
+	G_GLOBAL_TEXTURES[a1].field_C = 1.0f / (f32)a2;
 
 	u32 format = a4 & 0xFF;
 	u32 v12 = a4 & 0xFF00;
 
-	gGlobalTextures[a1].mSizeOne = a2;
-	gGlobalTextures[a1].mSizeTwo = a3;
-	gGlobalTextures[a1].mFlags = a6;
-	gGlobalTextures[a1].mTexture = 0;
-	gGlobalTextures[a1].field_10 = 1.0f / (f32)a3;
+	G_GLOBAL_TEXTURES[a1].mSizeOne = a2;
+	G_GLOBAL_TEXTURES[a1].mSizeTwo = a3;
+	G_GLOBAL_TEXTURES[a1].mFlags = a6;
+	G_GLOBAL_TEXTURES[a1].mTexture = 0;
+	G_GLOBAL_TEXTURES[a1].field_10 = 1.0f / (f32)a3;
 
 	char v13 = 0;
 	if (!format || format == 2 || format == 7)
 		v13 = 1;
 
-	gGlobalTextures[a1].mAlpha ^= (gGlobalTextures[a1].mAlpha ^ v13) & 1;
+	G_GLOBAL_TEXTURES[a1].mAlpha ^= (G_GLOBAL_TEXTURES[a1].mAlpha ^ v13) & 1;
 
 	if (a7)
-		strncpy(gGlobalTextures[a1].field_28, a7, 0x1F);
+		strncpy(G_GLOBAL_TEXTURES[a1].field_28, a7, 0x1F);
 	else
-		gGlobalTextures[a1].field_28[0] = 0;
+		G_GLOBAL_TEXTURES[a1].field_28[0] = 0;
 
-	gGlobalTextures[a1].field_48 = a8;
+	G_GLOBAL_TEXTURES[a1].field_48 = a8;
 
 	i32 v14;
 	if (!format)
@@ -1050,18 +1114,18 @@ i32 PCTex_CreateTexturePVRInId(
 		v14 = format == 7 ? 3 : -1;
 	}
 
-	if (v14 != 3 && gPcTexContainer[v14].field_28 & 1)
+	if (v14 != 3 && G_PC_TEX_CONTAINER[v14].field_28 & 1)
 	{
-		gGlobalTextures[a1].field_24 = v14;
+		G_GLOBAL_TEXTURES[a1].field_24 = v14;
 	}
 	else
 	{
-		gGlobalTextures[a1].field_24 = gPcTexPvrAndSoftRendererRelated;
+		G_GLOBAL_TEXTURES[a1].field_24 = G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED;
 	}
 
 	i32 v84;
 	if (a6 & 0x200)
-		v84 = 2 * gPvrRelatedWidth;
+		v84 = 2 * G_PVR_RELATED_WIDTH;
 	else
 		v84 = 2 * a2;
 
@@ -1085,17 +1149,17 @@ i32 PCTex_CreateTexturePVRInId(
 				v12 == 0x400);
 	}
 
-	gGlobalTextures[a1].mD3DTex = 0;
+	G_GLOBAL_TEXTURES[a1].mD3DTex = 0;
 
-	if (a2 <= (i32)gMaxTextureWidth && a3 <= (i32)gTextureHeight)
+	if (a2 <= (i32)G_MAX_TEXTURE_WIDTH && a3 <= (i32)G_TEXTURE_HEIGHT)
 	{
-		gPvrCountRelated++;
-		gGlobalTextures[a1].field_50 = gPvrCountRelated;
+		G_PVR_COUNT_RELATED++;
+		G_GLOBAL_TEXTURES[a1].field_50 = G_PVR_COUNT_RELATED;
 
-		i32 v19 = gGlobalTextures[a1].field_24;
+		i32 v19 = G_GLOBAL_TEXTURES[a1].field_24;
 
 		i32 v20;
-		if (gPcTexContainer[v19].field_4 == 32)
+		if (G_PC_TEX_CONTAINER[v19].field_4 == 32)
 		{
 			v20 = 4 * a2;
 		}
@@ -1104,14 +1168,14 @@ i32 PCTex_CreateTexturePVRInId(
 			v20 = 2 * a2;
 		}
 
-		if (gLowGraphics)
+		if (G_LOWGRAPHICS)
 		{
 			u8* pSysTex = static_cast<u8*>(malloc(v20 * a3));
 			print_if_false(pSysTex != 0, "out of memory loading softrend textures!\r\n");
-			gGlobalTextures[a1].mD3DTex = reinterpret_cast<IDirectDrawSurface7*>(pSysTex);
-			gGlobalTextures[a1].mFlags |= 0x400;
+			G_GLOBAL_TEXTURES[a1].mD3DTex = reinterpret_cast<IDirectDrawSurface7*>(pSysTex);
+			G_GLOBAL_TEXTURES[a1].mFlags |= 0x400;
 
-			if (v14 == gGlobalTextures[a1].field_24)
+			if (v14 == G_GLOBAL_TEXTURES[a1].field_24)
 			{
 				i32 rowBytes = v20;
 				if (!rowBytes)
@@ -1144,7 +1208,7 @@ i32 PCTex_CreateTexturePVRInId(
 							{
 								if (--threshold < 0)
 								{
-									gGlobalTextures[a1].mFlags |= 0x1000;
+									G_GLOBAL_TEXTURES[a1].mFlags |= 0x1000;
 									goto scannedSoft;
 								}
 							}
@@ -1163,7 +1227,7 @@ scannedSoft:
 						v14,
 						pSysTex,
 						v20,
-						gGlobalTextures[a1].field_24,
+						G_GLOBAL_TEXTURES[a1].field_24,
 						a2,
 						a3,
 						converted);
@@ -1172,8 +1236,8 @@ scannedSoft:
 		else
 		{
 #ifdef _WIN32
-			i32 width = gGlobalTextures[a1].mSizeOne;
-			i32 height = gGlobalTextures[a1].mSizeTwo;
+			i32 width = G_GLOBAL_TEXTURES[a1].mSizeOne;
+			i32 height = G_GLOBAL_TEXTURES[a1].mSizeTwo;
 
 			DDSURFACEDESC2 desc;
 			memset(&desc, 0, sizeof(desc));
@@ -1181,20 +1245,20 @@ scannedSoft:
 			desc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
 			desc.dwHeight = height;
 			desc.dwWidth = width;
-			memcpy(&desc.ddpfPixelFormat, &gPcTexContainer[v19].field_2C, sizeof(DDPIXELFORMAT));
+			memcpy(&desc.ddpfPixelFormat, &G_PC_TEX_CONTAINER[v19].field_2C, sizeof(DDPIXELFORMAT));
 			desc.ddsCaps.dwCaps = DDSCAPS_TEXTURE | DDSCAPS_SYSTEMMEMORY;
 
 			IDirectDrawSurface7* pTempSurf;
-			HRESULT hr = lpDD->CreateSurface(&desc, &pTempSurf, 0);
+			HRESULT hr = G_MOVIE_DD7->CreateSurface(&desc, &pTempSurf, 0);
 			D3D_ERROR_LOG_AND_QUIT(hr);
 
 			hr = pTempSurf->Lock(0, &desc, DDLOCK_WRITEONLY, 0);
 			D3D_ERROR_LOG_AND_QUIT(hr);
 
-			if (gGlobalTextures[a1].field_24 == v14)
+			if (G_GLOBAL_TEXTURES[a1].field_24 == v14)
 			{
 				i32 rowBytes;
-				if (gPcTexContainer[gGlobalTextures[a1].field_24].field_4 == 32)
+				if (G_PC_TEX_CONTAINER[G_GLOBAL_TEXTURES[a1].field_24].field_4 == 32)
 				{
 					rowBytes = 4 * width;
 				}
@@ -1233,7 +1297,7 @@ scannedSoft:
 							{
 								if (--threshold < 0)
 								{
-									gGlobalTextures[a1].mFlags |= 0x1000;
+									G_GLOBAL_TEXTURES[a1].mFlags |= 0x1000;
 									goto scannedHard;
 								}
 							}
@@ -1252,7 +1316,7 @@ scannedHard:
 						v14,
 						desc.lpSurface,
 						desc.lPitch,
-						gGlobalTextures[a1].field_24,
+						G_GLOBAL_TEXTURES[a1].field_24,
 						width,
 						height,
 						converted);
@@ -1266,14 +1330,14 @@ scannedHard:
 			desc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
 			desc.dwHeight = height;
 			desc.dwWidth = width;
-			memcpy(&desc.ddpfPixelFormat, &gPcTexContainer[gGlobalTextures[a1].field_24].field_2C, sizeof(DDPIXELFORMAT));
+			memcpy(&desc.ddpfPixelFormat, &G_PC_TEX_CONTAINER[G_GLOBAL_TEXTURES[a1].field_24].field_2C, sizeof(DDPIXELFORMAT));
 			desc.ddsCaps.dwCaps = DDSCAPS_TEXTURE;
 			desc.ddsCaps.dwCaps2 = DDSCAPS2_TEXTUREMANAGE;
 
-			hr = lpDD->CreateSurface(&desc, &gGlobalTextures[a1].mD3DTex, 0);
+			hr = G_MOVIE_DD7->CreateSurface(&desc, &G_GLOBAL_TEXTURES[a1].mD3DTex, 0);
 			D3D_ERROR_LOG_AND_QUIT(hr);
 
-			hr = gGlobalTextures[a1].mD3DTex->Blt(0, pTempSurf, 0, DDBLT_WAIT, 0);
+			hr = G_GLOBAL_TEXTURES[a1].mD3DTex->Blt(0, pTempSurf, 0, DDBLT_WAIT, 0);
 			D3D_ERROR_LOG_AND_QUIT(hr);
 
 			hr = pTempSurf->Release();
@@ -1283,50 +1347,50 @@ scannedHard:
 
 		if (a6 & 0x200)
 		{
-			gGlobalTextures[a1].mFlags = (gGlobalTextures[a1].mFlags & ~0x200) | 0x2006;
-			gGlobalTextures[a1].pTextureData = a5;
+			G_GLOBAL_TEXTURES[a1].mFlags = (G_GLOBAL_TEXTURES[a1].mFlags & ~0x200) | 0x2006;
+			G_GLOBAL_TEXTURES[a1].pTextureData = a5;
 
-			if (gCreateTextureClut)
+			if (G_CREATE_TEXTURE_CLUT)
 			{
-				gGlobalTextures[a1].field_60 = reinterpret_cast<i32>(gCreateTextureClut->mClut);
-				gGlobalTextures[a1].field_64 = gCreateTextureClut->mColorCount;
+				G_GLOBAL_TEXTURES[a1].field_60 = reinterpret_cast<i32>(G_CREATE_TEXTURE_CLUT->mClut);
+				G_GLOBAL_TEXTURES[a1].field_64 = G_CREATE_TEXTURE_CLUT->mColorCount;
 			}
 			else
 			{
-				gGlobalTextures[a1].field_60 = a4;
-				gGlobalTextures[a1].field_64 = 0x10000;
+				G_GLOBAL_TEXTURES[a1].field_60 = a4;
+				G_GLOBAL_TEXTURES[a1].field_64 = 0x10000;
 			}
 		}
 	}
 	else
 	{
-		i32 numX = a2 / (i32)gMaxTextureWidth;
-		if (numX * (i32)gMaxTextureWidth < a2)
+		i32 numX = a2 / (i32)G_MAX_TEXTURE_WIDTH;
+		if (numX * (i32)G_MAX_TEXTURE_WIDTH < a2)
 			numX++;
 
-		i32 numY = a3 / (i32)gTextureHeight;
-		if (numY * (i32)gTextureHeight < a3)
+		i32 numY = a3 / (i32)G_TEXTURE_HEIGHT;
+		if (numY * (i32)G_TEXTURE_HEIGHT < a3)
 			numY++;
 
 		i32 total = numY * numX;
-		gGlobalTextures[a1].mSplitCount = total;
-		gGlobalTextures[a1].mFlags |= 0x200;
-		gGlobalTextures[a1].mSplit = static_cast<i32*>(malloc(4 * total));
+		G_GLOBAL_TEXTURES[a1].mSplitCount = total;
+		G_GLOBAL_TEXTURES[a1].mFlags |= 0x200;
+		G_GLOBAL_TEXTURES[a1].mSplit = static_cast<i32*>(malloc(4 * total));
 
-		gPvrRelatedWidth = a2;
+		G_PVR_RELATED_WIDTH = a2;
 
 		i32 splitIndex = 0;
-		for (i32 yOff = 0; yOff < a3; yOff += gTextureHeight)
+		for (i32 yOff = 0; yOff < a3; yOff += G_TEXTURE_HEIGHT)
 		{
 			i32 sliceH = a3 - yOff;
-			if (sliceH > (i32)gTextureHeight)
-				sliceH = gTextureHeight;
+			if (sliceH > (i32)G_TEXTURE_HEIGHT)
+				sliceH = G_TEXTURE_HEIGHT;
 
-			for (i32 xOff = 0; xOff < a2; xOff += gMaxTextureWidth)
+			for (i32 xOff = 0; xOff < a2; xOff += G_MAX_TEXTURE_WIDTH)
 			{
 				i32 sliceW = a2 - xOff;
-				if (sliceW > (i32)gMaxTextureWidth)
-					sliceW = gMaxTextureWidth;
+				if (sliceW > (i32)G_MAX_TEXTURE_WIDTH)
+					sliceW = G_MAX_TEXTURE_WIDTH;
 
 				u16* pSlice = reinterpret_cast<u16*>(v83) + yOff * a2 + xOff;
 
@@ -1337,7 +1401,7 @@ scannedHard:
 				i32 index;
 				for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
 				{
-					if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+					if (!G_GLOBAL_TEXTURES[index].mD3DTex && !G_GLOBAL_TEXTURES[index].mSplit)
 						break;
 				}
 
@@ -1358,20 +1422,20 @@ scannedHard:
 
 				if (res)
 				{
-					gGlobalTextures[index].pTextureData = pSlice;
-					gGlobalTextures[index].field_60 = a4 & 0xFF;
-					gGlobalTextures[index].field_64 = 0x10000;
+					G_GLOBAL_TEXTURES[index].pTextureData = pSlice;
+					G_GLOBAL_TEXTURES[index].field_60 = a4 & 0xFF;
+					G_GLOBAL_TEXTURES[index].field_64 = 0x10000;
 				}
 				else
 				{
 					index = -1;
 				}
 
-				gGlobalTextures[a1].mSplit[splitIndex++] = index;
+				G_GLOBAL_TEXTURES[a1].mSplit[splitIndex++] = index;
 			}
 		}
 
-		gPvrRelatedWidth = 0;
+		G_PVR_RELATED_WIDTH = 0;
 	}
 
 	if (v12 == 0x100 || v12 == 0x200 || v12 == 0x300 || v12 == 0x400 || v12 == 0xD00)
@@ -1389,7 +1453,7 @@ INLINE i32 PCTex_FindUnusedTextureId(void)
 			id < GLOBAL_TEXTURE_COUNT;
 			id++)
 	{
-		if (!gGlobalTextures[id].mD3DTex && !gGlobalTextures[id].mSplit)
+		if (!G_GLOBAL_TEXTURES[id].mD3DTex && !G_GLOBAL_TEXTURES[id].mSplit)
 			break;
 	}
 
@@ -1408,10 +1472,10 @@ void PCTex_FreePcIcons(void)
 {
 	for (i32 i = 0; i < PC_ICON_COUNT; i++)
 	{
-		if (gPcIcons[i] != -1)
+		if (G_PC_ICONS[i] != -1)
 		{
-			PCTex_ReleaseSysTexture(gPcIcons[i], true);
-			gPcIcons[i] = -1;
+			PCTex_ReleaseSysTexture(G_PC_ICONS[i], true);
+			G_PC_ICONS[i] = -1;
 		}
 	}
 }
@@ -1419,14 +1483,14 @@ void PCTex_FreePcIcons(void)
 // @Ok
 IDirectDrawSurface7* PCTex_GetDirect3DTexture(i32 index)
 {
-	return gGlobalTextures[index].mD3DTex;
+	return G_GLOBAL_TEXTURES[index].mD3DTex;
 }
 
 // @Ok
 void PCTex_GetInvTextureSize(i32 index, f32* pF1 ,f32 * pF2)
 {
-	*pF1 = gGlobalTextures[index].field_C;
-	*pF2 = gGlobalTextures[index].field_10;
+	*pF1 = G_GLOBAL_TEXTURES[index].field_C;
+	*pF2 = G_GLOBAL_TEXTURES[index].field_10;
 }
 
 // @Ok
@@ -1435,34 +1499,34 @@ void PCTex_GetTextureSize(
 		i32* pOne,
 		i32* pTwo)
 {
-	*pOne = gGlobalTextures[index].mSizeOne;
-	*pTwo = gGlobalTextures[index].mSizeTwo;
+	*pOne = G_GLOBAL_TEXTURES[index].mSizeOne;
+	*pTwo = G_GLOBAL_TEXTURES[index].mSizeTwo;
 }
 
 // @Ok
 i32 PCTex_GetTextureSplitCount(i32 index)
 {
-	return gGlobalTextures[index].mSplitCount;
+	return G_GLOBAL_TEXTURES[index].mSplitCount;
 }
 
 // @Ok
 // @Matching
 void PCTex_InitSystemTextures(void)
 {
-	if (gLowGraphics)
+	if (G_LOWGRAPHICS)
 	{
-		gMaxTextureAspectRatio = 0;
-		gMaxTextureWidth = 256;
-		gTextureHeight = 256;
-		gSquareOnly = 0;
+		G_MAX_TEXTURE_ASPECT_RATIO = 0;
+		G_MAX_TEXTURE_WIDTH = 256;
+		G_TEXTURE_HEIGHT = 256;
+		G_SQUARE_ONLY = 0;
 	}
 	else
 	{
 #ifdef _WIN32
-		gMaxTextureWidth = gD3DDevCaps.dwMaxTextureWidth;
-		gTextureHeight = gD3DDevCaps.dwMaxTextureHeight;
-		gMaxTextureAspectRatio = gD3DDevCaps.dwMaxTextureAspectRatio;
-		gSquareOnly = (gD3DDevCaps.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
+		G_MAX_TEXTURE_WIDTH = G_D3DDEV_CAPS.dwMaxTextureWidth;
+		G_TEXTURE_HEIGHT = G_D3DDEV_CAPS.dwMaxTextureHeight;
+		G_MAX_TEXTURE_ASPECT_RATIO = G_D3DDEV_CAPS.dwMaxTextureAspectRatio;
+		G_SQUARE_ONLY = (G_D3DDEV_CAPS.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
 #endif
 	}
 
@@ -1566,7 +1630,7 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 		rounded_height = 1024;
 	}
 
-	if (gSquareOnly)
+	if (G_SQUARE_ONLY)
 	{
 		if (rounded_width > rounded_height)
 		{
@@ -1588,17 +1652,17 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 		aspectRatio = rounded_height / rounded_width;
 	}
 
-	if (gMaxTextureAspectRatio && aspectRatio > (i32)gMaxTextureAspectRatio)
+	if (G_MAX_TEXTURE_ASPECT_RATIO && aspectRatio > (i32)G_MAX_TEXTURE_ASPECT_RATIO)
 	{
 		if (rounded_width > rounded_height)
 		{
-			rounded_width = rounded_height * gMaxTextureAspectRatio;
+			rounded_width = rounded_height * G_MAX_TEXTURE_ASPECT_RATIO;
 			if (rounded_width < width)
 				rounded_width = width;
 		}
 		else
 		{
-			rounded_height = rounded_width * gMaxTextureAspectRatio;
+			rounded_height = rounded_width * G_MAX_TEXTURE_ASPECT_RATIO;
 			if (rounded_height < height)
 				rounded_height = height;
 		}
@@ -1633,7 +1697,7 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 		i32 index;
 		for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
 		{
-			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+			if (!G_GLOBAL_TEXTURES[index].mD3DTex && !G_GLOBAL_TEXTURES[index].mSplit)
 				break;
 		}
 
@@ -1654,9 +1718,9 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 
 		if (res)
 		{
-			gGlobalTextures[index].pTextureData = pPixels;
-			gGlobalTextures[index].field_60 = 0x907;
-			gGlobalTextures[index].field_64 = 0x10000;
+			G_GLOBAL_TEXTURES[index].pTextureData = pPixels;
+			G_GLOBAL_TEXTURES[index].field_60 = 0x907;
+			G_GLOBAL_TEXTURES[index].field_64 = 0x10000;
 			result = index;
 		}
 		else
@@ -1679,13 +1743,13 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 		result = a3;
 	}
 
-	if (!gGlobalTextures[result].pTextureData)
+	if (!G_GLOBAL_TEXTURES[result].pTextureData)
 	{
 		char* pName = static_cast<char*>(malloc(0x20));
-		gGlobalTextures[result].pTextureData = pName;
+		G_GLOBAL_TEXTURES[result].pTextureData = pName;
 		strcpy(pName, a1);
-		gGlobalTextures[result].field_60 = 0;
-		gGlobalTextures[result].field_64 = 0xFFFFFF;
+		G_GLOBAL_TEXTURES[result].field_60 = 0;
+		G_GLOBAL_TEXTURES[result].field_64 = 0xFFFFFF;
 	}
 
 	print_if_false(result != -1, "Unable to load replacement texture!");
@@ -1695,17 +1759,17 @@ i32 PCTex_LoadLtiTexture(const char* a1, u32 a2, i32 a3, u32 a4)
 	if (width != rounded_width || height != rounded_height)
 		free(pPixels);
 
-	gGlobalTextures[result].mSizeOne = width;
-	gGlobalTextures[result].mSizeTwo = height;
-	gGlobalTextures[result].mFlags |= 0x4000;
+	G_GLOBAL_TEXTURES[result].mSizeOne = width;
+	G_GLOBAL_TEXTURES[result].mSizeTwo = height;
+	G_GLOBAL_TEXTURES[result].mFlags |= 0x4000;
 
 	f32 v40 = (f32)(u16)width;
 	f32 v38 = (f32)rounded_width;
-	gGlobalTextures[result].mWScale = v40 / v38;
+	G_GLOBAL_TEXTURES[result].mWScale = v40 / v38;
 
 	f32 v41 = (f32)(u16)height;
 	f32 v43 = (f32)rounded_height;
-	gGlobalTextures[result].mHScale = v41 / v43;
+	G_GLOBAL_TEXTURES[result].mHScale = v41 / v43;
 
 	return result;
 }
@@ -1717,11 +1781,11 @@ void PCTex_LoadPcIcons(void)
 			i < PC_ICON_COUNT;
 			i++)
 	{
-		if (gPcIcons[i] == -1)
+		if (G_PC_ICONS[i] == -1)
 		{
-			i32 tex = PCTex_LoadLtiTexture(gPcIconNames[i], 0, i+3, 1);
-			gPcIcons[i] = tex;
-			print_if_false(tex != -1, "Error loading icon tex: %s\r\n", gPcIconNames[i]);
+			i32 tex = PCTex_LoadLtiTexture(G_PC_ICON_NAMES[i], 0, i+3, 1);
+			G_PC_ICONS[i] = tex;
+			print_if_false(tex != -1, "Error loading icon tex: %s\r\n", G_PC_ICON_NAMES[i]);
 		}
 	}
 }
@@ -1753,15 +1817,15 @@ void PCTex_ReleaseAllTextures(void)
 			i < GLOBAL_TEXTURE_COUNT;
 			i++)
 	{
-		if (gGlobalTextures[i].mD3DTex || gGlobalTextures[i].mSplit)
+		if (G_GLOBAL_TEXTURES[i].mD3DTex || G_GLOBAL_TEXTURES[i].mSplit)
 		{
 			PCTex_ReleaseTexture(i, true);
 		}
 	}
 
-	while (gClutPcRelated)
+	while (G_CLUT_PC_RELATED)
 	{
-		releaseClutPc(gClutPcRelated);
+		releaseClutPc(G_CLUT_PC_RELATED);
 	}
 }
 
@@ -1769,25 +1833,25 @@ void PCTex_ReleaseAllTextures(void)
 // @AlmostMatching: sligthly different order on the 9FF and thingy
 void PCTex_ReleaseSysTexture(i32 a1, bool a2)
 {
-	if (gGlobalTextures[a1].mD3DTex)
+	if (G_GLOBAL_TEXTURES[a1].mD3DTex)
 	{
-		if (gGlobalTextures[a1].mFlags & 0x400)
+		if (G_GLOBAL_TEXTURES[a1].mFlags & 0x400)
 		{
-			free(gGlobalTextures[a1].mD3DTex);
+			free(G_GLOBAL_TEXTURES[a1].mD3DTex);
 		}
 		else
 		{
 #ifdef _WIN32
-			HRESULT hr = gGlobalTextures[a1].mD3DTex->Release();
+			HRESULT hr = G_GLOBAL_TEXTURES[a1].mD3DTex->Release();
 			D3D_ERROR_LOG_AND_QUIT(hr);
 #endif
 		}
 
-		gGlobalTextures[a1].mD3DTex = 0;
-		gGlobalTextures[a1].mFlags &= 0x9FF;
+		G_GLOBAL_TEXTURES[a1].mD3DTex = 0;
+		G_GLOBAL_TEXTURES[a1].mFlags &= 0x9FF;
 
 		// @FIXME
-		ClutPC *v14 = clutToClutPc(reinterpret_cast<u16*>(gGlobalTextures[a1].field_60));
+		ClutPC *v14 = clutToClutPc(reinterpret_cast<u16*>(G_GLOBAL_TEXTURES[a1].field_60));
 		if (v14)
 		{
 			if (--v14->mRefs <= 0 && a2)
@@ -1799,19 +1863,19 @@ void PCTex_ReleaseSysTexture(i32 a1, bool a2)
 
 	if (a2)
 	{
-		if (gGlobalTextures[a1].field_64 == 0xFFFFFF)
+		if (G_GLOBAL_TEXTURES[a1].field_64 == 0xFFFFFF)
 		{
-			free(gGlobalTextures[a1].pTextureData);
+			free(G_GLOBAL_TEXTURES[a1].pTextureData);
 		}
-		gGlobalTextures[a1].pTextureData = 0;
-		gGlobalTextures[a1].field_60 = 0;
-		gGlobalTextures[a1].field_64 = 0;
+		G_GLOBAL_TEXTURES[a1].pTextureData = 0;
+		G_GLOBAL_TEXTURES[a1].field_60 = 0;
+		G_GLOBAL_TEXTURES[a1].field_64 = 0;
 	}
 
-	if (gGlobalTextures[a1].mSplit)
+	if (G_GLOBAL_TEXTURES[a1].mSplit)
 	{
-		free(gGlobalTextures[a1].mSplit);
-		gGlobalTextures[a1].mSplit = 0;
+		free(G_GLOBAL_TEXTURES[a1].mSplit);
+		G_GLOBAL_TEXTURES[a1].mSplit = 0;
 	}
 }
 
@@ -1821,8 +1885,8 @@ void PCTex_ReleaseTexture(i32 index, bool a2)
 {
 	if (index >= 8)
 	{
-		delete gGlobalTextures[index].mTexture;
-		gGlobalTextures[index].mTexture = 0;
+		delete G_GLOBAL_TEXTURES[index].mTexture;
+		G_GLOBAL_TEXTURES[index].mTexture = 0;
 		PCTex_ReleaseSysTexture(index, a2);
 	}
 }
@@ -1832,71 +1896,71 @@ void PCTex_ReleaseTexture(i32 index, bool a2)
 // the loop index use swapped registers), the inlined PCTex_LoadPcIcons matches
 void PCTex_ReloadTextures(void)
 {
-	i32 lowFlag = gLowGraphics ? 0x400 : 0;
+	i32 lowFlag = G_LOWGRAPHICS ? 0x400 : 0;
 
 	PCTex_LoadPcIcons();
 
 	for (i32 index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
 	{
-		if (!(gGlobalTextures[index].mFlags & 0x8000))
+		if (!(G_GLOBAL_TEXTURES[index].mFlags & 0x8000))
 		{
-			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+			if (!G_GLOBAL_TEXTURES[index].mD3DTex && !G_GLOBAL_TEXTURES[index].mSplit)
 				continue;
 
-			if ((gGlobalTextures[index].mFlags & 0x400) == lowFlag)
+			if ((G_GLOBAL_TEXTURES[index].mFlags & 0x400) == lowFlag)
 				continue;
 		}
 
-		i32 type = gGlobalTextures[index].field_64;
-		u32 flags = ((gGlobalTextures[index].mFlags & 0x800u) | 0x80) >> 7;
+		i32 type = G_GLOBAL_TEXTURES[index].field_64;
+		u32 flags = ((G_GLOBAL_TEXTURES[index].mFlags & 0x800u) | 0x80) >> 7;
 
 		switch (type)
 		{
 			case 0x100:
 				PCTex_CreateTexture256(
-						gGlobalTextures[index].mSizeOne,
-						gGlobalTextures[index].mSizeTwo,
-						gGlobalTextures[index].pTextureData,
-						reinterpret_cast<const u16*>(gGlobalTextures[index].field_60),
+						G_GLOBAL_TEXTURES[index].mSizeOne,
+						G_GLOBAL_TEXTURES[index].mSizeTwo,
+						G_GLOBAL_TEXTURES[index].pTextureData,
+						reinterpret_cast<const u16*>(G_GLOBAL_TEXTURES[index].field_60),
 						flags,
 						"RESTORED",
 						index,
-						gGlobalTextures[index].field_48);
+						G_GLOBAL_TEXTURES[index].field_48);
 				break;
 			case 0x10:
 				PCTex_CreateTexture16(
-						gGlobalTextures[index].mSizeOne,
-						gGlobalTextures[index].mSizeTwo,
-						gGlobalTextures[index].pTextureData,
-						reinterpret_cast<const u16*>(gGlobalTextures[index].field_60),
+						G_GLOBAL_TEXTURES[index].mSizeOne,
+						G_GLOBAL_TEXTURES[index].mSizeTwo,
+						G_GLOBAL_TEXTURES[index].pTextureData,
+						reinterpret_cast<const u16*>(G_GLOBAL_TEXTURES[index].field_60),
 						"RELOADED",
 						index,
-						gGlobalTextures[index].field_48,
+						G_GLOBAL_TEXTURES[index].field_48,
 						flags);
 				break;
 			case 0x10000:
-				if (!(gGlobalTextures[index].mFlags & 0x8000))
+				if (!(G_GLOBAL_TEXTURES[index].mFlags & 0x8000))
 					PCTex_ReleaseSysTexture(index, 0);
 
 				PCTex_CreateTexturePVRInId(
 						index,
-						gGlobalTextures[index].mSizeOne,
-						gGlobalTextures[index].mSizeTwo,
-						gGlobalTextures[index].field_60,
-						gGlobalTextures[index].pTextureData,
-						gGlobalTextures[index].mFlags & 0x1FF,
+						G_GLOBAL_TEXTURES[index].mSizeOne,
+						G_GLOBAL_TEXTURES[index].mSizeTwo,
+						G_GLOBAL_TEXTURES[index].field_60,
+						G_GLOBAL_TEXTURES[index].pTextureData,
+						G_GLOBAL_TEXTURES[index].mFlags & 0x1FF,
 						"RELOADED",
-						gGlobalTextures[index].field_48);
+						G_GLOBAL_TEXTURES[index].field_48);
 				break;
 			case 0xFFFFFF:
-				if (!(gGlobalTextures[index].mFlags & 0x8000))
+				if (!(G_GLOBAL_TEXTURES[index].mFlags & 0x8000))
 					PCTex_ReleaseSysTexture(index, 0);
 
 				PCTex_LoadLtiTexture(
-						static_cast<const char*>(gGlobalTextures[index].pTextureData),
-						gGlobalTextures[index].field_48,
+						static_cast<const char*>(G_GLOBAL_TEXTURES[index].pTextureData),
+						G_GLOBAL_TEXTURES[index].field_48,
 						index,
-						gGlobalTextures[index].mFlags & 0x1FF);
+						G_GLOBAL_TEXTURES[index].mFlags & 0x1FF);
 				break;
 			default:
 				print_if_false(0, "Invalid color count for original texture data: %i", type);
@@ -1909,7 +1973,7 @@ void PCTex_ReloadTextures(void)
 // @Matching
 u8 PCTex_TextureHasAlpha(i32 index)
 {
-	return gGlobalTextures[index].mAlpha & 1;
+	return G_GLOBAL_TEXTURES[index].mAlpha & 1;
 }
 
 // @Ok
@@ -1929,16 +1993,16 @@ void PCTex_UnloadTextures(void)
 			index < GLOBAL_TEXTURE_COUNT;
 			index++)
 	{
-		if (gGlobalTextures[index].mD3DTex || gGlobalTextures[index].mSplit)
+		if (G_GLOBAL_TEXTURES[index].mD3DTex || G_GLOBAL_TEXTURES[index].mSplit)
 		{
-			if (gGlobalTextures[index].mFlags & 0x2000)
+			if (G_GLOBAL_TEXTURES[index].mFlags & 0x2000)
 			{
 				PCTex_ReleaseSysTexture(index, true);
 			}
 			else
 			{
 				PCTex_ReleaseSysTexture(index, false);
-				gGlobalTextures[index].mFlags |= 0x8000;
+				G_GLOBAL_TEXTURES[index].mFlags |= 0x8000;
 			}
 		}
 	}
@@ -1949,62 +2013,62 @@ void PCTex_UnloadTextures(void)
 // PCTex_ReloadTextures call shows up inlined because it is still a printf stub
 void PCTex_UpdateForSoftwareRenderer(void)
 {
-	if (gLowGraphics)
+	if (G_LOWGRAPHICS)
 	{
-		gMaxTextureAspectRatio = 0;
-		gMaxTextureWidth = 256;
-		gTextureHeight = 256;
-		gSquareOnly = 0;
+		G_MAX_TEXTURE_ASPECT_RATIO = 0;
+		G_MAX_TEXTURE_WIDTH = 256;
+		G_TEXTURE_HEIGHT = 256;
+		G_SQUARE_ONLY = 0;
 
 		for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
 		{
-			if (gPcTexContainer[i].field_28 & 2)
-				gPcTexContainer[i].field_28 |= 1;
+			if (G_PC_TEX_CONTAINER[i].field_28 & 2)
+				G_PC_TEX_CONTAINER[i].field_28 |= 1;
 			else
-				gPcTexContainer[i].field_28 &= ~1;
+				G_PC_TEX_CONTAINER[i].field_28 &= ~1;
 		}
 
-		gPcTexPvrAndSoftRendererRelated = 0;
+		G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 0;
 	}
 	else
 	{
 		for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
 		{
-			if (gPcTexContainer[i].field_28 & 4)
-				gPcTexContainer[i].field_28 |= 1;
+			if (G_PC_TEX_CONTAINER[i].field_28 & 4)
+				G_PC_TEX_CONTAINER[i].field_28 |= 1;
 			else
-				gPcTexContainer[i].field_28 &= ~1;
+				G_PC_TEX_CONTAINER[i].field_28 &= ~1;
 		}
 
-		if (gPcTexContainer[0].field_28 & 1)
+		if (G_PC_TEX_CONTAINER[0].field_28 & 1)
 		{
-			gPcTexPvrAndSoftRendererRelated = 0;
+			G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 0;
 		}
-		else if (gPcTexContainer[4].field_28 & 1)
+		else if (G_PC_TEX_CONTAINER[4].field_28 & 1)
 		{
-			gPcTexPvrAndSoftRendererRelated = 4;
+			G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 4;
 		}
-		else if (gPcTexContainer[1].field_28 & 1)
+		else if (G_PC_TEX_CONTAINER[1].field_28 & 1)
 		{
-			gPcTexPvrAndSoftRendererRelated = 1;
+			G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = 1;
 		}
 		else
 		{
 			for (i32 index = 0; index < NUM_PCTEX_CONTAINERS; index++)
 			{
-				if (gPcTexContainer[index].field_28 & 1)
+				if (G_PC_TEX_CONTAINER[index].field_28 & 1)
 				{
-					gPcTexPvrAndSoftRendererRelated = index;
+					G_PC_TEX_PVR_AND_SOFT_RENDERER_RELATED = index;
 					break;
 				}
 			}
 		}
 
 #ifdef _WIN32
-		gMaxTextureWidth = gD3DDevCaps.dwMaxTextureWidth;
-		gTextureHeight = gD3DDevCaps.dwMaxTextureHeight;
-		gMaxTextureAspectRatio = gD3DDevCaps.dwMaxTextureAspectRatio;
-		gSquareOnly = (gD3DDevCaps.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
+		G_MAX_TEXTURE_WIDTH = G_D3DDEV_CAPS.dwMaxTextureWidth;
+		G_TEXTURE_HEIGHT = G_D3DDEV_CAPS.dwMaxTextureHeight;
+		G_MAX_TEXTURE_ASPECT_RATIO = G_D3DDEV_CAPS.dwMaxTextureAspectRatio;
+		G_SQUARE_ONLY = (G_D3DDEV_CAPS.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY) != 0;
 #endif
 	}
 
@@ -2015,7 +2079,7 @@ void PCTex_UpdateForSoftwareRenderer(void)
 // @Matching
 INLINE ClutPC* clutToClutPc(const u16* pClut)
 {
-	ClutPC* res = gClutPcRelated;
+	ClutPC* res = G_CLUT_PC_RELATED;
 	for (;
 			res;
 			res = res->mNext)
@@ -2034,8 +2098,7 @@ void copyBitmap(void const *,i32,void *,i32,i32,i32,i32)
 }
 
 // @Ok
-// @AlmostMatching: gPcTexContainer goes through a pointer in our build, and our
-// build hoists the u8 mask promotions out of the loop
+// @AlmostMatching: our build hoists the u8 mask promotions out of the loop
 void copyConvertBitmap(
 		const void* src,
 		i32 srcPitch,
@@ -2047,8 +2110,8 @@ void copyConvertBitmap(
 		i32 height,
 		bool forceAlpha)
 {
-	SPCTexContainer* pSrc = &gPcTexContainer[srcFormat];
-	SPCTexContainer* pDst = &gPcTexContainer[dstFormat];
+	SPCTexContainer* pSrc = &G_PC_TEX_CONTAINER[srcFormat];
+	SPCTexContainer* pDst = &G_PC_TEX_CONTAINER[dstFormat];
 
 	u8 dstAMask = (1 << pDst->field_8) - 1;
 	u8 dstRMask = (1 << pDst->field_C) - 1;
@@ -2123,7 +2186,9 @@ void copyConvertBitmap(
 		src = static_cast<const u8*>(src) + srcPitch;
 		dst = static_cast<u8*>(dst) + dstPitch;
 	}
+
 }
+
 
 // @Ok
 INLINE i32 countLeadingZeroBits(u32 num)
@@ -2153,11 +2218,11 @@ HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT lpDDPixFmt, void * lpContext
 {
 #ifdef _WIN32
 	LPDDPIXELFORMAT pPixelFormat = static_cast<LPDDPIXELFORMAT>(lpContext);
-	memcpy(&pPixelFormat[gNumPixelFormats], lpDDPixFmt, sizeof(DDPIXELFORMAT));
+	memcpy(&pPixelFormat[G_NUM_PIXEL_FORMATS], lpDDPixFmt, sizeof(DDPIXELFORMAT));
 #endif
-	gNumPixelFormats++;
+	G_NUM_PIXEL_FORMATS++;
 
-	return gNumPixelFormats < 16;
+	return G_NUM_PIXEL_FORMATS < 16;
 }
 
 // @Ok
@@ -2165,18 +2230,18 @@ HRESULT CALLBACK enumPixelFormatsCB(LPDDPIXELFORMAT lpDDPixFmt, void * lpContext
 INLINE void releaseClutPc(ClutPC* pClut)
 {
 	print_if_false(pClut->mRefs == 0, "Releasing a clut with pending references!");
-	print_if_false(gClutCount > 0, "Uh oh, clut count is off!");
+	print_if_false(G_CLUT_COUNT > 0, "Uh oh, clut count is off!");
 
 	if (pClut->mClut)
 		free(pClut->mClut);
 
-	if (pClut == gClutPcRelated)
+	if (pClut == G_CLUT_PC_RELATED)
 	{
-		gClutPcRelated = gClutPcRelated->mNext;
+		G_CLUT_PC_RELATED = G_CLUT_PC_RELATED->mNext;
 	}
 	else
 	{
-		for (ClutPC* iter = gClutPcRelated;
+		for (ClutPC* iter = G_CLUT_PC_RELATED;
 				iter;
 				iter = iter->mNext)
 		{
@@ -2189,7 +2254,7 @@ INLINE void releaseClutPc(ClutPC* pClut)
 	}
 
 	free(pClut);
-	gClutCount--;
+	G_CLUT_COUNT--;
 }
 
 // @Ok
@@ -2226,25 +2291,25 @@ i32 shouldForceBlend(
 // @Ok
 void PCTex_SetTextureUserData(int index, Bitmap256* texture)
 {
-	gGlobalTextures[index].mTexture = texture;
+	G_GLOBAL_TEXTURES[index].mTexture = texture;
 }
 
 // @Ok
 f32 PCTex_GetTextureWScale(int index)
 {
-	return gGlobalTextures[index].mWScale;
+	return G_GLOBAL_TEXTURES[index].mWScale;
 }
 
 // @Ok
 f32 PCTex_GetTextureHScale(int index)
 {
-	return gGlobalTextures[index].mHScale;
+	return G_GLOBAL_TEXTURES[index].mHScale;
 }
 
 // @Ok
 int PCTex_GetTextureFlags(int index)
 {
-	return gGlobalTextures[index].mFlags;
+	return G_GLOBAL_TEXTURES[index].mFlags;
 }
 
 // @Ok
@@ -2265,7 +2330,7 @@ INLINE i32 countBits(u32 value)
 // @Matching
 int PCTex_GetTextureSplitID(int index, int id)
 {
-	return gGlobalTextures[index].mSplit[id];
+	return G_GLOBAL_TEXTURES[index].mSplit[id];
 }
 
 void validate_SPCTexture(void)
