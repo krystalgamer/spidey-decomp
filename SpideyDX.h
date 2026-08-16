@@ -33,8 +33,8 @@ EXPORT void debugSettings(void);
 EXPORT i32 mipmapOffset(u32,u32,f32);
 EXPORT void parseCommandLine(char *);
 
-u16* PVR_ConvertTwiddledToBMP(i32, i32, const u16*, bool);
-u16* PVR_ConvertVQToBMP(i32, i32, const u16*, bool);
+u16* PVR_ConvertTwiddledToBMP(i32, i32, const u16*, i32);
+u16* PVR_ConvertVQToBMP(i32, i32, const u16*, i32);
 
 EXPORT i32 WINAPI RealWinMain(HINSTANCE, HINSTANCE, LPSTR, i32);
 

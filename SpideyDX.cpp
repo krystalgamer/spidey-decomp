@@ -33,17 +33,21 @@ EXPORT i32 gActive;
 EXPORT u32 gTwiddleTable[1024];
 
 // @SMALLTODO
-u16* PVR_ConvertTwiddledToBMP(i32, i32, const u16*, bool)
+u16* PVR_ConvertTwiddledToBMP(i32 a1, i32 a2, const u16* a3, i32 a4)
 {
-	printf("u16* PVR_ConvertTwiddledToBMP(i32, i32, u16*, bool)");
-	return (u16*)0x05102024;
+	// @FIXME
+	typedef u16* (*func_ptr)(i32, i32, const u16*, i32);
+	func_ptr func = (func_ptr)0x00511400;
+	return func(a1, a2, a3, a4);
 }
 
 // @SMALLTODO
-u16* PVR_ConvertVQToBMP(i32, i32, const u16*, bool)
+u16* PVR_ConvertVQToBMP(i32 a1, i32 a2, const u16* a3, i32 a4)
 {
-	printf("u16* PVR_ConvertVQToBMP(i32, i32, u16*, bool)");
-	return (u16*)0x05102024;
+	// @FIXME
+	typedef u16* (*func_ptr)(i32, i32, const u16*, i32);
+	func_ptr func = (func_ptr)0x005115D0;
+	return func(a1, a2, a3, a4);
 }
 
 // @Ok
