@@ -2512,3 +2512,17 @@ void validate_ConvertPSXPaletteToPC(void)
 
 	}
 }
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_pctex(void)
+{
+	PATCH_PUSH_RET(0x0050E1A0, PCTex_CreateTexture256);
+	PATCH_PUSH_RET(0x0050E880, PCTex_CreateTexture16);
+	PATCH_PUSH_RET(0x0050F4A0, copyConvertBitmap);
+	PATCH_PUSH_RET(0x0050F6D0, PCTex_CreateTexturePVRInId);
+	// PCTex_LoadLtiTexture, PCTex_ReloadTextures and PCTex_UpdateForSoftwareRenderer
+	// can not be hooked yet: they reach FileIO/PKR whose state is not shared with
+	// the game (needs G_* treatment in those files first)
+}

@@ -643,6 +643,7 @@ void game_patches(void)
 
 	patch_spool();
 	patch_trig();
+	patch_pctex();
 }
 
 // @Bogus
