@@ -22,8 +22,6 @@ u8 gObjFileRegion;
 // @FIXME - incorrect type
 i32 gBossRelated;
 
-extern i16** gTrigNodes;
-
 // @Ok
 // @Matching
 INLINE i16 CBaddy::GetScriptValue(void)
@@ -128,7 +126,7 @@ i32 CBaddy::GetNextWaypoint(void)
 
 		this->field_1F4 = LinksPointer[1];
 
-		u16* v4 = reinterpret_cast<u16*>(gTrigNodes[this->field_1F4]);
+		u16* v4 = reinterpret_cast<u16*>(G_OFFSETLIST[this->field_1F4]);
 		this->field_2F0 = 0;
 
 		if (*v4 == 1000 || *v4 == 1002)

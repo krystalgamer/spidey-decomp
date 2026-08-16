@@ -15,7 +15,10 @@ EXPORT extern i32 IsRestartDeath;
 EXPORT extern i32 gLevelStatus;
 EXPORT extern i32 gRunCinemaRelated;
 
-EXPORT extern i16 **gTrigNodes;
+extern i16 **OffsetList;
+// #define G_OFFSETLIST (OffsetList)
+#define G_OFFSETLIST (*reinterpret_cast<i16***>(0x006B466C))
+
 EXPORT extern i32 NumNodes;
 
 class CBody;
@@ -75,7 +78,7 @@ EXPORT void Trig_AddCommandListToPending(u16, u16*);
 EXPORT void Trig_DoPendingCommandLists(void);
 EXPORT void ExecuteCommandList(u16*, i32, i32);
 EXPORT void Trig_DeleteTrigFile(void);
-EXPORT char *SkipString(char *);
+EXPORT u16 *SkipString(char *);
 EXPORT void Trig_SetRestart(char *);
 EXPORT void Trig_ExecuteRestart(void);
 EXPORT void Trig_ExecuteAutoexec(void);

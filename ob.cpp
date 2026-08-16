@@ -23,6 +23,8 @@ CBody* EnvironmentalObjectList;
 CBody* SuspendedList;
 CItem* EnviroList;
 
+CBody* RealMechList;
+
 i32 gSuperItemRelated = 1;
 f32 gFloatSuperRelated = 1.0f;
 

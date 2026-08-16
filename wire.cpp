@@ -7,7 +7,6 @@
 #include "validate.h"
 
 extern CBody* ControlBaddyList;
-extern i16 **gTrigNodes;
 extern CPlayer* MechList;
 extern CSVector gTrajectoryVector;
 extern i32 TotalBitUsage;
@@ -268,10 +267,10 @@ CTripWire::CTripWire(i16 *, u16 a3)
 	print_if_false(*LinksPointer == 2, "Incorrect number of links for CTripWire node.");
 
 	u16 v5;
-	if ( *gTrigNodes[LinksPointer[1]] == 3 )
+	if ( *G_OFFSETLIST[LinksPointer[1]] == 3 )
 	{
 		u16 v11 = LinksPointer[2];
-		print_if_false(*gTrigNodes[v11] != 3, "Incorrect link node for CTripWire node.");
+		print_if_false(*G_OFFSETLIST[v11] != 3, "Incorrect link node for CTripWire node.");
 		this->field_100 = v11;
 		v5 = LinksPointer[1];
 	}
@@ -279,7 +278,7 @@ CTripWire::CTripWire(i16 *, u16 a3)
 	{
 		this->field_100 = LinksPointer[1];
 		v5 = LinksPointer[2];
-		print_if_false(*gTrigNodes[v5] == 3, "Incorrect link node for CTripWire node.");
+		print_if_false(*G_OFFSETLIST[v5] == 3, "Incorrect link node for CTripWire node.");
 	}
 
 	Trig_GetPosition(&this->field_104, v5);

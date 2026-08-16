@@ -48,7 +48,7 @@ void L2A1LSC_MonitorTimer(const u32 *,u32 *)
 
 		for (i32 i = 1; i < NumNodes; i++)
 		{
-			if (*gTrigNodes[i] == 1)
+			if (*G_OFFSETLIST[i] == 1)
 			{
 				CVector v18;
 				Trig_GetPosition(&v18, i);

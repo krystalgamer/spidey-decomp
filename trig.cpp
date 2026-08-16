@@ -14,15 +14,8 @@ i32 gLevelStatus;
 // @TODO: delete this shit
 EXPORT void* gTrigFile;
 
-// @TODO: delete this shit
-i16 **gTrigNodes;
-
 // @Ok
 i16 **OffsetList;
-//#define G_OFFSETLIST (OffsetList)
-#define G_OFFSETLIST (*reinterpret_cast<i16***>(0x006B466C))
-
-
 
 
 // @Ok
@@ -101,7 +94,7 @@ void SendKillFromNode(i32 Node, i32 How)
 	{
 		u16 nodeIndex = nodeIndexPtr[i];
 
-		i16 *node = reinterpret_cast<i16*>(gTrigNodes[nodeIndex]);
+		i16 *node = reinterpret_cast<i16*>(G_OFFSETLIST[nodeIndex]);
 		switch (*node)
 		{
 			case 1:
@@ -184,7 +177,7 @@ void SendSuspendOrActivate(u16* pLinkInfo, i32 signalType)
 
 	for (i32 i = 0; i < numIters; i++)
 	{
-		u16 *node = reinterpret_cast<u16*>(gTrigNodes[nodeIndexPtr[i]]);
+		u16 *node = reinterpret_cast<u16*>(G_OFFSETLIST[nodeIndexPtr[i]]);
 
 		switch(*node)
 		{
@@ -280,7 +273,7 @@ void Trig_ExecuteAutoexec(void)
 	{
 		for (i32 curNode = 0; curNode < NumNodes; curNode++)
 		{
-			u16 *v5 = reinterpret_cast<u16*>(gTrigNodes[curNode]);
+			u16 *v5 = reinterpret_cast<u16*>(G_OFFSETLIST[curNode]);
 			if (*v5 == 15)
 			{
 				trigLog("*** Executing AUTOEXEC2 Node %i ***", curNode);
@@ -292,7 +285,7 @@ void Trig_ExecuteAutoexec(void)
 
 	for (i32 curNode = 0; curNode < NumNodes; curNode++)
 	{
-		u16 *v5 = reinterpret_cast<u16*>(gTrigNodes[curNode]);
+		u16 *v5 = reinterpret_cast<u16*>(G_OFFSETLIST[curNode]);
 		if (*v5 == 4)
 		{
 			trigLog("*** Executing AUTOEXEC Node %i ***", curNode);
@@ -302,29 +295,29 @@ void Trig_ExecuteAutoexec(void)
 }
 
 // @Ok
+// @AlmostMatching: different reg alloc
 void Trig_ExecuteRestart(void)
 {
-	print_if_false(RestartNode != 0xFFFF, "Tried to execute a restart with no restart node set");
-	print_if_false(*gTrigNodes[RestartNode] == 8, "Eh? Restart node isn't a restart node!");
-	print_if_false(MechList != 0, "Tried to execute a restart with a NULL MechList");
+	ASSERT(G_RESTARTNODE != 0xFFFF, "Tried to execute a restart with no restart node set");
+	ASSERT(*G_OFFSETLIST[G_RESTARTNODE] == 8, "Eh? Restart node isn't a restart node!");
+	ASSERT(G_MECHLIST != 0, "Tried to execute a restart with a NULL MechList");
 
 	CVector v7;
-	v7.vx = 0;
-	v7.vy = 0;
-	v7.vz = 0;
 
-	CSVector *Position = reinterpret_cast<CSVector*>(Trig_GetPosition(&v7, RestartNode));
+	CSVector *Position = reinterpret_cast<CSVector*>(Trig_GetPosition(&v7, G_RESTARTNODE));
 
-	MechList->mPos = v7;
-	MechList->SetStartOrientation(Position);
+	CPlayer *pPlayer = (CPlayer*)G_MECHLIST;
+
+	pPlayer->mPos = v7;
+	pPlayer->SetStartOrientation(Position);
 
 	char *v3 = reinterpret_cast<char*>(&Position[1]);
 	trigLog("*** Executing Restart Node: %s ***", v3);
 
-	v3 = SkipString(v3);
+	u16* v4 = SkipString(v3);
 
 	Trig_ZeroPendingList();
-	ExecuteCommandList(reinterpret_cast<u16*>(v3), RestartNode, 1);
+	ExecuteCommandList(v4, G_RESTARTNODE, 1);
 }
 
 // @Ok
@@ -355,14 +348,16 @@ void Trig_SetRestart(char *pName)
 }
 
 // @Ok
-INLINE char *SkipString(char *pText)
+INLINE u16 *SkipString(char *pText)
 {
 	while(*pText)
 		pText++;
 
 	pText++;
 
-	return &pText[reinterpret_cast<u32>(pText) & 1];
+	u32 res = reinterpret_cast<u32>(pText);
+
+	return reinterpret_cast<u16*>(res + (res & 1));
 }
 
 // @Ok
@@ -440,7 +435,7 @@ SCommandPoint* Trig_TriggerCommandPoint(u32 checksum, bool assert)
 // @Ok
 INLINE SCommandPoint* GetCommandPoint(i32 Node)
 {
-	if (Node != 0xFFF && *gTrigNodes[Node] == 6)
+	if (Node != 0xFFF && *G_OFFSETLIST[Node] == 6)
 	{
 		for (SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
 		{
@@ -534,7 +529,7 @@ void* Trig_GetLinkInfoList(
 		{
 			for (i32 i = 0; i<result && i < count; i++, v8++)
 			{
-				u16 *v11 = reinterpret_cast<u16*>(gTrigNodes[*v8]);
+				u16 *v11 = reinterpret_cast<u16*>(G_OFFSETLIST[*v8]);
 
 				pLink[i].field_0 = *v8;
 				pLink[i].field_4 = *v11;
@@ -577,7 +572,7 @@ INLINE u16* Trig_GetLinksPointer(int node)
 {
 	print_if_false(node >= 0 && node < NumNodes, "Bad node sent to Trig_GetLinksPointer");
 
-	u16* trigNodePtr = reinterpret_cast<u16*>(gTrigNodes[node]);
+	u16* trigNodePtr = reinterpret_cast<u16*>(G_OFFSETLIST[node]);
 	i32 trigNodeValue = *reinterpret_cast<u16*>(trigNodePtr);
 
 	if (trigNodeValue <= 0xD)
@@ -657,7 +652,7 @@ void Trig_SendSignalToLinks(u16* pLinkInfo)
 	for (i32 i = 0; i < NumLinks; i++)
 	{
 		u32 nodeIndex = pLink[i];
-		switch (*gTrigNodes[nodeIndex])
+		switch (*G_OFFSETLIST[nodeIndex])
 		{
 			case 1:
 			case 7:
@@ -723,7 +718,7 @@ void Trig_SendPulseToNode(i32 NodeIndex)
 	trigLog("\tSending pulse to node %i", NodeIndex);
 
 	SCommandPoint *pCommand;
-	switch(*gTrigNodes[NodeIndex])
+	switch(*G_OFFSETLIST[NodeIndex])
 	{
 		case 1:
 		case 5:
@@ -794,4 +789,6 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE840, Trig_DeleteCommandPoints);
 	PATCH_PUSH_RET(0x004DE8D0, Trig_TriggerCommandPoint);
 	PATCH_PUSH_RET(0x004DE970, Trig_SetRestart);
+
+	PATCH_PUSH_RET(0x004DEA20, Trig_ExecuteRestart);
 }

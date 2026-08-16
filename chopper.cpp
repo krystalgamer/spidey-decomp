@@ -19,7 +19,6 @@ extern CBody* ControlBaddyList;
 extern CBaddy* BaddyList;
 
 extern i32 DifficultyLevel;
-extern i16 **gTrigNodes;
 
 extern const char *gObjFile;
 extern CPlayer* MechList;
@@ -537,7 +536,7 @@ i32 INLINE CChopper::GetToPos(CVector* a2)
 // @Ok
 i32 INLINE CChopper::DoWaypointAction(void)
 {
-	i16 *ptr = gTrigNodes[this->field_1F4];
+	i16 *ptr = G_OFFSETLIST[this->field_1F4];
 	if ( ptr[0] == 1002 )
 	{
 		switch (ptr[1])
@@ -571,7 +570,7 @@ i32 INLINE CChopper::DoWaypointAction(void)
 // @Ok
 i32 INLINE CChopper::DoArrivalAction(void)
 {
-	i16* ptr = gTrigNodes[this->field_1F4];
+	i16* ptr = G_OFFSETLIST[this->field_1F4];
 	if (ptr[0] == 1002 && ptr[1] == 7)
 	{
 		this->field_31C.bothFlags = 3;
@@ -804,7 +803,7 @@ INLINE i32 CChopperMissile::GetFinalTargetNode(i32 a2)
 		
 		i32 v9 = LinksPointer[1];
 
-		if (*gTrigNodes[v9] != 1002)
+		if (*G_OFFSETLIST[v9] != 1002)
 			return v9;
 	}
 	return 0;

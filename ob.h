@@ -287,6 +287,11 @@ EXPORT extern CItem* EnviroList;
 EXPORT extern CBody* EnvironmentalObjectList;
 EXPORT extern CBody* SuspendedList;
 
+// @Note: yeah it's cbody fucking game
+EXPORT extern CBody* RealMechList;
+#define G_MECHLIST (RealMechList)
+//#define G_MECHLIST (*reinterpret_cast<CBody**>(0x006A9038))
+
 EXPORT extern const char *gObjFile;
 EXPORT extern u8 gWhatIf;
 

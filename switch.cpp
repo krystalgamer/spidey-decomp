@@ -7,7 +7,6 @@
 extern CBody* ControlBaddyList;
 extern CPlayer* MechList;
 extern i32 NumNodes;
-extern i16 **gTrigNodes;
 
 // @MEDIUMTODO
 CSwitch::CSwitch(i16 *,i32)
@@ -121,7 +120,7 @@ void CSwitch::PulseLFA1Node(i32 a1)
 	{
 		for (; nodeIndex < NumNodes; nodeIndex++)
 		{
-			if (*gTrigNodes[nodeIndex] != 1)
+			if (*G_OFFSETLIST[nodeIndex] != 1)
 				continue;
 			Trig_GetPosition(&v3, nodeIndex);
 			switch (a1)

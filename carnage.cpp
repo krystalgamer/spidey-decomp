@@ -1877,7 +1877,7 @@ INLINE void CCarnage::PulseL8A5Node(void)
 
 	for (i32 i = 1 ; i < NumNodes; i++)
 	{
-		if (*gTrigNodes[i] == 1)
+		if (*G_OFFSETLIST[i] == 1)
 		{
 			Trig_GetPosition(&v3, i);
 			if (!(v3.vz | v3.vx | v3.vy))
