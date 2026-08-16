@@ -678,7 +678,9 @@ i32 PCTex_CreateTexture16(
 	return textureHandleIndex;
 }
 
-// @MEDIUMTODO
+// @Ok
+// @AlmostMatching: our build keeps rounded_width in a register while the original
+// keeps it on the stack, which shifts register homes through the rest of the function
 i32 PCTex_CreateTexture256(
 		i32 a1,
 		i32 a2,
@@ -782,7 +784,7 @@ i32 PCTex_CreateTexture256(
 		aspectRatio = rounded_height / rounded_width;
 	}
 
-	if (gMaxTextureAspectRatio && aspectRatio > gMaxTextureAspectRatio)
+	if (gMaxTextureAspectRatio && aspectRatio > (i32)gMaxTextureAspectRatio)
 	{
 		if (rounded_width > rounded_height)
 		{
@@ -818,11 +820,11 @@ i32 PCTex_CreateTexture256(
 	{
 		pClut = gClutPcRelated;
 		print_if_false(pClut != 0, "no palette!");
+		a4 = pClut->mClut;
 	}
 	else
 	{
 		pClut = clutToClutPc(a4);
-		a4 = pClut->mClut;
 	}
 
 	for (i32 i = 0; i < 0x27; i++)
@@ -835,29 +837,65 @@ i32 PCTex_CreateTexture256(
 	}
 
 	u16 v46[256];
-	i32 v45 = ConvertPSXPaletteToPC(a4, v46, 0x100, a5);
+	u8 v45 = ConvertPSXPaletteToPC(a4, v46, 0x100, a5);
+
+	const u8* src = static_cast<const u8*>(a3);
+	u16* dstRow = pBmpBuf;
 
 	for (i32 y = 0; y < a2; y++)
 	{
+		u16* dst = dstRow;
+
 		for (i32 x = 0; x < a1; x++)
-		{
-			pBmpBuf[x + y * rounded_width] = v46[
-				reinterpret_cast<const u8*>(a3)[x + y * a1]];
-		}
+			*dst++ = v46[src[x]];
+
+		src += a1;
+		dstRow += rounded_width;
 	}
 
 	i32 textureHandleIndex;
 	if (!a7)
 	{
-		textureHandleIndex = PCTex_CreateTexturePVR(
-			rounded_width,
-			rounded_height,
-			(v45 == 0 ? 1 : 0) | 0x900,
-			pBmpBuf,
-			1u,
-			a6,
-			a8);
-		print_if_false(textureHandleIndex != -1, "Ouch %s", a6);
+		u32 flags = (v45 == 0 ? 1 : 0) | 0x900;
+		print_if_false(
+				(reinterpret_cast<i32>(pBmpBuf) & 3) == 0,
+				"texture data pointer must be aligned to 4 byte boundary");
+
+		i32 index;
+		for (index = 8; index < GLOBAL_TEXTURE_COUNT; index++)
+		{
+			if (!gGlobalTextures[index].mD3DTex && !gGlobalTextures[index].mSplit)
+				break;
+		}
+
+		if (index >= GLOBAL_TEXTURE_COUNT)
+			error("out of texture handles.");
+
+		print_if_false(1, "id must fit into 10 bits!");
+
+		i32 res = PCTex_CreateTexturePVRInId(
+				index,
+				rounded_width,
+				rounded_height,
+				flags,
+				pBmpBuf,
+				1u,
+				a6,
+				a8);
+
+		if (res)
+		{
+			gGlobalTextures[index].pTextureData = pBmpBuf;
+			gGlobalTextures[index].field_60 = flags;
+			gGlobalTextures[index].field_64 = 0x10000;
+		}
+		else
+		{
+			index = -1;
+		}
+
+		print_if_false(index != -1, "Ouch %s", a6);
+		textureHandleIndex = index;
 	}
 	else
 	{
@@ -893,12 +931,18 @@ i32 PCTex_CreateTexture256(
 	f32 v43 = (f32)rounded_height;
 
 	v34->mHScale = v41 / v43;
+
+	if (a5 & 0x10)
+		v34->mFlags |= 0x800;
+
 	if (pClut)
 	{
 		print_if_false(pClut->mColorCount == 256, "Clut has wrong color count!");
 		++pClut->mRefs;
 		gCreateTextureClut = pClut;
 	}
+
+	Mem_Delete(pBmpBuf);
 
 	return textureHandleIndex;
 }
