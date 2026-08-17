@@ -52,7 +52,7 @@ void FileIO_Init(void)
 	if (!gFileIoInit)
 	{
 		gFileIoInit = 1;
-		gFileIOStatus = 1;
+		gFileIOStatus = 0;
 
 		i32 iter = 8;
 		i32 v1;
