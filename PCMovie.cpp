@@ -19,6 +19,15 @@ EXPORT u8 gPcMovieInited;
 EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
+//#define G_MEDIA_PKR (gMediaPkr)
+#define G_MEDIA_PKR (*reinterpret_cast<LIBPKR_HANDLE**>(0x00AC0BA8))
+
+//#define G_MOVIE_BINK_RELATED (gMovieBinkRelated)
+#define G_MOVIE_BINK_RELATED (*reinterpret_cast<HBINK*>(0x00AC0BA4))
+
+//#define G_MOVIE_FILE_HANDLE (gMovieFileHandle)
+#define G_MOVIE_FILE_HANDLE (*reinterpret_cast<HANDLE*>(0x00AC0BAC))
+
 EXPORT BINKSUMMARY g_BinkSummaryOne;
 EXPORT u32 g_CloneBinkSummaryOne;
 EXPORT u32 g_CloneBinkSummaryTwo;
@@ -34,17 +43,17 @@ EXPORT i32 g_MoviePrimarySurfaceType;
 // @Matching
 void INLINE CloseMovieFile(void)
 {
-	if (gMovieBinkRelated)
+	if (G_MOVIE_BINK_RELATED)
 	{
-		BinkClose(gMovieBinkRelated);
-		if (gMovieFileHandle)
+		BinkClose(G_MOVIE_BINK_RELATED);
+		if (G_MOVIE_FILE_HANDLE)
 		{
-			CloseHandle(gMovieFileHandle);
-			gMovieFileHandle = 0;
-			PKR_LockFile(gMediaPkr);
+			CloseHandle(G_MOVIE_FILE_HANDLE);
+			G_MOVIE_FILE_HANDLE = 0;
+			PKR_LockFile(G_MEDIA_PKR);
 		}
 
-		gMovieBinkRelated = 0;
+		G_MOVIE_BINK_RELATED = 0;
 	}
 }
 
@@ -80,9 +89,9 @@ INLINE u8 CreateMovieSurface(void)
 INLINE i32 NextMovieFrame(void)
 {
 #ifdef _WIN32
-	if (!gMovieBinkRelated)
+	if (!G_MOVIE_BINK_RELATED)
 		return 0;
-	BinkDoFrame(gMovieBinkRelated);
+	BinkDoFrame(G_MOVIE_BINK_RELATED);
 
 	DDSURFACEDESC2 v6;
 	memset(&v6, 0, sizeof(v6));
@@ -101,7 +110,7 @@ INLINE i32 NextMovieFrame(void)
 	D3D_ERROR_LOG_AND_QUIT(v1);
 
 	BinkCopyToBuffer(
-		gMovieBinkRelated,
+		G_MOVIE_BINK_RELATED,
 		v6.lpSurface,
 		v6.lPitch,
 		g_BinkSummaryOne.Height,
@@ -128,12 +137,12 @@ INLINE i32 NextMovieFrame(void)
 
 	DXPOLY_Flip();
 
-	if (gMovieBinkRelated->FrameNum == gMovieBinkRelated->Frames)
+	if (G_MOVIE_BINK_RELATED->FrameNum == G_MOVIE_BINK_RELATED->Frames)
 	{
 		return 0;
 	}
 
-	BinkNextFrame(gMovieBinkRelated);
+	BinkNextFrame(G_MOVIE_BINK_RELATED);
 	return 1;
 #else
 	return 0;
@@ -149,14 +158,14 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 	strcat(v14, a1);
 
 	DXERR_printf("\t\tMOVIE PLAYING %s\r\n", v14);
-	if (gMediaPkr)
+	if (G_MEDIA_PKR)
 	{
 		char v10[32];
 		char a3[32];
 		char a2[32];
 		CHAR FileName[256];
 
-		strcpy(FileName, gMediaPkr->name);
+		strcpy(FileName, G_MEDIA_PKR->name);
 		strcpy(v10, v14);
 
 		strcpy(a3, strrchr(v14, '\\') + 1);
@@ -168,15 +177,15 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 		i32 fileOffset = findFileOffsetPKR(a2, a3);
 		if (fileOffset == -1)
 			goto open_movie_file_error;
-		PKR_UnlockFile(gMediaPkr);
+		PKR_UnlockFile(G_MEDIA_PKR);
 
 #ifdef _WIN32
 		HANDLE FileA = CreateFileA(FileName, 0x80000000, 1u, 0, 3u, 1u, 0);
-		gMovieFileHandle = FileA;
+		G_MOVIE_FILE_HANDLE = FileA;
 		if (FileA == INVALID_HANDLE_VALUE)
 		{
-			PKR_LockFile(gMediaPkr);
-			gMovieFileHandle = 0;
+			PKR_LockFile(G_MEDIA_PKR);
+			G_MOVIE_FILE_HANDLE = 0;
 			goto open_movie_file_error;
 		}
 
@@ -185,10 +194,10 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 	}
 
 	HBINK v5;
-	if (gMovieFileHandle)
+	if (G_MOVIE_FILE_HANDLE)
 	{
 		v5 = BinkOpen(
-				gMovieFileHandle,
+				G_MOVIE_FILE_HANDLE,
 				BINKIOSIZE | BINKFILEHANDLE);
 	}
 	else
@@ -198,13 +207,13 @@ INLINE u8 OpenMovieFile(char *a1, bool)
 		v5 = BinkOpen(v14, BINKIOSIZE);
 	}
 
-	gMovieBinkRelated = v5;
+	G_MOVIE_BINK_RELATED = v5;
 
-	if (!gMovieBinkRelated)
+	if (!G_MOVIE_BINK_RELATED)
 		goto open_movie_file_error;
 
 	BinkSetVideoOnOff(v5, 1);
-	BinkGetSummary(gMovieBinkRelated, &g_BinkSummaryOne);
+	BinkGetSummary(G_MOVIE_BINK_RELATED, &g_BinkSummaryOne);
 
 	g_BinkDestx = 0;
 	g_BinkDesty = 0;
@@ -223,15 +232,15 @@ open_movie_file_error:
 // @Matching
 void PCMOVIE_ClosePKR(void)
 {
-	if (gMediaPkr)
+	if (G_MEDIA_PKR)
 	{
-		if (!PKR_Close(gMediaPkr))
+		if (!PKR_Close(G_MEDIA_PKR))
 		{
 			char buf[512];
 			if (PKR_GetLastError(buf))
 				error("PKR\t: %s\r\n", buf);
 		}
-		gMediaPkr = 0;
+		G_MEDIA_PKR = 0;
 		return;
 	}
 
@@ -312,10 +321,10 @@ void PCMOVIE_InitOnce(void)
 // @Matching
 u8 PCMOVIE_NextFrame(void)
 {
-	if (!gMovieBinkRelated)
+	if (!G_MOVIE_BINK_RELATED)
 		return 0;
 
-	if (BinkWait(gMovieBinkRelated) || NextMovieFrame())
+	if (BinkWait(G_MOVIE_BINK_RELATED) || NextMovieFrame())
 		return 1;
 
 	PCMOVIE_Stop();
@@ -329,7 +338,7 @@ void PCMOVIE_OpenPKR(void)
 	char v2[512];
 	char v3[512];
 
-	if (!gMediaPkr)
+	if (!G_MEDIA_PKR)
 	{
 		const char *v0 = gMovieCurrentDirectory;
 		if (!gFoundMediaPkr)
@@ -339,7 +348,7 @@ void PCMOVIE_OpenPKR(void)
 		strcat(v2, "\\");
 		strcat(v2, "Media.pkr");
 
-		if (!PKR_Open(&gMediaPkr, v2, 1))
+		if (!PKR_Open(&G_MEDIA_PKR, v2, 1))
 		{
 			if (PKR_GetLastError(v3))
 			{
@@ -348,14 +357,14 @@ void PCMOVIE_OpenPKR(void)
 		}
 		else
 		{
-			printf_fancy("PKR\t: Name       : %s\r\n", gMediaPkr->name);
-			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", gMediaPkr->mFooter.numDirs);
-			printf_fancy("PKR\t: N.O. Files : %i\r\n", gMediaPkr->mFooter.numFiles);
+			printf_fancy("PKR\t: Name       : %s\r\n", G_MEDIA_PKR->name);
+			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", G_MEDIA_PKR->mFooter.numDirs);
+			printf_fancy("PKR\t: N.O. Files : %i\r\n", G_MEDIA_PKR->mFooter.numFiles);
 		}
 	}
 	else
 	{
-		printf_fancy("PKR\t: PKR %s already open\r\n", gMediaPkr->name);
+		printf_fancy("PKR\t: PKR %s already open\r\n", G_MEDIA_PKR->name);
 	}
 }
 
@@ -382,8 +391,8 @@ u8 PCMOVIE_Play(char *a1, i32 a2)
 // @Matching
 void PCMOVIE_SetVolume(i32 a1)
 {
-	BinkSetVolume(gMovieBinkRelated, (a1 << 15) / 255);
-	BinkSetPan(gMovieBinkRelated, 0x8000);
+	BinkSetVolume(G_MOVIE_BINK_RELATED, (a1 << 15) / 255);
+	BinkSetPan(G_MOVIE_BINK_RELATED, 0x8000);
 }
 
 // @Ok
@@ -400,7 +409,7 @@ INLINE i32 findFileOffsetPKR(
 		const char *a2)
 {
 	PKR_FILEINFO v3;
-	if (PKR_GetFileInfo(gMediaPkr, a1, a2, &v3))
+	if (PKR_GetFileInfo(G_MEDIA_PKR, a1, a2, &v3))
 		return v3.fileOffset;
 
 	char v4[512];

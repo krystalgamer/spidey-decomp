@@ -18,6 +18,18 @@ EXPORT SGDOpenFile gOpenFiles[MAX_OPEN_FILE_COUNT];
 
 EXPORT HANDLE gOpenFile;
 
+//#define G_CURRENT_DIR (gCurrentDir)
+#define G_CURRENT_DIR (reinterpret_cast<TCHAR*>(0x006BC1F4))
+
+//#define G_OPEN_FILES (gOpenFiles)
+#define G_OPEN_FILES (reinterpret_cast<SGDOpenFile*>(0x006BC2F8))
+
+//#define G_FS_BASE (gFsBase)
+#define G_FS_BASE (reinterpret_cast<char*>(0x006BC334))
+
+//#define G_OPEN_FILE (gOpenFile)
+#define G_OPEN_FILE (*reinterpret_cast<HANDLE*>(0x006BC438))
+
 // @Ok
 // @Matching
 void gdFsFinish(void)
@@ -34,16 +46,16 @@ INLINE i32 readFilePKR(
 {
 
 	i32 index = (id ^ 0xFF) - 1;
-	if (!gOpenFiles[index].mBuf)
+	if (!G_OPEN_FILES[index].mBuf)
 		return 0;
 
-	i32 mOffset = gOpenFiles[index].mOffset;
-	i32 mEnd = gOpenFiles[index].mEnd;
+	i32 mOffset = G_OPEN_FILES[index].mOffset;
+	i32 mEnd = G_OPEN_FILES[index].mEnd;
 	if (mOffset + size > mEnd)
 		size = mEnd - mOffset;
 
-	memcpy(pBuf, &gOpenFiles[index].mBuf[mOffset], size);
-	gOpenFiles[index].mOffset += size;
+	memcpy(pBuf, &G_OPEN_FILES[index].mBuf[mOffset], size);
+	G_OPEN_FILES[index].mOffset += size;
 	return size;
 
 }
@@ -77,11 +89,11 @@ HANDLE gdFsOpen(
 		i32)
 {
 	char buf[512];
-	strcpy(buf, gFsBase);
+	strcpy(buf, G_FS_BASE);
 	strcat(buf, pFileName);
 
 	if (!strchr(pFileName, '\\'))
-		return reinterpret_cast<HANDLE>(openFilePKR(gFsBase, pFileName));
+		return reinterpret_cast<HANDLE>(openFilePKR(G_FS_BASE, pFileName));
 
 	char v16[32];
 	strcpy(v16, pFileName);
@@ -91,43 +103,43 @@ HANDLE gdFsOpen(
 	strchr(v16, '\\')[1] = 0;
 
 	char v15[32];
-	strcpy(v15, gFsBase);
+	strcpy(v15, G_FS_BASE);
 	strcat(v15, v16);
 	if (!strstr(localName, ".bik"))
 		return reinterpret_cast<HANDLE>(openFilePKR(v15, localName));
 
 	char FileName[512];
-	strcpy(FileName, gDataPkr->name);
+	strcpy(FileName, G_DATA_PKR->name);
 
 	i32 id = findFilePKR(v15, localName);
 	if ( !id )
 		return 0;
 
-	PKR_UnlockFile(gDataPkr);
+	PKR_UnlockFile(G_DATA_PKR);
 
 #if _WIN32
-	gOpenFile = CreateFileA(FileName, GENERIC_READ, 1, 0, 3, 1, 0);
+	G_OPEN_FILE = CreateFileA(FileName, GENERIC_READ, 1, 0, 3, 1, 0);
 #else
-	gOpenFile = INVALID_HANDLE_VALUE;
+	G_OPEN_FILE = INVALID_HANDLE_VALUE;
 #endif
-	if (gOpenFile == INVALID_HANDLE_VALUE)
+	if (G_OPEN_FILE == INVALID_HANDLE_VALUE)
 	{
-		PKR_LockFile(gDataPkr);
-		gOpenFile = 0;
+		PKR_LockFile(G_DATA_PKR);
+		G_OPEN_FILE = 0;
 		return 0;
 	}
 
 #if _WIN32
-	SetFilePointer(gOpenFile, gOpenFiles[(id ^ 0xFF) - 1].mOffset, 0, 0);
+	SetFilePointer(G_OPEN_FILE, G_OPEN_FILES[(id ^ 0xFF) - 1].mOffset, 0, 0);
 #endif
-	return gOpenFile;
+	return G_OPEN_FILE;
 }
 
 // @Ok
 // @Matching
 void gdFsClose(HANDLE handle)
 {
-	if (handle != gOpenFile)
+	if (handle != G_OPEN_FILE)
 	{
 		// @FIXME: portability issues
 		closeFilePKR(reinterpret_cast<i32>(handle));
@@ -135,19 +147,19 @@ void gdFsClose(HANDLE handle)
 	}
 
 #ifdef _WIN32
-	CloseHandle(gOpenFile);
+	CloseHandle(G_OPEN_FILE);
 #endif
-	PKR_LockFile(gDataPkr);
+	PKR_LockFile(G_DATA_PKR);
 }
 
 // @Ok
 EXPORT i32 gdFsInit(void)
 {
 #ifdef _WIN32
-	GetCurrentDirectoryA(260, gCurrentDir);
+	GetCurrentDirectoryA(260, G_CURRENT_DIR);
 #endif
 
-	strcpy(gFsBase, "data\\");
+	strcpy(G_FS_BASE, "data\\");
 	openPKR();
 
 	PCMOVIE_InitOnce();
@@ -162,12 +174,12 @@ INLINE void closeFilePKR(i32 id)
 {
 	i32 i = (id ^ 0xFF);
 	i--;
-	if (gOpenFiles[i].mBuf)
+	if (G_OPEN_FILES[i].mBuf)
 	{
-		delete gOpenFiles[i].mBuf;
-		gOpenFiles[i].mBuf = 0;
-		gOpenFiles[i].mOffset = 0;
-		gOpenFiles[i].mEnd = 0;
+		delete G_OPEN_FILES[i].mBuf;
+		G_OPEN_FILES[i].mBuf = 0;
+		G_OPEN_FILES[i].mOffset = 0;
+		G_OPEN_FILES[i].mEnd = 0;
 	}
 }
 
@@ -176,15 +188,15 @@ INLINE void closePKR(void)
 {
 	char v0[512]; // [esp+0h] [ebp-200h] BYREF
 
-	if (gDataPkr)
+	if (G_DATA_PKR)
 	{
-		if (!PKR_Close(gDataPkr))
+		if (!PKR_Close(G_DATA_PKR))
 		{
 			if (PKR_GetLastError(v0))
 				error("PKR\t: %s\r\n", v0);
 		}
 
-		gDataPkr = 0;
+		G_DATA_PKR = 0;
 	}
 	else
 	{
@@ -202,7 +214,7 @@ INLINE i32 findFilePKR(
 		return 0;
 
 	PKR_FILEINFO fileInfo;
-	if (!PKR_GetFileInfo(gDataPkr, a1, a2, &fileInfo))
+	if (!PKR_GetFileInfo(G_DATA_PKR, a1, a2, &fileInfo))
 	{
 		char buf[512];
 		if(PKR_GetLastError(buf))
@@ -211,7 +223,7 @@ INLINE i32 findFilePKR(
 		return 0;
 	}
 
-	gOpenFiles[nFile].mOffset = fileInfo.fileOffset;
+	G_OPEN_FILES[nFile].mOffset = fileInfo.fileOffset;
 	return (nFile + 1) ^ 0xFF;
 }
 
@@ -222,7 +234,7 @@ INLINE i32 nextFile(void)
 			i < MAX_OPEN_FILE_COUNT;
 			i++)
 	{
-		if (gOpenFiles[i].mBuf == 0)
+		if (G_OPEN_FILES[i].mBuf == 0)
 			return i;
 	}
 
@@ -238,11 +250,11 @@ INLINE i32 openFilePKR(char * a1,const char* a2)
 		return 0;
 
 	if (!PKR_ReadFile(
-				gDataPkr,
+				G_DATA_PKR,
 				a1,
 				a2,
-				reinterpret_cast<void**>(&gOpenFiles[nFile].mBuf),
-				&gOpenFiles[nFile].mEnd))
+				reinterpret_cast<void**>(&G_OPEN_FILES[nFile].mBuf),
+				&G_OPEN_FILES[nFile].mEnd))
 	{
 		char buf[512];
 		if (PKR_GetLastError(buf))
@@ -251,7 +263,7 @@ INLINE i32 openFilePKR(char * a1,const char* a2)
 		return 0;
 	}
 
-	gOpenFiles[nFile].mOffset = 0;
+	G_OPEN_FILES[nFile].mOffset = 0;
 	return (nFile + 1) ^ 0xFF;
 }
 
@@ -260,9 +272,9 @@ INLINE void openPKR(void)
 {
 	char error[512];
 
-	if (!gDataPkr)
+	if (!G_DATA_PKR)
 	{
-		if (!PKR_Open(&gDataPkr, "data.pkr", 1))
+		if (!PKR_Open(&G_DATA_PKR, "data.pkr", 1))
 		{
 			if (PKR_GetLastError(error))
 			{
@@ -271,14 +283,14 @@ INLINE void openPKR(void)
 		}
 		else
 		{
-			DXERR_printf("PKR\t: Name       : %s\r\n", gDataPkr->name);
-			DXERR_printf("PKR\t: N.O. Dir   : %i\r\n", gDataPkr->mFooter.numDirs);
-			DXERR_printf("PKR\t: N.O. Files : %i\r\n", gDataPkr->mFooter.numFiles);
+			DXERR_printf("PKR\t: Name       : %s\r\n", G_DATA_PKR->name);
+			DXERR_printf("PKR\t: N.O. Dir   : %i\r\n", G_DATA_PKR->mFooter.numDirs);
+			DXERR_printf("PKR\t: N.O. Files : %i\r\n", G_DATA_PKR->mFooter.numFiles);
 		}
 	}
 	else
 	{
-		DXERR_printf("PKR\t: PKR %s already open\r\n", gDataPkr->name);
+		DXERR_printf("PKR\t: PKR %s already open\r\n", G_DATA_PKR->name);
 	}
 }
 
@@ -290,29 +302,29 @@ INLINE i32 seekFilePKR(
 {
 	i32 index = (a1 ^ 0xFF) - 1;
 
-	if (!gOpenFiles[index].mBuf)
+	if (!G_OPEN_FILES[index].mBuf)
 		return 0;
 
 	switch (seekType)
 	{
 		case 0:
-			gOpenFiles[index].mOffset = seekOffset;
+			G_OPEN_FILES[index].mOffset = seekOffset;
 			break;
 		case 1:
-			gOpenFiles[index].mOffset += seekOffset;
+			G_OPEN_FILES[index].mOffset += seekOffset;
 			break;
 		case 2:
-			gOpenFiles[index].mOffset = gOpenFiles[index].mEnd - seekOffset;
+			G_OPEN_FILES[index].mOffset = G_OPEN_FILES[index].mEnd - seekOffset;
 			break;
 	}
 
-	return gOpenFiles[index].mOffset;
+	return G_OPEN_FILES[index].mOffset;
 }
 
 // @Ok
 INLINE i32 tellFilePKR(i32 a1)
 {
-	return gOpenFiles[(a1 ^ 0xFF) - 1].mOffset;
+	return G_OPEN_FILES[(a1 ^ 0xFF) - 1].mOffset;
 }
 
 void validate_SGDOpenFile(void)
