@@ -243,7 +243,7 @@ void* FileIO_Unk(const char* pName, i32 *size)
 // @Matching
 void FileIO_Unk2(void *p)
 {
-	DoAssert(!!p, "Cannot free null pointer");
+	ASSERT(!!p, "Cannot free null pointer");
 	syFree(p);
 }
 
@@ -262,4 +262,5 @@ INLINE void FileIO_Sync(void)
 void patch_dcfileio(void)
 {
 	PATCH_PUSH_RET(0x00430CC0, FileIO_Sync);
+	PATCH_PUSH_RET(0x00430CA0, FileIO_Unk2);
 }
