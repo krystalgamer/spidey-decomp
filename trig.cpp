@@ -656,9 +656,9 @@ void Trig_SendPulse(u16* pLinkInfo)
 	u16 NumLinks = pLinkInfo[0];
 	u16* pLink = &pLinkInfo[1];
 
-	for (i32 curLink = 0; curLink < NumLinks; curLink++)
+	for (i32 i = 0; i < NumLinks; i++)
 	{
-		Trig_SendPulseToNode(pLink[curLink]);
+		Trig_SendPulseToNode(pLink[i]);
 	}
 }
 
@@ -815,4 +815,5 @@ void patch_trig(void)
 
 	PATCH_PUSH_RET(0x004DEB10, Trig_DeleteTrigFile);
 	PATCH_PUSH_RET(0x004DFC20, Trig_SendPulseToNode);
+	PATCH_PUSH_RET(0x004DFD30, Trig_SendPulse);
 }
