@@ -20,7 +20,18 @@ static void print_if_false(unsigned char cry, char * message, ...) {
 }
 
 static void printf_fancy(const char *message, ...) {
-	// TODO
+	static char error_buf[512];
+	va_list lst;
+    va_start(lst, message);
+
+#ifdef _WIN32
+	_vsnprintf(error_buf, sizeof(error_buf), message, lst);
+#else
+	vsnprintf(error_buf, sizeof(error_buf), message, lst);
+#endif
+
+	va_end(lst);
+	printf("FANCY: %s\n", error_buf);
 }
 
 static void stubbed_printf(char *message){

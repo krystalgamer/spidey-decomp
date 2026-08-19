@@ -8,7 +8,6 @@
 
 #include <cstring>
 
-EXPORT LIBPKR_HANDLE* gMediaPkr;
 
 // @Ok
 EXPORT char gMovieCurrentDirectory[0x200];
@@ -30,6 +29,8 @@ EXPORT u8 gPcMovieInited;
 EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
+// @Ok
+EXPORT LIBPKR_HANDLE* gMediaPkr;
 //#define G_MEDIA_PKR (gMediaPkr)
 #define G_MEDIA_PKR (*reinterpret_cast<LIBPKR_HANDLE**>(0x00AC0BA8))
 
@@ -343,24 +344,23 @@ u8 PCMOVIE_NextFrame(void)
 }
 
 // @Ok
-// @Matching
+// @Matching - it wasn't before, now it is with the two strcpys
 void PCMOVIE_OpenPKR(void)
 {
-	char v2[512];
-	char v3[512];
-
 	if (!G_MEDIA_PKR)
 	{
-		const char *v0 = gMovieCurrentDirectory;
-		if (!gFoundMediaPkr)
-			v0 = gCdPath;
+		char v2[512];
+		if (G_FOUNDMEDIAPKR)
+			strcpy(v2, G_MOVIECURRENTDIRECTORY);
+		else
+			strcpy(v2, G_CDPATH);
 
-		strcpy(v2, v0);
 		strcat(v2, "\\");
 		strcat(v2, "Media.pkr");
 
 		if (!PKR_Open(&G_MEDIA_PKR, v2, 1))
 		{
+			char v3[512];
 			if (PKR_GetLastError(v3))
 			{
 				printf_fancy("PKR\t: %s\r\n", v3);
@@ -368,9 +368,10 @@ void PCMOVIE_OpenPKR(void)
 		}
 		else
 		{
-			printf_fancy("PKR\t: Name       : %s\r\n", G_MEDIA_PKR->name);
-			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", G_MEDIA_PKR->mFooter.numDirs);
-			printf_fancy("PKR\t: N.O. Files : %i\r\n", G_MEDIA_PKR->mFooter.numFiles);
+			LIBPKR_HANDLE *tmp = G_MEDIA_PKR;
+			printf_fancy("PKR\t: Name       : %s\r\n", tmp->name);
+			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", tmp->mFooter.numDirs);
+			printf_fancy("PKR\t: N.O. Files : %i\r\n", tmp->mFooter.numFiles);
 		}
 	}
 	else
@@ -436,4 +437,5 @@ INLINE i32 findFileOffsetPKR(
 void patch_PCMovie(void)
 {
 	PATCH_PUSH_RET(0x0050AC90, PCMOVIE_InitOnce);
+	PATCH_PUSH_RET(0x0050AF30, PCMOVIE_OpenPKR);
 }
