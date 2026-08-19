@@ -8,7 +8,7 @@
 #include "m3dzone.h"
 #include "my_assert.h"
 #include "ps2redbook.h"
-#include "SpideyDX.h"
+#include "stubs.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -476,73 +476,90 @@ i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 	return ((a2 - a1) >> delta) + a1;
 }
 
-// two packed 16 bit vblank countdown timers, also used by SpideyMain and Screen_SepiaFade
-static volatile i32 * const gVblankTimers = (volatile i32*)0x6B4C9C;
+// two packed 16 bit vblank countdown timers, THPS2 declares GameFade in utils.h
+//#define G_GAME_FADE (GameFade)
+#define G_GAME_FADE (*reinterpret_cast<volatile i32*>(0x006B4C9C))
+
 // set while the redbook device is busy, checked before starting a new play
-static char * const gRedbookBusy = (char*)0x682770;
-// id passed to the status query, probably the MCI device id
-static i32 * const gRedbookDeviceId = (i32*)0x681D2C;
+//#define G_REDBOOK_BUSY (gRedbookBusy)
+#define G_REDBOOK_BUSY (*reinterpret_cast<u8*>(0x00682770))
+
+// handle passed to ADXT_GetStat, same global Redbook_XAStat uses
+//#define G_ADXT (gADXT)
+#define G_ADXT (*reinterpret_cast<i32*>(0x00681D2C))
+
 // set once the device reports it stopped
-static char * const gRedbookStopped = (char*)0x550D81;
+//#define G_CARNAGE_XA_RELATED (gCarnageXaRelated)
+#define G_CARNAGE_XA_RELATED (*reinterpret_cast<u8*>(0x00550D81))
+
 // vblank delay before the pending XA play starts
-static i32 * const gRedbookDelay = (i32*)0x68276C;
-// current redbook track, -1 when nothing plays
-static i32 * const gRedbookCurrentTrack = (i32*)0x550D7C;
-// pause flag, also checked by Logic, Display and Front_Update
-static i32 * const gGamePaused = (i32*)0x5FAE98;
+//#define G_CARNAGE_XA_RELATED_TWO (gCarnageXaRelatedTwo)
+#define G_CARNAGE_XA_RELATED_TWO (*reinterpret_cast<u32*>(0x0068276C))
+
+// -1 when nothing plays
+//#define G_REDBOOK_XA_CURRENT_PRIORITY (Redbook_XACurrentPriority)
+#define G_REDBOOK_XA_CURRENT_PRIORITY (*reinterpret_cast<i32*>(0x00550D7C))
+
+// gates the delayed XA restart, also checked by Logic, Display and Front_Update
+//#define G_POST_WATER_EFFECT (gPostWaterEffect)
+#define G_POST_WATER_EFFECT (*reinterpret_cast<i32*>(0x005FAE98))
+
 // pending Redbook_XAPlay arguments
-static i32 * const gPendingXAOne = (i32*)0x681D3C;
-static i32 * const gPendingXATwo = (i32*)0x681D40;
-static i32 * const gPendingXAThree = (i32*)0x681D44;
+//#define G_PENDING_XA_ONE (gPendingXAOne)
+#define G_PENDING_XA_ONE (*reinterpret_cast<i32*>(0x00681D3C))
+//#define G_PENDING_XA_TWO (gPendingXATwo)
+#define G_PENDING_XA_TWO (*reinterpret_cast<i32*>(0x00681D40))
+//#define G_PENDING_XA_THREE (gPendingXAThree)
+#define G_PENDING_XA_THREE (*reinterpret_cast<i32*>(0x00681D44))
 
 // @Ok
-// @AlmostMatching: gGamePaused (0x5FAE98) is compared from memory instead of a cached register,
+// @AlmostMatching: G_POST_WATER_EFFECT (0x5FAE98) is compared from memory instead of a cached register,
 // and the Redbook_XAPlay argument loads use swapped registers (eax/edx)
 void Utils_VblankProcessing(void)
 {
-	if (*gVblankTimers)
+	if (G_GAME_FADE)
 	{
-		if (*gVblankTimers & 0xFFFF0000)
-			*gVblankTimers -= 0x10000;
+		if (G_GAME_FADE & 0xFFFF0000)
+			G_GAME_FADE -= 0x10000;
 		else
-			--*gVblankTimers;
+			--G_GAME_FADE;
 	}
 
-	if (*gRedbookBusy)
+	if (G_REDBOOK_BUSY)
 	{
-		if (gsub_516090(*gRedbookDeviceId) == 4)
+		if (ADXT_GetStat(G_ADXT) == 4)
 		{
-			*gRedbookBusy = 0;
-			*gRedbookStopped = 1;
-			*gRedbookDelay = 30;
-			*gRedbookCurrentTrack = -1;
+			G_REDBOOK_BUSY = 0;
+			G_CARNAGE_XA_RELATED = 1;
+			G_CARNAGE_XA_RELATED_TWO = 30;
+			G_REDBOOK_XA_CURRENT_PRIORITY = -1;
 		}
 
 		return;
 	}
 
-	if (*gRedbookDelay)
+	if (G_CARNAGE_XA_RELATED_TWO)
 	{
-		if (*gGamePaused)
+		if (G_POST_WATER_EFFECT)
 			return;
 
-		if (--*gRedbookDelay)
+		if (--G_CARNAGE_XA_RELATED_TWO)
 			return;
 
-		i32 pendingOne = *gPendingXAOne;
-		i32 pendingTwo = *gPendingXATwo;
-		i32 pendingThree = *gPendingXAThree;
+		i32 pendingOne = G_PENDING_XA_ONE;
+		i32 pendingTwo = G_PENDING_XA_TWO;
+		i32 pendingThree = G_PENDING_XA_THREE;
 
 		if (pendingThree | pendingTwo | pendingOne)
 		{
 			Redbook_XAPlay(pendingOne, pendingTwo, pendingThree);
 
-			*gPendingXAThree = 0;
-			*gPendingXATwo = 0;
-			*gPendingXAOne = 0;
+			G_PENDING_XA_THREE = 0;
+			G_PENDING_XA_TWO = 0;
+			G_PENDING_XA_ONE = 0;
 		}
 	}
-	else if (!*gGamePaused)
+	else if (!G_POST_WATER_EFFECT)
 	{
 		Redbook_XAReset();
 	}
