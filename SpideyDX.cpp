@@ -216,16 +216,6 @@ LRESULT CALLBACK SpideyWndProc(
 	return 0;
 }
 
-// @SMALLTODO
-i32 gsub_516090(i32 a1)
-{
-	// @FIXME
-	typedef i32 (*func_ptr)(i32);
-	func_ptr func = (func_ptr)0x00516090;
-
-	return func(a1);
-}
-
 // @Ok
 // @Matching
 i32 WinYield(void)
