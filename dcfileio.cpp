@@ -183,7 +183,7 @@ void FileIO_Load(void *where)
 // @Matching
 i32 FileIO_Open(const char* pName)
 {
-	print_if_false(G_FILE_IO_STATUS == 0, "Previous file not finished loading");
+	ASSERT(G_FILE_IO_STATUS == 0, "Previous file not finished loading");
 	G_FILE_IO_OLD_SIZE = 0;
 	G_FILE_IO_IN_PRE = 0;
 

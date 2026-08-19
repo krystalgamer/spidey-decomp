@@ -10,10 +10,21 @@
 
 EXPORT LIBPKR_HANDLE* gMediaPkr;
 
+// @Ok
 EXPORT char gMovieCurrentDirectory[0x200];
-EXPORT u8 gFoundMediaPkr;
+//#define G_MOVIECURRENTDIRECTORY (gMovieCurrentDirectory)
+#define G_MOVIECURRENTDIRECTORY (reinterpret_cast<char*>(0x00AC0CB0))
 
+// @Ok
+EXPORT u8 gFoundMediaPkr;
+//#define G_FOUNDMEDIAPKR (gFoundMediaPkr)
+#define G_FOUNDMEDIAPKR (*reinterpret_cast<u8*>(0x00AC0EB0))
+
+// @Ok
 EXPORT char gCdPath[0x100];
+//#define G_CDPATH (gCdPath)
+#define G_CDPATH (reinterpret_cast<char*>(0x00AC0BB0))
+
 EXPORT u8 gPcMovieInited;
 
 EXPORT HBINK gMovieBinkRelated;
@@ -269,7 +280,7 @@ void PCMOVIE_InitOnce(void)
 
 	char v0 = 'C';
 	strcpy(RootPathName, "C:");
-	strcpy(gCdPath, RootPathName);
+	strcpy(G_CDPATH, RootPathName);
 
 	while (1)
 	{
@@ -286,8 +297,8 @@ void PCMOVIE_InitOnce(void)
 			if (v1)
 			{
 				fclose(v1);
-				strcpy(gCdPath, rootCdPath);
-				printf_fancy("CDPATH: %s\r\n", gCdPath);
+				strcpy(G_CDPATH, rootCdPath);
+				printf_fancy("CDPATH: %s\r\n", G_CDPATH);
 				break;
 			}
 		}
@@ -296,12 +307,12 @@ void PCMOVIE_InitOnce(void)
 		if (v0 < 'Z')
 			continue;
 
-		printf_fancy("CDPATH: %s - NOT FOUND\r\n", gCdPath);
+		printf_fancy("CDPATH: %s - NOT FOUND\r\n", G_CDPATH);
 		break;
 	}
 
-	GetCurrentDirectoryA(0x200, gMovieCurrentDirectory);
-	strcpy(mediaPkrPath, gMovieCurrentDirectory);
+	GetCurrentDirectoryA(0x200, G_MOVIECURRENTDIRECTORY);
+	strcpy(mediaPkrPath, G_MOVIECURRENTDIRECTORY);
 	strcat(mediaPkrPath, "\\");
 	strcat(mediaPkrPath, "Media.pkr");
 	FILE* mediaFp = fopen(mediaPkrPath, "rb");
@@ -309,11 +320,11 @@ void PCMOVIE_InitOnce(void)
 	if (mediaFp)
 	{
 		fclose(mediaFp);
-		gFoundMediaPkr = 1;
+		G_FOUNDMEDIAPKR = 1;
 	}
 	else
 	{
-		gFoundMediaPkr = 0;
+		G_FOUNDMEDIAPKR = 0;
 	}
 }
 
@@ -417,4 +428,12 @@ INLINE i32 findFileOffsetPKR(
 		printf_fancy("PKR\t: %s%s - %s\r\n", a1, a2, v4);
 
 	return -1;
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_PCMovie(void)
+{
+	PATCH_PUSH_RET(0x0050AC90, PCMOVIE_InitOnce);
 }

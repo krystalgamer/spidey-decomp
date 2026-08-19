@@ -102,6 +102,7 @@
 #include "m3dzone.h"
 #include "PRE.h"
 #include "dcfileio.h"
+#include "PCMovie.h"
 
 
 #include "my_patch.h"
@@ -626,7 +627,7 @@ static int my_video_player(const char*, i32)
 // @Bogus
 void game_patches(void)
 {
-	PATCH_CALL(0x004707BE, my_video_player);
+	//PATCH_CALL(0x004707BE, my_video_player);
 
 	patch_alloc();
 
@@ -645,6 +646,7 @@ void game_patches(void)
 	patch_spool();
 	patch_trig();
 	patch_dcfileio();
+	patch_PCMovie();
 }
 
 // @Bogus

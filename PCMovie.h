@@ -19,4 +19,5 @@ EXPORT void PCMOVIE_SetVolume(i32);
 EXPORT void PCMOVIE_Stop(void);
 EXPORT i32 findFileOffsetPKR(char *,char const *);
 
+void patch_PCMovie(void);
 #endif
