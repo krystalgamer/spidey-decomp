@@ -228,6 +228,7 @@ void SendUnSuspend(CBody* pList, i32 NodeIndex)
 }
 
 // @Ok
+// @Matching
 void SendSignalToNode(CBody* pBody, i32 NodeIndex)
 {
 	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
@@ -816,4 +817,5 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DEB10, Trig_DeleteTrigFile);
 	PATCH_PUSH_RET(0x004DFC20, Trig_SendPulseToNode);
 	PATCH_PUSH_RET(0x004DFD30, Trig_SendPulse);
+	PATCH_PUSH_RET(0x004DFFB0, SendSignalToNode);
 }
