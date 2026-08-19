@@ -275,9 +275,12 @@ void KillInList(i32 Node, CBody* pList, i32 How)
 }
 
 // @BIGTODO
-void Trig_CreateObject(i32)
+CBody* Trig_CreateObject(i32 NodeIndex)
 {
-	printf("Trig_CreateObject");
+	typedef CBody* (*func_ptr)(i32);
+	func_ptr func = (func_ptr)0x004DEE70;
+
+	return func(NodeIndex);
 }
 
 // @Ok
@@ -422,7 +425,7 @@ INLINE void Trig_AddCommandListToPending(u16 nodeIndex, u16* pCommands)
 	i32 i;
 	for(i = 0; i < MAXPENDING && G_PENDINGLISTARRAY[i].pCommands; i++);
 
-	print_if_false(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
+	ASSERT(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
 
 	G_PENDINGLISTARRAY[i].NodeIndex = nodeIndex;
 	G_PENDINGLISTARRAY[i].pCommands = pCommands;
@@ -455,7 +458,7 @@ INLINE SCommandPoint* GetCommandPoint(i32 Node)
 {
 	if (Node != 0xFFF && *G_OFFSETLIST[Node] == 6)
 	{
-		for (SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+		for (SCommandPoint *cur = G_COMMANDPOINTS; cur; cur = cur->pNext)
 		{
 			if (cur->NodeIndex == Node)
 				return cur;
@@ -732,7 +735,7 @@ INLINE u8 GetFlag(unsigned char flag, unsigned char *pFlags)
 // @Ok
 void Trig_SendPulseToNode(i32 NodeIndex)
 {
-	print_if_false(NodeIndex >= 0 && NodeIndex < NumNodes, "Bad node sent to Trig_SendPulseToNode");
+	ASSERT(NodeIndex >= 0 && NodeIndex < G_NUMNODES, "Bad node sent to Trig_SendPulseToNode");
 	trigLog("\tSending pulse to node %i", NodeIndex);
 
 	SCommandPoint *pCommand;
@@ -746,7 +749,7 @@ void Trig_SendPulseToNode(i32 NodeIndex)
 			break;
 		case 6:
 			pCommand = GetCommandPoint(NodeIndex);
-			print_if_false(pCommand != 0, "Sent pulse to command point node before command point was created");
+			ASSERT(pCommand != 0, "Sent pulse to command point node before command point was created");
 
 			pCommand->PulsesReceived++;
 			Trig_AddCommandListToPending(NodeIndex, pCommand->pCommands);
@@ -811,4 +814,5 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DEA20, Trig_ExecuteRestart);
 
 	PATCH_PUSH_RET(0x004DEB10, Trig_DeleteTrigFile);
+	PATCH_PUSH_RET(0x004DFC20, Trig_SendPulseToNode);
 }

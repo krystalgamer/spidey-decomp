@@ -4,6 +4,7 @@
 #define EXPORT_H
 
 #include "my_types.h"
+#include <cstdarg>
 
 static i32 *Animations = (int*)0x006B245C;
 
@@ -27,7 +28,18 @@ static void stubbed_printf(char *message){
 }
 
 static void error(const char *message, ...) {
-	printf("static void error(const char *message, ...)");
+	static char error_buf[512];
+	va_list lst;
+    va_start(lst, message);
+
+#ifdef _WIN32
+	_vsnprintf(error_buf, sizeof(error_buf), message, lst);
+#else
+	vsnprintf(error_buf, sizeof(error_buf), message, lst);
+#endif
+
+	va_end(lst);
+	printf("ERROR: %s\n", error_buf);
 }
 
 static void DebugPrintfX(const char *message, ...)

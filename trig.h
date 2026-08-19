@@ -82,7 +82,7 @@ EXPORT u16 *SkipString(char *);
 EXPORT void Trig_SetRestart(char *);
 EXPORT void Trig_ExecuteRestart(void);
 EXPORT void Trig_ExecuteAutoexec(void);
-EXPORT void Trig_CreateObject(i32);
+EXPORT CBody* Trig_CreateObject(i32);
 EXPORT void KillInList(i32, CBody*, i32);
 EXPORT void SendSuspend(CBody**, i32);
 EXPORT void SendSignalToNode(CBody*, i32);
