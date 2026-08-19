@@ -27,6 +27,10 @@ def main():
     if old_names is not None:
         for k,v in old_names.items():
 
+            if k not in new_names:
+                new_names[k] = v
+                continue
+
             old_name = v['name']
             new_name = new_names[k]['name']
 

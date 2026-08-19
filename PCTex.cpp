@@ -225,7 +225,9 @@ void PCTEX_Init(void)
 	for (i32 i = 0; i < NUM_PCTEX_CONTAINERS; i++)
 	{
 		if (!i)
+		{
 			gPcTexContainer[i].field_28 = 2;
+		}
 		else
 			gPcTexContainer[i].field_28 = 0;
 	}

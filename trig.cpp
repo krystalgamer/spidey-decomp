@@ -13,8 +13,13 @@
 i32 gRunCinemaRelated;
 i32 gLevelStatus;
 
-// @TODO: delete this shit
-EXPORT void* gTrigFile;
+EXPORT u16* TrigFile;
+//#define G_TRIGFILE (TrigFile)
+#define G_TRIGFILE (*reinterpret_cast<u16**>(0x006B4668))
+
+EXPORT i32 NumCheatRestarts;
+//#define G_NUMCHEATRESTARTS (NumCheatRestarts)
+#define G_NUMCHEATRESTARTS (*reinterpret_cast<i32*>(0x006B4664))
 
 // @Ok
 i16 **OffsetList;
@@ -42,8 +47,6 @@ EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
 //#define G_HASHTABLE (HashTable)
 #define G_HASHTABLE (reinterpret_cast<SCommandPoint**>(0x006B4214))
-
-EXPORT i32 Restart;
 
 // @Ok
 EXPORT i32 RestartNode = 0xFFFF;
@@ -280,7 +283,7 @@ void Trig_CreateObject(i32)
 // @Ok
 void Trig_ExecuteAutoexec(void)
 {
-	print_if_false(gTrigFile != 0, "No trigger file");
+	print_if_false(G_TRIGFILE != 0, "No trigger file");
 	EndLevelNode = 0xFFFF;
 
 	if (JoelJewCheatCode)
@@ -375,15 +378,16 @@ INLINE u16 *SkipString(char *pText)
 }
 
 // @Ok
+// @Matching
 void Trig_DeleteTrigFile(void)
 {
-	if (gTrigFile)
+	if (G_TRIGFILE)
 	{
-		Mem_Delete(reinterpret_cast<void*>(gTrigFile));
-		gTrigFile = 0;
+		Mem_Delete(reinterpret_cast<void*>(G_TRIGFILE));
+		G_TRIGFILE = 0;
 	}
 
-	Restart = 0;
+	G_NUMCHEATRESTARTS = 0;
 	Trig_ZeroPendingList();
 }
 
@@ -805,4 +809,6 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE970, Trig_SetRestart);
 
 	PATCH_PUSH_RET(0x004DEA20, Trig_ExecuteRestart);
+
+	PATCH_PUSH_RET(0x004DEB10, Trig_DeleteTrigFile);
 }
