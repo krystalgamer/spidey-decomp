@@ -248,7 +248,18 @@ void FileIO_Unk2(void *p)
 }
 
 // @Ok
+// @Matching
 INLINE void FileIO_Sync(void)
 {
 	while (G_FILE_IO_STATUS);
+}
+
+
+#include "my_patch.h"
+
+
+// @Bogus
+void patch_dcfileio(void)
+{
+	PATCH_PUSH_RET(0x00430CC0, FileIO_Sync);
 }

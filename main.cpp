@@ -101,6 +101,7 @@
 #include "vram.h"
 #include "m3dzone.h"
 #include "PRE.h"
+#include "dcfileio.h"
 
 
 #include "my_patch.h"
@@ -643,6 +644,7 @@ void game_patches(void)
 
 	patch_spool();
 	patch_trig();
+	patch_dcfileio();
 }
 
 // @Bogus

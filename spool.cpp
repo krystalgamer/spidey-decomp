@@ -447,10 +447,12 @@ void Spool_ClearEnvironmentRegions(void)
 }
 
 // @SMALLTODO
-SAnimFrame* Spool_FindAnim(char *,i32)
+SAnimFrame* Spool_FindAnim(char *a1,i32 a2)
 {
-    printf("Spool_FindAnim(char *,i32)");
-	return (SAnimFrame*)0x25092024;
+	typedef SAnimFrame* (*func_ptr)(char*, i32);
+	func_ptr func = (func_ptr)0x004CAB50;
+
+	return func(a1, a2);
 }
 
 // @Ok
