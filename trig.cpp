@@ -13,8 +13,13 @@
 i32 gRunCinemaRelated;
 i32 gLevelStatus;
 
-// @TODO: delete this shit
-EXPORT void* gTrigFile;
+EXPORT u16* TrigFile;
+//#define G_TRIGFILE (TrigFile)
+#define G_TRIGFILE (*reinterpret_cast<u16**>(0x006B4668))
+
+EXPORT i32 NumCheatRestarts;
+//#define G_NUMCHEATRESTARTS (NumCheatRestarts)
+#define G_NUMCHEATRESTARTS (*reinterpret_cast<i32*>(0x006B4664))
 
 // @Ok
 i16 **OffsetList;
@@ -42,8 +47,6 @@ EXPORT SCommandPoint* CommandPoints;
 EXPORT SCommandPoint* HashTable[256];
 //#define G_HASHTABLE (HashTable)
 #define G_HASHTABLE (reinterpret_cast<SCommandPoint**>(0x006B4214))
-
-EXPORT i32 Restart;
 
 // @Ok
 EXPORT i32 RestartNode = 0xFFFF;
@@ -225,6 +228,7 @@ void SendUnSuspend(CBody* pList, i32 NodeIndex)
 }
 
 // @Ok
+// @Matching
 void SendSignalToNode(CBody* pBody, i32 NodeIndex)
 {
 	for (CBody* cur = pBody; cur; cur = reinterpret_cast<CBody*>(cur->mNextItem))
@@ -272,15 +276,18 @@ void KillInList(i32 Node, CBody* pList, i32 How)
 }
 
 // @BIGTODO
-void Trig_CreateObject(i32)
+CBody* Trig_CreateObject(i32 NodeIndex)
 {
-	printf("Trig_CreateObject");
+	typedef CBody* (*func_ptr)(i32);
+	func_ptr func = (func_ptr)0x004DEE70;
+
+	return func(NodeIndex);
 }
 
 // @Ok
 void Trig_ExecuteAutoexec(void)
 {
-	print_if_false(gTrigFile != 0, "No trigger file");
+	print_if_false(G_TRIGFILE != 0, "No trigger file");
 	EndLevelNode = 0xFFFF;
 
 	if (JoelJewCheatCode)
@@ -375,15 +382,16 @@ INLINE u16 *SkipString(char *pText)
 }
 
 // @Ok
+// @Matching
 void Trig_DeleteTrigFile(void)
 {
-	if (gTrigFile)
+	if (G_TRIGFILE)
 	{
-		Mem_Delete(reinterpret_cast<void*>(gTrigFile));
-		gTrigFile = 0;
+		Mem_Delete(reinterpret_cast<void*>(G_TRIGFILE));
+		G_TRIGFILE = 0;
 	}
 
-	Restart = 0;
+	G_NUMCHEATRESTARTS = 0;
 	Trig_ZeroPendingList();
 }
 
@@ -418,7 +426,7 @@ INLINE void Trig_AddCommandListToPending(u16 nodeIndex, u16* pCommands)
 	i32 i;
 	for(i = 0; i < MAXPENDING && G_PENDINGLISTARRAY[i].pCommands; i++);
 
-	print_if_false(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
+	ASSERT(i < 16, "Pending command list overflow, increase MAXPENDING in trig.cpp");
 
 	G_PENDINGLISTARRAY[i].NodeIndex = nodeIndex;
 	G_PENDINGLISTARRAY[i].pCommands = pCommands;
@@ -451,7 +459,7 @@ INLINE SCommandPoint* GetCommandPoint(i32 Node)
 {
 	if (Node != 0xFFF && *G_OFFSETLIST[Node] == 6)
 	{
-		for (SCommandPoint *cur = CommandPoints; cur; cur = cur->pNext)
+		for (SCommandPoint *cur = G_COMMANDPOINTS; cur; cur = cur->pNext)
 		{
 			if (cur->NodeIndex == Node)
 				return cur;
@@ -649,9 +657,9 @@ void Trig_SendPulse(u16* pLinkInfo)
 	u16 NumLinks = pLinkInfo[0];
 	u16* pLink = &pLinkInfo[1];
 
-	for (i32 curLink = 0; curLink < NumLinks; curLink++)
+	for (i32 i = 0; i < NumLinks; i++)
 	{
-		Trig_SendPulseToNode(pLink[curLink]);
+		Trig_SendPulseToNode(pLink[i]);
 	}
 }
 
@@ -728,7 +736,7 @@ INLINE u8 GetFlag(unsigned char flag, unsigned char *pFlags)
 // @Ok
 void Trig_SendPulseToNode(i32 NodeIndex)
 {
-	print_if_false(NodeIndex >= 0 && NodeIndex < NumNodes, "Bad node sent to Trig_SendPulseToNode");
+	ASSERT(NodeIndex >= 0 && NodeIndex < G_NUMNODES, "Bad node sent to Trig_SendPulseToNode");
 	trigLog("\tSending pulse to node %i", NodeIndex);
 
 	SCommandPoint *pCommand;
@@ -742,7 +750,7 @@ void Trig_SendPulseToNode(i32 NodeIndex)
 			break;
 		case 6:
 			pCommand = GetCommandPoint(NodeIndex);
-			print_if_false(pCommand != 0, "Sent pulse to command point node before command point was created");
+			ASSERT(pCommand != 0, "Sent pulse to command point node before command point was created");
 
 			pCommand->PulsesReceived++;
 			Trig_AddCommandListToPending(NodeIndex, pCommand->pCommands);
@@ -805,4 +813,9 @@ void patch_trig(void)
 	PATCH_PUSH_RET(0x004DE970, Trig_SetRestart);
 
 	PATCH_PUSH_RET(0x004DEA20, Trig_ExecuteRestart);
+
+	PATCH_PUSH_RET(0x004DEB10, Trig_DeleteTrigFile);
+	PATCH_PUSH_RET(0x004DFC20, Trig_SendPulseToNode);
+	PATCH_PUSH_RET(0x004DFD30, Trig_SendPulse);
+	PATCH_PUSH_RET(0x004DFFB0, SendSignalToNode);
 }

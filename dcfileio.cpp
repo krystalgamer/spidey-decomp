@@ -183,7 +183,7 @@ void FileIO_Load(void *where)
 // @Matching
 i32 FileIO_Open(const char* pName)
 {
-	print_if_false(G_FILE_IO_STATUS == 0, "Previous file not finished loading");
+	ASSERT(G_FILE_IO_STATUS == 0, "Previous file not finished loading");
 	G_FILE_IO_OLD_SIZE = 0;
 	G_FILE_IO_IN_PRE = 0;
 
@@ -243,12 +243,24 @@ void* FileIO_Unk(const char* pName, i32 *size)
 // @Matching
 void FileIO_Unk2(void *p)
 {
-	DoAssert(!!p, "Cannot free null pointer");
+	ASSERT(!!p, "Cannot free null pointer");
 	syFree(p);
 }
 
 // @Ok
+// @Matching
 INLINE void FileIO_Sync(void)
 {
 	while (G_FILE_IO_STATUS);
+}
+
+
+#include "my_patch.h"
+
+
+// @Bogus
+void patch_dcfileio(void)
+{
+	PATCH_PUSH_RET(0x00430CC0, FileIO_Sync);
+	PATCH_PUSH_RET(0x00430CA0, FileIO_Unk2);
 }

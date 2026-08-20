@@ -46,6 +46,8 @@ typedef u32 DWORD;
 
 void CloseHandle(HANDLE);
 
+typedef i32 HMODULE;
+
 #else
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>

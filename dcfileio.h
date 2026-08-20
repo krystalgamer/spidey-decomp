@@ -15,4 +15,5 @@ EXPORT void* FileIO_Unk(const char*, i32 *);
 EXPORT void FileIO_Continue(void);
 EXPORT void FileIO_Unk2(void*);
 
+void patch_dcfileio(void);
 #endif

@@ -8,17 +8,32 @@
 
 #include <cstring>
 
-EXPORT LIBPKR_HANDLE* gMediaPkr;
 
+// @Ok
 EXPORT char gMovieCurrentDirectory[0x200];
-EXPORT u8 gFoundMediaPkr;
+//#define G_MOVIECURRENTDIRECTORY (gMovieCurrentDirectory)
+#define G_MOVIECURRENTDIRECTORY (reinterpret_cast<char*>(0x00AC0CB0))
 
+// @Ok
+EXPORT u8 gFoundMediaPkr;
+//#define G_FOUNDMEDIAPKR (gFoundMediaPkr)
+#define G_FOUNDMEDIAPKR (*reinterpret_cast<u8*>(0x00AC0EB0))
+
+// @Ok
 EXPORT char gCdPath[0x100];
+//#define G_CDPATH (gCdPath)
+#define G_CDPATH (reinterpret_cast<char*>(0x00AC0BB0))
+
+// @Ok
 EXPORT u8 gPcMovieInited;
+//#define G_PC_MOVIE_INITED (gPcMovieInited)
+#define G_PC_MOVIE_INITED (*reinterpret_cast<u8*>(0x00AC0BA0))
 
 EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
 
+// @Ok
+EXPORT LIBPKR_HANDLE* gMediaPkr;
 //#define G_MEDIA_PKR (gMediaPkr)
 #define G_MEDIA_PKR (*reinterpret_cast<LIBPKR_HANDLE**>(0x00AC0BA8))
 
@@ -248,14 +263,14 @@ void PCMOVIE_ClosePKR(void)
 }
 
 // @Ok
-// @Matching
+// @Matching - not really because Bink* is not resolved through the PE loader
 INLINE void PCMOVIE_Init(void)
 {
-	if (!gPcMovieInited)
+	if (!G_PC_MOVIE_INITED)
 	{
-		BinkSetSoundSystem(BinkOpenDirectSound, g_pDS);
+		BinkSetSoundSystem(BinkOpenDirectSound, G_PDS);
 		BinkSetIOSize(256);
-		gPcMovieInited = 1;
+		G_PC_MOVIE_INITED = 1;
 	}
 }
 
@@ -269,7 +284,7 @@ void PCMOVIE_InitOnce(void)
 
 	char v0 = 'C';
 	strcpy(RootPathName, "C:");
-	strcpy(gCdPath, RootPathName);
+	strcpy(G_CDPATH, RootPathName);
 
 	while (1)
 	{
@@ -286,8 +301,8 @@ void PCMOVIE_InitOnce(void)
 			if (v1)
 			{
 				fclose(v1);
-				strcpy(gCdPath, rootCdPath);
-				printf_fancy("CDPATH: %s\r\n", gCdPath);
+				strcpy(G_CDPATH, rootCdPath);
+				printf_fancy("CDPATH: %s\r\n", G_CDPATH);
 				break;
 			}
 		}
@@ -296,12 +311,12 @@ void PCMOVIE_InitOnce(void)
 		if (v0 < 'Z')
 			continue;
 
-		printf_fancy("CDPATH: %s - NOT FOUND\r\n", gCdPath);
+		printf_fancy("CDPATH: %s - NOT FOUND\r\n", G_CDPATH);
 		break;
 	}
 
-	GetCurrentDirectoryA(0x200, gMovieCurrentDirectory);
-	strcpy(mediaPkrPath, gMovieCurrentDirectory);
+	GetCurrentDirectoryA(0x200, G_MOVIECURRENTDIRECTORY);
+	strcpy(mediaPkrPath, G_MOVIECURRENTDIRECTORY);
 	strcat(mediaPkrPath, "\\");
 	strcat(mediaPkrPath, "Media.pkr");
 	FILE* mediaFp = fopen(mediaPkrPath, "rb");
@@ -309,11 +324,11 @@ void PCMOVIE_InitOnce(void)
 	if (mediaFp)
 	{
 		fclose(mediaFp);
-		gFoundMediaPkr = 1;
+		G_FOUNDMEDIAPKR = 1;
 	}
 	else
 	{
-		gFoundMediaPkr = 0;
+		G_FOUNDMEDIAPKR = 0;
 	}
 }
 
@@ -332,24 +347,23 @@ u8 PCMOVIE_NextFrame(void)
 }
 
 // @Ok
-// @Matching
+// @Matching - it wasn't before, now it is with the two strcpys
 void PCMOVIE_OpenPKR(void)
 {
-	char v2[512];
-	char v3[512];
-
 	if (!G_MEDIA_PKR)
 	{
-		const char *v0 = gMovieCurrentDirectory;
-		if (!gFoundMediaPkr)
-			v0 = gCdPath;
+		char v2[512];
+		if (G_FOUNDMEDIAPKR)
+			strcpy(v2, G_MOVIECURRENTDIRECTORY);
+		else
+			strcpy(v2, G_CDPATH);
 
-		strcpy(v2, v0);
 		strcat(v2, "\\");
 		strcat(v2, "Media.pkr");
 
 		if (!PKR_Open(&G_MEDIA_PKR, v2, 1))
 		{
+			char v3[512];
 			if (PKR_GetLastError(v3))
 			{
 				printf_fancy("PKR\t: %s\r\n", v3);
@@ -357,9 +371,10 @@ void PCMOVIE_OpenPKR(void)
 		}
 		else
 		{
-			printf_fancy("PKR\t: Name       : %s\r\n", G_MEDIA_PKR->name);
-			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", G_MEDIA_PKR->mFooter.numDirs);
-			printf_fancy("PKR\t: N.O. Files : %i\r\n", G_MEDIA_PKR->mFooter.numFiles);
+			LIBPKR_HANDLE *tmp = G_MEDIA_PKR;
+			printf_fancy("PKR\t: Name       : %s\r\n", tmp->name);
+			printf_fancy("PKR\t: N.O. Dir   : %i\r\n", tmp->mFooter.numDirs);
+			printf_fancy("PKR\t: N.O. Files : %i\r\n", tmp->mFooter.numFiles);
 		}
 	}
 	else
@@ -417,4 +432,16 @@ INLINE i32 findFileOffsetPKR(
 		printf_fancy("PKR\t: %s%s - %s\r\n", a1, a2, v4);
 
 	return -1;
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_PCMovie(void)
+{
+	PATCH_PUSH_RET(0x0050AC90, PCMOVIE_InitOnce);
+	PATCH_PUSH_RET(0x0050AF30, PCMOVIE_OpenPKR);
+	PATCH_PUSH_RET(0x0050B080, PCMOVIE_ClosePKR);
+
+	PATCH_PUSH_RET(0x0050B0F0, PCMOVIE_Init);
 }

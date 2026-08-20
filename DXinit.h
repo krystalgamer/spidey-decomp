@@ -84,7 +84,11 @@ EXPORT void gsub_5027A0(void);
 
 EXPORT extern u32 gColorCount;
 EXPORT extern LPDIRECTINPUT8 gDirectInputRelated;
+
 EXPORT extern LPDIRECTSOUND8 g_pDS;
+//#define G_PDS (g_pDS)
+#define G_PDS (*reinterpret_cast<LPDIRECTSOUND8*>(0x006B7920))
+
 
 #define DISPLAY_DI_ERROR(x) displayDIError(x, __FILE__, __LINE__)
 #define DISPLAY_DS_ERROR(x) displayDSError(x, __FILE__, __LINE__)
