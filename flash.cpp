@@ -49,6 +49,7 @@ void Flash_Reset(void)
 }
 
 // @Ok
+// @Matching
 void Flash_Screen(
 		u8 StartR,
 		u8 StartG,
@@ -57,17 +58,22 @@ void Flash_Screen(
 		u8 Importance,
 		i32 Sort)
 {
-	if (Importance >= CurrentImportance && Frames)
+	if (Importance >= CurrentImportance)
 	{
-		CurrentR = StartR << 16;
-		CurrentG = StartG << 16;
-		CurrentB = StartB << 16;
-		FlashCountdown = Frames;
-		CurrentImportance = Importance;
-		dR = (StartR << 16) / Frames;
-		dG = (StartG << 16) / Frames;
-		dB = (StartB << 16) / Frames;
-		FlashSort = Sort;
+		if (Frames)
+		{
+			CurrentR = StartR << 16;
+			CurrentG = StartG << 16;
+			CurrentB = StartB << 16;
+
+			dR = (CurrentR) / Frames;
+			dG = (CurrentG) / Frames;
+			dB = (CurrentB) / Frames;
+
+			FlashCountdown = Frames;
+			CurrentImportance = Importance;
+			FlashSort = Sort;
+		}
 	}
 
 }
@@ -115,4 +121,6 @@ void Flash_Update(void)
 void patch_flash(void)
 {
 	PATCH_PUSH_RET(0x0043D820, Flash_FadeFinished);
+	PATCH_PUSH_RET(0x0043D800, Flash_Reset);
+	PATCH_PUSH_RET(0x0043D830, Flash_Screen);
 }
