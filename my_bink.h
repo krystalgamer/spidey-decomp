@@ -64,9 +64,11 @@ i32 STDCALL BinkWait(HBINK);
 void STDCALL BinkClose(HBINK);
 void STDCALL BinkSetVolume(HBINK, i32);
 void STDCALL BinkSetPan(HBINK, i32);
-void STDCALL BinkSetSoundSystem(void (STDCALL *fptr)(void), LPDIRECTSOUND8);
-void STDCALL BinkOpenDirectSound(void);
-void STDCALL BinkSetIOSize(i32);
+
+i32 STDCALL BinkSetSoundSystem(i32 (STDCALL *fptr)(void*), LPDIRECTSOUND8);
+i32 STDCALL BinkOpenDirectSound(void*);
+
+void STDCALL BinkSetIOSize(u32);
 i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7);
 HBINK STDCALL BinkOpen(void*, i32);
 void STDCALL BinkSetVideoOnOff(HBINK, i32);

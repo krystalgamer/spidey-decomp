@@ -24,7 +24,10 @@ EXPORT char gCdPath[0x100];
 //#define G_CDPATH (gCdPath)
 #define G_CDPATH (reinterpret_cast<char*>(0x00AC0BB0))
 
+// @Ok
 EXPORT u8 gPcMovieInited;
+//#define G_PC_MOVIE_INITED (gPcMovieInited)
+#define G_PC_MOVIE_INITED (*reinterpret_cast<u8*>(0x00AC0BA0))
 
 EXPORT HBINK gMovieBinkRelated;
 EXPORT HANDLE gMovieFileHandle;
@@ -260,14 +263,14 @@ void PCMOVIE_ClosePKR(void)
 }
 
 // @Ok
-// @Matching
+// @Matching - not really because Bink* is not resolved through the PE loader
 INLINE void PCMOVIE_Init(void)
 {
-	if (!gPcMovieInited)
+	if (!G_PC_MOVIE_INITED)
 	{
-		BinkSetSoundSystem(BinkOpenDirectSound, g_pDS);
+		BinkSetSoundSystem(BinkOpenDirectSound, G_PDS);
 		BinkSetIOSize(256);
-		gPcMovieInited = 1;
+		G_PC_MOVIE_INITED = 1;
 	}
 }
 
@@ -439,4 +442,6 @@ void patch_PCMovie(void)
 	PATCH_PUSH_RET(0x0050AC90, PCMOVIE_InitOnce);
 	PATCH_PUSH_RET(0x0050AF30, PCMOVIE_OpenPKR);
 	PATCH_PUSH_RET(0x0050B080, PCMOVIE_ClosePKR);
+
+	PATCH_PUSH_RET(0x0050B0F0, PCMOVIE_Init);
 }
