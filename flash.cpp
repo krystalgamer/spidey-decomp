@@ -123,4 +123,5 @@ void patch_flash(void)
 	PATCH_PUSH_RET(0x0043D820, Flash_FadeFinished);
 	PATCH_PUSH_RET(0x0043D800, Flash_Reset);
 	PATCH_PUSH_RET(0x0043D830, Flash_Screen);
+	PATCH_PUSH_RET(0x0043D8C0, Flash_Update);
 }
