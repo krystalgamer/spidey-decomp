@@ -11,4 +11,5 @@ EXPORT void Flash_Reset(void);
 EXPORT void Flash_Screen(u8,u8,u8,i32,u8,i32);
 EXPORT void Flash_Update(void);
 
+void patch_flash(void);
 #endif

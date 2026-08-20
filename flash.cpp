@@ -35,7 +35,18 @@ i32 Flash_FadeFinished(void)
 // @MEDIUMTODO
 void Flash_Display(void)
 {
-    printf("Flash_Display(void)");
+	*reinterpret_cast<i32*>(0x005FAA5C) = FlashCountdown;
+	*reinterpret_cast<i32*>(0x005FAA60) = Fading;
+
+	*reinterpret_cast<u32*>(0x005FAA14) = CurrentR;
+	*reinterpret_cast<u32*>(0x005FAA04) = CurrentB;
+	*reinterpret_cast<u32*>(0x005FAA00) = CurrentG;
+
+
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x0043D980;
+
+	func();
 }
 
 // @Ok
@@ -124,4 +135,6 @@ void patch_flash(void)
 	PATCH_PUSH_RET(0x0043D800, Flash_Reset);
 	PATCH_PUSH_RET(0x0043D830, Flash_Screen);
 	PATCH_PUSH_RET(0x0043D8C0, Flash_Update);
+
+	PATCH_CALL(0x004559A1, Flash_Display);
 }

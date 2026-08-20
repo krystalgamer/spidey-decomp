@@ -103,6 +103,7 @@
 #include "PRE.h"
 #include "dcfileio.h"
 #include "PCMovie.h"
+#include "flash.h"
 
 
 #include "my_patch.h"
@@ -648,6 +649,8 @@ void game_patches(void)
 	patch_pctex();
 	patch_dcfileio();
 	patch_PCMovie();
+
+	patch_flash();
 }
 
 // @Bogus
