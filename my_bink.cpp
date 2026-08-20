@@ -7,10 +7,12 @@ static HMODULE hBink = 0;
 
 static INLINE void init_module(void)
 {
+#ifdef _WIN32
 	if (!hBink)
 	{
 		hBink = GetModuleHandleA("binkw32_.dll");
 	}
+#endif
 }
 
 void STDCALL BinkService(HBINK)
@@ -71,15 +73,18 @@ i32 STDCALL BinkDDSurfaceType(LPDIRECTDRAWSURFACE7)
 
 void STDCALL BinkSetIOSize(u32 a1)
 {
+#ifdef _WIN32
 	init_module();
 
 	typedef void (STDCALL *func_ptr)(u32);
 	static func_ptr func = (func_ptr)GetProcAddress(hBink, "_BinkSetIOSize@4");
 	func(a1);
+#endif
 }
 
 i32 STDCALL BinkSetSoundSystem(i32 (STDCALL *fptr)(void*), LPDIRECTSOUND8 a2)
 {
+#ifdef _WIN32
 	init_module();
 
 	typedef i32 (STDCALL *func_ptr)(i32 (STDCALL *_ignore)(void*), LPDIRECTSOUND8);
@@ -88,10 +93,14 @@ i32 STDCALL BinkSetSoundSystem(i32 (STDCALL *fptr)(void*), LPDIRECTSOUND8 a2)
 	i32 res = func(fptr, a2);
 
 	return res;
+#endif
+
+	return 0;
 }
 
 i32 STDCALL BinkOpenDirectSound(void* a1)
 {
+#ifdef _WIN32
 	init_module();
 
 
@@ -101,6 +110,9 @@ i32 STDCALL BinkOpenDirectSound(void* a1)
 	i32 res = func(a1);
 
 	return res;
+#endif
+
+	return 0;
 }
 
 void STDCALL BinkSetVolume(HBINK, i32)

@@ -7,7 +7,7 @@
 #define TRUE 1
 
 EXPORT i32 Used[2];
-u32 HeapDefs[MAXHEAPS][2] = { {NULL, NULL}, {NULL, NULL}};
+u32 HeapDefs[MAXHEAPS][2] = { {0, 0}, {0, 0} };
 
 i32 LowMemory = 0;
 EXPORT u32 CriticalBigHeapUsage = 0;
