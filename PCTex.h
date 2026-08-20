@@ -145,4 +145,6 @@ void validate_SPCTexContainer(void);
 void validate_DDPIXELFORMAT(void);
 void validate_ConvertPSXPaletteToPC(void);
 
+void patch_pctex(void);
+
 #endif

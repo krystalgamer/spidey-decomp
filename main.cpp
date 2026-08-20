@@ -645,6 +645,7 @@ void game_patches(void)
 
 	patch_spool();
 	patch_trig();
+	patch_pctex();
 	patch_dcfileio();
 	patch_PCMovie();
 }
