@@ -75,7 +75,7 @@ void Redbook_XAStop(void)
 }
 
 // @BIGTODO
-u8 Redbook_XAPlay(int, int, int)
+u8 Redbook_XAPlay(int a1, int, int)
 {
 	return 0x1235959;
 }
@@ -90,7 +90,10 @@ void Redbook_XAAllow(bool allowed)
 // @MEDIUMTODO
 void Redbook_XAReset(void)
 {
-	printf("void Redbook_XAReset(void)");
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x00479940;
+
+	func();
 }
 
 // @BIGTODO

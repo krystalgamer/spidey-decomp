@@ -1,17 +1,28 @@
 #include "flash.h"
 
+// @Ok
 EXPORT i32 FadeCountdown;
+// @Ok
 EXPORT i32 FlashCountdown;
+// @Ok
 EXPORT i32 Fading;
+// @Ok
 EXPORT u8 CurrentImportance;
+// @Ok
 EXPORT i32 FlashSort;
 
+// @Ok
 EXPORT u32 CurrentR;
+// @Ok
 EXPORT u32 CurrentG;
+// @Ok
 EXPORT u32 CurrentB;
 
+// @Ok
 EXPORT u32 dR;
+// @Ok
 EXPORT u32 dG;
+// @Ok
 EXPORT u32 dB;
 
 // @Ok
@@ -96,4 +107,12 @@ void Flash_Update(void)
 			CurrentB -= dB;
 		}
 	}
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_flash(void)
+{
+	PATCH_PUSH_RET(0x0043D820, Flash_FadeFinished);
 }
