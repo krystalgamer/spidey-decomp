@@ -4,6 +4,9 @@
 #include "ob.h"
 
 // @Ok
+u16	Inquiry=0xFFFF;
+
+// @Ok
 SLineInfo gLineInfo;
 
 i32 LineOfSightCheck;
@@ -37,10 +40,23 @@ void M3dColij_LineToItemZoned(CItem **,SLineInfo *)
     printf("M3dColij_LineToItemZoned(CItem **,SLineInfo *)");
 }
 
-// @SMALLTODO
-void NextInquiry(void)
+// @Ok
+// @Leak
+INLINE void NextInquiry(void)
 {
-    printf("NextInquiry(void)");
+	// increment inquiry
+	// if it's 0, set to 1 and set all objects' inquiry fields to 0.
+	// If this weren't done, a rare bug may occur where the previous collision test with a particular object was
+	// performed 65536 tests ago, and the current test would automatically fail.
+	if	(!++Inquiry)
+	{
+		CItem	*pItem;
+		Inquiry=1;
+		for (pItem=EnviroList; pItem; pItem=pItem->mNextItem)
+			pItem->mInquiry=0;
+		for (pItem=EnvironmentalObjectList; pItem; pItem=pItem->mNextItem)
+			pItem->mInquiry=0;
+	}
 }
 
 
