@@ -651,6 +651,7 @@ void game_patches(void)
 	patch_PCMovie();
 
 	patch_flash();
+	patch_pshell();
 }
 
 // @Bogus

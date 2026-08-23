@@ -70,4 +70,5 @@ void validate_SCheat(void);
 static const i32 NUM_CHEATS = 24;
 EXPORT extern SCheat gCheats[NUM_CHEATS];
 
+void patch_pshell(void);
 #endif

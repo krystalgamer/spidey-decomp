@@ -12,6 +12,34 @@
 
 EXPORT i32 JoelJewCheatCode;
 
+enum ECheatCode
+{
+        CHEAT_WEAKNESS = 0,
+        CHEAT_LEANEST = 1,
+        CHEAT_GLANDS = 2,
+        CHEAT_EGOTRIP = 3,
+        CHEAT_RULUR = 4,
+        CHEAT_SECRTWAR = 5,
+        CHEAT_MIGUELOH = 6,
+        CHEAT_TRISNTNL = 7,
+        CHEAT_SYNOPTIC = 8,
+        CHEAT_XILRTRNS = 9,
+        CHEAT_KICKME = 10,
+        CHEAT_MRWATSON = 11,
+        CHEAT_SMLVIII = 12,
+        CHEAT_ROBRTSON = 13,
+        CHEAT_KIRBYFAN = 14,
+        CHEAT_MMEWEB = 15,
+        CHEAT_FANBOY = 16,
+        CHEAT_CINEMA = 17,
+        CHEAT_RGSGLLRY = 18,
+        CHEAT_UATUSEES = 19,
+        CHEAT_ADMNTIUM = 20,
+        CHEAT_CLUBNOIR = 21,
+        CHEAT_STICKMAN = 22,
+        CHEAT_FUNKYTWN = 23,
+};
+
 SCheat gCheats[NUM_CHEATS] =
 {
 	{
@@ -113,11 +141,13 @@ SCheat gCheats[NUM_CHEATS] =
 };
 
 // @MEDIUMTODO
-i32 ActivateCheat(i32)
+i32 ActivateCheat(i32 a1)
 {
-    printf("ActivateCheat(i32)");
-	//return 0x27092024;
-	return 0;
+	puts("Will activate something");
+	typedef i32 (*func_ptr)(i32);
+
+	func_ptr func = (func_ptr)0x0047C240;
+	return func(a1);
 }
 
 // @Ok
@@ -177,7 +207,7 @@ i32 PShell_ActivateCheat(char * pStr)
 		}
 	}
 
-	if (v1 == 4)
+	if (v1 == CHEAT_RULUR)
 		return -1;
 
 	if (ActivateCheat(v1))
@@ -417,4 +447,12 @@ void validate_SCheat(void)
 	}
 
 
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_pshell(void)
+{
+	PATCH_PUSH_RET(0x0047C440, PShell_ActivateCheat);
 }
