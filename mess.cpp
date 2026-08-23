@@ -339,11 +339,11 @@ void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
 	gRGBBottom = a2 | (a3 << 8) | (a4 << 16);
 }
 
-// @NotOk
-// global
+// @Ok
+// @Matching
 void Mess_UnloadFont(void)
 {
-	FontManager::UnloadFont(&gMessFont);
+	FontManager::UnloadFont(&G_MESS_FONT);
 }
 
 // @Ok
@@ -473,4 +473,5 @@ void patch_mess(void)
 {
 	PATCH_PUSH_RET(0x00458D50, Mess_GetCurrentFont);
 	PATCH_PUSH_RET(0x00458C20, Mess_UnloadAllFonts);
+	PATCH_PUSH_RET(0x00458C10, Mess_UnloadFont);
 }

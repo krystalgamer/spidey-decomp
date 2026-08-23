@@ -281,9 +281,16 @@ void FontManager::AllShadowOn(void)
 }
 
 
-// @Ok
+// @SMALLTODO
+//
 void FontManager::UnloadFont(Font* pFont)
 {
+	typedef void (*func_ptr)(Font*);
+	func_ptr func = (func_ptr)0x0043F5D0;
+
+	func(pFont);
+	return;
+	/*
 	i32 count = 0;
 	for (; count < 6; count++)
 	{
@@ -300,6 +307,7 @@ void FontManager::UnloadFont(Font* pFont)
 		delete FontList[count];
 
 	FontList[count] = 0;
+	*/
 }
 
 // @SMALLTODO
