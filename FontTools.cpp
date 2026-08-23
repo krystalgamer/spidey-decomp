@@ -463,10 +463,15 @@ INLINE i32 Font::heightAboveBaseline(char* pStr)
 	return (max_h * this->field_34) >> 12;
 }
 
-// @Ok
-int Font::height(char* txt)
+// @SMALLTODO
+i32 Font::height(char* txt)
 {
-	return this->heightAboveBaseline(txt) + this->heightBelowBaseline(txt);
+	typedef i32 (*func_ptr)(char*);
+
+	func_ptr func = (func_ptr)0x0043EAF0;
+
+	return func(txt);
+	//return this->heightAboveBaseline(txt) + this->heightBelowBaseline(txt);
 }
 
 // @Ok

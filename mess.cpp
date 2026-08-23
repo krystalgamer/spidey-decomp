@@ -354,9 +354,10 @@ char* Mess_GetCurrentFont(void)
 }
 
 // @Ok
-int Mess_TextHeight(char *pStr)
+// @Matching
+i32 Mess_TextHeight(char *pStr)
 {
-	return gMessFont.height(pStr);
+	return G_MESS_FONT.height(pStr);
 }
 
 // @Ok
@@ -474,4 +475,5 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x00458D50, Mess_GetCurrentFont);
 	PATCH_PUSH_RET(0x00458C20, Mess_UnloadAllFonts);
 	PATCH_PUSH_RET(0x00458C10, Mess_UnloadFont);
+	PATCH_PUSH_RET(0x004586F0, Mess_TextHeight);
 }
