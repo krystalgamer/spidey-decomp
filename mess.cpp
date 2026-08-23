@@ -28,7 +28,10 @@ EXPORT u16 gSort;
 EXPORT i32 gMessRelated;
 EXPORT i32 gRGBBottom = 0x808080;
 
+// @Ok
 EXPORT u8 gShadowRGB = 0x80;
+//#define G_SHADOW_RGB (gShadowRGB)
+#define G_SHADOW_RGB (*reinterpret_cast<u8*>(0x0054D7A8))
 
 EXPORT char gMessFontName[32];
 EXPORT u8 gMessFontLoaded;
@@ -216,12 +219,13 @@ SMessage* Mess_Message(const char * pText, SMessageProg* pProg)
 }
 
 // @Ok
+// @Matching
 void Mess_SetShadowRGB(u8 rgb)
 {
 	if (rgb < 0x80)
 		rgb = 0x80;
 
-	gShadowRGB = rgb;
+	G_SHADOW_RGB = rgb;
 }
 
 // @Ok
@@ -481,4 +485,6 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x00458C10, Mess_UnloadFont);
 	PATCH_PUSH_RET(0x004586F0, Mess_TextHeight);
 	PATCH_PUSH_RET(0x004586C0, Mess_TextWidth);
+
+	PATCH_PUSH_RET(0x004586B0, Mess_SetShadowRGB);
 }
