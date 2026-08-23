@@ -77,9 +77,12 @@ EXPORT i32 NumTrigMenuEntries;
 //#define G_NUMTRIGMENUENTRIES (NumTrigMenuEntries)
 #define G_NUMTRIGMENUENTRIES (*reinterpret_cast<i32*>(0x006B467C))
 
+// #define ENABLE_TRIG_LOG
+
 // @Bogus
 void trigLog(const char* fmt, ...)
 {
+#ifdef ENABLE_TRIG_LOG
 	static char buffer[512];
 
 	va_list lst;
@@ -93,6 +96,8 @@ void trigLog(const char* fmt, ...)
 
 	va_end(lst);
 	printf("trigLog! %s\n", buffer);
+
+#endif
 }
 
 // @NotOk

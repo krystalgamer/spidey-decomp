@@ -23,7 +23,10 @@ EXPORT u16 Scale;
 //#define G_SCALE (Scale)
 #define G_SCALE (*reinterpret_cast<u16*>(0x0060D5A4))
 
+// @Ok
 EXPORT u16 gSort;
+//#define G_SORT (gSort)
+#define G_SORT (*reinterpret_cast<u16*>(0x0060D5A6))
 
 EXPORT i32 gMessRelated;
 
@@ -233,9 +236,10 @@ void Mess_SetShadowRGB(u8 rgb)
 }
 
 // @Ok
+// @Matching
 void Mess_SetSort(i32 sort)
 {
-	gSort = sort;
+	G_SORT = sort;
 }
 
 // @Ok
@@ -499,4 +503,6 @@ void patch_mess(void)
 
 	PATCH_PUSH_RET(0x00458670, Mess_SetRGBBottom);
 	PATCH_PUSH_RET(0x00458640, Mess_SetRGB);
+
+	PATCH_PUSH_RET(0x00458630, Mess_SetSort);
 }
