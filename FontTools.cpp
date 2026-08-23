@@ -278,6 +278,13 @@ void FontManager::AllShadowOff(void)
 // globals
 void FontManager::AllShadowOn(void)
 {
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x0043F780;
+
+	func();
+	return;
+
+	/*
 	for (int i = 0; i<6; i++)
 	{
 		if (FontList[i])
@@ -285,6 +292,7 @@ void FontManager::AllShadowOn(void)
 			FontList[i]->field_21 = 1;
 		}
 	}
+	*/
 }
 
 

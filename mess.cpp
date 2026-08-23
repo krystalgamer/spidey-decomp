@@ -242,6 +242,7 @@ void Mess_ShadowsOff(void)
 }
 
 // @Ok
+// @Matching
 void Mess_ShadowsOn(void)
 {
 	FontManager::AllShadowOn();
@@ -490,4 +491,5 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x004586B0, Mess_SetShadowRGB);
 
 	PATCH_PUSH_RET(0x00458690, Mess_ShadowsOff);
+	PATCH_PUSH_RET(0x004586A0, Mess_ShadowsOn);
 }
