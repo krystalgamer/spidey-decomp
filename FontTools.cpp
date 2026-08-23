@@ -10,6 +10,11 @@
 
 #include <cstring>
 
+// @Ok
+Font* FontManager::FontTab[NUM_FONTS_TAB];
+//#define G_FONT_TAB (FontManager::FontTab)
+#define G_FONT_TAB (reinterpret_cast<Font**>(0x005FAD5C))
+
 // @SMALLTODO
 void Font::handleEscapeChar(char)
 {
@@ -168,8 +173,6 @@ Font::~Font(void)
 {
 }
 
-extern "C" void FASTCALL Font_draw_asm(Font*, void*, i32, i32, const char*, i32, f32);
-
 // @MEDIUMTODO
 void Font::draw(
 		i32 x,
@@ -233,8 +236,6 @@ char Font::getCharIndex(char a2)
 	return 1;
 }
 
-EXPORT Font* FontList[6];
-
 // @NotOk
 // globals
 // managed to make it match with the this->field_58 = this->field_58, by deref through array
@@ -242,9 +243,9 @@ void FontManager::ResetCharMaps(void)
 {
 	for (int i = 0; i<6; i++)
 	{
-		if (FontList[i])
+		if (FontManager::FontTab[i])
 		{
-			FontList[i]->SetCharMap(FontList[i]->GetCharMap());
+			FontManager::FontTab[i]->SetCharMap(FontManager::FontTab[i]->GetCharMap());
 		}
 	}
 }
@@ -255,24 +256,17 @@ char* FontManager::GetFontName(Font* pFont)
 	return pFont->field_38;
 }
 
-// @NotOk
-// globals
+// @Ok
+// @Matching
 void FontManager::AllShadowOff(void)
 {
-	typedef void (*func_ptr)(void);
-	func_ptr func = (func_ptr)0x0043F760;
-
-	func();
-	return;
-	/*
-	for (int i = 0; i<6; i++)
+	for (i32 i = 0; i<NUM_FONTS_TAB; i++)
 	{
-		if (FontList[i])
+		if (G_FONT_TAB[i])
 		{
-			FontList[i]->field_21 = 0;
+			G_FONT_TAB[i]->field_21 = 0;
 		}
 	}
-	*/
 }
 
 // @NotOk
@@ -288,9 +282,9 @@ void FontManager::AllShadowOn(void)
 	/*
 	for (int i = 0; i<6; i++)
 	{
-		if (FontList[i])
+		if (FontManager::FontTab[i])
 		{
-			FontList[i]->field_21 = 1;
+			FontManager::FontTab[i]->field_21 = 1;
 		}
 	}
 	*/
@@ -310,19 +304,19 @@ void FontManager::UnloadFont(Font* pFont)
 	i32 count = 0;
 	for (; count < 6; count++)
 	{
-		if (FontList[count] && !strcmp(FontList[count]->field_38, pFont->field_38))
+		if (FontManager::FontTab[count] && !strcmp(FontManager::FontTab[count]->field_38, pFont->field_38))
 			break;
 	}
 
 	print_if_false(count < 6, "Font %s is not in table", &pFont->field_38);
 
 
-	FontList[count]->unload();
+	FontManager::FontTab[count]->unload();
 
-	if (FontList[count])
-		delete FontList[count];
+	if (FontManager::FontTab[count])
+		delete FontManager::FontTab[count];
 
-	FontList[count] = 0;
+	FontManager::FontTab[count] = 0;
 	*/
 }
 
@@ -336,11 +330,11 @@ void FontManager::UnloadAllFonts(void)
 	/*
 	for (i32 i = 0; i < 6; i++)
 	{
-		if (FontList[i])
+		if (FontManager::FontTab[i])
 		{
-			FontList[i]->unload();
-			delete FontList[i];
-			FontList[i] = 0;
+			FontManager::FontTab[i]->unload();
+			delete FontManager::FontTab[i];
+			FontManager::FontTab[i] = 0;
 		}
 	}
 	*/
@@ -352,7 +346,7 @@ INLINE u8 FontManager::IsFontLoaded(const char* pName)
 {
 	for (i32 i = 0; i < 6; i++)
 	{
-		if (FontList[i] && !strcmp(FontList[i]->field_38, pName))
+		if (FontManager::FontTab[i] && !strcmp(FontManager::FontTab[i]->field_38, pName))
 		{
 			return 1;
 		}
@@ -374,14 +368,14 @@ INLINE Font* FontManager::GetFont(const char* pName)
 	i32 i;
 	for (i = 0; i < 6; i++)
 	{
-		if (FontList[i] && !strcmp(FontList[i]->field_38, pName))
+		if (FontManager::FontTab[i] && !strcmp(FontManager::FontTab[i]->field_38, pName))
 		{
 			break;
 		}
 	}
 
 	ASSERT(i < 6, "Font %s is not loaded", pName);
-	return FontList[i];
+	return FontManager::FontTab[i];
 	*/
 }
 
@@ -392,18 +386,18 @@ Font* FontManager::LoadFont(u8* pBuf, const char* pName)
 	i32 i;
 	for (i = 0; i < 6; i++)
 	{
-		if (FontList[i] == 0)
+		if (FontManager::FontTab[i] == 0)
 		{
 			print_if_false(i < 6, "out of font slots");
-			FontList[i] = new Font(pBuf, pName);
+			FontManager::FontTab[i] = new Font(pBuf, pName);
 			break;
 		}
 
-		if (!strcmp(FontList[i]->field_38, pName))
+		if (!strcmp(FontManager::FontTab[i]->field_38, pName))
 			break;
 	}
 
-	return FontList[i];
+	return FontManager::FontTab[i];
 }
 
 // @Ok
@@ -611,4 +605,6 @@ void validate_SDataGlyph(void)
 void patch_FontTools(void)
 {
 	PATCH_PUSH_RET(0x0043F5C0, FontManager::GetFontName);
+
+	PATCH_PUSH_RET(0x0043F760, FontManager::AllShadowOff);
 }

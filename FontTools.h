@@ -83,6 +83,10 @@ class Font : public CClass
 class FontManager
 {
 	public:
+
+#define NUM_FONTS_TAB 6
+		EXPORT static Font* FontTab[NUM_FONTS_TAB];
+
 		EXPORT static void ResetCharMaps(void);
 		EXPORT static char* GetFontName(Font*);
 		EXPORT static void AllShadowOff(void);
