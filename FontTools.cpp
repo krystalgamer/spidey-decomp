@@ -474,9 +474,15 @@ i32 Font::height(char* txt)
 	//return this->heightAboveBaseline(txt) + this->heightBelowBaseline(txt);
 }
 
-// @Ok
+// @SMALLTODO
 i32 Font::width(const char* pStr)
 {
+	typedef i32 (FASTCALL *func_ptr)(Font*, void*, const char*);
+	func_ptr func = (func_ptr)0x0043EA60;
+
+	return func(this, 0, pStr);
+
+	/*
 	i32 width = 0;
 	while (*pStr)
 	{
@@ -499,6 +505,7 @@ i32 Font::width(const char* pStr)
 	}
 
 	return (width * this->field_34) >> 12;
+	*/
 }
 
 // @Ok

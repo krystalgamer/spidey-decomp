@@ -144,7 +144,6 @@ SCheat gCheats[NUM_CHEATS] =
 // @MEDIUMTODO
 i32 ActivateCheat(i32 a1)
 {
-	puts("Will activate something");
 	typedef i32 (*func_ptr)(i32);
 
 	func_ptr func = (func_ptr)0x0047C240;

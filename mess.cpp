@@ -18,7 +18,11 @@ EXPORT Font gMessFont;
 #define G_MESS_FONT (*reinterpret_cast<Font*>(0x0060D238))
 
 
-EXPORT u16 gScale;
+// @Ok
+EXPORT u16 Scale;
+//#define G_SCALE (Scale)
+#define G_SCALE (*reinterpret_cast<u16*>(0x0060D5A4))
+
 EXPORT u16 gSort;
 
 EXPORT i32 gMessRelated;
@@ -138,7 +142,7 @@ i32 Mess_DrawText(
 			break;
 	}
 
-	gMessFont.field_34 = 8 * gScale;
+	gMessFont.field_34 = 8 * G_SCALE;
 
 	f32 v6;
 	switch (gSort)
@@ -164,7 +168,7 @@ i32 Mess_DrawText(
 // @Ok
 i32 Mess_GetScale(void)
 {
-	return gScale;
+	return G_SCALE;
 }
 
 // @Ok
@@ -267,8 +271,8 @@ SSimpleMessage* Mess_SimpleMessage(
 // @Matching
 INLINE i32 Mess_TextWidth(const char* pMessage)
 {
-	gMessFont.field_34 = 8 * gScale;
-	return gMessFont.width(pMessage);
+	G_MESS_FONT.field_34 = 8 * G_SCALE;
+	return G_MESS_FONT.width(pMessage);
 }
 
 // @Ok
@@ -329,7 +333,7 @@ INLINE void Mess_SetTextJustify(unsigned char value)
 // Global
 INLINE void Mess_SetScale(int value)
 {
-	gScale = value;
+	G_SCALE = value;
 }
 
 // @NotOk
@@ -476,4 +480,5 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x00458C20, Mess_UnloadAllFonts);
 	PATCH_PUSH_RET(0x00458C10, Mess_UnloadFont);
 	PATCH_PUSH_RET(0x004586F0, Mess_TextHeight);
+	PATCH_PUSH_RET(0x004586C0, Mess_TextWidth);
 }
