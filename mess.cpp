@@ -7,7 +7,10 @@
 
 #include "validate.h"
 
-EXPORT u8 gTextJustify;
+// @Ok
+EXPORT u8 TextJustification;
+//#define G_TEXT_JUSTIFICATION (TextJustification)
+#define G_TEXT_JUSTIFICATION (*reinterpret_cast<u8*>(0x0060D5A8))
 
 EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
@@ -139,7 +142,7 @@ i32 Mess_DrawText(
 		i32 a4,
 		u32 a5)
 {
-	switch (gTextJustify)
+	switch (G_TEXT_JUSTIFICATION)
 	{
 		case 0:
 			gMessFont.field_4 = 1;
@@ -336,11 +339,11 @@ void Mess_Update(void)
 	}
 }
 
-// @NotOk
-// Global
+// @Ok
+// @Matching
 INLINE void Mess_SetTextJustify(unsigned char value)
 {
-	gTextJustify = value;
+	G_TEXT_JUSTIFICATION = value;
 }
 
 // @Ok
@@ -506,4 +509,5 @@ void patch_mess(void)
 
 	PATCH_PUSH_RET(0x00458630, Mess_SetSort);
 	PATCH_PUSH_RET(0x00458620, Mess_SetScale);
+	PATCH_PUSH_RET(0x00458620, Mess_SetTextJustify);
 }
