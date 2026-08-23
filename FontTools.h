@@ -102,4 +102,5 @@ void validate_Font(void);
 void validate_SFontEntry(void);
 void validate_SDataGlyph(void);
 
+void patch_FontTools(void);
 #endif

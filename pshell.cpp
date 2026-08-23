@@ -40,6 +40,7 @@ enum ECheatCode
         CHEAT_FUNKYTWN = 23,
 };
 
+// @Ok
 SCheat gCheats[NUM_CHEATS] =
 {
 	{

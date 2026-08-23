@@ -556,3 +556,11 @@ void validate_SDataGlyph(void)
 	VALIDATE(SDataGlyph, mBaseline, 0x8);
 	VALIDATE(SDataGlyph, mWidth, 0xC);
 }
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_FontTools(void)
+{
+	PATCH_PUSH_RET(0x0043F5C0, FontManager::GetFontName);
+}

@@ -652,6 +652,7 @@ void game_patches(void)
 
 	patch_flash();
 	patch_pshell();
+	patch_FontTools();
 }
 
 // @Bogus
