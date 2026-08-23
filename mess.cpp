@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include "validate.h"
+#include "my_assert.h"
 
 // @Ok
 EXPORT u8 TextJustification;
@@ -13,7 +14,11 @@ EXPORT u8 TextJustification;
 #define G_TEXT_JUSTIFICATION (*reinterpret_cast<u8*>(0x0060D5A8))
 
 EXPORT SMessage* pMessages;
+
+// @Ok
 EXPORT SSimpleMessage* pSimpleMessages;
+//#define G_SIMPLE_MESSAGES (pSimpleMessages)
+#define G_SIMPLE_MESSAGES (*reinterpret_cast<SSimpleMessage**>(0x0060D5A0))
 
 // @Ok
 EXPORT Font gMessFont;
@@ -383,9 +388,9 @@ i32 Mess_TextHeight(char *pStr)
 // @Matching
 void Mess_ClearSimpleMessages(void)
 {
-	while (pSimpleMessages)
+	while (G_SIMPLE_MESSAGES)
 	{
-		DeleteSimpleMessage(pSimpleMessages);
+		DeleteSimpleMessage(G_SIMPLE_MESSAGES);
 	}
 }
 
@@ -393,7 +398,7 @@ void Mess_ClearSimpleMessages(void)
 // @Matching
 INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
 {
-	print_if_false(pMessage != 0, "Tried to delete a NULL pMessage");
+	ASSERT(pMessage != 0, "Tried to delete a NULL pMessage");
 
 	if (pMessage->pNext)
 		pMessage->pNext->pPrevious = pMessage->pPrevious;
@@ -401,8 +406,8 @@ INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
 	if (pMessage->pPrevious)
 		pMessage->pPrevious->pNext = pMessage->pNext;
 
-	if (pMessage == pSimpleMessages)
-		pSimpleMessages = pMessage->pNext;
+	if (pMessage == G_SIMPLE_MESSAGES)
+		G_SIMPLE_MESSAGES = pMessage->pNext;
 
 	Mem_Delete(pMessage);
 }
@@ -510,4 +515,6 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x00458610, Mess_SetTextJustify);
 
 	PATCH_PUSH_RET(0x00458700, Mess_DrawText);
+
+	PATCH_PUSH_RET(0x004588E0, Mess_ClearSimpleMessages);
 }
