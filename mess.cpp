@@ -26,7 +26,11 @@ EXPORT u16 Scale;
 EXPORT u16 gSort;
 
 EXPORT i32 gMessRelated;
+
+// @Ok
 EXPORT i32 gRGBBottom = 0x808080;
+//#define G_RGB_BOTTOM (gRGBBottom)
+#define G_RGB_BOTTOM (*reinterpret_cast<i32*>(0x0054D7B4))
 
 // @Ok
 EXPORT u8 gShadowRGB = 0x80;
@@ -342,11 +346,11 @@ INLINE void Mess_SetScale(int value)
 	G_SCALE = value;
 }
 
-// @NotOk
-// global
+// @Ok
+// @Matching
 void Mess_SetRGBBottom(unsigned char a2, unsigned char a3, unsigned char a4)
 {
-	gRGBBottom = a2 | (a3 << 8) | (a4 << 16);
+	G_RGB_BOTTOM = a2 | (a3 << 8) | (a4 << 16);
 }
 
 // @Ok
@@ -492,4 +496,6 @@ void patch_mess(void)
 
 	PATCH_PUSH_RET(0x00458690, Mess_ShadowsOff);
 	PATCH_PUSH_RET(0x004586A0, Mess_ShadowsOn);
+
+	PATCH_PUSH_RET(0x00458670, Mess_SetRGBBottom);
 }
