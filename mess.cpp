@@ -11,7 +11,13 @@ EXPORT u8 gTextJustify;
 
 EXPORT SMessage* pMessages;
 EXPORT SSimpleMessage* pSimpleMessages;
+
+// @Ok
 EXPORT Font gMessFont;
+//#define G_MESS_FONT (gMessFont)
+#define G_MESS_FONT (*reinterpret_cast<Font*>(0x0060D238))
+
+
 EXPORT u16 gScale;
 EXPORT u16 gSort;
 
@@ -340,9 +346,10 @@ void Mess_UnloadFont(void)
 }
 
 // @Ok
+// @Matching
 char* Mess_GetCurrentFont(void)
 {
-	return FontManager::GetFontName(&gMessFont);
+	return FontManager::GetFontName(&G_MESS_FONT);
 }
 
 // @Ok
@@ -456,4 +463,12 @@ void validate_SMessage(void)
 	VALIDATE(SMessage, pProg, 0x10);
 	VALIDATE(SMessage, pNext, 0x14);
 	VALIDATE(SMessage, pPrevious, 0x18);
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_mess(void)
+{
+	PATCH_PUSH_RET(0x00458D50, Mess_GetCurrentFont);
 }

@@ -72,5 +72,6 @@ void validate_SimpleMessage(void);
 void validate_SMessageProg(void);
 void validate_SMessage(void);
 
+void patch_mess(void);
 #endif
 

@@ -95,7 +95,7 @@ def main():
 
     mine = text.get_data()[symbol.address - text.VirtualAddress:][:len(original)]
 
-    print(f'{plain_name} (0x{address:X}) vs {symbol.name.decode()}')
+    print(f'{plain_name} (0x{address:08X}) vs {symbol.name.decode()}')
     print(f'byte-identical: {original == mine}')
 
     left = disassemble(original, address)
