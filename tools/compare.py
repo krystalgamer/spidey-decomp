@@ -80,6 +80,7 @@ def main():
     plain_name = names.get(address, sys.argv[1])
 
     dump_path = tools_path / 'functions' / f'{address}.bin'
+    print(dump_path)
     if not dump_path.exists():
         fail(f'no original dump for {plain_name} (0x{address:X}) in tools/functions')
     original = dump_path.read_bytes()

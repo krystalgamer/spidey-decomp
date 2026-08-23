@@ -302,10 +302,14 @@ void FontManager::UnloadFont(Font* pFont)
 	FontList[count] = 0;
 }
 
-// @Ok
-// @Matching
+// @SMALLTODO
 void FontManager::UnloadAllFonts(void)
 {
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x0043F6D0;
+	func();
+	return;
+	/*
 	for (i32 i = 0; i < 6; i++)
 	{
 		if (FontList[i])
@@ -315,6 +319,7 @@ void FontManager::UnloadAllFonts(void)
 			FontList[i] = 0;
 		}
 	}
+	*/
 }
 
 // @Ok

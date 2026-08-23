@@ -7,7 +7,7 @@ def data_generator():
     for segment in Segments():
         for funcea in Functions(segment, idc.get_segm_end(idc.INF_LONG_DN)):
             flags = idc.get_func_flags(funcea)
-            if (flags & (idc.FUNC_LIB | idc.FUNC_THUNK)) != 0:
+            if (flags & (idc.FUNC_LIB)) != 0:
                 continue
             func_end = idc.find_func_end(funcea)
             yield (str(funcea), idc.get_bytes(funcea, func_end-funcea))
@@ -29,8 +29,12 @@ def main():
         if cur_bin.exists():
             continue
 
+
         with open(path / f'{k}.bin', 'wb') as fp:
             fp.write(v)
+
+        print(f'Wrote {k}')
+
     print('Done')
 
     

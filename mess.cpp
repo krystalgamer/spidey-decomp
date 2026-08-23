@@ -272,6 +272,7 @@ INLINE i32 Mess_TextWidth(const char* pMessage)
 }
 
 // @Ok
+// @Matching
 void Mess_UnloadAllFonts(void)
 {
 	FontManager::UnloadAllFonts();
@@ -471,4 +472,5 @@ void validate_SMessage(void)
 void patch_mess(void)
 {
 	PATCH_PUSH_RET(0x00458D50, Mess_GetCurrentFont);
+	PATCH_PUSH_RET(0x00458C20, Mess_UnloadAllFonts);
 }
