@@ -9,6 +9,7 @@
 #include "my_debug.h"
 
 #include <cstring>
+#include "my_assert.h"
 
 // @Ok
 Font* FontManager::FontTab[NUM_FONTS_TAB];
@@ -273,7 +274,7 @@ void FontManager::AllShadowOff(void)
 // @Matching
 void FontManager::AllShadowOn(void)
 {
-	for (int i = 0; i<6; i++)
+	for (int i = 0; i<NUM_FONTS_TAB; i++)
 	{
 		if (G_FONT_TAB[i])
 		{
@@ -351,24 +352,17 @@ INLINE u8 FontManager::IsFontLoaded(const char* pName)
 // @Matching
 INLINE Font* FontManager::GetFont(const char* pName)
 {
-	typedef Font* (*func_ptr)(const char*);
-	func_ptr func = (func_ptr)0x0043F540;
-
-	return func(pName);
-
-	/*
 	i32 i;
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < NUM_FONTS_TAB; i++)
 	{
-		if (FontManager::FontTab[i] && !strcmp(FontManager::FontTab[i]->field_38, pName))
+		if (G_FONT_TAB[i] && !strcmp(G_FONT_TAB[i]->field_38, pName))
 		{
 			break;
 		}
 	}
 
-	ASSERT(i < 6, "Font %s is not loaded", pName);
-	return FontManager::FontTab[i];
-	*/
+	DoAssert(i < 6, "Font %s is not loaded", pName);
+	return G_FONT_TAB[i];
 }
 
 // @Ok
@@ -600,4 +594,6 @@ void patch_FontTools(void)
 
 	PATCH_PUSH_RET(0x0043F760, FontManager::AllShadowOff);
 	PATCH_PUSH_RET(0x0043F780, FontManager::AllShadowOn);
+
+	PATCH_PUSH_RET(0x0043F540, FontManager::GetFont);
 }
