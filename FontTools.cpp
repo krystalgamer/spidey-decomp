@@ -596,4 +596,6 @@ void patch_FontTools(void)
 	PATCH_PUSH_RET(0x0043F780, FontManager::AllShadowOn);
 
 	PATCH_PUSH_RET(0x0043F540, FontManager::GetFont);
+
+	PATCH_PUSH_RET_POLY(0x0043E130, Font::Font, "??0Font@@QAE@XZ");
 }

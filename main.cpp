@@ -692,6 +692,8 @@ int main()
 
 #else
 
+HMODULE bink_dll;
+
 BOOL WINAPI DllMain(
     HINSTANCE hinstDLL,
     DWORD fdwReason,
@@ -711,6 +713,8 @@ BOOL WINAPI DllMain(
 			AllocConsole();
 			SetConsoleTitle("spidey-decomp - " RUNTIME_VERSION);
 			freopen("CONOUT$", "w", stdout);
+
+			bink_dll = GetModuleHandleA("binkw32.dll");
 
 
 			puts("spidey-decomp starting " RUNTIME_VERSION);
