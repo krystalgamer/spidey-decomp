@@ -654,6 +654,7 @@ void game_patches(void)
 	patch_pshell();
 	patch_FontTools();
 	patch_mess();
+	patch_m3dcolij();
 }
 
 // @Bogus

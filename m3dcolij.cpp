@@ -74,36 +74,36 @@ i32 M3dColij_LineToSphere(CVector*, CVector*, CVector*, CBody*, CBody*, i32)
 }
 
 // @BIGTODO
-void M3dColij_LineToThisItem(CItem*, SLineInfo*)
+void M3dColij_LineToThisItem(CItem* pItem, SLineInfo* pInfo)
 {
-	printf("M3dColij_LineToThisItem");
+	typedef void (*func_ptr)(CItem*, SLineInfo*);
+	func_ptr func = (func_ptr)0x004529C0;
+
+	func(pItem, pInfo);
 }
 
-// @NotOk
-// was marked as todo but had body, so need to recheck
+// @Ok
+// @Leak
+// @Matching
 void M3dColij_LineToItem(
 		CItem* pItem,
-		SLineInfo* pLine)
+		SLineInfo* pInfo)
 {
-	if (pItem && pLine->Length)
-	{
-		gte_SetRotMatrix(&pLine->WorldCst);
-		M3dAsm_LineColijPreprocessItems(pItem, 0, pLine, pLine->Inquiry);
 
-		CItem *curItem = pItem;
+	if	(!pItem)	return;
 
-		while (curItem)
+	if (pInfo->Length==0)
+		return;
+
+	gte_SetRotMatrix(&pInfo->WorldCst);
+	M3dAsm_LineColijPreprocessItems(pItem, 0, pInfo, pInfo->Inquiry);
+
+	for (	; pItem;	pItem=pItem->mNextItem)
+		if	(pItem->mInquiry != pInfo->Inquiry)
 		{
-			if (curItem->mInquiry != pLine->Inquiry)
-			{
-				curItem->mInquiry = pLine->Inquiry;
-				M3dColij_LineToThisItem(curItem, pLine);
-			}
-
-			curItem = reinterpret_cast<CItem*>(curItem->mNextItem);
+			pItem->mInquiry	= pInfo->Inquiry;
+			M3dColij_LineToThisItem(pItem, pInfo);
 		}
-
-	}
 }
 
 void validate_Vector(void)
@@ -157,4 +157,12 @@ void validate_SLineInfo(void)
 	VALIDATE(SLineInfo, tDenomLo, 0x98);
 	VALIDATE(SLineInfo, tDenomHi, 0x9C);
 	VALIDATE(SLineInfo, NormalOffset, 0xA0);
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_m3dcolij(void)
+{
+	PATCH_PUSH_RET(0x004527C0, M3dColij_LineToItem);
 }

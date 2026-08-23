@@ -90,4 +90,5 @@ EXPORT extern i32 TriggerCollisionCheck;
 EXPORT extern SLineInfo gLineInfo;
 EXPORT extern i16 gUnkPose[1];
 
+void patch_m3dcolij(void);
 #endif

@@ -69,14 +69,23 @@ void gte_op0(void)
 	printf("void gte_op0(void)");
 }
 
-// @Ok
-void gte_SetRotMatrix(MATRIX* a1){
+// @SMALLTODO
+void gte_SetRotMatrix(MATRIX* a1)
+{
 
+	typedef void (*func_ptr)(MATRIX*);
+	func_ptr func = (func_ptr)0x0046D7B0;
+
+	func(a1);
+	return;
+
+	/*
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
 			gRotMatrix[i][j] = a1->m[i][j];
 		}
 	}
+	*/
 }
 
 // @Ok
@@ -587,8 +596,14 @@ u16 GetClut(int, int a2)
 }
 
 // @BIGTODO
-void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16)
-{}
+void M3dAsm_LineColijPreprocessItems(CItem* pItem, i32 ModelTable, SLineInfo* pInfo, u16 Inquiry)
+{
+	typedef void (*func_ptr)(CItem*, i32, SLineInfo*, u16);
+
+	func_ptr func = (func_ptr)0x0046ECB0;
+
+	func(pItem, ModelTable, pInfo, Inquiry);
+}
 
 // @SMALLTODO
 void DCSetFatalError(i32)
