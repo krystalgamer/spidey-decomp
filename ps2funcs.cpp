@@ -88,6 +88,15 @@ void gte_SetRotMatrix(MATRIX* a1)
 	*/
 }
 
+// @MEDIUMTODO
+void M3dAsm_LineColijPreprocessItemsZoned(CItem **ppItem, i32 ModelTable, SLineInfo *pInfo, u16 Inquiry)
+{
+	typedef void (*func_ptr)(CItem **, i32 , SLineInfo *, u16);
+	func_ptr func = (func_ptr)0x0046E7B0;
+
+	func(ppItem, ModelTable, pInfo, Inquiry);
+}
+
 // @Ok
 void gte_ldv0(const SVECTOR* a1){
 	vertexRegister[0] = a1->vx;

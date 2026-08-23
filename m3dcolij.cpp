@@ -34,10 +34,28 @@ void M3dColij_LineInfoFixup(SLineInfo *)
     printf("M3dColij_LineInfoFixup(SLineInfo *)");
 }
 
-// @SMALLTODO
-void M3dColij_LineToItemZoned(CItem **,SLineInfo *)
+// @Ok
+// @Leak
+// @Matching
+void M3dColij_LineToItemZoned(CItem **ppItem,SLineInfo *pInfo)
 {
-    printf("M3dColij_LineToItemZoned(CItem **,SLineInfo *)");
+	if	(!ppItem) return;
+
+	if (pInfo->Length==0)
+		return;
+
+	gte_SetRotMatrix(&pInfo->WorldCst);
+
+	M3dAsm_LineColijPreprocessItemsZoned(ppItem,0,pInfo,pInfo->Inquiry);
+
+	for (	; *ppItem; ppItem++)
+		if	((*ppItem)->mInquiry != pInfo->Inquiry)
+		{
+			(*ppItem)->mInquiry =	pInfo->Inquiry;
+
+
+			M3dColij_LineToThisItem(*ppItem, pInfo);
+		}
 }
 
 // @Ok
@@ -165,4 +183,5 @@ void validate_SLineInfo(void)
 void patch_m3dcolij(void)
 {
 	PATCH_PUSH_RET(0x004527C0, M3dColij_LineToItem);
+	PATCH_PUSH_RET(0x00452820, M3dColij_LineToItemZoned);
 }

@@ -129,6 +129,7 @@ EXPORT i32 ratan2(i32, i32);
 EXPORT u16 GetClut(i32, i32);
 
 EXPORT void M3dAsm_LineColijPreprocessItems(CItem*, i32, SLineInfo*, u16);
+EXPORT void M3dAsm_LineColijPreprocessItemsZoned(CItem**, i32, SLineInfo*, u16);
 
 EXPORT void TransMatrix(MATRIX*, VECTOR*);
 
