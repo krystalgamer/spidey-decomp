@@ -407,9 +407,9 @@ INLINE void DeleteSimpleMessage(SSimpleMessage* pMessage)
 // @Matching
 INLINE void Mess_SetRGB(u8 r, u8 g, u8 b, i32)
 {
-	gMessFont.mRed = r;
-	gMessFont.mGreen = g;
-	gMessFont.mBlue = b;
+	G_MESS_FONT.mRed = r;
+	G_MESS_FONT.mGreen = g;
+	G_MESS_FONT.mBlue = b;
 }
 
 // @Ok
@@ -498,4 +498,5 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x004586A0, Mess_ShadowsOn);
 
 	PATCH_PUSH_RET(0x00458670, Mess_SetRGBBottom);
+	PATCH_PUSH_RET(0x00458640, Mess_SetRGB);
 }
