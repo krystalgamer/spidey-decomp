@@ -26,9 +26,9 @@ EXPORT u16 Scale;
 //#define G_SCALE (Scale)
 #define G_SCALE (*reinterpret_cast<u16*>(0x0060D5A4))
 
-// @Ok
-EXPORT u16 gSort;
-//#define G_SORT (gSort)
+// @Ok - must be extern to have the code match, reads are not aligned to 32 bits
+extern u16 Sort;
+//#define G_SORT (Sort)
 #define G_SORT (*reinterpret_cast<u16*>(0x0060D5A6))
 
 EXPORT i32 gMessRelated;
@@ -145,36 +145,34 @@ i32 Mess_DrawText(
 	switch (G_TEXT_JUSTIFICATION)
 	{
 		case 0:
-			gMessFont.field_4 = 1;
+			G_MESS_FONT.field_4 = 1;
 			break;
 		case 1:
-			gMessFont.field_4 = 0;
+			G_MESS_FONT.field_4 = 0;
 			break;
 		case 2:
-			gMessFont.field_4 = 2;
+			G_MESS_FONT.field_4 = 2;
 			break;
 	}
 
-	gMessFont.field_34 = 8 * G_SCALE;
+	G_MESS_FONT.field_34 = 8 * G_SCALE;
 
-	f32 v6;
-	switch (gSort)
+	switch (G_SORT)
 	{
 		case 4093:
-			v6 = 6.0999999f;
+			G_MESS_FONT.draw(a1, a2, a3, 8, 6.0999999f);
 			break;
 		case 4094:
-			v6 = -4.0f;
+			G_MESS_FONT.draw(a1, a2, a3, 8, -4.0f);
 			break;
 		case 4095:
-			v6 = -3.0f;
+			G_MESS_FONT.draw(a1, a2, a3, 8, -3.0f);
 			break;
 		default:
-			v6 = 4.0f;
+			G_MESS_FONT.draw(a1, a2, a3, 8, 4.0f);
 			break;
 	}
 
-	gMessFont.draw(a1, a2, a3, 8, v6);
 	return 0;
 }
 
@@ -187,7 +185,7 @@ i32 Mess_GetScale(void)
 // @Ok
 i32 Mess_GetSort(void)
 {
-	return gSort;
+	return G_SORT;
 }
 
 // @Ok
@@ -509,5 +507,7 @@ void patch_mess(void)
 
 	PATCH_PUSH_RET(0x00458630, Mess_SetSort);
 	PATCH_PUSH_RET(0x00458620, Mess_SetScale);
-	PATCH_PUSH_RET(0x00458620, Mess_SetTextJustify);
+	PATCH_PUSH_RET(0x00458610, Mess_SetTextJustify);
+
+	PATCH_PUSH_RET(0x00458700, Mess_DrawText);
 }

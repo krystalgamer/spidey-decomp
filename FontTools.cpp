@@ -178,9 +178,10 @@ void Font::draw(
 		i32 drawFirst,
 		f32 last)
 {
-#ifdef _OLD_WINDOWS
-	Font_draw_asm(this, 0, x, y, pStr, drawFirst, last);
-#endif
+	typedef void (FASTCALL *func_ptr)(Font*, void*, i32, i32, const char*, i32, f32);
+	func_ptr func = (func_ptr)0x0043E4C0;
+
+	func(this, 0, x, y, pStr, drawFirst, last);
 }
 
 // @Ok

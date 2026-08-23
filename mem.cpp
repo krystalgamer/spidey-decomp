@@ -6,6 +6,9 @@
 #define FALSE 0
 #define TRUE 1
 
+// @Note: this is for mess.cpp
+u16 Sort;
+
 EXPORT i32 Used[2];
 u32 HeapDefs[MAXHEAPS][2] = { {0, 0}, {0, 0} };
 
