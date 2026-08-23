@@ -269,25 +269,17 @@ void FontManager::AllShadowOff(void)
 	}
 }
 
-// @NotOk
-// globals
+// @Ok
+// @Matching
 void FontManager::AllShadowOn(void)
 {
-	typedef void (*func_ptr)(void);
-	func_ptr func = (func_ptr)0x0043F780;
-
-	func();
-	return;
-
-	/*
 	for (int i = 0; i<6; i++)
 	{
-		if (FontManager::FontTab[i])
+		if (G_FONT_TAB[i])
 		{
-			FontManager::FontTab[i]->field_21 = 1;
+			G_FONT_TAB[i]->field_21 = 1;
 		}
 	}
-	*/
 }
 
 
@@ -607,4 +599,5 @@ void patch_FontTools(void)
 	PATCH_PUSH_RET(0x0043F5C0, FontManager::GetFontName);
 
 	PATCH_PUSH_RET(0x0043F760, FontManager::AllShadowOff);
+	PATCH_PUSH_RET(0x0043F780, FontManager::AllShadowOn);
 }
