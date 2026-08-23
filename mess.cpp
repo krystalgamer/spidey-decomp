@@ -343,9 +343,9 @@ INLINE void Mess_SetTextJustify(unsigned char value)
 	gTextJustify = value;
 }
 
-// @NotOk
-// Global
-INLINE void Mess_SetScale(int value)
+// @Ok
+// @Matching
+INLINE void Mess_SetScale(i32 value)
 {
 	G_SCALE = value;
 }
@@ -505,4 +505,5 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x00458640, Mess_SetRGB);
 
 	PATCH_PUSH_RET(0x00458630, Mess_SetSort);
+	PATCH_PUSH_RET(0x00458620, Mess_SetScale);
 }
