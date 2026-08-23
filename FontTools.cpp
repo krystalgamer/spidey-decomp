@@ -365,6 +365,12 @@ INLINE u8 FontManager::IsFontLoaded(const char* pName)
 // @Matching
 INLINE Font* FontManager::GetFont(const char* pName)
 {
+	typedef Font* (*func_ptr)(const char*);
+	func_ptr func = (func_ptr)0x0043F540;
+
+	return func(pName);
+
+	/*
 	i32 i;
 	for (i = 0; i < 6; i++)
 	{
@@ -374,8 +380,9 @@ INLINE Font* FontManager::GetFont(const char* pName)
 		}
 	}
 
-	print_if_false(i < 6, "Font %s is not loaded", pName);
+	ASSERT(i < 6, "Font %s is not loaded", pName);
 	return FontList[i];
+	*/
 }
 
 // @Ok
