@@ -235,6 +235,7 @@ void Mess_SetSort(i32 sort)
 }
 
 // @Ok
+// @Matching
 void Mess_ShadowsOff(void)
 {
 	FontManager::AllShadowOff();
@@ -487,4 +488,6 @@ void patch_mess(void)
 	PATCH_PUSH_RET(0x004586C0, Mess_TextWidth);
 
 	PATCH_PUSH_RET(0x004586B0, Mess_SetShadowRGB);
+
+	PATCH_PUSH_RET(0x00458690, Mess_ShadowsOff);
 }

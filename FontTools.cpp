@@ -258,6 +258,12 @@ char* FontManager::GetFontName(Font* pFont)
 // globals
 void FontManager::AllShadowOff(void)
 {
+	typedef void (*func_ptr)(void);
+	func_ptr func = (func_ptr)0x0043F760;
+
+	func();
+	return;
+	/*
 	for (int i = 0; i<6; i++)
 	{
 		if (FontList[i])
@@ -265,6 +271,7 @@ void FontManager::AllShadowOff(void)
 			FontList[i]->field_21 = 0;
 		}
 	}
+	*/
 }
 
 // @NotOk
