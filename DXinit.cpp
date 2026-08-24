@@ -300,10 +300,110 @@ u32 DXINIT_GetPrevColorDepth(u32 a1)
 	return v1;
 }
 
-// @SMALLTODO
-void DXINIT_GetPrevResolution(u32 *,u32 *,u32,i32,bool)
+// @Ok
+// @AlmostMatching: the original materializes the height compare with setb and moves
+// the equal-width block past the loop end, ours folds it into plain branches
+u8 DXINIT_GetPrevResolution(
+		u32 *a1,
+		u32 *a2,
+		u32 a3,
+		i32 a4,
+		bool a5)
 {
-    printf("DXINIT_GetPrevResolution(u32 *,u32 *,u32,i32,bool)");
+	u32 v11 = 0;
+	u32 v12 = 0;
+	u8 v13 = 0;
+#ifdef _WIN32
+	DDSURFACEDESC2* pSurface = gDisplayModeContext.mSurfaces;
+
+	for (i32 i = 0; i < gDisplayModeContext.mNumEntries; i++)
+	{
+		u8 flags = gDisplayModeContext.mFlags[i];
+
+		if (a4)
+		{
+			if ((flags & 2) == 0)
+			{
+				continue;
+			}
+		}
+		else if ((flags & 4) == 0)
+		{
+			continue;
+		}
+
+		if (pSurface[i].ddpfPixelFormat.dwRGBBitCount != a3)
+		{
+			continue;
+		}
+
+		if (!DXINIT_ZBufSupported(a3))
+		{
+			continue;
+		}
+
+		DWORD dwWidth = pSurface[i].dwWidth;
+		if (dwWidth > *a1)
+		{
+			continue;
+		}
+
+		if (dwWidth == *a1)
+		{
+			if (pSurface[i].dwHeight == *a2)
+			{
+				if (a5)
+				{
+					return 1;
+				}
+
+				continue;
+			}
+		}
+
+		if (dwWidth < v11)
+		{
+			continue;
+		}
+
+		if (dwWidth > v11)
+		{
+			if (dwWidth == *a1)
+			{
+				u8 smaller = pSurface[i].dwHeight < *a2;
+				if (!smaller)
+				{
+					continue;
+				}
+			}
+		}
+		else
+		{
+			DWORD dwHeight = pSurface[i].dwHeight;
+
+			if (dwHeight >= *a2)
+			{
+				continue;
+			}
+
+			if (dwHeight <= v12)
+			{
+				continue;
+			}
+		}
+
+		v11 = dwWidth;
+		v12 = pSurface[i].dwHeight;
+		v13 = 1;
+	}
+
+	if (v13)
+	{
+		*a1 = v11;
+		*a2 = v12;
+	}
+#endif
+	return v13;
 }
 
 // @MEDIUMTODO
