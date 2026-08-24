@@ -11,6 +11,8 @@
 
 #include <cstdlib>
 
+#include "my_assert.h"
+
 i32 gClutRelated;
 
 i32 DoVblankProcessing = 1;
@@ -481,17 +483,21 @@ i32 M3dMaths_SquareRoot0(i32 i){
 
 
 // @Ok
-int M3dMaths_MulDiv64(int a1, int a2, int a3)
+// @Matching
+i32 M3dMaths_MulDiv64(i32 a1, i32 a2, i32 a3)
 {
 	if (!a3)
 	{
 		return -1;
 	}
 
-	f64 hope = (f64)a1 * (f64)a2 / (f64)a3;
-	print_if_false(hope <= 2147483647.0, "hope<=INT_MAX");
-	print_if_false(hope >= -2147483648.0, "hope>=INT_MIN");
-	return (int)hope;
+	f64 hope = (f64)a1 * (f64)a2;
+	hope /= (f64)a3;
+
+	ASSERT(hope <= 2147483647.0, "hope<=INT_MAX");
+	ASSERT(hope >= -2147483648.0, "hope>=INT_MIN");
+
+	return hope;
 }
 
 // @Ok
@@ -707,4 +713,5 @@ void Port_Exit(void)
 void patch_ps2funcs(void)
 {
 	PATCH_PUSH_RET(0x0046D430, M3dMaths_SquareRoot0);
+	PATCH_PUSH_RET(0x0046D500, M3dMaths_MulDiv64);
 }

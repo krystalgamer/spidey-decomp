@@ -28,10 +28,22 @@ void M3dColij_GetLineInfo(SLineInfo *)
     printf("M3dColij_GetLineInfo(SLineInfo *)");
 }
 
-// @SMALLTODO
-void M3dColij_LineInfoFixup(SLineInfo *)
+// @Ok
+// @Matching
+void M3dColij_LineInfoFixup(SLineInfo *pInfo)
 {
-    printf("M3dColij_LineInfoFixup(SLineInfo *)");
+	i32 v2 = M3dMaths_MulDiv64(pInfo->Distance, 0x4000, pInfo->Length);
+	i32 v3 = pInfo->EndCoords.vx - pInfo->StartCoords.vx;
+	i32 v5 = pInfo->EndCoords.vy - pInfo->StartCoords.vy;
+	i32 v4 = pInfo->EndCoords.vz - pInfo->StartCoords.vz;
+
+	i32 v8 = (v3 < 0 ? -1 : 1) * M3dMaths_MulDiv64(my_abs(v3), v2, 0x4000);
+	i32 v6 = (v5 < 0 ? -1 : 1) * M3dMaths_MulDiv64(my_abs(v5), v2, 0x4000);
+	i32 v7 = (v4 < 0 ? -1 : 1) * M3dMaths_MulDiv64(my_abs(v4), v2, 0x4000);
+
+	pInfo->Position.vx = v8 + pInfo->StartCoords.vx;
+	pInfo->Position.vy = v6 + pInfo->StartCoords.vy;
+	pInfo->Position.vz = v7 + pInfo->StartCoords.vz;
 }
 
 // @Ok
@@ -184,4 +196,5 @@ void patch_m3dcolij(void)
 {
 	PATCH_PUSH_RET(0x004527C0, M3dColij_LineToItem);
 	PATCH_PUSH_RET(0x00452820, M3dColij_LineToItemZoned);
+	PATCH_PUSH_RET(0x004528E0, M3dColij_LineInfoFixup);
 }
