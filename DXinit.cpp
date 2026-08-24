@@ -580,10 +580,142 @@ void displayD3DError(long a1, char * a2, i32 a3)
 	func(a1, a2, a3);
 }
 
-// @SMALLTODO
-void displayDIError(HRESULT error, char* buf, i32 line)
+// @Ok
+// @Matching
+void displayDIError(HRESULT error, char* file, i32 line)
 {
-    printf("displayDIError(long,char *,i32)");
+#ifdef _WIN32
+	char* msg;
+
+	switch (error)
+	{
+	case DI_OK:
+		msg = "DI_OK: The operation completed successfully. This value is equal to the S_OK standard COM return value.";
+		break;
+	case DI_BUFFEROVERFLOW:
+		msg = "DI_BUFFEROVERFLOW or DI_NOEFFECT or DI_NOTATTACHED or DI_PROPNOEFFECT.";
+		break;
+	case DI_POLLEDDEVICE:
+		msg = "DI_POLLEDDEVICE: The device is a polled device. As a result, device buffering does not collect any data and event notifications is not signaled until the IDirectInputDevice8::Poll method is called.";
+		break;
+	case DI_DOWNLOADSKIPPED:
+		msg = "DI_DOWNLOADSKIPPED: The parameters of the effect were successfully updated, but the effect could not be downloaded because the associated device was not acquired in exclusive mode.";
+		break;
+	case DI_EFFECTRESTARTED:
+		msg = "DI_EFFECTRESTARTED: The effect was stopped, the parameters were updated, and the effect was restarted.";
+		break;
+	case DI_TRUNCATED:
+		msg = "DI_TRUNCATED: The parameters of the effect were successfully updated, but some of them were beyond the capabilities of the device and were truncated to the nearest supported value.";
+		break;
+	case DI_SETTINGSNOTSAVED:
+		msg = "DI_SETTINGSNOTSAVED: The action map was applied to the device, but the settings could not be saved.";
+		break;
+	case DI_TRUNCATEDANDRESTARTED:
+		msg = "DI_TRUNCATEDANDRESTARTED: Equal to DI_EFFECTRESTARTED | DI_TRUNCATED.";
+		break;
+	case DI_WRITEPROTECT:
+		msg = "DI_WRITEPROTECT: A SUCCESS code indicating that settings cannot be modified.";
+		break;
+	case E_PENDING:
+		msg = "E_PENDING: Data is not yet available.";
+		break;
+	case DIERR_UNSUPPORTED:
+		msg = "DIERR_UNSUPPORTED: The function called is not supported at this time. This value is equal to the E_NOTIMPL standard COM return value.";
+		break;
+	case DIERR_NOINTERFACE:
+		msg = "DIERR_NOINTERFACE: The object does not support the specified interface. This value is equal to the E_NOINTERFACE standard COM return value.";
+		break;
+	case E_POINTER:
+		msg = "E_POINTER: An invalid pointer, usually NULL, was passed as a parameter.";
+		break;
+	case DIERR_GENERIC:
+		msg = "DIERR_GENERIC: An undetermined error occurred inside the DirectInput subsystem. This value is equal to the E_FAIL standard COM return value.";
+		break;
+	case DIERR_NOAGGREGATION:
+		msg = "DIERR_NOAGGREGATION: This object does not support aggregation.";
+		break;
+	case DIERR_DEVICENOTREG:
+		msg = "DIERR_DEVICENOTREG: The device or device instance is not registered with DirectInput. This value is equal to the REGDB_E_CLASSNOTREG standard COM return value.";
+		break;
+	case DIERR_DEVICEFULL:
+		msg = "DIERR_DEVICEFULL: The device is full.";
+		break;
+	case DIERR_MOREDATA:
+		msg = "DIERR_MOREDATA: Not all the requested information fit into the buffer.";
+		break;
+	case DIERR_NOTDOWNLOADED:
+		msg = "DIERR_NOTDOWNLOADED: The effect is not downloaded.";
+		break;
+	case DIERR_HASEFFECTS:
+		msg = "DIERR_HASEFFECTS: The device cannot be reinitialized because effects are attached to it.";
+		break;
+	case DIERR_NOTEXCLUSIVEACQUIRED:
+		msg = "DIERR_NOTEXCLUSIVEACQUIRED: The operation cannot be performed unless the device is acquired in DISCL_EXCLUSIVE mode.";
+		break;
+	case DIERR_INCOMPLETEEFFECT:
+		msg = "DIERR_INCOMPLETEEFFECT: The effect could not be downloaded because essential information is missing. For example, no axes have been associated with the effect, or no type-specific information has been supplied.";
+		break;
+	case DIERR_NOTBUFFERED:
+		msg = "DIERR_NOTBUFFERED: The device is not buffered. Set the DIPROP_BUFFERSIZE property to enable buffering.";
+		break;
+	case DIERR_EFFECTPLAYING:
+		msg = "DIERR_EFFECTPLAYING: The parameters were updated in memory but were not downloaded to the device because the device does not support updating an effect while it is still playing.";
+		break;
+	case DIERR_UNPLUGGED:
+		msg = "DIERR_UNPLUGGED: The operation could not be completed because the device is not plugged in.";
+		break;
+	case DIERR_REPORTFULL:
+		msg = "DIERR_REPORTFULL: More information was requested to be sent than can be sent to the device.";
+		break;
+	case DIERR_MAPFILEFAIL:
+		msg = "DIERR_MAPFILEFAIL: An error has occured either reading the vendor-supplied action-mapping file for the device or reading or writing the user configuration mapping file for the device.";
+		break;
+	case DIERR_OBJECTNOTFOUND:
+		msg = "DIERR_NOTFOUND or DIERR_OBJECTNOTFOUND: The requested object does not exist.";
+		break;
+	case DIERR_OTHERAPPHASPRIO:
+		msg = "DIERR_OTHERAPPHASPRIO or DIERR_READONLY or DIERR_HANDLEEXISTS.";
+		break;
+	case E_HANDLE:
+		msg = "E_HANDLE: The HWND parameter is not a valid top-level window that belongs to the process.";
+		break;
+	case DIERR_NOTACQUIRED:
+		msg = "DIERR_NOTACQUIRED: The operation cannot be performed unless the device is acquired.";
+		break;
+	case DIERR_OUTOFMEMORY:
+		msg = "DIERR_OUTOFMEMORY: The DirectInput subsystem could not allocate sufficient memory to complete the call. This value is equal to the E_OUTOFMEMORY standard COM return value.";
+		break;
+	case DIERR_NOTINITIALIZED:
+		msg = "DIERR_NOTINITIALIZED: This object has not been initialized.";
+		break;
+	case DIERR_INPUTLOST:
+		msg = "DIERR_INPUTLOST: Access to the input device has been lost. It must be reacquired.";
+		break;
+	case DIERR_INVALIDPARAM:
+		msg = "DIERR_INVALIDPARAM: An invalid parameter was passed to the returning function, or the object was not in a state that permitted the function to be called. This value is equal to the E_INVALIDARG standard COM return value.";
+		break;
+	case DIERR_BADDRIVERVER:
+		msg = "DIERR_BADDRIVERVER: The object could not be created due to an incompatible driver version or mismatched or incomplete driver components.";
+		break;
+	case DIERR_ACQUIRED:
+		msg = "DIERR_ACQUIRED: The operation cannot be performed while the device is acquired.";
+		break;
+	case DIERR_OLDDIRECTINPUTVERSION:
+		msg = "DIERR_OLDDIRECTINPUTVERSION: The application requires a newer version of DirectInput.";
+		break;
+	case DIERR_BETADIRECTINPUTVERSION:
+		msg = "DIERR_BETADIRECTINPUTVERSION: The application was written for an unsupported prerelease version of DirectInput.";
+		break;
+	case DIERR_ALREADYINITIALIZED:
+		msg = "DIERR_ALREADYINITIALIZED: This object is already initialized.";
+		break;
+	default:
+		msg = "Unknown";
+		break;
+	}
+
+	DXERR_printf("DI Error: [%s], line %d: %s (%08x)\r\n", file, line, msg, error);
+#endif
 }
 
 // @Ok
