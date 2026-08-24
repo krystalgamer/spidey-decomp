@@ -4,6 +4,8 @@
 #include "DXinit.h"
 #include "pcdcPad.h"
 #include "PCInput.h"
+#include "tweak.h"
+#include "ps2lowsfx.h"
 
 #include "stdarg.h"
 #include <cstdio>
@@ -40,6 +42,12 @@ i32 gSavedSFXVolume;
 i32 gSavedMusicVolume;
 i32 gSavedXAVolume;
 bool gSavedSoundMode;
+
+// defaults for the sound settings, at 0x550EA4 in the original
+static i32 gDefaultSFXVolume = 0x2FFF;
+static i32 gDefaultMusicVolume = 0xA7;
+static i32 gDefaultXAVolume = 0xC9;
+static bool gDefaultSoundMode = false;
 
 EXPORT u8 gMissingCD;
 EXPORT i32 gActive;
@@ -193,10 +201,60 @@ void SPIDEYDX_DisplayDeviceSettings(char* name)
 	}
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void SPIDEYDX_LoadSettings(void)
 {
-    printf("SPIDEYDX_LoadSettings(void)");
+	u32 ctrlMappings[11];
+	u32 kbdMappings[11];
+	char deviceName[128];
+
+	FILE* file = fopen("Spidey.cfg", "rb");
+	if (file)
+	{
+		fread(&gSavedResolutionX, 4, 1, file);
+		fread(&gSavedResolutionY, 4, 1, file);
+		fread(&gSavedColorDepth, 4, 1, file);
+		fread(&gBrightnessRelated, 4, 1, file);
+		fread(&gLowGraphics, 4, 1, file);
+		gLowGraphics = 0;
+		fread(kbdMappings, 4, 11, file);
+		fread(ctrlMappings, 4, 11, file);
+		fread(deviceName, 0x80, 1, file);
+
+		for (i32 i = 0; i < 11; i++)
+		{
+			PCINPUT_SetKeyboardMappingForAction(1 << i, kbdMappings[i]);
+			PCINPUT_SetControllerMappingForAction(1 << i, ctrlMappings[i]);
+		}
+
+		SPIDEYDX_DisplayDeviceSettings(deviceName);
+
+		fread(&gSavedSFXVolume, 4, 1, file);
+		fread(&gSavedMusicVolume, 4, 1, file);
+		fread(&gSavedXAVolume, 4, 1, file);
+		// the original reads 4 bytes into this 1 byte flag
+		fread(&gSavedSoundMode, 4, 1, file);
+
+		fclose(file);
+	}
+	else
+	{
+		gSavedSFXVolume = gDefaultSFXVolume;
+		gSavedMusicVolume = gDefaultMusicVolume;
+		gSavedXAVolume = gDefaultXAVolume;
+		gSavedResolutionX = 640;
+		gSavedResolutionY = 480;
+		gSavedColorDepth = 16;
+		gBrightnessRelated = 4;
+		gLowGraphics = 0;
+		gSavedSoundMode = gDefaultSoundMode;
+	}
+
+	gGameState[12] = gSavedSFXVolume;
+	gGameState[11] = gSavedMusicVolume;
+	gGameState[13] = gSavedXAVolume;
+	gBootRomSoundMode = gSavedSoundMode;
 }
 
 // @Ok
