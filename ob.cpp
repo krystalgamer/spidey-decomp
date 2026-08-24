@@ -149,8 +149,9 @@ void CBody::Die(void)
 }
 
 // @Ok
+// @Matching
 void CBody::ShadowOn(void){
-	this->mCBodyFlags |= 8;
+	this->mCBodyFlags |= CBODY_HASSHADOW;
 }
 
 
@@ -853,4 +854,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460330, CBody::SquirtPos);
 	PATCH_PUSH_RET(0x004603D0, CBody::AttachXA);
 	PATCH_PUSH_RET(0x00460440, CBody::Suspend);
+
+	PATCH_PUSH_RET(0x00460560, CBody::ShadowOn);
 }
