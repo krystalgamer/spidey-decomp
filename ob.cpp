@@ -297,16 +297,14 @@ void CBody::InterleaveAI(void)
 }
 
 // @Ok
-// @Test
+// @Matching
 i16* CBody::SquirtPos(i16* p_info)
 {
 	i32 *walker = reinterpret_cast<i32*>(p_info);
-	DoAssert(((i32)walker & 3) == 0, "Bad alignment");
+	ASSERT(((i32)walker & 3) == 0, "Bad alignment");
 
 	this->mPos.vx = *walker++ << 12;
-
 	this->mPos.vy = *walker++ << 12;
-
 	this->mPos.vz = *walker++ << 12;
 
 	return reinterpret_cast<i16*>(walker);
@@ -851,4 +849,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460280, CBody::DeleteFrom);
 
 	PATCH_PUSH_RET(0x004602F0, CBody::FindBodyByNode);
+
+	PATCH_PUSH_RET(0x00460330, CBody::SquirtPos);
 }
