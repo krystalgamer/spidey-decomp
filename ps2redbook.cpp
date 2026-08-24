@@ -140,11 +140,11 @@ u8 Redbook_XAPlay(int a1, int, int)
 	return 0x1235959;
 }
 
-// @NotOk
-// Globals
+// @Ok
+// @Matching
 void Redbook_XAAllow(bool allowed)
 {
-	gXAAllowed = allowed;
+	G_XA_ALLOWED = allowed;
 }
 
 // @MEDIUMTODO
