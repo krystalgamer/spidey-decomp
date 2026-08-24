@@ -23,8 +23,8 @@ CBody* EnvironmentalObjectList;
 CBody* SuspendedList;
 CItem* EnviroList;
 
-#define G_SUSPENEDED_LIST (SuspendedList)
-//#define G_SUSPENEDED_LIST (*reinterpret_cast<CBody**>(0x0060DAB4))
+//#define G_SUSPENEDED_LIST (SuspendedList)
+#define G_SUSPENEDED_LIST (*reinterpret_cast<CBody**>(0x0060DAB4))
 
 CBody* RealMechList;
 
@@ -847,4 +847,5 @@ void patch_CBody(void)
 
 	PATCH_PUSH_RET(0x00460260, CBody::AttachTo);
 	PATCH_PUSH_RET(0x00460500, CBody::UnSuspend);
+	PATCH_PUSH_RET(0x00460280, CBody::DeleteFrom);
 }
