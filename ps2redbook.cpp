@@ -1,6 +1,7 @@
 #include "ps2redbook.h"
 #include "utils.h"
 #include "stubs.h"
+#include "dcfileio.h"
 
 #include <cstring>
 
@@ -257,13 +258,44 @@ void Redbook_XAReset(void)
 	G_REDBOOK_RELATED_THREE = 0;
 }
 
-// @BIGTODO
+// @Ok
+// @Matching
 void Redbook_XAInit(void)
 {
-	printf("void Redbook_XAInit(void)");
+	if (G_ADXT_INITIALIZED)
+		return;
+
+	Redbook_XAReset();
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+	ADXT_Init();
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+
+	ADXERR_EntryErrFunc(RedBook_MwErrFunc, 0);
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+	ADXF_LoadPartition(0, "speech.str", G_ADXF_PARTITION_INFO, 0x4F0);
+	FileIO_Sync();
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+
+	G_ADXT = ADXT_Create(2, G_ADXT_WORK, 0x208C4);
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+
+	G_ADXT_INITIALIZED = 1;
 }
 
 // @Ok
+// @Matching
 void Redbook_XAInitAtStart(void)
 {
 	Redbook_XAReset();
