@@ -151,13 +151,24 @@ void Redbook_XAAllow(bool allowed)
 	G_XA_ALLOWED = allowed;
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void Redbook_XAReset(void)
 {
-	typedef void (*func_ptr)(void);
-	func_ptr func = (func_ptr)0x00479940;
-
-	func();
+	G_REDBOOK_XA_RELATED_ONE = 0;
+	G_REDBOOK_XA_RELATED_TWO = 0;
+	G_REDBOOK_XA_CURRENT_PRIORITY = -1;
+	G_CARNAGE_XA_RELATED_TWO = 0;
+	G_PENDING_XA_THREE = 0;
+	G_PENDING_XA_TWO = 0;
+	G_PENDING_XA_ONE = 0;
+	G_XA_ALLOWED = 1;
+	G_REDBOOK_BUSY = 0;
+	G_CARNAGE_XA_RELATED = 1;
+	G_REDBOOK_XA_PAUSED = 0;
+	G_REDBOOK_RELATED_ONE = 0;
+	G_REDBOOK_RELATED_TWO = 0;
+	G_REDBOOK_RELATED_THREE = 0;
 }
 
 // @BIGTODO
