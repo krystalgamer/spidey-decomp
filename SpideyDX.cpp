@@ -8,6 +8,7 @@
 #include "stdarg.h"
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 
 // #define VALIDATE_TWIDDLE
 
@@ -142,10 +143,54 @@ INLINE void ComputeMaskShift(
 	}
 }
 
-// @SMALLTODO
-void SPIDEYDX_DisplayDeviceSettings(char *)
+// @Ok
+// @Matching
+void SPIDEYDX_DisplayDeviceSettings(char* name)
 {
-    printf("SPIDEYDX_DisplayDeviceSettings(char *)");
+#ifdef _WIN32
+	u32 size;
+	HKEY key;
+	char buf[16];
+
+	size = 16;
+	if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, "\\Software\\Activision\\Spider-Man", 0, KEY_ALL_ACCESS, &key) == ERROR_SUCCESS)
+	{
+		if (RegQueryValueExA(key, "DisplayDevice", 0, 0, (LPBYTE)buf, (LPDWORD)&size) == ERROR_SUCCESS && size > 0)
+		{
+			gDisplayDeviceIndex = atol(buf);
+
+			size = 0x80;
+			if (RegQueryValueExA(key, "DisplayDeviceName", 0, 0, (LPBYTE)gDisplayDeviceName, (LPDWORD)&size) != ERROR_SUCCESS && size > 0)
+			{
+				gDisplayDeviceName[0] = 0;
+			}
+		}
+		else
+		{
+			gDisplayDeviceIndex = -1;
+			gDisplayDeviceName[0] = 0;
+		}
+
+		RegCloseKey(key);
+	}
+	else
+	{
+		gDisplayDeviceIndex = -1;
+		gDisplayDeviceName[0] = 0;
+	}
+#endif
+
+	if (strlen(gDisplayDeviceName) != strlen(name) || strcmp(name, gDisplayDeviceName))
+	{
+		if (!gLowGraphics)
+		{
+			gSavedResolutionX = 640;
+			gSavedResolutionY = 480;
+			gSavedColorDepth = 16;
+		}
+
+		SPIDEYDX_SaveSettings();
+	}
 }
 
 // @MEDIUMTODO
