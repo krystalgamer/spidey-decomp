@@ -159,13 +159,36 @@ u8 Redbook_XAPlayPos(i32 a1, i32 a2, CVector* a3, i32 a4)
 	return 0;
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Redbook_XAStop(void)
 {
-	// @FIXME
-	typedef void (*func_ptr)(void);
-	func_ptr func = (func_ptr)0x00479E30;
-	func();
+	if (G_ADXT_INITIALIZED)
+	{
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+		ADXT_Stop(G_ADXT);
+
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+	}
+
+	if (!G_REDBOOK_BUSY)
+	{
+		if (G_PENDING_XA_THREE | G_PENDING_XA_TWO | G_PENDING_XA_ONE)
+		{
+			G_PENDING_XA_THREE = 0;
+			G_PENDING_XA_TWO = 0;
+			G_PENDING_XA_ONE = 0;
+		}
+	}
+
+	G_REDBOOK_XA_PAUSED = 0;
+	G_REDBOOK_BUSY = 0;
+	G_CARNAGE_XA_RELATED = 1;
+	G_REDBOOK_XA_CURRENT_PRIORITY = -1;
+	G_CARNAGE_XA_RELATED_TWO = 30;
 }
 
 // @BIGTODO
