@@ -72,7 +72,7 @@ i32 ADXF_LoadPartition(i32, const char*, void*, i32)
 	return 0;
 }
 
-// the DC build guards the ADXT calls with semaphores, the handles live in gSbInitRelated,
+// the DC build guards the ADXT calls with semaphores,
 // on PC both functions are empty in the exe (merged with the other empty stubs)
 // @Ok
 // @Matching

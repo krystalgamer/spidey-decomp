@@ -40,9 +40,6 @@ EXPORT u8 gFileIoInit;
 //#define G_FILE_IO_MEMORY (gFileIoMemory)
 #define G_FILE_IO_MEMORY (*reinterpret_cast<void**>(0x0057AD30))
 
-//#define G_FILE_IO_STATUS (gFileIOStatus)
-#define G_FILE_IO_STATUS (*reinterpret_cast<volatile i32*>(0x0057C400))
-
 //#define G_FILE_IO_INIT (gFileIoInit)
 #define G_FILE_IO_INIT (*reinterpret_cast<u8*>(0x0057C424))
 

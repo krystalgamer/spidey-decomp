@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "stubs.h"
 #include "dcfileio.h"
+#include "ps2gamefmv.h"
 
 #include <cstring>
 
@@ -17,18 +18,9 @@ i32 gRedbookXaRelatedOne;
 // @Ok
 i32 gRedbookXaRelatedTwo;
 
-// handle from ADXT_Create, same global Redbook_XAStat uses
-//#define G_ADXT (gADXT)
-#define G_ADXT (*reinterpret_cast<i32*>(0x00681D2C))
 // set by Redbook_XAAllow, forced back to 1 on every reset
 //#define G_XA_ALLOWED (gXAAllowed)
 #define G_XA_ALLOWED (*reinterpret_cast<u8*>(0x00550D80))
-// -1 when nothing plays
-//#define G_REDBOOK_XA_CURRENT_PRIORITY (Redbook_XACurrentPriority)
-#define G_REDBOOK_XA_CURRENT_PRIORITY (*reinterpret_cast<i32*>(0x00550D7C))
-// set while the redbook device is busy
-//#define G_REDBOOK_BUSY (gRedbookBusy)
-#define G_REDBOOK_BUSY (*reinterpret_cast<u8*>(0x00682770))
 // his IDB names 0x682771 Redbook_XAPaused
 //#define G_REDBOOK_XA_PAUSED (Redbook_XAPaused)
 #define G_REDBOOK_XA_PAUSED (*reinterpret_cast<u8*>(0x00682771))
@@ -42,13 +34,6 @@ i32 gRedbookXaRelatedTwo;
 // set once Redbook_XAInit created the ADXT handle
 //#define G_ADXT_INITIALIZED (gAdxtInitialized)
 #define G_ADXT_INITIALIZED (*reinterpret_cast<u8*>(0x0068277C))
-// pending Redbook_XAPlay arguments
-//#define G_PENDING_XA_ONE (gPendingXAOne)
-#define G_PENDING_XA_ONE (*reinterpret_cast<i32*>(0x00681D3C))
-//#define G_PENDING_XA_TWO (gPendingXATwo)
-#define G_PENDING_XA_TWO (*reinterpret_cast<i32*>(0x00681D40))
-//#define G_PENDING_XA_THREE (gPendingXAThree)
-#define G_PENDING_XA_THREE (*reinterpret_cast<i32*>(0x00681D44))
 // last error text from the CRI callback, 0x100 bytes
 //#define G_REDBOOK_ERROR_MSG (gRedbookErrorMsg)
 #define G_REDBOOK_ERROR_MSG (reinterpret_cast<char*>(0x006612E4))
@@ -64,18 +49,14 @@ i32 gRedbookXaRelatedTwo;
 // XA voice volume setting, 0 to 255
 //#define G_XA_VOLUME (gXAVolume)
 #define G_XA_VOLUME (*reinterpret_cast<i16*>(0x006B482E))
-// fields of gSbInitRelated (0x2E09BE0 in his IDB), two semaphore handles and an enable flag
-//#define G_SB_SEMAPHORE_ONE (gSbInitRelated.mSemaphoreOne)
+// two semaphore handles and an enable flag right after gSbInitRelated (0x2E09BE0),
+// they guard the ADXT calls, leftovers from the DC sound code
+//#define G_SB_SEMAPHORE_ONE (gSbSemaphoreOne)
 #define G_SB_SEMAPHORE_ONE (*reinterpret_cast<i32*>(0x02E09BE4))
-//#define G_SB_SEMAPHORE_TWO (gSbInitRelated.mSemaphoreTwo)
+//#define G_SB_SEMAPHORE_TWO (gSbSemaphoreTwo)
 #define G_SB_SEMAPHORE_TWO (*reinterpret_cast<i32*>(0x02E09BE8))
-//#define G_SB_USE_SEMAPHORES (gSbInitRelated.mUseSemaphores)
+//#define G_SB_USE_SEMAPHORES (gSbUseSemaphores)
 #define G_SB_USE_SEMAPHORES (*reinterpret_cast<i32*>(0x02E09BEC))
-// copies of the file local macros in dcfileio.cpp and ps2gamefmv.cpp
-//#define G_FILE_IO_STATUS (gFileIOStatus)
-#define G_FILE_IO_STATUS (*reinterpret_cast<volatile i32*>(0x0057C400))
-//#define G_GAME_FMV_ACTIVE (GameFMV_Active)
-#define G_GAME_FMV_ACTIVE (*reinterpret_cast<i32*>(0x006151F8))
 
 
 // @Ok

@@ -480,37 +480,9 @@ i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 //#define G_GAME_FADE (GameFade)
 #define G_GAME_FADE (*reinterpret_cast<volatile i32*>(0x006B4C9C))
 
-// set while the redbook device is busy, checked before starting a new play
-//#define G_REDBOOK_BUSY (gRedbookBusy)
-#define G_REDBOOK_BUSY (*reinterpret_cast<u8*>(0x00682770))
-
-// handle passed to ADXT_GetStat, same global Redbook_XAStat uses
-//#define G_ADXT (gADXT)
-#define G_ADXT (*reinterpret_cast<i32*>(0x00681D2C))
-
-// set once the device reports it stopped
-//#define G_CARNAGE_XA_RELATED (gCarnageXaRelated)
-#define G_CARNAGE_XA_RELATED (*reinterpret_cast<u8*>(0x00550D81))
-
-// vblank delay before the pending XA play starts
-//#define G_CARNAGE_XA_RELATED_TWO (gCarnageXaRelatedTwo)
-#define G_CARNAGE_XA_RELATED_TWO (*reinterpret_cast<u32*>(0x0068276C))
-
-// -1 when nothing plays
-//#define G_REDBOOK_XA_CURRENT_PRIORITY (Redbook_XACurrentPriority)
-#define G_REDBOOK_XA_CURRENT_PRIORITY (*reinterpret_cast<i32*>(0x00550D7C))
-
 // gates the delayed XA restart, also checked by Logic, Display and Front_Update
 //#define G_POST_WATER_EFFECT (gPostWaterEffect)
 #define G_POST_WATER_EFFECT (*reinterpret_cast<i32*>(0x005FAE98))
-
-// pending Redbook_XAPlay arguments
-//#define G_PENDING_XA_ONE (gPendingXAOne)
-#define G_PENDING_XA_ONE (*reinterpret_cast<i32*>(0x00681D3C))
-//#define G_PENDING_XA_TWO (gPendingXATwo)
-#define G_PENDING_XA_TWO (*reinterpret_cast<i32*>(0x00681D40))
-//#define G_PENDING_XA_THREE (gPendingXAThree)
-#define G_PENDING_XA_THREE (*reinterpret_cast<i32*>(0x00681D44))
 
 // @Ok
 // @AlmostMatching: G_POST_WATER_EFFECT (0x5FAE98) is compared from memory instead of a cached register,
