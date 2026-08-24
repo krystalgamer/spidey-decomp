@@ -139,12 +139,12 @@ INLINE i32 CBody::IsDead(void) const
 
 
 // @Ok
+// @Matching
 void CBody::Die(void)
 {
-	i32 isDead = this->IsDead();
-	if(!isDead)
+	if(!this->IsDead())
 	{
-		this->mCBodyFlags |= 0x40;
+		this->mCBodyFlags |= CBODY_ZOMBIE;
 	}
 }
 
@@ -856,4 +856,5 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460440, CBody::Suspend);
 
 	PATCH_PUSH_RET(0x00460560, CBody::ShadowOn);
+	PATCH_PUSH_RET(0x004606F0, CBody::Die);
 }
