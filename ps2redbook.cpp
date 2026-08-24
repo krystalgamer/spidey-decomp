@@ -3,6 +3,7 @@
 #include "stubs.h"
 #include "dcfileio.h"
 #include "ps2gamefmv.h"
+#include "tweak.h"
 
 #include <cstring>
 
@@ -46,9 +47,6 @@ i32 gRedbookXaRelatedTwo;
 // 16 ids per track into speech.str, -1 means no XA there
 //#define G_XA_TRACK_IDS (gXATrackIds)
 #define G_XA_TRACK_IDS (reinterpret_cast<i16*>(0x0055039C))
-// XA voice volume, 0 to 255, index 13 of gGameState (0x6B4814, tweak.cpp)
-//#define G_XA_VOLUME (gGameState[13])
-#define G_XA_VOLUME (reinterpret_cast<i16*>(0x006B4814)[13])
 // two semaphore handles and an enable flag right after gSbInitRelated (0x2E09BE0),
 // they guard the ADXT calls, leftovers from the DC sound code
 //#define G_SB_SEMAPHORE_ONE (gSbSemaphoreOne)
@@ -243,7 +241,7 @@ u8 Redbook_XAPlay(int a1, int a2, int a3)
 	}
 
 	ADXT_StartAfs(G_ADXT, 0, static_cast<u16>(a1 * 16 + a2));
-	Redbook_XASetVol(G_XA_VOLUME);
+	Redbook_XASetVol(G_GAMESTATE[13]); // 13 is the XA volume, 0 to 255
 
 	G_REDBOOK_XA_CURRENT_PRIORITY = a3;
 	G_REDBOOK_BUSY = 1;
