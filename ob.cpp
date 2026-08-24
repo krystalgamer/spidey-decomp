@@ -229,7 +229,7 @@ INLINE void CBody::AttachTo(CBody** ppList)
 INLINE void CBody::DeleteFrom(CBody **a2)
 {
 
-	if(this->mCBodyFlags & CBODY_SUSPENDED && a2 != &SuspendedList)
+	if(this->mCBodyFlags & CBODY_SUSPENDED && a2 != &G_SUSPENEDED_LIST)
 	{
 		this->UnSuspend();
 	}
@@ -846,4 +846,5 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x004603A0, CBody::SquirtAngles);
 
 	PATCH_PUSH_RET(0x00460260, CBody::AttachTo);
+	PATCH_PUSH_RET(0x00460500, CBody::UnSuspend);
 }
