@@ -23,6 +23,9 @@ CBody* EnvironmentalObjectList;
 CBody* SuspendedList;
 CItem* EnviroList;
 
+#define G_SUSPENEDED_LIST (SuspendedList)
+//#define G_SUSPENEDED_LIST (*reinterpret_cast<CBody**>(0x0060DAB4))
+
 CBody* RealMechList;
 
 i32 gSuperItemRelated = 1;
@@ -209,19 +212,16 @@ void CBody::UpdateShadow(void)
 
 
 // @Ok
-INLINE void CBody::AttachTo(CBody** a1)
+// @Matching
+INLINE void CBody::AttachTo(CBody** ppList)
 {
-
-	CBody *v2 = *a1;
+	this->mNextItem = *ppList;
 	this->mPreviousItem = 0;
-	this->mNextItem = v2;
 
-	*a1 = this;
+	*ppList = this;
 
-	CItem *v3 = this->mNextItem;
-	if (v3)
-		v3->mPreviousItem = this;
-
+	if (this->mNextItem)
+		this->mNextItem->mPreviousItem = this;
 }
 
 // @Ok
@@ -229,21 +229,19 @@ INLINE void CBody::AttachTo(CBody** a1)
 INLINE void CBody::DeleteFrom(CBody **a2)
 {
 
-	if(this->mCBodyFlags & 1 && a2 != &SuspendedList)
+	if(this->mCBodyFlags & CBODY_SUSPENDED && a2 != &SuspendedList)
 	{
 		this->UnSuspend();
 	}
 
-	CItem *v6 = this->mNextItem;
-	if (v6)
-		v6->mPreviousItem = this->mPreviousItem;
+	if (this->mNextItem)
+		this->mNextItem->mPreviousItem = this->mPreviousItem;
 
-	CItem *r = this->mPreviousItem;
-	if (r)
-		r->mNextItem = this->mNextItem;
+	if (this->mPreviousItem)
+		this->mPreviousItem->mNextItem = this->mNextItem;
 
 	if (*a2 == this)
-		*a2 = reinterpret_cast<CBody*>(this->mNextItem);
+		*a2 = (CBody*)this->mNextItem;
 }
 
 // @Ok
@@ -251,11 +249,11 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 INLINE void CBody::UnSuspend(void)
 {
 
-	if (this->mCBodyFlags & 1)
+	if (this->mCBodyFlags & CBODY_SUSPENDED)
 	{
-		this->DeleteFrom(&SuspendedList);
+		this->DeleteFrom(&G_SUSPENEDED_LIST);
 		this->AttachTo(this->mppOriginalList);
-		this->mCBodyFlags &= 0xFFFE;
+		this->mCBodyFlags &= ~CBODY_SUSPENDED;
 	}
 }
 
@@ -846,4 +844,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460570, CBody::KillShadow);
 	PATCH_PUSH_RET(0x00460F90, CBody::InterleaveAI);
 	PATCH_PUSH_RET(0x004603A0, CBody::SquirtAngles);
+
+	PATCH_PUSH_RET(0x00460260, CBody::AttachTo);
 }
