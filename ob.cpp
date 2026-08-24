@@ -49,6 +49,7 @@ void CBody::DeleteStuff(void)
 }
 
 // @Ok
+// @Matching
 CBody* CBody::FindBodyByNode(
 		i32 type,
 		CBody* pBody)
@@ -848,4 +849,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460260, CBody::AttachTo);
 	PATCH_PUSH_RET(0x00460500, CBody::UnSuspend);
 	PATCH_PUSH_RET(0x00460280, CBody::DeleteFrom);
+
+	PATCH_PUSH_RET(0x004602F0, CBody::FindBodyByNode);
 }
