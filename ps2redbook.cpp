@@ -109,10 +109,43 @@ void Redbook_XAExit(void)
 	G_ADXT_INITIALIZED = 0;
 }
 
-// @SMALLTODO
-void Redbook_XAPause(bool)
+// @Ok
+// @Matching
+void Redbook_XAPause(bool pause)
 {
-    printf("Redbook_XAPause(bool)");
+	if (G_REDBOOK_BUSY != 1)
+		return;
+
+	if (pause)
+	{
+		if (G_REDBOOK_XA_PAUSED)
+			return;
+
+		G_REDBOOK_XA_PAUSED = 1;
+
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+		ADXT_Pause(G_ADXT, 1);
+
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemSignal(G_SB_SEMAPHORE_TWO); // the original signals the wrong semaphore here
+	}
+	else
+	{
+		if (G_REDBOOK_XA_PAUSED != 1)
+			return;
+
+		G_REDBOOK_XA_PAUSED = 0;
+
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+		ADXT_Pause(G_ADXT, 0);
+
+		if (G_SB_USE_SEMAPHORES)
+			Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+	}
 }
 
 // @Ok
