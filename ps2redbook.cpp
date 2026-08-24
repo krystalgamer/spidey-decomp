@@ -115,10 +115,22 @@ void Redbook_XAPause(bool)
     printf("Redbook_XAPause(bool)");
 }
 
-// @SMALLTODO
-void Redbook_XASetVol(i32)
+// @Ok
+// @Matching
+void Redbook_XASetVol(i32 vol)
 {
-    printf("Redbook_XASetVol(i32)");
+	print_if_false(G_ADXT_INITIALIZED, "ADXT not initialized.");
+	print_if_false(vol >= 0 && vol <= 0xFF, "Strange XA Volume.");
+
+	if (vol == 0)
+	{
+		ADXT_SetOutVol(G_ADXT, -999);
+		return;
+	}
+
+	f32 v = static_cast<f32>(0x100 - vol);
+	v *= 0.7f;
+	ADXT_SetOutVol(G_ADXT, -static_cast<i32>(v));
 }
 
 // @Ok
