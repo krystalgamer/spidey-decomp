@@ -85,10 +85,28 @@ void RedBook_MwErrFunc(void* obj, char* msg)
 	printf_fancy("Redbook Error: Code %p, Msg: %s", obj, G_REDBOOK_ERROR_MSG);
 }
 
-// @SMALLTODO
+// @Ok
+// @Matching
 void Redbook_XAExit(void)
 {
-    printf("Redbook_XAExit(void)");
+	if (!G_ADXT_INITIALIZED)
+		return;
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemWait(G_SB_SEMAPHORE_ONE);
+
+	ADXT_Stop(G_ADXT);
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+
+	ADXT_Destroy(G_ADXT);
+
+	if (G_SB_USE_SEMAPHORES)
+		Sb_SemSignal(G_SB_SEMAPHORE_ONE);
+
+	ADXT_Finish();
+	G_ADXT_INITIALIZED = 0;
 }
 
 // @SMALLTODO
