@@ -25,4 +25,16 @@ EXPORT extern u32 gCarnageXaRelatedTwo;
 EXPORT extern i32 gRedbookXaRelatedOne;
 EXPORT extern i32 gRedbookXaRelatedTwo;
 
+// set once the device reports it stopped
+//#define G_CARNAGE_XA_RELATED (gCarnageXaRelated)
+#define G_CARNAGE_XA_RELATED (*reinterpret_cast<u8*>(0x00550D81))
+// vblank delay before the pending XA play starts
+//#define G_CARNAGE_XA_RELATED_TWO (gCarnageXaRelatedTwo)
+#define G_CARNAGE_XA_RELATED_TWO (*reinterpret_cast<u32*>(0x0068276C))
+// track and offset of the XA that plays now
+//#define G_REDBOOK_XA_RELATED_ONE (gRedbookXaRelatedOne)
+#define G_REDBOOK_XA_RELATED_ONE (*reinterpret_cast<i32*>(0x00681D1C))
+//#define G_REDBOOK_XA_RELATED_TWO (gRedbookXaRelatedTwo)
+#define G_REDBOOK_XA_RELATED_TWO (*reinterpret_cast<i32*>(0x006612C0))
+
 #endif
