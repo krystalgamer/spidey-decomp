@@ -130,10 +130,12 @@ void CItem::InitItem(const char * pName)
 
 
 // @Ok
-// has weird xor eax, eax at the top
+// @Matching
 INLINE i32 CBody::IsDead(void) const
 {
-	return (this->mCBodyFlags >> 6) & 1;
+	if (this->mCBodyFlags & CBODY_ZOMBIE)
+		return 1;
+	return 0;
 }
 	
 
@@ -857,4 +859,5 @@ void patch_CBody(void)
 
 	PATCH_PUSH_RET(0x00460560, CBody::ShadowOn);
 	PATCH_PUSH_RET(0x004606F0, CBody::Die);
+	PATCH_PUSH_RET(0x00460700, CBody::IsDead);
 }
