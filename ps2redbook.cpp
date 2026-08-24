@@ -2,6 +2,8 @@
 #include "utils.h"
 #include "stubs.h"
 
+#include <cstring>
+
 
 EXPORT i32 gADXT;
 EXPORT bool gXAAllowed;
@@ -75,10 +77,12 @@ i32 gRedbookXaRelatedTwo;
 #define G_GAME_FMV_ACTIVE (*reinterpret_cast<i32*>(0x006151F8))
 
 
-// @SMALLTODO
-void RedBook_MwErrFunc(void *,char *)
+// @Ok
+// @Matching
+void RedBook_MwErrFunc(void* obj, char* msg)
 {
-    printf("RedBook_MwErrFunc(void *,char *)");
+	strncpy(G_REDBOOK_ERROR_MSG, msg, 0x100);
+	printf_fancy("Redbook Error: Code %p, Msg: %s", obj, G_REDBOOK_ERROR_MSG);
 }
 
 // @SMALLTODO
