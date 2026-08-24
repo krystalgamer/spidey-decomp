@@ -252,6 +252,10 @@ void validate_CVector(void)
 	VALIDATE(CVector, vx, 0);
 	VALIDATE(CVector, vy, 4);
 	VALIDATE(CVector, vz, 8);
+
+	VALIDATE(Vector, vx, 0);
+	VALIDATE(Vector, vy, 4);
+	VALIDATE(Vector, vz, 8);
 }
 
 void validate_CSVector(void)

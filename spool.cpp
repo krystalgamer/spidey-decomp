@@ -53,9 +53,6 @@ EXPORT i16 gEnvModelHashTable[256][MAXITEMSPERCHECKSUM];
 
 EXPORT SPSXRegion PSXRegion[MAXPSX];
 
-//#define G_PSXREGION (PSXRegion)
-#define G_PSXREGION (reinterpret_cast<SPSXRegion*>(0x006B2440))
-
 #define TEXTURE_CHECKSUM_TABLE_SIZE (MAXTEXTUREENTRIES)
 EXPORT Texture* TextureChecksumHashTable[TEXTURE_CHECKSUM_TABLE_SIZE];
 
@@ -1187,8 +1184,19 @@ void validate_AnimPacket(void)
 
 void validate_SModel(void)
 {
-	VALIDATE_SIZE(SModel, 2);
+	VALIDATE_SIZE(SModel, 36);
+
 	VALIDATE(SModel, Flags, 0);
+	VALIDATE(SModel, NumNormals, 4);
+
+	VALIDATE(SModel, NumFaces, 6);
+	VALIDATE(SModel, Radius, 8);
+	VALIDATE(SModel, Box, 0xC);
+
+	VALIDATE(SModel, zMax, 0x18);
+	VALIDATE(SModel, NextLOD, 0x1A);
+
+	VALIDATE(SModel, Vertices, 0x1C);
 }
 
 void validate_POLY_F3(void)

@@ -32,6 +32,30 @@ struct AnimPacket
 struct SModel
 {
 	u16 Flags;
+
+	// offset: 0002
+	u16 NumVertices;
+	// offset: 0004
+	u16 NumNormals;
+	// offset: 0006
+	u16 NumFaces;
+	// offset: 0008
+	i32 Radius;
+
+	// offset: 000C (12 bytes)
+	struct Vector Box;
+
+	// offset: 0018
+	i16 zMax;
+	// offset: 001A
+	u16 NextLOD;
+
+	// @TODO - readd
+	unsigned char Vertices;
+	PADDING(7);
+	// offset: 001C (8 bytes)
+	//struct SVECTOR Vertices[1];
+
 };
 
 struct SPSXRegion {
@@ -149,6 +173,9 @@ void validate_POLY_F3(void);
 
 static const i32 MAXPSX = 40;
 EXPORT extern SPSXRegion PSXRegion[MAXPSX];
+//#define G_PSXREGION (PSXRegion)
+#define G_PSXREGION (reinterpret_cast<SPSXRegion*>(0x006B2440))
+
 EXPORT extern i32 EnvRegions[2];
 EXPORT extern i32 gSpoolCurrentOpenSpot;
 

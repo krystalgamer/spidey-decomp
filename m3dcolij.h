@@ -10,15 +10,6 @@
 
 class CBody;
 
-// @Note: meant for SLineInfo
-// but you know, it's the same as CVector, and would add just confusion
-struct Vector
-{
-	i32 vx;
-	i32 vy;
-	i32 vz;
-};
-
 struct SLineInfo
 {
 	CVector StartCoords;

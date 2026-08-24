@@ -106,20 +106,20 @@ int CBody::Hit(SHitInfo*)
 }
 
 // @Ok
+// @Matching
 void CItem::InitItem(const char * pName)
 {
-	int Region = Spool_FindRegion(pName);
-	this->mRegion = Region;
+	this->mRegion = Spool_FindRegion(pName);
 	this->mModel = 0;
 
 
-	if (PSXRegion[Region].Filename[9])
+	if (G_PSXREGION[this->mRegion].IsSuper)
 	{
-		u32 *tmp = *reinterpret_cast<u32**>(PSXRegion[Region].ppModels);
-		tmp[2] = 0x64000;
-		tmp[3] = 0xFF9C0064;
-		tmp[4] = 0xFF9C0064;
-		tmp[5] = 0xFF9C0064;
+		SModel *pModel = G_PSXREGION[this->mRegion].ppModels[0];
+		pModel->Radius = 0x64000;
+		pModel->Box.vx = 0xFF9C0064;
+		pModel->Box.vy = 0xFF9C0064;
+		pModel->Box.vz = 0xFF9C0064;
 	}
 }
 
@@ -818,7 +818,7 @@ void validate_SLight(void)
 // @Bogus
 void patch_CItem(void)
 {
-	// @TODO - patch constructor
+	PATCH_PUSH_RET(0x00460020, CItem::InitItem);
 }
 
 // @Bogus
