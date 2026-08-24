@@ -41,16 +41,49 @@ void ADXT_Pause(i32, i32 a2)
 
 // @Ok
 // @Matching
-i32 ADXT_Create(void)
+i32 ADXT_Create(i32, void*, i32)
 {
 	return 0;
 }
 
 // @Ok
 // @Matching
-void ADXT_Stop(void)
+void ADXT_Stop(i32)
 {
 	PCMUSIC_Stop();
+}
+
+// @Ok
+// @Matching
+void ADXT_Destroy(i32)
+{
+}
+
+// @Ok
+// @Matching
+void ADXERR_EntryErrFunc(void (*)(void*, char*), void*)
+{
+}
+
+// @Ok
+// @Matching
+i32 ADXF_LoadPartition(i32, const char*, void*, i32)
+{
+	return 0;
+}
+
+// the DC build guards the ADXT calls with semaphores, the handles live in gSbInitRelated,
+// on PC both functions are empty in the exe (merged with the other empty stubs)
+// @Ok
+// @Matching
+void Sb_SemWait(i32)
+{
+}
+
+// @Ok
+// @Matching
+void Sb_SemSignal(i32)
+{
 }
 
 // @Ok
