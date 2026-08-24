@@ -3,6 +3,7 @@
 #include "PCTimer.h"
 #include "DXinit.h"
 #include "pcdcPad.h"
+#include "PCInput.h"
 
 #include "stdarg.h"
 #include <cstdio>
@@ -24,6 +25,20 @@ u8 g3DAccelator = 1;
 HWND gHwnd;
 
 i32 gBrightnessRelated = 4;
+
+// display settings kept in Spidey.cfg, PCSHELL_DoDisplayOptions and SpideyMain read them too
+u32 gSavedResolutionX;
+u32 gSavedResolutionY;
+u32 gSavedColorDepth;
+char gDisplayDeviceName[128];
+
+// sound settings kept in Spidey.cfg, their low words land in
+// gGameState[12]/[11]/[13], the volumes used by SFX_Play,
+// GameFMV_PlayMovie and Redbook_XAPlay
+i32 gSavedSFXVolume;
+i32 gSavedMusicVolume;
+i32 gSavedXAVolume;
+bool gSavedSoundMode;
 
 EXPORT u8 gMissingCD;
 EXPORT i32 gActive;
@@ -139,10 +154,38 @@ void SPIDEYDX_LoadSettings(void)
     printf("SPIDEYDX_LoadSettings(void)");
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void SPIDEYDX_SaveSettings(void)
 {
-    printf("SPIDEYDX_SaveSettings(void)");
+	u32 kbdMappings[11];
+	u32 ctrlMappings[11];
+
+	FILE* file = fopen("Spidey.cfg", "wb");
+	if (file)
+	{
+		for (i32 i = 0; i < 11; i++)
+		{
+			PCINPUT_GetKeyboardMappingForAction(1 << i, &kbdMappings[i]);
+			PCINPUT_GetControllerMappingForAction(1 << i, &ctrlMappings[i]);
+		}
+
+		fwrite(&gSavedResolutionX, 4, 1, file);
+		fwrite(&gSavedResolutionY, 4, 1, file);
+		fwrite(&gSavedColorDepth, 4, 1, file);
+		fwrite(&gBrightnessRelated, 4, 1, file);
+		fwrite(&gLowGraphics, 4, 1, file);
+		fwrite(kbdMappings, 4, 11, file);
+		fwrite(ctrlMappings, 4, 11, file);
+		fwrite(gDisplayDeviceName, 0x80, 1, file);
+		fwrite(&gSavedSFXVolume, 4, 1, file);
+		fwrite(&gSavedMusicVolume, 4, 1, file);
+		fwrite(&gSavedXAVolume, 4, 1, file);
+		// the original writes 4 bytes of this 1 byte flag
+		fwrite(&gSavedSoundMode, 4, 1, file);
+		fflush(file);
+		fclose(file);
+	}
 }
 
 // @Ok

@@ -41,6 +41,16 @@ EXPORT i32 WINAPI RealWinMain(HINSTANCE, HINSTANCE, LPSTR, i32);
 EXPORT extern HWND gHwnd;
 
 EXPORT extern i32 gBrightnessRelated;
+
+EXPORT extern u32 gSavedResolutionX;
+EXPORT extern u32 gSavedResolutionY;
+EXPORT extern u32 gSavedColorDepth;
+EXPORT extern char gDisplayDeviceName[128];
+
+EXPORT extern i32 gSavedSFXVolume;
+EXPORT extern i32 gSavedMusicVolume;
+EXPORT extern i32 gSavedXAVolume;
+EXPORT extern bool gSavedSoundMode;
 EXPORT void validate_TwiddleStuff(void);
 
 
