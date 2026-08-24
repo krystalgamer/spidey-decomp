@@ -262,16 +262,16 @@ INLINE void CBody::UnSuspend(void)
 // @Matching
 void CBody::Suspend(CBody **a2)
 {
-	DoAssert((this->mCBodyFlags & 1) == 0, "Suspended flag illegally set");
-	DoAssert(a2 != 0, "woops");
+	ASSERT((this->mCBodyFlags & CBODY_SUSPENDED) == 0, "Suspended flag illegally set");
+	ASSERT(a2 != 0, "woops");
 
 	this->DeleteStuff();
 
 	this->mppOriginalList = a2;
 	this->DeleteFrom(a2);
 
-	this->AttachTo(&SuspendedList);
-	this->mCBodyFlags |= 1;
+	this->AttachTo(&G_SUSPENEDED_LIST);
+	this->mCBodyFlags |= CBODY_SUSPENDED;
 }
 
 
@@ -325,7 +325,7 @@ i16* CBody::SquirtAngles(i16* p_info)
 // @Matching
 void CBody::AttachXA(i32 a2, i32 a3)
 {
-	this->field_98 = Vblanks;
+	this->field_98 = G_VBLANKS;
 	this->field_9C = a2;
 	this->field_A0 = a3;
 }
@@ -851,4 +851,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x004602F0, CBody::FindBodyByNode);
 
 	PATCH_PUSH_RET(0x00460330, CBody::SquirtPos);
+	PATCH_PUSH_RET(0x004603D0, CBody::AttachXA);
+	PATCH_PUSH_RET(0x00460440, CBody::Suspend);
 }

@@ -11,6 +11,9 @@ EXPORT extern volatile i32 gVlanksRelated;
 EXPORT extern i32 DifficultyLevel;
 EXPORT extern volatile u32 Vblanks;
 
+//#define G_VBLANKS (Vblanks)
+#define G_VBLANKS (*reinterpret_cast<volatile u32*>(0x006B4CA0))
+
 EXPORT u32 Utils_CrapDist(const CVector& a,const CVector& b);
 EXPORT u32 Utils_CrapXZDist(const CVector& a,const CVector& b);
 EXPORT i32 Utils_CompareStrings(const char* left, const char* right);
