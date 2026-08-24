@@ -279,20 +279,22 @@ void CBody::Suspend(CBody **a2)
 
 
 // @Ok
+// @Matching
 void CBody::InterleaveAI(void)
 {
-	if (this->mFlags & 2)
+	if (this->mFlags & CBODY_RADIALSUSPENSION)
 	{
 		this->EveryFrame();
 		CSuper *super = reinterpret_cast<CSuper*>(this);
 		super->UpdateFrame();
+
+		this->AI();
 	}
 	else
 	{
 		this->EveryFrame();
+		this->AI();
 	}
-
-	this->AI();
 }
 
 // @Ok
@@ -412,9 +414,18 @@ void CSuper::SetOutlineRGB(
 	this->outlineB = a4;
 }
 
-// @Ok
+// @SMALLTODO
 // Slightly different register allocation, edx and eax are swapped
 void CSuper::UpdateFrame(void){
+
+
+	typedef void (FASTCALL *func_ptr)(CSuper*, void*);
+
+	func_ptr func = (func_ptr)0x00460DA0;
+	func(this, 0);
+
+	return;
+
 	char v1; // bl
 	i32 v2; // esi
 	i32 v3; // edx
@@ -561,10 +572,17 @@ void CSuper::RunAnim(
 	this->mAnimFinished = static_cast<u16>(from) == static_cast<u16>(to);
 }
 
-// @Ok
+// @SMALLTODO
 // @AlmostMatching: add esp, 8 happens 2 instructions later after DoAssert dunno why
 void CBody::EveryFrame(void)
 {
+
+	typedef void (FASTCALL *func_ptr)(CBody*, void*);
+	func_ptr func = (func_ptr)0x00460ED0;
+
+	func(this, 0);
+
+	return;
 	if (this->mCBodyFlags & 4)
 	{
 		this->field_80 = 2;
@@ -825,4 +843,5 @@ void patch_CItem(void)
 void patch_CBody(void)
 {
 	PATCH_PUSH_RET(0x00460570, CBody::KillShadow);
+	PATCH_PUSH_RET(0x00460F90, CBody::InterleaveAI);
 }
