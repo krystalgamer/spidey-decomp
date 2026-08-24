@@ -11,6 +11,8 @@
 extern HMODULE bink_dll;
 u32* get_thunk_address(void* first,...);
 
+#include <cstdlib>
+
 #define PATCH_PUSH_RET(addr, dest) {\
 	unsigned char *tmp = (unsigned char*)(addr);\
 	tmp[0] = 0x68;\

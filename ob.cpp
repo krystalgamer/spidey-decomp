@@ -245,7 +245,7 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 		this->mPreviousItem->mNextItem = this->mNextItem;
 
 	if (*a2 == this)
-		*a2 = (CBody*)this->mNextItem;
+		*a2 = reinterpret_cast<CBody*>(this->mNextItem);
 }
 
 // @Ok
@@ -849,6 +849,7 @@ void patch_CBody(void)
 
 	PATCH_PUSH_RET(0x00460260, CBody::AttachTo);
 	PATCH_PUSH_RET(0x00460500, CBody::UnSuspend);
+
 	PATCH_PUSH_RET(0x00460280, CBody::DeleteFrom);
 
 	PATCH_PUSH_RET(0x004602F0, CBody::FindBodyByNode);
@@ -858,6 +859,6 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460440, CBody::Suspend);
 
 	PATCH_PUSH_RET(0x00460560, CBody::ShadowOn);
-	PATCH_PUSH_RET(0x004606F0, CBody::Die);
+	PATCH_PUSH_RET_POLY(0x004606F0, CBody::Die, "?Die@CBody@@UAEXXZ");
 	PATCH_PUSH_RET(0x00460700, CBody::IsDead);
 }
