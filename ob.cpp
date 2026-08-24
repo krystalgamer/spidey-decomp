@@ -314,6 +314,7 @@ i16* CBody::SquirtPos(i16* p_info)
 }
 
 // @Ok
+// @Matching
 i16* CBody::SquirtAngles(i16* p_info)
 {
 	this->mAngles.vx = *p_info++;
@@ -844,4 +845,5 @@ void patch_CBody(void)
 {
 	PATCH_PUSH_RET(0x00460570, CBody::KillShadow);
 	PATCH_PUSH_RET(0x00460F90, CBody::InterleaveAI);
+	PATCH_PUSH_RET(0x004603A0, CBody::SquirtAngles);
 }
