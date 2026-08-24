@@ -586,10 +586,91 @@ void displayDIError(HRESULT error, char* buf, i32 line)
     printf("displayDIError(long,char *,i32)");
 }
 
-// @SMALLTODO
-void displayDSError(long,char *,i32)
+// @Ok
+// @Matching
+void displayDSError(long error, char* file, i32 line)
 {
-    printf("displayDSError(long,char *,i32)");
+#ifdef _WIN32
+	char* msg;
+
+	switch (error)
+	{
+	case DS_OK:
+		msg = "DS_OK: The method succeeded.";
+		break;
+	case DS_NO_VIRTUALIZATION:
+		msg = "DS_NO_VIRTUALIZATION: The buffer was created, but another 3-D algorithm was substituted.";
+		break;
+	case DS_INCOMPLETE:
+		msg = "DS_INCOMPLETE: The method succeeded, but not all the optional effects were obtained.";
+		break;
+	case DSERR_ACCESSDENIED:
+		msg = "DSERR_ACCESSDENIED: The request failed because access was denied.";
+		break;
+	case DSERR_ALLOCATED:
+		msg = "DSERR_ALLOCATED: The request failed because resources, such as a priority level, were already in use by another caller.";
+		break;
+	case DSERR_ALREADYINITIALIZED:
+		msg = "DSERR_ALREADYINITIALIZED: The object is already initialized.";
+		break;
+	case DSERR_BADFORMAT:
+		msg = "DSERR_BADFORMAT: The specified wave format is not supported.";
+		break;
+	case DSERR_BUFFERLOST:
+		msg = "DSERR_BUFFERLOST: The buffer memory has been lost and must be restored.";
+		break;
+	case DSERR_BUFFERTOOSMALL:
+		msg = "DSERR_BUFFERTOOSMALL: The buffer size is not great enough to enable effects processing.";
+		break;
+	case DSERR_CONTROLUNAVAIL:
+		msg = "DSERR_CONTROLUNAVAIL: The buffer control (volume, pan, and so on) requested by the caller is not available.";
+		break;
+	case DSERR_DS8_REQUIRED:
+		msg = "DSERR_DS8_REQUIRED: A DirectSound object of class CLSID_DirectSound8 or later is required for the requested functionality. For more information, see IDirectSound8.";
+		break;
+	case DSERR_GENERIC:
+		msg = "DSERR_GENERIC: An undetermined error occurred inside the DirectSound subsystem.";
+		break;
+	case DSERR_INVALIDCALL:
+		msg = "DSERR_INVALIDCALL: This function is not valid for the current state of this object.";
+		break;
+	case DSERR_INVALIDPARAM:
+		msg = "DSERR_INVALIDPARAM: An invalid parameter was passed to the returning function.";
+		break;
+	case DSERR_NOAGGREGATION:
+		msg = "DSERR_NOAGGREGATION: The object does not support aggregation.";
+		break;
+	case DSERR_NODRIVER:
+		msg = "DSERR_NODRIVER: No sound driver is available for use, or the given GUID is not a valid DirectSound device ID.";
+		break;
+	case DSERR_NOINTERFACE:
+		msg = "DSERR_NOINTERFACE: The requested COM interface is not available.";
+		break;
+	case DSERR_OBJECTNOTFOUND:
+		msg = "DSERR_OBJECTNOTFOUND: The requested object was not found.";
+		break;
+	case DSERR_OTHERAPPHASPRIO:
+		msg = "DSERR_OTHERAPPHASPRIO: Another application has a higher priority level, preventing this call from succeeding.";
+		break;
+	case DSERR_OUTOFMEMORY:
+		msg = "DSERR_OUTOFMEMORY: The DirectSound subsystem could not allocate sufficient memory to complete the caller's request.";
+		break;
+	case DSERR_PRIOLEVELNEEDED:
+		msg = "DSERR_PRIOLEVELNEEDED: The caller does not have the priority level required for the function to succeed.";
+		break;
+	case DSERR_UNINITIALIZED:
+		msg = "DSERR_UNINITIALIZED: The IDirectSound8::Initialize method has not been called or has not been called successfully before other methods were called.";
+		break;
+	case DSERR_UNSUPPORTED:
+		msg = "Unknown";
+		break;
+	default:
+		msg = "Unknown";
+		break;
+	}
+
+	DXERR_printf("DS Error: [%s], line %d: %s (%08x)\r\n", file, line, msg, error);
+#endif
 }
 
 // @Ok
