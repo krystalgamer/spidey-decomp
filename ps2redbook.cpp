@@ -225,10 +225,54 @@ void Redbook_XAStop(void)
 	G_CARNAGE_XA_RELATED_TWO = 30;
 }
 
-// @BIGTODO
-u8 Redbook_XAPlay(int a1, int, int)
+// @Ok
+// @Matching
+u8 Redbook_XAPlay(int a1, int a2, int a3)
 {
-	return 0x1235959;
+	if (a1 >= 0x4F)
+		return 0;
+
+	if (G_XA_TRACK_IDS[a1 * 16 + a2] == -1)
+		return 0;
+
+	if (a3 <= G_REDBOOK_XA_CURRENT_PRIORITY)
+		return 0;
+
+	if (G_FILE_IO_STATUS)
+		return 0;
+
+	if (G_GAME_FMV_ACTIVE)
+		return 0;
+
+	if (G_CARNAGE_XA_RELATED_TWO)
+	{
+		if (!(G_PENDING_XA_THREE | G_PENDING_XA_TWO | G_PENDING_XA_ONE))
+		{
+			G_PENDING_XA_ONE = a1;
+			G_PENDING_XA_TWO = a2;
+			G_PENDING_XA_THREE = a3;
+		}
+
+		return 0;
+	}
+
+	if (!G_ADXT_INITIALIZED)
+	{
+		Redbook_XAInit();
+	}
+
+	ADXT_StartAfs(G_ADXT, 0, static_cast<u16>(a1 * 16 + a2));
+	Redbook_XASetVol(G_XA_VOLUME);
+
+	G_REDBOOK_XA_CURRENT_PRIORITY = a3;
+	G_REDBOOK_BUSY = 1;
+	G_CARNAGE_XA_RELATED = 0;
+	G_REDBOOK_XA_RELATED_ONE = a1;
+	G_REDBOOK_XA_RELATED_TWO = a2;
+
+	print_if_false(a3 <= 0x100 || a3 == -1 || a3 == 0x29A, "Strange priority value.");
+
+	return 1;
 }
 
 // @Ok
