@@ -86,10 +86,16 @@ EXPORT void vector4d::__vc(const(i32);
 // @FIXME
 char gRenderBuf[4] = { 0, 0, 0, 0 };
 
-// @Ok
+// @SMALLTODO
 // @Matching
 void M3d_BuildTransform(CSuper* pSuper)
 {
+	typedef void (*func_ptr)(CSuper*);
+	func_ptr func = (func_ptr)0x00475F50;
+
+	func(pSuper);
+	return;
+
 	if ((pSuper->outlineRelated & 1) == 0 )
 	{
 		M3dMaths_RotMatrixYXZ(

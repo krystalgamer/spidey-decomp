@@ -2,13 +2,25 @@
 #include "validate.h"
 
 // @SMALLTODO
-void M3dUtils_ReadLinksPacket(CSuper*, void*)
-{}
+void M3dUtils_ReadLinksPacket(CSuper* a1, void* a2)
+{
+	typedef void (*func_ptr)(CSuper*, void*);
+	func_ptr func = (func_ptr)0x00453C50;
+
+	func(a1, a2);
+}
 
 // @NotOk
 // Revisit and fix globals
 void M3dUtils_InBetween(CSuper *a1)
 {
+
+	typedef void (*func_ptr)(CSuper*);
+
+	func_ptr func = (func_ptr)0x00454200;
+	func(a1);
+	return;
+
 	u16 v1; // cx
 	i32 v2; // ebp
 	i32 v3; // edi
@@ -33,9 +45,11 @@ void M3dUtils_InBetween(CSuper *a1)
 }
 
 // @BIGTODO
-void M3dUtils_BuildPose(CSuper*)
+void M3dUtils_BuildPose(CSuper* pSuper)
 {
-	printf("void M3dUtils_BuildPose(CSuper*)");
+	typedef void (*func_ptr)(CSuper*);
+	func_ptr func = (func_ptr)0x00454450;
+	func(pSuper);
 }
 
 

@@ -511,6 +511,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 
 
 // @Ok
+// @Matching
 void CSuper::ApplyPose(i16 *a2){
 
 	if (!this->field_188)
@@ -875,4 +876,5 @@ void patch_CSuper(void)
 	PATCH_PUSH_RET(0x00460BD0, CSuper::SetOutlineSemiTransparent);
 	PATCH_PUSH_RET(0x00460BE0, CSuper::SetOutlineRGB);
 	PATCH_PUSH_RET(0x00460D00, CSuper::CycleAnim);
+	PATCH_PUSH_RET(0x00460E80, CSuper::ApplyPose);
 }
