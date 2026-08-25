@@ -424,12 +424,11 @@ void CSuper::SetOutlineRGB(
 // Slightly different register allocation, edx and eax are swapped
 void CSuper::UpdateFrame(void){
 
-
 	typedef void (FASTCALL *func_ptr)(CSuper*, void*);
-
+	
 	func_ptr func = (func_ptr)0x00460DA0;
 	func(this, 0);
-
+	
 	return;
 
 	char v1; // bl
@@ -445,7 +444,7 @@ void CSuper::UpdateFrame(void){
 	  this->field_80 = 2;
 	v1 = this->mAnimDir;
 	v2 = this->field_80 * this->mAnimSpeed / 2;
-	v3 = (u16)this->mFrameFrac | (this->field_128 << 16);
+	v3 = (u16)this->mFrameFrac | (this->mFrame << 16);
 	if ( this->mAnimDir == 1 )
 	  v3 += v2;
 	if ( v1 == -1 )
@@ -454,7 +453,7 @@ void CSuper::UpdateFrame(void){
 	this->mFrameFrac = v3;
 	v5 = (u8)this->field_140;
 	v6 = v4 >> 16;
-	this->field_128 = v6;
+	this->mFrame = v6;
 
 	if (v5) {
 		if ( --v5 == 0)
@@ -462,14 +461,14 @@ void CSuper::UpdateFrame(void){
 		  v7 = this->mNumFrames;
 		  if ( (i16)v6 >= (int)v7 )
 		  {
-			  this->field_128 = v6 - v7;
+			  this->mFrame = v6 - v7;
         
 		  }
 		  else
 		  {
 
 			if ( (i16)(v6) < 0 )
-			  this->field_128 = v6 + v7;
+			  this->mFrame = v6 + v7;
 		  }
 		}
 	}
@@ -478,7 +477,7 @@ void CSuper::UpdateFrame(void){
 		(v1 == -1 && (i16)v6 <= this->field_144)
 		)
 	{
-		this->field_128 = this->field_144;
+		this->mFrame = this->field_144;
 		this->mAnimFinished = 1;
 	}
 }
@@ -490,7 +489,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 {
 	if (this->mAnim != anim)
 	{
-		this->field_128 = 0;
+		this->mFrame = 0;
 		this->mFrameFrac = 0;
 		this->mAnim = anim;
 
@@ -574,7 +573,7 @@ void CSuper::RunAnim(
 
 	this->field_144 = to;
 	this->mAnimDir = res;
-	this->field_128 = from;
+	this->mFrame = from;
 	this->mFrameFrac = 0;
 	this->mAnimFinished = static_cast<u16>(from) == static_cast<u16>(to);
 }
@@ -616,8 +615,8 @@ void CBody::EveryFrame(void)
 	if (this->mFlags & 2)
 	{
 		CSuper *pSuper = reinterpret_cast<CSuper*>(this);
-		pSuper->field_152 = pSuper->field_128;
-		pSuper->field_150 = pSuper->field_128;
+		pSuper->field_152 = pSuper->mFrame;
+		pSuper->field_150 = pSuper->mFrame;
 		pSuper->field_154 = pSuper->mAnim;
 		pSuper->field_143 = pSuper->mAnimDir;
 	}
@@ -776,7 +775,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, outlineG, 0x125);
 	VALIDATE(CSuper, outlineB, 0x126);
 
-	VALIDATE(CSuper, field_128, 0x128);
+	VALIDATE(CSuper, mFrame, 0x128);
 	VALIDATE(CSuper, mAnim, 0x12A);
 
 	VALIDATE(CSuper, outlineRelated, 0x12C);

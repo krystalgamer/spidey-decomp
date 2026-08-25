@@ -223,7 +223,7 @@ public:
 	u8 outlineB;
 
 
-	i16 field_128;
+	i16 mFrame;
 	u16 mAnim;
 
 	i32 outlineRelated;

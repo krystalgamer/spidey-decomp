@@ -723,4 +723,5 @@ void patch_ps2funcs(void)
 {
 	PATCH_PUSH_RET(0x0046D430, M3dMaths_SquareRoot0);
 	PATCH_PUSH_RET(0x0046D500, M3dMaths_MulDiv64);
+	PATCH_PUSH_RET(0x0046E730, M3dMaths_RotMatrixYXZ);
 }

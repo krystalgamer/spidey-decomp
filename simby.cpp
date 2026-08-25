@@ -645,7 +645,7 @@ void CSimby::Shoot(void)
 			}
 			break;
 		case 2:
-			if (this->field_128 >= 14)
+			if (this->mFrame >= 14)
 			{
 				this->SetUpHandPos();
 				new CSimbyShot(&this->field_3DC);

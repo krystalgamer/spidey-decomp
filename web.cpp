@@ -169,7 +169,7 @@ int CSwinger::IsOneTimeToDie(void)
 // @Matching
 void CSwinger::SetSpideyAnimFrame(i32 a2)
 {
-	MechList->field_128 = (a2 * (this->field_180 - 2048)) >> 11;
+	MechList->mFrame = (a2 * (this->field_180 - 2048)) >> 11;
 }
 
 

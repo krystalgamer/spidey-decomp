@@ -984,7 +984,7 @@ CSuper* createSuperItem(CItem *pItem)
 	pSuper->mType = pItem->mType;
 	pSuper->mpLight = pItem->mpLight;
 
-	pSuper->field_128 = 0;
+	pSuper->mFrame = 0;
 	pSuper->mAnim = 0;
 
 	return pSuper;

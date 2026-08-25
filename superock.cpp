@@ -217,26 +217,26 @@ void CSuperDocOck::PlaySounds(void)
 	switch (this->mAnim)
 	{
 		case 1:
-			if (!(this->field_364 & 1) && this->field_128 >= 0)
+			if (!(this->field_364 & 1) && this->mFrame >= 0)
 			{
 				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
 				this->field_364 |= 1u;
 			}
-			else if (!(this->field_364 & 2) && this->field_128 >= 20)
+			else if (!(this->field_364 & 2) && this->mFrame >= 20)
 			{
 				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
 				this->field_364 |= 2u;
 			}
 			break;
 		case 4:
-			if (!(this->field_364 & 1) && this->field_128 >= 0)
+			if (!(this->field_364 & 1) && this->mFrame >= 0)
 			{
 				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
 				this->field_364 |= 1u;
 			}
 			break;
 		case 6:
-			if (!(this->field_364 & 1) && this->field_128 >= 20)
+			if (!(this->field_364 & 1) && this->mFrame >= 20)
 			{
 				SFX_PlayPos((Rnd(3) + 230) | 0x8000, &this->mPos, 0);
 				this->field_364 |= 1u;

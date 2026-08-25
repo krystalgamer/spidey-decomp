@@ -254,7 +254,7 @@ void CAIProc_MonitorAttack::Execute(void)
 	}
 	else
 	{
-		if ( this->pBaddy->field_128 >= this->field_24 && this->pBaddy->field_128 <= this->field_28 )
+		if ( this->pBaddy->mFrame >= this->field_24 && this->pBaddy->mFrame <= this->field_28 )
 		{
 			if (this->pBaddy->SmackSpidey(this->field_2C, this->field_30, this->field_34, this->field_14))
 			{
