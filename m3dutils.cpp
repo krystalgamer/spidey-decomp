@@ -1,6 +1,8 @@
 #include "m3dutils.h"
 #include "validate.h"
 
+#include "spool.h"
+
 // @SMALLTODO
 void M3dUtils_ReadLinksPacket(CSuper* a1, void* a2)
 {
@@ -71,10 +73,11 @@ void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)
 	printf("void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*)");
 }
 
-// @SMALLTODO
-void M3dUtils_ReadHooksPacket(CSuper*, void*)
+// @Ok
+// @Matching
+void M3dUtils_ReadHooksPacket(CSuper* pSuper, void* pPacket)
 {
-	printf("void M3dUtils_ReadHooksPacket(CSuper*, void*)");
+	G_PSXREGION[pSuper->mRegion].pHooks = reinterpret_cast<SHook*>(reinterpret_cast<i32>(pPacket) + 4);
 }
 
 void validate_SHook(void)
@@ -83,4 +86,13 @@ void validate_SHook(void)
 
 	VALIDATE(SHook, Part, 0x0);
 	VALIDATE(SHook, Offset, 0x6);
+}
+
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_m3dutils(void)
+{
+	PATCH_PUSH_RET(0x00453C30, M3dUtils_ReadHooksPacket);
 }

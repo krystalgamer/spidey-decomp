@@ -21,5 +21,6 @@ EXPORT void M3dUtils_GetDynamicHookPosition(VECTOR*, CSuper*, SHook*);
 EXPORT void M3dUtils_ReadHooksPacket(CSuper*, void*);
 
 void validate_SHook(void);
+void patch_m3dutils(void);
 
 #endif
