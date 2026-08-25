@@ -642,8 +642,8 @@ CSuper::~CSuper(void)
 	if (this->mpDecompressedFrame)
 		Mem_Delete(this->mpDecompressedFrame);
 
-	if (this->field_130)
-		Mem_Delete(this->field_130);
+	if (this->mpCalculationOrder)
+		Mem_Delete(this->mpCalculationOrder);
 
 	CItem *first = reinterpret_cast<CItem*>(
 			Mem_RecoverPointer(&this->field_104));
@@ -780,7 +780,7 @@ void validate_CSuper(void)
 
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
-	VALIDATE(CSuper, field_130, 0x130);
+	VALIDATE(CSuper, mpCalculationOrder, 0x130);
 	VALIDATE(CSuper, mpDecompressedFrame, 0x134);
 
 	VALIDATE(CSuper, field_13E, 0x13E);

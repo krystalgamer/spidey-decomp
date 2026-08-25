@@ -227,7 +227,7 @@ public:
 	u16 mAnim;
 
 	i32 outlineRelated;
-	void* field_130;
+	u16* mpCalculationOrder;
 	struct SMatrix* mpDecompressedFrame;
 
 	PADDING(0x6);
