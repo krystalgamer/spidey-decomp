@@ -402,12 +402,14 @@ void CSuper::OutlineOn(void){
 
 
 // @Ok
+// @Matching
 void CSuper::SetOutlineSemiTransparent(){
 	this->alsoOutlineRelated |= 0x02000000;
 }
 
 
 // @Ok
+// @Matching
 void CSuper::SetOutlineRGB(
 		u8 a2,
 		u8 a3,
@@ -871,4 +873,5 @@ void patch_CSuper(void)
 {
 	PATCH_PUSH_RET(0x00460BC0, CSuper::OutlineOff);
 	PATCH_PUSH_RET(0x00460BD0, CSuper::SetOutlineSemiTransparent);
+	PATCH_PUSH_RET(0x00460BE0, CSuper::SetOutlineRGB);
 }
