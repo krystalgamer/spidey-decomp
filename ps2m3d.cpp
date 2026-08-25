@@ -86,16 +86,10 @@ EXPORT void vector4d::__vc(const(i32);
 // @FIXME
 char gRenderBuf[4] = { 0, 0, 0, 0 };
 
-// @SMALLTODO
+// @Ok
 // @Matching
 void M3d_BuildTransform(CSuper* pSuper)
 {
-	typedef void (*func_ptr)(CSuper*);
-	func_ptr func = (func_ptr)0x00475F50;
-
-	func(pSuper);
-	return;
-
 	if ((pSuper->outlineRelated & 1) == 0 )
 	{
 		M3dMaths_RotMatrixYXZ(
@@ -225,4 +219,12 @@ void validate_matrix4x4(void)
 	VALIDATE_SIZE(matrix4x4, 64);
 
 	VALIDATE(matrix4x4, field_0, 0x0);
+}
+
+#include "my_patch.h"
+
+// @Bogus
+void patch_ps2m3d(void)
+{
+	PATCH_PUSH_RET(0x00475F50, M3d_BuildTransform);
 }

@@ -516,9 +516,15 @@ void M3dMaths_TransposeMatrix1(MATRIX *a1, MATRIX *a2)
 
 
 
-// @Ok
+// @SMALLTODO
 void M3dMaths_ScaleMatrix(CItem *a1, MATRIX *a2)
 {
+	typedef void (*func_ptr)(CItem*, MATRIX*);
+	func_ptr func = (func_ptr)0x0046D480;
+	func(a1, a2);
+
+	return;
+
 	MATRIX v7;
 	MATRIX v8;
 	memset((void*)&v8, 0, sizeof(v8));
@@ -529,9 +535,9 @@ void M3dMaths_ScaleMatrix(CItem *a1, MATRIX *a2)
 
 	MulMatrix0(a2, &v8, &v7);
 
-	for (int i = 0; i < 3; i++)
+	for (i32 i = 0; i < 3; i++)
 	{
-		for(int j = 0; j < 3; j++)
+		for(i32 j = 0; j < 3; j++)
 		{
 			a2->m[i][j] = v7.m[i][j];
 		}
@@ -568,7 +574,10 @@ void M3dAsm_SetTransVector(VECTOR* a1)
 // @BIGTODO
 MATRIX* RotMatrixYXZ(SVECTOR *a1, MATRIX *a2)
 {
-	return reinterpret_cast<MATRIX*>(0x69696969);
+	typedef MATRIX* (*func_ptr)(SVECTOR*, MATRIX*);
+
+	func_ptr func = (func_ptr)0x0046D1E0;
+	return func(a1, a2);
 }
 
 // @Ok

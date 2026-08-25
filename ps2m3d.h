@@ -50,5 +50,6 @@ EXPORT extern i32 gWideScreen;
 EXPORT extern char gRenderBuf[4];
 
 void validate_matrix4x4(void);
+void patch_ps2m3d(void);
 
 #endif
