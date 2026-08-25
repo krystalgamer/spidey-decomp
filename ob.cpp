@@ -389,6 +389,7 @@ void CSuper::OutlineOff(void)
 // @NotOk
 // Missing most stuff, only used by CVenom and CDummy
 void CSuper::OutlineOn(void){
+	NOT_IMPLEMENTED;
 	this->outlineRelated |= CSUPER_OUTLINE;
 	if (!this->field_11C){
 	}
@@ -402,7 +403,7 @@ void CSuper::OutlineOn(void){
 
 // @Ok
 void CSuper::SetOutlineSemiTransparent(){
-	this->alsoOutlineRelated |= 0x20000000;
+	this->alsoOutlineRelated |= 0x02000000;
 }
 
 
@@ -869,4 +870,5 @@ void patch_CBody(void)
 void patch_CSuper(void)
 {
 	PATCH_PUSH_RET(0x00460BC0, CSuper::OutlineOff);
+	PATCH_PUSH_RET(0x00460BD0, CSuper::SetOutlineSemiTransparent);
 }
