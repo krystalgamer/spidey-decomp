@@ -633,8 +633,8 @@ INLINE CBody::~CBody(void)
 // @Ok
 CSuper::~CSuper(void)
 {
-	if (this->field_184)
-		Mem_Delete(this->field_184);
+	if (this->mpPoseBuffer)
+		Mem_Delete(this->mpPoseBuffer);
 
 	if (this->field_188)
 		Mem_Delete(this->field_188);
@@ -806,7 +806,7 @@ void validate_CSuper(void)
 
 	VALIDATE(CSuper, mTransform, 0x164);
 
-	VALIDATE(CSuper, field_184, 0x184);
+	VALIDATE(CSuper, mpPoseBuffer, 0x184);
 	VALIDATE(CSuper, field_188, 0x188);
 	VALIDATE(CSuper, actualcsuperend, 0x190);
 }

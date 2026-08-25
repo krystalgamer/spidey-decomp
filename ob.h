@@ -265,7 +265,7 @@ public:
 
 	MATRIX mTransform;
 
-	void *field_184;
+	SMatrix *mpPoseBuffer;
 	void* field_188;
 
 	PADDING(0x4);
