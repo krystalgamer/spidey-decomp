@@ -495,11 +495,11 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 		this->mAnim = anim;
 
 		DoAssert(
-			static_cast<u32>(anim & 0xFFFF) < PSXRegion[this->mRegion].pAnimFile[0],
+			static_cast<u32>(anim & 0xFFFF) < G_PSXREGION[this->mRegion].pAnimFile[0],
 			"Bad anim sent to CycleAnim");
 
 		this->mNumFrames =
-			reinterpret_cast<u16*>(PSXRegion[this->mRegion].pAnimFile)[4 + (4 * this->mAnim)];
+			reinterpret_cast<u16*>(G_PSXREGION[this->mRegion].pAnimFile)[4 + (4 * this->mAnim)];
 
 
 		this->mAnimDir = animdir;
@@ -874,4 +874,5 @@ void patch_CSuper(void)
 	PATCH_PUSH_RET(0x00460BC0, CSuper::OutlineOff);
 	PATCH_PUSH_RET(0x00460BD0, CSuper::SetOutlineSemiTransparent);
 	PATCH_PUSH_RET(0x00460BE0, CSuper::SetOutlineRGB);
+	PATCH_PUSH_RET(0x00460D00, CSuper::CycleAnim);
 }
