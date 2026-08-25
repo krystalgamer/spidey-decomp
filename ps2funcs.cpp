@@ -72,6 +72,14 @@ void validate_SMatrix(void)
 	VALIDATE(SMatrix, t, 0x12);
 }
 
+void validate_SJoint(void)
+{
+	VALIDATE_SIZE(SJoint, 0xC);
+
+	VALIDATE(SJoint, Angles, 0x0);
+	VALIDATE(SJoint, Displacement, 0x6);
+}
+
 // @SMALLTODO
 void gte_op0(void)
 {

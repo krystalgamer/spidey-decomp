@@ -478,10 +478,10 @@ void CChopper::AimGunPod(void)
 		Utils_CalcAim(&v3, &v4, &this->field_3A8);
 		v3.vy = (v3.vy - this->mAngles.vy) & 0xFFF;
 
-		if (!this->field_188)
+		if (!this->mpJoints)
 			this->ApplyPose(reinterpret_cast<i16*>(0x548F48));
 
-		i16* ptr = static_cast<i16*>(this->field_188);
+		i16* ptr = reinterpret_cast<i16*>(this->mpJoints);
 		ptr[24] = v3.vx;
 		ptr[18] = v3.vy;
 	}
@@ -491,10 +491,10 @@ void CChopper::AimGunPod(void)
 // @Note: fix ApplyPose and 188
 void INLINE CChopper::RotateBlades(void)
 {
-	if (!this->field_188)
+	if (!this->mpJoints)
 		this->ApplyPose(reinterpret_cast<i16*>(0x1A2BD8));
 
-	u16* ptr = static_cast<u16*>(this->field_188);
+	u16* ptr = reinterpret_cast<u16*>(this->mpJoints);
 
 	ptr[6] += 35 * this->field_80;
 	ptr[6] &= 0xFFF;

@@ -266,7 +266,7 @@ public:
 	MATRIX mTransform;
 
 	SMatrix *mpPoseBuffer;
-	void* field_188;
+	SJoint  *mpJoints;
 
 	PADDING(0x4);
 

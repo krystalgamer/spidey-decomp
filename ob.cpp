@@ -513,7 +513,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 // @Matching
 void CSuper::ApplyPose(i16 *a2){
 
-	if (!this->field_188)
+	if (!this->mpJoints)
 	{
 		M3dUtils_ReadLinksPacket(this, reinterpret_cast<void*>(a2));
 		this->actualcsuperend = a2;
@@ -636,8 +636,8 @@ CSuper::~CSuper(void)
 	if (this->mpPoseBuffer)
 		Mem_Delete(this->mpPoseBuffer);
 
-	if (this->field_188)
-		Mem_Delete(this->field_188);
+	if (this->mpJoints)
+		Mem_Delete(this->mpJoints);
 
 	if (this->mpDecompressedFrame)
 		Mem_Delete(this->mpDecompressedFrame);
@@ -807,7 +807,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, mTransform, 0x164);
 
 	VALIDATE(CSuper, mpPoseBuffer, 0x184);
-	VALIDATE(CSuper, field_188, 0x188);
+	VALIDATE(CSuper, mpJoints, 0x188);
 	VALIDATE(CSuper, actualcsuperend, 0x190);
 }
 

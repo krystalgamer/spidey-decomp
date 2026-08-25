@@ -1386,7 +1386,7 @@ void CPlayer::ExitLookaroundMode(void)
 		this->field_DE4 = 0;
 		Screen_TargetOn(false);
 
-		i16 *v3 = reinterpret_cast<i16*>(this->field_188);
+		i16 *v3 = reinterpret_cast<i16*>(this->mpJoints);
 		if (v3)
 		{
 			v3[6] = 0;
