@@ -64,4 +64,8 @@ static void DebugPrintfX(const char *message, ...)
 #define STRINGIFICATE(x) STRINGIFICATE_INNER(x)
 #define DO_LOG puts("Running " __FILE__ ":" STRINGIFICATE(__LINE__))
 
+#include <cstdlib>
+
+#define NOT_IMPLEMENTED { DO_LOG; exit(69); }
+
 #endif

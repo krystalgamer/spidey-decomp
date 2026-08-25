@@ -184,6 +184,8 @@ public:
 	EXPORT ~CBody(void);
 };
 
+#define CSUPER_OUTLINE (1 << 2)
+
 class CSuper : public CBody {
 public:
 
@@ -299,6 +301,7 @@ EXPORT extern CVector ZeroVector;
 
 void patch_CItem(void);
 void patch_CBody(void);
+void patch_CSuper(void);
 
 #define CBODY_SUSPENDED        (1<<0)
 #define CBODY_RADIALSUSPENSION (1<<1)

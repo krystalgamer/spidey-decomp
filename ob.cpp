@@ -173,6 +173,7 @@ void CBody::KillShadow(void)
 // @Matching
 void CBody::UpdateShadow(void)
 {
+	NOT_IMPLEMENTED;
 
 	if(this->mCBodyFlags & 8){
 
@@ -379,15 +380,16 @@ CSuper::CSuper()
 }
 
 // @Ok
+// @Matching
 void CSuper::OutlineOff(void)
 {
-	this->outlineRelated &= 0xFFFFFFFB;
+	this->outlineRelated &= ~CSUPER_OUTLINE;
 }
 
 // @NotOk
 // Missing most stuff, only used by CVenom and CDummy
 void CSuper::OutlineOn(void){
-	this->outlineRelated |= 4;
+	this->outlineRelated |= CSUPER_OUTLINE;
 	if (!this->field_11C){
 	}
 
@@ -861,4 +863,10 @@ void patch_CBody(void)
 	PATCH_PUSH_RET(0x00460560, CBody::ShadowOn);
 	PATCH_PUSH_RET_POLY(0x004606F0, CBody::Die, "?Die@CBody@@UAEXXZ");
 	PATCH_PUSH_RET(0x00460700, CBody::IsDead);
+}
+
+// @Bogus
+void patch_CSuper(void)
+{
+	PATCH_PUSH_RET(0x00460BC0, CSuper::OutlineOff);
 }
