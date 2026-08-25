@@ -228,7 +228,7 @@ public:
 
 	i32 outlineRelated;
 	void* field_130;
-	void* field_134;
+	struct SMatrix* mpDecompressedFrame;
 
 	PADDING(0x6);
 

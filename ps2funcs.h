@@ -44,6 +44,13 @@ struct MATRIX{
 	i32 t[3];
 };
 
+struct SMatrix {
+	// offset: 0000 (18 bytes)
+	i16 m[3][3];
+	// offset: 0012 (6 bytes)
+	i16 t[3];
+};
+
 typedef struct {		/* long word type 3D vector */
 	long	vx, vy;
 	long	vz, pad;
@@ -72,6 +79,7 @@ typedef struct {		/* 2D short vector */
 
 
 void validate_MATRIX(void);
+void validate_SMatrix(void);
 
 EXPORT void Port_InitAtStart(void);
 EXPORT void Port_Exit(void);

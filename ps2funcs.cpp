@@ -65,6 +65,13 @@ void validate_MATRIX(void){
 	VALIDATE(MATRIX, t, 0x14);
 }
 
+void validate_SMatrix(void)
+{
+	VALIDATE_SIZE(SMatrix, 0x18);
+	VALIDATE(SMatrix, m, 0x0);
+	VALIDATE(SMatrix, t, 0x12);
+}
+
 // @SMALLTODO
 void gte_op0(void)
 {

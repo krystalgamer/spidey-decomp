@@ -21,10 +21,10 @@ void Cinema_Run(u32 a1)
 	SFX_StopAll();
 	if (MechList)
 	{
-		if (MechList->field_134)
+		if (MechList->mpDecompressedFrame)
 		{
-			Mem_Delete(MechList->field_134);
-			MechList->field_134 = 0;
+			Mem_Delete(MechList->mpDecompressedFrame);
+			MechList->mpDecompressedFrame = 0;
 		}
 	}
 

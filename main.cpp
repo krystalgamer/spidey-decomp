@@ -274,6 +274,7 @@ extern "C" EXPORT int run_assertions(void)
 	validate_CThug();
 	validate_CTurret();
 	validate_MATRIX();
+	validate_SMatrix();
 	validate_CRudeWordHitterSpidey();
 	validate_CBulletFrag();
 	validate_CImpactWeb();

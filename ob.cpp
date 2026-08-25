@@ -639,8 +639,8 @@ CSuper::~CSuper(void)
 	if (this->field_188)
 		Mem_Delete(this->field_188);
 
-	if (this->field_134)
-		Mem_Delete(this->field_134);
+	if (this->mpDecompressedFrame)
+		Mem_Delete(this->mpDecompressedFrame);
 
 	if (this->field_130)
 		Mem_Delete(this->field_130);
@@ -781,7 +781,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, outlineRelated, 0x12C);
 
 	VALIDATE(CSuper, field_130, 0x130);
-	VALIDATE(CSuper, field_134, 0x134);
+	VALIDATE(CSuper, mpDecompressedFrame, 0x134);
 
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
