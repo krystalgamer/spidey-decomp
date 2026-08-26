@@ -165,9 +165,9 @@ void CLizMan::Acknowledge(void)
 // @Ok
 void CLizMan::SwitchFromEulerToMatrix(void)
 {
-	if ((this->outlineRelated & 1) == 0)
+	if ((this->mExtraFlags & 1) == 0)
 	{
-		this->outlineRelated |= 1;
+		this->mExtraFlags |= 1;
 		M3dMaths_RotMatrixYXZ(
 				reinterpret_cast<SVECTOR*>(&this->mAngles),
 				&this->mTransform);
@@ -221,9 +221,9 @@ void INLINE CLizMan::StandStill(void)
 // @Ok
 void CLizMan::SwitchFromMatrixToEuler(void)
 {
-	if ( this->outlineRelated & 1)
+	if ( this->mExtraFlags & 1)
 	{
-		this->outlineRelated &= 0xFFFFFFFE;
+		this->mExtraFlags &= 0xFFFFFFFE;
 		this->mAngles.vz = 0;
 		this->mAngles.vx = 0;
 		this->mAngles.vy = (3072 - ratan2(-this->mTransform.m[2][2], -this->mTransform.m[0][2])) & 0xFFF;

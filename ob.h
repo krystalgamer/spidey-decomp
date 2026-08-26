@@ -226,7 +226,7 @@ public:
 	i16 mFrame;
 	u16 mAnim;
 
-	i32 outlineRelated;
+	u32 mExtraFlags;
 	u16* mpCalculationOrder;
 	struct SMatrix* mpDecompressedFrame;
 

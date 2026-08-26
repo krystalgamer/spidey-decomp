@@ -383,14 +383,14 @@ CSuper::CSuper()
 // @Matching
 void CSuper::OutlineOff(void)
 {
-	this->outlineRelated &= ~CSUPER_OUTLINE;
+	this->mExtraFlags &= ~CSUPER_OUTLINE;
 }
 
 // @NotOk
 // Missing most stuff, only used by CVenom and CDummy
 void CSuper::OutlineOn(void){
 	NOT_IMPLEMENTED;
-	this->outlineRelated |= CSUPER_OUTLINE;
+	this->mExtraFlags |= CSUPER_OUTLINE;
 	if (!this->field_11C){
 	}
 
@@ -778,7 +778,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, mFrame, 0x128);
 	VALIDATE(CSuper, mAnim, 0x12A);
 
-	VALIDATE(CSuper, outlineRelated, 0x12C);
+	VALIDATE(CSuper, mExtraFlags, 0x12C);
 
 	VALIDATE(CSuper, mpCalculationOrder, 0x130);
 	VALIDATE(CSuper, mpDecompressedFrame, 0x134);

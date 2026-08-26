@@ -90,7 +90,7 @@ char gRenderBuf[4] = { 0, 0, 0, 0 };
 // @Matching
 void M3d_BuildTransform(CSuper* pSuper)
 {
-	if ((pSuper->outlineRelated & 1) == 0 )
+	if ((pSuper->mExtraFlags & 1) == 0 )
 	{
 		M3dMaths_RotMatrixYXZ(
 				reinterpret_cast<SVECTOR *>(&pSuper->mAngles),
