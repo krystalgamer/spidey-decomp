@@ -537,6 +537,7 @@ extern "C" EXPORT int run_assertions(void)
 	validate_POLY_F3();
 	validate_CVenomHitSpark();
 	validate_SPushOffset();
+	validate_SLink();
 
 	puts("[*] Validation done!");
 

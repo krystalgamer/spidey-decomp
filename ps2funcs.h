@@ -48,6 +48,18 @@ struct SJoint {
 	struct SVector Displacement;
 };
 
+// size: 0xC
+struct SLink {
+	// offset: 0000
+	unsigned short Part;
+	// offset: 0002
+	unsigned short ParentPart;
+	// offset: 0004 (6 bytes)
+	struct SVector Pivot;
+	// offset: 000A
+	unsigned short ParentLink;
+};
+
 struct MATRIX{
 	i16 m[3][3];
 	i32 t[3];
@@ -90,6 +102,7 @@ typedef struct {		/* 2D short vector */
 void validate_MATRIX(void);
 void validate_SMatrix(void);
 void validate_SJoint(void);
+void validate_SLink(void);
 
 EXPORT void Port_InitAtStart(void);
 EXPORT void Port_Exit(void);

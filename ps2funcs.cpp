@@ -59,27 +59,6 @@ void TransMatrix(MATRIX*, VECTOR*)
 	printf("void TransMatrix(MATRIX*, VECTOR*)");
 }
 
-void validate_MATRIX(void){
-	VALIDATE_SIZE(MATRIX, 0x20);
-	VALIDATE(MATRIX, m, 0x0);
-	VALIDATE(MATRIX, t, 0x14);
-}
-
-void validate_SMatrix(void)
-{
-	VALIDATE_SIZE(SMatrix, 0x18);
-	VALIDATE(SMatrix, m, 0x0);
-	VALIDATE(SMatrix, t, 0x12);
-}
-
-void validate_SJoint(void)
-{
-	VALIDATE_SIZE(SJoint, 0xC);
-
-	VALIDATE(SJoint, Angles, 0x0);
-	VALIDATE(SJoint, Displacement, 0x6);
-}
-
 // @SMALLTODO
 void gte_op0(void)
 {
@@ -729,6 +708,38 @@ void Port_InitAtStart(void)
 void Port_Exit(void)
 {
 	sbExitSystem();
+}
+
+
+void validate_MATRIX(void){
+	VALIDATE_SIZE(MATRIX, 0x20);
+	VALIDATE(MATRIX, m, 0x0);
+	VALIDATE(MATRIX, t, 0x14);
+}
+
+void validate_SMatrix(void)
+{
+	VALIDATE_SIZE(SMatrix, 0x18);
+	VALIDATE(SMatrix, m, 0x0);
+	VALIDATE(SMatrix, t, 0x12);
+}
+
+void validate_SJoint(void)
+{
+	VALIDATE_SIZE(SJoint, 0xC);
+
+	VALIDATE(SJoint, Angles, 0x0);
+	VALIDATE(SJoint, Displacement, 0x6);
+}
+
+void validate_SLink(void)
+{
+	VALIDATE_SIZE(SLink, 0xC);
+
+	VALIDATE(SLink, Part, 0x0);
+	VALIDATE(SLink, ParentPart, 0x2);
+	VALIDATE(SLink, Pivot, 0x4);
+	VALIDATE(SLink, ParentLink, 0xA);
 }
 
 #include "my_patch.h"

@@ -275,7 +275,7 @@ public:
 	SMatrix *mpPoseBuffer;
 	SJoint  *mpJoints;
 
-	PADDING(0x4);
+	SLink *mpLinks;
 
 	i16 *actualcsuperend;
 

@@ -813,6 +813,7 @@ void validate_CSuper(void)
 
 	VALIDATE(CSuper, mpPoseBuffer, 0x184);
 	VALIDATE(CSuper, mpJoints, 0x188);
+	VALIDATE(CSuper, mpLinks, 0x18C);
 	VALIDATE(CSuper, actualcsuperend, 0x190);
 }
 

@@ -5,13 +5,53 @@
 
 #include "my_assert.h"
 
-// @SMALLTODO
-void M3dUtils_ReadLinksPacket(CSuper* a1, void* a2)
+// @Ok
+// @Matching
+void M3dUtils_ReadLinksPacket(CSuper* pSuper, void* pPacket)
 {
-	typedef void (*func_ptr)(CSuper*, void*);
-	func_ptr func = (func_ptr)0x00453C50;
+	i32 NumJoints = reinterpret_cast<u16*>(pPacket)[1];
+	pSuper->mpLinks = reinterpret_cast<SLink*>(reinterpret_cast<i32>(pPacket) + 4);
 
-	func(a1, a2);
+	// @Note: it's important to hoist this calculation or else the funciton wouldn't match
+	// size would be the same but registers and order of instructions would be slightly off here
+	i32 matrixSize = sizeof(SMatrix) * G_PSXREGION[pSuper->mRegion].NumParts;
+	pSuper->mpPoseBuffer = static_cast<SMatrix *>(DCMem_New(
+		matrixSize,
+		0,
+		1,
+		0,
+		1));
+	pSuper->mpJoints = static_cast<SJoint *>(
+			DCMem_New(sizeof(SJoint) * NumJoints, 0, 1, 0, 1));
+
+	for (i32 i = 0; i < NumJoints; ++i )
+	{
+		pSuper->mpJoints[i].Displacement.vz = 0;
+		pSuper->mpJoints[i].Displacement.vy = 0;
+		pSuper->mpJoints[i].Displacement.vx = 0;
+
+		pSuper->mpJoints[i].Angles.vz = 0;
+		pSuper->mpJoints[i].Angles.vy = 0;
+		pSuper->mpJoints[i].Angles.vx = 0;
+	}
+
+	for (i32 j = 0; j < NumJoints; j++)
+	{
+		i32 k;
+		for (k = 0; k < NumJoints; k++)
+		{
+			if (pSuper->mpLinks[j].ParentPart == pSuper->mpLinks[k].Part)
+			{
+				pSuper->mpLinks[j].ParentLink = k;
+				break;
+			}
+		}
+
+		if (k == NumJoints)
+		{
+			pSuper->mpLinks[j].ParentLink = 0xFFFF;
+		}
+	}
 }
 
 // @Ok
@@ -89,4 +129,6 @@ void patch_m3dutils(void)
 {
 	PATCH_PUSH_RET(0x00453C30, M3dUtils_ReadHooksPacket);
 	PATCH_PUSH_RET(0x00454200, M3dUtils_InBetween);
+
+	PATCH_PUSH_RET(0x00453C50, M3dUtils_ReadLinksPacket);
 }
