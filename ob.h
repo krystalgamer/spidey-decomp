@@ -230,7 +230,12 @@ public:
 	u16* mpCalculationOrder;
 	struct SMatrix* mpDecompressedFrame;
 
-	PADDING(0x6);
+	u16 mRoot;
+
+	// @Note: it was a u8
+	u16 mDecompressedAnim;
+	// @Note: it was a i8
+	u16 mDecompressedFrame;
 
 	u8 field_13E;
 	u8 field_13F;

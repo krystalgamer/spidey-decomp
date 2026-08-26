@@ -783,6 +783,11 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, mpCalculationOrder, 0x130);
 	VALIDATE(CSuper, mpDecompressedFrame, 0x134);
 
+	VALIDATE(CSuper, mRoot, 0x138);
+
+	VALIDATE(CSuper, mDecompressedAnim, 0x13A);
+	VALIDATE(CSuper, mDecompressedFrame, 0x13C);
+
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
 
