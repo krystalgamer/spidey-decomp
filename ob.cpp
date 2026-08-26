@@ -472,12 +472,12 @@ void CSuper::UpdateFrame(void){
 		  }
 		}
 	}
-	else if( (this->mAnimDir == 1 && (i16)v6 >= this->field_144)
+	else if( (this->mAnimDir == 1 && (i16)v6 >= this->mTargetFrame)
 		||
-		(v1 == -1 && (i16)v6 <= this->field_144)
+		(v1 == -1 && (i16)v6 <= this->mTargetFrame)
 		)
 	{
-		this->mFrame = this->field_144;
+		this->mFrame = this->mTargetFrame;
 		this->mAnimFinished = 1;
 	}
 }
@@ -571,7 +571,7 @@ void CSuper::RunAnim(
 		res = (to >= from) ? 0 : -1;
 	}
 
-	this->field_144 = to;
+	this->mTargetFrame = to;
 	this->mAnimDir = res;
 	this->mFrame = from;
 	this->mFrameFrac = 0;
@@ -797,7 +797,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, field_143, 0x143);
 
 
-	VALIDATE(CSuper, field_144, 0x144);	
+	VALIDATE(CSuper, mTargetFrame, 0x144);	
 	VALIDATE(CSuper, mFrameFrac, 0x146);	
 
 	VALIDATE(CSuper, mNumFrames, 0x148);	

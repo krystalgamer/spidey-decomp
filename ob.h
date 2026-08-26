@@ -248,7 +248,8 @@ public:
 	u8 field_143;
 
 
-	i16 field_144;
+	// @Note: it was i8
+	i16 mTargetFrame;
 
 	i16 mFrameFrac;
 	i16 mNumFrames;
