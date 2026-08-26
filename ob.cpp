@@ -451,7 +451,7 @@ void CSuper::UpdateFrame(void){
 	  v3 -= v2;
 	v4 = v3;
 	this->mFrameFrac = v3;
-	v5 = (u8)this->field_140;
+	v5 = (u8)this->mAnimMode;
 	v6 = v4 >> 16;
 	this->mFrame = v6;
 
@@ -504,7 +504,7 @@ void CSuper::CycleAnim(i32 anim, i8 animdir)
 		this->mAnimDir = animdir;
 	}
 
-	this->field_140 = 1;
+	this->mAnimMode = 1;
 	this->mAnimFinished = 0;
 }
 
@@ -559,7 +559,7 @@ void CSuper::RunAnim(
 	if (to < 0 || to >= v6)
 		to = 0;
 
-	this->field_140 = 0;
+	this->mAnimMode = 0;
 
 	i32 res;
 	if (to > from)
@@ -791,7 +791,7 @@ void validate_CSuper(void)
 	VALIDATE(CSuper, field_13E, 0x13E);
 	VALIDATE(CSuper, field_13F, 0x13F);
 
-	VALIDATE(CSuper, field_140, 0x140);
+	VALIDATE(CSuper, mAnimMode, 0x140);
 	VALIDATE(CSuper, mAnimDir, 0x141);
 	VALIDATE(CSuper, mAnimFinished, 0x142);
 	VALIDATE(CSuper, field_143, 0x143);

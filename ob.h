@@ -235,12 +235,12 @@ public:
 	// @Note: it was a u8
 	u16 mDecompressedAnim;
 	// @Note: it was a i8
-	u16 mDecompressedFrame;
+	i16 mDecompressedFrame;
 
 	u8 field_13E;
 	u8 field_13F;
 
-	u8 field_140;
+	u8 mAnimMode;
 
 	i8 mAnimDir;
 	u8 mAnimFinished;
@@ -249,6 +249,7 @@ public:
 
 
 	i16 field_144;
+
 	i16 mFrameFrac;
 	i16 mNumFrames;
 
