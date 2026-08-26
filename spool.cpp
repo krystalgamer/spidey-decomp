@@ -1148,6 +1148,9 @@ void validate_SPSXRegion(void)
 	VALIDATE(SPSXRegion, pColourTable, 0x28);
 	VALIDATE(SPSXRegion, pTexWibData, 0x2C);
 	VALIDATE(SPSXRegion, pColourPulseData, 0x30);
+
+	VALIDATE(SPSXRegion, NumParts, 0x38);
+
 	VALIDATE(SPSXRegion, LowRes, 0x3B);
 
 	VALIDATE(SPSXRegion, pAccess, 0x3C);

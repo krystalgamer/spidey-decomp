@@ -3,6 +3,8 @@
 
 #include "spool.h"
 
+#include "my_assert.h"
+
 // @SMALLTODO
 void M3dUtils_ReadLinksPacket(CSuper* a1, void* a2)
 {
@@ -12,37 +14,25 @@ void M3dUtils_ReadLinksPacket(CSuper* a1, void* a2)
 	func(a1, a2);
 }
 
-// @NotOk
-// Revisit and fix globals
-void M3dUtils_InBetween(CSuper *a1)
+// @Ok
+// @Matching
+void M3dUtils_InBetween(CSuper *pSuper)
 {
-
-	typedef void (*func_ptr)(CSuper*);
-
-	func_ptr func = (func_ptr)0x00454200;
-	func(a1);
-	return;
-
-	u16 v1; // cx
-	i32 v2; // ebp
-	i32 v3; // edi
-	i32 v4; // si
-
-	v1 = a1->mAnim;
-	v2 = Animations[17 * a1->mRegion];
-	v3 = (*(unsigned int *)(v2 + 8 * v1 + 8) >> 16) + 1;
-	if (v3 != 1)
+	u32 *pAnimFile = G_PSXREGION[pSuper->mRegion].pAnimFile;
+    i32 Interval =  (pAnimFile[2 * pSuper->mAnim + 2] >> 16) + 1;
+    
+	if (Interval != 1)
 	{
-		v4 = 0;
-		v4 = word_6B2478[34 * a1->mRegion];
-		print_if_false(v4 <= 0x1E, "Too many parts for TweenBuffer");
+		i32 NumParts = G_PSXREGION[pSuper->mRegion].NumParts;
+		ASSERT(NumParts <= 30, "Too many parts for TweenBuffer");
+
 		M3dUtils_InterpolateVectors(
-				4 * v4,
-				v3,
-				reinterpret_cast<u32*>(v2),
-				a1,
+				4 * NumParts,
+				Interval,
+				pAnimFile,
+				pSuper,
 				0,
-				v4);
+				NumParts);
 	}
 }
 
@@ -56,9 +46,12 @@ void M3dUtils_BuildPose(CSuper* pSuper)
 
 
 // @BIGTODO
-void M3dUtils_InterpolateVectors(i32, i32, u32*, CItem*, i32, i32)
+void M3dUtils_InterpolateVectors(i32 NumVectors, i32 Interval, u32* pAnimFile, CItem* pItem, i32 Part, i32 NumParts)
 {
-	printf("void M3dUtils_InterpolateVectors(int, int, unsigned int*, CItem*, int, int)");
+	typedef void (*func_ptr)(i32, i32, u32*, CItem*, i32,i32);
+
+	func_ptr func = (func_ptr)0x00454270;
+	func(NumVectors, Interval, pAnimFile, pItem, Part, NumParts);
 }
 
 // @BIGTODO
@@ -95,4 +88,5 @@ void validate_SHook(void)
 void patch_m3dutils(void)
 {
 	PATCH_PUSH_RET(0x00453C30, M3dUtils_ReadHooksPacket);
+	PATCH_PUSH_RET(0x00454200, M3dUtils_InBetween);
 }
