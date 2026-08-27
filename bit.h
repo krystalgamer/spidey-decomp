@@ -597,6 +597,9 @@ EXPORT extern CTextBox* TextBoxList;
 #define NUM_ANIM_ENTRIES 0x1D
 EXPORT extern SAnimFrame* gAnimTable[NUM_ANIM_ENTRIES];
 
+//#define G_ANIM_TABLE (gAnimTable)
+#define G_ANIM_TABLE (reinterpret_cast<SAnimFrame**>(0x0056EA64))
+
 EXPORT extern i32 TotalBitUsage;
 
 void validate_CFlatBit(void);

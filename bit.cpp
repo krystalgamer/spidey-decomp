@@ -63,7 +63,10 @@ EXPORT char *gAnimNames[29] =
 
 
 
+// @NotOk
+// @FIXME: must be zero initialized
 SAnimFrame* gAnimTable[0x1D];
+
 EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
@@ -1722,17 +1725,14 @@ void CFT4Bit::SetTransparency(unsigned char t){
 }
 
 
-static const unsigned int maxANimTableEntry = 0x1D;
-
 // @Ok
 // @Matching
 INLINE void CFT4Bit::SetAnim(i32 a2)
 {
+	ASSERT(a2 >= 0 && !(static_cast<u32>(a2) >= NUM_ANIM_ENTRIES), "Bad lookup value sent to SetAnim");
+	ASSERT(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
 
-	DoAssert(a2 >= 0 && !(static_cast<u32>(a2) >= maxANimTableEntry), "Bad lookup value sent to SetAnim");
-	DoAssert(this->mDeleteAnimOnDestruction == 0, "mDeleteAnimOnDestruction set?");
-
-	this->mpPSXAnim = gAnimTable[a2];
+	this->mpPSXAnim = G_ANIM_TABLE[a2];
 	this->mNumFrames = *reinterpret_cast<u8*>(&this->mpPSXAnim[-1].pTexture);
 	this->mFrameFrac = 0;
 	this->mFrame = 0;
@@ -2018,6 +2018,7 @@ INLINE void CFT4Bit::SetFrame(i32 a2)
 }
 
 // @Ok
+// @Note: no materialization exists
 INLINE void CFT4Bit::SetTransDecay(i32 decay)
 {
 	this->mTransDecay = decay;
@@ -2598,4 +2599,5 @@ void patch_CFT4Bit(void)
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
 	PATCH_PUSH_RET(0x00408C80, CFT4Bit::SetSemiTransparent);
 	PATCH_PUSH_RET(0x00408CC0, CFT4Bit::SetTint);
+	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
 }
