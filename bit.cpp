@@ -1539,6 +1539,7 @@ INLINE CBit::~CBit()
 }
 
 // @Ok
+// @Matching
 INLINE void CBit::Die(void)
 {
 	DoAssert(this->mProtected == 0, "A protected bit die");
@@ -2572,4 +2573,5 @@ void patch_CBit(void)
 {
 	PATCH_PUSH_RET(0x004088E0, CBit::AttachTo);
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
+	PATCH_PUSH_RET(0x00408930, CBit::Die);
 }
