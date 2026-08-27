@@ -86,7 +86,12 @@ u32 SparkSize = 1;
 // @FIXME - is it really?
 volatile i32 gTimerRelated;
 
-EXPORT CBit* NonRenderedBitList;
+// @Ok
+EXPORT CNonRenderedBit* NonRenderedBitList = 0;
+//#define G_NONRENDEREDBIT_LIST (NonRenderedBitList)
+#define G_NONRENDEREDBIT_LIST (*reinterpret_cast<CNonRenderedBit**>(0x0056EAD8))
+
+
 EXPORT CBit* Linked2EndedBitListLeftover;
 CBit* PolyLineList;
 CBit* GPolyLineList;
@@ -617,7 +622,7 @@ void DisplayGPolyLineList(void**)
 void Bit_Init(void)
 {
 	G_BITCOUNT = 0;
-	NonRenderedBitList = 0;
+	G_NONRENDEREDBIT_LIST = 0;
 	TextBoxList = 0;
 	FlatBitList = 0;
 	Linked2EndedBitListLeftover = 0;
@@ -1656,14 +1661,14 @@ void CQuadBit::SetTexture(Texture *pTex)
 // @Matching
 INLINE CNonRenderedBit::CNonRenderedBit(void)
 {
-	this->AttachTo(&NonRenderedBitList);
+	this->AttachTo(&G_NONRENDEREDBIT_LIST);
 }
 
 // @Ok
 // @Matching
 INLINE CNonRenderedBit::~CNonRenderedBit(void)
 {
-	this->DeleteFrom(&NonRenderedBitList);
+	this->DeleteFrom(&G_NONRENDEREDBIT_LIST);
 }
 
 // @Ok
