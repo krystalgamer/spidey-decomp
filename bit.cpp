@@ -1740,6 +1740,7 @@ INLINE void CFT4Bit::SetAnim(i32 a2)
 }
 
 // @Ok
+// @Matching
 INLINE void CFT4Bit::SetTint(u8 r, u8 g, u8 b)
 {
 	this->mCodeBGR = (this->mCodeBGR & 0xFF000000) | (b << 0x10) | (g << 8) | r;
@@ -2596,4 +2597,5 @@ void patch_CFT4Bit(void)
 {
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
 	PATCH_PUSH_RET(0x00408C80, CFT4Bit::SetSemiTransparent);
+	PATCH_PUSH_RET(0x00408CC0, CFT4Bit::SetTint);
 }
