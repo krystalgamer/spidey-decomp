@@ -16,7 +16,7 @@ void M3dUtils_ReadLinksPacket(CSuper* pSuper, void* pPacket)
 
 	pSuper->mpJoints = static_cast<SJoint*>(Mem_New(sizeof(SJoint) * NumJoints));
 
-	for (i32 i = 0; i < NumJoints; ++i )
+	for (i32 i = 0; i < NumJoints; i++)
 	{
 		pSuper->mpJoints[i].Displacement.vz = 0;
 		pSuper->mpJoints[i].Displacement.vy = 0;

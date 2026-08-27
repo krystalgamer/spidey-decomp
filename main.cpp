@@ -666,6 +666,7 @@ void game_patches(void)
 	patch_CSuper();
 	patch_ps2m3d();
 	patch_m3dutils();
+	patch_CBit();
 }
 
 // @Bogus

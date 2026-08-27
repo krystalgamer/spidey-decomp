@@ -1494,9 +1494,12 @@ CMotionBlur::CMotionBlur(
 
 // @Ok
 // @Matching
-INLINE CBit::CBit() 
+INLINE CBit::CBit()
 {
-	this->mFric.Set(1,1,1);
+	this->mFric.vx = 1;
+	this->mFric.vy = 1;
+	this->mFric.vz = 1;
+	//this->mFric.Set(1,1,1);
 
 	BitCount++;
 }
@@ -1544,19 +1547,14 @@ INLINE void CBit::Die(void)
 
 // @Ok
 // @Matching
-INLINE void CBit::AttachTo(void* to){
+INLINE void CBit::AttachTo(void* p)
+{
+	this->mNext = *reinterpret_cast<CBit**>(p);
+	this->mPrevious = 0;
+	*reinterpret_cast<CBit**>(p) = this;
 
-	CBit* tmp;
-	CBit* result;
-	tmp = *reinterpret_cast<CBit**>(to);
-
-	this->mPrevious = NULL;
-	this->mNext = tmp;
-	*reinterpret_cast<CBit**>(to) = this;
-
-	result = this->mNext;
-	if (result)
-		result->mPrevious = this;
+	if (this->mNext)
+		this->mNext->mPrevious = this;
 }
 
 // @Ok
@@ -2568,4 +2566,11 @@ void validate_CSpark(void)
 	VALIDATE(CSpark, mFadeR, 0x48);
 	VALIDATE(CSpark, mFadeG, 0x49);
 	VALIDATE(CSpark, mFadeB, 0x4A);
+}
+
+#include "my_patch.h"
+
+void patch_CBit(void)
+{
+	PATCH_PUSH_RET(0x004088E0, CBit::AttachTo);
 }

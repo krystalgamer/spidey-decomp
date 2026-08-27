@@ -638,4 +638,6 @@ void validate_CSpark(void);
 EXPORT extern CBit* GLineList;
 EXPORT extern CBit* PolyLineList;
 
+void patch_CBit(void);
+
 #endif
