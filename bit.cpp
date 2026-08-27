@@ -1710,6 +1710,7 @@ INLINE void CFT4Bit::SetScale(u16 s)
 
 
 // @Ok
+// @Matching
 INLINE void CFT4Bit::SetSemiTransparent()
 {
 	this->mCodeBGR |= 0x2000000;
@@ -2594,4 +2595,5 @@ void patch_CBit(void)
 void patch_CFT4Bit(void)
 {
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
+	PATCH_PUSH_RET(0x00408C80, CFT4Bit::SetSemiTransparent);
 }
