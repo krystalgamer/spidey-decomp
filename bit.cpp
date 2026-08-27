@@ -1507,9 +1507,9 @@ INLINE void* CBit::operator new(size_t size) {
 
 	void *pnew;
 	if (TotalBitUsage == 0)
-		pnew = DCMem_New(size, 0, 1, 0, 1);
+		pnew = Mem_New(size);
 	else
-		pnew = DCMem_New(size, 0, 1, 0, 1);
+		pnew = Mem_New(size);
 
 	// Ensure size is a multiple of 4.
 	size = ( size + 3 ) & ~0x03;

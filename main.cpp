@@ -166,7 +166,7 @@ void SpideyMain(void)
 // @Leak
 void* CClass::operator new(size_t size)
 {
-	void *pnew = DCMem_New(size, 0, 1, 0, 1);
+	void *pnew = Mem_New(size);
 
 	// Ensure size is a multiple of 4.
 	size = ( size + 3 ) & ~0x03;

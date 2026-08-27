@@ -12,17 +12,9 @@ void M3dUtils_ReadLinksPacket(CSuper* pSuper, void* pPacket)
 	i32 NumJoints = reinterpret_cast<u16*>(pPacket)[1];
 	pSuper->mpLinks = reinterpret_cast<SLink*>(reinterpret_cast<i32>(pPacket) + 4);
 
-	// @Note: it's important to hoist this calculation or else the funciton wouldn't match
-	// size would be the same but registers and order of instructions would be slightly off here
-	i32 matrixSize = sizeof(SMatrix) * G_PSXREGION[pSuper->mRegion].NumParts;
-	pSuper->mpPoseBuffer = static_cast<SMatrix *>(DCMem_New(
-		matrixSize,
-		0,
-		1,
-		0,
-		1));
-	pSuper->mpJoints = static_cast<SJoint *>(
-			DCMem_New(sizeof(SJoint) * NumJoints, 0, 1, 0, 1));
+	pSuper->mpPoseBuffer = static_cast<SMatrix*>(Mem_New(sizeof(SMatrix) * G_PSXREGION[pSuper->mRegion].NumParts));
+
+	pSuper->mpJoints = static_cast<SJoint*>(Mem_New(sizeof(SJoint) * NumJoints));
 
 	for (i32 i = 0; i < NumJoints; ++i )
 	{

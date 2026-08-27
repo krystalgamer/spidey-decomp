@@ -64,10 +64,10 @@ CBody* CBody::FindBodyByNode(
 }
 
 // @Ok
-// Random move from global to eax and test eax, eax that doesn't change shit
+// @Matching
 void* CItem::operator new(size_t size)
 {
-	void *pnew = DCMem_New(size, 0, 1, 0, 1);
+	void *pnew = Mem_New(size);
 
 	// Ensure size is a multiple of 4.
 	size = ( size + 3 ) & ~0x03;

@@ -55,4 +55,9 @@ void validate_SHandle(void);
 
 void patch_mem(void);
 
+static void* Mem_New(size_t size)
+{
+	return DCMem_New(size, 0, 1, 0, 1);
+}
+
 #endif
