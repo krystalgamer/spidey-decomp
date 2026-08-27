@@ -69,6 +69,10 @@ EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
 
 EXPORT volatile i32 BitCount = 0;
+
+//#define G_BITCOUNT (BitCount)
+#define G_BITCOUNT (*reinterpret_cast<volatile i32*>(0x0056EB48))
+
 i32 TotalBitUsage = 0;
 
 EXPORT CFlatBit *FlatBitList;
@@ -546,7 +550,7 @@ void Bit_DeleteAll(void)
 	DoAssert(GLineList == 0, "GLineList  Leftover protected bits!");
 	DoAssert(SpecialDisplayList == 0, "SpecialDisplayList  Leftover protected bits!");
 
-	DoAssert(BitCount == 0, "Still some bits left");
+	DoAssert(G_BITCOUNT == 0, "Still some bits left");
 }
 
 // @MEDIUMTODO
@@ -612,7 +616,7 @@ void DisplayGPolyLineList(void**)
 // @Ok
 void Bit_Init(void)
 {
-	BitCount = 0;
+	G_BITCOUNT = 0;
 	NonRenderedBitList = 0;
 	TextBoxList = 0;
 	FlatBitList = 0;
@@ -1501,7 +1505,7 @@ INLINE CBit::CBit()
 	this->mFric.vz = 1;
 	//this->mFric.Set(1,1,1);
 
-	BitCount++;
+	G_BITCOUNT++;
 }
 
 // @Ok
@@ -1535,7 +1539,7 @@ void CBit::operator delete(void* ptr)
 // @Matching
 INLINE CBit::~CBit()
 {
-	--BitCount;
+	--G_BITCOUNT;
 }
 
 // @Ok
