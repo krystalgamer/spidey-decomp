@@ -65,15 +65,18 @@ CBody* CBody::FindBodyByNode(
 
 // @Ok
 // Random move from global to eax and test eax, eax that doesn't change shit
-void* CItem::operator new(size_t size) {
+void* CItem::operator new(size_t size)
+{
+	void *pnew = DCMem_New(size, 0, 1, 0, 1);
 
-  void *result = DCMem_New(size, 0, 1, 0, 1);
+	// Ensure size is a multiple of 4.
+	size = ( size + 3 ) & ~0x03;
 
-  unsigned int adjusted_size = ((size + 3) & 0xFFFFFFFC) >> 2;
-  if ( adjusted_size )
-    memset(result, 0, 4 * adjusted_size);
+	// Zero all the newly allocated memory
+	u32 *p=(u32 *)pnew;
+	for (i32 i=0; i<size/4; ++i) *p++=0;
 
-  return result;
+	return pnew;
 }
 
 // @Ok

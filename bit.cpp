@@ -1501,32 +1501,24 @@ INLINE CBit::CBit()
 	BitCount++;
 }
 
-// @NotOk
-/*
- * With optimizations the >>=2 expression is removed
- * taking a look at THPS2 it shows it's due
- * to it storing the result in a global variable. For some reason
- * both PC and MAC remove the store
- */
+// @Ok
+// @Matching
 INLINE void* CBit::operator new(size_t size) {
 
-	void *result;
+	void *pnew;
 	if (TotalBitUsage == 0)
-		result = DCMem_New(size, 0, 1, 0, 1);
+		pnew = DCMem_New(size, 0, 1, 0, 1);
 	else
-		result = DCMem_New(size, 0, 1, 0, 1);
+		pnew = DCMem_New(size, 0, 1, 0, 1);
 
-	unsigned int quarter = size + 3;
-	quarter &= 0xFFFFFFFC;
-	/*
-	TotalBitUsage += 4 + quarter;
-	*/
-	quarter >>= 2; // optimized out 
+	// Ensure size is a multiple of 4.
+	size = ( size + 3 ) & ~0x03;
 
-	if (quarter)
-		memset(result, 0, 4 * quarter);
+	// Zero all the newly allocated memory
+	u32 *p=(u32 *)pnew;
+	for (i32 i=0; i<size/4; ++i) *p++=0;
 
-	return result;
+	return pnew;
 }
 
 
