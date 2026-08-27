@@ -1679,7 +1679,9 @@ INLINE CNonRenderedBit::~CNonRenderedBit(void)
 }
 
 // @Ok
-// @Matching
+// @Note: not matererialized. it's very weird on PSX and on PowerPC
+// according to the symbols there's no local variable and i can't seem to
+// be able to write it without it.
 INLINE void CFT4Bit::IncFrame(void)
 {
 	i16 val = ((this->mFrame << 8) | this->mFrameFrac) + this->mAnimSpeed;
@@ -2603,4 +2605,7 @@ void patch_CFT4Bit(void)
 
 	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
 	PATCH_PUSH_RET(0x00408E90, CFT4Bit::SetFrame);
+
+
+	PATCH_PUSH_RET(0x0040F980, CSimpleAnim::Move);
 }
