@@ -76,7 +76,11 @@ EXPORT volatile i32 BitCount = 0;
 i32 TotalBitUsage = 0;
 
 EXPORT CFlatBit *FlatBitList;
-EXPORT CSpecialDisplay *SpecialDisplayList;
+
+// @Ok
+EXPORT CSpecialDisplay *SpecialDisplayList = 0;
+//#define G_SPECIALDISPLAY_LIST (SpecialDisplayList)
+#define G_SPECIALDISPLAY_LIST (*reinterpret_cast<CSpecialDisplay**>(0x0056EB34))
 
 
 EXPORT CPixel* PixelList;
@@ -207,7 +211,7 @@ CSpark::~CSpark(void)
 // @Ok
 INLINE CSpecialDisplay::~CSpecialDisplay(void)
 {
-	this->DeleteFrom(reinterpret_cast<CBit**>(&SpecialDisplayList));
+	this->DeleteFrom(&G_SPECIALDISPLAY_LIST);
 }
 
 // @Ok
@@ -635,7 +639,7 @@ void Bit_Init(void)
 	GlowList = 0;
 	GlassList = 0;
 	GLineList = 0;
-	SpecialDisplayList = 0;
+	G_SPECIALDISPLAY_LIST = 0;
 
 	if (gBitServer)
 	{
@@ -654,7 +658,7 @@ void Bit_Init(void)
 
 		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GlassList), DisplayGlassList);
 		gBitServer->RegisterSlot(reinterpret_cast<void**>(&GLineList), DisplayGLineList);
-		gBitServer->RegisterSlot(reinterpret_cast<void**>(&SpecialDisplayList), DisplaySpecialDisplayList);
+		gBitServer->RegisterSlot(reinterpret_cast<void**>(&G_SPECIALDISPLAY_LIST), DisplaySpecialDisplayList);
 	}
 
 	setDrawTPage();
@@ -1883,7 +1887,7 @@ void Bit_SetSparkFadeRGB(u8 r, u8 g, u8 b)
 // @Ok
 INLINE CSpecialDisplay::CSpecialDisplay(void)
 {
-	this->AttachTo(reinterpret_cast<CBit**>(&SpecialDisplayList));
+	this->AttachTo(&G_SPECIALDISPLAY_LIST);
 }
 
 // @Ok
