@@ -162,15 +162,20 @@ void SpideyMain(void)
 }
 
 // @Ok
+// @Matching
+// @Leak
 void* CClass::operator new(size_t size)
 {
-	void *result = DCMem_New(size, 0, 1, 0, 1);
+	void *pnew = DCMem_New(size, 0, 1, 0, 1);
 
-	unsigned int adjusted_size = ((size + 3) & 0xFFFFFFFC) >> 2;
-	if ( adjusted_size )
-		memset(result, 0, 4 * adjusted_size);
+	// Ensure size is a multiple of 4.
+	size = ( size + 3 ) & ~0x03;
 
-	return result;
+	// Zero all the newly allocated memory
+	u32 *p=(u32 *)pnew;
+	for (i32 i=0; i<size/4; ++i) *p++=0;
+
+	return pnew;
 }
 
 // @Ok
