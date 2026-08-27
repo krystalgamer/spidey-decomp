@@ -2590,3 +2590,8 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
 }
+
+void patch_CFT4Bit(void)
+{
+	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
+}
