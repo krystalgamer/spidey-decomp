@@ -2006,12 +2006,13 @@ void Bit_ReduceRGB(unsigned int*, int)
 }
 
 // @Ok
-INLINE void CFT4Bit::SetFrame(i32 a2)
+// @Matching
+INLINE void CFT4Bit::SetFrame(i32 frame)
 {
-	DoAssert(a2 >= 0 && a2 < this->mNumFrames, "Bad frame sent to SetFrame");
-	DoAssert(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
+	ASSERT(frame >= 0 && frame < this->mNumFrames, "Bad frame sent to SetFrame");
+	ASSERT(this->mpPSXAnim != 0, "SetFrame called before SetAnim");
 
-	this->mFrame = a2;
+	this->mFrame = frame;
 	this->mFrameFrac = 0;
 
 	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
@@ -2599,5 +2600,7 @@ void patch_CFT4Bit(void)
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
 	PATCH_PUSH_RET(0x00408C80, CFT4Bit::SetSemiTransparent);
 	PATCH_PUSH_RET(0x00408CC0, CFT4Bit::SetTint);
+
 	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
+	PATCH_PUSH_RET(0x00408E90, CFT4Bit::SetFrame);
 }
