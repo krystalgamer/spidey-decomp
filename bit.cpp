@@ -1565,21 +1565,19 @@ void CBit::SetPos(const CVector &pos){
 
 
 // @Ok
-INLINE void CBit::DeleteFrom(CBit **lst){
-	
-	CBit* next = this->mNext;
-	if(next != NULL){
-		next->mPrevious = this->mPrevious;
-	}
+// @Matching
+INLINE void CBit::DeleteFrom(void *p)
+{
+	if (this->mNext)
+		this->mNext->mPrevious = this->mPrevious;
 
-	CBit* prev = this->mPrevious;
-	if(prev != NULL){
-		prev->mNext = this->mNext;
-	}
+	if (this->mPrevious)
+		this->mPrevious->mNext = this->mNext;
 
-	if(*lst == this){
-		*lst = this->mNext;
-	}
+	CBit **ppList = reinterpret_cast<CBit**>(p);
+
+	if (*ppList == this)
+		*ppList = this->mNext;
 }
 
 // @Ok
@@ -2573,4 +2571,5 @@ void validate_CSpark(void)
 void patch_CBit(void)
 {
 	PATCH_PUSH_RET(0x004088E0, CBit::AttachTo);
+	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 }

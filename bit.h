@@ -154,7 +154,7 @@ class CBit
 		EXPORT void Die();
 		EXPORT void AttachTo(void*);
 		EXPORT void SetPos(const CVector &pos);
-		EXPORT void DeleteFrom(CBit **lst);
+		EXPORT void DeleteFrom(void*);
 };
 
 class CQuadBit : public CBit {

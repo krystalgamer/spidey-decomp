@@ -234,10 +234,10 @@ INLINE void CBody::AttachTo(CBody** ppList)
 
 // @Ok
 // @Matching
-INLINE void CBody::DeleteFrom(CBody **a2)
+INLINE void CBody::DeleteFrom(CBody **ppList)
 {
 
-	if(this->mCBodyFlags & CBODY_SUSPENDED && a2 != &G_SUSPENEDED_LIST)
+	if(this->mCBodyFlags & CBODY_SUSPENDED && ppList != &G_SUSPENEDED_LIST)
 	{
 		this->UnSuspend();
 	}
@@ -248,8 +248,8 @@ INLINE void CBody::DeleteFrom(CBody **a2)
 	if (this->mPreviousItem)
 		this->mPreviousItem->mNextItem = this->mNextItem;
 
-	if (*a2 == this)
-		*a2 = reinterpret_cast<CBody*>(this->mNextItem);
+	if (*ppList == this)
+		*ppList = reinterpret_cast<CBody*>(this->mNextItem);
 }
 
 // @Ok
