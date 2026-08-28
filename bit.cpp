@@ -1723,7 +1723,9 @@ INLINE void CFT4Bit::SetSemiTransparent()
 }
 
 // @Ok
-void CFT4Bit::SetTransparency(unsigned char t){
+// @Matching
+void CFT4Bit::SetTransparency(u8 t)
+{
 	this->mCodeBGR = t | this->mCodeBGR & 0xFF000000 | ((t | (t << 8)) << 8);
 }
 
@@ -2604,6 +2606,7 @@ void patch_CFT4Bit(void)
 	PATCH_PUSH_RET_POLY(0x00408DF0, CFT4Bit::SetTexture, "?SetTexture@CFT4Bit@@QAEXPAUTexture@@@Z");
 	PATCH_PUSH_RET(0x00408EF0, CFT4Bit::Fade);
 	PATCH_PUSH_RET(0x00408C60, CFT4Bit::SetAnimSpeed);
+	PATCH_PUSH_RET(0x00408C90, CFT4Bit::SetTransparency);
 
 	PATCH_PUSH_RET_POLY(0x004C9460, CFT4Bit::SetTexture, "?Spool_FindTextureEntry@@YAPAUTexture@@I@Z");
 
