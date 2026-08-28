@@ -1749,30 +1749,24 @@ INLINE void CFT4Bit::SetTint(u8 r, u8 g, u8 b)
 }
 
 // @Ok
+// @Matching
 void CFT4Bit::SetTexture(Texture* pTexture)
 {
-	int v4; // ecx
-	int v5; // eax
-	int v6; // edx
-	int v7; // ecx
+	ASSERT(this->mpPSXAnim == 0, "mpPSXAnim already set?");
+	ASSERT(pTexture != 0, "No Texture for SetTexture");
 
-	DoAssert(this->mpPSXAnim == 0, "mpPSXAnim already set?");
-	DoAssert(pTexture != 0, "No Texture for SetTexture");
-
-	this->mpPSXAnim = static_cast<SAnimFrame*>(DCMem_New(sizeof(SAnimFrame), 0, 1, 0, 1));
-
+	this->mpPSXAnim = static_cast<SAnimFrame*>(Mem_New(sizeof(SAnimFrame)));
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (u8)pTexture->v2;
-	v5 = (u8)pTexture->u1 - (u8)pTexture->u0;
-	v6 = (u8)pTexture->v0;
+	i32 w = pTexture->u1 - pTexture->u0;
+	i32 h = pTexture->v2 - pTexture->v0;
 
-	this->mpPSXAnim->Width = v5;
+	this->mpPSXAnim->Width = w;
+	this->mpPSXAnim->Height = h;
 
-	v7 = v4 - v6;
-	this->mpPSXAnim->Height = v7;
-	this->mpPSXAnim->OffX = v5 / -2;
-	this->mpPSXAnim->OffY = v7 / -2;
+	this->mpPSXAnim->OffX = w / -2;
+	this->mpPSXAnim->OffY = h / -2;
+
 	this->mpPSXAnim->pTexture = pTexture;
 	this->mpPSXFrame = this->mpPSXAnim;
 
@@ -1955,9 +1949,19 @@ void CRibbonBit::Move(void)
 	this->IncFrameWithWrap();
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Note: not materialized, got it from CRibbonBit::Move
 void CFT4Bit::IncFrameWithWrap(void)
 {
+	i16 val = ((this->mFrame << 8) | this->mFrameFrac) + this->mAnimSpeed;
+
+	this->mFrame = val >> 8;
+	this->mFrameFrac = val;
+
+	if (this->mFrame >= this->mNumFrames)
+		this->mFrame = 0;
+
+	this->mpPSXFrame = &this->mpPSXAnim[this->mFrame];
 }
 
 /*
@@ -2589,6 +2593,7 @@ void validate_CSpark(void)
 
 #include "my_patch.h"
 
+// @Bogus
 void patch_CBit(void)
 {
 	PATCH_PUSH_RET(0x004088E0, CBit::AttachTo);
@@ -2597,6 +2602,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
 }
 
+// @Bogus
 void patch_CFT4Bit(void)
 {
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
@@ -2605,7 +2611,7 @@ void patch_CFT4Bit(void)
 
 	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
 	PATCH_PUSH_RET(0x00408E90, CFT4Bit::SetFrame);
+	PATCH_PUSH_RET_POLY(0x00408DF0, CFT4Bit::SetTexture, "?SetTexture@CFT4Bit@@QAEXPAUTexture@@@Z");
 
-
-	PATCH_PUSH_RET(0x0040F980, CSimpleAnim::Move);
+	PATCH_PUSH_RET_POLY(0x0040F980, CSimpleAnim::Move, "?Move@CSimpleAnim@@UAEXXZ");
 }
