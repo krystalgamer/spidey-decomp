@@ -211,7 +211,7 @@ class CFT4Bit : public CBit
 		EXPORT void SetTransDecay(i32);
 		EXPORT void IncFrame(void);
 
-		u16 mTransDecay;
+		i16 mTransDecay;
 		u16 field_3E;
 		u32 mCodeBGR;
 

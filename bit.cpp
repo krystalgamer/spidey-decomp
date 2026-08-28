@@ -1558,7 +1558,7 @@ INLINE CBit::~CBit()
 // @Matching
 INLINE void CBit::Die(void)
 {
-	DoAssert(this->mProtected == 0, "A protected bit die");
+	ASSERT(this->mProtected == 0, "A protected bit die");
 	this->mDead = 1;
 }
 
@@ -1800,39 +1800,34 @@ void CFT4Bit::SetTexture(u32 Checksum)
 	this->mNumFrames = 1;
 }
 
-// @NotOk
-// not matching becausae they assign all mCodeBGR at beggining
-i32 CFT4Bit::Fade(i32 a2)
+// @Ok
+// @Matching
+i32 CFT4Bit::Fade(i32 die)
 {
-	i32 mCodeBGR = this->mCodeBGR;
-
-	if (!(mCodeBGR & 0xFFFFFF))
+	if (!(this->mCodeBGR & 0xFFFFFF))
 	{
-		this->Die();
+		if (die)
+		{
+			this->Die();
+		}
+
 		return 1;
 	}
 
-	u16 v6 = this->mTransDecay;
-	u8 v10;
-	if (v6 > (u16)(this->mCodeBGR & 0xFF))
-		v10 = 0;
-	else
-		v10 = (this->mCodeBGR & 0xFF) - (this->mTransDecay & 0xFF);
+	u8 r = (this->mCodeBGR) & 0xFF;
+	u8 g = (this->mCodeBGR >> 8) & 0xFF;
+	u8 b = (this->mCodeBGR >> 16) & 0xFF;
 
-	u8 v7;
-	if (v6 > (u16)((this->mCodeBGR & 0xFF00) >> 8))
-		v7 = 0;
-	else
-		v7 = ((this->mCodeBGR & 0xFF00) >> 8) - (this->mTransDecay & 0xFF);
+#define DECAY_COLOR(x) if (this->mTransDecay > (x)) (x) = 0; else (x) -= this->mTransDecay;
 
-	u8 v8;
-	if (v6 > (u16)((this->mCodeBGR & 0xFF0000) >> 16))
-		v8 = 0;
-	else
-		v8 = ((this->mCodeBGR & 0xFFFF00) >> 16) - (this->mTransDecay & 0xFF);
+	DECAY_COLOR(r);
+	DECAY_COLOR(g);
+	DECAY_COLOR(b);
+
+#undef DECAY_COLOR 
 
 
-	this->mCodeBGR = (mCodeBGR & 0xFF000000) | (((v8 << 8) | v7) << 8) | v10;
+	this->mCodeBGR = (this->mCodeBGR & 0xFF000000) | r | (g << 8) | (b << 16);
 
 	return 0;
 }
@@ -2606,6 +2601,8 @@ void patch_CFT4Bit(void)
 	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
 	PATCH_PUSH_RET(0x00408E90, CFT4Bit::SetFrame);
 	PATCH_PUSH_RET_POLY(0x00408DF0, CFT4Bit::SetTexture, "?SetTexture@CFT4Bit@@QAEXPAUTexture@@@Z");
+	PATCH_PUSH_RET(0x00408EF0, CFT4Bit::Fade);
+
 	PATCH_PUSH_RET_POLY(0x004C9460, CFT4Bit::SetTexture, "?Spool_FindTextureEntry@@YAPAUTexture@@I@Z");
 
 	PATCH_PUSH_RET_POLY(0x0040F980, CSimpleAnim::Move, "?Move@CSimpleAnim@@UAEXXZ");
