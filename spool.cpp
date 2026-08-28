@@ -1065,9 +1065,14 @@ void Spool_ClearAllPSXs(void)
 	Spool_RemoveUnusedTextures();
 }
 
-// @Ok
+// @SMALLTODO
 Texture *Spool_FindTextureEntry(u32 checksum)
 {
+	//@FIXME
+	typedef Texture* (*func_ptr)(u32);
+	func_ptr func = (func_ptr)0x004C9460;
+	return func(checksum);
+
 	Texture *pSearch;
 	for (pSearch = TextureChecksumHashTable[checksum & 511];
 			pSearch;

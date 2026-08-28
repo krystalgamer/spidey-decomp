@@ -1774,32 +1774,26 @@ void CFT4Bit::SetTexture(Texture* pTexture)
 }
 
 // @Ok
-void CFT4Bit::SetTexture(unsigned int Checksum)
+// @Matching
+void CFT4Bit::SetTexture(u32 Checksum)
 {
-	int v4; // ecx
-	int v5; // eax
-	int v6; // edx
-	int v7; // ecx
-
-	DoAssert(this->mpPSXAnim == 0, "mpPSXAnim already set?");
+	ASSERT(this->mpPSXAnim == 0, "mpPSXAnim already set?");
 
 	Texture *pTexture = Spool_FindTextureEntry(Checksum);
-	print_if_false(pTexture != 0, "Bad checksum sent to SetTexture");
+	ASSERT(pTexture != 0, "No Texture for SetTexture");
 
-	this->mpPSXAnim = static_cast<SAnimFrame*>(DCMem_New(sizeof(SAnimFrame), 0, 1, 0, 1));
-
+	this->mpPSXAnim = static_cast<SAnimFrame*>(Mem_New(sizeof(SAnimFrame)));
 	this->mDeleteAnimOnDestruction = 1;
 
-	v4 = (u8)pTexture->v2;
-	v5 = (u8)pTexture->u1 - (u8)pTexture->u0;
-	v6 = (u8)pTexture->v0;
+	i32 w = pTexture->u1 - pTexture->u0;
+	i32 h = pTexture->v2 - pTexture->v0;
 
-	this->mpPSXAnim->Width = v5;
+	this->mpPSXAnim->Width = w;
+	this->mpPSXAnim->Height = h;
 
-	v7 = v4 - v6;
-	this->mpPSXAnim->Height = v7;
-	this->mpPSXAnim->OffX = v5 / -2;
-	this->mpPSXAnim->OffY = v7 / -2;
+	this->mpPSXAnim->OffX = w / -2;
+	this->mpPSXAnim->OffY = h / -2;
+
 	this->mpPSXAnim->pTexture = pTexture;
 	this->mpPSXFrame = this->mpPSXAnim;
 
@@ -2612,6 +2606,7 @@ void patch_CFT4Bit(void)
 	PATCH_PUSH_RET(0x00408CF0, CFT4Bit::SetAnim);
 	PATCH_PUSH_RET(0x00408E90, CFT4Bit::SetFrame);
 	PATCH_PUSH_RET_POLY(0x00408DF0, CFT4Bit::SetTexture, "?SetTexture@CFT4Bit@@QAEXPAUTexture@@@Z");
+	PATCH_PUSH_RET_POLY(0x004C9460, CFT4Bit::SetTexture, "?Spool_FindTextureEntry@@YAPAUTexture@@I@Z");
 
 	PATCH_PUSH_RET_POLY(0x0040F980, CSimpleAnim::Move, "?Move@CSimpleAnim@@UAEXXZ");
 }
