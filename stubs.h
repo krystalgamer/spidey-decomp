@@ -38,8 +38,13 @@ EXPORT void ADXT_Finish(void);
 EXPORT void ADXT_StartAfs(i32, i32, i32);
 EXPORT i32 ADXT_GetStat(i32);
 EXPORT void ADXT_Init(void);
-EXPORT void ADXT_Stop(void);
-EXPORT i32 ADXT_Create(void);
+EXPORT void ADXT_Stop(i32);
+EXPORT void ADXT_Destroy(i32);
+EXPORT void ADXERR_EntryErrFunc(void (*)(void*, char*), void*);
+EXPORT i32 ADXF_LoadPartition(i32, const char*, void*, i32);
+EXPORT void Sb_SemWait(i32);
+EXPORT void Sb_SemSignal(i32);
+EXPORT i32 ADXT_Create(i32, void*, i32);
 EXPORT void ADXT_Pause(i32, i32);
 EXPORT void ADXT_SetOutVol(i32, i32);
 

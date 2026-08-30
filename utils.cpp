@@ -7,6 +7,8 @@
 #include "spool.h"
 #include "m3dzone.h"
 #include "my_assert.h"
+#include "ps2redbook.h"
+#include "stubs.h"
 
 extern CBody *EnvironmentalObjectList;
 extern CBody *ControlBaddyList;
@@ -474,10 +476,65 @@ i32 Utils_ShiftFilter(i32 a1,i32 a2,i32 delta, i32 a4)
 	return ((a2 - a1) >> delta) + a1;
 }
 
-// @SMALLTODO
+// two packed 16 bit vblank countdown timers, THPS2 declares GameFade in utils.h
+//#define G_GAME_FADE (GameFade)
+#define G_GAME_FADE (*reinterpret_cast<volatile i32*>(0x006B4C9C))
+
+// gates the delayed XA restart, also checked by Logic, Display and Front_Update
+//#define G_POST_WATER_EFFECT (gPostWaterEffect)
+#define G_POST_WATER_EFFECT (*reinterpret_cast<i32*>(0x005FAE98))
+
+// @Ok
+// @AlmostMatching: G_POST_WATER_EFFECT (0x5FAE98) is compared from memory instead of a cached register,
+// and the Redbook_XAPlay argument loads use swapped registers (eax/edx)
 void Utils_VblankProcessing(void)
 {
-    printf("Utils_VblankProcessing(void)");
+	if (G_GAME_FADE)
+	{
+		if (G_GAME_FADE & 0xFFFF0000)
+			G_GAME_FADE -= 0x10000;
+		else
+			--G_GAME_FADE;
+	}
+
+	if (G_REDBOOK_BUSY)
+	{
+		if (ADXT_GetStat(G_ADXT) == 4)
+		{
+			G_REDBOOK_BUSY = 0;
+			G_CARNAGE_XA_RELATED = 1;
+			G_CARNAGE_XA_RELATED_TWO = 30;
+			G_REDBOOK_XA_CURRENT_PRIORITY = -1;
+		}
+
+		return;
+	}
+
+	if (G_CARNAGE_XA_RELATED_TWO)
+	{
+		if (G_POST_WATER_EFFECT)
+			return;
+
+		if (--G_CARNAGE_XA_RELATED_TWO)
+			return;
+
+		i32 pendingOne = G_PENDING_XA_ONE;
+		i32 pendingTwo = G_PENDING_XA_TWO;
+		i32 pendingThree = G_PENDING_XA_THREE;
+
+		if (pendingThree | pendingTwo | pendingOne)
+		{
+			Redbook_XAPlay(pendingOne, pendingTwo, pendingThree);
+
+			G_PENDING_XA_THREE = 0;
+			G_PENDING_XA_TWO = 0;
+			G_PENDING_XA_ONE = 0;
+		}
+	}
+	else if (!G_POST_WATER_EFFECT)
+	{
+		Redbook_XAReset();
+	}
 }
 
 // @Ok
@@ -1006,4 +1063,5 @@ void patch_utils(void)
 	PATCH_PUSH_RET(0x004E6520, Utils_GenerateCRC);
 	PATCH_PUSH_RET(0x004E6150, Utils_Dist);
 	PATCH_PUSH_RET(0x004E65E0, Utils_CopyString);
+	PATCH_PUSH_RET(0x004E5C10, Utils_VblankProcessing);
 }

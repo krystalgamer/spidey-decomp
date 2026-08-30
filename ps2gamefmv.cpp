@@ -10,9 +10,6 @@
 #include "validate.h"
 
 EXPORT i32 GameFMV_Active;
-
-//#define G_GAME_FMV_ACTIVE (GameFMV_Active)
-#define G_GAME_FMV_ACTIVE (*reinterpret_cast<i32*>(0x006151F8))
 EXPORT u8 GameFMV_CurrentTrack;
 
 EXPORT i32 gGameFmvOne;
