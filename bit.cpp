@@ -2613,6 +2613,10 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET_POLY(
+		0x004090E0,
+		CQuadBit::SetTexture,
+		"?SetTexture@CQuadBit@@QAEXHH@Z");
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
 }
 
