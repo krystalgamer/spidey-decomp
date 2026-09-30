@@ -1599,6 +1599,7 @@ INLINE void CBit::DeleteFrom(void *p)
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 {
   this->mTint = a2 | ((a4 << 16) & 0xFF0000 | (a3 << 8) & 0xFF00) & 0xFFFFFF00;
@@ -2592,6 +2593,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET(0x004093C0, CQuadBit::SetTint);
 }
 
 // @Bogus
