@@ -1623,6 +1623,7 @@ void CQuadBit::SetSubtractiveTransparency(){
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5)
 {
 	this->mPos = a2;
@@ -2592,6 +2593,10 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET_POLY(
+		0x004092C0,
+		CQuadBit::SetCorners,
+		"?SetCorners@CQuadBit@@QAEXABVCVector@@000@Z");
 }
 
 // @Bogus
