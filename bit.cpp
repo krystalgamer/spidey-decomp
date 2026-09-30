@@ -1612,6 +1612,7 @@ void CQuadBit::SetSemiTransparent()
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetOpaque(){
 	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFDBF) | 0x80;
 }
@@ -2592,6 +2593,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET(0x004093B0, CQuadBit::SetOpaque);
 }
 
 // @Bogus
