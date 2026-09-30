@@ -209,6 +209,19 @@ CVector operator*(const CVector& lhs, const CVector& other){
 }
 
 // @Ok
+// @Matching
+CVector operator-(const CVector& lhs, const CVector& other)
+{
+	CVector res;
+
+	res.vx = lhs.vx - other.vx;
+	res.vy = lhs.vy - other.vy;
+	res.vz = lhs.vz - other.vz;
+
+	return res;
+}
+
+// @Ok
 CVector operator+(const CVector& lhs, const CVector& other){
 
 	CVector res;

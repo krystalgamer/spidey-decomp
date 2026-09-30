@@ -92,17 +92,7 @@ class CVector
 
 EXPORT CVector operator/(const CVector& lhs, const int& other);
 
-// @Ok
-INLINE CVector operator-(const CVector& lhs, const CVector& other)
-{
-	CVector res;
-
-	res.vx = lhs.vx - other.vx;
-	res.vy = lhs.vy - other.vy;
-	res.vz = lhs.vz - other.vz;
-
-	return res;
-}
+EXPORT CVector operator-(const CVector& lhs, const CVector& other);
 
 EXPORT CVector operator*(const CVector& lhs, const int& other);
 EXPORT CVector operator*(const CVector& lhs, const CVector& other);
