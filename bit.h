@@ -184,6 +184,7 @@ public:
 	EXPORT void SetOpaque();
 	EXPORT void SetSubtractiveTransparency();
 	EXPORT void SetCorners(const CVector &a2, const CVector &a3, const CVector &a4, const CVector &a5);
+	EXPORT void SetCorners(const CVector *a2, const CVector *a3, const CVector *a4, const CVector *a5);
 	EXPORT void SetTransparency(u8 a2);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32);
 	EXPORT void OrientUsing(CVector *, SVECTOR *, i32, i32, i32);

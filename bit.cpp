@@ -1631,6 +1631,25 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 	this->mPosD = a5;
 }
 
+void CQuadBit::SetCorners(const CVector *a2, const CVector *a3, const CVector *a4, const CVector *a5)
+{
+	this->mPos.vx = a2->vx;
+	this->mPos.vy = a2->vy;
+	this->mPos.vz = a2->vz;
+
+	this->mPosB.vx = a3->vx;
+	this->mPosB.vy = a3->vy;
+	this->mPosB.vz = a3->vz;
+
+	this->mPosC.vx = a4->vx;
+	this->mPosC.vy = a4->vy;
+	this->mPosC.vz = a4->vz;
+
+	this->mPosD.vx = a5->vx;
+	this->mPosD.vy = a5->vy;
+	this->mPosD.vz = a5->vz;
+}
+
 // @Ok
 void CQuadBit::SetTransparency(unsigned char a2){
 	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
