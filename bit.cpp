@@ -2609,6 +2609,15 @@ void patch_CBit(void)
 }
 
 // @Bogus
+void patch_CQuadBit(void)
+{
+	PATCH_PUSH_RET_POLY(
+		0x00409400,
+		CQuadBit::OrientUsing,
+		"?OrientUsing@CQuadBit@@QAEXPAVCVector@@PAUSVECTOR@@HH@Z");
+}
+
+// @Bogus
 void patch_CFT4Bit(void)
 {
 	PATCH_PUSH_RET(0x00408C70, CFT4Bit::SetScale);
