@@ -1632,6 +1632,7 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetTransparency(unsigned char a2){
 	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
 }
@@ -2592,6 +2593,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET(0x004093E0, CQuadBit::SetTransparency);
 }
 
 // @Bogus
