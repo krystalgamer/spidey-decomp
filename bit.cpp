@@ -1643,7 +1643,7 @@ void CQuadBit::OrientUsing(CVector *a2, SVECTOR *a3, int a4, int a5)
 
 // @Ok
 // @Matching
-void CQuadBit::SetTexture(int a, int b)
+void CQuadBit::SetTexture(i32 a, i32 b)
 {
 	ASSERT(a >= 0 && !(static_cast<u32>(a) >= NUM_ANIM_ENTRIES),
 		"Bad lookup value sent to CQuadBit::SetTexture");
