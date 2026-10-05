@@ -1648,7 +1648,7 @@ void CQuadBit::SetTexture(int a, int b){
 
 // @Ok
 // @Matching
-void CQuadBit::SetTexture(char *a, int b)
+void CQuadBit::SetTexture(char *a, i32 b)
 {
 	SAnimFrame *pAnim = Spool_FindAnim(a, 1);
 
