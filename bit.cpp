@@ -1647,6 +1647,26 @@ void CQuadBit::SetTexture(int a, int b){
 }
 
 // @Ok
+// @Matching
+void CQuadBit::SetTexture(char *a, i32 b)
+{
+	SAnimFrame *pAnim = Spool_FindAnim(a, 1);
+
+	ASSERT(b >= 0 && b < *reinterpret_cast<i32*>(&pAnim[-1].pTexture),
+		"Bad frame sent to CQuadBit::SetTexture");
+
+	this->mpTexture = pAnim[b].pTexture;
+
+	if (this->mpTexture->field_12 & 0xF0)
+		this->mCodeBGR |= 0x20u;
+
+	this->field_74 = *reinterpret_cast<u32*>(&this->mpTexture->u0);
+	this->field_78 = *reinterpret_cast<u32*>(&this->mpTexture->u1);
+	this->field_7C = *reinterpret_cast<u32*>(&this->mpTexture->u2);
+	this->field_80 = this->mpTexture->TexWin;
+}
+
+// @Ok
 // @Matching: the assingments are weird bro
 void CQuadBit::SetTexture(Texture *pTex)
 {
@@ -2592,6 +2612,10 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET_POLY(
+		0x00409190,
+		CQuadBit::SetTexture,
+		"?SetTexture@CQuadBit@@QAEXPADH@Z");
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
 }
 
