@@ -1608,7 +1608,7 @@ void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 // @Ok
 void CQuadBit::SetSemiTransparent()
 {
-	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFFFE) | 0x2C0;
+    this->mCodeBGR = (this->mCodeBGR & 0xFFFFFEFF) | 0x2C0;
 }
 
 // @Ok
@@ -2593,6 +2593,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408900, CBit::DeleteFrom);
 	PATCH_PUSH_RET(0x00408930, CBit::Die);
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
+	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
 	PATCH_PUSH_RET(0x004093B0, CQuadBit::SetOpaque);
 }
 
