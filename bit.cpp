@@ -1631,6 +1631,8 @@ void CQuadBit::SetCorners(const CVector &a2, const CVector &a3, const CVector &a
 	this->mPosD = a5;
 }
 
+// @Ok
+// @Matching
 void CQuadBit::SetCorners(const CVector *a2, const CVector *a3, const CVector *a4, const CVector *a5)
 {
 	this->mPos.vx = a2->vx;
