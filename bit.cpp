@@ -1975,16 +1975,19 @@ void CGlow::SetRadius(int radius)
 	}
 }
 
-// @NotOk
-// slightly different register allocation
+// @Ok
+// @Matching
 void CSimpleTexturedRibbon::SetRGB(unsigned char r, unsigned char g, unsigned char b)
 {
-	int value = (r | (((b << 8) | g) << 8));
 	u32 *ptr = this->field_48;
+	int value = (r | (((b << 8) | g) << 8));
 
 	int i = 0;
 	for (i = 0; i < this->field_3C + 1; i++)
-		ptr[i] = value;
+	{
+		*ptr = value;
+		ptr++;
+	}
 }
 
 // @Ok
@@ -2595,6 +2598,7 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
 	PATCH_PUSH_RET(0x004093C0, CQuadBit::SetTint);
+	PATCH_PUSH_RET(0x0040A920, CSimpleTexturedRibbon::SetRGB);
 }
 
 // @Bogus
