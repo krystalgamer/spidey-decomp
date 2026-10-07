@@ -1612,6 +1612,7 @@ void CQuadBit::SetSemiTransparent()
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetOpaque(){
 	this->mCodeBGR = (this->mCodeBGR & 0xFFFFFDBF) | 0x80;
 }
@@ -2621,6 +2622,7 @@ void patch_CBit(void)
 		CQuadBit::SetTexture,
 		"?SetTexture@CQuadBit@@QAEXHH@Z");
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
+	PATCH_PUSH_RET(0x004093B0, CQuadBit::SetOpaque);
 	PATCH_PUSH_RET(0x0040A920, CSimpleTexturedRibbon::SetRGB);
 }
 
