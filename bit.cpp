@@ -71,7 +71,7 @@ EXPORT CChunkBit* ChunkBitList;
 EXPORT CGlow* GlowList;
 CTextBox* TextBoxList = 0;
 
-EXPORT volatile i32 BitCount = 0;
+EXPORT i32 BitCount = 0;
 
 //#define G_BITCOUNT (BitCount)
 #define G_BITCOUNT (*reinterpret_cast<volatile i32*>(0x0056EB48))
@@ -470,7 +470,7 @@ INLINE void RemoveDeadBits(CBit *pBit)
 }
 
 // @Ok
-// @AlmostMatching: CFriction::Set was not inlined and attachto seems different too
+// @Matching
 CQuadBit::CQuadBit(void)
 {
 	this->AttachTo(&QuadBitList);
@@ -1512,12 +1512,9 @@ CMotionBlur::CMotionBlur(
 // @Matching
 INLINE CBit::CBit()
 {
-	this->mFric.vx = 1;
-	this->mFric.vy = 1;
-	this->mFric.vz = 1;
-	//this->mFric.Set(1,1,1);
+	this->mFric.Set(1,1,1);
 
-	G_BITCOUNT++;
+	BitCount++;
 }
 
 // @Ok
