@@ -1636,9 +1636,23 @@ void CQuadBit::SetTransparency(unsigned char a2){
 	this->mTint = a2 | ((a2 | (a2 << 8)) << 8);
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void CQuadBit::OrientUsing(CVector *a2, SVECTOR *a3, int a4, int a5)
 {
+	CVector normal(a3->vx, a3->vy, a3->vz);
+	CVector perp1;
+	CVector perp2;
+
+	Utils_CalcPerps(&normal, &perp1, &perp2);
+
+	perp1 *= a4;
+	perp2 *= a5;
+
+	this->mPos = *a2 - perp1 - perp2;
+	this->mPosB = *a2 + perp1 - perp2;
+	this->mPosC = *a2 - perp1 + perp2;
+	this->mPosD = *a2 + perp1 + perp2;
 }
 
 // @MEDIUMTODO
@@ -2597,6 +2611,15 @@ void patch_CBit(void)
 	PATCH_PUSH_RET(0x00408950, CBit::SetPos);
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
 	PATCH_PUSH_RET(0x0040A920, CSimpleTexturedRibbon::SetRGB);
+}
+
+// @Bogus
+void patch_CQuadBit(void)
+{
+	PATCH_PUSH_RET_POLY(
+		0x00409400,
+		CQuadBit::OrientUsing,
+		"?OrientUsing@CQuadBit@@QAEXPAVCVector@@PAUSVECTOR@@HH@Z");
 }
 
 // @Bogus

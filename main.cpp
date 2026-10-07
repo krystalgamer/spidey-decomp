@@ -668,6 +668,7 @@ void game_patches(void)
 	patch_m3dutils();
 	patch_CBit();
 	patch_CFT4Bit();
+	patch_CQuadBit();
 }
 
 // @Bogus
