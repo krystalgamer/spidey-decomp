@@ -1599,6 +1599,7 @@ INLINE void CBit::DeleteFrom(void *p)
 }
 
 // @Ok
+// @Matching
 void CQuadBit::SetTint(unsigned char a2, unsigned char a3, unsigned char a4)
 {
   this->mTint = a2 | ((a4 << 16) & 0xFF0000 | (a3 << 8) & 0xFF00) & 0xFFFFFF00;
@@ -2621,6 +2622,7 @@ void patch_CBit(void)
 		CQuadBit::SetTexture,
 		"?SetTexture@CQuadBit@@QAEXHH@Z");
 	PATCH_PUSH_RET(0x00409390, CQuadBit::SetSemiTransparent);
+	PATCH_PUSH_RET(0x004093C0, CQuadBit::SetTint);
 	PATCH_PUSH_RET(0x0040A920, CSimpleTexturedRibbon::SetRGB);
 }
 
