@@ -3,10 +3,14 @@
 #include "PCTimer.h"
 #include "DXinit.h"
 #include "pcdcPad.h"
+#include "PCInput.h"
+#include "tweak.h"
+#include "ps2lowsfx.h"
 
 #include "stdarg.h"
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 
 // #define VALIDATE_TWIDDLE
 
@@ -24,6 +28,26 @@ u8 g3DAccelator = 1;
 HWND gHwnd;
 
 i32 gBrightnessRelated = 4;
+
+// display settings kept in Spidey.cfg, PCSHELL_DoDisplayOptions and SpideyMain read them too
+u32 gSavedResolutionX;
+u32 gSavedResolutionY;
+u32 gSavedColorDepth;
+char gDisplayDeviceName[128];
+
+// sound settings kept in Spidey.cfg, their low words land in
+// gGameState[12]/[11]/[13], the volumes used by SFX_Play,
+// GameFMV_PlayMovie and Redbook_XAPlay
+i32 gSavedSFXVolume;
+i32 gSavedMusicVolume;
+i32 gSavedXAVolume;
+bool gSavedSoundMode;
+
+// defaults for the sound settings, at 0x550EA4 in the original
+static i32 gDefaultSFXVolume = 0x2FFF;
+static i32 gDefaultMusicVolume = 0xA7;
+static i32 gDefaultXAVolume = 0xC9;
+static bool gDefaultSoundMode = false;
 
 EXPORT u8 gMissingCD;
 EXPORT i32 gActive;
@@ -127,22 +151,144 @@ INLINE void ComputeMaskShift(
 	}
 }
 
-// @SMALLTODO
-void SPIDEYDX_DisplayDeviceSettings(char *)
+// @Ok
+// @Matching
+void SPIDEYDX_DisplayDeviceSettings(char* name)
 {
-    printf("SPIDEYDX_DisplayDeviceSettings(char *)");
+#ifdef _WIN32
+	u32 size;
+	HKEY key;
+	char buf[16];
+
+	size = 16;
+	if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, "\\Software\\Activision\\Spider-Man", 0, KEY_ALL_ACCESS, &key) == ERROR_SUCCESS)
+	{
+		if (RegQueryValueExA(key, "DisplayDevice", 0, 0, (LPBYTE)buf, (LPDWORD)&size) == ERROR_SUCCESS && size > 0)
+		{
+			gDisplayDeviceIndex = atol(buf);
+
+			size = 0x80;
+			if (RegQueryValueExA(key, "DisplayDeviceName", 0, 0, (LPBYTE)gDisplayDeviceName, (LPDWORD)&size) != ERROR_SUCCESS && size > 0)
+			{
+				gDisplayDeviceName[0] = 0;
+			}
+		}
+		else
+		{
+			gDisplayDeviceIndex = -1;
+			gDisplayDeviceName[0] = 0;
+		}
+
+		RegCloseKey(key);
+	}
+	else
+	{
+		gDisplayDeviceIndex = -1;
+		gDisplayDeviceName[0] = 0;
+	}
+#endif
+
+	if (strlen(gDisplayDeviceName) != strlen(name) || strcmp(name, gDisplayDeviceName))
+	{
+		if (!gLowGraphics)
+		{
+			gSavedResolutionX = 640;
+			gSavedResolutionY = 480;
+			gSavedColorDepth = 16;
+		}
+
+		SPIDEYDX_SaveSettings();
+	}
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void SPIDEYDX_LoadSettings(void)
 {
-    printf("SPIDEYDX_LoadSettings(void)");
+	u32 ctrlMappings[11];
+	u32 kbdMappings[11];
+	char deviceName[128];
+
+	FILE* file = fopen("Spidey.cfg", "rb");
+	if (file)
+	{
+		fread(&gSavedResolutionX, 4, 1, file);
+		fread(&gSavedResolutionY, 4, 1, file);
+		fread(&gSavedColorDepth, 4, 1, file);
+		fread(&gBrightnessRelated, 4, 1, file);
+		fread(&gLowGraphics, 4, 1, file);
+		gLowGraphics = 0;
+		fread(kbdMappings, 4, 11, file);
+		fread(ctrlMappings, 4, 11, file);
+		fread(deviceName, 0x80, 1, file);
+
+		for (i32 i = 0; i < 11; i++)
+		{
+			PCINPUT_SetKeyboardMappingForAction(1 << i, kbdMappings[i]);
+			PCINPUT_SetControllerMappingForAction(1 << i, ctrlMappings[i]);
+		}
+
+		SPIDEYDX_DisplayDeviceSettings(deviceName);
+
+		fread(&gSavedSFXVolume, 4, 1, file);
+		fread(&gSavedMusicVolume, 4, 1, file);
+		fread(&gSavedXAVolume, 4, 1, file);
+		// the original reads 4 bytes into this 1 byte flag
+		fread(&gSavedSoundMode, 4, 1, file);
+
+		fclose(file);
+	}
+	else
+	{
+		gSavedSFXVolume = gDefaultSFXVolume;
+		gSavedMusicVolume = gDefaultMusicVolume;
+		gSavedXAVolume = gDefaultXAVolume;
+		gSavedResolutionX = 640;
+		gSavedResolutionY = 480;
+		gSavedColorDepth = 16;
+		gBrightnessRelated = 4;
+		gLowGraphics = 0;
+		gSavedSoundMode = gDefaultSoundMode;
+	}
+
+	gGameState[12] = gSavedSFXVolume;
+	gGameState[11] = gSavedMusicVolume;
+	gGameState[13] = gSavedXAVolume;
+	gBootRomSoundMode = gSavedSoundMode;
 }
 
-// @MEDIUMTODO
+// @Ok
+// @Matching
 void SPIDEYDX_SaveSettings(void)
 {
-    printf("SPIDEYDX_SaveSettings(void)");
+	u32 kbdMappings[11];
+	u32 ctrlMappings[11];
+
+	FILE* file = fopen("Spidey.cfg", "wb");
+	if (file)
+	{
+		for (i32 i = 0; i < 11; i++)
+		{
+			PCINPUT_GetKeyboardMappingForAction(1 << i, &kbdMappings[i]);
+			PCINPUT_GetControllerMappingForAction(1 << i, &ctrlMappings[i]);
+		}
+
+		fwrite(&gSavedResolutionX, 4, 1, file);
+		fwrite(&gSavedResolutionY, 4, 1, file);
+		fwrite(&gSavedColorDepth, 4, 1, file);
+		fwrite(&gBrightnessRelated, 4, 1, file);
+		fwrite(&gLowGraphics, 4, 1, file);
+		fwrite(kbdMappings, 4, 11, file);
+		fwrite(ctrlMappings, 4, 11, file);
+		fwrite(gDisplayDeviceName, 0x80, 1, file);
+		fwrite(&gSavedSFXVolume, 4, 1, file);
+		fwrite(&gSavedMusicVolume, 4, 1, file);
+		fwrite(&gSavedXAVolume, 4, 1, file);
+		// the original writes 4 bytes of this 1 byte flag
+		fwrite(&gSavedSoundMode, 4, 1, file);
+		fflush(file);
+		fclose(file);
+	}
 }
 
 // @Ok

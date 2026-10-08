@@ -122,6 +122,8 @@ EXPORT void SFX_Unpause(void);
 EXPORT u32 playSFX(u32,u8,i16,i16,i32,u16);
 EXPORT u32 translateLevelSpecificAliasToIndex(u32);
 
+EXPORT extern bool gBootRomSoundMode;
+
 void validate_SSFXBank(void);
 void validate_SSfxEntry(void);
 void validate_SSfxRelated(void);
