@@ -342,8 +342,8 @@ void CBody::AttachXA(i32 a2, i32 a3)
 void CBody::StopMyXA(void)
 {
 	if ((Vblanks - this->field_98) < 0x12C
-			&& gRedbookXaRelatedOne == this->field_9C
-			&& gRedbookXaRelatedTwo == this->field_A0)
+			&& G_REDBOOK_XA_RELATED_ONE == this->field_9C
+			&& G_REDBOOK_XA_RELATED_TWO == this->field_A0)
 	{
 		Redbook_XAStop();
 	}

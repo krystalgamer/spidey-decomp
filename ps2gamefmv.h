@@ -25,6 +25,9 @@ EXPORT void GameFMV_Init(void);
 EXPORT void GameFMV_SetStartTrack(u8);
 EXPORT void GameFMV_StopFMV(void);
 
+//#define G_GAME_FMV_ACTIVE (GameFMV_Active)
+#define G_GAME_FMV_ACTIVE (*reinterpret_cast<i32*>(0x006151F8))
+
 void validate_SMovieDetails(void);
 
 #endif

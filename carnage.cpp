@@ -936,7 +936,7 @@ void CCarnage::StretchJumpAdvance(void)
 					if (this->mAnimFinished)
 						this->RunAnim(7, 0, -1);
 
-					if (gCarnageXaRelated && !gCarnageXaRelatedTwo)
+					if (G_CARNAGE_XA_RELATED && !G_CARNAGE_XA_RELATED_TWO)
 					{
 						if (gWhatIf)
 						{
